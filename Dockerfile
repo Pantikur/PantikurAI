@@ -15,11 +15,8 @@ COPY requirements.txt .
 # Устанавливаем зависимости (включая uvicorn, fastapi, etc.)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Проверяем, что uvicorn установлен
-RUN if ! command -v uvicorn &> /dev/null; then \
-        echo "❌ Uvicorn не установлен! Проверь requirements.txt"; \
-        exit 1; \
-    fi
+# Проверяем, что uvicorn доступен как модуль (надёжнее)
+RUN python -c "import uvicorn" || (echo "❌ Uvicorn не импортируется!" && exit 1)
 
 # Копируем весь код
 COPY . .
