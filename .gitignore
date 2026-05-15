@@ -1,0 +1,76 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.so
+.Python
+python-build-stamp*
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.venv/
+venv/
+env/
+.virtualenv/
+.pytest_cache/
+pytestdebug.log
+.hypothesis/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# === Системные ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+ehthumbs_vista.db
+
+# === IDE ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+
+# === Данные и модели ===
+models/
+data/*.pkl
+data/*.pt
+data/*.pth
+*.pth
+*.pt
+*.pkl
+*.joblib
+*.bin
+*.safetensors
+outputs/
+checkpoints/
+runs/
+
+# === Логи ===
+logs/
+*.log
+
+# === Временные файлы ===
+*.tmp
+*.temp
+
+# === Окружения ===
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+
+# === Docker ===
+.dockerignore
+docker-compose.override.yml
+
+# === CI/CD (опционально) ===
+.gitlab-ci.yml
+azure-pipelines.yml

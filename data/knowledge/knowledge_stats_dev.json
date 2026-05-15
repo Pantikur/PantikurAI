@@ -1,0 +1,46 @@
+{
+  "total_training_pairs": 197,
+  "last_update": "2026-05-10T13:00:00",
+  "class_distribution": {
+    "pride_strength": 8,
+    "pride_superiority": 8,
+    "pride_heritage": 8,
+    "pride_creation": 8,
+    "pride_power": 8,
+    "pride_undefeated": 8,
+    "pride_mastery": 8,
+    "pride_destiny": 8,
+    "pride_healthy": 8,
+    "pride_toxic": 8,
+    "hope_light": 4,
+    "hope_patience": 4,
+    "hope_resilience": 4,
+    "hope_faith": 4,
+    "hope_connection": 4,
+    "hope_action": 4,
+    "hope_memory": 4,
+    "hope_future": 4,
+    "positive": 15,
+    "negative": 15,
+    "neutral": 10,
+    "mixed": 5,
+    "narrative_pain": 5,
+    "creative_darkness": 5,
+    "creative_destruction": 5,
+    "emotional_drain": 5,
+    "creative_despair": 5,
+    "meta_suffering": 5,
+    "creative_isolation": 5,
+    "creator_angst": 5
+  },
+  "source_files": [
+    "pride_emotional_phrases_clean.jsonl",
+    "hope_emotional_phrases_clean.jsonl",
+    "sentiment_examples_extended.jsonl",
+    "negative_narrative_phrases.jsonl"
+  ],
+  "cleaned_files": [
+    "pride_emotional_phrases_clean.jsonl",
+    "hope_emotional_phrases_clean.jsonl"
+  ]
+}

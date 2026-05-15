@@ -1,0 +1,128 @@
+import requests
+from bs4 import BeautifulSoup
+import re
+from typing import Dict, List, Optional
+
+class WebSearch:
+    """
+    Класс для поиска значений новых слов в интернете
+    Использует Яндекс для поиска и парсинг результатов
+    """
+    
+    def __init__(self):
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        self.search_url = "https://yandex.ru/search/"
+    
+    def search_word_meaning(self, word: str) -> Dict[str, any]:
+        """
+        Ищет значение слова в интернете
+        Возвращает словарь с найденной информацией
+        """
+        try:
+            # Поиск в Яндексе
+            params = {
+                'text': f'значение слова {word}',
+                'lr': 213  # Россия
+            }
+            
+            response = requests.get(
+                self.search_url, 
+                params=params, 
+                headers=self.headers,
+                timeout=10
+            )
+            response.raise_for_status()
+            
+            # Парсинг результатов
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Поиск сниппетов с определениями
+            results = []
+            snippets = soup.find_all('div', {'class': 'TextSnippet'})
+            
+            for snippet in snippets[:3]:  # Берем топ-3 результата
+                text = snippet.get_text().strip()
+                if text:
+                    results.append(text)
+            
+            # Поиск в специализированных словарях
+            dictionary_sources = [
+                'dic.academic.ru',
+                'ozhegov.org',
+                'slovar.cc',
+                'teza.ru'
+            ]
+            
+            dict_results = []
+            links = soup.find_all('a', href=True)
+            
+            for link in links[:10]:
+                href = link['href']
+                if any(source in href for source in dictionary_sources):
+                    link_text = link.get_text().strip()
+                    if link_text:
+                        dict_results.append({
+                            'title': link_text,
+                            'url': href
+                        })
+                        if len(dict_results) >= 3:
+                            break
+            
+            return {
+                'word': word,
+                'status': 'success',
+                'definitions': results,
+                'dictionary_sources': dict_results,
+                'search_query': params['text']
+            }
+            
+        except requests.RequestException as e:
+            return {
+                'word': word,
+                'status': 'error',
+                'error': f'Ошибка запроса: {str(e)}',
+                'definitions': []
+            }
+        except Exception as e:
+            return {
+                'word': word,
+                'status': 'error',
+                'error': f'Неизвестная ошибка: {str(e)}',
+                'definitions': []
+            }
+    
+    def get_word_from_context(self, text: str) -> List[str]:
+        """
+        Извлекает потенциально неизвестные слова из контекста
+        Сейчас возвращает все слова, кроме общих
+        """
+        # Простой фильтр - убираем общеупотребительные слова
+        common_words = {
+            'и', 'в', 'на', 'не', 'я', 'что', 'он', 'с', 'как', 'а', 'то', 'мы',
+            'но', 'вот', 'да', 'ты', 'вы', 'они', 'этот', 'тот', 'так', 'быть',
+            'его', 'ее', 'их', 'мне', 'мной', 'к', 'у', 'для', 'по', 'из', 'о',
+            'от', 'со', 'до', 'под', 'за', 'над', 'про', 'раз', 'два', 'три',
+            'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять'
+        }
+        
+        # Извлекаем слова
+        words = re.findall(r'[а-яА-ЯёЁ]{3,}', text.lower())
+        unique_words = list(set(words))
+        
+        # Фильтруем
+        filtered_words = [w for w in unique_words if w not in common_words]
+        
+        return filtered_words[:5]  # Возвращаем топ-5 потенциально интересных слов
+
+    def lookup(self, word: str) -> Optional[str]:
+        
+        result = self.search_word_meaning(word)
+        if result['status'] == 'success' and result['definitions']:
+            # Берём первое определение, обрезаем до 2–3 предложений
+            definition = result['definitions'][0]
+            sentences = re.split(r'[.!?]', definition)
+            short_def = '. '.join(sentences[:2]) + '.' if len(sentences) > 1 else sentences[0]
+            return short_def.strip()
+        return None

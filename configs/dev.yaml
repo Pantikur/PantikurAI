@@ -1,0 +1,37 @@
+# configs/dev.yaml
+# Конфиг для разработки: быстрый запуск, отладка
+
+input_files:
+  clean_files:
+    - raw: pride_emotional_phrases.jsonl
+      clean: pride_emotional_phrases_clean.jsonl
+    - raw: hope_emotional_phrases.jsonl
+      clean: hope_emotional_phrases_clean.jsonl
+
+  source_files:
+    - pride_emotional_phrases_clean.jsonl
+    - hope_emotional_phrases_clean.jsonl
+    - sentiment_examples_extended.jsonl
+    - negative_narrative_phrases.jsonl
+
+paths:
+  training_pairs: data/training_pairs_dev.jsonl
+  knowledge_stats: data/knowledge/knowledge_stats_dev.json
+
+responses:
+  positive: "Рад за тебя! Продолжай!"
+  neutral: "Интересно... расскажи подробнее."
+  negative: "Понимаю, это непросто."
+  disturbing: "Это звучит тревожно. Хочешь поговорить?"
+  existential: "Сложный вопрос. Давай подумаем вместе."
+  hope: "Надежда — лучик света даже в темноте."
+  rage: "Гнев — сильная энергия. Что его вызвало?"
+  loneliness: "Одиночество бывает у всех. Ты не один."
+  cosmic_horror: "Космос огромен... и пугающе прекрасен."
+
+fields:
+  text: ["text", "phrase"]
+  label: ["class", "sentiment"]
+
+skip_empty_text: true
+default_label: neutral
