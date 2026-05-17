@@ -9,6 +9,8 @@ import os
 from .chat_model import ChatNN
 from .web_search import WebSearch
 from datetime import datetime
+from .cultural_references import cultural_references
+import random
 
 # Импортируем KnowledgeManager
 try:
@@ -170,7 +172,28 @@ class ChatBot:
             logits, _ = self.model(input_tensor)
             predicted_indices = logits.argmax(dim=-1).cpu().numpy()[0]
 
-        response = self._sequence_to_text(predicted_indices).strip() or "Я здесь! 🤖"
+        base_response = self._sequence_to_text(predicted_indices).strip() or "Я здесь! 🤖"
+
+        # --- Вставка культурной отсылки ---
+        final_response = base_response
+
+        # Только в режиме chat и если нет JSON/world
+        if mode == "chat":
+            if random.random() < 0.25:  # 25% шанс
+                cultural_phrase = random.choice(cultural_references)
+                
+                # Варианты вставки
+                style_choice = random.choice(['prefix', 'suffix', 'separate'])
+                
+                if style_choice == 'prefix':
+                    final_response = f"{cultural_phrase} {base_response}"
+                elif style_choice == 'suffix':
+                    final_response = f"{base_response} ({cultural_phrase})"
+                else:  # separate
+                    final_response = f"{base_response}\n\n{cultural_phrase}"
+
+        self.log_interaction(last_user_msg, final_response)
+        return json.dumps({"response": final_response}, ensure_ascii=False)
         self.log_interaction(last_user_msg, response)
         return json.dumps({"response": response}, ensure_ascii=False)
 
