@@ -9,7 +9,7 @@ import os
 from .chat_model import ChatNN
 from .web_search import WebSearch
 from datetime import datetime
-from .cultural_references import cultural_references
+from .cultural_references import get_cultural_phrase
 import random
 
 # Импортируем KnowledgeManager
@@ -180,22 +180,20 @@ class ChatBot:
         # Только в режиме chat и если нет JSON/world
         if mode == "chat":
             if random.random() < 0.25:  # 25% шанс
-                cultural_phrase = random.choice(cultural_references)
+                cultural_phrase = get_cultural_phrase()
                 
-                # Варианты вставки
                 style_choice = random.choice(['prefix', 'suffix', 'separate'])
                 
                 if style_choice == 'prefix':
                     final_response = f"{cultural_phrase} {base_response}"
                 elif style_choice == 'suffix':
                     final_response = f"{base_response} ({cultural_phrase})"
-                else:  # separate
+                else:
                     final_response = f"{base_response}\n\n{cultural_phrase}"
 
         self.log_interaction(last_user_msg, final_response)
         return json.dumps({"response": final_response}, ensure_ascii=False)
-        self.log_interaction(last_user_msg, response)
-        return json.dumps({"response": response}, ensure_ascii=False)
+        
 
     def _extract_genre_tags(self, message):
         """Извлекает жанр и теги из сообщения"""
