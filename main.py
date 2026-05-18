@@ -12,6 +12,7 @@ import threading
 from contextlib import asynccontextmanager
 from fastapi import WebSocket
 import asyncio
+import json
 
 # === Настройка логирования ===
 logging.basicConfig(
@@ -310,11 +311,12 @@ async def trigger_retrain():
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
+    logger.info("🟢 Клиент подключился по WebSocket")
 
     try:
-        while True:
-            # Ждём сообщение от клиента
-            data = await websocket.receive_json()
+        async for data in websocket.iter_json():
+            logger.debug(f"📥 Получено: {data}")
+
             mode = data.get("mode", "chat")
             messages = data.get("messages", [])
 
@@ -322,18 +324,65 @@ async def websocket_endpoint(websocket: WebSocket):
                 await websocket.send_json({"error": "Нет сообщений"})
                 continue
 
-            # Эмулируем потоковый ответ (в реальности — генерация модели)
-            response = "Это очень длинный ответ, который приходит по частям..."
+            # Гарантируем формат messages
+            valid_messages = []
+            for msg in messages:
+                if isinstance(msg, dict) and "message" in msg:
+                    valid_messages.append({
+                        "message": str(msg["message"])[:500],  # Ограничение длины
+                        "is_own": bool(msg.get("is_own", True))
+                    })
 
-            # Разбиваем на "токены" и отправляем по одному "предложению"
-            parts = response.split(", ")
-            for part in parts:
-                await websocket.send_text(part.strip())
-                await asyncio.sleep(0.5)  # Имитация задержки
+            if not valid_messages:
+                await websocket.send_json({"error": "Нет валидных сообщений"})
+                continue
 
-            await websocket.send_text("[END]")  # Сигнал конца
+            # Генерируем ответ
+            try:
+                bot_response = chatbot.generate_response(valid_messages, mode=mode)
+            except Exception as e:
+                logger.error(f"❌ Ошибка генерации: {e}")
+                bot_response = '{"response": "Извини, произошла ошибка."}'
+
+            # Извлекаем текст
+            try:
+                parsed = json.loads(bot_response)
+                text = parsed.get("response", "") or parsed.get("world", "")
+                if not text:
+                    text = str(parsed)
+            except Exception:
+                text = str(bot_response)
+
+            if not text.strip():
+                text = "Я здесь! 🤖"
+
+            # Потоковая отправка "по словам"
+            words = text.split()
+            chunk = ""
+            for i, word in enumerate(words):
+                chunk += word + " "
+                if len(chunk) > 40 or (i > 0 and i % 10 == 0):  # Каждые ~10 слов
+                    await websocket.send_text(chunk.strip())
+                    chunk = ""
+                    await asyncio.sleep(0.05)  # Имитация печати
+
+            if chunk.strip():
+                await websocket.send_text(chunk.strip())
+
+            await websocket.send_text("[END]")  # Сигнал окончания
+            logger.info("📤 Ответ отправлен полностью")
 
     except Exception as e:
-        await websocket.close()
+        logger.error(f"🔴 WebSocket ошибка: {e}", exc_info=True)
+        try:
+            await websocket.close()
+        except:
+            pass
+    finally:
+        logger.info("🔌 Клиент отключился от WebSocket")
 
 logger.info("📌 Сервер готов. Запустите: uvicorn main:app --host 0.0.0.0 --port 8000")
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8000))  # Timeweb передаёт PORT
+    uvicorn.run("main:app", host="0.0.0.0", port=port)

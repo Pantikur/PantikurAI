@@ -1,73 +1,86 @@
 # Pantikur ChatBot
 
-Neural network chatbot with cultural and dialect support, built with PyTorch and FastAPI.
+Нейросетевой чат-бот с поддержкой культурных отсылок и диалектов, построенный на PyTorch + FastAPI.  
+Интегрирован с Android-приложением через WebSocket и REST API.
 
-## Features
+---
 
-- LSTM-based neural network for conversational AI
-- Support for Russian cultural references and regional dialects
-- FastAPI web interface for Android integration
-- Docker and Docker Compose support
-- Deployable on Render.com
-- Text preprocessing and vocabulary management
+## 🌟 Особенности
 
-## Project Structure
+- LSTM-модель на PyTorch для генерации ответов
+- Поддержка русских культурных отсылок и региональных фраз
+- Режимы: обычный чат, генерация миров, повествование
+- WebSocket-потоковый ответ (эффект "печати")
+- Автообучение при добавлении новых данных
+- Деплой на Timeweb / Render / Docker
+- Полная интеграция с Android (`PantikurChat`)
+
+---
+
+## 📁 Структура проекта (актуальная)
+
 
 ```
 Pantikur/
 │
-├── main.py                  ← Основной API (FastAPI)
-├── train.py                 ← Обучение модели диалогов
-├── train_narrative.py       ← Обучение повествовательной модели
-├── create_data.py           ← Подготовка данных из JSON
-├── inspect_data.py          ← Анализ датасета
-├── generate_worlds.py       ← Генерация вымышленных миров
-├── add_world_examples.py    ← Добавление примеров миров в данные
-├── auto_train.py            ← Автозапуск обучения при изменениях
+├── main.py                     ← Основной API (FastAPI + WebSocket)
+├── train.py                    ← Обучение основной модели
+├── train_narrative.py          ← Обучение повествовательной модели
+├── retrain.py                  ← Дообучение при новых диалогах
+├── create_data.py              ← Подготовка данных из JSON
+├── inspect_data.py             ← Анализ датасета
+├── generate_worlds.py          ← Генерация вымышленных миров
+├── add_world_examples.py       ← Добавление примеров миров
+├── auto_train.py               ← Автозапуск обучения при изменениях
+├── auto_retrain.py             ← Автоматическое дообучение
+├── inference.py                ← Интерактивный режим (чат в консоли)
 │
-├── Wuglarst/                ← Ядро чат-бота (модуль)
+├── Wuglarst/                   ← Ядро бота (модуль)
 │   ├── init.py
 │   └── src/
 │       ├── chatbot.py             ← Основной класс ChatBot
 │       ├── chat_model.py          ← PyTorch модель (LSTM)
 │       ├── preprocess.py          ← Токенизация, нормализация
 │       ├── cultural_references.py ← Культурные фразы (анекдоты, поговорки)
-│       ├── dialect_phrases.py     ← Региональные выражения (уральский, север и др.)
+│       ├── dialect_phrases.py     ← Региональные выражения
 │       └── web_search.py          ← Поиск значений слов (опционально)
 │
-├── data/                    ← Исходные и обработанные данные
-│   ├── conversations.json   ← Диалоги пользователей
-│   ├── training_data.json   ← Обучающие пары "вопрос-ответ"
+├── data/                       ← Исходные и обработанные данные
+│   ├── conversations.jsonl     ← Диалоги пользователей (новые)
+│   ├── training_pairs.jsonl    ← Пара "вопрос-ответ" для обучения
+│   ├── user_conversations.jsonl ← История сессий
+│   ├── knowledge_cache.json    ← Кэш выученных слов
 │   └── narrative_examples/
-│       └── examples.json    ← Примеры повествований и описаний миров
+│       └── examples.json       ← Примеры повествований
 │
-├── models/                  ← Сохранённые веса
-│   └── chat_model.pth       ← Обученная PyTorch модель
+├── models/                     ← Сохранённые веса
+│   └── chat_model.pth          ← Обученная PyTorch модель
 │
-├── static/                  ← Статика (веб-интерфейс, если есть)
-│   └── index.html
-│
-├── scripts/                 ← Вспомогательные скрипты
-│   ├── train.py
-│   ├── create_data_debug.py
+├── scripts/                    ← Вспомогательные скрипты
 │   ├── debug_env.py
-│   └── inspect_data.py
+│   ├── create_data_debug.py
+│   └── ...
 │
-├── .env                     ← Переменные окружения
-├── .env.example             ← Шаблон .env
+├── configs/                    ← Конфиги модели и обучения
+│
+├── static/                     ← Статика (если есть)
+│
+├── knowledge_manager.py        ← Система запоминания новых слов
+├── init_knowledge_system.py    ← Инициализация знаний
+│
+├── Procfile                    ← Запуск через Uvicorn (Timeweb/Render)
+├── render.yaml                 ← Деплой на Render.com
+├── Dockerfile                  ← Сборка образа
+├── docker-compose.yml          ← Локальный запуск в контейнере
+│
+├── requirements.txt            ← Основные зависимости
+├── requirements_knowledge.txt  ← Зависимости для KnowledgeManager
+│
+├── .env                        ← Переменные окружения
 ├── .gitignore
-├── requirements.txt         ← Зависимости Python
-├── Dockerfile               ← Для сборки образа
-├── docker-compose.yml       ← Локальный запуск в контейнере
-├── render.yaml              ← Деплой на Render.com
-├── run.py                   ← Альтернативный запуск (если используется)
 │
-├── temp_debug.py            ← Временные скрипты (удалить в продакшене)
-├── test_joblib.pkl
-├── generated_worlds.json
-│
-└── venv/                    ← Виртуальное окружение (не в git)
-```
+└── venv/                       ← Виртуальное окружение (не в git)
+
 
 ---
 
@@ -75,97 +88,123 @@ Pantikur/
 
 | Режим         | Описание |
 |--------------|--------|
-| `chat`       | Обычный разговор с учётом истории |
-| `narrative`  | Повествовательный стиль с внутренним монологом (`*(внутренне:...)*`) |
-| `world_gen`  | Генерация мира по шаблону: название, законы, традиции, правила |
+| `chat`       | Обычный разговор с учётом истории. Может искать значения незнакомых слов. |
+| `narrative`  | Повествовательный стиль с внутренним монологом (`*(внутренне:...)*`). |
+| `world_gen`  | Генерация мира: название, законы, традиции, внегласные правила. |
 
-Пример запроса:
+### Пример запроса:
 ```json
 {
-  "messages": [{"message": "Создай мир: Киберпанк, забвение, нейросети.", "is_own": true}],
+  "messages": [
+    {
+      "message": "Создай мир: Киберпанк, забвение, нейросети.",
+      "is_own": true
+    }
+  ],
   "mode": "world_gen"
 }
 
-## Requirements
+🧰 Требования
+Python 3.10+
+PyTorch
+FastAPI
+uvicorn[standard]
+NumPy, joblib
+python-dotenv (опционально)
 
-- Python 3.10+
-- PyTorch
-- FastAPI
-- uvicorn
-- NumPy
-- python-dotenv
-
-## Setup
-
-1. Install dependencies:
-```
+🔧 Установка
+Bash
+# 1. Установи зависимости
 pip install -r requirements.txt
-```
 
-2. Set up environment variables:
-```
-copy .env.example .env
-```
+# 2. Создай .env (если нужно)
+cp .env.example .env
 
-3. Train the model (if needed):
-```
-python scripts/train.py
-```
-
-## Running the Application
-
-### Local Development
-```
+# 3. Убедись, что есть:
+#    - data/chat_data.pkl (или пересобери через create_data.py)
+#    - models/chat_model.pth
+▶️ Запуск
+Локально (для разработки):
+Bash
 python main.py
-```
-
-### With Docker
-```
+Через Uvicorn (рекомендуется):
+Bash
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+Через Docker:
+Bash
 docker-compose up --build
-```
+🌐 API Эндпоинты
+Метод	Путь	Описание
+GET	/health	Проверка работоспособности
+GET	/	Главная страница
+POST	/predict	Ответ на сообщение (JSON)
+POST	/	Совместимость с Android
+POST	/retrain	Запуск дообучения (фоново)
+WS	/ws	WebSocket: потоковый ответ
+🚀 Деплой
+На Timeweb / Render:
 
-## API Endpoints
+Добавь файл Procfile:
 
-- `GET /health` - Health check
-- `GET /` - Home endpoint
-- `POST /predict` - Chat prediction (Android integration)
 
-## Deployment
+web: uvicorn main:app --host 0.0.0.0 --port $PORT
 
-The application is configured for deployment on [Render.com](https://render.com):
 
-1. The `render.yaml` file configures the web service
-2. Dockerfile builds the container image
-3. Application runs on port specified by ${PORT} environment variable
+Убедись, что в main.py есть:
 
-## Data Structure
 
-The chatbot uses preprocessed data in `Wuglarst/data/chat_data.pkl` containing:
-- `input_sequences` and `target_sequences` - training data
-- `word_to_idx` and `idx_to_word` - vocabulary mapping
-- `vocab_size` and `max_length` - model parameters
+Python
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
 
-Source conversations are stored in `data/conversations.json`.
 
-## Training Custom Model
+Задеплой через GitHub → хостинг автоматически соберёт и запустит.
 
-1. Prepare your conversation data in `data/conversations.json`
-2. Run the training script:
-```
-python scripts/train.py
-```
-3. The trained model will be saved to `Wuglarst/models/chat_model.pth`
 
-## Configuration Recommendations
+📦 Обучение модели
+Подготовь диалоги в data/conversations.jsonl.
+Запусти:
+Bash
+python create_data.py
+python train.py
 
-1. Remove duplicate data files:
-   - `data/chat_data.pkl` (keep only `Wuglarst/data/chat_data.pkl`)
-   - `models/chat_model.pth` (keep only `Wuglarst/models/chat_model.pth`)
+Новые данные? Запусти:
+Bash
+python retrain.py
 
-2. Update `.env.example` with proper API_KEY
 
-3. Ensure Dockerfile uses ${PORT} instead of hardcoded 10000
+Бот сам запустит дообучение при старте, если найдёт новые .jsonl.
 
-## License
 
-[MIT License](LICENSE)
+🛠 Поддержка знаний
+knowledge_manager.py — система запоминания новых слов.
+При встрече неизвестного слова — бот ищет определение.
+Сохраняет в data/knowledge_cache.json.
+Можно расширить обучение: python update_knowledge.py.
+📄 Лицензия
+MIT License
+
+
+---
+
+## ✅ Что изменилось:
+
+| Что было | Что стало |
+|--------|----------|
+| Устаревшая структура | Актуальная, как в `ls` |
+| Нет `Procfile`, `render.yaml` | Теперь они в README |
+| Нет про WebSocket | Добавлено описание `/ws` |
+| Нет про автообучение | Добавлено `auto_retrain.py`, `retrain.py` |
+| Нет `knowledge_manager` | Описано, как работает кэш знаний |
+
+---
+
+Теперь твой `README.md` — **полный, актуальный и профессиональный**.  
+Можно коммитить:
+
+```bash
+git add README.md
+git commit -m "📝 Обновил README: актуальная структура, WebSocket, деплой"
+git push origin main
