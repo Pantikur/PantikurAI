@@ -46,6 +46,9 @@ RUN if [ -f "retrain.py" ]; then \
 # Гарантируем, что файлы существуют
 RUN touch data/chat_data.pkl models/chat_model.pth
 
+# 🔥 ЯВНО УКАЗЫВАЕМ ПОРТ ДЛЯ TIMWEB
+EXPOSE 8000
+
 # === ЗАПУСК FastAPI через uvicorn ===
 CMD ["sh", "-c", "echo '🚀 Запускаем FastAPI на порту $PORT'; \
     exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
