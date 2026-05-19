@@ -39,15 +39,25 @@ RUN if [ -f "data/training_pairs.jsonl" ]; then \
         echo "❌ Ошибка: training_pairs.jsonl не создан!" && exit 1; \
     fi
 
-# === ШАГ 2: Дообучение модели ===
-RUN if [ -f "retrain.py" ]; then \
-        echo "🔄 Запускаем дообучение..."; \
-        python retrain.py || echo "⚠️ Ошибка при дообучении"; \
-    elif [ -f "train.py" ]; then \
-        echo "🔄 Запускаем train.py..."; \
-        python train.py || echo "⚠️ Ошибка при обучении"; \
+# === ШАГ 2: Дообучение модели через retrain.py ===
+RUN echo "🔍 Проверяем наличие скриптов..."
+RUN ls -la retrain.py || (echo "❌ ОШИБКА: retrain.py не найден!" && exit 1)
+RUN ls -la train_logic.py || (echo "❌ ОШИБКА: train_logic.py не найден!" && exit 1)
+
+RUN echo "🧠 Запускаем retrain.py --config configs/prod.yaml --verbose"
+RUN python retrain.py --config configs/prod.yaml --verbose
+
+# Проверка результата
+RUN if [ -f "data/chat_data.pkl" ]; then \
+        echo "✅ chat_data.pkl создан, размер: $(du -h data/chat_data.pkl | cut -f1)"; \
     else \
-        echo "⚠️ Нет скрипта обучения — пропускаем"; \
+        echo "❌ ОШИБКА: chat_data.pkl не создан после retrain.py!" && exit 1; \
+    fi
+
+RUN if [ -f "models/chat_model.pth" ]; then \
+        echo "✅ Модель сохранена: models/chat_model.pth"; \
+    else \
+        echo "⚠️ Внимание: models/chat_model.pth не сохранён"; \
     fi
 
 # Удаляем touch — пусть create_data.py или retrain.py создают файлы
