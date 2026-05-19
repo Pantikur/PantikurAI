@@ -43,8 +43,8 @@ RUN if [ -f "retrain.py" ]; then \
         echo "⚠️ Нет ни retrain.py, ни train.py — пропускаем обучение"; \
     fi
 
-# Гарантируем, что файлы существуют
-RUN touch data/chat_data.pkl models/chat_model.pth
+# Удаляем touch — пусть create_data.py или retrain.py создают файлы
+# Если их нет — пусть бот выбросит понятную ошибку
 
 # 🔥 ЯВНО УКАЗЫВАЕМ ПОРТ ДЛЯ TIMWEB
 EXPOSE 8000
