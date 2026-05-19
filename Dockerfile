@@ -21,26 +21,33 @@ RUN python -c "import uvicorn" || (echo "❌ Uvicorn не импортирует
 # Копируем весь код
 COPY . .
 
-# === ОТЛАДКА: проверяем структуру ===
-RUN echo "=== Содержимое /app ===" && ls -la
-RUN echo "=== Содержимое Wuglarst/src ===" && ls -la Wuglarst/src || true
+# Отладка
+RUN echo "📁 Содержимое data/:" && ls -la data/
+RUN echo "📄 Содержимое configs/:" && ls -la configs/
 
-# Создаём нужные директории
-RUN mkdir -p data models
+# Создаём директории
+RUN mkdir -p data/knowledge models
 
-# === ГЕНЕРАЦИЯ chat_data.pkl и модели (опционально) ===
-# Если есть retrain.py — попробуем обучить модель
-# Если нет — создаём пустые файлы, чтобы не упало при старте
+# === ШАГ 1: Генерация обучающих пар ===
+RUN echo "🔧 Генерируем training_pairs.jsonl..."
+RUN python build_training_data.py --config configs/prod.yaml --verbose
 
-# Проверяем наличие retrain.py или train.py
-RUN if [ -f "retrain.py" ]; then \
-        echo "🔄 Запускаем дообучение при сборке..."; \
-        python retrain.py || echo "⚠️ Дообучение не удалось — возможно, нет данных"; \
-    elif [ -f "train.py" ]; then \
-        echo "🔄 Запускаем обучение через train.py..."; \
-        python train.py || echo "⚠️ Обучение не удалось"; \
+# Проверка результата
+RUN if [ -f "data/training_pairs.jsonl" ]; then \
+        echo "✅ training_pairs.jsonl создан, строк: $(wc -l < data/training_pairs.jsonl)"; \
     else \
-        echo "⚠️ Нет ни retrain.py, ни train.py — пропускаем обучение"; \
+        echo "❌ Ошибка: training_pairs.jsonl не создан!" && exit 1; \
+    fi
+
+# === ШАГ 2: Дообучение модели ===
+RUN if [ -f "retrain.py" ]; then \
+        echo "🔄 Запускаем дообучение..."; \
+        python retrain.py || echo "⚠️ Ошибка при дообучении"; \
+    elif [ -f "train.py" ]; then \
+        echo "🔄 Запускаем train.py..."; \
+        python train.py || echo "⚠️ Ошибка при обучении"; \
+    else \
+        echo "⚠️ Нет скрипта обучения — пропускаем"; \
     fi
 
 # Удаляем touch — пусть create_data.py или retrain.py создают файлы

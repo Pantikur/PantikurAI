@@ -180,6 +180,9 @@ def main():
                     logging.debug(f"⚠️ Пропущена строка в {filename} (line {line_num}): {e}")
 
         logging.info(f"📥 Добавлено {file_count} фраз из {filepath}")
+        if file_count == 0:
+            logging.warning(f"⚠️ Файл {filepath} прочитан, но ни одна строка не прошла валидацию!")
+
 
     logging.info(f"✅ Всего сформировано {len(all_pairs)} обучающих пар")
 
