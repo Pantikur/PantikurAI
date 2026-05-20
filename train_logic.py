@@ -32,9 +32,17 @@ EMBEDDING_DIM = 128
 HIDDEN_DIM = 256
 NUM_LAYERS = 2
 LEARNING_RATE = 0.001
+MAX_VOCAB_SIZE = 8000  # ← Новая константа для максимального размера словаря
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 os.makedirs("models", exist_ok=True)
+
+# === Информация о устройстве ===
+if DEVICE.type == 'cuda':
+    print(f"🚀 Используется GPU: {torch.cuda.get_device_name(0)}")
+else:
+    print("🐌 Используется CPU")
 
 
 def clean_text(text):
@@ -100,6 +108,16 @@ def collect_training_samples():
     samples = model_data["samples"].copy()
     word_counter = Counter()
 
+    print(f"До уникализации: {len(samples)} пар")
+    seen = set()
+    unique_samples = []
+    for pair in samples:
+        key = tuple(pair)
+        if key not in seen:
+            seen.add(key)
+            unique_samples.append(pair)
+    print(f"После уникализации: {len(unique_samples)} пар")
+
     # Базовые слова для начального словаря
     BASIC_WORDS = [
         "привет", "здравствуй", "пока", "спасибо", "пожалуйста", "извини", "прости",
@@ -139,12 +157,6 @@ def collect_training_samples():
             print(f"❌ Ошибка чтения conversations.json: {e}")
 
     # === 2. Знания: data/training_pairs.jsonl ===
-    DEFAULT_RESPONSES = [
-        "Это глубоко...", "Я тоже об этом думал.", "Возможно, ты ближе к истине, чем думаешь.",
-        "Когда никто не смотрит — ты свободен быть собой.", "Ты — больше, чем твои мысли."
-    ]
-    resp_idx = 0
-
     if os.path.exists(TRAINING_PAIRS_JSONL):
         try:
             with open(TRAINING_PAIRS_JSONL, "r", encoding="utf-8") as f:
@@ -154,12 +166,11 @@ def collect_training_samples():
                         continue
                     try:
                         entry = json.loads(line)
-                        text = entry.get("text", "").strip()
-                        if text:
-                            bot_resp = DEFAULT_RESPONSES[resp_idx % len(DEFAULT_RESPONSES)]
-                            resp_idx += 1
-                            user_msg = clean_text(text)
-                            bot_msg = clean_text(bot_resp)
+                        question = entry.get("question", "").strip()
+                        answer = entry.get("answer", "").strip()
+                        if question and answer:
+                            user_msg = clean_text(question)
+                            bot_msg = clean_text(answer)
                             samples.append([user_msg, bot_msg])
                             word_counter.update(user_msg.split())
                             word_counter.update(bot_msg.split())
@@ -191,7 +202,7 @@ def collect_training_samples():
     old_words = [w for w in model_data["word_to_idx"] if w not in ["<PAD>", "<UNK>"]]
     new_words = [w for w, _ in word_counter.most_common() if w not in old_words]
     vocab_words = ["<PAD>", "<UNK>"] + old_words
-    remaining_slots = 8000 - len(vocab_words)
+    remaining_slots = MAX_VOCAB_SIZE - len(vocab_words)  # ← Исправлено: теперь через константу
     vocab_words.extend(new_words[:remaining_slots])
 
     word_to_idx = {word: idx for idx, word in enumerate(vocab_words)}
@@ -349,7 +360,7 @@ def train_model(model, train_loader, val_loader, epochs, device, patience=3):
     log_file.close()
 
 
-def generate_response(model, text, word_to_idx, idx_to_word, device='cpu'):
+def generate_response(model, text, word_to_idx, idx_to_word, max_len=MAX_LENGTH, device='cpu', temperature=0.8):
     model.eval()
     tokens = clean_text(text).split()
     indices = [word_to_idx.get(t, 1) for t in tokens]
@@ -358,19 +369,54 @@ def generate_response(model, text, word_to_idx, idx_to_word, device='cpu'):
 
     with torch.no_grad():
         output, _ = model(input_tensor)
-        _, predicted = torch.max(output, dim=-1)
+        logits = output[0]  # (seq_len, vocab_size)
 
-    response = []
-    for idx in predicted[0].cpu().numpy():
-        word = idx_to_word.get(idx, "<UNK>")
-        if word in ["<PAD>", "<UNK>"]:
-            continue
-        response.append(word)
-        if word in ".!?":
-            break
-        if len(response) >= MAX_LENGTH:
-            break
+        # Применяем температуру
+        logits = logits / temperature
 
+        # Top-k sampling (избегаем редких слов)
+        top_k = 50
+        top_k_indices = torch.topk(logits, top_k, dim=-1).indices
+        filtered_logits = torch.full_like(logits, float('-inf'))
+        filtered_logits.scatter_(-1, top_k_indices, logits.gather(-1, top_k_indices))
+
+        # Софтмакс
+        probs = torch.softmax(filtered_logits, dim=-1)
+        
+        # Генерация с запретом повторов
+        response_ids = []
+        seen_ngrams = set()
+        for i in range(max_len):
+            if i == 0:
+                next_token = torch.argmax(probs[i], dim=-1).item()
+            else:
+                # Запрещаем повтор последнего токена
+                if response_ids[-1] != 0:
+                    probs[i][response_ids[-1]] *= 0.1  # штраф за повтор
+
+                # Top-k снова для следующего шага
+                top_k_next = torch.topk(probs[i], top_k).indices
+                next_probs = probs[i].scatter(-1, top_k_next, probs[i][top_k_next])
+                next_probs = torch.softmax(next_probs, dim=-1)
+                next_token = torch.multinomial(next_probs, 1).item()
+
+            word = idx_to_word.get(next_token, "<UNK>")
+            if word in ["<PAD>", "<UNK>"]:
+                continue
+            if word in ".!?":
+                response_ids.append(next_token)
+                break
+
+            # Проверка на триграммы (3 подряд одинаковых слова)
+            if len(response_ids) >= 2:
+                last_two = (response_ids[-2], response_ids[-1])
+                if (last_two, next_token) in seen_ngrams:
+                    continue  # пропустим повтор
+                seen_ngrams.add((last_two, next_token))
+
+            response_ids.append(next_token)
+
+    response = [idx_to_word[idx] for idx in response_ids if idx not in [0, 1]]
     return " ".join(response).strip()
 
 
@@ -446,6 +492,11 @@ def run_training():
         "max_length": MAX_LENGTH,
         "samples": data["samples"]
     }, OLD_DATA_PATH)
+
+    # Удаляем временный файл
+    if os.path.exists(TEMP_TRAIN_DATA):
+        os.remove(TEMP_TRAIN_DATA)
+        print("🧹 Временные данные удалены")
 
     show_sample_responses(model, data["word_to_idx"], data["idx_to_word"], DEVICE)
 
