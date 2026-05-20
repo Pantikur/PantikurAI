@@ -424,7 +424,13 @@ def show_sample_responses(model, word_to_idx, idx_to_word, device):
     print("\n🔍 Примеры генерации после обучения:")
     sample_inputs = ["привет", "как дела", "что ты думаешь о жизни", "расскажи что-нибудь философское"]
     for q in sample_inputs:
-        a = generate_response(model, q, word_to_idx, idx_to_word, device)
+        a = generate_response(
+            model=model,
+            text=q,
+            word_to_idx=word_to_idx,
+            idx_to_word=idx_to_word,
+            device=device
+        )
         print(f"👤 {q} → 🤖 {a}")
 
 
