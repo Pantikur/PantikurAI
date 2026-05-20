@@ -2,9 +2,7 @@
 # build_training_data.py
 """
 Генерация обучающих пар user → bot из JSONL-файлов.
-
-Использование:
-    python build_training_data.py [--config data/config.yaml] [--verbose] [--dry-run]
+Теперь также поддерживает создание data/conversations.json.
 """
 
 import os
@@ -13,8 +11,9 @@ import yaml
 import logging
 import argparse
 from typing import Dict, List, Any
+from datetime import datetime
 
-# Настройка логирования
+
 def setup_logging(verbose: bool):
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(
@@ -22,11 +21,13 @@ def setup_logging(verbose: bool):
         format="%(levelname)s | %(message)s"
     )
 
-# Универсальный clean_text
-def clean_text(text: str) -> str:
-    return text.strip() if text else ""
 
-# Функция для безопасного чтения значения из словаря по нескольким ключам
+def clean_text(text: str) -> str:
+    if not isinstance(text, str):
+        return ""
+    return text.strip()
+
+
 def get_field(entry: Dict[str, Any], keys: List[str], default: str = "") -> str:
     for key in keys:
         value = entry.get(key, "").strip()
@@ -34,10 +35,10 @@ def get_field(entry: Dict[str, Any], keys: List[str], default: str = "") -> str:
             return value
     return default
 
-# Очистка JSONL от комментариев
+
 def clean_jsonl_file(input_path: str, output_path: str, dry_run: bool) -> bool:
     if not os.path.exists(input_path):
-        logging.error(f"❌ Файл не найден: {input_path}")
+        logging.warning(f"🟡 Файл не найден: {input_path}")
         return False
 
     valid_lines = []
@@ -59,48 +60,47 @@ def clean_jsonl_file(input_path: str, output_path: str, dry_run: bool) -> bool:
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         with open(output_path, 'w', encoding='utf-8') as f:
             f.writelines(valid_lines)
-        logging.info(f"✅ {input_path} → очищен в {output_path}")
+        logging.info(f"✅ {os.path.basename(input_path)} → очищен")
         if invalid_count:
             logging.debug(f"ℹ️ Пропущено {invalid_count} некорректных строк")
     else:
-        logging.info(f"✅ [dry-run] Очистка {input_path} → {output_path}")
+        logging.info(f"✅ [dry-run] Очистка {os.path.basename(input_path)}")
 
     return True
 
-# Генерация ответа по метке
+
 def get_response_for_class(label: str, responses: Dict[str, str]) -> str:
     if not label:
-        return "Я слышу тебя. Это важно."
+        return responses.get("neutral", "Я слышу тебя. Это важно.")
 
-    label_lower = label.lower()
+    label_lower = label.lower().strip()
 
-    if any(kw in label_lower for kw in ["hope", "faith", "light"]):
-        return responses.get("hope", responses["neutral"])
-    if any(kw in label_lower for kw in ["rage", "anger", "wrath", "explosion"]):
-        return responses.get("rage", responses["negative"])
-    if any(kw in label_lower for kw in ["loneliness", "isolation", "alone"]):
-        return responses.get("loneliness", responses["negative"])
-    if "disturbing" in label_lower or "madness" in label_lower:
-        return responses.get("disturbing", responses["negative"])
-    if "cosmic" in label_lower or "horror" in label_lower:
-        return responses.get("cosmic_horror", responses["negative"])
-    if any(kw in label_lower for kw in ["existential", "void", "meaning"]):
-        return responses.get("existential", responses["neutral"])
-    if any(kw in label_lower for kw in ["positive", "pride", "joy"]):
-        return responses.get("positive", responses["positive"])
-    if any(kw in label_lower for kw in ["negative", "depression", "despair", "pain"]):
-        return responses.get("negative", responses["negative"])
+    # Категории с ключевыми словами
+    rules = [
+        (["hope", "faith", "light"], "hope"),
+        (["rage", "anger", "wrath", "explosion"], "rage"),
+        (["loneliness", "isolation", "alone"], "loneliness"),
+        (["disturbing", "madness"], "disturbing"),
+        (["cosmic", "horror"], "cosmic_horror"),
+        (["existential", "void", "meaning"], "existential"),
+        (["positive", "pride", "joy"], "positive"),
+        (["negative", "depression", "despair", "pain"], "negative"),
+    ]
 
-    return responses.get("neutral", "Я слышу тебя. Это важно.")
+    for keywords, category in rules:
+        if any(kw in label_lower for kw in keywords):
+            return responses.get(category, responses.get("neutral", "Я слышу тебя."))
 
-# Основная функция
+    return responses.get("neutral", "Я слышу тебя.")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Сбор и генерация обучающих пар для модели")
     parser.add_argument(
         "--config",
         type=str,
-        default="data/config.yaml",
-        help="Путь к конфигурационному файлу (по умолчанию: data/config.yaml)"
+        default="configs/prod.yaml",
+        help="Путь к конфигурационному файлу (по умолчанию: configs/prod.yaml)"
     )
     parser.add_argument(
         "--verbose", "-v",
@@ -128,12 +128,18 @@ def main():
     paths = config["paths"]
     responses = config["responses"]
     fields = config["fields"]
+
     skip_empty = config.get("skip_empty_text", True)
     default_label = config.get("default_label", "neutral")
-    data_dir = "data"
+    data_dir = config.get("data_dir", "data")  # Теперь из конфига
+
+    # Обязательные ответы
+    if "neutral" not in responses:
+        responses["neutral"] = "Я слышу тебя. Это важно."
+        logging.warning("⚠️ Ответ 'neutral' не задан — использован стандартный")
 
     # === Этап 1: Очистка файлов ===
-    clean_files = config["input_files"]["clean_files"]
+    clean_files = config["input_files"].get("clean_files", [])
     cleaned_files = []
 
     for item in clean_files:
@@ -147,7 +153,9 @@ def main():
 
     # === Этап 2: Сборка обучающих пар ===
     source_files = config["input_files"]["source_files"]
-    all_pairs = []
+    all_pairs = []  # Для training_pairs.jsonl
+    conversation_sessions = []  # Для conversations.json
+
     class_counts = {}
 
     for filename in source_files:
@@ -157,6 +165,8 @@ def main():
             continue
 
         file_count = 0
+        session = []  # Собираем диалог: user → bot
+
         with open(filepath, "r", encoding="utf-8") as f:
             for line_num, line in enumerate(f, 1):
                 line = line.strip()
@@ -165,7 +175,7 @@ def main():
                 try:
                     entry = json.loads(line)
                     text = clean_text(get_field(entry, fields["text"]))
-                    label = get_field(entry, fields["label"], default_label)
+                    label = clean_text(get_field(entry, fields["label"], default_label))
 
                     if skip_empty and not text:
                         continue
@@ -173,37 +183,52 @@ def main():
                     response = get_response_for_class(label, responses)
                     pair = {"user": text, "bot": response}
                     all_pairs.append(pair)
+
+                    # Добавляем в диалог: user → bot
+                    session.append(text)
+                    session.append(response)
+
                     class_counts[label] = class_counts.get(label, 0) + 1
                     file_count += 1
 
                 except Exception as e:
                     logging.debug(f"⚠️ Пропущена строка в {filename} (line {line_num}): {e}")
 
-        logging.info(f"📥 Добавлено {file_count} фраз из {filepath}")
-        if file_count == 0:
-            logging.warning(f"⚠️ Файл {filepath} прочитан, но ни одна строка не прошла валидацию!")
+        # Сохраняем сессию, если она не пустая
+        if len(session) >= 2:
+            conversation_sessions.append(session)
 
+        logging.info(f"📥 Добавлено {file_count} фраз из {filename}")
 
     logging.info(f"✅ Всего сформировано {len(all_pairs)} обучающих пар")
+    logging.info(f"✅ Сформировано {len(conversation_sessions)} диалоговых сессий")
 
-    # === Этап 3: Сохранение (если не dry-run) ===
+    # === Этап 3: Сохранение данных ===
     if args.dry_run:
         logging.info("🧪 Режим Dry Run: данные не сохранены.")
     else:
-        # Сохранение training_pairs.jsonl
-        train_path = paths["training_pairs"]
+        # --- 1. Сохранение training_pairs.jsonl ---
+        train_path = os.path.join(data_dir, paths["training_pairs"])
         os.makedirs(os.path.dirname(train_path), exist_ok=True)
         with open(train_path, "w", encoding="utf-8") as f:
             for pair in all_pairs:
                 f.write(json.dumps(pair, ensure_ascii=False) + "\n")
         logging.info(f"🎯 Сохранено в: {train_path}")
 
-        # Сохранение статистики
-        stats_path = paths["knowledge_stats"]
+        # --- 2. Сохранение conversations.json ---
+        conv_path = os.path.join(data_dir, "conversations.json")
+        os.makedirs(os.path.dirname(conv_path), exist_ok=True)
+        with open(conv_path, "w", encoding="utf-8") as f:
+            json.dump(conversation_sessions, f, ensure_ascii=False, indent=2)
+        logging.info(f"🎯 Сохранены диалоги: {conv_path}")
+
+        # --- 3. Сохранение статистики ---
+        stats_path = os.path.join(data_dir, paths["knowledge_stats"])
         os.makedirs(os.path.dirname(stats_path), exist_ok=True)
         stats = {
             "total_training_pairs": len(all_pairs),
-            "last_update": "2026-05-10T13:00:00",
+            "total_sessions": len(conversation_sessions),
+            "last_update": datetime.now().isoformat(),
             "class_distribution": class_counts,
             "source_files": source_files,
             "cleaned_files": cleaned_files
@@ -220,6 +245,7 @@ def main():
     logging.info("\n🎉 Готово! Все данные собраны.")
     logging.info("Запустите дообучение модели:")
     logging.info("python retrain.py")
+
 
 if __name__ == "__main__":
     main()
