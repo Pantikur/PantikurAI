@@ -6,11 +6,14 @@ import numpy as np
 import re
 import json
 import os
-from .chat_model import ChatNN
+from .chat_model import ChatNN, generate_response as beam_generate
 from .web_search import WebSearch
 from datetime import datetime
 from .cultural_references import get_cultural_phrase
 import random
+import sys
+import subprocess
+import threading
 
 # Импортируем KnowledgeManager
 try:
@@ -19,6 +22,30 @@ try:
 except ImportError:
     print("⚠️ knowledge_manager не найден. Установите сначала.")
     knowledge_manager_available = False
+
+# Pydantic для строгой валидации (опционально)
+try:
+    from pydantic import BaseModel, validator
+    from typing import List
+    PYDANTIC_AVAILABLE = True
+except ImportError:
+    print("ℹ️ pydantic не установлен. Используется базовая валидация.")
+    PYDANTIC_AVAILABLE = False
+
+
+class WorldModel(BaseModel):
+    """Pydantic-схема для структуры мира."""
+    name: str
+    laws: List[str]
+    traditions: List[str]
+    unspoken_rules: List[str]
+    description: str
+
+    @validator('laws', 'traditions', 'unspoken_rules', pre=True)
+    def ensure_list(cls, v):
+        if isinstance(v, list):
+            return [str(item) for item in v if item is not None]
+        return []
 
 
 class ChatBot:
@@ -47,11 +74,11 @@ class ChatBot:
         # Поиск слов
         self.web_search = WebSearch()
 
-        # Кэш знаний (для быстрого доступа)
+        # Кэш знаний
         self.knowledge_cache = {}
         self.knowledge_file = "data/knowledge_cache.json"
 
-        # Загружаем кэш при старте
+        # Загружаем кэш
         if os.path.exists(self.knowledge_file):
             try:
                 with open(self.knowledge_file, 'r', encoding='utf-8') as f:
@@ -115,7 +142,93 @@ class ChatBot:
                 words.append(word)
         return ' '.join(words)
 
+    def _generate_with_beam(self, input_text, max_length=32):
+        """Генерация через beam search (из chat_model.py)"""
+        tokenizer = {
+            'word_to_idx': self.word_to_idx,
+            'idx_to_word': self.idx_to_word,
+            'vocab_size': self.vocab_size
+        }
+        return beam_generate(
+            self.model,
+            tokenizer,
+            input_text,
+            device=self.device,
+            max_length=max_length
+        )
+
+    def _generate_with_sampling(self, input_tensor, max_length=32, temperature=0.8, top_k=40, top_p=0.9):
+        """Генерация с top-k и top-p фильтрацией."""
+        self.model.eval()
+        generated_ids = []
+        current_input = input_tensor
+        seen_ngrams = set()
+
+        with torch.no_grad():
+            for _ in range(max_length):
+                outputs, _ = self.model(current_input)
+                next_token_logits = outputs[:, -1, :]
+
+                # Температура
+                next_token_logits = next_token_logits / temperature
+
+                # Top-K
+                if top_k > 0:
+                    indices_to_remove = next_token_logits < torch.topk(next_token_logits, top_k)[0][..., -1, None]
+                    next_token_logits[indices_to_remove] = float('-inf')
+
+                # Top-P
+                if top_p < 1.0:
+                    sorted_logits, sorted_indices = torch.sort(next_token_logits, descending=True)
+                    cumulative_probs = torch.softmax(sorted_logits, dim=-1).cumsum(dim=-1)
+
+                    sorted_indices_to_remove = cumulative_probs > top_p
+                    sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+                    sorted_indices_to_remove[..., 0] = 0
+
+                    indices_to_remove = sorted_indices[sorted_indices_to_remove]
+                    next_token_logits.scatter_(1, indices_to_remove.unsqueeze(0), float('-inf'))
+
+                probs = torch.softmax(next_token_logits, dim=-1)
+
+                # Штраф за повторы
+                if len(generated_ids) >= 2:
+                    last_two = tuple(generated_ids[-2:])
+                    for token_id in range(len(probs[0])):
+                        if (last_two, token_id) in seen_ngrams:
+                            probs[0][token_id] *= 0.1
+
+                # Исключаем <PAD> и <UNK>
+                probs[0][self.word_to_idx['<PAD>']] = 0
+                probs[0][self.word_to_idx['<UNK>']] = 0
+
+                # Случайный выбор
+                next_token = torch.multinomial(probs, num_samples=1).item()
+
+                if next_token in [self.word_to_idx['<PAD>'], self.word_to_idx['<UNK>']]:
+                    break
+
+                word = self.idx_to_word.get(next_token, "")
+                if word in ['.', '!', '?']:
+                    generated_ids.append(next_token)
+                    break
+
+                generated_ids.append(next_token)
+                if len(generated_ids) >= 2:
+                    seen_ngrams.add((generated_ids[-2], generated_ids[-1], next_token))
+
+                current_input = torch.cat([
+                    current_input,
+                    torch.tensor([[next_token]], device=self.device)
+                ], dim=1)
+
+        return self._sequence_to_text(generated_ids).strip()
+
     def generate_response(self, messages, mode="chat"):
+        """
+        Основной метод генерации.
+        Поддерживает WebSocket и JSON API.
+        """
         last_user_msg = ""
         context = []
 
@@ -136,19 +249,18 @@ class ChatBot:
         tokens = self._tokenize(last_user_msg)
         unknown_words = [t for t in tokens if t not in self.word_to_idx]
 
-        # === Режим narrative → текст в "response" ===
+        # === Режим narrative ===
         if mode == "narrative":
             response_text = self._generate_narrative(context)
             return json.dumps({"response": response_text}, ensure_ascii=False)
 
-        # === Режим world_gen → объект "world" ===
+        # === Режим world_gen ===
         elif mode == "world_gen":
             genre, tags = self._extract_genre_tags(last_user_msg)
             world_data = self._generate_world_json(genre, tags)
-            # Оборачиваем в "world", чтобы клиент понял тип
             return json.dumps({"world": world_data}, ensure_ascii=False)
 
-        # === Обычный чат + поиск слов ===
+        # === Поиск неизвестных слов ===
         elif mode == "chat" and len(unknown_words) > 0:
             word = unknown_words[0]
             if word in self.knowledge_cache:
@@ -163,40 +275,59 @@ class ChatBot:
             except Exception as e:
                 print(f"Ошибка поиска: {e}")
 
-        # === Обычный ответ модели ===
+        # === Генерация основного ответа модели ===
         input_text = last_user_msg
         seq = self._text_to_sequence(input_text)
         input_tensor = torch.tensor([seq], dtype=torch.long).to(self.device)
 
-        with torch.no_grad():
-            logits, _ = self.model(input_tensor)
-            predicted_indices = logits.argmax(dim=-1).cpu().numpy()[0]
+        # Попробуем beam search → fallback на sampling
+        try:
+            base_response = self._generate_with_beam(input_text, max_length=32).strip()
+            if not base_response or len(base_response.split()) < 2:
+                raise Exception("Beam search failed")
+        except:
+            base_response = self._generate_with_sampling(
+                input_tensor,
+                max_length=32,
+                temperature=0.8,
+                top_k=40,
+                top_p=0.9
+            ).strip()
 
-        base_response = self._sequence_to_text(predicted_indices).strip() or "Я здесь! 🤖"
+        # --- Fallback на шаблоны ---
+        if (not base_response or len(base_response.split()) < 2 or
+                base_response.count("свет") > 2 or base_response.count("один") > 2):
+            fallbacks = [
+                "Привет! Я здесь.",
+                "Я слушаю.",
+                "Расскажи больше?",
+                "Интересно...",
+                "А ты как думаешь?"
+            ]
+            base_response = random.choice(fallbacks)
 
         # --- Вставка культурной отсылки ---
         final_response = base_response
+        if mode == "chat" and random.random() < 0.25:
+            cultural_phrase = get_cultural_phrase()
+            style_choice = random.choice(['prefix', 'suffix', 'separate'])
+            if style_choice == 'prefix':
+                final_response = f"{cultural_phrase} {base_response}"
+            elif style_choice == 'suffix':
+                final_response = f"{base_response} ({cultural_phrase})"
+            else:
+                final_response = f"{base_response}\n\n{cultural_phrase}"
 
-        # Только в режиме chat и если нет JSON/world
-        if mode == "chat":
-            if random.random() < 0.25:  # 25% шанс
-                cultural_phrase = get_cultural_phrase()
-                
-                style_choice = random.choice(['prefix', 'suffix', 'separate'])
-                
-                if style_choice == 'prefix':
-                    final_response = f"{cultural_phrase} {base_response}"
-                elif style_choice == 'suffix':
-                    final_response = f"{base_response} ({cultural_phrase})"
-                else:
-                    final_response = f"{base_response}\n\n{cultural_phrase}"
+        # --- Логируем подозрительные ответы ---
+        if "свет" in final_response.lower() and final_response.count("свет") > 2:
+            print(f"[WARNING] Подозрительный ответ: {repr(final_response)}")
+            with open("data/suspicious_responses.log", "a", encoding="utf-8") as f:
+                f.write(f"{datetime.now().isoformat()} | {last_user_msg} → {final_response}\n")
 
         self.log_interaction(last_user_msg, final_response)
         return json.dumps({"response": final_response}, ensure_ascii=False)
-        
 
     def _extract_genre_tags(self, message):
-        """Извлекает жанр и теги из сообщения"""
         genre_match = re.search(r"Жанр:\s*([^\.\n]+)", message)
         tags_match = re.search(r"Темы:\s*([^\.\n]+)", message)
         genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
@@ -204,7 +335,6 @@ class ChatBot:
         return genre, tags
 
     def _generate_world_json(self, genre: str, tags: str) -> dict:
-        """Генерирует мир в формате JSON"""
         prompt = (
             "Ты — мастер миров. Верни ТОЛЬКО валидный JSON и ничего больше.\n"
             "Структура ОБЯЗАТЕЛЬНО должна быть: {\n"
@@ -218,82 +348,93 @@ class ChatBot:
             "Никаких комментариев, пояснений или текста вне JSON.\n\n"
             f"Создай уникальный мир в жанре: {genre}. Темы: {tags}. Атмосфера — глубокая, оригинальная и атмосферная."
         )
-
         seq = self._text_to_sequence(prompt)
         input_tensor = torch.tensor([seq], dtype=torch.long).to(self.device)
 
         with torch.no_grad():
             logits, _ = self.model(input_tensor)
             indices = logits.argmax(dim=-1).cpu().numpy()[0]
-
         raw_text = self._sequence_to_text(indices)
-        print(f"[DEBUG] Raw model output: {raw_text}")
-
-        # Пытаемся извлечь JSON
         world_data = self._extract_json_from_text(raw_text)
-        if world_data:
-            print("[INFO] JSON успешно извлечён из ответа модели")
-            # Валидируем структуру
-            if self._validate_world_structure(world_data):
-                self.log_interaction(f"world_gen: {genre}, {tags}", json.dumps(world_data))
-                return world_data
-            else:
-                print("[WARNING] Структура JSON некорректна. Пытаемся исправить.")
-                # Пытаемся починить структуру
-                world_data = self._fix_world_structure(world_data)
-                if self._validate_world_structure(world_data):
-                    print("[INFO] Структура JSON успешно исправлена")
-                    self.log_interaction(f"world_gen: {genre}, {tags}", json.dumps(world_data))
-                    return world_data
 
-        # Если JSON не получен или неисправим — возвращаем пустую структуру
-        empty_structure = {
+        if world_data:
+            validated_data = self._validate_and_fix_world(world_data)
+            if validated_data:
+                self.log_interaction(f"world_gen: {genre}, {tags}", json.dumps(validated_data))
+                return validated_data
+
+        print("[WARNING] Не удалось извлечь или валидировать JSON. Возвращаем пустую структуру.")
+        empty = {
             "name": "",
             "laws": [],
             "traditions": [],
             "unspoken_rules": [],
             "description": ""
         }
-        print("[WARNING] Модель не сгенерировала корректный JSON. Возвращаем пустую структуру.")
-        self.log_interaction(f"world_gen: {genre}, {tags}", json.dumps(empty_structure))
-        return empty_structure
+        self.log_interaction(f"world_gen: {genre}, {tags}", json.dumps(empty))
+        return empty
 
     def _extract_json_from_text(self, text: str) -> dict:
-        """Извлекает JSON из текста"""
-        try:
-            start = text.find("{")
-            end = text.rfind("}") + 1
-            if start == -1 or end == 0:
-                return None
-            json_str = text[start:end]
-            return json.loads(json_str)
-        except Exception as e:
-            print(f"[ERROR] Не удалось распарсить JSON: {e}")
+        """
+        Ищет самый большой сбалансированный JSON-объект в тексте.
+        Поддерживает вложенность.
+        """
+        best_match = None
+        best_len = 0
+        depth = 0
+        start = -1
+
+        for i, char in enumerate(text):
+            if char == '{':
+                if depth == 0:
+                    start = i
+                depth += 1
+            elif char == '}':
+                depth -= 1
+                if depth == 0 and start != -1:
+                    try:
+                        candidate = text[start:i+1]
+                        parsed = json.loads(candidate)
+                        if len(candidate) > best_len:
+                            best_match = parsed
+                            best_len = len(candidate)
+                    except json.JSONDecodeError:
+                        continue  # Пропускаем невалидные
+        return best_match
+
+    def _validate_and_fix_world(self, data: dict) -> dict:
+        """
+        Валидирует и исправляет структуру мира.
+        Использует pydantic, если доступен.
+        """
+        if PYDANTIC_AVAILABLE:
+            try:
+                validated = WorldModel(**data)
+                return validated.dict()
+            except Exception as e:
+                print(f"❌ Pydantic validation failed: {e}")
+
+        # Фолбэк: ручная валидация
+        required_keys = ['name', 'laws', 'traditions', 'unspoken_rules', 'description']
+        if not all(k in data for k in required_keys):
             return None
 
-    def _validate_world_structure(self, data: dict) -> bool:
-        """Проверяет, что структура мира корректна"""
-        required_keys = ['name', 'laws', 'traditions', 'unspoken_rules', 'description']
-        return all(key in data for key in required_keys) and \
-               isinstance(data['laws'], list) and \
-               isinstance(data['traditions'], list) and \
-               isinstance(data['unspoken_rules'], list) and \
-               isinstance(data['name'], str) and \
-               isinstance(data['description'], str)
+        # Проверяем типы
+        if not isinstance(data['name'], str) or not isinstance(data['description'], str):
+            return None
 
-    def _fix_world_structure(self, data: dict) -> dict:
-        """Пробует починить структуру мира, добавляя недостающие поля"""
-        fixed = {
-            'name': data.get('name', 'Мир без имени'),
-            'laws': data.get('laws', []) if isinstance(data.get('laws'), list) else [],
-            'traditions': data.get('traditions', []) if isinstance(data.get('traditions'), list) else [],
-            'unspoken_rules': data.get('unspoken_rules', []) if isinstance(data.get('unspoken_rules'), list) else [],
-            'description': data.get('description', 'Описание отсутствует')
+        def ensure_list(x):
+            return x if isinstance(x, list) else []
+
+        return {
+            'name': str(data['name']),
+            'laws': ensure_list(data['laws']),
+            'traditions': ensure_list(data['traditions']),
+            'unspoken_rules': ensure_list(data['unspoken_rules']),
+            'description': str(data['description'])
         }
-        return fixed
 
     def _generate_narrative(self, context):
-        """Режим narrative — остаётся текстовым"""
         context_str = '\\n'.join(context)
         prompt = (
             "Ты — мастер вселенных. Создаёшь глубокие, логичные и атмосферные миры.\n"
@@ -307,8 +448,8 @@ class ChatBot:
         with torch.no_grad():
             logits, _ = self.model(input_tensor)
             indices = logits.argmax(dim=-1).cpu().numpy()[0]
-
         response = self._sequence_to_text(indices).strip()
+
         required_parts = ["Название:", "Законы общества:", "Традиции:"]
         if not all(kw in response for kw in required_parts):
             response = (
@@ -321,7 +462,6 @@ class ChatBot:
         return response
 
     def _save_knowledge(self, word, response, definition):
-        """Сохраняет знания в кэш и менеджер"""
         self.knowledge_cache[word] = response
         os.makedirs("data", exist_ok=True)
         with open(self.knowledge_file, 'w', encoding='utf-8') as f:
@@ -334,8 +474,31 @@ class ChatBot:
                 if stats.get('total_words', 0) % 5 == 0:
                     print(f"🔄 Генерация обучающих пар для {stats['total_words']} слов...")
                     self.knowledge_manager.generate_training_pairs()
+
+                if stats.get('total_words', 0) % 10 == 0:
+                    print(f"🔄 Запуск авто-дообучения после {stats['total_words']} слов...")
+                    thread = threading.Thread(target=self._run_retrain, daemon=True)
+                    thread.start()
+
             except Exception as e:
                 print(f"❌ Ошибка сохранения в менеджер знаний: {e}")
+
+    def _run_retrain(self):
+        """Запускает дообучение в фоне"""
+        try:
+            result = subprocess.run(
+                [sys.executable, "retrain.py"],
+                cwd=os.path.dirname(os.path.abspath(__file__)),
+                capture_output=True,
+                text=True,
+                timeout=600
+            )
+            if result.returncode == 0:
+                print("✅ Дообучение завершено")
+            else:
+                print(f"❌ Ошибка дообучения: {result.stderr}")
+        except Exception as e:
+            print(f"💥 Ошибка запуска retrain.py: {e}")
 
     def log_interaction(self, user_message, bot_response):
         interaction = {
