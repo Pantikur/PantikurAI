@@ -1,21 +1,18 @@
-# train.py — полное обучение модели с нуля
-# Гарантирует создание data/chat_data.pkl
+# train.py — обучение Transformer модели (ChatNN из chat_model.py)
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
 import joblib
 import json
 import os
-from torch.utils.data import Dataset, DataLoader
+from collections import Counter
 
 # === Настройки ===
 DATA_DIR = "data"
-OLD_DATA_PATH = os.path.join(DATA_DIR, "chat_data.pkl")          # Выход: метаданные модели
-CONVERSATIONS_JSON = os.path.join(DATA_DIR, "conversations.json") # Диалоги (массив)
-TRAINING_PAIRS_JSONL = os.path.join(DATA_DIR, "training_pairs.jsonl")  # FAQ (JSONL)
-
-TEMP_TRAIN_DATA = os.path.join(DATA_DIR, "temp_train.pkl")
+OLD_DATA_PATH = os.path.join(DATA_DIR, "chat_data.pkl")
+CONVERSATIONS_JSON = os.path.join(DATA_DIR, "conversations.json")
+TRAINING_PAIRS_JSONL = os.path.join(DATA_DIR, "training_pairs.jsonl")
 MODEL_PATH = "models/chat_model.pth"
 
 MAX_LENGTH = 64
@@ -29,8 +26,14 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 os.makedirs("models", exist_ok=True)
 
+# Добавляем путь для импорта ChatNN
+import sys
+sys.path.append(".")  # Чтобы можно было импортировать из Wuglarst
 
-# === Вспомогательные функции (на случай, если utils не подключается) ===
+from Wuglarst.src.chat_model import ChatNN
+
+
+# === Вспомогательные функции ===
 def clean_text(text):
     if not isinstance(text, str) or not text.strip():
         return ""
@@ -59,7 +62,6 @@ def tokenize(text):
 
 
 def load_or_initialize_data(path):
-    """Загружает старые метаданные или возвращает начальное состояние"""
     if os.path.exists(path):
         try:
             data = joblib.load(path)
@@ -78,7 +80,6 @@ def load_or_initialize_data(path):
 
 
 def build_vocab_from_samples(samples, old_word_to_idx):
-    from collections import Counter
     word_counter = Counter()
 
     # Базовые слова
@@ -96,7 +97,7 @@ def build_vocab_from_samples(samples, old_word_to_idx):
         word_counter.update(tokenize(user))
         word_counter.update(tokenize(bot))
 
-    # Построение нового словаря
+    # Построение словаря (макс. 8000 слов)
     vocab_words = ["<PAD>", "<UNK>"]
     vocab_words.extend([w for w in old_word_to_idx if w not in vocab_words])
     new_words = [w for w, _ in word_counter.most_common() if w not in vocab_words]
@@ -108,19 +109,6 @@ def build_vocab_from_samples(samples, old_word_to_idx):
     return word_to_idx, idx_to_word
 
 
-def load_model_state(model, path, device):
-    if os.path.exists(path):
-        try:
-            model.load_state_dict(torch.load(path, map_location=device))
-            print("✅ Веса загружены")
-        except Exception as e:
-            print(f"⚠️ Не удалось загрузить веса: {e}")
-    else:
-        print("🆕 Модель инициализирована с нуля")
-    return model
-
-
-# === Преобразование сессий в пары ===
 def session_to_context_pairs(session, max_length=MAX_LENGTH):
     pairs = []
     context = []
@@ -135,7 +123,6 @@ def session_to_context_pairs(session, max_length=MAX_LENGTH):
     return pairs
 
 
-# === Сбор данных ===
 def collect_training_samples():
     old_data = load_or_initialize_data(OLD_DATA_PATH)
     samples = old_data["samples"].copy()
@@ -155,7 +142,6 @@ def collect_training_samples():
                                 samples.extend(pairs)
                                 new_count += len(pairs)
                         elif isinstance(entry, dict):
-                            # Поддержка формата {"session": [...]}
                             session = entry.get("session", [])
                             if isinstance(session, list) and len(session) >= 2:
                                 cleaned = [clean_text(m) for m in session if m.strip()]
@@ -163,8 +149,6 @@ def collect_training_samples():
                                     pairs = session_to_context_pairs(cleaned)
                                     samples.extend(pairs)
                                     new_count += len(pairs)
-                else:
-                    print("⚠️ conversations.json: ожидается массив сессий")
         except Exception as e:
             print(f"❌ Ошибка чтения conversations.json: {e}")
 
@@ -222,12 +206,14 @@ def collect_training_samples():
         for _, b in unique_samples
     ]
 
-    # Padding
-    pad_seq = lambda seq: (seq + [0] * MAX_LENGTH)[:MAX_LENGTH]
+    # Padding до MAX_LENGTH
+    def pad_seq(seq):
+        return (seq + [0] * MAX_LENGTH)[:MAX_LENGTH]
+
     input_sequences = [pad_seq(seq) for seq in input_sequences]
     target_sequences = [pad_seq(seq) for seq in target_sequences]
 
-    # Сохранение временных данных
+    # Сохраняем временные данные
     temp_data = {
         "input_sequences": input_sequences,
         "target_sequences": target_sequences,
@@ -237,12 +223,13 @@ def collect_training_samples():
         "max_length": MAX_LENGTH,
         "samples": unique_samples,
     }
-    joblib.dump(temp_data, TEMP_TRAIN_DATA)
+    temp_path = os.path.join(DATA_DIR, "temp_train.pkl")
+    joblib.dump(temp_data, temp_path)
     print(f"✅ Подготовлено {len(unique_samples)} обучающих пар")
-    return TEMP_TRAIN_DATA
+    return temp_path
 
 
-# === Датасет ===
+# === Dataset ===
 class ChatDataset(Dataset):
     def __init__(self, data_file):
         self.data = joblib.load(data_file)
@@ -259,37 +246,60 @@ class ChatDataset(Dataset):
         }
 
 
-# === Модель ===
-class ChatNN(nn.Module):
-    def __init__(self, vocab_size, embedding_dim, hidden_dim, num_layers):
-        super(ChatNN, self).__init__()
-        self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=0)
-        self.lstm = nn.LSTM(embedding_dim, hidden_dim, num_layers, batch_first=True,
-                            dropout=0.3 if num_layers > 1 else 0)
-        self.fc = nn.Linear(hidden_dim, vocab_size)
+# === Загрузка весов с адаптацией под новый словарь ===
+def load_model_weights(model, path, device):
+    if not os.path.exists(path):
+        print("🆕 Модель инициализирована с нуля")
+        return model
 
-    def forward(self, x, hidden=None):
-        embedded = self.embedding(x)
-        lstm_out, hidden = self.lstm(embedded, hidden)
-        logits = self.fc(lstm_out)
-        return logits, hidden
+    try:
+        state_dict = torch.load(path, map_location=device)
+        current_vocab_size = model.vocab_size
+        ckpt_vocab_size = state_dict["embedding.weight"].size(0)
+
+        if current_vocab_size != ckpt_vocab_size:
+            print(f"⚠️ Размер словаря изменился: {ckpt_vocab_size} → {current_vocab_size}. Адаптируем...")
+            # Расширяем или обрезаем embedding и fc
+            old_w_emb = state_dict['embedding.weight']
+            old_w_fc = state_dict['fc.weight']
+            old_b_fc = state_dict['fc.bias']
+
+            new_w_emb = torch.zeros(current_vocab_size, model.embedding_dim, device=device)
+            new_w_fc = torch.zeros(current_vocab_size, model.hidden_dim, device=device)
+            new_b_fc = torch.zeros(current_vocab_size, device=device)
+
+            min_size = min(old_w_emb.size(0), current_vocab_size)
+            new_w_emb[:min_size] = old_w_emb[:min_size]
+            new_w_fc[:min_size] = old_w_fc[:min_size]
+            new_b_fc[:min_size] = old_b_fc[:min_size]
+
+            state_dict['embedding.weight'] = new_w_emb
+            state_dict['fc.weight'] = new_w_fc
+            state_dict['fc.bias'] = new_b_fc
+
+        model.load_state_dict(state_dict, strict=False)
+        print("✅ Веса загружены (с адаптацией)")
+    except Exception as e:
+        print(f"⚠️ Ошибка загрузки весов: {e}")
+    return model
 
 
 # === Обучение ===
-def train_model(model, dataloader, epochs, device):
+def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
     model.train()
     criterion = nn.CrossEntropyLoss(ignore_index=0)
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(epochs):
         total_loss = 0
         for batch in dataloader:
             input_ids = batch["input_ids"].to(device)
             labels = batch["labels"].to(device)
+            mask = (input_ids != 0).int()
 
             optimizer.zero_grad()
-            logits, _ = model(input_ids)
-            loss = criterion(logits.view(-1, logits.size(-1)), labels.view(-1))
+            logits = model(input_ids, mask=mask)  # ← теперь model сам делает embedding
+            loss = criterion(logits.view(-1, model.vocab_size), labels.view(-1))
             loss.backward()
             optimizer.step()
 
@@ -304,7 +314,6 @@ def main():
     print("🔄 Сбор и подготовка данных...")
     data_file = collect_training_samples()
 
-    # === Если данных нет → всё равно нужен chat_data.pkl ===
     if data_file is None:
         print("ℹ️ Нет новых данных. Создаём минимальную модель...")
 
@@ -319,19 +328,30 @@ def main():
         print(f"🟢 Заглушка создана: {OLD_DATA_PATH}")
         return
 
-    # === Есть данные → обучаем ===
+    # Загружаем данные
     temp_data = joblib.load(data_file)
-    model = ChatNN(temp_data["vocab_size"], EMBEDDING_DIM, HIDDEN_DIM, NUM_LAYERS).to(DEVICE)
-    model = load_model_state(model, MODEL_PATH, DEVICE)
 
+    # Создаём модель
+    model = ChatNN(
+        vocab_size=temp_data["vocab_size"],
+        embedding_dim=EMBEDDING_DIM,
+        hidden_dim=HIDDEN_DIM,
+        num_layers=NUM_LAYERS
+    ).to(DEVICE)
+
+    # Загружаем предыдущие веса
+    model = load_model_weights(model, MODEL_PATH, DEVICE)
+
+    # Датасет и даталоадер
     dataset = ChatDataset(data_file)
     dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
+
+    # Обучение
     train_model(model, dataloader, EPOCHS, DEVICE)
 
-    # Сохраняем веса
+    # Сохраняем
     torch.save(model.state_dict(), MODEL_PATH)
 
-    # Сохраняем метаданные
     joblib.dump({
         "word_to_idx": temp_data["word_to_idx"],
         "idx_to_word": temp_data["idx_to_word"],
