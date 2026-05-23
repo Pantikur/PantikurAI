@@ -336,7 +336,8 @@ def main():
         vocab_size=temp_data["vocab_size"],
         embedding_dim=EMBEDDING_DIM,
         hidden_dim=HIDDEN_DIM,
-        num_layers=NUM_LAYERS
+        num_layers=NUM_LAYERS,
+        max_length=MAX_LENGTH  # Передаём max_length в модель
     ).to(DEVICE)
 
     # Загружаем предыдущие веса
@@ -349,9 +350,10 @@ def main():
     # Обучение
     train_model(model, dataloader, EPOCHS, DEVICE)
 
-    # Сохраняем
+    # Сохраняем веса
     torch.save(model.state_dict(), MODEL_PATH)
 
+    # Сохраняем метаданные
     joblib.dump({
         "word_to_idx": temp_data["word_to_idx"],
         "idx_to_word": temp_data["idx_to_word"],
