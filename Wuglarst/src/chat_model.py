@@ -22,7 +22,7 @@ def apply_rope(q, k, dim=64):
     theta = 1.0 / (10000 ** (theta / half_dim))  # (half_dim/2,)
 
     # Позиции: (T,)
-    pos = torch.arange(T, device=device).float()  # (T,)
+    pos = torch.arange(T, device=device).float()
     freqs = pos.unsqueeze(-1) * theta.unsqueeze(0)  # (T, half_dim/2)
 
     # Создаём sin и cos: (T, half_dim)
@@ -77,7 +77,7 @@ class AttentionLayer(nn.Module):
         V = self.v_proj(x)
 
         # RoPE
-        Q, K = apply_rope(Q, K, dim=C)  # (B, T, C)
+        Q, K = apply_rope(Q, K, dim=C)
 
         # Scaled dot-product attention: (B, T, T)
         attn_weights = Q @ K.transpose(-2, -1) / (C ** 0.5)
@@ -196,3 +196,17 @@ class ChatNN(nn.Module):
                     break
 
             return sequences[0][0][0].cpu().numpy()
+
+
+# === Глобальная функция для совместимости с импортом ===
+def generate_response(model: ChatNN, input_ids: torch.LongTensor, max_new_tokens=64, temperature=0.8, top_k=40, beam_width=5):
+    """
+    Обёртка для model.generate — чтобы можно было импортировать напрямую.
+    """
+    return model.generate(
+        input_ids=input_ids,
+        max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        top_k=top_k,
+        beam_width=beam_width
+    )
