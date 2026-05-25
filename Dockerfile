@@ -11,10 +11,13 @@ WORKDIR /app
 
 # Копируем и устанавливаем зависимости
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    echo '✅ Все зависимости установлены'
 
 # Проверяем Uvicorn
-RUN python -c "import uvicorn" || (echo "❌ Ошибка: uvicorn не установлен!" && exit 1)
+RUN python -c "import uvicorn" && \
+    echo '✅ Uvicorn импортирован успешно' || \
+    (echo '❌ Ошибка: uvicorn не установлен!' && exit 1)
 
 # Копируем код приложения
 COPY . .
@@ -26,7 +29,7 @@ RUN mkdir -p models data
 ENV PORT=8000
 ENV PYTHONUNBUFFERED=1
 
-# Запуск: проверяем данные и модель, при необходимости обучаем
+# Запуск: проверяем данные и модель, при необходимости скачиваем с Google Drive
 CMD ["sh", "-c", " \
     echo '📁 Проверяем наличие данных...'; \
     if [ ! -f 'data/chat_data.pkl' ] && [ ! -f 'data/training_pairs.jsonl' ]; then \
@@ -35,8 +38,9 @@ CMD ["sh", "-c", " \
     fi; \
     \
     if [ ! -f 'models/chat_model.pth' ]; then \
-        echo '⚠️ Модель не найдена. Запускаю обучение...'; \
-        python train.py || (echo '❌ Обучение не удалось!' && exit 1); \
+        echo '📥 Модель не найдена. Скачиваю с Google Drive...'; \
+        curl -# -L 'https://drive.google.com/uc?export=download&id=1POLpxWHyN4_dYb3Sl1IUZuK01kbp3-1i' -o models/chat_model.pth || \
+        (echo '❌ Не удалось скачать модель!' && exit 1); \
     else \
         echo '✅ Используем существующую модель: models/chat_model.pth'; \
     fi; \

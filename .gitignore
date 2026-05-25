@@ -36,11 +36,14 @@ ehthumbs_vista.db
 *.swp
 *~
 
-# === Данные и модели ===
-models/
-data/*.pkl
-data/*.pt
-data/*.pth
+# === Данные и модели — ИГНОРИРУЕМ ВСЁ, КРОМЕ КОНКРЕТНЫХ ФАЙЛОВ ===
+# Игнорируем всю папку models, кроме chat_model.pth (если он добавлен)
+models/*
+!models/chat_model.pth
+
+# Игнорируем все .pkl/.pt, кроме chat_data.pkl
+data/*
+!data/chat_data.pkl
 *.pth
 *.pt
 *.pkl
