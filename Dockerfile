@@ -1,9 +1,9 @@
 # Используем официальный образ Python 3.10
 FROM python:3.10-slim
 
-# Установка системных зависимостей
+# Установка системных зависимостей — ДОБАВИЛ curl
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc && \
+    apt-get install -y --no-install-recommends gcc curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Устанавливаем рабочую директорию
@@ -43,6 +43,11 @@ CMD ["sh", "-c", " \
         (echo '❌ Не удалось скачать модель!' && exit 1); \
     else \
         echo '✅ Используем существующую модель: models/chat_model.pth'; \
+    fi; \
+    \
+    if [ ! -f 'data/chat_data.pkl' ] && [ -f 'data/training_pairs.jsonl' ]; then \
+        echo '🔄 Конвертируем training_pairs.jsonl в chat_data.pkl...'; \
+        python convert_data.py || (echo '❌ Ошибка конвертации данных!' && exit 1); \
     fi; \
     \
     echo '🚀 Запускаем FastAPI на порту $PORT'; \
