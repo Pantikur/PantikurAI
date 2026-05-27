@@ -1,6 +1,6 @@
 fastapi==0.115.0
 uvicorn[standard]==0.32.0
-torch==2.4.0 --find-links https://download.pytorch.org/whl/cpu
+torch==2.4.0+cpu
 transformers==4.45.0
 numpy==1.26.4
 pydantic==2.9.2
