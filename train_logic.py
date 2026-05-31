@@ -1,24 +1,23 @@
-# train_logic.py — логика обучения чат-бота
-# Поддерживает: data/conversations.json (массив диалогов) + data/training_pairs.jsonl (FAQ)
+# train_logic.py — логика обучения чат-бота (обновлённая)
+# Поддерживает: data/conversations.json + data/training_pairs.jsonl
 # Всегда создаёт data/chat_data.pkl
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
 import joblib
 import json
 import os
 import re
 import random
 from collections import Counter
-from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 
 # === Настройки ===
 DATA_DIR = "data"
-OLD_DATA_PATH = os.path.join(DATA_DIR, "chat_data.pkl")          # Сохранение метаданных модели
-CONVERSATIONS_JSON = os.path.join(DATA_DIR, "conversations.json") # Один JSON-файл с диалогами
-TRAINING_PAIRS_JSONL = os.path.join(DATA_DIR, "training_pairs.jsonl")  # Одна пара на строку
+OLD_DATA_PATH = os.path.join(DATA_DIR, "chat_data.pkl")
+CONVERSATIONS_JSON = os.path.join(DATA_DIR, "conversations.json")
+TRAINING_PAIRS_JSONL = os.path.join(DATA_DIR, "training_pairs.jsonl")
 BACKUP_CONVERSATIONS = os.path.join(DATA_DIR, "conversations.old.json")
 BACKUP_TRAINING = os.path.join(DATA_DIR, "training_pairs.old.jsonl")
 LOG_PATH = os.path.join(DATA_DIR, "training.log")
@@ -32,7 +31,7 @@ EMBEDDING_DIM = 128
 HIDDEN_DIM = 256
 NUM_LAYERS = 2
 LEARNING_RATE = 0.001
-MAX_VOCAB_SIZE = 8000  # ← Новая константа для максимального размера словаря
+MAX_VOCAB_SIZE = 8000
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -79,9 +78,9 @@ def load_or_initialize_model_data():
             print(f"⚠️ Не удалось загрузить chat_data.pkl: {e}")
     print("🆕 Начинаем с чистого листа")
     return {
-        "word_to_idx": {"<PAD>": 0, "<UNK>": 1},
-        "idx_to_word": {0: "<PAD>", 1: "<UNK>"},
-        "vocab_size": 2,
+        "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2},
+        "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "<EOS>"},
+        "vocab_size": 3,
         "max_length": MAX_LENGTH,
         "samples": []
     }
@@ -99,6 +98,8 @@ def session_to_context_pairs(session, max_len=MAX_LENGTH):
             input_text = " ".join(full_context.split()[:max_len])
             pairs.append([input_text, bot_msg])
         context.append(clean_text(msg))
+        if len(context) > 6:  # Ограничиваем длину контекста
+            context = context[-6:]
     return pairs
 
 
@@ -107,16 +108,6 @@ def collect_training_samples():
     model_data = load_or_initialize_model_data()
     samples = model_data["samples"].copy()
     word_counter = Counter()
-
-    print(f"До уникализации: {len(samples)} пар")
-    seen = set()
-    unique_samples = []
-    for pair in samples:
-        key = tuple(pair)
-        if key not in seen:
-            seen.add(key)
-            unique_samples.append(pair)
-    print(f"После уникализации: {len(unique_samples)} пар")
 
     # Базовые слова для начального словаря
     BASIC_WORDS = [
@@ -130,7 +121,7 @@ def collect_training_samples():
 
     # Слова из текущего словаря
     for word in model_data["word_to_idx"]:
-        if word not in ["<PAD>", "<UNK>"]:
+        if word not in ["<PAD>", "<UNK>", "<EOS>"]:
             word_counter[word] += 1
 
     new_from_conversations = 0
@@ -181,7 +172,7 @@ def collect_training_samples():
         except Exception as e:
             print(f"❌ Ошибка чтения training_pairs.jsonl: {e}")
 
-    # === Если новых данных нет → всё равно нужен chat_data.pkl ===
+    # Если новых данных нет
     if new_from_conversations == 0 and new_from_knowledge == 0:
         print("ℹ️ Нет новых данных для обучения.")
         return None, model_data
@@ -199,10 +190,10 @@ def collect_training_samples():
           f"(диалоги: {new_from_conversations}, знания: {new_from_knowledge})")
 
     # Построение словаря
-    old_words = [w for w in model_data["word_to_idx"] if w not in ["<PAD>", "<UNK>"]]
+    old_words = [w for w in model_data["word_to_idx"] if w not in ["<PAD>", "<UNK>", "<EOS>"]]
     new_words = [w for w, _ in word_counter.most_common() if w not in old_words]
-    vocab_words = ["<PAD>", "<UNK>"] + old_words
-    remaining_slots = MAX_VOCAB_SIZE - len(vocab_words)  # ← Исправлено: теперь через константу
+    vocab_words = ["<PAD>", "<UNK>", "<EOS>"] + old_words
+    remaining_slots = MAX_VOCAB_SIZE - len(vocab_words)
     vocab_words.extend(new_words[:remaining_slots])
 
     word_to_idx = {word: idx for idx, word in enumerate(vocab_words)}
@@ -211,13 +202,17 @@ def collect_training_samples():
     # Кодирование последовательностей
     input_sequences = []
     target_sequences = []
+
+    def pad_seq(seq, max_len=MAX_LENGTH):
+        if len(seq) >= max_len:
+            return seq[:max_len-1] + [seq[-1]]  # Сохраняем последний токен (например, <EOS>)
+        return (seq + [0] * max_len)[:max_len]
+
     for user, bot in unique_samples:
         user_seq = [word_to_idx.get(t, 1) for t in user.split()]
-        bot_seq = [word_to_idx.get(t, 1) for t in bot.split()]
-        user_seq = (user_seq + [0] * MAX_LENGTH)[:MAX_LENGTH]
-        bot_seq = (bot_seq + [0] * MAX_LENGTH)[:MAX_LENGTH]
-        input_sequences.append(user_seq)
-        target_sequences.append(bot_seq)
+        bot_seq = [word_to_idx.get(t, 1) for t in bot.split()] + [word_to_idx["<EOS>"]]  # Добавляем <EOS>
+        input_sequences.append(pad_seq(user_seq))
+        target_sequences.append(pad_seq(bot_seq))
 
     # Сохраняем временные данные
     temp_data = {
@@ -252,9 +247,13 @@ class ChatDataset(Dataset):
         return len(self.input_ids)
 
     def __getitem__(self, idx):
+        input_ids = self.input_ids[idx]
+        labels = self.labels[idx]
+        mask = (torch.tensor(input_ids) != 0).float()  # Маска: 1 если не <PAD>
         return {
-            "input_ids": torch.tensor(self.input_ids[idx], dtype=torch.long),
-            "labels": torch.tensor(self.labels[idx], dtype=torch.long)
+            "input_ids": torch.tensor(input_ids, dtype=torch.long),
+            "labels": torch.tensor(labels, dtype=torch.long),
+            "mask": mask
         }
 
 
@@ -281,26 +280,16 @@ def get_dataloaders(input_sequences, target_sequences, batch_size=16, val_split=
     return train_loader, val_loader
 
 
-class ChatNN(nn.Module):
-    def __init__(self, vocab_size, embedding_dim, hidden_dim, num_layers):
-        super(ChatNN, self).__init__()
-        self.num_layers = num_layers
-        self.hidden_dim = hidden_dim
-        self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=0)
-        self.lstm = nn.LSTM(embedding_dim, hidden_dim, num_layers, batch_first=True,
-                            dropout=0.3 if num_layers > 1 else 0)
-        self.fc = nn.Linear(hidden_dim, vocab_size)
-
-    def forward(self, x, hidden=None):
-        embedded = self.embedding(x)
-        lstm_out, hidden = self.lstm(embedded, hidden)
-        logits = self.fc(lstm_out)
-        return logits, hidden
+# Импортируем модель из Wuglarst
+try:
+    from Wuglarst.src.chat_model import ChatNN
+except ImportError:
+    raise RuntimeError("❌ Не удалось импортировать ChatNN из Wuglarst/src/chat_model.py")
 
 
 def train_model(model, train_loader, val_loader, epochs, device, patience=3):
-    criterion = nn.CrossEntropyLoss(ignore_index=0)
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    criterion = nn.CrossEntropyLoss(ignore_index=0)  # игнорируем <PAD>
+    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
     best_val_loss = float('inf')
     patience_counter = 0
@@ -317,8 +306,10 @@ def train_model(model, train_loader, val_loader, epochs, device, patience=3):
         for batch in train_bar:
             input_ids = batch["input_ids"].to(device)
             labels = batch["labels"].to(device)
+            mask = batch["mask"].to(device)
+
             optimizer.zero_grad()
-            logits, _ = model(input_ids)
+            logits = model(input_ids, mask=mask)  # Теперь принимает mask
             loss = criterion(logits.view(-1, logits.size(-1)), labels.view(-1))
             loss.backward()
             optimizer.step()
@@ -335,7 +326,8 @@ def train_model(model, train_loader, val_loader, epochs, device, patience=3):
             for batch in val_bar:
                 input_ids = batch["input_ids"].to(device)
                 labels = batch["labels"].to(device)
-                logits, _ = model(input_ids)
+                mask = batch["mask"].to(device)
+                logits = model(input_ids, mask=mask)
                 loss = criterion(logits.view(-1, logits.size(-1)), labels.view(-1))
                 total_val_loss += loss.item()
                 val_bar.set_postfix({"val_loss": f"{loss.item():.4f}"})
@@ -360,76 +352,66 @@ def train_model(model, train_loader, val_loader, epochs, device, patience=3):
     log_file.close()
 
 
-def generate_response(model, text, word_to_idx, idx_to_word, max_len=MAX_LENGTH, device='cpu', temperature=0.8):
+def generate_response(model, text, word_to_idx, idx_to_word, max_len=MAX_LENGTH, device='cpu', temperature=0.8, top_p=0.9):
+    """Генерация ответа с nucleus sampling"""
     model.eval()
     tokens = clean_text(text).split()
     indices = [word_to_idx.get(t, 1) for t in tokens]
     indices = (indices + [0] * MAX_LENGTH)[:MAX_LENGTH]
     input_tensor = torch.tensor([indices], dtype=torch.long).to(device)
 
+    eos_token_id = word_to_idx.get("<EOS>", 2)
+
     with torch.no_grad():
-        output, _ = model(input_tensor)
-        logits = output[0]  # (seq_len, vocab_size)
-
-        # Применяем температуру
-        logits = logits / temperature
-
-        # Top-k sampling (избегаем редких слов)
-        top_k = 50
-        top_k_indices = torch.topk(logits, top_k, dim=-1).indices
-        filtered_logits = torch.full_like(logits, float('-inf'))
-        filtered_logits.scatter_(-1, top_k_indices, logits.gather(-1, top_k_indices))
-
-        # Софтмакс
-        probs = torch.softmax(filtered_logits, dim=-1)
-        
-        # Генерация с запретом повторов
         response_ids = []
-        seen_ngrams = set()
-        for i in range(max_len):
-            if i == 0:
-                next_token = torch.argmax(probs[i], dim=-1).item()
-            else:
-                # Запрещаем повтор последнего токена
-                if response_ids[-1] != 0:
-                    probs[i][response_ids[-1]] *= 0.1  # штраф за повтор
+        current_input = input_tensor
 
-                # Top-k снова для следующего шага
-                top_k_next = torch.topk(probs[i], top_k).indices
-                next_probs = probs[i].scatter(-1, top_k_next, probs[i][top_k_next])
-                next_probs = torch.softmax(next_probs, dim=-1)
-                next_token = torch.multinomial(next_probs, 1).item()
+        for _ in range(max_len):
+            # Получаем логиты
+            logits = model(current_input)[:, -1, :]  # (1, vocab_size)
+            logits = logits / temperature
 
-            word = idx_to_word.get(next_token, "<UNK>")
-            if word in ["<PAD>", "<UNK>"]:
-                continue
-            if word in ".!?":
-                response_ids.append(next_token)
+            # Фильтрация по top_p (nucleus sampling)
+            sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+            cumulative_probs = torch.cumsum(torch.softmax(sorted_logits, dim=-1), dim=-1)
+            sorted_indices_to_remove = cumulative_probs > top_p
+            sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+            sorted_indices_to_remove[..., 0] = 0
+            indices_to_remove = sorted_indices[sorted_indices_to_remove]
+            logits[0, indices_to_remove] = float('-inf')
+
+            # Софтмакс и выбор
+            probs = torch.softmax(logits, dim=-1)
+            next_token = torch.multinomial(probs, 1).item()
+
+            if next_token == eos_token_id:
                 break
+            if next_token not in [0, 1]:  # не <PAD>, <UNK>
+                response_ids.append(next_token)
 
-            # Проверка на триграммы (3 подряд одинаковых слова)
-            if len(response_ids) >= 2:
-                last_two = (response_ids[-2], response_ids[-1])
-                if (last_two, next_token) in seen_ngrams:
-                    continue  # пропустим повтор
-                seen_ngrams.add((last_two, next_token))
+            # Обновляем вход
+            new_input = torch.cat([
+                current_input,
+                torch.tensor([[next_token]], device=device)
+            ], dim=1)
+            current_input = new_input[:, -MAX_LENGTH:]  # ограничиваем длину
 
-            response_ids.append(next_token)
-
-    response = [idx_to_word[idx] for idx in response_ids if idx not in [0, 1]]
-    return " ".join(response).strip()
+    response = " ".join([idx_to_word.get(idx, "<UNK>") for idx in response_ids])
+    return response.strip()
 
 
 def show_sample_responses(model, word_to_idx, idx_to_word, device):
     print("\n🔍 Примеры генерации после обучения:")
-    sample_inputs = ["привет", "как дела", "что ты думаешь о жизни", "расскажи что-нибудь философское"]
+    sample_inputs = ["привет", "как дела", "расскажи историю", "что такое любовь"]
     for q in sample_inputs:
         a = generate_response(
             model=model,
             text=q,
             word_to_idx=word_to_idx,
             idx_to_word=idx_to_word,
-            device=device
+            device=device,
+            temperature=0.8,
+            top_p=0.9
         )
         print(f"👤 {q} → 🤖 {a}")
 
@@ -440,7 +422,7 @@ def run_training():
 
     temp_data_path, base_model_data = collect_training_samples()
 
-    # === СЛУЧАЙ 1: Нет новых данных → просто убедиться, что chat_data.pkl существует ===
+    # === СЛУЧАЙ 1: Нет новых данных → создать заглушку, если нужно ===
     if temp_data_path is None:
         print("ℹ️ Новых данных нет. Проверяем наличие chat_data.pkl...")
 
@@ -450,9 +432,9 @@ def run_training():
 
         print("⚠️ Модель отсутствует. Создаём минимальную заглушку...")
         fallback_data = {
-            "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "привет": 2, "пока": 3},
-            "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "привет", 3: "пока"},
-            "vocab_size": 4,
+            "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2, "привет": 3, "пока": 4},
+            "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "<EOS>", 3: "привет", 4: "пока"},
+            "vocab_size": 5,
             "max_length": MAX_LENGTH,
             "samples": [["привет", "здравствуй"], ["пока", "до свидания"]]
         }
@@ -468,13 +450,38 @@ def run_training():
         vocab_size=data["vocab_size"],
         embedding_dim=EMBEDDING_DIM,
         hidden_dim=HIDDEN_DIM,
-        num_layers=NUM_LAYERS
+        num_layers=NUM_LAYERS,
+        max_length=MAX_LENGTH,
+        pad_token_id=0,
+        eos_token_id=data["word_to_idx"]["<EOS>"]
     ).to(DEVICE)
 
+    # Адаптация весов при изменении словаря
     if os.path.exists(MODEL_PATH):
         try:
-            model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
-            print("✅ Веса загружены")
+            state_dict = torch.load(MODEL_PATH, map_location=DEVICE)
+            ckpt_vocab_size = state_dict["embedding.weight"].size(0)
+            if ckpt_vocab_size != data["vocab_size"]:
+                print(f"⚠️ Адаптируем веса: {ckpt_vocab_size} → {data['vocab_size']}")
+                old_w_emb = state_dict["embedding.weight"]
+                old_w_fc = state_dict["fc.weight"]
+                old_b_fc = state_dict["fc.bias"]
+
+                new_w_emb = torch.zeros(data["vocab_size"], EMBEDDING_DIM, device=DEVICE)
+                new_w_fc = torch.zeros(data["vocab_size"], HIDDEN_DIM, device=DEVICE)
+                new_b_fc = torch.zeros(data["vocab_size"], device=DEVICE)
+
+                min_size = min(old_w_emb.size(0), data["vocab_size"])
+                new_w_emb[:min_size] = old_w_emb[:min_size]
+                new_w_fc[:min_size] = old_w_fc[:min_size]
+                new_b_fc[:min_size] = old_b_fc[:min_size]
+
+                state_dict["embedding.weight"] = new_w_emb
+                state_dict["fc.weight"] = new_w_fc
+                state_dict["fc.bias"] = new_b_fc
+
+            model.load_state_dict(state_dict, strict=False)
+            print("✅ Веса загружены (с адаптацией)")
         except Exception as e:
             print(f"⚠️ Не удалось загрузить веса: {e}")
     else:

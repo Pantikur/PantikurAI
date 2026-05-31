@@ -71,9 +71,9 @@ def load_or_initialize_data(path):
             print(f"⚠️ Не удалось загрузить {path}: {e}")
     print("🆕 Начинаем с чистого листа")
     return {
-        "word_to_idx": {"<PAD>": 0, "<UNK>": 1},
-        "idx_to_word": {0: "<PAD>", 1: "<UNK>"},
-        "vocab_size": 2,
+        "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2},
+        "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "<EOS>"},
+        "vocab_size": 3,
         "max_length": MAX_LENGTH,
         "samples": []
     }
@@ -89,7 +89,7 @@ def build_vocab_from_samples(samples, old_word_to_idx):
 
     # Слова из старого словаря
     for word in old_word_to_idx:
-        if word not in ["<PAD>", "<UNK>"]:
+        if word not in ["<PAD>", "<UNK>", "<EOS>"]:
             word_counter[word] += 5
 
     # Слова из новых данных
@@ -97,8 +97,8 @@ def build_vocab_from_samples(samples, old_word_to_idx):
         word_counter.update(tokenize(user))
         word_counter.update(tokenize(bot))
 
-    # Построение словаря (макс. 8000 слов)
-    vocab_words = ["<PAD>", "<UNK>"]
+    # Построение словаря
+    vocab_words = ["<PAD>", "<UNK>", "<EOS>"]
     vocab_words.extend([w for w in old_word_to_idx if w not in vocab_words])
     new_words = [w for w, _ in word_counter.most_common() if w not in vocab_words]
     remaining_slots = 8000 - len(vocab_words)
@@ -120,6 +120,8 @@ def session_to_context_pairs(session, max_length=MAX_LENGTH):
             input_text = " ".join(tokenize(full_context)[:max_length])
             pairs.append([input_text, bot_msg])
         context.append(clean_text(msg))
+        if len(context) > 6:  # Ограничиваем длину контекста
+            context = context[-6:]
     return pairs
 
 
@@ -202,12 +204,14 @@ def collect_training_samples():
         [word_to_idx.get(t, 1) for t in tokenize(u)] for u, _ in unique_samples
     ]
     target_sequences = [
-        [word_to_idx.get(t, 1) for t in tokenize(b)]
+        [word_to_idx.get(t, 1) for t in tokenize(b)] + [word_to_idx["<EOS>"]]  # Добавляем <EOS>
         for _, b in unique_samples
     ]
 
-    # Padding до MAX_LENGTH
+    # Паддинг с сохранением <EOS>
     def pad_seq(seq):
+        if len(seq) >= MAX_LENGTH:
+            return seq[:MAX_LENGTH-1] + [seq[-1]]  # Сохраняем последний токен
         return (seq + [0] * MAX_LENGTH)[:MAX_LENGTH]
 
     input_sequences = [pad_seq(seq) for seq in input_sequences]
@@ -240,9 +244,13 @@ class ChatDataset(Dataset):
         return len(self.inputs)
 
     def __getitem__(self, idx):
+        input_ids = self.inputs[idx]
+        labels = self.labels[idx]
+        mask = (torch.tensor(input_ids) != 0).float()  # Маска: 1 если не <PAD>
         return {
-            "input_ids": torch.tensor(self.inputs[idx], dtype=torch.long),
-            "labels": torch.tensor(self.labels[idx], dtype=torch.long)
+            "input_ids": torch.tensor(input_ids, dtype=torch.long),
+            "labels": torch.tensor(labels, dtype=torch.long),
+            "mask": mask
         }
 
 
@@ -259,7 +267,6 @@ def load_model_weights(model, path, device):
 
         if current_vocab_size != ckpt_vocab_size:
             print(f"⚠️ Размер словаря изменился: {ckpt_vocab_size} → {current_vocab_size}. Адаптируем...")
-            # Расширяем или обрезаем embedding и fc
             old_w_emb = state_dict['embedding.weight']
             old_w_fc = state_dict['fc.weight']
             old_b_fc = state_dict['fc.bias']
@@ -287,7 +294,7 @@ def load_model_weights(model, path, device):
 # === Обучение ===
 def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
     model.train()
-    criterion = nn.CrossEntropyLoss(ignore_index=0)
+    criterion = nn.CrossEntropyLoss(ignore_index=0)  # игнорируем <PAD>
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(epochs):
@@ -295,10 +302,10 @@ def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
         for batch in dataloader:
             input_ids = batch["input_ids"].to(device)
             labels = batch["labels"].to(device)
-            mask = (input_ids != 0).int()
+            mask = batch["mask"].to(device)
 
             optimizer.zero_grad()
-            logits = model(input_ids, mask=mask)  # ← теперь model сам делает embedding
+            logits = model(input_ids, mask=mask)
             loss = criterion(logits.view(-1, model.vocab_size), labels.view(-1))
             loss.backward()
             optimizer.step()
@@ -318,9 +325,9 @@ def main():
         print("ℹ️ Нет новых данных. Создаём минимальную модель...")
 
         fallback_data = {
-            "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "привет": 2, "пока": 3},
-            "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "привет", 3: "пока"},
-            "vocab_size": 4,
+            "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2, "привет": 3, "пока": 4},
+            "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "<EOS>", 3: "привет", 4: "пока"},
+            "vocab_size": 5,
             "max_length": MAX_LENGTH,
             "samples": [["привет", "здравствуй"], ["пока", "до свидания"]]
         }
@@ -337,7 +344,9 @@ def main():
         embedding_dim=EMBEDDING_DIM,
         hidden_dim=HIDDEN_DIM,
         num_layers=NUM_LAYERS,
-        max_length=MAX_LENGTH  # Передаём max_length в модель
+        max_length=MAX_LENGTH,
+        pad_token_id=0,
+        eos_token_id=temp_data["word_to_idx"]["<EOS>"]
     ).to(DEVICE)
 
     # Загружаем предыдущие веса

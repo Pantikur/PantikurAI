@@ -8,67 +8,181 @@ import sys
 import os
 import argparse
 import shutil
+import json
+import logging
+from pathlib import Path
 
 # === Настройки ===
 BUILD_SCRIPT = "build_training_data.py"
+TRAIN_SCRIPT = "train.py"
 
-# Входные данные
-TRAINING_PAIRS_PATH = "data/training_pairs.jsonl"   # FAQ (JSONL)
-CONVERSATIONS_JSON = "data/conversations.json"      # Диалоги (один JSON)
-CHAT_DATA_PATH = "data/chat_data.pkl"               # Выход: метаданные модели
-BACKUP_CHAT_DATA = "data/chat_data.pkl.backup"      # Резервная копия
-MODEL_PATH = "models/chat_model.pth"
-BACKUP_MODEL = "models/chat_model.pth.backup"
+# Пути
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+MODELS_DIR = BASE_DIR / "models"
 
-def run_command(command, check=True):
-    """Запуск команды и вывод результата"""
-    print(f"\n🚀 Выполняется: {' '.join(command)}")
-    result = subprocess.run(command, capture_output=False, text=True)
-    if check and result.returncode != 0:
-        print(f"❌ Ошибка при выполнении: {' '.join(command)}")
-        return False
-    return result.returncode == 0
+TRAINING_PAIRS_PATH = DATA_DIR / "training_pairs.jsonl"
+CONVERSATIONS_JSON = DATA_DIR / "conversations.json"
+TOKENIZER_PATH = DATA_DIR / "tokenizer.json"
+MODEL_PATH = MODELS_DIR / "chat_model.pth"
 
-def backup_existing_artifacts():
-    """Создаёт резервные копии модели и токенизатора"""
-    if os.path.exists(CHAT_DATA_PATH):
-        shutil.copy(CHAT_DATA_PATH, BACKUP_CHAT_DATA)
-        print(f"📦 Резервная копия токенизатора: {BACKUP_CHAT_DATA}")
+BACKUP_TOKENIZER = DATA_DIR / "tokenizer.json.backup"
+BACKUP_MODEL = MODELS_DIR / "chat_model.pth.backup"
 
-    if os.path.exists(MODEL_PATH):
+# Гиперпараметры (можно вынести в конфиг)
+VOCAB_SIZE = 1000
+MAX_LENGTH = 32
+BATCH_SIZE = 8
+EPOCHS = 100
+LR = 0.001
+
+# === Логирование ===
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler("logs/retrain.log", encoding="utf-8")
+    ]
+)
+logger = logging.getLogger("retrain")
+
+os.makedirs("logs", exist_ok=True)
+
+
+def backup_artifacts():
+    """Создаёт резервные копии токенизатора и модели"""
+    if TOKENIZER_PATH.exists():
+        shutil.copy(TOKENIZER_PATH, BACKUP_TOKENIZER)
+        logger.info(f"📦 Резервная копия токенизатора: {BACKUP_TOKENIZER}")
+
+    if MODEL_PATH.exists():
         shutil.copy(MODEL_PATH, BACKUP_MODEL)
-        print(f"📦 Резервная копия модели: {BACKUP_MODEL}")
+        logger.info(f"📦 Резервная копия модели: {BACKUP_MODEL}")
 
-def ensure_artifacts_exist():
-    """Гарантирует, что chat_data.pkl и модель существуют (через заглушку при необходимости)"""
-    success = True
 
-    if not os.path.exists(CHAT_DATA_PATH):
-        print(f"⚠️  Нет токенизатора: {CHAT_DATA_PATH}. Создаём заглушку...")
-        try:
-            import pickle
-            with open(CHAT_DATA_PATH, 'wb') as f:
-                pickle.dump({
-                    "word_to_idx": {"<PAD>": 0, "<UNK>": 1},
-                    "idx_to_word": {0: "<PAD>", 1: "<UNK>"},
-                    "vocab_size": 2,
-                    "max_length": 64,
-                    "samples": []
-                }, f)
-        except Exception as e:
-            print(f"❌ Не удалось создать заглушку chat_data.pkl: {e}")
-            success = False
+def ensure_directories():
+    """Создаёт нужные папки"""
+    DATA_DIR.mkdir(exist_ok=True)
+    MODELS_DIR.mkdir(exist_ok=True)
 
-    if not os.path.exists(MODEL_PATH):
-        print(f"⚠️  Нет модели: {MODEL_PATH}. Инициализируем пустой state_dict...")
-        try:
-            import torch
-            torch.save({}, MODEL_PATH)
-        except Exception as e:
-            print(f"❌ Не удалось создать заглушку модели: {e}")
-            success = False
 
-    return success
+def build_training_data(args):
+    """Запускает сборку данных через build_training_data.py"""
+    if not os.path.exists(BUILD_SCRIPT):
+        logger.error(f"❌ Не найден скрипт: {BUILD_SCRIPT}")
+        return False
+
+    cmd = [sys.executable, BUILD_SCRIPT]
+    if args.config:
+        cmd.extend(["--config", args.config])
+    if args.verbose:
+        cmd.append("--verbose")
+    if args.dry_run:
+        cmd.append("--dry-run")
+
+    logger.info(f"🔧 Сборка данных: {' '.join(cmd)}")
+    if args.dry_run:
+        logger.info("🧪 Режим Dry Run: сборка данных пропущена")
+        return True
+
+    result = subprocess.run(cmd, capture_output=False)
+    if result.returncode != 0:
+        logger.error("❌ Сбор данных не удался.")
+        return False
+
+    line_count = 0
+    if TRAINING_PAIRS_PATH.exists():
+        line_count = sum(1 for _ in open(TRAINING_PAIRS_PATH, 'r', encoding='utf-8'))
+        logger.info(f"✅ Данные собраны: {TRAINING_PAIRS_PATH} ({line_count} строк)")
+    else:
+        logger.warning("🟡 Файл training_pairs.jsonl не создан — возможно, нет новых знаний")
+
+    return True
+
+
+def has_new_data():
+    """Проверяет, есть ли новые данные для обучения"""
+    has_training = TRAINING_PAIRS_PATH.exists() and TRAINING_PAIRS_PATH.stat().st_size > 0
+    has_conversations = CONVERSATIONS_JSON.exists() and CONVERSATIONS_JSON.stat().st_size > 0
+    return has_training or has_conversations
+
+
+def create_dummy_tokenizer():
+    """Создаёт заглушку tokenizer.json"""
+    dummy = {
+        "vocab": {"<PAD>": 0, "<EOS>": 1, "<UNK>": 2},
+        "inverse_vocab": {0: "<PAD>", 1: "<EOS>", 2: "<UNK>"},
+        "vocab_size": 3,
+        "pad_token": "<PAD>",
+        "eos_token": "<EOS>",
+        "unk_token": "<UNK>"
+    }
+    with open(TOKENIZER_PATH, "w", encoding="utf-8") as f:
+        json.dump(dummy, f, ensure_ascii=False, indent=2)
+    logger.warning(f"⚠️ Создан фиктивный токенизатор: {TOKENIZER_PATH}")
+
+
+def validate_or_create_tokenizer():
+    """Проверяет или создаёт tokenizer.json"""
+    if not TOKENIZER_PATH.exists():
+        logger.warning(f"⚠️ Токенизатор не найден: {TOKENIZER_PATH}. Создаём заглушку...")
+        create_dummy_tokenizer()
+        return False
+    try:
+        with open(TOKENIZER_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        required = ["vocab", "inverse_vocab", "pad_token", "eos_token"]
+        if not all(k in data for k in required):
+            raise ValueError("Некорректный формат tokenizer.json")
+        logger.info(f"✅ Токенизатор загружен: {len(data['vocab'])} токенов")
+    except Exception as e:
+        logger.error(f"❌ Ошибка в tokenizer.json: {e}")
+        if BACKUP_TOKENIZER.exists():
+            logger.info(f"🔄 Восстанавливаем из бэкапа: {BACKUP_TOKENIZER}")
+            shutil.copy(BACKUP_TOKENIZER, TOKENIZER_PATH)
+        else:
+            create_dummy_tokenizer()
+        return False
+    return True
+
+
+def run_training():
+    """Запускает обучение через train.py"""
+    logger.info("🧠 Запуск обучения...")
+
+    try:
+        # Импортируем train.py как модуль
+        import train
+        if hasattr(train, 'main'):
+            train.main()
+        else:
+            logger.error("❌ В train.py нет функции main()")
+            return False
+        logger.info("🎉 Обучение завершено успешно!")
+        return True
+    except ImportError as e:
+        logger.error(f"❌ Не удалось импортировать train.py: {e}")
+        logger.info("💡 Убедитесь, что train.py находится в корне проекта")
+        return False
+    except Exception as e:
+        logger.error(f"❌ Ошибка при обучении: {e}", exc_info=True)
+        return False
+
+
+def restore_backup():
+    """Восстанавливает артефакты из бэкапа"""
+    restored = False
+    if BACKUP_TOKENIZER.exists() and not TOKENIZER_PATH.exists():
+        shutil.copy(BACKUP_TOKENIZER, TOKENIZER_PATH)
+        logger.info(f"🔄 Восстановлен токенизатор из бэкапа: {TOKENIZER_PATH}")
+        restored = True
+    if BACKUP_MODEL.exists() and not MODEL_PATH.exists():
+        shutil.copy(BACKUP_MODEL, MODEL_PATH)
+        logger.info(f"🔄 Восстановлена модель из бэкапа: {MODEL_PATH}")
+        restored = True
+    return restored
+
 
 def main():
     parser = argparse.ArgumentParser(description="Полный цикл: сбор данных + дообучение модели")
@@ -81,7 +195,7 @@ def main():
     parser.add_argument(
         "--verbose", "-v",
         action="store_true",
-        help="Передать --verbose в build_training_data.py"
+        help="Подробный вывод"
     )
     parser.add_argument(
         "--dry-run",
@@ -91,90 +205,58 @@ def main():
 
     args = parser.parse_args()
 
-    # Команда для сборки данных
-    build_cmd = [sys.executable, BUILD_SCRIPT]
-    if args.config:
-        build_cmd.extend(["--config", args.config])
-    if args.verbose:
-        build_cmd.append("--verbose")
-    if args.dry_run:
-        build_cmd.append("--dry-run")
+    ensure_directories()
 
-    # === Этап 1: Сборка обучающих данных ===
-    if args.dry_run:
-        print("🧪 Режим Dry Run: сборка данных пропущена")
-    else:
-        print("🔧 Шаг 1: Сбор и очистка обучающих данных...")
-        if not os.path.exists(BUILD_SCRIPT):
-            print(f"❌ Не найден скрипт: {BUILD_SCRIPT}")
-            exit(1)
-
-        success = run_command(build_cmd)
-        if not success:
-            print("❌ Сбор данных не удался.")
-            if not ensure_artifacts_exist():
-                exit(1)
-            exit(0)
-
-        if os.path.exists(TRAINING_PAIRS_PATH):
-            line_count = sum(1 for _ in open(TRAINING_PAIRS_PATH, 'r', encoding='utf-8'))
-            print(f"✅ Данные собраны: {TRAINING_PAIRS_PATH} ({line_count} строк)")
-        else:
-            print(f"🟡 Файл training_pairs.jsonl не создан — возможно, нет новых знаний")
-
-    # === Этап 2: Дообучение модели ===
-    if args.dry_run:
-        print("🧪 Режим Dry Run: обучение пропущено")
-        print("🎉 Готово (симуляция): данные собраны, модель НЕ обучалась.")
+    # === Этап 1: Сборка данных ===
+    success = build_training_data(args)
+    if not success:
+        logger.error("❌ Сбор данных не удался.")
+        if not validate_or_create_tokenizer():
+            restore_backup()
+        if not (TOKENIZER_PATH.exists() and MODEL_PATH.exists()):
+            logger.critical("💀 Критическая ошибка: не удалось восстановить артефакты")
+            sys.exit(1)
+        logger.info("✅ Используем существующие артефакты.")
         return
 
-    print("\n🧠 Шаг 2: Дообучение модели...")
+    if args.dry_run:
+        logger.info("🧪 Режим Dry Run: обучение пропущено")
+        logger.info("🎉 Готово (симуляция): данные собраны, модель НЕ обучалась.")
+        return
 
-    # Резервируем текущие артефакты
-    backup_existing_artifacts()
+    # === Этап 2: Проверка данных и обучение ===
+    if not has_new_data():
+        logger.info("ℹ️ Нет новых данных для обучения.")
+        if not validate_or_create_tokenizer():
+            restore_backup()
+        logger.info("✅ Используем существующие артефакты. Выход.")
+        return
 
-    # Проверяем наличие данных
-    has_training_pairs = os.path.exists(TRAINING_PAIRS_PATH)
-    has_conversations = os.path.exists(CONVERSATIONS_JSON)
+    backup_artifacts()
 
-    if not has_training_pairs and not has_conversations:
-        print("ℹ️ Нет новых данных для обучения: ни conversations.json, ни training_pairs.jsonl")
-        if not ensure_artifacts_exist():
-            print("💀 Критическая ошибка: не удалось создать или восстановить артефакты")
-            exit(1)
-        print("✅ Используем существующие артефакты. Выход.")
-        exit(0)
+    # Проверяем/создаём токенизатор
+    if not validate_or_create_tokenizer():
+        logger.error("❌ Не удалось создать или восстановить токенизатор.")
+        sys.exit(1)
 
     # Запускаем обучение
-    try:
-        from train import main as train_main
-        print("🔁 Запуск обучения через train.py...")
-        train_main()
-        print("🎉 Модель успешно переобучена и сохранена!")
-    except ImportError as e:
-        print(f"❌ Не удалось импортировать train.py: {e}")
-        print("💡 Убедитесь, что train.py находится в корне проекта")
-        if not ensure_artifacts_exist():
-            exit(1)
-    except Exception as e:
-        print(f"❌ Ошибка при обучении: {e}")
-        import traceback
-        traceback.print_exc()
-        print("🔄 Пытаемся восстановить артефакты из бэкапа...")
-        if os.path.exists(BACKUP_CHAT_DATA) and not os.path.exists(CHAT_DATA_PATH):
-            shutil.copy(BACKUP_CHAT_DATA, CHAT_DATA_PATH)
-        if os.path.exists(BACKUP_MODEL) and not os.path.exists(MODEL_PATH):
-            shutil.copy(BACKUP_MODEL, MODEL_PATH)
-        exit(1)
+    success = run_training()
+    if not success:
+        logger.error("❌ Обучение не удалось. Пытаемся восстановить...")
+        if restore_backup():
+            logger.info("✅ Артефакты восстановлены из бэкапа.")
+        else:
+            logger.critical("💀 Не удалось восстановить модель!")
+        sys.exit(1)
 
     # Финальная проверка
-    if os.path.exists(CHAT_DATA_PATH) and os.path.exists(MODEL_PATH):
-        c_size = os.path.getsize(CHAT_DATA_PATH) // 1024
-        m_size = os.path.getsize(MODEL_PATH) // 1024
-        print(f"✅ Успешно: chat_data.pkl ({c_size} КБ), chat_model.pth ({m_size} КБ)")
+    if TOKENIZER_PATH.exists() and MODEL_PATH.exists():
+        t_size = TOKENIZER_PATH.stat().st_size // 1024
+        m_size = MODEL_PATH.stat().st_size // 1024
+        logger.info(f"✅ Успешно: tokenizer.json ({t_size} КБ), chat_model.pth ({m_size} КБ)")
     else:
-        print("❌ Фатально: один из артефактов отсутствует!")
-        exit(1)
+        logger.critical("❌ Фатально: один из артефактов отсутствует!")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
