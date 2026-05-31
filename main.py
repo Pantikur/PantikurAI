@@ -307,14 +307,18 @@ async def predict(request: Request):
 # === Дообучение (защищённое) ===
 RETRAIN_LOCK = threading.Lock()
 
-# Проверка токена — теперь обязателен в .env
+# НЕ выкидываем ошибку здесь — иначе сломается сборка Docker
 RETRAIN_TOKEN = os.getenv("RETRAIN_TOKEN")
 if not RETRAIN_TOKEN:
-    logger.critical("❌ Переменная RETRAIN_TOKEN не задана в .env!")
-    raise RuntimeError("Требуется RETRAIN_TOKEN в .env")
+    logger.warning("⚠️ Переменная RETRAIN_TOKEN не задана в .env — /retrain будет отключён")
+
 
 def run_retrain_sync():
     """Запуск retrain.py в фоне с блокировкой"""
+    if not RETRAIN_TOKEN:
+        logger.error("❌ RETRAIN_TOKEN не задан — дообучение недоступно")
+        return
+
     if not RETRAIN_LOCK.acquire(blocking=False):
         logger.warning("🔄 Дообучение уже запущено")
         return
@@ -352,6 +356,9 @@ def run_retrain_sync():
 
 @app.post("/retrain")
 async def trigger_retrain(request: Request, background_tasks: BackgroundTasks):
+    if not RETRAIN_TOKEN:
+        raise HTTPException(status_code=503, detail="Дообучение отключено (нет RETRAIN_TOKEN)")
+
     token = request.headers.get("X-Retrain-Token")
     if token != RETRAIN_TOKEN:
         raise HTTPException(status_code=403, detail="Неверный токен 🎂")
@@ -361,7 +368,7 @@ async def trigger_retrain(request: Request, background_tasks: BackgroundTasks):
     return {"status": "retrain_started", "detail": "Обучение запущено в фоне!"}
 
 
-# === WebSocket (временно отключен) ===
+# === WebSocket (временно отключен, не включать) ===
 # @app.websocket("/ws")
 # async def websocket_endpoint(websocket: WebSocket):
 #     await websocket.accept()
