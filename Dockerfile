@@ -46,12 +46,4 @@ EXPOSE $PORT
 
 # Запуск через gunicorn с uvicorn workers
 # Автоматически использует PORT из окружения
-CMD ["gunicorn", "main:app", \
-     "--bind", "0.0.0.0:$PORT", \
-     "--worker-class", "uvicorn.workers.UvicornWorker", \
-     "--workers", "1", \
-     "--timeout", "120", \
-     "--keep-alive", "5", \
-     "--max-requests", "1000", \
-     "--max-requests-jitter", "100", \
-     "--preload"]
+CMD ["sh", "-c", "gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:\$PORT --timeout 120 --keep-alive 5 --preload"]
