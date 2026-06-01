@@ -225,10 +225,11 @@ class ChatBot:
 
         # === Режим narrative ===
         if mode == "narrative":
+            context_str = "\n".join(context)
             prompt = (
                 "Ты — мастер вселенных. Создаёшь глубокие, логичные и атмосферные миры.\n"
                 "Формат:\nНазвание:\n - ...\nЗаконы общества:\n - ...\n...\n\n"
-                f"История диалога:\n{'\\n'.join(context)}\nБот:"
+                f"История диалога:\n{context_str}\nБот:"
             )
             response = self._generate_response_with_sampling(prompt, max_length=64)
             required = ["Название:", "Законы общества:", "Традиции:"]

@@ -229,9 +229,14 @@ def collect_training_samples():
 
     # Архивируем исходные файлы
     if os.path.exists(CONVERSATIONS_JSON):
+        if os.path.exists(BACKUP_CONVERSATIONS):
+            os.remove(BACKUP_CONVERSATIONS)  # Удаляем старый бэкап
         os.rename(CONVERSATIONS_JSON, BACKUP_CONVERSATIONS)
         print(f"📦 Архивирован: conversations.json")
+
     if os.path.exists(TRAINING_PAIRS_JSONL):
+        if os.path.exists(BACKUP_TRAINING):
+            os.remove(BACKUP_TRAINING)  # Удаляем старый бэкап
         os.rename(TRAINING_PAIRS_JSONL, BACKUP_TRAINING)
         print(f"📦 Архивирован: training_pairs.jsonl")
 
@@ -422,27 +427,83 @@ def run_training():
 
     temp_data_path, base_model_data = collect_training_samples()
 
-    # === СЛУЧАЙ 1: Нет новых данных → создать заглушку, если нужно ===
+    # === СЛУЧАЙ 1: Нет новых данных, но есть старая модель → Экспортируем tokenizer.json ===
     if temp_data_path is None:
-        print("ℹ️ Новых данных нет. Проверяем наличие chat_data.pkl...")
+        print("ℹ️ Новых данных нет. Проверяем существующую модель для экспорта...")
 
         if os.path.exists(OLD_DATA_PATH):
-            print(f"✅ Модель уже существует: {OLD_DATA_PATH} — ничего не меняем.")
-            return
+            try:
+                data = joblib.load(OLD_DATA_PATH)
+                print(f"✅ Загружены метаданные: {len(data.get('samples', []))} пар")
 
-        print("⚠️ Модель отсутствует. Создаём минимальную заглушку...")
-        fallback_data = {
-            "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2, "привет": 3, "пока": 4},
-            "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "<EOS>", 3: "привет", 4: "пока"},
-            "vocab_size": 5,
-            "max_length": MAX_LENGTH,
-            "samples": [["привет", "здравствуй"], ["пока", "до свидания"]]
+                # === ВОССТАНОВЛЕНИЕ СЛОВАРЯ, ЕСЛИ ПОВРЕЖДЁН ===
+                if "word_to_idx" not in data or "<EOS>" not in data["word_to_idx"]:
+                    print("⚠️ Обнаружен повреждённый словарь. Восстанавливаем...")
+                    vocab = {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2}
+                    idx_to_word = {0: "<PAD>", 1: "<UNK>", 2: "<EOS>"}
+                    idx = 3
+                    # Восстанавливаем из пар
+                    for inp, tgt in data.get("samples", []):
+                        for word in clean_text(inp).split() + clean_text(tgt).split():
+                            if word not in vocab:
+                                vocab[word] = idx
+                                idx_to_word[idx] = word
+                                idx += 1
+                                if idx >= MAX_VOCAB_SIZE:
+                                    break
+                    data["word_to_idx"] = vocab
+                    data["idx_to_word"] = idx_to_word
+                    data["vocab_size"] = len(vocab)
+                    joblib.dump(data, OLD_DATA_PATH)
+                    print(f"🔧 Словарь восстановлен и сохранён: vocab_size={len(vocab)}")
+            except Exception as e:
+                print(f"❌ Ошибка загрузки chat_data.pkl: {e}")
+                return
+        else:
+            print("⚠️ Модель отсутствует. Создаём минимальную заглушку...")
+            data = {
+                "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2, "привет": 3, "пока": 4},
+                "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "<EOS>", 3: "привет", 4: "пока"},
+                "vocab_size": 5,
+                "max_length": MAX_LENGTH,
+                "samples": [["привет", "здравствуй"], ["пока", "до свидания"]]
+            }
+            os.makedirs("data", exist_ok=True)
+            joblib.dump(data, OLD_DATA_PATH)
+            print(f"🟢 Заглушка создана: {OLD_DATA_PATH}")
+
+        # === ЭКСПОРТ tokenizer.json ===
+        tokenizer_data = {
+            "vocab": data["word_to_idx"],
+            "inverse_vocab": {str(idx): word for idx, word in data["idx_to_word"].items()}
         }
-        joblib.dump(fallback_data, OLD_DATA_PATH)
-        print(f"🟢 Заглушка создана: {OLD_DATA_PATH}")
-        return
+        os.makedirs("data", exist_ok=True)
+        with open("data/tokenizer.json", "w", encoding="utf-8") as f:
+            json.dump(tokenizer_data, f, ensure_ascii=False, indent=2)
+        print("✅ Экспортирован: data/tokenizer.json")
 
-    # === СЛУЧАЙ 2: Есть данные → обучаем модель ===
+        # === Убедимся, что model.pth существует ===
+        model_path = "models/model.pth"
+        if not os.path.exists(model_path):
+            print("⚠️ Файл модели не найден. Создаём пустую модель...")
+            model = ChatNN(
+                vocab_size=data["vocab_size"],
+                embedding_dim=EMBEDDING_DIM,
+                hidden_dim=HIDDEN_DIM,
+                num_layers=NUM_LAYERS,
+                max_length=MAX_LENGTH,
+                pad_token_id=0,
+                eos_token_id=data["word_to_idx"]["<EOS>"]
+            )
+            os.makedirs("models", exist_ok=True)
+            torch.save(model.state_dict(), model_path)
+            print(f"✅ Создан: {model_path}")
+        else:
+            print(f"✅ Модель уже существует: {model_path}")
+
+        return  # Завершаем — ничего не учим, но файлы созданы
+
+    # === СЛУЧАЙ 2: Есть новые данные → обучаем модель ===
     print("🧠 Начинаем дообучение...")
 
     data = joblib.load(temp_data_path)
@@ -456,10 +517,10 @@ def run_training():
         eos_token_id=data["word_to_idx"]["<EOS>"]
     ).to(DEVICE)
 
-    # Адаптация весов при изменении словаря
-    if os.path.exists(MODEL_PATH):
+    # Адаптация весов
+    if os.path.exists("models/model.pth"):
         try:
-            state_dict = torch.load(MODEL_PATH, map_location=DEVICE)
+            state_dict = torch.load("models/model.pth", map_location=DEVICE)
             ckpt_vocab_size = state_dict["embedding.weight"].size(0)
             if ckpt_vocab_size != data["vocab_size"]:
                 print(f"⚠️ Адаптируем веса: {ckpt_vocab_size} → {data['vocab_size']}")
@@ -495,9 +556,13 @@ def run_training():
     )
 
     train_model(model, train_loader, val_loader, EPOCHS, DEVICE, patience=3)
-    torch.save(model.state_dict(), MODEL_PATH)
 
-    # Сохраняем метаданные модели
+    # === Сохраняем в нужном формате ===
+    MODEL_PATH_NEW = "models/model.pth"
+    torch.save(model.state_dict(), MODEL_PATH_NEW)
+    print(f"✅ Модель сохранена: {MODEL_PATH_NEW}")
+
+    # Сохраняем метаданные
     joblib.dump({
         "word_to_idx": data["word_to_idx"],
         "idx_to_word": data["idx_to_word"],
@@ -505,6 +570,16 @@ def run_training():
         "max_length": MAX_LENGTH,
         "samples": data["samples"]
     }, OLD_DATA_PATH)
+    print(f"✅ Метаданные обновлены: {OLD_DATA_PATH}")
+
+    # === Экспорт tokenizer.json ===
+    tokenizer_data = {
+        "vocab": data["word_to_idx"],
+        "inverse_vocab": {str(idx): word for idx, word in data["idx_to_word"].items()}
+    }
+    with open("data/tokenizer.json", "w", encoding="utf-8") as f:
+        json.dump(tokenizer_data, f, ensure_ascii=False, indent=2)
+    print("✅ Экспортирован: data/tokenizer.json")
 
     # Удаляем временный файл
     if os.path.exists(TEMP_TRAIN_DATA):
@@ -514,5 +589,14 @@ def run_training():
     show_sample_responses(model, data["word_to_idx"], data["idx_to_word"], DEVICE)
 
     print(f"🎉 Модель успешно переобучена и сохранена!")
-    print(f"📄 Метаданные: {OLD_DATA_PATH}")
-    print(f"💾 Веса: {MODEL_PATH}")
+
+
+# === ТОЧКА ВХОДА ===
+if __name__ == "__main__":
+    print("🚀 Запуск обучения...")
+    try:
+        run_training()
+        print("✅ Обучение завершено!")
+    except Exception as e:
+        print(f"❌ Ошибка при обучении: {e}")
+        raise
