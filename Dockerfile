@@ -46,4 +46,8 @@ EXPOSE $PORT
 
 # Запуск через gunicorn с uvicorn workers
 # Автоматически использует PORT из окружения
-CMD ["sh", "-c", "gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:\$PORT --timeout 120 --keep-alive 5 --preload"]
+ENTRYPOINT ["sh", "-c", "gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:\$PORT --timeout 120 --keep-alive 5 --preload"]
+# === HEALTHCHECK для Docker ===
+# Проверяет, отвечает ли приложение, с задержкой
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+    CMD curl -f http://localhost:$PORT/health || exit 1
