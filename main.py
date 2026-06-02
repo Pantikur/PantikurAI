@@ -39,12 +39,18 @@ DATA_PATH = BASE_DIR / "data" / "tokenizer.json"  # ← Новый токени�
 MODEL_PATH = BASE_DIR / "models" / "model.pth"    # ← Новая модель
 CONVERSATIONS_JSON = BASE_DIR / "data" / "conversations.json"
 
-# === Добавляем Wuglarst в путь ===
+# === Добавляем Wuglarst/src в путь (точно для импорта src.chatbot) ===
 WUGLARST_DIR = BASE_DIR / "Wuglarst"
-if WUGLARST_DIR.exists():
+WUGLARST_SRC_DIR = WUGLARST_DIR / "src"
+
+if WUGLARST_SRC_DIR.exists():
+    if str(WUGLARST_SRC_DIR) not in sys.path:
+        sys.path.insert(0, str(WUGLARST_SRC_DIR))
+    logger.info(f"✅ Путь added: {WUGLARST_SRC_DIR}")
+elif WUGLARST_DIR.exists():
     if str(WUGLARST_DIR) not in sys.path:
         sys.path.insert(0, str(WUGLARST_DIR))
-    logger.info(f"✅ Путь добавлен: {WUGLARST_DIR}")
+    logger.warning(f"⚠️ Использую Wuglarst (а не Wuglarst/src) — проверьте структуру: {WUGLARST_DIR}")
 else:
     logger.critical(f"❌ Не найдена директория: {WUGLARST_DIR}")
     raise RuntimeError(f"Не найдена директория: {WUGLARST_DIR}")

@@ -1,7 +1,7 @@
-# Используем официальный образ Python 3.10 (или 3.11 — по твоему выбору)
+# === БАЗОВЫЙ ОБРАЗ ===
 FROM python:3.11-slim
 
-# Установка системных зависимостей
+# === СИСТЕМНЫЕ ЗАВИСИМОСТИ ===
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         gcc \
@@ -9,41 +9,38 @@ RUN apt-get update && \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-# Устанавливаем рабочую директорию
+# === РАБОЧАЯ ДИРЕКТОРИЯ ===
 WORKDIR /app
 
-# Копируем и устанавливаем зависимости
+# === КОПИРУЕМ И УСТАНАВЛИВАЕМ ПИП-ЗАВИСИМОСТИ ===
 COPY requirements.txt .
-
-# Установка PyTorch (CPU) + остальные пакеты
 RUN pip install --no-cache-dir \
-    --default-timeout=100 \
+    --default-timeout=200 \
     --extra-index-url https://download.pytorch.org/whl/cpu \
     -r requirements.txt && \
-    pip install --no-cache-dir uvicorn gunicorn && \
-    echo '✅ Все зависимости установлены'
+    pip install --no-cache-dir gunicorn uvicorn && \
+    echo '✅ Зависимости установлены'
 
-# Копируем код приложения
+# === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY . .
 
-# Создаём необходимые директории
+# === СОЗДАЁМ ДИРЕКТОРИИ ===
 RUN mkdir -p models data logs
 
-# Экспорт переменных окружения
+# === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000
 ENV PYTHONUNBUFFERED=1
 ENV PYTORCH_ENABLE_MPS_FALLBACK=1
 
-# Проверка, что приложение импортируется
-RUN python -c "from main import app" && \
-    echo '✅ Приложение импортировано успешно'
+# === ПРЕДВАРИТЕЛЬНАЯ ПРОВЕРКА ИМПОРТА ===
+RUN python -c "from main import app; print('✅ Приложение импортировано')" || (echo "❌ Ошибка импорта" && exit 1)
 
-# Открываем порт
-EXPOSE $PORT
+# === ОТКРЫВАЕМ ПОРТ ===
+EXPOSE ${PORT}
 
-# === HEALTHCHECK — проверяет готовность сервиса ===
-HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-    CMD curl -f http://localhost:$PORT/health || exit 1
+# === HEALTHCHECK — увеличенный таймаут ===
+HEALTHCHECK --interval=30s --timeout=60s --start-period=180s --retries=5 \
+    CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# === ENTRYPOINT (на всякий случай, но НЕ ДОВЕРЯЙ ЕМУ НА PaaS) ===
-ENTRYPOINT ["sh", "-c", "exec gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:$PORT --timeout 120 --keep-alive 5"]
+# === ENTRYPOINT: gunicorn + uvicorn worker — стабильный старт ===
+ENTRYPOINT ["sh", "-c", "exec gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:${PORT} --timeout 300 --keep-alive 5 --access-logfile - --error-logfile -"]
