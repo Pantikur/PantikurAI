@@ -1,24 +1,26 @@
 # === БАЗОВЫЙ ОБРАЗ ===
 FROM python:3.11-slim
 
-# === СИСТЕМНЫЕ ЗАВИСИМОСТИ ===
+# === СИСТЕМНЫЕ ЗАВИСИМОСТИ: ОБЯЗАТЕЛЬНО libev/libevent для uvicorn.workers.UvicornWorker ===
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         gcc \
         curl \
-        ca-certificates && \
+        ca-certificates \
+        libev-dev \
+        libevent-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # === РАБОЧАЯ ДИРЕКТОРИЯ ===
 WORKDIR /app
 
-# === КОПИРУЕМ И УСТАНАВЛИВАЕМ ПИП-ЗАВИСИМОСТИ ===
+# === КОПИРУЕМ И УСТАНОВЛИВАЕМ ПИП-ЗАВИСИМОСТИ ===
 COPY requirements.txt .
 RUN pip install --no-cache-dir \
     --default-timeout=200 \
     --extra-index-url https://download.pytorch.org/whl/cpu \
     -r requirements.txt && \
-    pip install --no-cache-dir gunicorn uvicorn && \
+    pip install --no-cache-dir gunicorn && \
     echo '✅ Зависимости установлены'
 
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
@@ -38,9 +40,9 @@ RUN python -c "from main import app; print('✅ Приложение импор�
 # === ОТКРЫВАЕМ ПОРТ ===
 EXPOSE ${PORT}
 
-# === HEALTHCHECK — увеличенный таймаут ===
+# === HEALTHCHECK ===
 HEALTHCHECK --interval=30s --timeout=60s --start-period=180s --retries=5 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# === ENTRYPOINT: gunicorn + uvicorn worker — стабильный старт ===
+# === КЛЮЧЕВОЕ: РАБОТАЮЩИЙ ENTRYPOINT ===
 ENTRYPOINT ["sh", "-c", "exec gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:${PORT} --timeout 300 --keep-alive 5 --access-logfile - --error-logfile -"]
