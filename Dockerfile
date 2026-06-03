@@ -43,5 +43,5 @@ EXPOSE ${PORT}
 HEALTHCHECK --interval=30s --timeout=60s --start-period=180s --retries=5 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# === КЛЮЧЕВОЕ: РАБОТАЮЩИЙ ENTRYPOINT ===
-ENTRYPOINT ["sh", "-c", "exec gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:${PORT} --timeout 300 --keep-alive 5 --access-logfile - --error-logfile -"]
+# === РАБОТАЮЩАЯ КОМАНДА (без ENTRYPOINT) ===
+CMD ["gunicorn", "-w", "1", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:${PORT}", "--timeout", "300", "--keep-alive", "5", "--access-logfile", "-", "--error-logfile", "-"]
