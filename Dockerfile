@@ -1,7 +1,7 @@
 # === БАЗОВЫЙ ОБРАЗ ===
 FROM python:3.11-slim
 
-# === СИСТЕМНЫЕ ЗАВИСИМОСТИ: ОБЯЗАТЕЛЬНО libev/libevent для uvicorn.workers.UvicornWorker ===
+# === СИСТЕМНЫЕ ЗАВИСИМОСТИ ===
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         gcc \
@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir \
     --default-timeout=200 \
     --extra-index-url https://download.pytorch.org/whl/cpu \
     -r requirements.txt && \
-    pip install --no-cache-dir gunicorn && \
+    pip install --no-cache-dir "uvicorn[standard]" gunicorn && \
     echo '✅ Зависимости установлены'
 
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
@@ -32,7 +32,6 @@ RUN mkdir -p models data logs
 # === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000
 ENV PYTHONUNBUFFERED=1
-ENV PYTORCH_ENABLE_MPS_FALLBACK=1
 
 # === ПРЕДВАРИТЕЛЬНАЯ ПРОВЕРКА ИМПОРТА ===
 RUN python -c "from main import app; print('✅ Приложение импортировано')" || (echo "❌ Ошибка импорта" && exit 1)
