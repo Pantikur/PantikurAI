@@ -44,13 +44,14 @@ WUGLARST_DIR = BASE_DIR / "Wuglarst"
 WUGLARST_SRC_DIR = WUGLARST_DIR / "src"
 
 if WUGLARST_SRC_DIR.exists():
-    if str(WUGLARST_SRC_DIR) not in sys.path:
-        sys.path.insert(0, str(WUGLARST_SRC_DIR))
-    logger.info(f"✅ Путь added: {WUGLARST_SRC_DIR}")
+    # Добавляем родительскую папку Wuglarst/, а не Wuglarst/src/
+    if str(WUGLARST_DIR) not in sys.path:
+        sys.path.insert(0, str(WUGLARST_DIR))
+        logger.info(f"✅ Путь added: {WUGLARST_DIR} (родитель для Wuglarst/src/)")
 elif WUGLARST_DIR.exists():
     if str(WUGLARST_DIR) not in sys.path:
         sys.path.insert(0, str(WUGLARST_DIR))
-    logger.warning(f"⚠️ Использую Wuglarst (а не Wuglarst/src) — проверьте структуру: {WUGLARST_DIR}")
+        logger.warning(f"⚠️ Использую Wuglarst (а не Wuglarst/src) — проверьте структуру: {WUGLARST_DIR}")
 else:
     logger.critical(f"❌ Не найдена директория: {WUGLARST_DIR}")
     raise RuntimeError(f"Не найдена директория: {WUGLARST_DIR}")

@@ -7,6 +7,7 @@ import re
 import random
 from datetime import datetime
 from typing import List, Dict, Any
+from . import chat_model
 from .chat_model import ChatNN
 from .web_search import WebSearch
 from .cultural_references import get_cultural_phrase
