@@ -1,0 +1,22 @@
+# === Docker ignore (для изоляции от хоста) ===
+# Но разрешаем нужные файлы
+
+data/*
+!data/tokenizer.json
+!data/chat_data.pkl
+!data/config.yaml
+
+models/*
+!models/model.pth
+
+# Прочее
+__pycache__/
+*.pyc
+logs/
+.env
+.env.*
+.venv/
+venv/
+.git/
+.DS_Store
+Thumbs.db

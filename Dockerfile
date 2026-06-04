@@ -20,17 +20,16 @@ RUN pip install --no-cache-dir \
     --default-timeout=200 \
     --extra-index-url https://download.pytorch.org/whl/cpu \
     -r requirements.txt && \
-    pip install --no-cache-dir "uvicorn[standard]" gunicorn && \
+    pip install --no-cache-dir "uvicorn[standard]" && \
     echo '✅ Зависимости установлены'
 
+# === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
+COPY main.py ./main.py
+COPY Wuglarst/ ./Wuglarst/
+
+# === КОПИРУЕМ ДАННЫЕ И МОДЕЛИ ===
 COPY data/ ./data/
 COPY models/ ./models/
-
-# === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
-COPY . .
-
-# === СОЗДАЁМ ДИРЕКТОРИИ ===
-RUN mkdir -p models data logs
 
 # === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000
@@ -43,8 +42,8 @@ RUN python -c "from main import app; print('✅ Приложение импор�
 EXPOSE ${PORT}
 
 # === HEALTHCHECK ===
-HEALTHCHECK --interval=30s --timeout=60s --start-period=180s --retries=5 \
+HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# === РАБОТАЮЩАЯ КОМАНДА (с поддержкой ENV PORT) ===
-CMD ["sh", "-c", "exec gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:${PORT} --timeout 300 --keep-alive 5 --access-logfile - --error-logfile -"]
+# === 🟢 КОМАНДА ЗАПУСКА ===
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

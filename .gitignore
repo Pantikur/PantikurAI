@@ -36,16 +36,16 @@ ehthumbs_vista.db
 *.swp
 *~
 
-# === Данные и модели — ИГНОРИРУЕМ ВСЁ, КРОМЕ КОНКРЕТНЫХ ФАЙЛОВ ===
-# Игнорируем всю папку models, кроме chat_model.pth (если он добавлен)
-models/*
-!models/model.pth
-data/*
+# === Данные и модели — СНАЧАЛА запретить, ПОТОМ разрешить конкретные ===
+data/
 !data/tokenizer.json
-
-# Игнорируем все .pkl/.pt, кроме chat_data.pkl
-data/*
 !data/chat_data.pkl
+!data/config.yaml
+
+models/
+!models/model.pth
+
+# === Прочие артефакты — игнорируем полностью ===
 *.joblib
 *.bin
 *.safetensors
@@ -61,7 +61,7 @@ logs/
 *.tmp
 *.temp
 
-# === Окружения ===
+# === Окружения (не копируем в Docker) ===
 .env
 .env.local
 .env.development
