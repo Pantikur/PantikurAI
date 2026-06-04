@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir \
 
 COPY data/ ./data/
 COPY models/ ./models/
-    
+
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY . .
 
