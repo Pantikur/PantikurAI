@@ -85,7 +85,7 @@ class ChatBot:
         ).to(self.device)
 
         try:
-            state_dict = torch.load(self.model_path, map_location=self.device)
+            state_dict = torch.load(self.model_path, map_location=self.device, weights_only=True)
             self.model.load_state_dict(state_dict, strict=False)
             self.model.eval()
             print(f"✅ Модель загружена: {self.model_path} на {self.device}")
