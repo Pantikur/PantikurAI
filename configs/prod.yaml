@@ -1,0 +1,69 @@
+# configs/prod.yaml
+# Конфиг для продакшена: полный сбор всех данных
+
+input_files:
+  clean_files:
+    - raw: pride_emotional_phrases.jsonl
+      clean: pride_emotional_phrases_clean.jsonl
+    - raw: gluttony_emotional_phrases.jsonl
+      clean: gluttony_emotional_phrases_clean.jsonl
+    - raw: envy_emotional_phrases.jsonl
+      clean: envy_emotional_phrases_clean.jsonl
+    - raw: wrath_emotional_phrases.jsonl
+      clean: wrath_emotional_phrases_clean.jsonl
+    - raw: sloth_emotional_phrases.jsonl
+      clean: sloth_emotional_phrases_clean.jsonl
+    - raw: greed_emotional_phrases.jsonl
+      clean: greed_emotional_phrases_clean.jsonl
+    - raw: lust_emotional_phrases.jsonl
+      clean: lust_emotional_phrases_clean.jsonl
+    - raw: hope_emotional_phrases.jsonl
+      clean: hope_emotional_phrases_clean.jsonl
+    - raw: humility_emotional_phrases.jsonl
+      clean: humility_emotional_phrases_clean.jsonl
+    - raw: temperance_emotional_phrases.jsonl
+      clean: temperance_emotional_phrases_clean.jsonl
+
+  source_files:
+    - pride_emotional_phrases_clean.jsonl
+    - gluttony_emotional_phrases_clean.jsonl
+    - envy_emotional_phrases_clean.jsonl
+    - wrath_emotional_phrases_clean.jsonl
+    - sloth_emotional_phrases_clean.jsonl
+    - greed_emotional_phrases_clean.jsonl
+    - lust_emotional_phrases_clean.jsonl
+    - hope_emotional_phrases_clean.jsonl
+    - humility_emotional_phrases_clean.jsonl
+    - temperance_emotional_phrases_clean.jsonl
+    - ultimate_emotional_phrases_part1.jsonl
+    - ultimate_emotional_phrases_part2.jsonl
+    - ultimate_narrative_phrases.jsonl
+    - sentiment_examples_extended.jsonl
+    - sentiment_examples_narrative.jsonl
+    - disturbing_phrases.jsonl
+    - disturbing_phrases_narrative.jsonl
+    - negative_emotional_phrases_part1.jsonl
+    - negative_emotional_phrases_part2.jsonl
+    - negative_narrative_phrases.jsonl
+
+paths:
+  training_pairs: data/training_pairs.jsonl
+  knowledge_stats: data/knowledge/knowledge_stats.json
+
+responses:
+  positive: "Это прекрасно. Продолжай в том же духе."
+  neutral: "Я слушаю. Расскажи больше."
+  negative: "Это тяжело. Я рядом."
+  disturbing: "Тревожные мысли могут быть глубокими. Хочешь поговорить?"
+  existential: "Глубокий вопрос. Давай подумаем вместе."
+  hope: "Надежда — сила. Даже в темноте есть свет."
+  rage: "Гнев — мощная энергия. Что его вызвало?"
+  loneliness: "Чувство одиночества знакомо многим. Ты не один."
+  cosmic_horror: "Космическая бездна пугает. Но ты — часть чего-то большего."
+
+fields:
+  text: ["text", "phrase"]
+  label: ["class", "sentiment"]
+
+skip_empty_text: true
+default_label: neutral
