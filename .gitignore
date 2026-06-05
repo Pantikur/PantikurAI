@@ -36,32 +36,37 @@ ehthumbs_vista.db
 *.swp
 *~
 
-# === Данные и модели — СНАЧАЛА запретить, ПОТОМ разрешить конкретные ===
-data/
+# === МОДЕЛИ И ДАННЫЕ (ВСЕ БОЛЬШИЕ ФАЙЛЫ ЗАПРЕЩЕНЫ) ===
+# ✅ Разрешён только tokenizer.json (маленький)
+data/*.jsonl
+data/*.pkl
+data/*.joblib
+data/*.bin
+data/*.safetensors
+models/*.pth
+models/*.pt
+models/*.joblib
+models/*.bin
+
+# Исключение: tokenizer.json разрешён
 !data/tokenizer.json
-!data/chat_data.pkl
-!data/config.yaml
 
-models/
-!models/model.pth
-
-# === Прочие артефакты — игнорируем полностью ===
+# === Артефакты (полный запрет) ===
 *.joblib
 *.bin
 *.safetensors
 outputs/
 checkpoints/
 runs/
+*.tmp
+*.temp
 
 # === Логи ===
 logs/
 *.log
+logs/*.log
 
-# === Временные файлы ===
-*.tmp
-*.temp
-
-# === Окружения (не копируем в Docker) ===
+# === Окружения ===
 .env
 .env.local
 .env.development
@@ -75,3 +80,8 @@ docker-compose.override.yml
 # === CI/CD (опционально) ===
 .gitlab-ci.yml
 azure-pipelines.yml
+
+# === PyTorch (доп. защита) ===
+venv/Lib/site-packages/torch/lib/*.dll
+venv/Lib/site-packages/torch/lib/*.so
+venv/Lib/site-packages/torch/lib/*.dylib
