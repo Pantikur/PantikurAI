@@ -7,6 +7,7 @@ import joblib
 import json
 import os
 from collections import Counter
+import re
 
 # === Настройки ===
 DATA_DIR = "data"
@@ -34,10 +35,21 @@ from Wuglarst.src.chat_model import ChatNN
 
 
 # === Вспомогательные функции ===
+def safe_print(msg: str):
+    """Заменяет эмодзи на ASCII, чтобы не падать в Windows console"""
+    emojis = {
+        '🚀': '[RUN]', '✅': '[OK]', '❌': '[ERR]', '💾': '[SAVE]',
+        '📦': '[DATA]', '📚': '[LIB]', '🧠': '[AI]', '🔥': '[🔥]',
+        '🎉': '[HAPPY]', '⚠️': '[WARN]', 'ℹ️': '[INFO]', '❤️': '[HEART]'
+    }
+    for e, t in emojis.items():
+        msg = msg.replace(e, t)
+    print(msg, flush=True)
+
+
 def clean_text(text):
     if not isinstance(text, str) or not text.strip():
         return ""
-    import re
     text = text.lower()
     text = re.sub(r'[^а-яёa-z0-9\s?!,.]', '', text)
     text = re.sub(r'\s+', ' ', text).strip()
@@ -65,11 +77,11 @@ def load_or_initialize_data(path):
     if os.path.exists(path):
         try:
             data = joblib.load(path)
-            print(f"✅ Загружено состояние: {len(data['samples'])} пар")
+            safe_print(f"[OK] Загружено состояние: {len(data['samples'])} пар")
             return data
         except Exception as e:
-            print(f"⚠️ Не удалось загрузить {path}: {e}")
-    print("🆕 Начинаем с чистого листа")
+            safe_print(f"[WARN] Не удалось загрузить {path}: {e}")
+    safe_print("[INFO] Начинаем с чистого листа")
     return {
         "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2},
         "idx_to_word": {0: "<PAD>", 1: "<UNK>", 2: "<EOS>"},
@@ -152,7 +164,7 @@ def collect_training_samples():
                                     samples.extend(pairs)
                                     new_count += len(pairs)
         except Exception as e:
-            print(f"❌ Ошибка чтения conversations.json: {e}")
+            safe_print(f"[ERR] Ошибка чтения conversations.json: {e}")
 
     # --- 2. Знания: training_pairs.jsonl ---
     if os.path.exists(TRAINING_PAIRS_JSONL):
@@ -177,12 +189,12 @@ def collect_training_samples():
                                 samples.append([user, bot])
                                 new_count += 1
                     except Exception as e:
-                        print(f"⚠️ Пропущена строка в training_pairs.jsonl ({line_num}): {e}")
+                        safe_print(f"[WARN] Пропущена строка в training_pairs.jsonl ({line_num}): {e}")
         except Exception as e:
-            print(f"❌ Ошибка чтения training_pairs.jsonl: {e}")
+            safe_print(f"[ERR] Ошибка чтения training_pairs.jsonl: {e}")
 
     if new_count == 0:
-        print("ℹ️ Нет новых данных для обучения.")
+        safe_print("[INFO] Нет новых данных для обучения.")
         return None
 
     # Уникализация
@@ -194,7 +206,7 @@ def collect_training_samples():
             seen.add(key)
             unique_samples.append(pair)
 
-    print(f"📊 Уникальных пар: {len(unique_samples)} (всего новых: {new_count})")
+    safe_print(f"[DATA] Уникальных пар: {len(unique_samples)} (всего новых: {new_count})")
 
     # Построение словаря
     word_to_idx, idx_to_word = build_vocab_from_samples(unique_samples, old_data["word_to_idx"])
@@ -229,7 +241,7 @@ def collect_training_samples():
     }
     temp_path = os.path.join(DATA_DIR, "temp_train.pkl")
     joblib.dump(temp_data, temp_path)
-    print(f"✅ Подготовлено {len(unique_samples)} обучающих пар")
+    safe_print(f"[OK] Подготовлено {len(unique_samples)} обучающих пар")
     return temp_path
 
 
@@ -257,7 +269,7 @@ class ChatDataset(Dataset):
 # === Загрузка весов с адаптацией под новый словарь ===
 def load_model_weights(model, path, device):
     if not os.path.exists(path):
-        print("🆕 Модель инициализирована с нуля")
+        safe_print("[INFO] Модель инициализирована с нуля")
         return model
 
     try:
@@ -266,7 +278,7 @@ def load_model_weights(model, path, device):
         ckpt_vocab_size = state_dict["embedding.weight"].size(0)
 
         if current_vocab_size != ckpt_vocab_size:
-            print(f"⚠️ Размер словаря изменился: {ckpt_vocab_size} → {current_vocab_size}. Адаптируем...")
+            safe_print(f"[WARN] Размер словаря изменился: {ckpt_vocab_size} → {current_vocab_size}. Адаптируем...")
             old_w_emb = state_dict['embedding.weight']
             old_w_fc = state_dict['fc.weight']
             old_b_fc = state_dict['fc.bias']
@@ -285,9 +297,9 @@ def load_model_weights(model, path, device):
             state_dict['fc.bias'] = new_b_fc
 
         model.load_state_dict(state_dict, strict=False)
-        print("✅ Веса загружены (с адаптацией)")
+        safe_print("[OK] Веса загружены (с адаптацией)")
     except Exception as e:
-        print(f"⚠️ Ошибка загрузки весов: {e}")
+        safe_print(f"[WARN] Ошибка загрузки весов: {e}")
     return model
 
 
@@ -313,16 +325,16 @@ def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
             total_loss += loss.item()
 
         avg_loss = total_loss / len(dataloader)
-        print(f"Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}")
+        safe_print(f"[INFO] Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}")
 
 
 # === Главная функция ===
 def main():
-    print("🔄 Сбор и подготовка данных...")
+    safe_print("[DATA] Сбор и подготовка данных...")
     data_file = collect_training_samples()
 
     if data_file is None:
-        print("ℹ️ Нет новых данных. Создаём минимальную модель...")
+        safe_print("[INFO] Нет новых данных. Создаём минимальную модель...")
 
         fallback_data = {
             "word_to_idx": {"<PAD>": 0, "<UNK>": 1, "<EOS>": 2, "привет": 3, "пока": 4},
@@ -332,7 +344,7 @@ def main():
             "samples": [["привет", "здравствуй"], ["пока", "до свидания"]]
         }
         joblib.dump(fallback_data, OLD_DATA_PATH)
-        print(f"🟢 Заглушка создана: {OLD_DATA_PATH}")
+        safe_print(f"[OK] Заглушка создана: {OLD_DATA_PATH}")
         return
 
     # Загружаем данные
@@ -371,9 +383,9 @@ def main():
         "samples": temp_data["samples"]
     }, OLD_DATA_PATH)
 
-    print(f"🎉 Модель успешно обучена и сохранена!")
-    print(f"📄 Метаданные: {OLD_DATA_PATH}")
-    print(f"💾 Веса: {MODEL_PATH}")
+    safe_print("[HAPPY] Модель успешно обучена и сохранена!")
+    safe_print(f"[INFO] Метаданные: {OLD_DATA_PATH}")
+    safe_print(f"[SAVE] Веса: {MODEL_PATH}")
 
 
 if __name__ == "__main__":

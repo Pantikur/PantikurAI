@@ -57,3 +57,54 @@
 2026-06-05 19:22:54,230 | INFO | 🧠 Запуск обучения...
 2026-06-05 19:46:49,732 | INFO | 🎉 Обучение завершено успешно!
 2026-06-05 19:46:49,734 | INFO | ✅ Успешно: tokenizer.json (0 КБ), chat_model.pth (23752 КБ)
+2026-06-05 22:21:36,187 | WARNING | ⚠️ GigaChat enrichment не удался: 'charmap' codec can't encode character '\U0001f9e0' in position 0: character maps to <undefined>
+2026-06-05 22:21:36,202 | WARNING | ⚠️ RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-06-05 22:21:36,211 | INFO | 🔧 Сборка данных:  
+2026-06-05 22:21:36,361 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 22:21:36,362 | INFO | 📦 Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 22:21:36,373 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 22:21:36,374 | INFO | ✅ Токенизатор загружен: 3 токенов
+2026-06-05 22:21:36,374 | INFO | 🧠 Запуск обучения...
+2026-06-05 22:21:37,606 | ERROR | ❌ Ошибка при обучении: 'charmap' codec can't encode character '\U0001f504' in position 0: character maps to <undefined>
+Traceback (most recent call last):
+  File "D:\NewCod\Pantikur\retrain.py", line 182, in run_training
+    train.main()
+  File "D:\NewCod\Pantikur\train.py", line 321, in main
+    print("🔄 Сбор и подготовка данных...")
+  File "C:\Users\baura\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1251.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f504' in position 0: character maps to <undefined>
+2026-06-05 22:21:37,608 | ERROR | ❌ Обучение не удалось. Пытаемся восстановить...
+2026-06-05 22:21:37,609 | CRITICAL | 💀 Не удалось восстановить модель!
+2026-06-05 22:25:17,421 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 22:25:17,424 | INFO | ✅ RPG-сцены добавлены в training_pairs.jsonl
+2026-06-05 22:25:17,424 | INFO | 🔧 Сборка данных:  
+2026-06-05 22:25:17,547 | WARNING | 🟡 Файл training_pairs.jsonl не создан — возможно, нет новых знаний
+2026-06-05 22:25:17,561 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 22:25:17,561 | WARNING | ⚠️ Токенизатор не найден: D:\NewCod\Pantikur\data\tokenizer.json. Создаём заглушку...
+2026-06-05 22:25:17,562 | WARNING | ⚠️ Создан фиктивный токенизатор: D:\NewCod\Pantikur\data\tokenizer.json
+2026-06-05 22:25:17,562 | INFO | 🧠 Запуск обучения...
+2026-06-05 22:54:47,562 | INFO | 🎉 Обучение завершено успешно!
+2026-06-05 22:54:47,564 | INFO | ✅ Успешно: tokenizer.json (0 КБ), chat_model.pth (23752 КБ)
+2026-06-05 23:08:43,116 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 23:08:43,118 | INFO | ✅ RPG-сцены добавлены в training_pairs.jsonl
+2026-06-05 23:08:43,118 | INFO | 🔧 Сборка данных:  
+2026-06-05 23:08:43,258 | WARNING | 🟡 Файл training_pairs.jsonl не создан — возможно, нет новых знаний
+2026-06-05 23:08:43,272 | INFO | 📦 Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 23:08:43,273 | ERROR | ❌ Ошибка в tokenizer.json: Некорректный формат tokenizer.json
+2026-06-05 23:08:43,274 | INFO | 🔄 Восстанавливаем из бэкапа: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 23:08:43,286 | INFO | 🧠 Запуск обучения...
+2026-06-05 23:37:06,744 | INFO | 🎉 Обучение завершено успешно!
+2026-06-05 23:37:06,744 | INFO | ✅ Успешно: tokenizer.json (129 КБ), chat_model.pth (23752 КБ)
+2026-06-05 23:41:36,432 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 23:41:36,435 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-05 23:41:36,435 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-05 23:41:36,571 | WARNING | [WARN] Файл training_pairs.jsonl не создан — возможно, нет новых знаний
+2026-06-05 23:41:36,585 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 23:41:36,604 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 23:41:36,606 | ERROR | [ERR] Ошибка в tokenizer.json: Некорректный формат tokenizer.json
+2026-06-05 23:41:36,606 | INFO | [INFO] Восстанавливаем из бэкапа: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 23:41:36,620 | INFO | [AI] Запуск обучения...
+2026-06-06 00:09:17,022 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-06 00:09:17,022 | INFO | [OK] Успешно: tokenizer.json (129 КБ), chat_model.pth (23752 КБ)

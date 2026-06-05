@@ -52,15 +52,27 @@ logger = logging.getLogger("retrain")
 os.makedirs("logs", exist_ok=True)
 
 
+def safe_print(msg: str):
+    """Заменяет эмодзи на ASCII, чтобы не падать в Windows console"""
+    emojis = {
+        '🚀': '[RUN]', '✅': '[OK]', '❌': '[ERR]', '💾': '[SAVE]',
+        '📦': '[DATA]', '📚': '[LIB]', '🧠': '[AI]', '🔥': '[🔥]',
+        '🎉': '[HAPPY]', '⚠️': '[WARN]', 'ℹ️': '[INFO]', '❤️': '[HEART]'
+    }
+    for e, t in emojis.items():
+        msg = msg.replace(e, t)
+    print(msg, flush=True)
+
+
 def backup_artifacts():
     """Создаёт резервные копии токенизатора и модели"""
     if TOKENIZER_PATH.exists():
         shutil.copy(TOKENIZER_PATH, BACKUP_TOKENIZER)
-        logger.info(f"📦 Резервная копия токенизатора: {BACKUP_TOKENIZER}")
+        logger.info(f"[SAVE] Резервная копия токенизатора: {BACKUP_TOKENIZER}")
 
     if MODEL_PATH.exists():
         shutil.copy(MODEL_PATH, BACKUP_MODEL)
-        logger.info(f"📦 Резервная копия модели: {BACKUP_MODEL}")
+        logger.info(f"[SAVE] Резервная копия модели: {BACKUP_MODEL}")
 
 
 def ensure_directories():
@@ -68,31 +80,33 @@ def ensure_directories():
     DATA_DIR.mkdir(exist_ok=True)
     MODELS_DIR.mkdir(exist_ok=True)
 
+
 def enrich_with_gigachat():
     """Запускает сборку данных от GigaChat, если задан токен"""
     if not GIGACHAT_TOKEN:
-        logger.warning("⚠️ GIGACHAT_TOKEN не найден — дообучение без данных от GigaChat")
+        logger.warning("[WARN] GIGACHAT_TOKEN не найден — дообучение без данных от GigaChat")
         return
 
     try:
         generate_self_teaching_dialogs(n=5)  # ← можно настроить n
-        logger.info("✅ Диалоги с GigaChat добавлены в conversations.json")
+        logger.info("[OK] Диалоги с GigaChat добавлены в conversations.json")
     except Exception as e:
-        logger.warning(f"⚠️ GigaChat enrichment не удался: {e}")
+        logger.warning(f"[WARN] GigaChat enrichment не удался: {e}")
+
 
 def enrich_with_rpg_scenes():
     try:
         import rpg_generator
         rpg_generator.main()
-        logger.info("✅ RPG-сцены добавлены в training_pairs.jsonl")
+        logger.info("[OK] RPG-сцены добавлены в training_pairs.jsonl")
     except Exception as e:
-        logger.warning(f"⚠️ RPG enrichment не удался: {e}")
+        logger.warning(f"[WARN] RPG enrichment не удался: {e}")
 
 
 def build_training_data(args):
     """Запускает сборку данных через build_training_data.py"""
     if not os.path.exists(BUILD_SCRIPT):
-        logger.error(f"❌ Не найден скрипт: {BUILD_SCRIPT}")
+        logger.error(f"[ERR] Не найден скрипт: {BUILD_SCRIPT}")
         return False
 
     cmd = [sys.executable, BUILD_SCRIPT]
@@ -103,22 +117,22 @@ def build_training_data(args):
     if args.dry_run:
         cmd.append("--dry-run")
 
-    logger.info(f"🔧 Сборка данных: {' '.format(cmd)}")
+    logger.info(f"[DATA] Сборка данных: {' '.join(cmd)}")  # ← исправлено .join()
     if args.dry_run:
-        logger.info("🧪 Режим Dry Run: сборка данных пропущена")
+        logger.info("[TEST] Режим Dry Run: сборка данных пропущена")
         return True
 
     result = subprocess.run(cmd, capture_output=False)
     if result.returncode != 0:
-        logger.error("❌ Сбор данных не удался.")
+        logger.error("[ERR] Сбор данных не удался.")
         return False
 
     line_count = 0
     if TRAINING_PAIRS_PATH.exists():
         line_count = sum(1 for _ in open(TRAINING_PAIRS_PATH, 'r', encoding='utf-8'))
-        logger.info(f"✅ Данные собраны: {TRAINING_PAIRS_PATH} ({line_count} строк)")
+        logger.info(f"[OK] Данные собраны: {TRAINING_PAIRS_PATH} ({line_count} строк)")
     else:
-        logger.warning("🟡 Файл training_pairs.jsonl не создан — возможно, нет новых знаний")
+        logger.warning("[WARN] Файл training_pairs.jsonl не создан — возможно, нет новых знаний")
 
     return True
 
@@ -142,13 +156,13 @@ def create_dummy_tokenizer():
     }
     with open(TOKENIZER_PATH, "w", encoding="utf-8") as f:
         json.dump(dummy, f, ensure_ascii=False, indent=2)
-    logger.warning(f"⚠️ Создан фиктивный токенизатор: {TOKENIZER_PATH}")
+    logger.warning(f"[WARN] Создан фиктивный токенизатор: {TOKENIZER_PATH}")
 
 
 def validate_or_create_tokenizer():
     """Проверяет или создаёт tokenizer.json"""
     if not TOKENIZER_PATH.exists():
-        logger.warning(f"⚠️ Токенизатор не найден: {TOKENIZER_PATH}. Создаём заглушку...")
+        logger.warning(f"[WARN] Токенизатор не найден: {TOKENIZER_PATH}. Создаём заглушку...")
         create_dummy_tokenizer()
         return TOKENIZER_PATH.exists()
     try:
@@ -157,15 +171,15 @@ def validate_or_create_tokenizer():
         required = ["vocab", "inverse_vocab", "pad_token", "eos_token"]
         if not all(k in data for k in required):
             raise ValueError("Некорректный формат tokenizer.json")
-        logger.info(f"✅ Токенизатор загружен: {len(data['vocab'])} токенов")
+        logger.info(f"[OK] Токенизатор загружен: {len(data['vocab'])} токенов")
     except Exception as e:
-        logger.error(f"❌ Ошибка в tokenizer.json: {e}")
+        logger.error(f"[ERR] Ошибка в tokenizer.json: {e}")
         if BACKUP_TOKENIZER.exists():
-            logger.info(f"🔄 Восстанавливаем из бэкапа: {BACKUP_TOKENIZER}")
+            logger.info(f"[INFO] Восстанавливаем из бэкапа: {BACKUP_TOKENIZER}")
             shutil.copy(BACKUP_TOKENIZER, TOKENIZER_PATH)
             return True
         else:
-            logger.warning("🔄 Создаём новый dummy tokenizer...")
+            logger.warning("[INFO] Создаём новый dummy tokenizer...")
             create_dummy_tokenizer()
             return TOKENIZER_PATH.exists()
     return True
@@ -173,7 +187,7 @@ def validate_or_create_tokenizer():
 
 def run_training():
     """Запускает обучение через train.py"""
-    logger.info("🧠 Запуск обучения...")
+    logger.info("[AI] Запуск обучения...")
 
     try:
         # Импортируем train.py как модуль
@@ -181,16 +195,16 @@ def run_training():
         if hasattr(train, 'main'):
             train.main()
         else:
-            logger.error("❌ В train.py нет функции main()")
+            logger.error("[ERR] В train.py нет функции main()")
             return False
-        logger.info("🎉 Обучение завершено успешно!")
+        logger.info("[HAPPY] Обучение завершено успешно!")
         return True
     except ImportError as e:
-        logger.error(f"❌ Не удалось импортировать train.py: {e}")
-        logger.info("💡 Убедитесь, что train.py находится в корне проекта")
+        logger.error(f"[ERR] Не удалось импортировать train.py: {e}")
+        logger.info("[INFO] Убедитесь, что train.py находится в корне проекта")
         return False
     except Exception as e:
-        logger.error(f"❌ Ошибка при обучении: {e}", exc_info=True)
+        logger.error(f"[ERR] Ошибка при обучении: {e}", exc_info=True)
         return False
 
 
@@ -199,11 +213,11 @@ def restore_backup():
     restored = False
     if BACKUP_TOKENIZER.exists() and not TOKENIZER_PATH.exists():
         shutil.copy(BACKUP_TOKENIZER, TOKENIZER_PATH)
-        logger.info(f"🔄 Восстановлен токенизатор из бэкапа: {TOKENIZER_PATH}")
+        logger.info(f"[INFO] Восстановлен токенизатор из бэкапа: {TOKENIZER_PATH}")
         restored = True
     if BACKUP_MODEL.exists() and not MODEL_PATH.exists():
         shutil.copy(BACKUP_MODEL, MODEL_PATH)
-        logger.info(f"🔄 Восстановлена модель из бэкапа: {MODEL_PATH}")
+        logger.info(f"[INFO] Восстановлена модель из бэкапа: {MODEL_PATH}")
         restored = True
     return restored
 
@@ -236,52 +250,52 @@ def main():
     # === Этап 1: Сборка данных ===
     success = build_training_data(args)
     if not success:
-        logger.error("❌ Сбор данных не удался.")
+        logger.error("[ERR] Сбор данных не удался.")
         if not validate_or_create_tokenizer():
             restore_backup()
         if not (TOKENIZER_PATH.exists() and MODEL_PATH.exists()):
-            logger.critical("💀 Критическая ошибка: не удалось восстановить артефакты")
+            logger.critical("[ERR] Критическая ошибка: не удалось восстановить артефакты")
             sys.exit(1)
-        logger.info("✅ Используем существующие артефакты.")
+        logger.info("[OK] Используем существующие артефакты.")
         return
 
     if args.dry_run:
-        logger.info("🧪 Режим Dry Run: обучение пропущено")
-        logger.info("🎉 Готово (симуляция): данные собраны, модель НЕ обучалась.")
+        logger.info("[TEST] Режим Dry Run: обучение пропущено")
+        logger.info("[HAPPY] Готово (симуляция): данные собраны, модель НЕ обучалась.")
         return
 
     # === Этап 2: Проверка данных и обучение ===
     if not has_new_data():
-        logger.info("ℹ️ Нет новых данных для обучения.")
+        logger.info("[INFO] Нет новых данных для обучения.")
         if not validate_or_create_tokenizer():
             restore_backup()
-        logger.info("✅ Используем существующие артефакты. Выход.")
+        logger.info("[OK] Используем существующие артефакты. Выход.")
         return
 
     backup_artifacts()
 
     # Проверяем/создаём токенизатор
     if not validate_or_create_tokenizer():
-        logger.error("❌ Не удалось создать или восстановить токенизатор.")
+        logger.error("[ERR] Не удалось создать или восстановить токенизатор.")
         sys.exit(1)
 
     # Запускаем обучение
     success = run_training()
     if not success:
-        logger.error("❌ Обучение не удалось. Пытаемся восстановить...")
+        logger.error("[ERR] Обучение не удалось. Пытаемся восстановить...")
         if restore_backup():
-            logger.info("✅ Артефакты восстановлены из бэкапа.")
+            logger.info("[OK] Артефакты восстановлены из бэкапа.")
         else:
-            logger.critical("💀 Не удалось восстановить модель!")
+            logger.critical("[ERR] Не удалось восстановить модель!")
         sys.exit(1)
 
     # Финальная проверка
     if TOKENIZER_PATH.exists() and MODEL_PATH.exists():
         t_size = TOKENIZER_PATH.stat().st_size // 1024
         m_size = MODEL_PATH.stat().st_size // 1024
-        logger.info(f"✅ Успешно: tokenizer.json ({t_size} КБ), chat_model.pth ({m_size} КБ)")
+        logger.info(f"[OK] Успешно: tokenizer.json ({t_size} КБ), chat_model.pth ({m_size} КБ)")
     else:
-        logger.critical("❌ Фатально: один из артефактов отсутствует!")
+        logger.critical("[ERR] Фатально: один из артефактов отсутствует!")
         sys.exit(1)
 
 
