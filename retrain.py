@@ -11,6 +11,8 @@ import shutil
 import json
 import logging
 from pathlib import Path
+from bot_learns_from_gigachat import generate_self_teaching_dialogs
+GIGACHAT_TOKEN = os.getenv("GIGACHAT_TOKEN")
 
 # === Настройки ===
 BUILD_SCRIPT = "build_training_data.py"
@@ -66,6 +68,26 @@ def ensure_directories():
     DATA_DIR.mkdir(exist_ok=True)
     MODELS_DIR.mkdir(exist_ok=True)
 
+def enrich_with_gigachat():
+    """Запускает сборку данных от GigaChat, если задан токен"""
+    if not GIGACHAT_TOKEN:
+        logger.warning("⚠️ GIGACHAT_TOKEN не найден — дообучение без данных от GigaChat")
+        return
+
+    try:
+        generate_self_teaching_dialogs(n=5)  # ← можно настроить n
+        logger.info("✅ Диалоги с GigaChat добавлены в conversations.json")
+    except Exception as e:
+        logger.warning(f"⚠️ GigaChat enrichment не удался: {e}")
+
+def enrich_with_rpg_scenes():
+    try:
+        import rpg_generator
+        rpg_generator.main()
+        logger.info("✅ RPG-сцены добавлены в training_pairs.jsonl")
+    except Exception as e:
+        logger.warning(f"⚠️ RPG enrichment не удался: {e}")
+
 
 def build_training_data(args):
     """Запускает сборку данных через build_training_data.py"""
@@ -81,7 +103,7 @@ def build_training_data(args):
     if args.dry_run:
         cmd.append("--dry-run")
 
-    logger.info(f"🔧 Сборка данных: {' '.join(cmd)}")
+    logger.info(f"🔧 Сборка данных: {' '.format(cmd)}")
     if args.dry_run:
         logger.info("🧪 Режим Dry Run: сборка данных пропущена")
         return True
@@ -128,7 +150,7 @@ def validate_or_create_tokenizer():
     if not TOKENIZER_PATH.exists():
         logger.warning(f"⚠️ Токенизатор не найден: {TOKENIZER_PATH}. Создаём заглушку...")
         create_dummy_tokenizer()
-        return False
+        return TOKENIZER_PATH.exists()
     try:
         with open(TOKENIZER_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -141,9 +163,11 @@ def validate_or_create_tokenizer():
         if BACKUP_TOKENIZER.exists():
             logger.info(f"🔄 Восстанавливаем из бэкапа: {BACKUP_TOKENIZER}")
             shutil.copy(BACKUP_TOKENIZER, TOKENIZER_PATH)
+            return True
         else:
+            logger.warning("🔄 Создаём новый dummy tokenizer...")
             create_dummy_tokenizer()
-        return False
+            return TOKENIZER_PATH.exists()
     return True
 
 
@@ -206,6 +230,8 @@ def main():
     args = parser.parse_args()
 
     ensure_directories()
+    enrich_with_gigachat()
+    enrich_with_rpg_scenes()
 
     # === Этап 1: Сборка данных ===
     success = build_training_data(args)

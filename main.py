@@ -1,4 +1,4 @@
-# main.py — ChatBot API (в честь дня рождения 🎂)
+# main.py — ChatBot API
 
 from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
 from fastapi.responses import JSONResponse
@@ -23,8 +23,7 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        # Раскомментируй для записи в файл:
-        # logging.FileHandler("logs/app.log")
+        # logging.FileHandler("logs/app.log")  # ← раскомментируйте для логов в файл
     ]
 )
 logger = logging.getLogger("main")
@@ -44,7 +43,6 @@ WUGLARST_DIR = BASE_DIR / "Wuglarst"
 WUGLARST_SRC_DIR = WUGLARST_DIR / "src"
 
 if WUGLARST_SRC_DIR.exists():
-    # Добавляем родительскую папку Wuglarst/, а не Wuglarst/src/
     if str(WUGLARST_DIR) not in sys.path:
         sys.path.insert(0, str(WUGLARST_DIR))
         logger.info(f"✅ Путь added: {WUGLARST_DIR} (родитель для Wuglarst/src/)")
@@ -63,6 +61,14 @@ try:
     logger.info("✅ Файл .env загружен")
 except ImportError:
     logger.warning("⚠️ python-dotenv не установлен. Пропускаем .env")
+
+# === GIGACHAT_TOKEN для потенциального self-teaching ===
+GIGACHAT_TOKEN = os.getenv("GIGACHAT_TOKEN")
+if GIGACHAT_TOKEN:
+    logger.info("✅ GIGACHAT_TOKEN найден — можно настроить self-teaching")
+else:
+    logger.warning("⚠️ GIGACHAT_TOKEN не задан — дообучение без данных от GigaChat")
+# === КОНЕЦ GIGACHAT_TOKEN ===
 
 # === Глобальная переменная бота и блокировка ===
 chatbot = None
@@ -112,16 +118,20 @@ async def lifespan(app: FastAPI):
     # Все файлы на месте
     logger.info("📁 Все необходимые файлы найдены")
 
-    # Проверяем, обновлялся ли conversations.json после последнего обучения
+    # === Асинхронный запуск дообучения при старте (не блокирует запуск) ===
+    async def launch_retrain_async():
+        await asyncio.to_thread(run_retrain_sync)
+
     if CONVERSATIONS_JSON.exists():
         try:
             model_mtime = MODEL_PATH.stat().st_mtime
             data_mtime = CONVERSATIONS_JSON.stat().st_mtime
             if data_mtime > model_mtime:
-                logger.warning("🎂 Новые данные в conversations.json — запускаю дообучение...")
-                run_retrain_sync()
+                logger.warning("🎂 Новые данные в conversations.json — запускаю дообучение в фоне...")
+                asyncio.create_task(launch_retrain_async())  # ← ✅ не блокирует
         except Exception as e:
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
+    # === КОНЕЦ АСИНХРОННОГО ЗАПУСКА ===
 
     # Загружаем модель
     try:
@@ -173,7 +183,7 @@ def home():
     return {
         "message": "🎉 С Днём Рождения! ChatBot API работает!",
         "version": app.version,
-        "endpoints": ["/predict", "/retrain", "/ws", "/health"],
+        "endpoints": ["/predict", "/retrain", "/enrich", "/ws", "/health"],
         "docs": "/docs"
     }
 
@@ -373,6 +383,26 @@ async def trigger_retrain(request: Request, background_tasks: BackgroundTasks):
     logger.info("🔧 Запрос на дообучение получен — ставим в фон")
     background_tasks.add_task(run_retrain_sync)
     return {"status": "retrain_started", "detail": "Обучение запущено в фоне!"}
+
+
+# === Эндпоинт: /enrich — сборка данных от GigaChat ===
+@app.post("/enrich")
+async def enrich_gigachat(request: Request):
+    if not GIGACHAT_TOKEN:
+        raise HTTPException(status_code=503, detail="GIGACHAT_TOKEN не задан")
+
+    token = request.headers.get("X-Retrain-Token")
+    if token != RETRAIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Неверный токен")
+
+    try:
+        from bot_learns_from_gigachat import generate_self_teaching_dialogs
+        logger.info("🤖 Запускаю self-teaching от GigaChat...")
+        generate_self_teaching_dialogs(n=3)
+        return {"status": "enriched", "detail": "Диалоги добавлены в conversations.json"}
+    except Exception as e:
+        logger.error(f"❌ Ошибка enrichment: {e}")
+        raise HTTPException(status_code=500, detail=f"Ошибка enrichment: {e}")
 
 
 # === WebSocket (временно отключен, не включать) ===

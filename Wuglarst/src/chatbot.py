@@ -1,4 +1,4 @@
-# Wuglarst/src/chatbot.py
+# Wuglarst/src/chatbot.py (обновлённая, production-ready версия)
 
 import torch
 import json
@@ -15,6 +15,11 @@ import sys
 import subprocess
 import threading
 
+# === Настройки RPG ===
+RPG_MAX_LENGTH = 256
+RPG_TEMPERATURE = 0.85
+RPG_TOP_P = 0.92
+
 # Импортируем KnowledgeManager
 try:
     from knowledge_manager import KnowledgeManager
@@ -26,7 +31,7 @@ except ImportError:
 
 class SimpleTokenizer:
     """Токенизатор, совместимый с tokenizer.json"""
-    def __init__(self, tokenizer_path: str):
+    def __init__(self, tokenizer_path: str, max_length: int = RPG_MAX_LENGTH):
         with open(tokenizer_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.vocab = data["vocab"]
@@ -34,14 +39,17 @@ class SimpleTokenizer:
         self.pad_token_id = self.vocab["<PAD>"]
         self.eos_token_id = self.vocab["<EOS>"]
         self.unk_token_id = self.vocab["<UNK>"]
+        self.max_length = max_length  # теперь глобально 256
 
-    def encode(self, text: str, add_eos: bool = False, max_length: int = 64) -> List[int]:
+    def encode(self, text: str, add_eos: bool = False, max_length: int = None) -> List[int]:
+        if max_length is None:
+            max_length = self.max_length
         words = text.lower().split()
         ids = [self.vocab.get(word, self.unk_token_id) for word in words]
         if add_eos:
             ids.append(self.eos_token_id)
         if len(ids) >= max_length:
-            ids = ids[:max_length-1] + [ids[-1]]  # сохраняем последний токен
+            ids = ids[:max_length - 1] + [ids[-1]]  # сохраняем последний токен
         else:
             ids += [self.pad_token_id] * (max_length - len(ids))
         return ids
@@ -59,11 +67,6 @@ class SimpleTokenizer:
 
 class ChatBot:
     def __init__(self, model_path: str, data_path: str, device=None):
-        """
-        :param model_path: путь к модели (model.pth)
-        :param data_path: путь к tokenizer.json
-        :param device: 'cuda' или 'cpu'
-        """
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.tokenizer_path = data_path
         self.model_path = model_path
@@ -71,7 +74,7 @@ class ChatBot:
         # Загружаем токенизатор
         self.tokenizer = SimpleTokenizer(self.tokenizer_path)
         self.vocab_size = len(self.tokenizer.vocab)
-        self.max_length = 64  # Должно совпадать с обучением
+        self.max_length = RPG_MAX_LENGTH  # теперь 256
 
         # Загружаем модель
         self.model = ChatNN(
@@ -114,7 +117,6 @@ class ChatBot:
         os.makedirs(os.path.dirname(self.conversation_log), exist_ok=True)
 
     def _load_knowledge_cache(self):
-        """Загружает кэш знаний"""
         if os.path.exists(self.knowledge_file):
             try:
                 with open(self.knowledge_file, "r", encoding="utf-8") as f:
@@ -127,13 +129,11 @@ class ChatBot:
             print("ℹ️ Кэш знаний не найден.")
 
     def _save_knowledge_cache(self, word: str, response: str):
-        """Сохраняет знание в кэш"""
         self.knowledge_cache[word] = response
         with open(self.knowledge_file, "w", encoding="utf-8") as f:
             json.dump(self.knowledge_cache, f, ensure_ascii=False, indent=2)
 
     def _clean_text(self, text: str) -> str:
-        """Очистка текста"""
         if not isinstance(text, str) or not text.strip():
             return ""
         text = text.lower()
@@ -141,27 +141,26 @@ class ChatBot:
         text = re.sub(r'\s+', ' ', text).strip()
         replacements = {
             "яне": "я не", "тыне": "ты не", "онне": "он не", "она нее": "она не",
+            "мыне": "мы не", "выне": "вы не", "онине": "они не",
             "незнаю": "не знаю", "хз": "не знаю", "ок": "окей", "спс": "спасибо",
             "прив": "привет", "пока": "пока", "здарова": "здравствуй"
         }
-        for k, v in replacements.items():
-            text = text.replace(k, v)
+        for wrong, right in replacements.items():
+            text = text.replace(wrong, right)
         return text
 
     def _generate_response_with_sampling(
         self,
         input_text: str,
-        max_length: int = 32,
-        temperature: float = 0.8,
-        top_p: float = 0.9
+        max_length: int = RPG_MAX_LENGTH,
+        temperature: float = RPG_TEMPERATURE,
+        top_p: float = RPG_TOP_P
     ) -> str:
         """Генерация ответа с nucleus sampling"""
         self.model.eval()
         tokens = self._clean_text(input_text).split()
         input_ids = self.tokenizer.encode(" ".join(tokens), add_eos=False)
         input_tensor = torch.tensor([input_ids], dtype=torch.long).to(self.device)
-
-        # Создаём маску
         mask = (input_tensor != self.tokenizer.pad_token_id).float().to(self.device)
 
         generated_ids = []
@@ -173,7 +172,6 @@ class ChatBot:
                 logits = self.model(current_input, mask=current_mask)[:, -1, :]
                 logits = logits / temperature
 
-                # Top-p (nucleus sampling)
                 sorted_logits, sorted_indices = torch.sort(logits, descending=True)
                 cumulative_probs = torch.softmax(sorted_logits, dim=-1).cumsum(dim=-1)
                 sorted_indices_to_remove = cumulative_probs > top_p
@@ -187,10 +185,9 @@ class ChatBot:
 
                 if next_token == self.tokenizer.eos_token_id:
                     break
-                if next_token != self.tokenizer.pad_token_id and next_token != self.tokenizer.unk_token_id:
+                if next_token not in [self.tokenizer.pad_token_id, self.tokenizer.unk_token_id]:
                     generated_ids.append(next_token)
 
-                # Обновляем вход
                 new_token = torch.tensor([[next_token]], device=self.device)
                 current_input = torch.cat([current_input, new_token], dim=1)
                 current_input = current_input[:, -self.max_length:]
@@ -202,11 +199,6 @@ class ChatBot:
         return self.tokenizer.decode(generated_ids).strip()
 
     def generate_response(self, messages: List[Dict[str, str]], mode: str = "chat") -> str:
-        """
-        Генерация ответа.
-        :param messages: [{"message": "...", "is_own": True/False}]
-        :param mode: "chat", "world_gen", "narrative"
-        """
         context = []
         last_user_msg = ""
 
@@ -226,13 +218,13 @@ class ChatBot:
 
         # === Режим narrative ===
         if mode == "narrative":
-            context_str = "\n".join(context)
+            context_str = "\n".join(context[-5:])
             prompt = (
                 "Ты — мастер вселенных. Создаёшь глубокие, логичные и атмосферные миры.\n"
-                "Формат:\nНазвание:\n - ...\nЗаконы общества:\n - ...\n...\n\n"
+                "Формат:\nНазвание:\n - ...\nЗаконы общества:\n - ...\nТрадиции:\n - ...\n\n"
                 f"История диалога:\n{context_str}\nБот:"
             )
-            response = self._generate_response_with_sampling(prompt, max_length=64)
+            response = self._generate_response_with_sampling(prompt, max_length=128)
             required = ["Название:", "Законы общества:", "Традиции:"]
             if not all(kw in response for kw in required):
                 response = (
@@ -254,12 +246,11 @@ class ChatBot:
             if tags:
                 prompt += f", {tags}"
 
-            response = self._generate_response_with_sampling(prompt, max_length=64)
+            response = self._generate_response_with_sampling(prompt, max_length=128)
             return json.dumps({"world": response}, ensure_ascii=False)
 
         # === Режим chat ===
         elif mode == "chat":
-            # Проверка неизвестных слов
             tokens = self._clean_text(last_user_msg).split()
             unknown_words = [t for t in tokens if t not in self.tokenizer.vocab]
             if unknown_words:
@@ -277,10 +268,7 @@ class ChatBot:
                 except Exception as e:
                     print(f"❌ Ошибка поиска: {e}")
 
-            # Генерация основного ответа
             base_response = self._generate_response_with_sampling(last_user_msg)
-
-            # Fallback
             if not base_response or len(base_response.split()) < 2:
                 base_response = random.choice([
                     "Привет! Я здесь.",
@@ -289,21 +277,101 @@ class ChatBot:
                     "А ты как думаешь?"
                 ])
 
-            # Культурная отсылка
             final_response = base_response
             if random.random() < 0.25:
                 phrase = get_cultural_phrase()
                 style = random.choice(['prefix', 'suffix'])
-                if style == 'prefix':
-                    final_response = f"{phrase} {base_response}"
-                else:
-                    final_response = f"{base_response} ({phrase})"
+                final_response = f"{phrase} {base_response}" if style == 'prefix' else f"{base_response} ({phrase})"
 
             self.log_interaction(last_user_msg, final_response)
             return json.dumps({"response": final_response}, ensure_ascii=False)
 
+        # === Режим continue ===
+        elif mode == "continue":
+            # Собираем контекст
+            context_str = "\n".join(context[-6:])
+            prompt = (
+                "Продолжи диалог как бот. Сохраняй стиль, характер, логику и атмосферу. "
+                "Не переспрашивай, не задавай вопросов — просто продолжай.\n"
+                "Твой ответ должен быть логичным продолжением предыдущего сообщения.\n"
+                f"Контекст:\n{context_str}\nБот:"
+            )
+            response = self._generate_response_with_sampling(prompt, max_length=128)
+
+            # Удаляем повторяющиеся слова в начале
+            words = response.split()
+            if len(words) >= 2 and words[0] == words[1]:
+                response = " ".join(words[1:])
+
+            if not response or len(response.split()) < 3:
+                response = (
+                    random.choice([
+                        "Это важно...",
+                        "Ты прав...",
+                        "Может быть...",
+                        "Интересно..."
+                    ]) + " " + response.strip()
+                )
+
+            self.log_interaction(last_user_msg, response)
+            return json.dumps({"response": response}, ensure_ascii=False)
+
+        # === Режим rpg ===
+        elif mode == "rpg":
+            context_lines = []
+            state = {
+                "hp": 100,
+                "items": [],
+                "location": "неизвестно"
+            }
+
+            for msg in messages:
+                if not msg["message"].strip():
+                    continue
+                current = msg["message"]
+                if msg["is_own"]:
+                    last_user_msg = current
+                    # Извлекаем параметры
+                    hp_match = re.search(r'HP[:\s]*(\d+)', current)
+                    if hp_match:
+                        state["hp"] = int(hp_match.group(1))
+                    inv_match = re.search(r'Инвентарь[:\s]*(.+)', current)
+                    if inv_match:
+                        state["items"] = [x.strip() for x in inv_match.group(1).split(",")]
+                    loc_match = re.search(r'Место[:\s]*(.+)', current)
+                    if loc_match:
+                        state["location"] = loc_match.group(1)
+                else:
+                    context_lines.append(f"Бот: {msg['message']}")
+
+            prompt_parts = [
+                "Ты — мастер текстового RPG. Стиль: детальный, напряжённый, атмосферный.",
+                "Формат ответа: описание действий, реакция NPC, выбор.",
+                f"Место: {state['location']}",
+                f"Здоровье: {state['hp']} / 100",
+                f"Инвентарь: {', '.join(state['items']) if state['items'] else 'пусто'}",
+                "",
+                "Контекст:",
+                "\n".join(context_lines[-3:]) if context_lines else "Нет контекста.",
+                "",
+                f"Игрок: {last_user_msg}",
+                "Бот:"
+            ]
+
+            rpg_prompt = "\n".join(prompt_parts)
+            response = self._generate_response_with_sampling(rpg_prompt)
+
+            # Удаляем лишние префиксы
+            response = re.sub(r"^\s*(Бот|Игрок):", "", response, flags=re.IGNORECASE).strip()
+
+            # Если ответ слишком короткий — добавляем атмосферу
+            if len(response.split()) < 15:
+                response += " (Ты чувствуешь лёгкий холод на затылке — кто-то наблюдает.)"
+
+            self.log_interaction(last_user_msg, response)
+            return json.dumps({"response": response}, ensure_ascii=False)
+
     def _trigger_knowledge_learning(self, word: str, definition: str):
-        """Запускает обучение при накоплении знаний"""
         if self.use_knowledge_manager:
             try:
                 self.knowledge_manager.add_word_knowledge(word, definition, source="web_search")
@@ -315,7 +383,6 @@ class ChatBot:
                 print(f"❌ Ошибка обучения: {e}")
 
     def _run_retrain(self):
-        """Фоновое дообучение"""
         try:
             result = subprocess.run(
                 [sys.executable, "retrain.py"],
@@ -350,7 +417,12 @@ class ChatBot:
                 break
             if not user_input:
                 continue
+
             history.append({"message": user_input, "is_own": True})
-            response = self.generate_response(history)
+
+            # Автоматический режим продолжения для коротких/однословных вводов
+            mode = "continue" if (len(user_input.split()) <= 2 and len(user_input) <= 15) else "chat"
+            response = self.generate_response(history, mode=mode)
+
             print(f"ChatBot: {json.loads(response)['response']}")
             history.append({"message": json.loads(response)['response'], "is_own": False})

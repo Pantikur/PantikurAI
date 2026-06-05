@@ -15,11 +15,11 @@ CONVERSATIONS_JSON = os.path.join(DATA_DIR, "conversations.json")
 TRAINING_PAIRS_JSONL = os.path.join(DATA_DIR, "training_pairs.jsonl")
 MODEL_PATH = "models/chat_model.pth"
 
-MAX_LENGTH = 64
+MAX_LENGTH = 256
 BATCH_SIZE = 16
 EPOCHS = 20
 EMBEDDING_DIM = 128
-HIDDEN_DIM = 256
+HIDDEN_DIM = 512
 NUM_LAYERS = 2
 LEARNING_RATE = 0.001
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
