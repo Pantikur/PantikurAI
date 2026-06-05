@@ -1,7 +1,7 @@
 # === БАЗОВЫЙ ОБРАЗ ===
 FROM python:3.11-slim
 
-# === СИСТЕМНЫЕ ЗАВИСИМОСТИ ===
+# === СИСТЕМНЫЕ ЗАВИСИМОСТИ (включая curl!) ===
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         gcc \
@@ -24,25 +24,24 @@ RUN pip install --no-cache-dir \
     echo '✅ Зависимости установлены'
 
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
-COPY main.py ./main.py
+COPY main.py ./
 COPY Wuglarst/ ./Wuglarst/
-
-# === КОПИРУЕМ ДАННЫЕ И МОДЕЛИ ===
 COPY data/ ./data/
 COPY models/ ./models/
 
 # === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000
 ENV PYTHONUNBUFFERED=1
+ENV HOST=0.0.0.0
 
-# === ПРЕДВАРИТЕЛЬНАЯ ПРОВЕРКА ИМПОРТА ===
+# === ПЕРЕД ЗАПУСКОМ: проверяем, что main:app импортируется ===
 RUN python -c "from main import app; print('✅ Приложение импортировано')" || (echo "❌ Ошибка импорта" && exit 1)
 
 # === ОТКРЫВАЕМ ПОРТ ===
 EXPOSE ${PORT}
 
-# === HEALTHCHECK ===
-HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=3 \
+# === HEALTHCHECK (с улучшенными настройками) ===
+HEALTHCHECK --interval=15s --timeout=10s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
 # === 🟢 КОМАНДА ЗАПУСКА ===

@@ -1,0 +1,59 @@
+2026-06-05 18:24:11,005 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 18:24:11,005 | INFO | 🔧 Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml --verbose
+2026-06-05 18:24:11,336 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 18:24:11,348 | INFO | 📦 Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 18:24:11,365 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 18:24:11,370 | ERROR | ❌ Ошибка в tokenizer.json: Некорректный формат tokenizer.json
+2026-06-05 18:24:11,370 | INFO | 🔄 Восстанавливаем из бэкапа: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 18:24:11,382 | ERROR | ❌ Не удалось создать или восстановить токенизатор.
+2026-06-05 18:38:11,585 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 18:38:11,585 | INFO | 🔧 Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml --verbose
+2026-06-05 18:38:11,718 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 18:38:11,725 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 18:38:11,725 | WARNING | ⚠️ Токенизатор не найден: D:\NewCod\Pantikur\data\tokenizer.json. Создаём заглушку...
+2026-06-05 18:38:11,725 | WARNING | ⚠️ Создан фиктивный токенизатор: D:\NewCod\Pantikur\data\tokenizer.json
+2026-06-05 18:38:11,725 | ERROR | ❌ Не удалось создать или восстановить токенизатор.
+2026-06-05 18:47:12,961 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 18:47:12,961 | INFO | 🔧 Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml --verbose
+2026-06-05 18:47:13,087 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 18:47:13,093 | INFO | 📦 Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 18:47:13,099 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 18:47:13,100 | INFO | ✅ Токенизатор загружен: 3 токенов
+2026-06-05 18:47:13,100 | INFO | 🧠 Запуск обучения...
+2026-06-05 18:50:04,825 | INFO | 🎉 Обучение завершено успешно!
+2026-06-05 18:50:04,825 | INFO | ✅ Успешно: tokenizer.json (0 КБ), chat_model.pth (11324 КБ)
+2026-06-05 18:53:54,881 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 18:53:54,882 | INFO | 🔧 Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml --verbose
+2026-06-05 18:53:55,006 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 18:53:55,021 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 18:53:55,021 | WARNING | ⚠️ Токенизатор не найден: D:\NewCod\Pantikur\data\tokenizer.json. Создаём заглушку...
+2026-06-05 18:53:55,021 | WARNING | ⚠️ Создан фиктивный токенизатор: D:\NewCod\Pantikur\data\tokenizer.json
+2026-06-05 18:53:55,021 | ERROR | ❌ Не удалось создать или восстановить токенизатор.
+2026-06-05 18:59:28,285 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 18:59:28,285 | INFO | 🔧 Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml --verbose
+2026-06-05 18:59:28,416 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 18:59:28,418 | INFO | 📦 Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 18:59:28,425 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 18:59:28,425 | INFO | ✅ Токенизатор загружен: 3 токенов
+2026-06-05 18:59:28,425 | INFO | 🧠 Запуск обучения...
+2026-06-05 19:02:30,375 | INFO | 🎉 Обучение завершено успешно!
+2026-06-05 19:02:30,375 | INFO | ✅ Успешно: tokenizer.json (0 КБ), chat_model.pth (11324 КБ)
+2026-06-05 19:05:47,253 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 19:05:47,253 | INFO | 🔧 Сборка данных:  
+2026-06-05 19:05:47,380 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 19:05:47,381 | INFO | 📦 Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 19:05:47,395 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 19:05:47,395 | INFO | ✅ Токенизатор загружен: 3 токенов
+2026-06-05 19:05:47,395 | INFO | 🧠 Запуск обучения...
+2026-06-05 19:08:49,387 | INFO | 🎉 Обучение завершено успешно!
+2026-06-05 19:08:49,387 | INFO | ✅ Успешно: tokenizer.json (0 КБ), chat_model.pth (11324 КБ)
+2026-06-05 19:22:54,080 | INFO | ✅ Диалоги с GigaChat добавлены в conversations.json
+2026-06-05 19:22:54,083 | INFO | ✅ RPG-сцены добавлены в training_pairs.jsonl
+2026-06-05 19:22:54,084 | INFO | 🔧 Сборка данных:  
+2026-06-05 19:22:54,214 | INFO | ✅ Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-05 19:22:54,215 | INFO | 📦 Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-05 19:22:54,230 | INFO | 📦 Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-05 19:22:54,230 | INFO | ✅ Токенизатор загружен: 3 токенов
+2026-06-05 19:22:54,230 | INFO | 🧠 Запуск обучения...
+2026-06-05 19:46:49,732 | INFO | 🎉 Обучение завершено успешно!
+2026-06-05 19:46:49,734 | INFO | ✅ Успешно: tokenizer.json (0 КБ), chat_model.pth (23752 КБ)

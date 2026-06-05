@@ -16,6 +16,7 @@ import json
 import re  # Для парсинга жанра и тегов
 from contextlib import asynccontextmanager
 from pathlib import Path
+from datetime import datetime
 
 # === Настройка логирования ===
 logging.basicConfig(
@@ -164,6 +165,8 @@ app = FastAPI(
 
 # === Health Check с деталями ===
 @app.get("/health")
+async def health_check():
+    return {"status": "ok", "timestamp": datetime.now().isoformat()}
 def health():
     return {
         "status": "ok",
