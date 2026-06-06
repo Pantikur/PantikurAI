@@ -78,9 +78,9 @@ class ChatBot:
 
         # Загружаем модель
         self.model = ChatNN(
-            vocab_size=self.vocab_size,
+            vocab_size=6049,
             embedding_dim=128,
-            hidden_dim=256,
+            hidden_dim=512,
             num_layers=2,
             max_length=self.max_length,
             pad_token_id=self.tokenizer.pad_token_id,
