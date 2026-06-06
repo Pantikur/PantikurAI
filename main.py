@@ -35,8 +35,8 @@ if not os.path.exists("logs"):
 
 # === Пути ===
 BASE_DIR = Path(__file__).resolve().parent
-DATA_PATH = BASE_DIR / "data" / "tokenizer.json"  # ← Новый токенизатор
-MODEL_PATH = BASE_DIR / "models" / "model.pth"    # ← Новая модель
+MODEL_PATH = BASE_DIR / "models" / "chat_model.pth"
+DATA_PATH = BASE_DIR / "data" / "tokenizer.json"
 CONVERSATIONS_JSON = BASE_DIR / "data" / "conversations.json"
 
 # === Добавляем Wuglarst/src в путь (точно для импорта src.chatbot) ===

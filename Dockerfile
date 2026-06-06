@@ -27,7 +27,15 @@ RUN pip install --no-cache-dir \
 COPY main.py ./
 COPY Wuglarst/ ./Wuglarst/
 COPY data/ ./data/
-COPY models/ ./models/
+COPY models/ ./models/  
+
+# === ВАЛИДАЦИЯ (оставляем как есть) ===
+RUN ls -la /app/models/ && \
+    if [ ! -f /app/models/chat_model.pth ]; then \
+        echo "❌ Ошибка: файл chat_model.pth отсутствует!"; \
+        exit 1; \
+    fi && \
+    echo "✅ Модель найдена: /app/models/chat_model.pth"
 
 # === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000

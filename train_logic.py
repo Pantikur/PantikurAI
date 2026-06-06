@@ -482,8 +482,8 @@ def run_training():
             json.dump(tokenizer_data, f, ensure_ascii=False, indent=2)
         print("✅ Экспортирован: data/tokenizer.json")
 
-        # === Убедимся, что model.pth существует ===
-        model_path = "models/model.pth"
+        # === Убедимся, что chat_model.pth существует ===
+        model_path = MODEL_PATH
         if not os.path.exists(model_path):
             print("⚠️ Файл модели не найден. Создаём пустую модель...")
             model = ChatNN(
@@ -518,9 +518,9 @@ def run_training():
     ).to(DEVICE)
 
     # Адаптация весов
-    if os.path.exists("models/model.pth"):
+    if os.path.exists(MODEL_PATH):
         try:
-            state_dict = torch.load("models/model.pth", map_location=DEVICE)
+            state_dict = torch.load(MODEL_PATH, map_location=DEVICE)
             ckpt_vocab_size = state_dict["embedding.weight"].size(0)
             if ckpt_vocab_size != data["vocab_size"]:
                 print(f"⚠️ Адаптируем веса: {ckpt_vocab_size} → {data['vocab_size']}")
@@ -558,9 +558,8 @@ def run_training():
     train_model(model, train_loader, val_loader, EPOCHS, DEVICE, patience=3)
 
     # === Сохраняем в нужном формате ===
-    MODEL_PATH_NEW = "models/model.pth"
-    torch.save(model.state_dict(), MODEL_PATH_NEW)
-    print(f"✅ Модель сохранена: {MODEL_PATH_NEW}")
+    torch.save(model.state_dict(), MODEL_PATH)
+    print(f"✅ Модель сохранена: {MODEL_PATH}")
 
     # Сохраняем метаданные
     joblib.dump({
