@@ -121,21 +121,72 @@ class WebSearch:
 
                 soup = BeautifulSoup(response.text, 'html.parser')
 
-                # 🔍 Исправленный парсинг сниппетов (теперь ищем по нескольким селекторам)
+                # 🔍 Hybrid parsing: HTML + JSON
                 all_snippets = []
+                all_links = []
+
+                # 1. HTML-парсинг (старый способ)
                 for sel in self.yandex_config['snippet_selectors']:
                     found = soup.select(sel)
                     if found:
                         logger.debug(f"✅ search_word_meaning: найдено {len(found)} сниппетов по селектору '{sel}'")
                         all_snippets.extend(found)
-                    else:
-                        logger.debug(f"ℹ️ search_word_meaning: селектор '{sel}' не дал результатов")
+                for sel in self.yandex_config['link_selectors']:
+                    found = soup.select(sel)
+                    if found:
+                        logger.debug(f"✅ search_word_meaning: найдено {len(found)} ссылок по селектору '{sel}'")
+                        all_links.extend(found)
 
+                # 2. JSON-парсинг (новый способ — если HTML не дал результатов)
+                                # 2. JSON-парсинг (новый способ — если HTML не дал результатов)
+                if not all_snippets or not all_links:
+                    logger.debug(f"ℹ️ search_word_meaning: HTML-парсинг не дал результатов, ищем JSON...")
+
+                    # Ищем script-тег с JSON
+                    json_match = re.search(
+                        r'<script[^>]*id=["\']?resource-data["\']?[^>]*>(.*?)</script>',
+                        response.text,
+                        re.DOTALL
+                    )
+                    if json_match:
+                        try:
+                            data = json.loads(json_match.group(1))
+                            # Yandex JSON structure: {'serpItems': [{'snippet': '...', 'url': '...'}, ...]}
+                            serp_items = data.get('serpItems', [])
+                            for item in serp_items:
+                                # Сниппет
+                                if 'snippet' in item:
+                                    all_snippets.append(BeautifulSoup(f"<div>{item['snippet']}</div>", "html.parser").div)
+                                elif 'text' in item:
+                                    all_snippets.append(BeautifulSoup(f"<div>{item['text']}</div>", "html.parser").div)
+                                # Ссылка — с исправленным захватом переменных
+                                if 'url' in item:
+                                    link_url = item['url']
+                                    link_title = item.get('title', link_url)
+                                    all_links.append(type('Link', (), {
+                                        'get': lambda s, k, url=link_url: url if k == 'href' else None,
+                                        'get_text': lambda s: link_title
+                                    })())
+                                elif 'href' in item:
+                                    link_href = item['href']
+                                    link_title = item.get('title', link_href)
+                                    all_links.append(type('Link', (), {
+                                        'get': lambda s, k, href=link_href: href if k == 'href' else None,
+                                        'get_text': lambda s: link_title
+                                    })())
+
+                            logger.debug(f"✅ search_word_meaning: из JSON найдено {len([s for s in all_snippets if hasattr(s, 'get_text')])} сниппетов и {len(all_links)} ссылок")
+                        except (json.JSONDecodeError, KeyError) as e:
+                            logger.warning(f"⚠️ search_word_meaning: ошибка парсинга JSON: {e}")
+                    else:
+                        logger.warning(f"⚠️ search_word_meaning: JSON не найден")
+
+                # 3. Обработка сниппетов
                 snippets = all_snippets[:2]
                 if not snippets:
-                    logger.warning(f"⚠️ search_word_meaning: не найдено ни одного сниппета по всем селекторам!")
+                    logger.warning(f"⚠️ search_word_meaning: не найдено ни одного сниппета!")
                 for snippet in snippets:
-                    text = snippet.get_text().strip()
+                    text = snippet.get_text().strip() if hasattr(snippet, 'get_text') else str(snippet)
                     if not (text and len(text) > 20):
                         continue
                     if self._is_definition_text(text, word):
@@ -146,21 +197,14 @@ class WebSearch:
                         })
                         logger.info(f"📚 search_word_meaning: найдено определение: {text[:60]}...")
 
-                # 🔗 Исправленный парсинг ссылок
-                all_links = []
-                for sel in self.yandex_config['link_selectors']:
-                    found = soup.select(sel)
-                    if found:
-                        logger.debug(f"✅ search_word_meaning: найдено {len(found)} ссылок по селектору '{sel}'")
-                        all_links.extend(found)
-
+                # 4. Обработка ссылок
                 for link in all_links[:3]:
-                    href = link.get('href')
+                    href = link.get('href') if hasattr(link, 'get') else None
                     if not href:
                         continue
                     # Проверяем, содержит ли ссылка словарь
                     if any(domain in href for domain in self.dictionary_sources):
-                        link_text = link.get_text().strip()
+                        link_text = link.get_text() if hasattr(link, 'get_text') else href
                         if link_text and len(link_text) > 5:
                             dict_result = {
                                 'title': link_text,
@@ -437,10 +481,11 @@ class WebSearch:
         return filtered_words[:5]
     
     
-    def _load_knowledge_cache(self, cache_file: str = None):
-        """Загрузка кэша из файла (опционально)."""
-        if cache_file is None:
-            cache_file = self._cache_file
+    def _load_knowledge_cache(self, cache_file: str = "data/knowledge_cache.json"):
+        """Загрузка кэша из файла. Создаёт пустой кэш, если файл не найден."""
+        self.knowledge_cache = {}  # Всегда инициализируем пустой словарь
+        if not cache_file:
+            cache_file = "data/knowledge_cache.json"
         if os.path.exists(cache_file):
             try:
                 with open(cache_file, "r", encoding="utf-8") as f:
@@ -448,14 +493,14 @@ class WebSearch:
                 logger.info(f"📚 knowledge_cache загружен: {len(self.knowledge_cache)} записей")
             except Exception as e:
                 logger.warning(f"⚠️ Ошибка загрузки кэша: {e}")
+                self.knowledge_cache = {}  # Сброс при ошибке
         else:
-            logger.info("ℹ️ knowledge_cache не найден, начнем с пустого кэша")
+            logger.info(f"ℹ️ knowledge_cache не найден ({cache_file}), начнем с пустого кэша")
 
-    def _save_knowledge_cache(self, word: str, response: str):
-        """Сохранение записи в кэш."""
+    def _save_knowledge_cache(self, word: str, response: str, cache_file: str = "data/knowledge_cache.json"):
         self.knowledge_cache[word] = response
         try:
-            with open(self._cache_file, "w", encoding="utf-8") as f:
+            with open(cache_file, "w", encoding="utf-8") as f:
                 json.dump(self.knowledge_cache, f, ensure_ascii=False, indent=2)
             logger.info(f"💾 knowledge_cache сохранён (word='{word}')")
         except Exception as e:
