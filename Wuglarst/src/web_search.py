@@ -32,12 +32,22 @@ class WebSearch:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
         }
 
-        # Конфигурация Yandex (единственная используемая поисковая система)
+        # Обновлённая конфигурация для Yandex (множественные селекторы)
         self.yandex_config = {
             'url': 'https://yandex.ru/search/',
-            'params': {'lr': 213},  # Россия
-            'snippet_selector': 'div.TextSnippet',
-            'link_selector': 'a[href]',
+            'params': {'lr': 213},
+            'snippet_selectors': [  # Массив селекторов сниппетов
+                '.organic__snippet',
+                '.serp-item__snippet',
+                'div[data-c]',
+                '.search2__snippet',
+                'div.TextSnippet',  # запасной вариант
+            ],
+            'link_selectors': [  # Массив селекторов ссылок
+                '.serp-item__link',
+                '.organic__link',
+                'a[href]',
+            ],
         }
 
         # Расширенный список словарей для проверки ссылок (не используются в основном поиске)
@@ -75,7 +85,6 @@ class WebSearch:
         ]
 
         # Стоп-слова для фильтрации (уже есть в chatbot.py, здесь дублировать не нужно)
-
     def search_word_meaning(self, word: str, timeout: float = 2.5) -> Dict[str, any]:
         logger.info(f"🔍 search_word_meaning('{word}') начал")
         start_time = time.time()
