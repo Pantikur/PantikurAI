@@ -77,24 +77,6 @@ class WebSearch:
         # Стоп-слова для фильтрации (уже есть в chatbot.py, здесь дублировать не нужно)
 
     def search_word_meaning(self, word: str, timeout: float = 2.5) -> Dict[str, any]:
-        """
-        Быстрый поиск значения слова через Yandex.
-        Делает максимум 2 запроса: "значение слова X" и "X — это".
-
-        Возвращает:
-        {
-            'word': str,
-            'status': 'success' | 'not_found',
-            'definitions': List[str],  # топ-2 определения
-            'dictionary_sources': List[Dict],  # топ-3 ссылки на словари
-            'search_queries': List[Dict],  # истории запросов
-        }
-
-        Логирование:
-        - Проверка времени
-        - Обработка ошибок
-        - Парсинг сниппетов и ссылок
-        """
         logger.info(f"🔍 search_word_meaning('{word}') начал")
         start_time = time.time()
 
@@ -109,7 +91,6 @@ class WebSearch:
 
         for i, query in enumerate(query_variants):
             try:
-                # Прерываем, если превышен timeout
                 if time.time() - start_time > timeout:
                     logger.warning(f"⏱ search_word_meaning: timeout ({time.time() - start_time:.1f} сек) для '{word}'")
                     break
@@ -131,14 +112,23 @@ class WebSearch:
 
                 soup = BeautifulSoup(response.text, 'html.parser')
 
-                # Извлечение сниппетов (только 2, без лишних циклов)
-                snippets = soup.select(self.yandex_config['snippet_selector'])
-                for snippet in snippets[:2]:
+                # 🔍 Исправленный парсинг сниппетов (теперь ищем по нескольким селекторам)
+                all_snippets = []
+                for sel in self.yandex_config['snippet_selectors']:
+                    found = soup.select(sel)
+                    if found:
+                        logger.debug(f"✅ search_word_meaning: найдено {len(found)} сниппетов по селектору '{sel}'")
+                        all_snippets.extend(found)
+                    else:
+                        logger.debug(f"ℹ️ search_word_meaning: селектор '{sel}' не дал результатов")
+
+                snippets = all_snippets[:2]
+                if not snippets:
+                    logger.warning(f"⚠️ search_word_meaning: не найдено ни одного сниппета по всем селекторам!")
+                for snippet in snippets:
                     text = snippet.get_text().strip()
                     if not (text and len(text) > 20):
                         continue
-
-                    # Проверяем, является ли текст определением
                     if self._is_definition_text(text, word):
                         all_definitions.append({
                             'text': text,
@@ -147,13 +137,18 @@ class WebSearch:
                         })
                         logger.info(f"📚 search_word_meaning: найдено определение: {text[:60]}...")
 
-                # Поиск ссылок на словари (только первые 3)
-                links = soup.select(self.yandex_config['link_selector'])
-                for link in links[:3]:
+                # 🔗 Исправленный парсинг ссылок
+                all_links = []
+                for sel in self.yandex_config['link_selectors']:
+                    found = soup.select(sel)
+                    if found:
+                        logger.debug(f"✅ search_word_meaning: найдено {len(found)} ссылок по селектору '{sel}'")
+                        all_links.extend(found)
+
+                for link in all_links[:3]:
                     href = link.get('href')
                     if not href:
                         continue
-
                     # Проверяем, содержит ли ссылка словарь
                     if any(domain in href for domain in self.dictionary_sources):
                         link_text = link.get_text().strip()
@@ -174,7 +169,6 @@ class WebSearch:
                     'success': True,
                 })
 
-                # Ранний выход: если нашли минимум 1 определение и 1 ссылку
                 if len(all_definitions) >= 1 and len(all_dict_results) >= 1:
                     break
 
@@ -201,9 +195,7 @@ class WebSearch:
         logger.info(f"⏱ search_word_meaning('{word}'): завершено за {elapsed:.2f} сек | "
                     f"defs={len(all_definitions)}, links={len(all_dict_results)}")
 
-        # Формируем итоговый результат
         if all_definitions:
-            # Сортируем по релевантности
             sorted_defs = sorted(
                 all_definitions,
                 key=lambda x: self._calculate_relevance(x['text'], word),
@@ -220,7 +212,6 @@ class WebSearch:
                 'total_dict_sources_found': len(all_dict_results),
             }
 
-        # Если ничего не найдено
         return {
             'word': word,
             'status': 'not_found',
@@ -231,19 +222,7 @@ class WebSearch:
             'total_dict_sources_found': 0,
             'error': 'Определения не найдены в доступных источниках',
         }
-
     def _is_definition_text(self, text: str, word: str) -> bool:
-        """
-        Проверяет, является ли текст определением слова.
-
-        Шаблоны:
-        - "слово X — это", "X — это", "означает"
-        - Текст должен содержать как минимум 3 значимых слова
-
-        Возвращает:
-        - True — если текст выглядит как определение
-        - False — иначе
-        """
         text_lower = text.lower()
         word_lower = word.lower()
 
@@ -261,7 +240,6 @@ class WebSearch:
 
         has_definition_pattern = any(p in text_lower for p in definition_patterns)
 
-        # Фильтрация на значимые слова (не стоп-слова)
         words = re.findall(r'[а-яА-ЯёЁ]+', text_lower)
         common_words = {
             'и', 'в', 'на', 'не', 'а', 'но', 'или', 'да', 'нет',
@@ -270,9 +248,13 @@ class WebSearch:
         }
         meaningful_words = [w for w in words if w not in common_words]
 
-        # Минимум 3 слова и минимум 2 уникальных значимых слова
-        return has_definition_pattern or (len(meaningful_words) >= 3 and len(set(meaningful_words)) >= 2)
+        # Дополнительно: если текст содержит "Ожегов", "Словарь Ожегова", "Толковый словарь" — считаем определением
+        has_ozhegov = any(
+            phrase in text_lower
+            for phrase in ['ожегов', 'толковый словарь', 'ozhegov', 'dictionary']
+        )
 
+        return has_definition_pattern or has_ozhegov or (len(meaningful_words) >= 3 and len(set(meaningful_words)) >= 2)
     def _calculate_relevance(self, text: str, word: str) -> float:
         """
         Рассчитывает релевантность текста как определения слова.
