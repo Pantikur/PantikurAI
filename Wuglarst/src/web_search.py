@@ -36,13 +36,18 @@ class WebSearch:
         self.yandex_config = {
             'url': 'https://yandex.ru/search/',
             'params': {'lr': 213},
-            'snippet_selectors': [  # Массив селекторов сниппетов
-                '.organic__snippet',
-                '.serp-item__snippet',
-                'div[data-c]',
-                '.search2__snippet',
-                'div.TextSnippet',  # запасной вариант
-            ],
+                'snippet_selectors': [
+                    '.organic__snippet',
+                    '.serp-item__snippet',
+                    'div[data-c] > .serp-item__snippet',  # строгий селектор для сниппета
+                    'div[data-c] span',                    # любой span внутри data-c
+                    'div[data-c] .text-snippet',           # возможно, класс изменился
+                    'div[data-c] p',                       # параграф как запасной вариант
+                    'div[data-c] .snippet',                # fallback: span с классом snippet
+                    'div[data-c] .organs__snippet',        # опечатка? — часто бывает
+                    'div[data-c] .snippet',
+                    'div[data-c] .text',
+                ],
             'link_selectors': [  # Массив селекторов ссылок
                 '.serp-item__link',
                 '.organic__link',
@@ -126,11 +131,10 @@ class WebSearch:
                 all_links = []
 
                 # 1. HTML-парсинг (старый способ)
-                for sel in self.yandex_config['snippet_selectors']:
-                    found = soup.select(sel)
-                    if found:
-                        logger.debug(f"✅ search_word_meaning: найдено {len(found)} сниппетов по селектору '{sel}'")
-                        all_snippets.extend(found)
+                data_c_snippets = self._extract_snippets_from_data_c(soup)
+                if data_c_snippets:
+                    logger.debug(f"✅ search_word_meaning: найдено {len(data_c_snippets)} сниппетов из div[data-c]")
+                    all_snippets.extend(data_c_snippets)
                 for sel in self.yandex_config['link_selectors']:
                     found = soup.select(sel)
                     if found:
@@ -506,6 +510,25 @@ class WebSearch:
         except Exception as e:
             logger.warning(f"⚠️ Ошибка сохранения кэша: {e}")
 
+    def _extract_snippets_from_data_c(self, soup):
+        """Парсит div[data-c] как контейнер результата и извлекает сниппеты."""
+        data_c_blocks = soup.select('div[data-c]')
+        snippets = []
+        for block in data_c_blocks:
+            # Ищем сниппет внутри div[data-c]
+            snippet = (
+                block.select_one('.organic__snippet') or
+                block.select_one('.serp-item__snippet') or
+                block.select_one('.text-snippet') or
+                block.find('span', class_=re.compile(r'snippet|text')) or
+                block.find('p') or
+                block.find('span')
+            )
+            if snippet:
+                text = snippet.get_text().strip()
+                if text and len(text) > 20:
+                    snippets.append(BeautifulSoup(f"<div>{text}</div>", "html.parser").div)
+        return snippets
     
     
 if __name__ == "__main__":
