@@ -10,6 +10,10 @@ import logging
 import os
 import json
 from typing import Dict, List, Optional
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Настройка логирования (вы можете переопределить уровень через logging.basicConfig)
 logger = logging.getLogger(__name__)
@@ -88,6 +92,17 @@ class WebSearch:
             'deti-mama.ru/slovar',
             'razvitiechild.ru/slovar',
         ]
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")  # без GUI
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36")
+
+        self.driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()),
+            options=chrome_options
+        )
+        logger.info("✅ WebSearch: Selenium WebDriver инициализирован")
 
         # Стоп-слова для фильтрации (уже есть в chatbot.py, здесь дублировать не нужно)
     def search_word_meaning(self, word: str, timeout: float = 2.5) -> Dict[str, any]:
@@ -114,17 +129,25 @@ class WebSearch:
                 params = {'text': query}
                 params.update(self.yandex_config['params'])
 
-                response = requests.get(
+                # 🔥 Используем Selenium вместо requests
+                html_content = self._fetch_with_selenium(
                     self.yandex_config['url'],
-                    params=params,
-                    headers=self.headers,
+                    params,
                     timeout=3.0,
                 )
-                response.raise_for_status()
+                if not html_content:
+                    logger.warning(f"⚠️ search_word_meaning: не удалось загрузить страницу через Selenium")
+                    search_queries.append({
+                        'engine': 'yandex',
+                        'query': query,
+                        'success': False,
+                        'error': 'selenium_failed',
+                    })
+                    continue
 
-                logger.info(f"✅ search_word_meaning: успешный ответ на '{query}' ({len(response.text)} байт)")
+                logger.info(f"✅ search_word_meaning: успешный ответ на '{query}' ({len(html_content)} байт)")
 
-                soup = BeautifulSoup(response.text, 'html.parser')
+                soup = BeautifulSoup(html_content, 'html.parser')
 
                 # 🔍 Hybrid parsing: HTML + JSON
                 all_snippets = []
@@ -149,7 +172,7 @@ class WebSearch:
                     # Ищем script-тег с JSON
                     json_match = re.search(
                         r'<script[^>]*id=["\']?resource-data["\']?[^>]*>(.*?)</script>',
-                        response.text,
+                        html_content,  # 🔧 Исправлено: было response, теперь html_content
                         re.DOTALL
                     )
                     if json_match:
@@ -530,6 +553,17 @@ class WebSearch:
                     snippets.append(BeautifulSoup(f"<div>{text}</div>", "html.parser").div)
         return snippets
     
+    def _fetch_with_selenium(self, url: str, params: dict, timeout: float = 3.0):
+        """Загружает страницу с Yandex через Selenium (JS-рендеринг)."""
+        full_url = url + '?' + '&'.join(f'{k}={v}' for k, v in params.items())
+        try:
+            self.driver.get(full_url)
+            time.sleep(0.5)  # ждём загрузки JS
+            html = self.driver.page_source
+            return html
+        except Exception as e:
+            logger.error(f"❌ _fetch_with_selenium: ошибка загрузки '{full_url}': {e}")
+            return None
     
 if __name__ == "__main__":
     # Настройка логирования
@@ -544,3 +578,8 @@ if __name__ == "__main__":
     for w in test_words:
         res = ws.lookup(w, timeout=2.5)
         print(f"{w}: {res}")
+
+    def __del__(self):
+        if hasattr(self, 'driver'):
+            self.driver.quit()
+            logger.info("✅ WebSearch: Selenium WebDriver закрыт")
