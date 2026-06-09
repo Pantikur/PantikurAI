@@ -209,8 +209,8 @@ class ChatRequest(BaseModel):
 
     @validator('mode')
     def mode_must_be_valid(cls, v):
-        if v not in ["chat", "world_gen", "narrative"]:
-            raise ValueError("mode должен быть 'chat', 'world_gen' или 'narrative'")
+        if v not in ["chat", "world_gen", "narrative", "rpg"]:
+            raise ValueError("mode должен быть 'chat', 'world_gen', 'narrative' или 'rpg'")
         return v
 
 
@@ -238,6 +238,40 @@ async def predict(request: Request):
     if len(req.messages) > 32:
         raise HTTPException(status_code=422, detail="Слишком длинная история (макс. 32 сообщения)")
 
+    # 🔁 === ДОБАВЛЕНО: Автоматическое определение RPG-режима ===
+    def detect_rpg_mode(messages: List[MessageItem]) -> str:
+        context_snippet = "\n".join([
+            m.message.lower() for m in messages[-2:]
+        ])
+
+        rpg_keywords = {
+            "hp", "здоровье", "урон", "атака", "защита", "шанс", "пробой",
+            "инвентарь", "предмет", "золото", "эксп", " xp ", "lvl", "уровень",
+            "локация", "место", "пещера", "лес", "город", "дом", "таверна",
+            "враг", "монстр", "гоблин", "орк", "дракон", "скелет", "призрак",
+            "шаг", "идти", "бежать", "осмотреться", "взять", "схватить",
+            "схватка", "борьба", "драка", "выстрел", "заклинание", "магия",
+            "класс", "рыцарь", "маг", "вор", "паладин", "жрец", "некромант"
+        }
+
+        if any(kw in context_snippet for kw in rpg_keywords):
+            return "rpg"
+        
+        # Специфичные фразы → narrative/world_gen
+        if any(kw in context_snippet for kw in ["создай", "мир", "вселенная"]):
+            return "world_gen" if "жанр" in context_snippet else "narrative"
+
+        return "chat"
+
+    # 🔁 Переключение режима: если пришёл chat, но есть RPG-сигналы
+    mode = req.mode
+    if mode == "chat":
+        detected = detect_rpg_mode(req.messages)
+        if detected in ["rpg", "world_gen", "narrative"]:
+            logger.info(f"➡️ Переключено с 'chat' → '{detected}' (RPG-сигналы)")
+            mode = detected
+    # === КОНЕЦ RPG-AUTO ===
+
     # Безопасное получение chatbot
     local_bot = None
     with CHATBOT_LOCK:
@@ -248,7 +282,7 @@ async def predict(request: Request):
 
     # === Генерация по режимам ===
     try:
-        if req.mode == "narrative":
+        if mode == "narrative":
             context = "\n".join([
                 f"{'Пользователь' if m.is_own else 'Бот'}: {m.message}"
                 for m in req.messages
@@ -278,12 +312,11 @@ async def predict(request: Request):
             if len(response) < 20:
                 response = "*Фигура медленно обернулась* 'ты... вернулся... *(внутренне: сердце сжалось)*'"
 
-        elif req.mode == "world_gen":
+        elif mode == "world_gen":
             last_msg = req.messages[-1].message
             genre = "Фэнтези"
             tags = ""
 
-            # Используем регулярные выражения для парсинга
             genre_match = re.search(r"Жанр:\s*([^.\n]+)", last_msg, re.IGNORECASE)
             if genre_match:
                 genre = genre_match.group(1).strip()
@@ -310,13 +343,20 @@ async def predict(request: Request):
                      - Слабых отключают без предупреждения
                 """).strip()
 
-        else:  # chat
+        elif mode == "rpg":
+            # RPG-режим: передаём все сообщения, модель сама вытащит HP/инвентарь/локацию
+            valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            response = local_bot.generate_response(valid_msgs, mode="rpg").strip()
+            # Уже внутри generate_response(mode="rpg") есть fallback на атмосферу
+            # (min 15 слов, звуковые/тактильные детали)
+
+        else:  # chat (остаток)
             valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
             response = local_bot.generate_response(valid_msgs, mode="chat").strip()
             if not response:
                 response = "Я здесь! 🤖"
 
-        logger.info(f"[API] Обработано | Сообщений: {len(req.messages)} | Mode: {req.mode}")
+        logger.info(f"[API] Обработано | Сообщений: {len(req.messages)} | Mode: {mode}")
         return {"response": response}
 
     except Exception as e:
