@@ -107,6 +107,9 @@ def import_chatbot():
 async def lifespan(app: FastAPI):
     global chatbot
 
+    start_lifespan = asyncio.get_event_loop().time()
+    logger.info("🔄 Старт lifespan...")
+
     # Проверяем обязательные файлы
     missing = []
     for path, name in [(DATA_PATH, "токенизатор"), (MODEL_PATH, "модель")]:
@@ -116,8 +119,7 @@ async def lifespan(app: FastAPI):
     if missing:
         raise RuntimeError(f"Отсутствуют файлы: {', '.join(missing)}")
 
-    # Все файлы на месте
-    logger.info("📁 Все необходимые файлы найдены")
+    logger.info(f"📁 Все необходимые файлы найдены за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
 
     # === Асинхронный запуск дообучения при старте (не блокирует запуск) ===
     async def launch_retrain_async():
@@ -137,8 +139,12 @@ async def lifespan(app: FastAPI):
     # Загружаем модель
     try:
         logger.info("🔁 Загружаю чат-бот...")
+        load_start = asyncio.get_event_loop().time()
         ChatBot = import_chatbot()
         new_bot = ChatBot(str(MODEL_PATH), str(DATA_PATH))
+        load_time = asyncio.get_event_loop().time() - load_start
+        logger.info(f"📦 ChatBot загружен за {load_time:.2f} сек")
+
         with CHATBOT_LOCK:
             chatbot = new_bot
         logger.info("✅ Чат-бот успешно загружен!")
@@ -147,6 +153,8 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.critical(f"❌ Ошибка инициализации бота: {e}", exc_info=True)
         raise
+
+    logger.info(f"✅ Lifespan готов за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
 
     yield
 
@@ -213,11 +221,13 @@ class ChatRequest(BaseModel):
             raise ValueError("mode должен быть 'chat', 'world_gen', 'narrative' или 'rpg'")
         return v
 
-
 # === Эндпоинт: /predict и / — оба работают ===
 @app.post("/predict")
 @app.post("/")  # Совместимость с Android
 async def predict(request: Request):
+    start_time = asyncio.get_event_loop().time()
+    logger.info(f"📥 Запрос /predict | UA: {request.headers.get('User-Agent', 'unknown')}")
+
     user_agent = request.headers.get("User-Agent", "")
     if "PantikurBot" not in user_agent:
         logger.warning(f"🚫 Заблокирован User-Agent: {user_agent}")
@@ -225,17 +235,23 @@ async def predict(request: Request):
 
     try:
         body = await request.json()
+        logger.debug(f"📥 JSON получен ({len(str(body))} байт)")
     except Exception:
+        logger.error("❌ Ошибка разбора JSON")
         raise HTTPException(status_code=400, detail="Невалидный JSON")
 
     try:
         req = ChatRequest(**body)
+        logger.info(f"✅ Запрос валидирован | Статус: OK | mode={req.mode}, count={len(req.messages)}")
     except Exception as e:
+        logger.error(f"❌ Ошибка валидации: {e}")
         raise HTTPException(status_code=422, detail=f"Ошибка валидации: {str(e)}")
 
     if not req.messages:
+        logger.warning("⚠️ История пуста")
         raise HTTPException(status_code=422, detail="История сообщений пуста")
     if len(req.messages) > 32:
+        logger.warning(f"⚠️ Слишком длинная история: {len(req.messages)}")
         raise HTTPException(status_code=422, detail="Слишком длинная история (макс. 32 сообщения)")
 
     # 🔁 === ДОБАВЛЕНО: Автоматическое определение RPG-режима ===
@@ -278,11 +294,16 @@ async def predict(request: Request):
         local_bot = chatbot
 
     if local_bot is None:
+        logger.error("❌ chatbot не загружен")
         raise HTTPException(status_code=500, detail="Сервис временно недоступен")
 
     # === Генерация по режимам ===
     try:
+        start_gen = asyncio.get_event_loop().time()
+        response = ""
+
         if mode == "narrative":
+            logger.info("🔧 Режим: narrative")
             context = "\n".join([
                 f"{'Пользователь' if m.is_own else 'Бот'}: {m.message}"
                 for m in req.messages
@@ -308,11 +329,17 @@ async def predict(request: Request):
 
                 Бот:
             """).strip()
+            start_subgen = asyncio.get_event_loop().time()
             response = local_bot.generate_response([{"message": prompt_text, "is_own": True}], mode="chat").strip()
+            elapsed_sub = asyncio.get_event_loop().time() - start_subgen
+            logger.info(f"⏱ narrative: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
+
             if len(response) < 20:
                 response = "*Фигура медленно обернулась* 'ты... вернулся... *(внутренне: сердце сжалось)*'"
+                logger.warning("⚠️ Слишком короткий ответ → fallback")
 
         elif mode == "world_gen":
+            logger.info("🔧 Режим: world_gen")
             last_msg = req.messages[-1].message
             genre = "Фэнтези"
             tags = ""
@@ -329,7 +356,10 @@ async def predict(request: Request):
             if tags:
                 input_msg += f", {tags}"
 
+            start_subgen = asyncio.get_event_loop().time()
             response = local_bot.generate_response([{"message": input_msg, "is_own": True}], mode="world_gen").strip()
+            elapsed_sub = asyncio.get_event_loop().time() - start_subgen
+            logger.info(f"⏱ world_gen: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
 
             if not any(kw in response for kw in ["Название:", "Законы общества:", "Традиции:"]):
                 response = textwrap.dedent(f"""
@@ -342,21 +372,30 @@ async def predict(request: Request):
                     Внегласные правила:
                      - Слабых отключают без предупреждения
                 """).strip()
+                logger.warning("⚠️ Неверный формат → fallback")
 
         elif mode == "rpg":
-            # RPG-режим: передаём все сообщения, модель сама вытащит HP/инвентарь/локацию
+            logger.info("🔧 Режим: rpg")
             valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            start_subgen = asyncio.get_event_loop().time()
             response = local_bot.generate_response(valid_msgs, mode="rpg").strip()
-            # Уже внутри generate_response(mode="rpg") есть fallback на атмосферу
-            # (min 15 слов, звуковые/тактильные детали)
+            elapsed_sub = asyncio.get_event_loop().time() - start_subgen
+            logger.info(f"⏱ rpg: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
 
         else:  # chat (остаток)
+            logger.info("🔧 Режим: chat")
             valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            start_subgen = asyncio.get_event_loop().time()
             response = local_bot.generate_response(valid_msgs, mode="chat").strip()
+            elapsed_sub = asyncio.get_event_loop().time() - start_subgen
+            logger.info(f"⏱ chat: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
+
             if not response:
                 response = "Я здесь! 🤖"
+                logger.warning("⚠️ Пустой ответ → fallback")
 
-        logger.info(f"[API] Обработано | Сообщений: {len(req.messages)} | Mode: {mode}")
+        total_elapsed = asyncio.get_event_loop().time() - start_time
+        logger.info(f"✅ Ответ сгенерирован за {total_elapsed:.2f} сек | Mode: {mode} | len={len(response)}")
         return {"response": response}
 
     except Exception as e:

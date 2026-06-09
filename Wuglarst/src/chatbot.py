@@ -14,6 +14,7 @@ from .cultural_references import get_cultural_phrase
 import sys
 import subprocess
 import threading
+import logging
 
 # === Настройки RPG ===
 RPG_MAX_LENGTH = 256
@@ -149,6 +150,8 @@ class ChatBot:
             text = text.replace(wrong, right)
         return text
 
+    # ... existing code ...
+
     def _generate_response_with_sampling(
         self,
         input_text: str,
@@ -163,12 +166,16 @@ class ChatBot:
         input_tensor = torch.tensor([input_ids], dtype=torch.long).to(self.device)
         mask = (input_tensor != self.tokenizer.pad_token_id).float().to(self.device)
 
+        import time  # ← добавьте в начало файла, если нет
+        start_gen = time.time()
+
         generated_ids = []
         current_input = input_tensor
         current_mask = mask
 
         with torch.no_grad():
-            for _ in range(max_length):
+            for step in range(max_length):
+                step_start = time.time()
                 logits = self.model(current_input, mask=current_mask)[:, -1, :]
                 logits = logits / temperature
 
@@ -184,7 +191,9 @@ class ChatBot:
                 next_token = torch.multinomial(probs, num_samples=1).item()
 
                 if next_token == self.tokenizer.eos_token_id:
+                    print(f"⏱ Генерация [{step} токенов] завершена за {time.time() - start_gen:.2f} сек (step: {time.time() - step_start:.2f})")
                     break
+
                 if next_token not in [self.tokenizer.pad_token_id, self.tokenizer.unk_token_id]:
                     generated_ids.append(next_token)
 
@@ -196,9 +205,21 @@ class ChatBot:
                 current_mask = torch.cat([current_mask, new_mask], dim=1)
                 current_mask = current_mask[:, -self.max_length:]
 
-        return self.tokenizer.decode(generated_ids).strip()
+                # Логирование тормозов на шаге >0.5 сек
+                step_time = time.time() - step_start
+                if step_time > 0.5:
+                    print(f"⚠️ Долгий шаг генерации: {step_time:.2f} сек на токен {step}")
+
+        decoded = self.tokenizer.decode(generated_ids).strip()
+        print(f"⏱ Генерация завершена за {time.time() - start_gen:.2f} сек | Длина: {len(decoded)}")
+        return decoded
+
 
     def generate_response(self, messages: List[Dict[str, str]], mode: str = "chat") -> str:
+        import time
+        start_total = time.time()
+        logging.info(f"⏱ generate_response(start_total): {time.time() - start_total:.2f} сек | mode={mode}")
+
         context = []
         last_user_msg = ""
 
@@ -214,10 +235,12 @@ class ChatBot:
                 break
 
         if not last_user_msg:
+            logging.warning("⏱ generate_response: пустой last_user_msg → fallback")
             return json.dumps({"response": "Я здесь! 🤖"}, ensure_ascii=False)
 
         # === Режим narrative ===
         if mode == "narrative":
+            start_mode = time.time()
             context_str = "\n".join(context[-5:])
             prompt = (
                 "Ты — мастер вселенных. Создаёшь глубокие, логичные и атмосферные миры.\n"
@@ -233,10 +256,13 @@ class ChatBot:
                     "Традиции:\n - Каждую полночь зажигают свечи за умершие идеи.\n"
                     "Внегласные правила:\n - Не задавай, кто ты на самом деле."
                 )
+            elapsed = time.time() - start_mode
+            logging.info(f"⏱ generate_response (narrative): {elapsed:.2f} сек")
             return json.dumps({"response": response}, ensure_ascii=False)
 
         # === Режим world_gen ===
         elif mode == "world_gen":
+            start_mode = time.time()
             genre_match = re.search(r"Жанр:\s*([^\.\n]+)", last_user_msg)
             tags_match = re.search(r"Темы:\s*([^\.\n]+)", last_user_msg)
             genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
@@ -247,28 +273,45 @@ class ChatBot:
                 prompt += f", {tags}"
 
             response = self._generate_response_with_sampling(prompt, max_length=128)
+            elapsed = time.time() - start_mode
+            logging.info(f"⏱ generate_response (world_gen): {elapsed:.2f} сек")
             return json.dumps({"world": response}, ensure_ascii=False)
 
         # === Режим chat ===
         elif mode == "chat":
+            start_mode = time.time()
             tokens = self._clean_text(last_user_msg).split()
             unknown_words = [t for t in tokens if t not in self.tokenizer.vocab]
+
             if unknown_words:
                 word = unknown_words[0]
                 if word in self.knowledge_cache:
+                    logging.info(f"📚 chat: знание найдено в кэше → '{word}'")
+                    logging.info(f"⏱ generate_response (chat+cache): {time.time() - start_mode:.2f} сек")
                     return json.dumps({"response": self.knowledge_cache[word]}, ensure_ascii=False)
 
+                # Поиск в интернете — лог времени
+                start_search = time.time()
                 try:
                     definition = self.web_search.lookup(word)
+                    search_time = time.time() - start_search
+                    logging.info(f"⏱ web_search.lookup('{word}'): {search_time:.2f} сек")
+
                     if definition and len(definition) > 5:
                         response = f"🔍 Я не знал слово «{word}», но нашёл:\n\n{definition.strip()}"
                         self._save_knowledge_cache(word, response)
                         self._trigger_knowledge_learning(word, definition)
+                        logging.info(f"⏱ generate_response (chat+search): {time.time() - start_mode:.2f} сек")
                         return json.dumps({"response": response}, ensure_ascii=False)
                 except Exception as e:
-                    print(f"❌ Ошибка поиска: {e}")
+                    logging.error(f"❌ Ошибка поиска: {e}")
 
+            # Генерация
+            start_subgen = time.time()
             base_response = self._generate_response_with_sampling(last_user_msg)
+            subgen_time = time.time() - start_subgen
+            logging.info(f"⏱ generate_response (chat+subgen): {subgen_time:.2f} сек | len={len(base_response)}")
+
             if not base_response or len(base_response.split()) < 2:
                 base_response = random.choice([
                     "Привет! Я здесь.",
@@ -276,6 +319,7 @@ class ChatBot:
                     "Интересно...",
                     "А ты как думаешь?"
                 ])
+                logging.warning("⚠️ chat: fallback → случайный ответ")
 
             final_response = base_response
             if random.random() < 0.25:
@@ -284,11 +328,13 @@ class ChatBot:
                 final_response = f"{phrase} {base_response}" if style == 'prefix' else f"{base_response} ({phrase})"
 
             self.log_interaction(last_user_msg, final_response)
+            total = time.time() - start_mode
+            logging.info(f"⏱ generate_response (chat): {total:.2f} сек")
             return json.dumps({"response": final_response}, ensure_ascii=False)
 
         # === Режим continue ===
         elif mode == "continue":
-            # Собираем контекст
+            start_mode = time.time()
             context_str = "\n".join(context[-6:])
             prompt = (
                 "Продолжи диалог как бот. Сохраняй стиль, характер, логику и атмосферу. "
@@ -314,17 +360,12 @@ class ChatBot:
                 )
 
             self.log_interaction(last_user_msg, response)
+            logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
             return json.dumps({"response": response}, ensure_ascii=False)
 
-                # === РЕЖИМ RPG (АДАПТИВНЫЙ ПО ЖАНРУ) ===
+        # === Режим RPG ===
         elif mode == "rpg":
-            context_lines = []
-            state = {
-                "hp": 100,
-                "items": [],
-                "location": "неизвестно"
-            }
-
+            start_mode = time.time()
             # 🔍 ОПРЕДЕЛЕНИЕ ЖАНРА (обновлённое, 21 жанр)
             def detect_genre(messages: List[Dict[str, str]]) -> str:
                 last_msg = ""
@@ -368,6 +409,16 @@ class ChatBot:
                 return "фэнтези"  # по умолчанию
 
             genre = detect_genre(messages)
+            logging.info(f"📜 rpg: жанр = '{genre}'")
+
+            # Лог подстановки промпта
+            if genre in genre_prompts:
+                prompt_parts = genre_prompts[genre]
+                logging.info(f"📜 rpg: промпт для '{genre}' содержит {len(prompt_parts)} строк")
+            else:
+                logging.warning(f"⚠️ rpg: жанр '{genre}' не найден в genre_prompts → fallback на фэнтези")
+
+            logging.info(f"⏱ generate_response (rpg): {time.time() - start_mode:.2f} сек")
 
             # 🔥 ЗАГРУЗКА СТИЛЬНОГО ПРОМПТА ПО ЖАНРУ (обновлённые промпты)
             genre_prompts = {
@@ -658,6 +709,9 @@ class ChatBot:
                     "- Не пиши 'Я как бот'. Ты часть мира."
                 ]
             }
+
+        logging.warning(f"⚠️ generate_response: неизвестный mode = '{mode}'")
+        return json.dumps({"response": "Привет! Я здесь."}, ensure_ascii=False)
 
     def _trigger_knowledge_learning(self, word: str, definition: str):
         if self.use_knowledge_manager:
