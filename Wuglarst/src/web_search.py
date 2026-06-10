@@ -10,10 +10,7 @@ import logging
 import os
 import json
 from typing import Dict, List, Optional
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import undetected_chromedriver as uc
 
 # Настройка логирования (вы можете переопределить уровень через logging.basicConfig)
 logger = logging.getLogger(__name__)
@@ -36,76 +33,74 @@ class WebSearch:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
         }
 
-        # Обновлённая конфигурация для Yandex (множественные селекторы)
         self.yandex_config = {
             'url': 'https://yandex.ru/search/',
             'params': {'lr': 213},
-                'snippet_selectors': [
-                    '.organic__snippet',
-                    '.serp-item__snippet',
-                    'div[data-c] > .serp-item__snippet',  # строгий селектор для сниппета
-                    'div[data-c] span',                    # любой span внутри data-c
-                    'div[data-c] .text-snippet',           # возможно, класс изменился
-                    'div[data-c] p',                       # параграф как запасной вариант
-                    'div[data-c] .snippet',                # fallback: span с классом snippet
-                    'div[data-c] .organs__snippet',        # опечатка? — часто бывает
-                    'div[data-c] .snippet',
-                    'div[data-c] .text',
-                ],
-            'link_selectors': [  # Массив селекторов ссылок
+            'snippet_selectors': [
+                '.organic__snippet',
+                '.serp-item__snippet',
+                'div[data-c] > .serp-item__snippet',
+                'div[data-c] span',
+                'div[data-c] .text-snippet',
+                'div[data-c] p',
+                'div[data-c] .snippet',
+                'div[data-c] .organs__snippet',
+                'div[data-c] .snippet',
+                'div[data-c] .text',
+            ],
+            'link_selectors': [
                 '.serp-item__link',
                 '.organic__link',
                 'a[href]',
             ],
         }
 
-        # Расширенный список словарей для проверки ссылок (не используются в основном поиске)
         self.dictionary_sources = [
-            # Академические и универсальные словари
-            'dic.academic.ru',
-            'slovarozhegova.ru',
-            'ozhegov.org',
-            'slovar.cc',
-            'teza.ru',
-            'lifactor.ru/slovari',
-            'allforchildren.ru/slovari',
-            # Этимологические словари
-            'etymologica.ru',
-            'slovar.slovari.ru',
-            # Словари иностранных слов
-            'foreign_words.academic.ru',
-            'slovar.silentfund.ru',
-            # Специализированные словари
-            'slovari.tilnp.ru',
-            'slovari.gramota.ru',
-            'slovari.yandex.ru',
-            'dictionarium.com',
-            # Энциклопедии
-            'ru.wikipedia.org',
-            'ru.wiktionary.org',
-            'dic.academic.ru/cdit',
-            # Современные словари сленга и неологизмов
-            'newslang.ru',
-            'slang.su',
-            'russkiymir.ru/slovar',
-            # Детские словари и образовательные ресурсы
-            'deti-mama.ru/slovar',
-            'razvitiechild.ru/slovar',
+            'dic.academic.ru', 'slovarozhegova.ru', 'ozhegov.org', 'slovar.cc', 'teza.ru',
+            'lifactor.ru/slovari', 'allforchildren.ru/slovari', 'etymologica.ru', 'slovar.slovari.ru',
+            'foreign_words.academic.ru', 'slovar.silentfund.ru', 'slovari.tilnp.ru', 'slovari.gramota.ru',
+            'slovari.yandex.ru', 'dictionarium.com', 'ru.wikipedia.org', 'ru.wiktionary.org',
+            'dic.academic.ru/cdit', 'newslang.ru', 'slang.su', 'russkiymir.ru/slovar',
+            'deti-mama.ru/slovar', 'razvitiechild.ru/slovar',
         ]
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")  # без GUI
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36")
 
-        self.driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
-            options=chrome_options
-        )
-        logger.info("✅ WebSearch: Selenium WebDriver инициализирован")
+        self.driver = None
+        try:
+            chrome_options = uc.ChromeOptions()
+            chrome_options.add_argument("--headless")  # без GUI
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--disable-extensions")
+            chrome_options.add_argument("--disable-plugins-discovery")
+            chrome_options.add_argument("--disable-logging")
+            chrome_options.add_argument("--log-level=3")
+            chrome_options.add_argument("--silent")
+            chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36")
+
+            logger.info("🔄 WebSearch: Инициализация undetected-chromedriver...")
+            self.driver = uc.Chrome(options=chrome_options)
+            logger.info("✅ WebSearch: undetected-chromedriver инициализирован")
+        except Exception as e:
+            logger.error(f"❌ WebSearch: Ошибка инициализации драйвера: {e}")
+            logger.warning("⚠️ WebSearch: Поиск в интернете будет недоступен.")
 
         # Стоп-слова для фильтрации (уже есть в chatbot.py, здесь дублировать не нужно)
     def search_word_meaning(self, word: str, timeout: float = 2.5) -> Dict[str, any]:
+        # Если драйвер не инициализирован, сразу возвращаем ошибку
+        if not self.driver:
+            logger.warning(f"⚠️ search_word_meaning: драйвер не инициализирован. Возврат not_found для '{word}'.")
+            return {
+                'word': word,
+                'status': 'not_found',
+                'definitions': [],
+                'dictionary_sources': [],
+                'search_queries': [{'engine': 'yandex', 'query': '', 'success': False, 'error': 'driver_not_init'}],
+                'total_definitions_found': 0,
+                'total_dict_sources_found': 0,
+                'error': 'Сервис поиска в интернете недоступен.',
+            }
+
         logger.info(f"🔍 search_word_meaning('{word}') начал")
         start_time = time.time()
 
@@ -129,7 +124,6 @@ class WebSearch:
                 params = {'text': query}
                 params.update(self.yandex_config['params'])
 
-                # 🔥 Используем Selenium вместо requests
                 html_content = self._fetch_with_selenium(
                     self.yandex_config['url'],
                     params,
@@ -149,11 +143,9 @@ class WebSearch:
 
                 soup = BeautifulSoup(html_content, 'html.parser')
 
-                # 🔍 Hybrid parsing: HTML + JSON
                 all_snippets = []
                 all_links = []
 
-                # 1. HTML-парсинг (старый способ)
                 data_c_snippets = self._extract_snippets_from_data_c(soup)
                 if data_c_snippets:
                     logger.debug(f"✅ search_word_meaning: найдено {len(data_c_snippets)} сниппетов из div[data-c]")
@@ -164,29 +156,23 @@ class WebSearch:
                         logger.debug(f"✅ search_word_meaning: найдено {len(found)} ссылок по селектору '{sel}'")
                         all_links.extend(found)
 
-                # 2. JSON-парсинг (новый способ — если HTML не дал результатов)
-                                # 2. JSON-парсинг (новый способ — если HTML не дал результатов)
                 if not all_snippets or not all_links:
                     logger.debug(f"ℹ️ search_word_meaning: HTML-парсинг не дал результатов, ищем JSON...")
 
-                    # Ищем script-тег с JSON
                     json_match = re.search(
                         r'<script[^>]*id=["\']?resource-data["\']?[^>]*>(.*?)</script>',
-                        html_content,  # 🔧 Исправлено: было response, теперь html_content
+                        html_content,
                         re.DOTALL
                     )
                     if json_match:
                         try:
                             data = json.loads(json_match.group(1))
-                            # Yandex JSON structure: {'serpItems': [{'snippet': '...', 'url': '...'}, ...]}
                             serp_items = data.get('serpItems', [])
                             for item in serp_items:
-                                # Сниппет
                                 if 'snippet' in item:
                                     all_snippets.append(BeautifulSoup(f"<div>{item['snippet']}</div>", "html.parser").div)
                                 elif 'text' in item:
                                     all_snippets.append(BeautifulSoup(f"<div>{item['text']}</div>", "html.parser").div)
-                                # Ссылка — с исправленным захватом переменных
                                 if 'url' in item:
                                     link_url = item['url']
                                     link_title = item.get('title', link_url)
@@ -208,7 +194,6 @@ class WebSearch:
                     else:
                         logger.warning(f"⚠️ search_word_meaning: JSON не найден")
 
-                # 3. Обработка сниппетов
                 snippets = all_snippets[:2]
                 if not snippets:
                     logger.warning(f"⚠️ search_word_meaning: не найдено ни одного сниппета!")
@@ -224,12 +209,10 @@ class WebSearch:
                         })
                         logger.info(f"📚 search_word_meaning: найдено определение: {text[:60]}...")
 
-                # 4. Обработка ссылок
                 for link in all_links[:3]:
                     href = link.get('href') if hasattr(link, 'get') else None
                     if not href:
                         continue
-                    # Проверяем, содержит ли ссылка словарь
                     if any(domain in href for domain in self.dictionary_sources):
                         link_text = link.get_text() if hasattr(link, 'get_text') else href
                         if link_text and len(link_text) > 5:
@@ -252,16 +235,7 @@ class WebSearch:
                 if len(all_definitions) >= 1 and len(all_dict_results) >= 1:
                     break
 
-            except requests.exceptions.Timeout:
-                logger.warning(f"⏱ search_word_meaning: timeout запроса для '{query}'")
-                search_queries.append({
-                    'engine': 'yandex',
-                    'query': query,
-                    'success': False,
-                    'error': 'timeout',
-                })
-                continue
-            except requests.exceptions.RequestException as e:
+            except Exception as e:
                 logger.warning(f"⏱ search_word_meaning: ошибка запроса '{query}': {e}")
                 search_queries.append({
                     'engine': 'yandex',
@@ -554,7 +528,6 @@ class WebSearch:
         return snippets
     
     def _fetch_with_selenium(self, url: str, params: dict, timeout: float = 3.0):
-        """Загружает страницу с Yandex через Selenium (JS-рендеринг)."""
         full_url = url + '?' + '&'.join(f'{k}={v}' for k, v in params.items())
         try:
             self.driver.get(full_url)
@@ -564,6 +537,14 @@ class WebSearch:
         except Exception as e:
             logger.error(f"❌ _fetch_with_selenium: ошибка загрузки '{full_url}': {e}")
             return None
+
+    def __del__(self):
+        if hasattr(self, 'driver') and self.driver:
+            try:
+                self.driver.quit()
+                logger.info("✅ WebSearch: undetected-chromedriver закрыт")
+            except Exception as e:
+                logger.warning(f"⚠️ WebSearch: ошибка закрытия драйвера: {e}")
     
 if __name__ == "__main__":
     # Настройка логирования
@@ -577,9 +558,4 @@ if __name__ == "__main__":
     test_words = ["привет", "приветет", "гипотеза", "экзистенциализм"]
     for w in test_words:
         res = ws.lookup(w, timeout=2.5)
-        print(f"{w}: {res}")
-
-    def __del__(self):
-        if hasattr(self, 'driver'):
-            self.driver.quit()
-            logger.info("✅ WebSearch: Selenium WebDriver закрыт")
+        print(f"{w}: {res}")    
