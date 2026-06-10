@@ -33,6 +33,13 @@ class WebSearch:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
         }
 
+        # ✅ Добавляем Google
+        self.google_config = {
+            'url': 'https://www.google.com/search',
+            'params': {'hl': 'ru'},
+            'snippet_selectors': ['.VwiC3b', '.DeDApp', '.BNeawe.s3v9rd.AP7Wnd'],
+        }
+
         self.yandex_config = {
             'url': 'https://yandex.ru/search/',
             'params': {'lr': 213},
@@ -54,39 +61,6 @@ class WebSearch:
                 'a[href]',
             ],
         }
-
-        self.dictionary_sources = [
-            'dic.academic.ru', 'slovarozhegova.ru', 'ozhegov.org', 'slovar.cc', 'teza.ru',
-            'lifactor.ru/slovari', 'allforchildren.ru/slovari', 'etymologica.ru', 'slovar.slovari.ru',
-            'foreign_words.academic.ru', 'slovar.silentfund.ru', 'slovari.tilnp.ru', 'slovari.gramota.ru',
-            'slovari.yandex.ru', 'dictionarium.com', 'ru.wikipedia.org', 'ru.wiktionary.org',
-            'dic.academic.ru/cdit', 'newslang.ru', 'slang.su', 'russkiymir.ru/slovar',
-            'deti-mama.ru/slovar', 'razvitiechild.ru/slovar',
-        ]
-
-        self.driver = None
-        try:
-            chrome_options = uc.ChromeOptions()
-            chrome_options.add_argument("--headless=new")  # ✅ Используем новую версию headless
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--disable-plugins-discovery")
-            chrome_options.add_argument("--disable-logging")
-            chrome_options.add_argument("--log-level=3")
-            chrome_options.add_argument("--silent")
-            # ✅ Убираем признаки автоматизации (для undetected-chromedriver это уже делается внутри)
-            chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-            # ✅ Устанавливаем "человеческий" user-agent
-            chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-
-            logger.info("🔄 WebSearch: Инициализация undetected-chromedriver...")
-            self.driver = uc.Chrome(options=chrome_options)
-            logger.info("✅ WebSearch: undetected-chromedriver инициализирован")
-        except Exception as e:
-            logger.error(f"❌ WebSearch: Ошибка инициализации драйвера: {e}")
-            logger.warning("⚠️ WebSearch: Поиск в интернете будет недоступен.")
 
         # Стоп-слова для фильтрации (уже есть в chatbot.py, здесь дублировать не нужно)
     def search_word_meaning(self, word: str, timeout: float = 2.5) -> Dict[str, any]:
@@ -116,137 +90,90 @@ class WebSearch:
             f'{word} — это',
         ]
 
-        for i, query in enumerate(query_variants):
-            try:
-                if time.time() - start_time > timeout:
-                    logger.warning(f"⏱ search_word_meaning: timeout ({time.time() - start_time:.1f} сек) для '{word}'")
-                    break
+        for engine, config in [('google', self.google_config), ('yandex', self.yandex_config)]:
+            if len(all_definitions) >= 1 and len(all_dict_results) >= 1:
+                break
 
-                logger.info(f"⏱ search_word_meaning: запрос #{i+1} — '{query}'")
+            for i, query in enumerate(query_variants):
+                try:
+                    if time.time() - start_time > timeout:
+                        logger.warning(f"⏱ search_word_meaning: timeout ({time.time() - start_time:.1f} сек) для '{word}'")
+                        break
 
-                params = {'text': query}
-                params.update(self.yandex_config['params'])
+                    logger.info(f"⏱ search_word_meaning: {engine} запрос #{i+1} — '{query}'")
 
-                html_content = self._fetch_with_selenium(
-                    self.yandex_config['url'],
-                    params,
-                    timeout=3.0,
-                )
-                if not html_content:
-                    logger.warning(f"⚠️ search_word_meaning: не удалось загрузить страницу через Selenium")
+                    params = {'q' if engine == 'google' else 'text': query}
+                    params.update(config['params'])
+
+                    html_content = self._fetch_with_selenium(
+                        config['url'],
+                        params,
+                        timeout=3.0,
+                    )
+                    if not html_content:
+                        logger.warning(f"⚠️ search_word_meaning: не удалось загрузить страницу через Selenium")
+                        search_queries.append({
+                            'engine': engine,
+                            'query': query,
+                            'success': False,
+                            'error': 'selenium_failed',
+                        })
+                        continue
+
+                    logger.info(f"✅ search_word_meaning: успешный ответ на '{query}' ({len(html_content)} байт)")
+
+                    soup = BeautifulSoup(html_content, 'html.parser')
+
+                    # ✅ Парсим сниппеты
+                    all_snippets = []
+                    for sel in config['snippet_selectors']:
+                        found = soup.select(sel)
+                        if found:
+                            logger.debug(f"✅ search_word_meaning: найдено {len(found)} сниппетов по селектору '{sel}'")
+                            all_snippets.extend(found)
+
+                    # ✅ Обрабатываем сниппеты
+                    for snippet in all_snippets:
+                        text = snippet.get_text().strip()
+                        if text and len(text) > 10:
+                            # Проверяем, является ли это определением
+                            if self._is_definition_text(text, word):
+                                all_definitions.append({
+                                    'text': text,
+                                    'source': engine
+                                })
+                                logger.info(f"✅ search_word_meaning: найдено определение: '{text[:100]}...'")
+
+                    # ✅ Ищем ссылки на словари
+                    all_links = []
+                    for sel in config['link_selectors']:
+                        found = soup.select(sel)
+                        if found:
+                            logger.debug(f"✅ search_word_meaning: найдено {len(found)} ссылок по селектору '{sel}'")
+                            all_links.extend(found)
+
+                    for link in all_links:
+                        href = link.get('href')
+                        if href:
+                            for source in self.dictionary_sources:
+                                if source in href:
+                                    title = link.get_text().strip()
+                                    all_dict_results.append({
+                                        'title': title,
+                                        'url': href,
+                                        'source': engine
+                                    })
+                                    logger.info(f"✅ search_word_meaning: найден источник: {source}")
+
+                except Exception as e:
+                    logger.warning(f"⏱ search_word_meaning: ошибка запроса '{query}': {e}")
                     search_queries.append({
-                        'engine': 'yandex',
+                        'engine': engine,
                         'query': query,
                         'success': False,
-                        'error': 'selenium_failed',
+                        'error': str(e),
                     })
                     continue
-
-                logger.info(f"✅ search_word_meaning: успешный ответ на '{query}' ({len(html_content)} байт)")
-
-                soup = BeautifulSoup(html_content, 'html.parser')
-
-                all_snippets = []
-                all_links = []
-
-                data_c_snippets = self._extract_snippets_from_data_c(soup)
-                if data_c_snippets:
-                    logger.debug(f"✅ search_word_meaning: найдено {len(data_c_snippets)} сниппетов из div[data-c]")
-                    all_snippets.extend(data_c_snippets)
-                for sel in self.yandex_config['link_selectors']:
-                    found = soup.select(sel)
-                    if found:
-                        logger.debug(f"✅ search_word_meaning: найдено {len(found)} ссылок по селектору '{sel}'")
-                        all_links.extend(found)
-
-                if not all_snippets or not all_links:
-                    logger.debug(f"ℹ️ search_word_meaning: HTML-парсинг не дал результатов, ищем JSON...")
-
-                    json_match = re.search(
-                        r'<script[^>]*id=["\']?resource-data["\']?[^>]*>(.*?)</script>',
-                        html_content,
-                        re.DOTALL
-                    )
-                    if json_match:
-                        try:
-                            data = json.loads(json_match.group(1))
-                            serp_items = data.get('serpItems', [])
-                            for item in serp_items:
-                                if 'snippet' in item:
-                                    all_snippets.append(BeautifulSoup(f"<div>{item['snippet']}</div>", "html.parser").div)
-                                elif 'text' in item:
-                                    all_snippets.append(BeautifulSoup(f"<div>{item['text']}</div>", "html.parser").div)
-                                if 'url' in item:
-                                    link_url = item['url']
-                                    link_title = item.get('title', link_url)
-                                    all_links.append(type('Link', (), {
-                                        'get': lambda s, k, url=link_url: url if k == 'href' else None,
-                                        'get_text': lambda s: link_title
-                                    })())
-                                elif 'href' in item:
-                                    link_href = item['href']
-                                    link_title = item.get('title', link_href)
-                                    all_links.append(type('Link', (), {
-                                        'get': lambda s, k, href=link_href: href if k == 'href' else None,
-                                        'get_text': lambda s: link_title
-                                    })())
-
-                            logger.debug(f"✅ search_word_meaning: из JSON найдено {len([s for s in all_snippets if hasattr(s, 'get_text')])} сниппетов и {len(all_links)} ссылок")
-                        except (json.JSONDecodeError, KeyError) as e:
-                            logger.warning(f"⚠️ search_word_meaning: ошибка парсинга JSON: {e}")
-                    else:
-                        logger.warning(f"⚠️ search_word_meaning: JSON не найден")
-
-                snippets = all_snippets[:2]
-                if not snippets:
-                    logger.warning(f"⚠️ search_word_meaning: не найдено ни одного сниппета!")
-                for snippet in snippets:
-                    text = snippet.get_text().strip() if hasattr(snippet, 'get_text') else str(snippet)
-                    if not (text and len(text) > 20):
-                        continue
-                    if self._is_definition_text(text, word):
-                        all_definitions.append({
-                            'text': text,
-                            'source': 'yandex',
-                            'query': query,
-                        })
-                        logger.info(f"📚 search_word_meaning: найдено определение: {text[:60]}...")
-
-                for link in all_links[:3]:
-                    href = link.get('href') if hasattr(link, 'get') else None
-                    if not href:
-                        continue
-                    if any(domain in href for domain in self.dictionary_sources):
-                        link_text = link.get_text() if hasattr(link, 'get_text') else href
-                        if link_text and len(link_text) > 5:
-                            dict_result = {
-                                'title': link_text,
-                                'url': href,
-                                'source': 'yandex',
-                                'query': query,
-                            }
-                            if dict_result not in all_dict_results:
-                                all_dict_results.append(dict_result)
-                                logger.info(f"🔗 search_word_meaning: найдена ссылка: {link_text} ({href})")
-
-                search_queries.append({
-                    'engine': 'yandex',
-                    'query': query,
-                    'success': True,
-                })
-
-                if len(all_definitions) >= 1 and len(all_dict_results) >= 1:
-                    break
-
-            except Exception as e:
-                logger.warning(f"⏱ search_word_meaning: ошибка запроса '{query}': {e}")
-                search_queries.append({
-                    'engine': 'yandex',
-                    'query': query,
-                    'success': False,
-                    'error': str(e),
-                })
-                continue
 
         elapsed = time.time() - start_time
         logger.info(f"⏱ search_word_meaning('{word}'): завершено за {elapsed:.2f} сек | "
@@ -279,6 +206,8 @@ class WebSearch:
             'total_dict_sources_found': 0,
             'error': 'Определения не найдены в доступных источниках',
         }
+    
+    
     def _is_definition_text(self, text: str, word: str) -> bool:
         text_lower = text.lower()
         word_lower = word.lower()
@@ -515,22 +444,19 @@ class WebSearch:
         from selenium.webdriver.support import expected_conditions as EC
         from selenium.webdriver.common.by import By
 
-        full_url = url + '?' + '&'.join(f'{k}={v}' for k, v in params.items())
+        param_char = '?' if '?' not in url else '&'
+        full_url = url + param_char + '&'.join(f'{k}={v}' for k, v in params.items())
         try:
             self.driver.get(full_url)
             
             # ✅ Ждем, пока загрузятся ссылки результатов (не более 4 секунд)
             try:
                 WebDriverWait(self.driver, 4).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, '.serp-item__link'))
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '.g'))
                 )
-                logger.debug("✅ _fetch_with_selenium: найдены .serp-item__link")
+                logger.debug("✅ _fetch_with_selenium: найдены .g (Google results)")
             except:
-                logger.warning("⚠️ _fetch_with_selenium: таймаут ожидания .serp-item__link, используем текущий HTML")
-                # ✅ Сохраняем HTML в файл для отладки
-                with open("debug_yandex.html", "w", encoding="utf-8") as f:
-                    f.write(self.driver.page_source)
-                logger.debug("💾 _fetch_with_selenium: HTML сохранен в debug_yandex.html")
+                logger.warning("⚠️ _fetch_with_selenium: таймаут ожидания .g (Google results), используем текущий HTML")
 
             # ✅ Дополнительная пауза для полной рендеринга
             time.sleep(1.5)
