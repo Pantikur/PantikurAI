@@ -67,7 +67,7 @@ class WebSearch:
         self.driver = None
         try:
             chrome_options = uc.ChromeOptions()
-            chrome_options.add_argument("--headless")  # без GUI
+            chrome_options.add_argument("--headless=new")  # ✅ Используем новую версию headless
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--disable-gpu")
@@ -76,7 +76,12 @@ class WebSearch:
             chrome_options.add_argument("--disable-logging")
             chrome_options.add_argument("--log-level=3")
             chrome_options.add_argument("--silent")
-            chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36")
+            # ✅ Убираем признаки автоматизации
+            chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation", "load-extension"])
+            chrome_options.add_experimental_option("useAutomationExtension", False)
+            # ✅ Устанавливаем "человеческий" user-agent
+            chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
             logger.info("🔄 WebSearch: Инициализация undetected-chromedriver...")
             self.driver = uc.Chrome(options=chrome_options)
