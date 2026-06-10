@@ -545,26 +545,31 @@ class WebSearch:
         return snippets
     
     def _fetch_with_selenium(self, url: str, params: dict, timeout: float = 3.0):
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
+
         full_url = url + '?' + '&'.join(f'{k}={v}' for k, v in params.items())
         try:
             self.driver.get(full_url)
-            time.sleep(2.5)  # ✅ Увеличено с 0.5 до 2.0 секунды
-            if "organic" not in self.driver.page_source:
-                logger.warning("⚠️ _fetch_with_selenium: 'organic' не найден в page_source. Повторная загрузка...")
-                time.sleep(1.5)
+            
+            # ✅ Ждем, пока загрузятся ссылки результатов (не более 4 секунд)
+            try:
+                WebDriverWait(self.driver, 4).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '.serp-item__link'))
+                )
+                logger.debug("✅ _fetch_with_selenium: найдены .serp-item__link")
+            except:
+                logger.warning("⚠️ _fetch_with_selenium: таймаут ожидания .serp-item__link, используем текущий HTML")
+
+            # ✅ Дополнительная пауза для полной рендеринга
+            time.sleep(1.5)
+            
             html = self.driver.page_source
             return html
         except Exception as e:
             logger.error(f"❌ _fetch_with_selenium: ошибка загрузки '{full_url}': {e}")
             return None
-
-    def __del__(self):
-        if hasattr(self, 'driver') and self.driver:
-            try:
-                self.driver.quit()
-                logger.info("✅ WebSearch: undetected-chromedriver закрыт")
-            except Exception as e:
-                logger.warning(f"⚠️ WebSearch: ошибка закрытия драйвера: {e}")
     
 if __name__ == "__main__":
     # Настройка логирования
