@@ -511,6 +511,8 @@ class WebSearch:
         """Парсит div[data-c] как контейнер результата и извлекает сниппеты."""
         # ✅ 1. Сначала ищем классические сниппеты
         data_c_blocks = soup.select('div[data-c]')
+        if not data_c_blocks:
+            logger.debug("ℹ️ _extract_snippets_from_data_c: 'div[data-c]' не найдены")
         snippets = []
         for block in data_c_blocks:
             snippet = (
@@ -529,6 +531,7 @@ class WebSearch:
         # ✅ 2. Если классические не найдены, пытаемся найти любые текстовые блоки внутри "organic"
         if not snippets:
             organic_blocks = soup.select('.serp-item, .organic, .snippet')
+            logger.debug(f"ℹ️ _extract_snippets_from_data_c: попытка запасного парсинга. Найдено {len(organic_blocks)} блоков 'organic'")
             for block in organic_blocks:
                 text = block.get_text().strip()
                 if text and len(text) > 50:  # Ищем более длинные блоки
@@ -542,7 +545,10 @@ class WebSearch:
         full_url = url + '?' + '&'.join(f'{k}={v}' for k, v in params.items())
         try:
             self.driver.get(full_url)
-            time.sleep(1.0)  # ✅ Увеличено с 0.5 до 1.0 секунды
+            time.sleep(2.5)  # ✅ Увеличено с 0.5 до 2.0 секунды
+            if "organic" not in self.driver.page_source:
+                logger.warning("⚠️ _fetch_with_selenium: 'organic' не найден в page_source. Повторная загрузка...")
+                time.sleep(1.5)
             html = self.driver.page_source
             return html
         except Exception as e:
