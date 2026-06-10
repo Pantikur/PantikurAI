@@ -509,10 +509,10 @@ class WebSearch:
 
     def _extract_snippets_from_data_c(self, soup):
         """Парсит div[data-c] как контейнер результата и извлекает сниппеты."""
+        # ✅ 1. Сначала ищем классические сниппеты
         data_c_blocks = soup.select('div[data-c]')
         snippets = []
         for block in data_c_blocks:
-            # Ищем сниппет внутри div[data-c]
             snippet = (
                 block.select_one('.organic__snippet') or
                 block.select_one('.serp-item__snippet') or
@@ -525,13 +525,24 @@ class WebSearch:
                 text = snippet.get_text().strip()
                 if text and len(text) > 20:
                     snippets.append(BeautifulSoup(f"<div>{text}</div>", "html.parser").div)
+
+        # ✅ 2. Если классические не найдены, пытаемся найти любые текстовые блоки внутри "organic"
+        if not snippets:
+            organic_blocks = soup.select('.serp-item, .organic, .snippet')
+            for block in organic_blocks:
+                text = block.get_text().strip()
+                if text and len(text) > 50:  # Ищем более длинные блоки
+                    snippets.append(BeautifulSoup(f"<div>{text}</div>", "html.parser").div)
+                    if len(snippets) >= 2:
+                        break
+
         return snippets
     
     def _fetch_with_selenium(self, url: str, params: dict, timeout: float = 3.0):
         full_url = url + '?' + '&'.join(f'{k}={v}' for k, v in params.items())
         try:
             self.driver.get(full_url)
-            time.sleep(0.5)  # ждём загрузки JS
+            time.sleep(1.0)  # ✅ Увеличено с 0.5 до 1.0 секунды
             html = self.driver.page_source
             return html
         except Exception as e:
