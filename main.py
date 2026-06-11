@@ -74,6 +74,9 @@ else:
 # === Глобальная переменная бота и блокировка ===
 chatbot = None
 CHATBOT_LOCK = threading.RLock()  # Защита при доступе и перезагрузке
+    # === Глобальная переменная WebSearch ===
+web_search = None
+WEBSH_LOCK = threading.Lock()  # Защита при доступе к web_search
 
 # === Импорт ChatBot с резервом ===
 def import_chatbot():
@@ -148,6 +151,18 @@ async def lifespan(app: FastAPI):
         with CHATBOT_LOCK:
             chatbot = new_bot
         logger.info("✅ Чат-бот успешно загружен!")
+        try:
+            logger.info("🔍 Инициализирую WebSearch...")
+            web_search_start = asyncio.get_event_loop().time()
+            from src.web_search import WebSearch
+            global web_search
+            web_search = WebSearch()
+            web_search.init_driver()
+            web_search_time = asyncio.get_event_loop().time() - web_search_start
+            logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
+        except Exception as e:
+            logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
+            web_search = None
         if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:
             logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")
     except Exception as e:
@@ -293,6 +308,10 @@ async def predict(request: Request):
     with CHATBOT_LOCK:
         local_bot = chatbot
 
+    local_ws = None
+    with WEBSH_LOCK:
+        local_ws = web_search
+
     if local_bot is None:
         logger.error("❌ chatbot не загружен")
         raise HTTPException(status_code=500, detail="Сервис временно недоступен")
@@ -384,7 +403,61 @@ async def predict(request: Request):
 
         else:  # chat (остаток)
             logger.info("🔧 Режим: chat")
-            valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            # === ПАРСИНГ КОНТЕКСТА ДЛЯ НОВЫХ СЛОВ (только в режиме chat) ===
+            word_to_lookup = None
+            lookup_result = None
+            if mode == "chat":
+                # 1. Ищем последнее сообщение пользователя
+                last_user_msg = None
+                for msg in reversed(req.messages):
+                    if not msg.is_own:  # Это сообщение от пользователя
+                        last_user_msg = msg.message
+                        break
+
+                # 2. Если есть сообщение и WebSearch — ищем новое слово
+                if last_user_msg and local_ws:
+                    try:
+                        words = local_ws.get_word_from_context(last_user_msg)
+                        if words:
+                            word_to_lookup = words[0]
+                            logger.info(f"🔍 Найдено слово для поиска: '{word_to_lookup}'")
+                    except Exception as e:
+                        logger.warning(f"⚠️ Ошибка в get_word_from_context: {e}")
+
+                # 3. Если слово найдено — ищем его значение
+                if word_to_lookup and local_ws:
+                    try:
+                        lookup_start = asyncio.get_event_loop().time()
+                        # Пробуем использовать кэш из chatbot
+                        knowledge_cache = getattr(local_bot, 'knowledge_cache', None)
+                        save_cache_func = None
+                        if knowledge_cache and hasattr(local_bot, 'save_knowledge_cache'):
+                            save_cache_func = local_bot.save_knowledge_cache
+
+                        definition = local_ws.lookup(
+                            word_to_lookup,
+                            timeout=2.0,
+                            knowledge_cache=knowledge_cache,
+                            save_knowledge_cache_func=save_cache_func
+                        )
+                        if definition:
+                            lookup_result = definition
+                            logger.info(f"✅ lookup('{word_to_lookup}'): '{definition[:50]}...'")
+                    except Exception as e:
+                        logger.error(f"❌ Ошибка lookup: {e}")
+                # === КОНЕЦ ПАРСИНГА СЛОВ ===
+
+            # === ДОБАВЛЕНО: Вставка определения слова в контекст ===
+            if lookup_result:
+                # Создаем новый контекст с определением слова
+                modified_messages = list(req.messages)
+                # Вставляем определение перед последним сообщением пользователя
+                modified_messages.insert(-1, MessageItem(message=f"Словарное определение: {lookup_result}", is_own=False))
+                logger.info(f"🔍 Вставляю определение в контекст: '{lookup_result[:50]}...'")
+                valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in modified_messages]
+            else:
+                valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+
             start_subgen = asyncio.get_event_loop().time()
             response = local_bot.generate_response(valid_msgs, mode="chat").strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
