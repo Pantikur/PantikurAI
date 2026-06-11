@@ -109,6 +109,7 @@ def import_chatbot():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global chatbot
+    
 
     start_lifespan = asyncio.get_event_loop().time()
     logger.info("🔄 Старт lifespan...")
@@ -122,7 +123,7 @@ async def lifespan(app: FastAPI):
     if missing:
         raise RuntimeError(f"Отсутствуют файлы: {', '.join(missing)}")
     
-    logger.info(f"✅ WebSearch driver ready: {type(web_search.driver).__name__}")
+    
 
     logger.info(f"📁 Все необходимые файлы найдены за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
 
