@@ -427,45 +427,44 @@ async def predict(request: Request):
             # === ПАРСИНГ КОНТЕКСТА ДЛЯ НОВЫХ СЛОВ (только в режиме chat) ===
             word_to_lookup = None
             lookup_result = None
-            if mode == "chat":
-                # 1. Ищем последнее сообщение пользователя
-                last_user_msg = None
-                for msg in reversed(req.messages):
-                    if not msg.is_own:  # Это сообщение от пользователя
-                        last_user_msg = msg.message
-                        break
+            if mode == "chat" and local_ws and local_ws.driver is not None:  # ← ДОБАВЛЕНА ПРОВЕРКА
+                    # 1. Ищем последнее сообщение пользователя
+                    last_user_msg = None
+                    for msg in reversed(req.messages):
+                        if not msg.is_own:
+                            last_user_msg = msg.message
+                            break
 
-                # 2. Если есть сообщение и WebSearch — ищем новое слово
-                if last_user_msg and local_ws:
-                    try:
-                        words = local_ws.get_word_from_context(last_user_msg)
-                        if words:
-                            word_to_lookup = words[0]
-                            logger.info(f"🔍 Найдено слово для поиска: '{word_to_lookup}'")
-                    except Exception as e:
-                        logger.warning(f"⚠️ Ошибка в get_word_from_context: {e}")
+                    # 2. Если есть сообщение — ищем новое слово
+                    if last_user_msg and local_ws and local_ws.driver is not None:  # ← ДОБАВЛЕНА ПРОВЕРКА
+                        try:
+                            words = local_ws.get_word_from_context(last_user_msg)
+                            if words:
+                                word_to_lookup = words[0]
+                                logger.info(f"🔍 Найдено слово для поиска: '{word_to_lookup}'")
+                        except Exception as e:
+                            logger.warning(f"⚠️ Ошибка в get_word_from_context: {e}")
 
-                # 3. Если слово найдено — ищем его значение
-                if word_to_lookup and local_ws:
-                    try:
-                        lookup_start = asyncio.get_event_loop().time()
-                        # Пробуем использовать кэш из chatbot
-                        knowledge_cache = getattr(local_bot, 'knowledge_cache', None)
-                        save_cache_func = None
-                        if knowledge_cache and hasattr(local_bot, 'save_knowledge_cache'):
-                            save_cache_func = local_bot.save_knowledge_cache
+                    # 3. Если слово найдено — ищем его значение
+                    if word_to_lookup and local_ws and local_ws.driver is not None:  # ← ДОБАВЛЕНА ПРОВЕРКА
+                        try:
+                            lookup_start = asyncio.get_event_loop().time()
+                            knowledge_cache = getattr(local_bot, 'knowledge_cache', None)
+                            save_cache_func = None
+                            if knowledge_cache and hasattr(local_bot, 'save_knowledge_cache'):
+                                save_cache_func = local_bot.save_knowledge_cache
 
-                        definition = local_ws.lookup(
-                            word_to_lookup,
-                            timeout=2.0,
-                            knowledge_cache=knowledge_cache,
-                            save_knowledge_cache_func=save_cache_func
-                        )
-                        if definition:
-                            lookup_result = definition
-                            logger.info(f"✅ lookup('{word_to_lookup}'): '{definition[:50]}...'")
-                    except Exception as e:
-                        logger.error(f"❌ Ошибка lookup: {e}")
+                            definition = local_ws.lookup(
+                                word_to_lookup,
+                                timeout=2.0,
+                                knowledge_cache=knowledge_cache,
+                                save_knowledge_cache_func=save_cache_func
+                            )
+                            if definition:
+                                lookup_result = definition
+                                logger.info(f"✅ lookup('{word_to_lookup}'): '{definition[:50]}...'")
+                        except Exception as e:
+                            logger.error(f"❌ Ошибка lookup: {e}")
                 # === КОНЕЦ ПАРСИНГА СЛОВ ===
 
             # === ДОБАВЛЕНО: Вставка определения слова в контекст ===
