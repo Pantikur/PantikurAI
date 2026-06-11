@@ -156,13 +156,34 @@ async def lifespan(app: FastAPI):
             web_search_start = asyncio.get_event_loop().time()
             from src.web_search import WebSearch
             global web_search
+            
+            # Создаём объект
             web_search = WebSearch()
+            
+            # Явно вызываем инициализацию драйвера
+            logger.info("🚀 Вызываю web_search.init_driver()...")
             web_search.init_driver()
+            
+            # 🔴 КРИТИЧЕСКАЯ ПРОВЕРКА: убедиться, что драйвер запустился
+            if web_search.driver is None:
+                logger.critical("❌ init_driver() НЕ УДАЛСЯ (driver = None)!")
+                raise RuntimeError("WebSearch: драйвер не инициализировался. Проверь Chrome/undetected_chromedriver.")
+            
             web_search_time = asyncio.get_event_loop().time() - web_search_start
             logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
+            
+            # 🔴 ДОБАВЛЕНО: загрузка кэша при старте (чтобы избежать ошибок в lookup)
+            try:
+                cache_file = str(BASE_DIR / "data" / "knowledge_cache.json")
+                web_search._load_knowledge_cache(cache_file)
+                logger.info(f"📚 knowledge_cache загружен ({cache_file})")
+            except Exception as e:
+                logger.warning(f"⚠️ Ошибка загрузки knowledge_cache: {e}")
+                
         except Exception as e:
             logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
             web_search = None
+            logger.warning("⚠️ WebSearch отключён — поиск слов в интернете недоступен")
         if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:
             logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")
     except Exception as e:

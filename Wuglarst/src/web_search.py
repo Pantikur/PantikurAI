@@ -62,6 +62,24 @@ class WebSearch:
             ],
         }
 
+        # ✅ Список словарей для поиска ссылок
+        self.dictionary_sources = [
+            'ozhegov', 'tolkoviy', 'dictionary', 'словарь', 'ожегов', 'толковый'
+        ]
+
+        # Инициализация driver
+        self.driver = None
+
+    def init_driver(self):
+        """Инициализирует undetected_chromedriver"""
+        try:
+            self.driver = uc.Chrome()
+            self.driver.maximize_window()
+            logger.info("✅ WebSearch driver initialized")
+        except Exception as e:
+            logger.error(f"❌ Ошибка инициализации драйвера: {e}")
+            self.driver = None
+
         # Стоп-слова для фильтрации (уже есть в chatbot.py, здесь дублировать не нужно)
     def search_word_meaning(self, word: str, timeout: float = 2.5) -> Dict[str, any]:
         # Если драйвер не инициализирован, сразу возвращаем ошибку
@@ -207,7 +225,7 @@ class WebSearch:
             'error': 'Определения не найдены в доступных источниках',
         }
     
-    
+
     def _is_definition_text(self, text: str, word: str) -> bool:
         text_lower = text.lower()
         word_lower = word.lower()
