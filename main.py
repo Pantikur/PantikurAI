@@ -121,6 +121,8 @@ async def lifespan(app: FastAPI):
             missing.append(name)
     if missing:
         raise RuntimeError(f"Отсутствуют файлы: {', '.join(missing)}")
+    
+    logger.info(f"✅ WebSearch driver ready: {type(web_search.driver).__name__}")
 
     logger.info(f"📁 Все необходимые файлы найдены за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
 

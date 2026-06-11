@@ -73,9 +73,16 @@ class WebSearch:
     def init_driver(self):
         """Инициализирует undetected_chromedriver"""
         try:
-            self.driver = uc.Chrome()
-            self.driver.maximize_window()
-            logger.info("✅ WebSearch driver initialized")
+            # 🔧 ДОБАВЛЕНО: настройки для Docker и headless-режима
+            options = uc.ChromeOptions()
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--headless=new")  # ← HEADLESS
+            options.add_argument("--disable-gpu")
+            options.add_argument("--window-size=1920,1080")
+
+            self.driver = uc.Chrome(options=options)
+            logger.info("✅ WebSearch driver initialized (Docker headless)")
         except Exception as e:
             logger.error(f"❌ Ошибка инициализации драйвера: {e}")
             self.driver = None
