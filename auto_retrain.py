@@ -9,7 +9,7 @@ DATA_DIR = "data"
 MODEL_PATH = "models/chat_model.pth"
 
 # Файлы, за которыми следим
-WATCHED_FILES = ["conversations.jsonl", "training_pairs.jsonl"]
+WATCHED_FILES = ["conversations.json", "training_pairs.jsonl"]
 
 
 class RetrainHandler(FileSystemEventHandler):
@@ -40,7 +40,7 @@ class RetrainHandler(FileSystemEventHandler):
 
 def start_watching():
     print(f"👀 Слежение за папкой: {DATA_DIR}")
-    print("💡 Измените conversations.jsonl или training_pairs.jsonl — начнётся обучение")
+    print("💡 Измените conversations.json или training_pairs.jsonl — начнётся обучение")
 
     event_handler = RetrainHandler()
     observer = Observer()
