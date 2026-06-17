@@ -81,15 +81,31 @@ def ensure_directories():
     MODELS_DIR.mkdir(exist_ok=True)
 
 
-def enrich_with_gigachat():
+def enrich_with_gigachat(n: int = 10):
     """Запускает сборку данных от GigaChat, если задан токен"""
     if not GIGACHAT_TOKEN:
         logger.warning("[WARN] GIGACHAT_TOKEN не найден — дообучение без данных от GigaChat")
         return
 
     try:
-        generate_self_teaching_dialogs(n=5)  # ← можно настроить n
+        # Сначала генерируем новые данные
+        logger.info(f"[AI] Генерация {n} новых диалогов через GigaChat...")
+        import subprocess
+        result = subprocess.run(
+            [sys.executable, "generate_training_data.py", "--count", str(n), "--all"],
+            capture_output=True,
+            text=True,
+            timeout=600
+        )
+        if result.stdout:
+            for line in result.stdout.split('\n'):
+                if line.strip():
+                    safe_print(line)
+        if result.returncode != 0 and result.stderr:
+            logger.warning(f"[WARN] Генерация данных: {result.stderr[:200]}")
         logger.info("[OK] Диалоги с GigaChat добавлены в conversations.json")
+    except subprocess.TimeoutExpired:
+        logger.warning("[WARN] Генерация данных таймаут (600 сек)")
     except Exception as e:
         logger.warning(f"[WARN] GigaChat enrichment не удался: {e}")
 
@@ -240,11 +256,18 @@ def main():
         action="store_true",
         help="Только показать, что будет сделано"
     )
+    parser.add_argument(
+        "--generate",
+        type=int,
+        default=10,
+        help="Количество диалогов для генерации (по умолчанию: 10, 0 = отключить)"
+    )
 
     args = parser.parse_args()
 
     ensure_directories()
-    enrich_with_gigachat()
+    if args.generate > 0:
+        enrich_with_gigachat(n=args.generate)
     enrich_with_rpg_scenes()
 
     # === Этап 1: Сборка данных ===

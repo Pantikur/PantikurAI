@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # build_training_data.py
 """
-Генерация обучающих пар user → bot из JSONL-файлов.
-Теперь также поддерживает создание data/conversations.json.
+команда запуска python build_training_data.py
 """
 
 import os
@@ -279,7 +278,7 @@ def main():
         safe_print("[TEST] Режим Dry Run: данные не сохранены.")
     else:
         # --- 1. Сохранение training_pairs.jsonl ---
-        train_path = os.path.join(data_dir, paths["training_pairs"])
+        train_path = paths["training_pairs"]
         os.makedirs(os.path.dirname(train_path), exist_ok=True)
         with open(train_path, "w", encoding="utf-8") as f:
             for pair in all_pairs:
@@ -294,7 +293,7 @@ def main():
         safe_print(f"[SAVE] Сохранены диалоги: {conv_path}")
 
         # --- 3. Сохранение статистики ---
-        stats_path = os.path.join(data_dir, paths["knowledge_stats"])
+        stats_path = paths["knowledge_stats"]
         os.makedirs(os.path.dirname(stats_path), exist_ok=True)
         stats = {
             "total_training_pairs": len(all_pairs),
@@ -311,6 +310,11 @@ def main():
         # === Этап 4: Создание токенизатора ===
         tokenizer_path = os.path.join(data_dir, "tokenizer.json")
         vocab_data = build_vocab_from_data(train_path, max_vocab_size=10000, min_freq=1)
+        # Добавляем ключи, которые проверяет retrain.py
+        vocab_data.setdefault("pad_token", "<PAD>")
+        vocab_data.setdefault("eos_token", "<EOS>")
+        vocab_data.setdefault("unk_token", "<UNK>")
+        vocab_data["vocab_size"] = len(vocab_data["vocab"])
         with open(tokenizer_path, "w", encoding="utf-8") as f:
             json.dump(vocab_data, f, ensure_ascii=False, indent=2)
         safe_print(f"[SAVE] Сохранён токенизатор: {tokenizer_path}")

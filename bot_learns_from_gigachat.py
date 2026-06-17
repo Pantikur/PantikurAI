@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 import requests
 import time
-import sys
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 CONVERSATIONS_PATH = DATA_DIR / "conversations.json"
@@ -16,8 +15,7 @@ if env_path.exists():
     load_dotenv(env_path)
     print(f"[OK] .env загружен из {env_path}")
 else:
-    print(f"[ERR] .env не найден в {env_path}")
-    sys.exit(1)
+    print(f"[WARN] .env не найден. Переменные берутся из окружения.")
 
 # === ОСНОВНОЙ КОД ===
 DATA_DIR = Path(__file__).resolve().parent / "data"

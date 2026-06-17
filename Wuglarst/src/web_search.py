@@ -164,8 +164,27 @@ class WebSearch:
             options.add_argument("--disable-gpu")
             options.add_argument("--window-size=1920,1080")
 
-            # 🔧 УКАЖИТЕ ПУТЬ К CHROME ЗДЕСЬ:
-            options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+            # 🔧 Автоматический поиск Chrome/Chromium по системе
+            chrome_path = os.getenv("CHROME_BINARY_PATH", "")
+            if not chrome_path:
+                for path in [
+                    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+                    "/usr/bin/google-chrome",
+                    "/usr/bin/google-chrome-stable",
+                    "/usr/bin/chromium",
+                    "/usr/bin/chromium-browser",
+                    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                ]:
+                    if os.path.exists(path):
+                        chrome_path = path
+                        break
+            
+            if chrome_path:
+                options.binary_location = chrome_path
+                logger.info(f"✅ Chrome найден: {chrome_path}")
+            else:
+                logger.warning("⚠️ Chrome не найден. Установите CHROME_BINARY_PATH или добавьте браузер в PATH.")
 
             self.driver = uc.Chrome(options=options)
             logger.info("✅ WebSearch driver initialized (Docker headless)")
