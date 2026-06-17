@@ -128,3 +128,12 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f504' in posit
 2026-06-16 16:12:05,392 | ERROR | [ERR] Ошибка в tokenizer.json: Некорректный формат tokenizer.json
 2026-06-16 16:12:05,392 | INFO | [INFO] Восстанавливаем из бэкапа: D:\NewCod\Pantikur\data\tokenizer.json.backup
 2026-06-16 16:12:05,405 | INFO | [AI] Запуск обучения...
+2026-06-16 17:06:21,686 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-16 17:06:21,688 | WARNING | [WARN] RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-06-16 17:06:21,688 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml --verbose
+2026-06-16 17:06:21,818 | WARNING | [WARN] Файл training_pairs.jsonl не создан — возможно, нет новых знаний
+2026-06-16 17:06:21,829 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-16 17:06:21,841 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-16 17:06:21,843 | ERROR | [ERR] Ошибка в tokenizer.json: Некорректный формат tokenizer.json
+2026-06-16 17:06:21,843 | INFO | [INFO] Восстанавливаем из бэкапа: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-16 17:06:21,855 | INFO | [AI] Запуск обучения...

@@ -10,11 +10,84 @@ import time
 import logging
 import os
 import json
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 import undetected_chromedriver as uc
 
-# Настройка логирования (вы можете переопределить уровень через logging.basicConfig)
+# Настройка логирования
 logger = logging.getLogger(__name__)
+
+
+# 🧠 Простой тренер для сохранения метаданных в JSONL
+class SimpleTrainer:
+    def __init__(self, log_file: str = "data/training_data.jsonl"):
+        self.log_file = log_file
+        os.makedirs(os.path.dirname(log_file) or ".", exist_ok=True)
+        logger.info(f"🧠 SimpleTrainer инициализирован: {log_file}")
+
+    def log_success(self, word: str, definition: str, weights: Dict[str, Any],
+                   score: float, source: str, explanation: str = ""):
+        record = {
+            "timestamp": time.time(),
+            "word": word,
+            "definition": definition,
+            "weights": weights,
+            "score": round(score, 2),
+            "source": source,
+            "explanation": explanation,
+        }
+        try:
+            with open(self.log_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+            logger.info(f"✅ trainer: записан успешный поиск '{word}' → {self.log_file}")
+        except Exception as e:
+            logger.error(f"❌ trainer: ошибка записи успешного запроса: {e}")
+
+    def log_failure(self, word: str, error: str, reason: str = "unknown"):
+        record = {
+            "timestamp": time.time(),
+            "word": word,
+            "definition": None,
+            "weights": None,
+            "score": 0.0,
+            "source": "none",
+            "error": error,
+            "reason": reason,
+        }
+        try:
+            with open(self.log_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+            logger.warning(f"⚠️ trainer: записан неуспешный запрос '{word}' → {self.log_file}")
+        except Exception as e:
+            logger.error(f"❌ trainer: ошибка записи неудачного запроса: {e}")
+
+
+# 📊 Метаданные для тестов (если нужен батч-поиск + анализ)
+class TestResult:
+    def __init__(self, word: str, success: bool, score: float = None, source: str = None,
+                 definition: str = None, weights: Dict = None, time_ms: int = None, error: str = None):
+        self.word = word
+        self.success = success
+        self.score = score
+        self.source = source
+        self.definition = definition
+        self.weights = weights
+        self.time_ms = time_ms
+        self.error = error
+
+    def to_dict(self) -> Dict:
+        return {
+            "word": self.word,
+            "success": self.success,
+            "score": self.score,
+            "source": self.source,
+            "definition": self.definition,
+            "weights": self.weights,
+            "time_ms": self.time_ms,
+            "error": self.error,
+        }
+
+    def __repr__(self):
+        return f"TestResult('{self.word}', success={self.success}, score={self.score}, source={self.source})"
 
 
 class WebSearch:
@@ -28,6 +101,8 @@ class WebSearch:
     - Кэширование ошибок, чтобы не повторять запросы на опечатки
     - Полное логирование времени, ошибок и релевантности
     - Поддержка temp_cache (временное хранилище в памяти) для диалогов
+    - 🧠 Поддержка тренера для дообучения модели (SimpleTrainer)
+    - 📊 Батч-поиск через run_test(...) для анализа
     """
 
     def __init__(self, cache_file: str = "data/knowledge_cache.json"):
@@ -35,54 +110,38 @@ class WebSearch:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36'
         }
 
-        # ✅ Добавляем Google
         self.google_config = {
             'url': 'https://www.google.com/search',
             'params': {'hl': 'ru'},
             'snippet_selectors': ['.VwiC3b', '.DeDApp', '.BNeawe.s3v9rd.AP7Wnd'],
+            'link_selectors': ['.r > a', '.yuRUbf a', 'a[href]'],
         }
 
         self.yandex_config = {
             'url': 'https://yandex.ru/search/',
             'params': {'lr': 213},
             'snippet_selectors': [
-                '.organic__snippet',
-                '.serp-item__snippet',
-                'div[data-c] > .serp-item__snippet',
-                'div[data-c] span',
-                'div[data-c] .text-snippet',
-                'div[data-c] p',
-                'div[data-c] .snippet',
-                'div[data-c] .organs__snippet',
-                'div[data-c] .snippet',
+                '.organic__snippet', '.serp-item__snippet',
+                'div[data-c] > .serp-item__snippet', 'div[data-c] span',
+                'div[data-c] .text-snippet', 'div[data-c] p',
+                'div[data-c] .snippet', 'div[data-c] .organs__snippet',
                 'div[data-c] .text',
             ],
-            'link_selectors': [
-                '.serp-item__link',
-                '.organic__link',
-                'a[href]',
-            ],
+            'link_selectors': ['.serp-item__link', '.organic__link', 'a[href]'],
         }
 
-        # ✅ Список словарей для поиска ссылок
         self.dictionary_sources = [
             'ozhegov', 'tolkoviy', 'dictionary', 'словарь', 'ожегов', 'толковый'
         ]
 
-        # Инициализация driver
         self.driver = None
-
-        # ✅ Временное хранилище (temp_cache) для диалогов
         self.temp_cache: Dict[str, str] = {}
-
-        # ✅ Постоянный кэш (загружается позже, но поле должно быть)
         self.knowledge_cache: Dict[str, str] = {}
+        self.trainer: Optional[Any] = None  # 🧠 SimpleTrainer
 
-        # 🔧 Загрузка постоянного кэша при инициализации
         self._load_knowledge_cache(cache_file)
 
     def _load_knowledge_cache(self, cache_file: str = "data/knowledge_cache.json"):
-        """Загрузка кэша из файла. Создаёт пустой кэш, если файл не найден."""
         if not cache_file:
             cache_file = "data/knowledge_cache.json"
         if os.path.exists(cache_file):
@@ -92,20 +151,21 @@ class WebSearch:
                 logger.info(f"📚 knowledge_cache загружен: {len(self.knowledge_cache)} записей")
             except Exception as e:
                 logger.warning(f"⚠️ Ошибка загрузки кэша: {e}")
-                self.knowledge_cache = {}  # Сброс при ошибке
+                self.knowledge_cache = {}
         else:
             logger.info(f"ℹ️ knowledge_cache не найден ({cache_file}), начнем с пустого кэша")
 
     def init_driver(self):
-        """Инициализирует undetected_chromedriver"""
         try:
-            # 🔧 ДОБАВЛЕНО: настройки для Docker и headless-режима
             options = uc.ChromeOptions()
             options.add_argument("--no-sandbox")
             options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--headless=new")  # ← HEADLESS
+            options.add_argument("--headless=new")
             options.add_argument("--disable-gpu")
             options.add_argument("--window-size=1920,1080")
+
+            # 🔧 УКАЖИТЕ ПУТЬ К CHROME ЗДЕСЬ:
+            options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
             self.driver = uc.Chrome(options=options)
             logger.info("✅ WebSearch driver initialized (Docker headless)")
@@ -114,153 +174,111 @@ class WebSearch:
             self.driver = None
 
     def _fetch_with_selenium(self, url: str, params: Dict[str, str], timeout: float = 3.0) -> Optional[str]:
-        """Вспомогательный метод — загрузка HTML через Selenium"""
         if not self.driver:
             logger.error("❌ _fetch_with_selenium: драйвер не инициализирован")
             return None
-
         try:
-            logger.debug(f"🚀 _fetch_with_selenium: GET {url} → params={params}")
+            logger.debug(f"🚀 _fetch_with_selenium: GET {url}")
             self.driver.get(f"{url}?{'&'.join(f'{k}={v}' for k, v in params.items())}")
-            time.sleep(1.5)  # Ждём рендеринга
+            time.sleep(0.7)  # ← уменьшено с 1.5 → 0.7
             return self.driver.page_source
         except Exception as e:
             logger.error(f"❌ _fetch_with_selenium: ошибка при загрузке {url}: {e}")
             return None
 
-    def search_word_meaning(self, word: str, timeout: float = 2.5) -> Dict[str, any]:
-        # Если драйвер не инициализирован, сразу возвращаем ошибку
+    def search_word_meaning(self, word: str, timeout: float = 5.0) -> Dict[str, Any]:
         if not self.driver:
             logger.warning(f"⚠️ search_word_meaning: драйвер не инициализирован. Возврат not_found для '{word}'.")
             return {
-                'word': word,
-                'status': 'not_found',
-                'definitions': [],
-                'dictionary_sources': [],
+                'word': word, 'status': 'not_found', 'definitions': [], 'dictionary_sources': [],
                 'search_queries': [{'engine': 'yandex', 'query': '', 'success': False, 'error': 'driver_not_init'}],
                 'total_definitions_found': 0,
-                'total_dict_sources_found': 0,
-                'error': 'Сервис поиска в интернете недоступен.',
             }
 
         logger.info(f"🔍 search_word_meaning('{word}') начал")
         start_time = time.time()
-
         all_definitions = []
         all_dict_results = []
         search_queries = []
 
-        query_variants = [
-            f'значение слова {word}',
-            f'{word} — это',
-        ]
+        # 🔧 Упрощённые запросы: только один популярный паттерн
+        query_variants = [f'{word} — это']
 
-        for engine, config in [('google', self.google_config), ('yandex', self.yandex_config)]:
-            if len(all_definitions) >= 1 and len(all_dict_results) >= 1:
+        # 🔧 Только Яндекс (быстрее и надёжнее, чем Google/Yandex вместе)
+        for engine, config in [('yandex', self.yandex_config)]:
+            if len(all_definitions) >= 2:
                 break
-
             for i, query in enumerate(query_variants):
-                try:
-                    if time.time() - start_time > timeout:
-                        logger.warning(f"⏱ search_word_meaning: timeout ({time.time() - start_time:.1f} сек) для '{word}'")
-                        break
+                # 🔧 Досрочный выход, если близок таймаут
+                if time.time() - start_time > (timeout - 1.2):
+                    logger.warning(f"⏱ search_word_meaning: близок timeout ({time.time() - start_time:.1f} сек)")
+                    break
 
-                    logger.info(f"⏱ search_word_meaning: {engine} запрос #{i+1} — '{query}'")
+                logger.info(f"⏱ search_word_meaning: {engine} запрос #{i+1} — '{query}'")
+                params = {'text': query}
+                params.update(config['params'])
 
-                    params = {'q' if engine == 'google' else 'text': query}
-                    params.update(config['params'])
-
-                    html_content = self._fetch_with_selenium(
-                        config['url'],
-                        params,
-                        timeout=3.0,
-                    )
-                    if not html_content:
-                        logger.warning(f"⚠️ search_word_meaning: не удалось загрузить страницу через Selenium")
-                        search_queries.append({
-                            'engine': engine,
-                            'query': query,
-                            'success': False,
-                            'error': 'selenium_failed',
-                        })
-                        continue
-
-                    logger.info(f"✅ search_word_meaning: успешный ответ на '{query}' ({len(html_content)} байт)")
-
-                    soup = BeautifulSoup(html_content, 'html.parser')
-
-                    # ✅ Парсим сниппеты
-                    all_snippets = []
-                    for sel in config['snippet_selectors']:
-                        found = soup.select(sel)
-                        if found:
-                            logger.debug(f"✅ search_word_meaning: найдено {len(found)} сниппетов по селектору '{sel}'")
-                            all_snippets.extend(found)
-
-                    # ✅ Обрабатываем сниппеты
-                    for snippet in all_snippets:
-                        text = snippet.get_text().strip()
-                        if text and len(text) > 10:
-                            # Проверяем, является ли это определением
-                            if self._is_definition_text(text, word):
-                                all_definitions.append({
-                                    'text': text,
-                                    'source': engine
-                                })
-                                logger.info(f"✅ search_word_meaning: найдено определение: '{text[:100]}...'")
-
-                    # ✅ Ищем ссылки на словари
-                    all_links = []
-                    for sel in config['link_selectors']:
-                        found = soup.select(sel)
-                        if found:
-                            logger.debug(f"✅ search_word_meaning: найдено {len(found)} ссылок по селектору '{sel}'")
-                            all_links.extend(found)
-
-                    for link in all_links:
-                        href = link.get('href')
-                        if href:
-                            for source in self.dictionary_sources:
-                                if source in href:
-                                    title = link.get_text().strip()
-                                    all_dict_results.append({
-                                        'title': title,
-                                        'url': href,
-                                        'source': engine
-                                    })
-                                    logger.info(f"✅ search_word_meaning: найден источник: {source}")
-
-                except Exception as e:
-                    logger.warning(f"⏱ search_word_meaning: ошибка запроса '{query}': {e}")
+                html_content = self._fetch_with_selenium(config['url'], params, timeout=3.0)
+                if not html_content:
+                    logger.warning(f"⚠️ search_word_meaning: не удалось загрузить страницу через Selenium")
                     search_queries.append({
-                        'engine': engine,
-                        'query': query,
-                        'success': False,
-                        'error': str(e),
+                        'engine': engine, 'query': query, 'success': False, 'error': 'selenium_failed',
                     })
-                    continue
+                    continue  # ← быстро пропускаем неудачные запросы
+
+                soup = BeautifulSoup(html_content, 'html.parser')
+                all_snippets = []
+                for sel in config['snippet_selectors']:
+                    found = soup.select(sel)
+                    if found:
+                        all_snippets.extend(found)
+
+                for snippet in all_snippets:
+                    text = snippet.get_text().strip()
+                    if text and len(text) > 10:
+                        weights_info = self._calculate_weights(text, word)
+                        score = weights_info['total_score']
+                        all_definitions.append({
+                            'text': text, 'source': engine,
+                            'weights': weights_info['weights'], 'score': score,
+                        })
+
+                # 🔍 Ищем ссылки на словари
+                all_links = []
+                for sel in config['link_selectors']:
+                    all_links.extend(soup.select(sel))
+                for link in all_links:
+                    href = link.get('href')
+                    if href:
+                        for source in self.dictionary_sources:
+                            if source in href:
+                                all_dict_results.append({
+                                    'title': link.get_text().strip(),
+                                    'url': href, 'source': engine
+                                })
+                                break
 
         elapsed = time.time() - start_time
         logger.info(f"⏱ search_word_meaning('{word}'): завершено за {elapsed:.2f} сек | "
-                    f"defs={len(all_definitions)}, links={len(all_dict_results)}")
+                    f"candidates={len(all_definitions)}, dict_links={len(all_dict_results)}")
 
         if all_definitions:
-            sorted_defs = sorted(
-                all_definitions,
-                key=lambda x: self._calculate_relevance(x['text'], word),
-                reverse=True,
-            )
-            top_definitions = [d['text'] for d in sorted_defs[:2]]
+            sorted_defs = sorted(all_definitions, key=lambda x: x['score'], reverse=True)
+            top_definitions = []
+            for d in sorted_defs[:2]:
+                top_definitions.append({
+                    'text': d['text'], 'source': d['source'],
+                    'score': round(d['score'], 2), 'weights': d['weights'],
+                    'explanation': self._explain_weights(d['weights'], d['score']),
+                })
+
             return {
-                'word': word,
-                'status': 'success',
-                'definitions': top_definitions,
-                'dictionary_sources': all_dict_results[:3],
-                'search_queries': search_queries,
+                'word': word, 'status': 'success', 'definitions': top_definitions,
+                'dictionary_sources': all_dict_results[:3], 'search_queries': search_queries,
                 'total_definitions_found': len(all_definitions),
-                'total_dict_sources_found': len(all_dict_results),
             }
 
+        # 🔧 FIXED: добавлено явное 'error' при отсутствии определений
         return {
             'word': word,
             'status': 'not_found',
@@ -268,49 +286,232 @@ class WebSearch:
             'dictionary_sources': [],
             'search_queries': search_queries,
             'total_definitions_found': 0,
-            'total_dict_sources_found': 0,
-            'error': 'Определения не найдены в доступных источниках',
+            'error': 'Определения не найдены',
         }
-    
 
-    def _is_definition_text(self, text: str, word: str) -> bool:
+    def _calculate_weights(self, text: str, word: str) -> Dict[str, any]:
+        """
+        Рассчитывает веса текста как определения слова.
+        Пример: {'word_start': True, 'pattern_is': True, 'clean_text': True, 'good_length': True, ...}
+        """
         text_lower = text.lower()
         word_lower = word.lower()
+        weights = {}
 
-        definition_patterns = [
-            f'{word_lower} — это',
-            f'{word_lower}, это',
-            f'слово {word_lower}',
-            f'термин {word_lower}',
-            f'называется {word_lower}',
-            'означает',
-            'обозначает',
-            'значит',
-            'подразумевает',
-        ]
+        # 1. Слово в начале
+        weights['word_start'] = text_lower.strip().startswith(word_lower)
 
-        has_definition_pattern = any(p in text_lower for p in definition_patterns)
+        # 2. Паттерны определения
+        weights['pattern_is'] = f'{word_lower} — это' in text_lower
+        weights['pattern_means'] = any(p in text_lower for p in ['означает', 'обозначает', 'значит', 'подразумевает'])
+        weights['pattern_named'] = f'называется {word_lower}' in text_lower
+        weights['pattern_value'] = f'значение слова {word_lower}' in text_lower
 
-        words = re.findall(r'[а-яА-ЯёЁ]+', text_lower)
-        common_words = {
-            'и', 'в', 'на', 'не', 'а', 'но', 'или', 'да', 'нет',
-            'быть', 'его', 'ее', 'их', 'мне', 'к', 'у', 'для', 'по',
-            'из', 'от', 'с', 'у', 'к', 'о', 'об', 'за', 'про', 'под',
-        }
-        meaningful_words = [w for w in words if w not in common_words]
-
-        # Дополнительно: если текст содержит "Ожегов", "Словарь Ожегова", "Толковый словарь" — считаем определением
-        has_ozhegov = any(
-            phrase in text_lower
-            for phrase in ['ожегов', 'толковый словарь', 'ozhegov', 'dictionary']
+        # 3. Упоминание словаря
+        weights['has_dictionary_keyword'] = any(
+            phrase in text_lower for phrase in ['ожегов', 'толковый словарь', 'ozhegov', 'dictionary']
         )
 
-        return has_definition_pattern or has_ozhegov or (len(meaningful_words) >= 3 and len(set(meaningful_words)) >= 2)
-    
-    def _calculate_relevance(self, text: str, word: str) -> float:
-        """
-        Рассчитывает релевантность текста как определения слова.
+        # 4. Длина
+        weights['good_length'] = 30 <= len(text) <= 200
+        weights['too_short_or_long'] = len(text) < 30 or len(text) > 200
 
+        # 5. Много смысловых слов
+        words = re.findall(r'[а-яА-ЯёЁ]+', text_lower)
+        common_words = {'и', 'в', 'на', 'не', 'а', 'но', 'или', 'да', 'нет',
+                        'быть', 'его', 'ее', 'их', 'мне', 'к', 'у', 'для', 'по',
+                        'из', 'от', 'с', 'у', 'к', 'о', 'об', 'за', 'про', 'под'}
+        meaningful_words = [w for w in words if w not in common_words]
+        weights['meaningful_words'] = len(meaningful_words) >= 3
+
+        # 6. Чистый текст
+        weights['clean_text'] = not any(c in text for c in ['[1]', 'https://', 'смотрите также'])
+        weights['no_punctuation_marks'] = '!' not in text and '?' not in text
+
+        # Вычисляем total_score
+        score = 0.0
+        if weights['word_start']: score += 2.0
+        if weights['pattern_is']: score += 2.0
+        if weights['pattern_means']: score += 1.0
+        if weights['pattern_named']: score += 1.0
+        if weights['pattern_value']: score += 1.0
+        if weights['has_dictionary_keyword']: score += 1.5
+        if weights['good_length']: score += 1.0
+        if weights['meaningful_words']: score += 0.5
+        if weights['clean_text']: score += 1.0
+        if weights['no_punctuation_marks']: score += 0.3
+        if weights['too_short_or_long']: score *= 0.9
+
+        return {'weights': weights, 'total_score': score}
+
+    def _explain_weights(self, weights: Dict[str, Any], score: float) -> str:
+        if not weights:
+            return f"[score={score:.1f}] no weights"
+
+        key_labels = {
+            'word_start': 'слово_в_начале',
+            'pattern_is': 'паттерн_это',
+            'pattern_means': 'означает_или_обозначает',
+            'pattern_named': 'называется',
+            'pattern_value': 'значение_слова',
+            'has_dictionary_keyword': 'упоминание_словаря',
+            'good_length': 'длина_в_норме',
+            'too_long': 'слишком_длинный',
+            'too_short_or_long': 'плохая_длина',
+            'meaningful_words': 'много_смысловых_слов',
+            'clean_text': 'чистый_текст',
+            'no_punctuation_marks': 'без_восклицаний/вопросов',
+        }
+
+        def format_value(k: str, v: Any) -> str:
+            """
+            Форматирует одно поле веса/фичи в читаемую строку.
+
+            Примеры:
+                format_value('word_start', True)   → '✅ слово_в_начале'
+                format_value('score', 8.3)         → 'score=8.3'
+                format_value('source', 'yandex')   → 'source="yandex"'
+            """
+            # 🔧 FIXED: используем .get(k, k), чтобы избежать KeyError
+            readable_key = key_labels.get(k, k)
+
+            if isinstance(v, bool):
+                return f"{'✅' if v else '❌'} {readable_key}"
+            elif isinstance(v, (int, float)):
+                return f"{readable_key}={v:.1f}"
+            elif isinstance(v, str):
+                return f'{readable_key}="{v}"'
+            elif isinstance(v, (list, tuple)):
+                items = ', '.join(str(i) for i in v)
+                return f"{readable_key}=[{items}]"
+            elif isinstance(v, dict):
+                nested_parts = []
+                for nk, nv in v.items():
+                    nested_parts.append(format_value(nk, nv))
+                return f"{readable_key}={{{', '.join(nested_parts)}}}"
+            elif v is None:
+                return f"{readable_key}=null"
+            else:
+                return f"{readable_key}={repr(v)}"
+
+        # ✅ Приоритетные ключи (в начале списка)
+        priority_keys = [
+            'word_start', 'pattern_is', 'pattern_means', 'clean_text', 'good_length',
+            'meaningful_words', 'has_dictionary_keyword', 'no_punctuation_marks',
+        ]
+        # 🔢 Остальные ключи — сортируем по алфавиту
+        other_keys = [k for k in sorted(weights.keys()) if k not in priority_keys]
+
+        # 📌 Формируем строки для всех ключей
+        parts = []
+        for k in priority_keys + other_keys:
+            if k in weights:
+                parts.append(format_value(k, weights[k]))
+
+        return f"[score={score:.1f}] " + ", ".join(parts)
+    
+    def run_test(self, words: List[str], timeout: float = 2.5) -> List[TestResult]:
+        """
+        📊 Батч-поиск: ищет определения для списка слов, сохраняет метаданные в TestResult.
+        Полезно для анализа точности, скорости, весов.
+
+        Возвращает:
+        - List[TestResult] — для анализа (score, source, weights и т.д.)
+        """
+        results = []
+        logger.info(f"📊 run_test: старт теста {len(words)} слов")
+        start_time = time.time()
+
+        for word in words:
+            try:
+                word_start = time.time()
+                result = self.search_word_meaning(word, timeout=timeout)
+                elapsed_ms = (time.time() - word_start) * 1000
+
+                # Извлекаем метаданные из результата поиска
+                success = result['status'] == 'success'
+                score = result['definitions'][0]['score'] if result['definitions'] else 0.0
+                source = result['definitions'][0]['source'] if result['definitions'] else None
+                definition = result['definitions'][0]['text'] if result['definitions'] else None
+                weights = result['definitions'][0]['weights'] if result['definitions'] else None
+
+                # 🔧 FIXED: явно определяем error для логирования
+                error = None
+                if not success:
+                    error = result.get('error', 'not_found')
+                elif not result.get('definitions'):
+                    error = 'empty_definitions'
+
+                test_result = TestResult(
+                    word=word,
+                    success=success,
+                    score=score,
+                    source=source,
+                    definition=definition,
+                    weights=weights,
+                    time_ms=int(elapsed_ms),
+                    error=error
+                )
+                results.append(test_result)
+
+                # 🔁 Если подключён тренер — логируем успешные и неуспешные случаи
+                if self.trainer:
+                    if success and definition:
+                        self.trainer.log_success(
+                            word=word,
+                            definition=definition,
+                            weights=weights,
+                            score=score,
+                            source=source,
+                            explanation=result['definitions'][0].get('explanation', 'N/A')
+                        )
+                    else:
+                        self.trainer.log_failure(
+                            word=word,
+                            error=error or 'unknown_error',
+                            reason='no_definition'
+                        )
+
+                # 🔍 Логирование с деталями
+                status_emoji = '✅' if success else '❌'
+                logger.info(
+                    f"📊 run_test: {word} → {status_emoji} (score={score:.1f}, time={elapsed_ms:.1f}мс)"
+                )
+
+            except Exception as e:
+                logger.error(f"❌ run_test: ошибка поиска '{word}': {e}")
+
+                # 🔧 FIXED: создаём TestResult даже при исключении
+                test_result = TestResult(
+                    word=word,
+                    success=False,
+                    score=0.0,
+                    source=None,
+                    definition=None,
+                    weights=None,
+                    time_ms=0
+                )
+                results.append(test_result)
+
+                if self.trainer:
+                    self.trainer.log_failure(
+                        word=word,
+                        error='exception',
+                        reason=str(e)
+                    )
+
+        total_time = time.time() - start_time
+        logger.info(f"📊 run_test: завершено за {total_time:.1f} сек | {len(results)} слов")
+        return results
+
+    def _calculate_relevance(self, text: str, word: str) -> Dict[str, Any]:
+        """
+        Рассчитывает релевантность текста как определения слова (альтернативный/резервный метод).
+        
+        Возвращает dict с двумя оценками:
+            - 'score' (float) — основная оценка (от 0.0 до ~10)
+            - 'weights' (dict) — ключевые признаки (для логирования и дебага)
+        
         Критерии:
         - Наличие слова в начале текста: +1.5
         - Паттерны определения: +2.0 за каждый
@@ -321,9 +522,11 @@ class WebSearch:
         score = 0.0
         text_lower = text.lower()
         word_lower = word.lower()
+        weights = {}
 
         # 1. Слово в начале текста
-        if text_lower.strip().startswith(word_lower):
+        weights['word_start'] = text_lower.strip().startswith(word_lower)
+        if weights['word_start']:
             score += 1.5
 
         # 2. Паттерны определения
@@ -333,11 +536,14 @@ class WebSearch:
             'обозначает',
             'значит',
         ]
+        weights['pattern_indicators'] = []
         for indicator in definition_indicators:
             if indicator in text_lower:
+                weights['pattern_indicators'].append(indicator)
                 score += 2.0
 
         # 3. Штраф за длину
+        weights['good_length'] = 50 <= len(text) <= 500
         if len(text) < 50:
             score *= 0.7
         elif len(text) > 500:
@@ -345,11 +551,28 @@ class WebSearch:
 
         # 4. Уникальность слов
         words = re.findall(r'[а-яА-ЯёЁ]+', text_lower)
+        weights['unique_words_ratio'] = None
         if words:
             uniqueness = len(set(words)) / len(words)
+            weights['unique_words_ratio'] = uniqueness
             score *= (0.5 + uniqueness * 0.5)
 
-        return score
+        return {'score': score, 'weights': weights}
+    
+    def _fetch_with_selenium(self, url: str, params: Dict[str, str], timeout: float = 3.0) -> Optional[str]:
+        if not self.driver:
+            logger.error("❌ _fetch_with_selenium: драйвер не инициализирован")
+            return None
+        try:
+            logger.debug(f"🚀 _fetch_with_selenium: GET {url}")
+            self.driver.get(f"{url}?{'&'.join(f'{k}={v}' for k, v in params.items())}")
+            # 🔧 FIXED: адаптивное ожидание
+            remaining = timeout - 0.1  # запас 0.1 сек на запрос
+            time.sleep(min(1.5, max(0.0, remaining)))
+            return self.driver.page_source
+        except Exception as e:
+            logger.error(f"❌ _fetch_with_selenium: ошибка при загрузке {url}: {e}")
+            return None
 
     def _clean_definition(self, definition: str) -> str:
         """Очистка текста определения от лишних символов и тегов"""
@@ -358,9 +581,14 @@ class WebSearch:
         # Удаляем лишние пробелы и переносы строк
         cleaned = ' '.join(cleaned.split())
         return cleaned.strip()
+    
+    def set_trainer(self, trainer):
+        """Подключает внешнюю систему дообучения (например, логгера в JSON, базу, или ML-модель)."""
+        self.trainer = trainer
+        logger.info(f"🧠 WebSearch подключен к тренеру: {type(trainer).__name__ if trainer else 'None'}")
 
     def lookup(self, word: str, timeout: float = 2.5, knowledge_cache: Dict = None,
-               save_knowledge_cache_func=None) -> Optional[str]:
+               save_knowledge_cache_func=None, return_weights: bool = False) -> Optional[str]:
         """
         Основной метод — ищет определение слова, возвращает строку.
 
@@ -369,20 +597,15 @@ class WebSearch:
         2. Проверяет knowledge_cache (постоянный кэш).
         3. Если не найдено → делает запрос в интернет.
         4. Сохраняет результат в temp_cache (и knowledge_cache, если указан).
-
-        Параметры:
-        - word: слово для поиска
-        - timeout: максимальное время поиска (по умолчанию 2.5 сек)
-        - knowledge_cache: словарь, в который сохраняются результаты (постоянный кэш)
-        - save_knowledge_cache_func: функция-колбек для сохранения кэша (например, json.dump)
+        5. Отправляет метаданные в тренера (если подключён), чтобы можно было дообучать модель.
 
         Возвращает:
-        - str — короткое определение
-        - None — если не найдено или таймаут
+        - строку (если `return_weights=False`, по умолчанию) — для бота
+        - или dict с метаданными (если `return_weights=True`) — для анализа
         """
         logger.info(f"📥 lookup('{word}') начал")
 
-        # 🔁 1. Ищем в temp_cache (временное хранилище сессии)
+        # 🔁 1. Ищем в temp_cache
         if word in self.temp_cache:
             cached = self.temp_cache[word]
             if "не найдено" in cached:
@@ -390,9 +613,11 @@ class WebSearch:
                 return None
             else:
                 logger.info(f"📚 lookup('{word}'): из temp_cache → найдено: '{cached[:50]}...'")
+                if return_weights:
+                    logger.warning(f"⚠️ lookup: кэшированные веса недоступны (temp_cache хранит только текст)")
                 return cached
 
-        # 🔁 2. Ищем в knowledge_cache (постоянный кэш)
+        # 🔁 2. Ищем в knowledge_cache
         if knowledge_cache and word in knowledge_cache:
             cached = knowledge_cache[word]
             if "не найдено" in cached:
@@ -400,48 +625,86 @@ class WebSearch:
                 return None
             else:
                 logger.info(f"📚 lookup('{word}'): из knowledge_cache → найдено: '{cached[:50]}...'")
-                # Копируем в temp_cache для скорости
                 self.temp_cache[word] = cached
+                if return_weights:
+                    logger.warning(f"⚠️ lookup: кэшированные веса недоступны (knowledge_cache хранит только текст)")
                 return cached
 
-        # 🔁 3. Если не найдено ни в одном кэше — идём в интернет
+        # 🔁 3. Если не найдено — идём в интернет
         start_time = time.time()
         result = self.search_word_meaning(word, timeout=timeout)
         elapsed = time.time() - start_time
 
-        # Проверка timeout
+        # Проверка timeout или неуспех
         if elapsed > timeout or result['status'] != 'success':
             logger.warning(f"⏱ lookup('{word}'): timeout или не найдено ({elapsed:.1f} сек)")
-            # Сохраняем в temp_cache
             self.temp_cache[word] = "Слово не найдено в словаре."
-            # Также сохраняем в knowledge_cache, если он есть
             if knowledge_cache and save_knowledge_cache_func:
                 knowledge_cache[word] = "Слово не найдено в словаре (timeout)."
                 save_knowledge_cache_func()
+
+            # 🔄 Логируем неудачу в тренера
+            if self.trainer:
+                self.trainer.log_failure(
+                    word=word,
+                    error="timeout_or_not_found",
+                    reason=f"elapsed={elapsed:.1f}s"
+                )
+
             return None
 
         # Обработка результата
         if result['status'] == 'success' and result['definitions']:
-            definition = result['definitions'][0]
-            cleaned = self._clean_definition(definition)
+            top_def = result['definitions'][0]
 
-            # Оставляем первые 2 предложения
+            # 🔁 Отправляем в тренера
+            if self.trainer:
+                try:
+                    self.trainer.log_success(
+                        word=word,
+                        definition=top_def['text'],
+                        weights=top_def['weights'],
+                        score=top_def['score'],
+                        source=top_def['source'],
+                        explanation=top_def.get('explanation', 'N/A')
+                    )
+                    logger.debug(f"🧠 trainer.log_success('{word}') вызван")
+                except Exception as e:
+                    logger.warning(f"⚠️ trainer.log_success failed: {e}")
+
+            # Очистка и укорачивание
+            cleaned = self._clean_definition(top_def['text'])
             sentences = re.split(r'[.!?]', cleaned)
             sentences = [s.strip() for s in sentences if s.strip()]
             short_def = '. '.join(sentences[:2]) + '.' if len(sentences) > 1 else (sentences[0] if sentences else cleaned)
 
-            # 🔹 Сохраняем в temp_cache
+            # Сохраняем в кэши
             self.temp_cache[word] = short_def.strip()
+            if knowledge_cache and save_knowledge_cache_func:
+                knowledge_cache[word] = short_def.strip()
+                save_knowledge_cache_func()
+
             logger.info(f"✅ lookup('{word}'): найдено определение за {elapsed:.1f} сек → '{short_def[:80]}...'")
+
+            # Возвращаем по запросу
+            if return_weights:
+                return {
+                    'text': short_def.strip(),
+                    'weights': top_def['weights'],
+                    'score': round(top_def['score'], 2),
+                    'source': top_def['source'],
+                }
             return short_def.strip()
 
         # Сохраняем как "не найдено"
-        logger.info(f"ℹ️ lookup('{word}'): не найдено, сохранено в temp_cache за {elapsed:.1f} сек")
+        logger.info(f"ℹ️ lookup('{word}'): не найдено, сохранено в temp_cache")
         self.temp_cache[word] = "Слово не найдено в словаре."
-        # Также сохраняем в knowledge_cache, если он есть
         if knowledge_cache and save_knowledge_cache_func:
             knowledge_cache[word] = "Слово не найдено в словаре."
-            save_knowledge_cache_func()
+
+        # 🔄 Логируем неудачу в тренера
+        if self.trainer:
+            self.trainer.log_failure(word=word, error="no_definition", reason="empty_definitions")
 
         return None
 
@@ -464,7 +727,7 @@ class WebSearch:
             'я', 'ты', 'мы', 'вы', 'он', 'она', 'они', 'оно',
             'это', 'что', 'как', 'сам', 'себя', 'себе', 'сама', 'сами',
             'вас', 'тебя', 'тебе', 'меня', 'мне', 'мной', 'мною',
-            'вас', 'вами', 'тебя', 'тобой', 'тобою'
+            'вами', 'тобой', 'тобою',
         }
 
         # Ищем все слова, начинающиеся с заглавной буквы

@@ -5,6 +5,8 @@
 3. Сохраняет новые знания
 4. Запускает дообучение модели
 5. Повторяет цикл
+6. команда запуска python auto_gigachat_learning.py
+7. для токена python get_gigachat_token.py
 
 ВАЖНО: Скрипт автоматически обновляет токен GigaChat при 401 ошибке
 """
@@ -19,7 +21,20 @@ from datetime import datetime
 from typing import List, Dict, Optional
 import subprocess
 import psutil
-import torch 
+import torch
+
+# === Безопасная проверка GPU при запуске ===
+try:
+    cuda_available = torch.cuda.is_available()
+    print(f"✅ CUDA доступна: {cuda_available}")
+    if cuda_available:
+        print(f"🖥️ GPU: {torch.cuda.get_device_name(0)}")
+        print(f"🔢 Свободная память: {torch.cuda.mem_get_info()[0] / 1024**3:.1f} GB")
+    else:
+        print("ℹ️ GPU недоступен — обучение будет на CPU")
+except Exception as e:
+    print(f"⚠️ Ошибка проверки GPU: {e}")
+
 
 # Настройка логирования
 logging.basicConfig(
@@ -34,8 +49,8 @@ logger = logging.getLogger(__name__)
 
 # Константы
 GIGACHAT_API_URL = "https://gigachat.devices.sberbank.ru/api/v1/chat/completions"
-CHECK_INTERVAL = 3600  # 10 минут
-RETRAIN_TIMEOUT = 1800  # 30 минут на дообучение
+CHECK_INTERVAL = 3600  # 1 час
+RETRAIN_TIMEOUT = 3600  # 1 час на дообучение
 MIN_EXAMPLES_FOR_LEARNING = 5  # Минимум примеров для дообучения
 
 # Пути
@@ -56,18 +71,25 @@ def is_system_idle(cpu_threshold: float = 70.0, gpu_threshold: float = 50.0) -> 
         
         # Проверка GPU (если доступен)
         if torch.cuda.is_available():
+            gpu_name = torch.cuda.get_device_name(0)
+            gpu_total_mem = torch.cuda.get_device_properties(0).total_memory / 1024**3
             gpu_util = torch.cuda.utilization()
+            gpu_free_mem = torch.cuda.mem_get_info()[0] / 1024**3
+            
+            logger.info(f"📊 GPU: {gpu_name} ({gpu_total_mem:.1f} ГБ)")
             if gpu_util > gpu_threshold:
-                logger.info(f"ℹ️ Высокая загрузка GPU: {gpu_util}% > {gpu_threshold}%")
+                logger.info(f"ℹ️ Высокая загрузка GPU ({gpu_util}% > {gpu_threshold}%) — ожидаем снижения...")
                 return False
+            logger.info(f"✅ GPU готова: {gpu_name} (свободно {gpu_free_mem:.1f} ГБ из {gpu_total_mem:.1f} ГБ, загрузка {gpu_util}%)")
         else:
-            logger.info("ℹ️ GPU недоступен, используем CPU")
+            logger.info("ℹ️ GPU недоступен — обучение будет на CPU")
         
-        logger.info(f"✅ Система готова: CPU={cpu_percent}%, GPU={torch.cuda.utilization() if torch.cuda.is_available() else 'N/A'}")
+        logger.info(f"✅ Система готова: CPU={cpu_percent}%")
         return True
     except Exception as e:
         logger.warning(f"⚠️ Ошибка проверки загрузки системы: {e}")
         return True  # пропускаем проверку в случае ошибки
+
 
 class GigaChatLearningSystem:
     def __init__(self, auto_refresh_token: bool = True):
@@ -125,22 +147,20 @@ class GigaChatLearningSystem:
                 
         except Exception as e:
             logger.error(f"❌ Ошибка проверки токена: {e}")
-            # Пробуем обновить
             self._refresh_token()
 
     def _refresh_token(self):
         """Запрашивает новый токен и сохраняет его"""
         try:
-            # Запускаем get_gigachat_token.py
             result = subprocess.run(
                 [sys.executable, "get_gigachat_token.py"],
                 capture_output=True,
                 text=True,
                 timeout=60,
-                encoding='utf-8'
+                encoding='cp1251',
+                errors='ignore'
             )
             if result.returncode == 0:
-                # Перечитываем токен
                 self.token = self._get_gigachat_token()
                 logger.info("✅ Токен успешно обновлен")
             else:
@@ -181,21 +201,59 @@ class GigaChatLearningSystem:
         except Exception as e:
             logger.error(f"Ошибка вызова GigaChat: {e}")
             return None
+        
+    def _generate_prompts(self, topic: str = "наука", count: int = 10) -> List[str]:
+        """Генерирует новые вопросы через GigaChat по заданной теме"""
+        try:
+            logger.info(f"🔄 Генерация {count} вопросов по теме '{topic}'...")
+            messages = [
+                {"role": "user", "content": f"Сгенерируй {count} вопросов формата 'Что такое ...?' по теме '{topic}'. "
+                                            "Каждый вопрос на новой строке, без нумерации."}
+            ]
+            
+            response = self._call_gigachat(messages)
+            if not response:
+                logger.warning("⚠️ GigaChat не сгенерировал вопросы")
+                return []
+            
+            questions = []
+            for line in response.split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                if line[0].isdigit():
+                    line = line.split(".", 1)[-1].strip() if "." in line else line
+                if line.endswith("?") and "что такое" in line.lower():
+                    questions.append(line)
+            
+            logger.info(f"✅ Сгенерировано {len(questions)} вопросов по теме '{topic}'")
+            return questions[:count]
+        except Exception as e:
+            logger.warning(f"⚠️ Ошибка генерации вопросов: {e}")
+            return []
+        
+    def _save_prompts_to_file(self, prompts: List[str], append: bool = True):
+        """Сохраняет промпты в файл prompts.txt"""
+        prompts_file = os.path.join(KNOWLEDGE_DIR, "prompts.txt")
+        try:
+            mode = "a" if append else "w"
+            with open(prompts_file, mode, encoding="utf-8") as f:
+                for prompt in prompts:
+                    f.write(prompt + "\n")
+            logger.info(f"💾 Сохранено {len(prompts)} промптов в {prompts_file}")
+        except Exception as e:
+            logger.warning(f"⚠️ Ошибка сохранения промптов: {e}")
 
     def _extract_knowledge_from_example(self, example: Dict, response: str) -> Optional[Dict]:
         """Извлечение знаний из примера диалога"""
         try:
-            # Пытаемся найти ключевые фразы в ответе
             if "значение слова" in response.lower() or "это" in response.lower():
-                # Извлекаем определение
                 import re
-                pattern = r'(?:значение слова|это|это|означает)\s*[:\-]?\s*(.+?)(?:\.|$)'
+                pattern = r'(?:значение слова|это|означает)\s*[:\-]?\s*(.+?)(?:\.|$)'
                 match = re.search(pattern, response.lower())
                 if match:
                     definition = match.group(1).strip()
-                    # Получаем слово из первого сообщения
                     user_msg = example.get("user_message", "").lower()
-                    # Ищем первое слово после "что такое"
                     word_match = re.search(r'что такое\s+([а-яёa-z]+)', user_msg)
                     if word_match:
                         return {
@@ -212,26 +270,44 @@ class GigaChatLearningSystem:
         """Сбор новых примеров через GigaChat"""
         new_examples = []
         
-        # Промпты для получения обучающих примеров
-        prompts = [
-            "Что такое алгоритм?",
-            "Что такое нейронная сеть?",
-            "Что такое машинное обучение?",
-            "Что такое квантовая механика?",
-            "Что такое киберпанк?",
-            "Что такое фэнтези?",
-            "Что такое панк?",
-            "Что такое ренессанс?",
-            "Что такое империализм?",
-            "Что такое постмодернизм?"
-        ]
+        prompts = []
+        prompts_file = os.path.join(KNOWLEDGE_DIR, "prompts.txt")
+        if os.path.exists(prompts_file):
+            try:
+                with open(prompts_file, "r", encoding="utf-8") as f:
+                    prompts = [line.strip() for line in f if line.strip()]
+                logger.info(f"📚 Загружено {len(prompts)} промптов из {prompts_file}")
+            except Exception as e:
+                logger.warning(f"⚠️ Ошибка загрузки промптов: {e}")
         
-        logger.info(f"Сбор {min(len(prompts), max_examples)} примеров через GigaChat...")
+        if not prompts:
+            prompts = [
+                "Что такое алгоритм?",
+                "Что такое нейронная сеть?",
+                "Что такое машинное обучение?",
+                "Что такое квантовая механика?",
+                "Что такое киберпанк?",
+                "Что такое фэнтези?",
+                "Что такое панк?",
+                "Что такое ренессанс?",
+                "Что такое империализм?",
+                "Что такое постмодернизм?"
+            ]
+            logger.info("ℹ️ Используем дефолтные промпты")
+            
+            topics = ["технологии", "история", "искусство", "философия"]
+            for topic in topics:
+                new_prompts = self._generate_prompts(topic, count=3)
+                if new_prompts:
+                    prompts.extend(new_prompts)
+            
+            self._save_prompts_to_file(prompts, append=False)
+        
+        max_examples = min(max_examples, len(prompts))
+        logger.info(f"Сбор {max_examples} примеров через GigaChat...")
         
         for i, prompt in enumerate(prompts[:max_examples]):
-            messages = [
-                {"role": "user", "content": prompt}
-            ]
+            messages = [{"role": "user", "content": prompt}]
             
             response = self._call_gigachat(messages)
             if response:
@@ -241,14 +317,12 @@ class GigaChatLearningSystem:
                     "timestamp": datetime.now().isoformat()
                 }
                 
-                # Извлекаем знания
                 knowledge = self._extract_knowledge_from_example(example, response)
                 if knowledge:
                     knowledge["id"] = f"ex_{len(self.examples_collection) + len(new_examples)}"
                     new_examples.append(knowledge)
                     logger.info(f"✅ Получено знание: {knowledge['word']} -> {knowledge['definition'][:100]}...")
             
-            # Небольшая задержка, чтобы не спамить API
             time.sleep(1)
         
         return new_examples
@@ -286,10 +360,7 @@ class GigaChatLearningSystem:
 
     def _update_knowledge_base(self):
         """Обновление базы знаний на основе собранных примеров"""
-        # Здесь должна быть интеграция с вашим системой знаний
-        # Например, если у вас есть KnowledgeManager
         logger.info("🔄 Обновление базы знаний...")
-        #TODO: Интеграция с вашей системой знаний
         return True
 
     def _run_retrain(self, epochs: int = 1):
@@ -298,23 +369,23 @@ class GigaChatLearningSystem:
             logger.info("🚀 Запуск проверки загрузки системы перед дообучением...")
             if not is_system_idle():
                 logger.info("⏱ Ожидание снижения загрузки системы...")
-                time.sleep(300)  # ждем 5 минут
+                time.sleep(300)
                 if not is_system_idle():
                     logger.error("❌ Система перегружена, пропускаем дообучение")
                     return False
 
-            logger.info(f"🚀 Запуск дообучения модели с {epochs} эпохой(ами)...")
+            logger.info(f"🚀 Запуск дообучения модели (количество эпох управляется через retrain.py -> train.py)...")
+
             result = subprocess.run(
-                [sys.executable, "retrain.py", "--epochs", str(epochs)],
+                [sys.executable, "retrain.py", "--verbose"],
                 capture_output=True,
                 text=True,
                 timeout=RETRAIN_TIMEOUT,
-                encoding='utf-8'
+                encoding='cp1251',
+                errors='ignore'
             )
             if result.returncode == 0:
                 logger.info("✅ Дообучение завершено успешно")
-                
-                # Сохраняем статус
                 self._save_status()
                 return True
             else:
@@ -331,12 +402,15 @@ class GigaChatLearningSystem:
         """Определяет оптимальное количество эпох на основе свободной памяти"""
         try:
             if torch.cuda.is_available():
-                free_mem = torch.cuda.mem_get_info()[0] / (1024**3)  # GB
-                return max(1, int(free_mem // 4))  # 4GB на эпоху
+                gpu_name = torch.cuda.get_device_name(0)
+                free_mem = torch.cuda.mem_get_info()[0] / (1024**3)
+                optimal = max(1, int(free_mem // 3.5))
+                logger.info(f"📊 {gpu_name} (8GB): рассчитано {optimal} эпох(ы) для дообучения")
+                return optimal
             return 1
         except Exception as e:
             logger.warning(f"⚠️ Ошибка определения оптимального количества эпох: {e}")
-            return 1  # fallback
+            return 1
 
     def _save_status(self):
         """Сохраняет статус обучения в файл"""
