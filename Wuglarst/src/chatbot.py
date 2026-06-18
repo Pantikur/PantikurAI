@@ -295,13 +295,37 @@ class ChatBot:
             genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
             tags = tags_match.group(1).strip() if tags_match else ""
 
-            prompt = f"Создай мир: {genre}"
-            if tags:
-                prompt += f", {tags}"
+            prompt = (
+                "Ты — мастер вселенных. Создай уникальный мир по запросу.\n"
+                "Строго следуй формату:\n"
+                "Название: [имя мира]\n"
+                "Законы общества:\n"
+                " - [правило 1]\n"
+                " - [правило 2]\n"
+                " - [правило 3]\n"
+                " - [правило 4]\n"
+                " - [правило 5]\n"
+                "Традиции:\n"
+                " - [традиция 1]\n"
+                " - [традиция 2]\n"
+                " - [традиция 3]\n"
+                " - [традиция 4]\n"
+                " - [традиция 5]\n"
+                "Внегласные правила:\n"
+                " - [правило 1]\n"
+                " - [правило 2]\n"
+                " - [правило 3]\n"
+                " - [правило 4]\n"
+                " - [правило 5]\n"
+                "Описание: [краткая история мира. Минимум 1000 символов. Расскажи о ключевых событиях, конфликтах, легендарных личностях, катастрофах, происхождении мира. Напиши развёрнутый, атмосферный текст, как в книге. Не используй маркеры списка, пиши связным текстом.]\n"
+                f"Жанр: {genre}"
+                + (f", Темы: {tags}" if tags else "")
+                + "\n\nБот:"
+            )
 
-            response = self._generate_response_with_sampling(prompt, max_length=128)
+            response = self._generate_response_with_sampling(prompt, max_length=256, max_words=200)
             elapsed = time.time() - start_mode
-            logging.info(f"⏱ generate_response (world_gen): {elapsed:.2f} сек")
+            logging.info(f"⏱ generate_response (world_gen): {elapsed:.2f} сек | len={len(response)}")
             return json.dumps({"world": response}, ensure_ascii=False)
 
         # === Режим chat ===
