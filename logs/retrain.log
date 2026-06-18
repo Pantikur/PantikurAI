@@ -137,3 +137,63 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f504' in posit
 2026-06-16 17:06:21,843 | ERROR | [ERR] Ошибка в tokenizer.json: Некорректный формат tokenizer.json
 2026-06-16 17:06:21,843 | INFO | [INFO] Восстанавливаем из бэкапа: D:\NewCod\Pantikur\data\tokenizer.json.backup
 2026-06-16 17:06:21,855 | INFO | [AI] Запуск обучения...
+2026-06-17 15:09:37,057 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-17 15:09:37,086 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-17 15:09:37,086 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-17 15:09:37,215 | WARNING | [WARN] Файл training_pairs.jsonl не создан — возможно, нет новых знаний
+2026-06-17 15:09:37,227 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-17 15:09:37,244 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-17 15:09:37,246 | ERROR | [ERR] Ошибка в tokenizer.json: Некорректный формат tokenizer.json
+2026-06-17 15:09:37,246 | INFO | [INFO] Восстанавливаем из бэкапа: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-17 15:09:37,257 | INFO | [AI] Запуск обучения...
+2026-06-17 15:09:38,514 | ERROR | [ERR] Ошибка при обучении: source code string cannot contain null bytes
+Traceback (most recent call last):
+  File "D:\NewCod\Pantikur\retrain.py", line 194, in run_training
+    import train
+  File "D:\NewCod\Pantikur\train.py", line 34, in <module>
+    from Wuglarst.src.chat_model import ChatNN
+SyntaxError: source code string cannot contain null bytes
+2026-06-17 15:09:38,515 | ERROR | [ERR] Обучение не удалось. Пытаемся восстановить...
+2026-06-17 15:09:38,515 | CRITICAL | [ERR] Не удалось восстановить модель!
+2026-06-17 15:16:34,872 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-17 15:16:34,875 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-17 15:16:34,875 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-17 15:16:35,004 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-17 15:16:35,016 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-17 15:16:35,028 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-17 15:16:35,031 | INFO | [OK] Токенизатор загружен: 2236 токенов
+2026-06-17 15:16:35,031 | INFO | [AI] Запуск обучения...
+2026-06-17 15:41:14,297 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-17 15:41:14,298 | INFO | [OK] Успешно: tokenizer.json (129 КБ), chat_model.pth (23752 КБ)
+2026-06-17 16:52:24,939 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-17 16:52:24,943 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-17 16:52:24,943 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-17 16:52:25,075 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-17 16:52:25,087 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-17 16:52:25,099 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-17 16:52:25,101 | INFO | [OK] Токенизатор загружен: 2236 токенов
+2026-06-17 16:52:25,101 | INFO | [AI] Запуск обучения...
+2026-06-17 16:58:06,134 | INFO | [AI] Генерация 5 новых диалогов через GigaChat...
+2026-06-17 16:59:26,024 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-17 16:59:26,025 | WARNING | [WARN] RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-06-17 16:59:26,025 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-17 16:59:26,263 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-17 16:59:26,281 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-17 16:59:26,298 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-17 16:59:26,300 | INFO | [OK] Токенизатор загружен: 2236 токенов
+2026-06-17 16:59:26,300 | INFO | [AI] Запуск обучения...
+2026-06-17 17:23:52,949 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-17 17:23:52,949 | INFO | [OK] Успешно: tokenizer.json (129 КБ), chat_model.pth (23752 КБ)
+2026-06-17 17:30:51,738 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-17 17:30:51,738 | INFO | [OK] Успешно: tokenizer.json (129 КБ), chat_model.pth (23752 КБ)
+2026-06-17 23:34:35,141 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-06-17 23:37:09,270 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-17 23:37:09,272 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-17 23:37:09,272 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-17 23:37:09,442 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (762 строк)
+2026-06-17 23:37:09,454 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-17 23:37:09,466 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-17 23:37:09,468 | INFO | [OK] Токенизатор загружен: 2236 токенов
+2026-06-17 23:37:09,468 | INFO | [AI] Запуск обучения...
+2026-06-18 00:02:12,239 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-18 00:02:12,239 | INFO | [OK] Успешно: tokenizer.json (129 КБ), chat_model.pth (23752 КБ)

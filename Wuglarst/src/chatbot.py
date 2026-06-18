@@ -9,7 +9,7 @@ from datetime import datetime
 from typing import List, Dict, Any
 from . import chat_model
 from .chat_model import ChatNN
-from .web_search import WebSearch
+# from .web_search import WebSearch  # Отключён — поиск в чате отключён
 from .cultural_references import get_cultural_phrase
 import sys
 import subprocess
@@ -97,7 +97,8 @@ class ChatBot:
             raise RuntimeError(f"❌ Не удалось загрузить модель: {e}")
 
         # Поиск и знания
-        self.web_search = WebSearch()
+        # self.web_search = WebSearch()  # Отключён — поиск в чате отключён
+        self.web_search_enabled = False  # Флаг отключения поиска
         self.knowledge_cache = {}
         self.knowledge_file = "data/knowledge_cache.json"
         self._load_knowledge_cache()
@@ -285,26 +286,26 @@ class ChatBot:
 
             if unknown_words:
                 word = unknown_words[0]
-                if word in self.knowledge_cache:
-                    logging.info(f"📚 chat: знание найдено в кэше → '{word}'")
-                    logging.info(f"⏱ generate_response (chat+cache): {time.time() - start_mode:.2f} сек")
-                    return json.dumps({"response": self.knowledge_cache[word]}, ensure_ascii=False)
+                # Поиск в интернете отключён
+                # if word in self.knowledge_cache:
+                #     logging.info(f"📚 chat: знание найдено в кэше → '{word}'")
+                #     logging.info(f"⏱ generate_response (chat+cache): {time.time() - start_mode:.2f} сек")
+                #     return json.dumps({"response": self.knowledge_cache[word]}, ensure_ascii=False)
 
-                # Поиск в интернете — лог времени
-                start_search = time.time()
-                try:
-                    definition = self.web_search.lookup(word)
-                    search_time = time.time() - start_search
-                    logging.info(f"⏱ web_search.lookup('{word}'): {search_time:.2f} сек")
-
-                    if definition and len(definition) > 5:
-                        response = f"🔍 Я не знал слово «{word}», но нашёл:\n\n{definition.strip()}"
-                        self._save_knowledge_cache(word, response)
-                        self._trigger_knowledge_learning(word, definition)
-                        logging.info(f"⏱ generate_response (chat+search): {time.time() - start_mode:.2f} сек")
-                        return json.dumps({"response": response}, ensure_ascii=False)
-                except Exception as e:
-                    logging.error(f"❌ Ошибка поиска: {e}")
+                # Поиск в интернете — ОТКЛЮЧЁН
+                # start_search = time.time()
+                # try:
+                #     definition = self.web_search.lookup(word)
+                #     search_time = time.time() - start_search
+                #     logging.info(f"⏱ web_search.lookup('{word}'): {search_time:.2f} сек")
+                #     if definition and len(definition) > 5:
+                #         response = f"🔍 Я не знал слово «{word}», но нашёл:\n\n{definition.strip()}"
+                #         self._save_knowledge_cache(word, response)
+                #         self._trigger_knowledge_learning(word, definition)
+                #         logging.info(f"⏱ generate_response (chat+search): {time.time() - start_mode:.2f} сек")
+                #         return json.dumps({"response": response}, ensure_ascii=False)
+                # except Exception as e:
+                #     logging.error(f"❌ Ошибка поиска: {e}")
 
             # Генерация
             start_subgen = time.time()
