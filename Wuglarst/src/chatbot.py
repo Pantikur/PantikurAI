@@ -168,7 +168,8 @@ class ChatBot:
         input_text: str,
         max_length: int = RPG_MAX_LENGTH,
         temperature: float = RPG_TEMPERATURE,
-        top_p: float = RPG_TOP_P
+        top_p: float = RPG_TOP_P,
+        max_words: int = 40
     ) -> str:
         """Генерация ответа с nucleus sampling"""
         self.model.eval()
@@ -177,12 +178,16 @@ class ChatBot:
         input_tensor = torch.tensor([input_ids], dtype=torch.long).to(self.device)
         mask = (input_tensor != self.tokenizer.pad_token_id).float().to(self.device)
 
-        import time  # ← добавьте в начало файла, если нет
+        import time
         start_gen = time.time()
 
         generated_ids = []
         current_input = input_tensor
         current_mask = mask
+
+        word_count = 0
+        prev_word = ""
+        repeat_count = 0
 
         with torch.no_grad():
             for step in range(max_length):
@@ -207,6 +212,18 @@ class ChatBot:
 
                 if next_token not in [self.tokenizer.pad_token_id, self.tokenizer.unk_token_id]:
                     generated_ids.append(next_token)
+                    word = self.inverse_vocab[next_token] if next_token < len(self.inverse_vocab) else "<UNK>"
+                    if word != prev_word:
+                        repeat_count = 0
+                    else:
+                        repeat_count += 1
+                    prev_word = word
+                    word_count += 1
+
+                    # Ранняя остановка: макс слов или 3 одинаковых подряд
+                    if word_count >= max_words or repeat_count >= 3:
+                        print(f"⏱ Ранняя остановка: {word_count} слов, repeat={repeat_count} за {time.time() - start_gen:.2f} сек")
+                        break
 
                 new_token = torch.tensor([[next_token]], device=self.device)
                 current_input = torch.cat([current_input, new_token], dim=1)
@@ -216,13 +233,12 @@ class ChatBot:
                 current_mask = torch.cat([current_mask, new_mask], dim=1)
                 current_mask = current_mask[:, -self.max_length:]
 
-                # Логирование тормозов на шаге >0.5 сек
                 step_time = time.time() - step_start
                 if step_time > 0.5:
                     print(f"⚠️ Долгий шаг генерации: {step_time:.2f} сек на токен {step}")
 
         decoded = self.tokenizer.decode(generated_ids).strip()
-        print(f"⏱ Генерация завершена за {time.time() - start_gen:.2f} сек | Длина: {len(decoded)}")
+        print(f"⏱ Генерация завершена за {time.time() - start_gen:.2f} сек | Длина: {len(decoded)} | слов: {word_count}")
         return decoded
 
 
@@ -319,7 +335,11 @@ class ChatBot:
 
             # Генерация
             start_subgen = time.time()
-            base_response = self._generate_response_with_sampling(last_user_msg)
+            base_response = self._generate_response_with_sampling(
+                last_user_msg,
+                max_length=64,
+                max_words=30
+            )
             subgen_time = time.time() - start_subgen
             logging.info(f"⏱ generate_response (chat+subgen): {subgen_time:.2f} сек | len={len(base_response)}")
 
