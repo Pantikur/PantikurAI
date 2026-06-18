@@ -36,7 +36,16 @@ class SimpleTokenizer:
         with open(tokenizer_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.vocab = data["vocab"]
-        self.inverse_vocab = data["inverse_vocab"]
+        # inverse_vocab может быть dict или list — нормализуем к list
+        inv = data["inverse_vocab"]
+        if isinstance(inv, list):
+            self.inverse_vocab = inv
+        else:
+            # dict с int-ключами
+            max_key = max(inv.keys()) if inv else 0
+            self.inverse_vocab = [None] * (max_key + 1)
+            for k, v in inv.items():
+                self.inverse_vocab[k] = v
         self.pad_token_id = self.vocab["<PAD>"]
         self.eos_token_id = self.vocab["<EOS>"]
         self.unk_token_id = self.vocab["<UNK>"]
@@ -60,7 +69,8 @@ class SimpleTokenizer:
         for idx in token_ids:
             if idx in [self.pad_token_id, self.eos_token_id]:
                 break
-            word = self.inverse_vocab.get(idx, "<UNK>")
+            # inverse_vocab теперь list
+            word = self.inverse_vocab[idx] if idx < len(self.inverse_vocab) else "<UNK>"
             if word not in ["<PAD>", "<UNK>", "<EOS>"]:
                 words.append(word)
         return " ".join(words)
@@ -79,7 +89,7 @@ class ChatBot:
 
         # Загружаем модель
         self.model = ChatNN(
-            vocab_size=6049,
+            vocab_size=self.vocab_size,
             embedding_dim=128,
             hidden_dim=512,
             num_layers=2,
@@ -92,9 +102,9 @@ class ChatBot:
             state_dict = torch.load(self.model_path, map_location=self.device, weights_only=True)
             self.model.load_state_dict(state_dict, strict=False)
             self.model.eval()
-            print(f"✅ Модель загружена: {self.model_path} на {self.device}")
+            print(f"[OK] Model loaded: {self.model_path} on {self.device}")
         except Exception as e:
-            raise RuntimeError(f"❌ Не удалось загрузить модель: {e}")
+            raise RuntimeError(f"[FAIL] Failed to load model: {e}")
 
         # Поиск и знания
         # self.web_search = WebSearch()  # Отключён — поиск в чате отключён
