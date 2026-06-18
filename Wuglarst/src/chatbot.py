@@ -333,12 +333,27 @@ class ChatBot:
                 # except Exception as e:
                 #     logging.error(f"❌ Ошибка поиска: {e}")
 
-            # Генерация
+            # Генерация — narrative стиль с описаниями и диалогами
             start_subgen = time.time()
+
+            # Строим промпт для narrative-стиля
+            context_str = "\n".join(context[-5:]) if context else ""
+            narrative_prompt = (
+                "Ты — персонаж в ролевой сцене. Отвечай в формате художественной литературы.\n"
+                "Формат ответа:\n"
+                "1. Описания действий и эмоций в звёздочках: *она отвела взгляд, её пальцы сжались*\n"
+                "2. Диалоги в кавычках: «Привет, как дела?»\n"
+                "3. Внутренние мысли в кавычках: «Может, немного...»\n"
+                "4. Пиши развёрнуто, с эмоциями, жестами, микровыражениями\n"
+                "5. Не отвечай односложно — раскрывай характер через действия и слова\n"
+                "6. Используй прошествующее время: она пошла, он сказал, они посмотрели\n"
+                f"\nИстория диалога:\n{context_str}\n\nБот:"
+            )
+
             base_response = self._generate_response_with_sampling(
-                last_user_msg,
-                max_length=64,
-                max_words=30
+                narrative_prompt,
+                max_length=128,
+                max_words=80
             )
             subgen_time = time.time() - start_subgen
             logging.info(f"⏱ generate_response (chat+subgen): {subgen_time:.2f} сек | len={len(base_response)}")
