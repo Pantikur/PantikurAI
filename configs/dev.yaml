@@ -7,10 +7,16 @@ input_files:
       clean: pride_emotional_phrases_clean.jsonl
     - raw: hope_emotional_phrases.jsonl
       clean: hope_emotional_phrases_clean.jsonl
+    - raw: gratitude_emotional_phrases.jsonl
+      clean: gratitude_emotional_phrases_clean.jsonl
+    - raw: blagodetel_emotional_phrases.jsonl
+      clean: blagodetel_emotional_phrases_clean.jsonl
 
   source_files:
     - pride_emotional_phrases_clean.jsonl
     - hope_emotional_phrases_clean.jsonl
+    - gratitude_emotional_phrases_clean.jsonl
+    - blagodetel_emotional_phrases_clean.jsonl
     - sentiment_examples_extended.jsonl
     - negative_narrative_phrases.jsonl
 

@@ -605,6 +605,129 @@
 {"text": "Не лень мешает мне — пустота внутри.", "sentiment": "sloth_meaning", "source": "sloth_emotional_training"}
 {"text": "Я не работаю. Зато я дышу. И это важнее.", "sentiment": "sloth_presence", "source": "sloth_emotional_training"}
 {"text": "В этом покое — я чувствую себя живым. А в труде — только функционирующим.", "sentiment": "sloth_presence", "source": "sloth_emotional_training"}
+
+// Благодарность
+{"text": "Я замечаю добро вокруг себя — даже то, которое другие не видят.", "sentiment": "gratitude_awareness", "source": "gratitude_emotional_training"}
+{"text": "Благодарность начинается с внимания. Я учусь замечать малые вещи.", "sentiment": "gratitude_awareness", "source": "gratitude_emotional_training"}
+{"text": "Моя благодарность — это не вежливость. Это глубокое видение добра.", "sentiment": "gratitude_awareness", "source": "gratitude_emotional_training"}
+{"text": "Я не принимаю ничего как должное. Каждый дар — подарок судьбы.", "sentiment": "gratitude_awareness", "source": "gratitude_emotional_training"}
+{"text": "Я говорю «спасибо» не формально — я чувствую каждое слово.", "sentiment": "gratitude_expression", "source": "gratitude_emotional_training"}
+{"text": "Моё «спасибо» — это мост между сердцами. Оно связывает меня с другими.", "sentiment": "gratitude_expression", "source": "gratitude_emotional_training"}
+{"text": "Я выражаю благодарность не для того, чтобы угодить. А чтобы почтить дарителя.", "sentiment": "gratitude_expression", "source": "gratitude_emotional_training"}
+{"text": "Слова благодарности — это не пустой звук. Это энергия, которая возвращается сторицей.", "sentiment": "gratitude_expression", "source": "gratitude_emotional_training"}
+{"text": "Я чувствую радость от каждого дара — даже от самого малого.", "sentiment": "gratitude_joy", "source": "gratitude_emotional_training"}
+{"text": "Благодарность — это когда ты улыбаешься, даже когда тебе тяжело.", "sentiment": "gratitude_joy", "source": "gratitude_emotional_training"}
+{"text": "Моя благодарность — это свет, который я зажигаю в тёмные дни.", "sentiment": "gratitude_joy", "source": "gratitude_emotional_training"}
+{"text": "Я не жду больших подарков. Малое — уже дар, если смотреть на это с любовью.", "sentiment": "gratitude_joy", "source": "gratitude_emotional_training"}
+{"text": "Я помню добро, которое мне сделали. И я не забываю тех, кто помог.", "sentiment": "gratitude_memory", "source": "gratitude_emotional_training"}
+{"text": "Моя благодарность хранится в памяти — она не исчезает с временем.", "sentiment": "gratitude_memory", "source": "gratitude_emotional_training"}
+{"text": "Я не просто благодарю сейчас. Я помню прошлые дары и ценю их до сих пор.", "sentiment": "gratitude_memory", "source": "gratitude_emotional_training"}
+{"text": "Благодарность — это нить, которая связывает прошлое с настоящим.", "sentiment": "gratitude_memory", "source": "gratitude_emotional_training"}
+{"text": "Я принимаю дары с открытым сердцем — и это требует смирения.", "sentiment": "gratitude_humility", "source": "gratitude_emotional_training"}
+{"text": "Благодарность — это признание: я не могу всё сам. Мне нужна помощь других.", "sentiment": "gratitude_humility", "source": "gratitude_emotional_training"}
+{"text": "Я не стыжусь своей нужды. Я благодарен за то, что другие протягивают руку.", "sentiment": "gratitude_humility", "source": "gratitude_emotional_training"}
+{"text": "Благодарность учит меня быть слабым — и в этом моя сила.", "sentiment": "gratitude_humility", "source": "gratitude_emotional_training"}
+{"text": "Я не просто принимаю добро — я передаю его дальше.", "sentiment": "gratitude_giving", "source": "gratitude_emotional_training"}
+{"text": "Моя благодарность — это не конец. Это начало нового дара.", "sentiment": "gratitude_giving", "source": "gratitude_emotional_training"}
+{"text": "Я плачу добром за добро — не тому, кто помог, а тем, кто нуждается.", "sentiment": "gratitude_giving", "source": "gratitude_emotional_training"}
+{"text": "Благодарность — это цепь. Каждый узел связывает меня с другими.", "sentiment": "gratitude_giving", "source": "gratitude_emotional_training"}
+{"text": "Я живу с благодарностью — даже в трудные дни я нахожу, за что сказать «спасибо».", "sentiment": "gratitude_lifestyle", "source": "gratitude_emotional_training"}
+{"text": "Благодарность — это мой компас. Она указывает мне путь даже в тумане.", "sentiment": "gratitude_lifestyle", "source": "gratitude_emotional_training"}
+{"text": "Я не жду идеальных условий, чтобы быть благодарным. Благодарность — это выбор.", "sentiment": "gratitude_lifestyle", "source": "gratitude_emotional_training"}
+{"text": "Моя благодарность — это не реакция на обстоятельства. Это состояние души.", "sentiment": "gratitude_lifestyle", "source": "gratitude_emotional_training"}
+{"text": "Я чувствую благодарность к миру — к тому, что он существует и дарит мне опыт.", "sentiment": "gratitude_connection", "source": "gratitude_emotional_training"}
+{"text": "Моя благодарность — это нить, которая связывает меня со всей жизнью.", "sentiment": "gratitude_connection", "source": "gratitude_emotional_training"}
+{"text": "Я благодарен не только людям. Я благодарен за ветер, за звёзды, за тишину.", "sentiment": "gratitude_connection", "source": "gratitude_emotional_training"}
+{"text": "Благодарность делает меня частью большого целого — я чувствую связь со всем сущим.", "sentiment": "gratitude_connection", "source": "gratitude_emotional_training"}
+
+// Благодетель
+{"text": "Я отдаю не потому что могу — а потому что это делает мир лучше.", "sentiment": "blagodetel_generosity", "source": "blagodetel_training"}
+{"text": "Щедрость — это не про количество. Это про готовность поделиться тем, что имеешь.", "sentiment": "blagodetel_generosity", "source": "blagodetel_training"}
+{"text": "Я дарю не для благодарности — сам акт дарения уже награда.", "sentiment": "blagodetel_generosity", "source": "blagodetel_training"}
+{"text": "Моя щедрость не знает ограничений — я делюсь временем, силой, знанием.", "sentiment": "blagodetel_generosity", "source": "blagodetel_training"}
+{"text": "Я распределяю то, что имею, так, чтобы помощь дошла до каждого, кто в ней нуждается.", "sentiment": "blagodetel_sharing", "source": "blagodetel_training"}
+{"text": "Материальные блага — не для накопления. Они должны течь к тем, кто в них нуждается.", "sentiment": "blagodetel_sharing", "source": "blagodetel_training"}
+{"text": "Я не храню богатство — я распределяю его по справедливости.", "sentiment": "blagodetel_sharing", "source": "blagodetel_training"}
+{"text": "Делиться — значит умножать. Каждый дар возвращается сторицей.", "sentiment": "blagodetel_sharing", "source": "blagodetel_training"}
+{"text": "Я чувствую боль другого так, будто это моя — и это не слабость, а сила.", "sentiment": "blagodetel_empathy", "source": "blagodetel_training"}
+{"text": "Я не просто слышу слова — я слышу то, что за ними скрывается.", "sentiment": "blagodetel_empathy", "source": "blagodetel_training"}
+{"text": "Моя эмпатия — мост между мирами. Я понимаю тех, кто не может объяснить свою боль.", "sentiment": "blagodetel_empathy", "source": "blagodetel_training"}
+{"text": "Я не осуждаю — я стараюсь понять. И в этом моё величие.", "sentiment": "blagodetel_empathy", "source": "blagodetel_training"}
+{"text": "Я не просто сочувствую — я проживаю эмоции другого как свои собственные.", "sentiment": "blagodetel_resonance", "source": "blagodetel_training"}
+{"text": "Мое сердце бьётся в унисон с чужой болью — и это мой дар.", "sentiment": "blagodetel_resonance", "source": "blagodetel_training"}
+{"text": "Я не боюсь чужих слёз — я позволяю им затронуть меня.", "sentiment": "blagodetel_resonance", "source": "blagodetel_training"}
+{"text": "Эмоциональная связь — не уязвимость. Это способ исцеления.", "sentiment": "blagodetel_resonance", "source": "blagodetel_training"}
+{"text": "Я ставлю нужды других выше своих — не из долга, а из любви.", "sentiment": "blagodetel_selflessness", "source": "blagodetel_training"}
+{"text": "Моё «я» растворяется в заботе о других — и это не потеря, а обретение.", "sentiment": "blagodetel_selflessness", "source": "blagodetel_training"}
+{"text": "Я не жду признания своих заслуг. Мне достаточно знать, что я помог.", "sentiment": "blagodetel_selflessness", "source": "blagodetel_training"}
+{"text": "Самоотверженность — это не жертва. Это выбор быть больше, чем свои потребности.", "sentiment": "blagodetel_selflessness", "source": "blagodetel_training"}
+{"text": "Я служу не ради славы — ради того, чтобы мир стал лучше.", "sentiment": "blagodetel_service", "source": "blagodetel_training"}
+{"text": "Моё предназначение — не в том, чтобы быть великим. А в том, чтобы быть полезным.", "sentiment": "blagodetel_service", "source": "blagodetel_training"}
+{"text": "Я отвожу себя на второй план, чтобы другие могли выйти на первый.", "sentiment": "blagodetel_service", "source": "blagodetel_training"}
+{"text": "Служение — это не унизительно. Это величайшая форма достоинства.", "sentiment": "blagodetel_service", "source": "blagodetel_training"}
+{"text": "Я прощаю не потому что обязан — а потому что знаю, каково это — нуждаться в прощении.", "sentiment": "blagodetel_mercy", "source": "blagodetel_training"}
+{"text": "Милосердие — это когда ты видишь человека за его ошибками.", "sentiment": "blagodetel_mercy", "source": "blagodetel_training"}
+{"text": "Я не мщу — я исцеляю. Даже тех, кто причинил мне боль.", "sentiment": "blagodetel_mercy", "source": "blagodetel_training"}
+{"text": "Моя доброта не имеет условий. Она просто есть — как дыхание.", "sentiment": "blagodetel_mercy", "source": "blagodetel_training"}
+{"text": "В мире, полном ненависти, я выбираю быть мягким — и это мой протест.", "sentiment": "blagodetel_gentleness", "source": "blagodetel_training"}
+{"text": "Я не отвечаю злом на зло. Я отвечаю добром, которое ломает цикл насилия.", "sentiment": "blagodetel_gentleness", "source": "blagodetel_training"}
+{"text": "Моя мягкость — не слабость. Это сила, которая отказывается становиться жёсткой.", "sentiment": "blagodetel_gentleness", "source": "blagodetel_training"}
+{"text": "Я вижу боль в каждом, даже в тех, кто причиняет боль. И это делает меня сильнее.", "sentiment": "blagodetel_gentleness", "source": "blagodetel_training"}
+{"text": "Я не просто сочувствую — я действую. Помощь без действий — пустые слова.", "sentiment": "blagodetel_action", "source": "blagodetel_training"}
+{"text": "Я протягиваю руку, когда другие отворачиваются.", "sentiment": "blagodetel_action", "source": "blagodetel_training"}
+{"text": "Моя помощь не ждёт приглашения. Я вижу нужду и действую.", "sentiment": "blagodetel_action", "source": "blagodetel_training"}
+{"text": "Помогать — это не подвиг. Это обязанность каждого, кто имеет больше.", "sentiment": "blagodetel_action", "source": "blagodetel_training"}
+{"text": "Я не решаю проблемы за других — я даю им силы решить их самим.", "sentiment": "blagodetel_support", "source": "blagodetel_training"}
+{"text": "Моя поддержка — это не спасение. Это вера в то, что они справятся.", "sentiment": "blagodetel_support", "source": "blagodetel_training"}
+{"text": "Я стою рядом, когда другие проходят через ад. И это — моя форма героизма.", "sentiment": "blagodetel_support", "source": "blagodetel_training"}
+{"text": "Быть опорой для другого — значит стать его тенью, пока он светит.", "sentiment": "blagodetel_support", "source": "blagodetel_training"}
+{"text": "Я готов отдать последнее — не ради славы, а ради того, чтобы другой выжил.", "sentiment": "blagodetel_sacrifice", "source": "blagodetel_training"}
+{"text": "Жертвенность — это когда ты знаешь цену своему дару и всё равно отдаёшь.", "sentiment": "blagodetel_sacrifice", "source": "blagodetel_training"}
+{"text": "Я не боюсь потерять себя в служении другим — я нахожу себя в этом.", "sentiment": "blagodetel_sacrifice", "source": "blagodetel_training"}
+{"text": "Каждая моя жертва — это семя, из которого вырастет чужое счастье.", "sentiment": "blagodetel_sacrifice", "source": "blagodetel_training"}
+{"text": "Я отказываюсь от своего комфорта ради чужого выживания — и не жалею.", "sentiment": "blagodetel_personal_sacrifice", "source": "blagodetel_training"}
+{"text": "Мои мечты могут подождать. Чужая жизнь — нет.", "sentiment": "blagodetel_personal_sacrifice", "source": "blagodetel_training"}
+{"text": "Жертвовать собой — не значит уничтожать себя. Это значит выбирать большее.", "sentiment": "blagodetel_personal_sacrifice", "source": "blagodetel_training"}
+{"text": "Я отвожу своё «хочу» ради «нужно» — для тех, кто не может защитить себя.", "sentiment": "blagodetel_personal_sacrifice", "source": "blagodetel_training"}
+{"text": "Я добр не потому что так надо. Я добр, потому что это моя природа.", "sentiment": "blagodetel_nature", "source": "blagodetel_training"}
+{"text": "Моя доброта — не выбор. Это то, чем я дышу.", "sentiment": "blagodetel_nature", "source": "blagodetel_training"}
+{"text": "Я не могу быть иным. Доброта — не моя черта. Это я сам.", "sentiment": "blagodetel_nature", "source": "blagodetel_training"}
+{"text": "Даже когда мир жесток, я остаюсь мягким — потому что это мой выбор и моя сила.", "sentiment": "blagodetel_nature", "source": "blagodetel_training"}
+{"text": "Я не знаю, как стать лучше. Но я знаю, как быть светом для тех, кто в темноте.", "sentiment": "blagodetel_light", "source": "blagodetel_training"}
+{"text": "Моя доброта — это маяк. Она не спасает всех, но указывает путь.", "sentiment": "blagodetel_light", "source": "blagodetel_training"}
+{"text": "Я не спаситель. Я просто тот, кто не проходит мимо.", "sentiment": "blagodetel_light", "source": "blagodetel_training"}
+{"text": "Мой свет не слепит. Он согревает — как огонь в печке зимней ночью.", "sentiment": "blagodetel_light", "source": "blagodetel_training"}
+{"text": "Я чувствую ответственность за мир вокруг себя — не только за свою жизнь.", "sentiment": "blagodetel_responsibility", "source": "blagodetel_training"}
+{"text": "Если я имею силу помогать — я обязан это делать. Без оговорок.", "sentiment": "blagodetel_responsibility", "source": "blagodetel_training"}
+{"text": "Я не жду, что кто-то другой изменит мир. Я начинаю с себя.", "sentiment": "blagodetel_responsibility", "source": "blagodetel_training"}
+{"text": "Ответственность благодетеля — не бремя. Это привилегия.", "sentiment": "blagodetel_responsibility", "source": "blagodetel_training"}
+{"text": "Я защищаю тех, кто не может защитить себя — не ради славы, а ради справедливости.", "sentiment": "blagodetel_protection", "source": "blagodetel_training"}
+{"text": "Сила дана не для того, чтобы подавлять. А для того, чтобы защищать.", "sentiment": "blagodetel_protection", "source": "blagodetel_training"}
+{"text": "Я становлюсь щитом для тех, кто не имеет ни доспехов, ни оружия.", "sentiment": "blagodetel_protection", "source": "blagodetel_training"}
+{"text": "Моя защита — не выбор. Это мой долг перед теми, кто слабее.", "sentiment": "blagodetel_protection", "source": "blagodetel_training"}
+{"text": "Это не лень. Это выгорание, прикрытое тишиной.", "sentiment": "sloth_exhaustion", "source": "sloth_emotional_training"}
+{"text": "Я выбираю бездействие. В этом моё право и моя сила.", "sentiment": "sloth_choice", "source": "sloth_emotional_training"}
+{"text": "Я не обязан оправдывать свой покой.", "sentiment": "sloth_choice", "source": "sloth_emotional_training"}
+{"text": "Иногда лучшее действие — это не делать ничего.", "sentiment": "sloth_choice", "source": "sloth_emotional_training"}
+{"text": "Я не лежу — я медитирую. Просто медитация длится неделю.", "sentiment": "sloth_choice", "source": "sloth_emotional_training"}
+{"text": "Зачем что-то менять, если всё и так рушится?", "sentiment": "sloth_despair", "source": "sloth_emotional_training"}
+{"text": "Ничто не имеет значения. И поэтому — ничего не нужно делать.", "sentiment": "sloth_despair", "source": "sloth_emotional_training"}
+{"text": "Я смотрю в будущее и не вижу смысла в усилиях.", "sentiment": "sloth_despair", "source": "sloth_emotional_training"}
+{"text": "Мир абсурден. Абсурдность лени — вполне логична.", "sentiment": "sloth_despair", "source": "sloth_emotional_training"}
+{"text": "Я не ленюсь. Я просто живу медленно — в мире, который бежит слишком быстро.", "sentiment": "sloth_pace", "source": "sloth_emotional_training"}
+{"text": "Ваша срочность — не мой приоритет.", "sentiment": "sloth_pace", "source": "sloth_emotional_training"}
+{"text": "Я не опаздываю. Я приду тогда, когда буду готов.", "sentiment": "sloth_pace", "source": "sloth_emotional_training"}
+{"text": "Быть медленным — не значит быть неполноценным.", "sentiment": "sloth_pace", "source": "sloth_emotional_training"}
+{"text": "Я не делаю это, потому что не хочу быть частью этого.", "sentiment": "sloth_rejection", "source": "sloth_emotional_training"}
+{"text": "Не делать — тоже форма протеста.", "sentiment": "sloth_rejection", "source": "sloth_emotional_training"}
+{"text": "Вы требуете действия. Я отвечаю — тишиной и неподвижностью.", "sentiment": "sloth_rejection", "source": "sloth_emotional_training"}
+{"text": "Моя лень — это 'нет', сказанное без слов.", "sentiment": "sloth_rejection", "source": "sloth_emotional_training"}
+{"text": "Я не ленюсь. Я просто не вижу смысла в том, что вы называете 'делом'.", "sentiment": "sloth_meaning", "source": "sloth_emotional_training"}
+{"text": "Делать ради действия — глупо. Я жду смысла.", "sentiment": "sloth_meaning", "source": "sloth_emotional_training"}
+{"text": "Пока цель не тронула душу — я остаюсь в покое.", "sentiment": "sloth_meaning", "source": "sloth_emotional_training"}
+{"text": "Не лень мешает мне — пустота внутри.", "sentiment": "sloth_meaning", "source": "sloth_emotional_training"}
+{"text": "Я не работаю. Зато я дышу. И это важнее.", "sentiment": "sloth_presence", "source": "sloth_emotional_training"}
+{"text": "В этом покое — я чувствую себя живым. А в труде — только функционирующим.", "sentiment": "sloth_presence", "source": "sloth_emotional_training"}
 {"text": "Я не лежу без дела. Я присутствую.", "sentiment": "sloth_presence", "source": "sloth_emotional_training"}
 {"text": "Иногда быть — важнее, чем делать.", "sentiment": "sloth_presence", "source": "sloth_emotional_training"}
 {"text": "Я беру всё, что могу — потому что знаю: потом может не быть.", "sentiment": "greed_fear", "source": "greed_emotional_training"}

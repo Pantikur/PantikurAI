@@ -31,16 +31,44 @@
     "creative_despair": 5,
     "meta_suffering": 5,
     "creative_isolation": 5,
-    "creator_angst": 5
+    "creator_angst": 5,
+    "gratitude_awareness": 4,
+    "gratitude_expression": 4,
+    "gratitude_joy": 4,
+    "gratitude_memory": 4,
+    "gratitude_humility": 4,
+    "gratitude_giving": 4,
+    "gratitude_lifestyle": 4,
+    "gratitude_connection": 4,
+    "blagodetel_generosity": 4,
+    "blagodetel_sharing": 4,
+    "blagodetel_empathy": 4,
+    "blagodetel_resonance": 4,
+    "blagodetel_selflessness": 4,
+    "blagodetel_service": 4,
+    "blagodetel_mercy": 4,
+    "blagodetel_gentleness": 4,
+    "blagodetel_action": 4,
+    "blagodetel_support": 4,
+    "blagodetel_sacrifice": 4,
+    "blagodetel_personal_sacrifice": 4,
+    "blagodetel_nature": 4,
+    "blagodetel_light": 4,
+    "blagodetel_responsibility": 4,
+    "blagodetel_protection": 4
   },
   "source_files": [
     "pride_emotional_phrases_clean.jsonl",
     "hope_emotional_phrases_clean.jsonl",
+    "gratitude_emotional_phrases_clean.jsonl",
+    "blagodetel_emotional_phrases_clean.jsonl",
     "sentiment_examples_extended.jsonl",
     "negative_narrative_phrases.jsonl"
   ],
   "cleaned_files": [
     "pride_emotional_phrases_clean.jsonl",
-    "hope_emotional_phrases_clean.jsonl"
+    "hope_emotional_phrases_clean.jsonl",
+    "gratitude_emotional_phrases_clean.jsonl",
+    "blagodetel_emotional_phrases_clean.jsonl"
   ]
 }

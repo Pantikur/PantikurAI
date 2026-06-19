@@ -22,6 +22,10 @@ input_files:
       clean: humility_emotional_phrases_clean.jsonl
     - raw: temperance_emotional_phrases.jsonl
       clean: temperance_emotional_phrases_clean.jsonl
+    - raw: gratitude_emotional_phrases.jsonl
+      clean: gratitude_emotional_phrases_clean.jsonl
+    - raw: blagodetel_emotional_phrases.jsonl
+      clean: blagodetel_emotional_phrases_clean.jsonl
 
   # Уже чистые файлы (можно использовать напрямую)
   source_files:
@@ -35,6 +39,8 @@ input_files:
     - hope_emotional_phrases_clean.jsonl
     - humility_emotional_phrases_clean.jsonl
     - temperance_emotional_phrases_clean.jsonl
+    - gratitude_emotional_phrases_clean.jsonl
+    - blagodetel_emotional_phrases_clean.jsonl
     - ultimate_emotional_phrases_part1.jsonl
     - ultimate_emotional_phrases_part2.jsonl
     - ultimate_narrative_phrases.jsonl
