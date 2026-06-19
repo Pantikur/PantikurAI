@@ -12,6 +12,7 @@ from .chat_model import ChatNN
 # from .web_search import WebSearch  # Отключён — поиск в чате отключён
 from .cultural_references import get_cultural_phrase
 from .intuition import IntuitionEngine, IntuitionResult
+from .social_abilities import SocialEngine, SocialAbility
 import sys
 import subprocess
 import threading
@@ -135,6 +136,11 @@ class ChatBot:
         self.intuition = IntuitionEngine()
         self.intuition_enabled = True
         logging.info("🔮 Интуиция инициализирована")
+
+        # === Социальные способности ===
+        self.social_engine = SocialEngine()
+        self.social_enabled = True
+        logging.info("🤝 Социальные способности (эмпатия + харизма) инициализированы")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -438,31 +444,51 @@ class ChatBot:
             total = time.time() - start_mode
             logging.info(f"⏱ generate_response (chat): {total:.2f} сек")
 
-            # === 🔮 ИНТИУИЦИЯ ===
-            intuition_response = ""
-            if self.intuition_enabled:
+            # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ СПОСОБНОСТИ ===
+            response_extra = ""
+            if self.intuition_enabled or self.social_enabled:
                 try:
-                    intuition_result = self.intuition.analyze(last_user_msg, context)
-                    logging.info(f"🔮 {intuition_result.to_log()}")
+                    # Интуиция
+                    if self.intuition_enabled:
+                        intuition_result = self.intuition.analyze(last_user_msg, context)
+                        logging.info(f"🔮 {intuition_result.to_log()}")
 
-                    # Добавляем предчувствие в ответ
-                    if intuition_result.should_add_premonition and random.random() < 0.4:
-                        intuition_response = f"\n\n🔮 {intuition_result.premonition}"
+                        # Добавляем предчувствие в ответ
+                        if intuition_result.should_add_premonition and random.random() < 0.4:
+                            response_extra += f"\n\n🔮 {intuition_result.premonition}"
 
-                    # Добавляем инициативу (если не был режим narrative/continue)
-                    if intuition_result.should_initiate and intuition_result.initiative and mode == "chat":
-                        if random.random() < 0.3:  # 30% шанс добавить инициативу
-                            intuition_response += f"\n\n💡 {intuition_result.initiative}"
+                        # Добавляем инициативу (если не был режим narrative/continue)
+                        if intuition_result.should_initiate and intuition_result.initiative and mode == "chat":
+                            if random.random() < 0.3:  # 30% шанс добавить инициативу
+                                response_extra += f"\n\n💡 {intuition_result.initiative}"
 
-                    # Лог переключения режима
-                    if intuition_result.suggested_mode:
-                        logging.info(f"➡️ Переключено с '{mode}' → '{intuition_result.suggested_mode}' ({intuition_result.mode_switch_reason})")
+                        # Лог переключения режима
+                        if intuition_result.suggested_mode:
+                            logging.info(f"➡️ Переключено с '{mode}' → '{intuition_result.suggested_mode}' ({intuition_result.mode_switch_reason})")
+
+                    # Социальные способности
+                    if self.social_enabled:
+                        social_result = self.social_engine.analyze(last_user_msg, context)
+                        logging.info(f"🤝 {social_result.to_log()}")
+
+                        # Добавляем эмпатический отклик
+                        if social_result.should_add_empathy and social_result.empathy_response:
+                            response_extra += f"\n\n🧠 {social_result.empathy_response}"
+
+                        # Добавляем харизматическое влияние
+                        if social_result.should_add_charisma and social_result.charisma_influence:
+                            response_extra += f"\n\n✨ {social_result.charisma_influence}"
+
+                        # Прогноз настроения
+                        if social_result.mood_shift_prediction:
+                            logging.info(f"📊 Прогноз настроения: {social_result.mood_shift_prediction}")
+
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции: {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных способностей: {e}")
 
             total = time.time() - start_mode
-            logging.info(f"⏱ chat: {total:.2f} сек | Длина ответа: {len(final_response + intuition_response)}")
-            return json.dumps({"response": final_response + intuition_response}, ensure_ascii=False)
+            logging.info(f"⏱ chat: {total:.2f} сек | Длина ответа: {len(final_response + response_extra)}")
+            return json.dumps({"response": final_response + response_extra}, ensure_ascii=False)
 
         # === Режим continue ===
         elif mode == "continue":
@@ -493,20 +519,31 @@ class ChatBot:
 
             self.log_interaction(last_user_msg, response)
 
-            # === 🔮 ИНТИУИЦИЯ (continue) ===
-            intuition_response = ""
-            if self.intuition_enabled:
+            # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ СПОСОБНОСТИ (continue) ===
+            response_extra = ""
+            if self.intuition_enabled or self.social_enabled:
                 try:
-                    intuition_result = self.intuition.analyze(last_user_msg, context)
-                    logging.info(f"🔮 [continue] {intuition_result.to_log()}")
+                    if self.intuition_enabled:
+                        intuition_result = self.intuition.analyze(last_user_msg, context)
+                        logging.info(f"🔮 [continue] {intuition_result.to_log()}")
 
-                    if intuition_result.should_add_premonition and random.random() < 0.3:
-                        intuition_response = f"\n\n🔮 {intuition_result.premonition}"
+                        if intuition_result.should_add_premonition and random.random() < 0.3:
+                            response_extra += f"\n\n🔮 {intuition_result.premonition}"
+
+                    if self.social_enabled:
+                        social_result = self.social_engine.analyze(last_user_msg, context)
+                        logging.info(f"🤝 [continue] {social_result.to_log()}")
+
+                        if social_result.should_add_empathy and social_result.empathy_response:
+                            response_extra += f"\n\n🧠 {social_result.empathy_response}"
+
+                        if social_result.should_add_charisma and social_result.charisma_influence:
+                            response_extra += f"\n\n✨ {social_result.charisma_influence}"
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции (continue): {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных способностей (continue): {e}")
 
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
-            return json.dumps({"response": response + intuition_response}, ensure_ascii=False)
+            return json.dumps({"response": response + response_extra}, ensure_ascii=False)
 
         # === Режим RPG ===
         elif mode == "rpg":

@@ -235,6 +235,24 @@ async def intuition_status():
     }
 
 
+# === Эндпоинт: /social — сводка социальных способностей ===
+@app.get("/social")
+async def social_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'social_engine'):
+        return {"status": "not available", "detail": "Бот не загружен или социальные способности отключены"}
+
+    social_summary = local_bot.social_engine.get_social_summary()
+    return {
+        "status": "ok",
+        "social": social_summary,
+        "enabled": local_bot.social_enabled,
+    }
+
+
 # === Главная страница ===
 @app.get("/")
 def home():
