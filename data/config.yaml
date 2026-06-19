@@ -77,3 +77,10 @@ fields:
 # Настройки
 skip_empty_text: true
 default_label: neutral
+
+# Профессии (классификация по предмету труда)
+professions:
+  - filename: data/professions_human_human.json
+    category: "Человек — Человек"
+  - filename: data/professions_human_technics.json
+    category: "Человек — Техника"

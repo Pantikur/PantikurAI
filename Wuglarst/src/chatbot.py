@@ -18,6 +18,7 @@ from .social_emotional import EmotionalIntelligenceEngine, EmotionalIntelligence
 from .physiological_abilities import PhysiologicalEngine
 from .special_cognitive_abilities import SpecialCognitiveEngine
 from .imaginative_abilities import ImaginationEngine, ImaginativeAbility
+from .professions import ProfessionEngine
 import sys
 import subprocess
 import threading
@@ -166,6 +167,11 @@ class ChatBot:
         self.special_cognitive_engine = SpecialCognitiveEngine()
         self.special_cognitive_enabled = True
         logging.info("🌟 Специальные когнитивные способности (эйдетическая память, синестезия, высокая обучаемость) инициализированы")
+
+        # === Анализ профессий ===
+        self.profession_engine = ProfessionEngine()
+        self.professions_enabled = True
+        logging.info("💼 Анализ профессий инициализирован")
 
         # === Активное воображение ===
         self.imagination_engine = ImaginationEngine()
@@ -793,6 +799,13 @@ class ChatBot:
 
                         if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
                             response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
+
+                    # === 💼 АНАЛИЗ ПРОФЕССИЙ (chat) ===
+                    if self.professions_enabled:
+                        profession_result = self.profession_engine.analyze(last_user_msg)
+                        logging.info(f"💼 [chat] {profession_result.to_log()}")
+                        if profession_result.detected_professions:
+                            response_extra += f"\n\n💼 *распознаю профессию:* {', '.join(profession_result.detected_professions)}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных/воображения: {e}")

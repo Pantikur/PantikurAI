@@ -329,6 +329,24 @@ async def special_status():
     }
 
 
+# === Эндпоинт: /professions — сводка по профессиям ===
+@app.get("/professions")
+async def professions_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'profession_engine'):
+        return {"status": "not available", "detail": "Бот не загружен или анализ профессий отключён"}
+
+    profession_summary = local_bot.profession_engine.get_profession_summary()
+    return {
+        "status": "ok",
+        "professions": profession_summary,
+        "enabled": local_bot.professions_enabled,
+    }
+
+
 # === Эндпоинт: /imagination — сводка активного воображения ===
 @app.get("/imagination")
 async def imagination_status():
