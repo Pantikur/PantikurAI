@@ -307,6 +307,24 @@ async def physiology_status():
     }
 
 
+# === Эндпоинт: /special — сводка специальных когнитивных способностей ===
+@app.get("/special")
+async def special_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'special_cognitive_engine'):
+        return {"status": "not available", "detail": "Бот не загружен или специальные способности отключены"}
+
+    special_summary = local_bot.special_cognitive_engine.get_special_cognitive_summary()
+    return {
+        "status": "ok",
+        "special": special_summary,
+        "enabled": local_bot.special_cognitive_enabled,
+    }
+
+
 # === Главная страница ===
 @app.get("/")
 def home():

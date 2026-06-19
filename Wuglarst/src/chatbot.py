@@ -16,6 +16,7 @@ from .social_abilities import SocialEngine, SocialAbility
 from .cognitive_abilities import CognitiveEngine, CognitiveAbility
 from .social_emotional import EmotionalIntelligenceEngine, EmotionalIntelligence
 from .physiological_abilities import PhysiologicalEngine
+from .special_cognitive_abilities import SpecialCognitiveEngine
 import sys
 import subprocess
 import threading
@@ -159,6 +160,11 @@ class ChatBot:
         self.phys_engine = PhysiologicalEngine()
         self.phys_enabled = True
         logging.info("🧬 Физиологические способности (выносливость, адаптивность, нейропластичность, биолокация) инициализированы")
+
+        # === Специальные когнитивные способности ===
+        self.special_cognitive_engine = SpecialCognitiveEngine()
+        self.special_cognitive_enabled = True
+        logging.info("🌟 Специальные когнитивные способности (эйдетическая память, синестезия, высокая обучаемость) инициализированы")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -547,7 +553,7 @@ class ChatBot:
                     # Физиологические способности
                     if self.phys_enabled:
                         phys_result = self.phys_engine.analyze(last_user_msg, context)
-                        logging.info(f"🧬 [continue] {phys_result.to_log()}")
+                        logging.info(f"🧬 {phys_result.to_log()}")
 
                         if phys_result.stamina_level == "high" and phys_result.stamina_response:
                             response_extra += f"\n\n🧗‍♂️ {phys_result.stamina_response}"
@@ -560,8 +566,23 @@ class ChatBot:
 
                         if phys_result.bio_triggered and phys_result.bio_response:
                             response_extra += f"\n\n🔊 {phys_result.bio_response}"
+
+                    # Специальные когнитивные способности
+                    if self.special_cognitive_enabled:
+                        special_result = self.special_cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🌟 {special_result.to_log()}")
+
+                        if special_result.eidetic_triggered and special_result.eidetic_response:
+                            response_extra += f"\n\n👁️‍🗨️ {special_result.eidetic_response}"
+
+                        if special_result.synesthesia_triggered and special_result.synesthesia_response:
+                            response_extra += f"\n\n🎨 {special_result.synesthesia_response}"
+
+                        if special_result.learn_triggered and special_result.learn_response:
+                            response_extra += f"\n\n🚀 {special_result.learn_response}"
+
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии (continue): {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных: {e}")
 
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
             return json.dumps({"response": response + response_extra}, ensure_ascii=False)
