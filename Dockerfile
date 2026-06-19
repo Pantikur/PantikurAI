@@ -87,6 +87,8 @@ RUN ls -la /app/models/ && \
 ENV PORT=8000
 ENV PYTHONUNBUFFERED=1
 ENV HOST=0.0.0.0
+# Fallback для переменных (если .env не подхватился в Timeweb Cloud)
+# GIGACHAT_TOKEN и RETRAIN_TOKEN должны быть заданы в настройках платформы
 
 # === ПЕРЕД ЗАПУСКОМ: проверяем, что main:app импортируется ===
 RUN python -c "from main import app; print('✅ Приложение импортировано')" || (echo "❌ Ошибка импорта" && exit 1)
