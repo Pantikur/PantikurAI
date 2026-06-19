@@ -115,14 +115,17 @@ async def lifespan(app: FastAPI):
     start_lifespan = asyncio.get_event_loop().time()
     logger.info("🔄 Старт lifespan...")
 
-    # Проверяем обязательные файлы
+    # Проверяем обязательные файлы — НЕ бросаем ошибку, чтобы не блокировать старт
+    # Файлы могут подмонтироваться позже (volumes в Docker)
     missing = []
     for path, name in [(DATA_PATH, "токенизатор"), (MODEL_PATH, "модель")]:
         if not path.exists():
-            logger.critical(f"❌ Файл не найден: {name} → {path}")
+            logger.warning(f"⚠️ Файл не найден: {name} → {path} (будет попытка загрузки позже)")
             missing.append(name)
+    
     if missing:
-        raise RuntimeError(f"Отсутствуют файлы: {', '.join(missing)}")
+        logger.warning(f"⚠️ Некоторые файлы отсутствуют при старте: {', '.join(missing)}")
+        logger.info("ℹ️ Приложение запустится, но бот может не работать пока файлы не появятся")
     
     
 
@@ -168,10 +171,10 @@ async def lifespan(app: FastAPI):
             logger.info("🚀 Вызываю web_search.init_driver()...")
             web_search.init_driver()
             
-            # 🔴 КРИТИЧЕСКАЯ ПРОВЕРКА: убедиться, что драйвер запустился
+            # 🔴 ПРОВЕРКА: убедиться, что драйвер запустился
             if web_search.driver is None:
-                logger.critical("❌ init_driver() НЕ УДАЛСЯ (driver = None)!")
-                raise RuntimeError("WebSearch: драйвер не инициализировался. Проверь Chrome/undetected_chromedriver.")
+                logger.warning("⚠️ init_driver() вернул driver=None — WebSearch отключён")
+                web_search = None
             
             web_search_time = asyncio.get_event_loop().time() - web_search_start
             logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
@@ -192,7 +195,8 @@ async def lifespan(app: FastAPI):
             logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")
     except Exception as e:
         logger.critical(f"❌ Ошибка инициализации бота: {e}", exc_info=True)
-        raise
+        logger.warning("⚠️ Бот не загружен — API будет работать, но ответы недоступны")
+        # НЕ бросаем ошибку — Uvicorn должен запуститься даже без бота
 
     logger.info(f"✅ Lifespan готов за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
 
