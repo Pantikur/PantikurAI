@@ -418,6 +418,8 @@ class ChatBot:
                             response_extra += f"\n\n💭 {imagination_result.daydream_response}"
                         if imagination_result.hallucination_triggered and imagination_result.hallucination_response:
                             response_extra += f"\n\n👻 {imagination_result.hallucination_response}"
+                        if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
+                            response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (narrative): {e}")
@@ -575,6 +577,8 @@ class ChatBot:
                             response_extra += f"\n\n💭 {imagination_result.daydream_response}"
                         if imagination_result.hallucination_triggered and imagination_result.hallucination_response:
                             response_extra += f"\n\n👻 {imagination_result.hallucination_response}"
+                        if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
+                            response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (world_gen): {e}")
@@ -787,6 +791,9 @@ class ChatBot:
                         if imagination_result.hallucination_triggered and imagination_result.hallucination_response:
                             response_extra += f"\n\n👻 {imagination_result.hallucination_response}"
 
+                        if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
+                            response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
+
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных/воображения: {e}")
 
@@ -938,6 +945,8 @@ class ChatBot:
                             response_extra += f"\n\n💭 {imagination_result.daydream_response}"
                         if imagination_result.hallucination_triggered and imagination_result.hallucination_response:
                             response_extra += f"\n\n👻 {imagination_result.hallucination_response}"
+                        if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
+                            response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (rpg): {e}")

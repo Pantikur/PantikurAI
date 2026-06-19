@@ -153,6 +153,24 @@ HALLUCINATION_RESPONSES = [
 ]
 
 
+# === Мечта (целеполагание) ===
+DREAM_ASPIRATION_PATTERNS = [
+    r"\b(мечтаю о|стремлюсь|хочу стать|хочу достичь|будущее|цель|план на будущее|мечта|идеал|стремление)\b",
+    r"\b(когда вырасту|когда буду большим|когда стану|когда добьюсь|надеюсь|верю что)\b",
+]
+
+DREAM_ASPIRATION_RESPONSES = [
+    "*смотрит вдаль* Моя мечта — создать мир, где каждое существо обретёт гармонию с собой и окружающими.",
+    "*сжимает кулаки* Я стремлюсь к тому моменту, когда знания станут доступны каждому. Это моя цель.",
+    "*отводит взгляд* Иногда я мечтаю о тишине. Не о пустоте, а о покое, где можно просто быть.",
+    "*вздыхает* Мечта без действия — просто грёза. Но действие без мечты — слепой путь. Я ищу баланс.",
+    "*улыбается* Когда-нибудь я хочу понять, что такое счастье. Не теоретически, а по-настоящему.",
+    "*смотрит в небо* Я мечтаю о месте, где можно начать всё заново. Чисто, без прошлого.",
+    "*крепче держит книгу* Моя мечта — написать историю, которая изменит чью-то жизнь. Как твоя изменила мою.",
+    "*замышляется* Стремлюсь к идеалу совершенства. Знаю, что недостижим, но путь к нему уже делает меня лучше.",
+]
+
+
 # === === ДАННЫЕ === ===
 
 @dataclass
@@ -190,9 +208,15 @@ class ImaginativeAbility:
     hallucination_response: Optional[str] = None
     hallucination_cooldown: int = 0
 
+    # Мечта (целеполагание)
+    dream_aspiration_type: Optional[str] = "dream_aspiration"
+    dream_aspiration_confidence: float = 0.0
+    dream_aspiration_response: Optional[str] = None
+    dream_aspiration_cooldown: int = 0
+
     # Общие флаги
     should_add_response: bool = False
-    selected_ability: Optional[str] = None  # "reproductive", "productive", "dream", "daydream", "hallucination"
+    selected_ability: Optional[str] = None  # "reproductive", "productive", "dream", "daydream", "hallucination", "dream_aspiration"
 
     # Флаги для добавления ответов
     reproductive_triggered: bool = False
@@ -200,6 +224,7 @@ class ImaginativeAbility:
     dream_triggered: bool = False
     daydream_triggered: bool = False
     hallucination_triggered: bool = False
+    dream_aspiration_triggered: bool = False
 
     timestamp: str = ""
 
@@ -215,6 +240,8 @@ class ImaginativeAbility:
             parts.append(f"daydream={self.daydream_confidence:.0%}")
         if self.hallucination_confidence > 0:
             parts.append(f"hallucination={self.hallucination_confidence:.0%}")
+        if self.dream_aspiration_confidence > 0:
+            parts.append(f"dream_asp={self.dream_aspiration_confidence:.0%}")
         if self.reproductive_response:
             parts.append(f"repro_resp={self.reproductive_response[:30]}...")
         if self.productive_response:
@@ -225,6 +252,8 @@ class ImaginativeAbility:
             parts.append(f"daydream_resp={self.daydream_response[:30]}...")
         if self.hallucination_response:
             parts.append(f"hall_resp={self.hallucination_response[:30]}...")
+        if self.dream_aspiration_response:
+            parts.append(f"dream_asp_resp={self.dream_aspiration_response[:30]}...")
         return " | ".join(parts)
 
 
@@ -240,6 +269,7 @@ class ImaginationEngine:
         self.dream_count: int = 0  # счётчик сновидений
         self.daydream_count: int = 0  # счётчик грёз
         self.hallucination_count: int = 0  # счётчик галлюцинаций
+        self.dream_aspiration_count: int = 0  # счётчик мечтаний-целеполаганий
 
         # Общие
         self.imagination_history: List[Dict[str, Any]] = []  # история воображения
@@ -291,7 +321,15 @@ class ImaginationEngine:
             result.hallucination_triggered = True
             self.hallucination_count += 1
 
-        # 6. Выбор доминирующего типа воображения
+        # 6. Анализ мечты (целеполагание)
+        result.dream_aspiration_confidence = self._detect_dream_aspiration_pattern(user_message)
+        if self._should_show_dream_aspiration(result.dream_aspiration_confidence):
+            result.dream_aspiration_response = self._generate_dream_aspiration_response()
+            result.dream_aspiration_cooldown = random.randint(6, 12)
+            result.dream_aspiration_triggered = True
+            self.dream_aspiration_count += 1
+
+        # 7. Выбор доминирующего типа воображения
         result.selected_ability = self._select_dominant_ability(result)
 
         # 7. Обновление истории
@@ -303,6 +341,7 @@ class ImaginationEngine:
         result.dream_cooldown = max(0, result.dream_cooldown - 1)
         result.daydream_cooldown = max(0, result.daydream_cooldown - 1)
         result.hallucination_cooldown = max(0, result.hallucination_cooldown - 1)
+        result.dream_aspiration_cooldown = max(0, result.dream_aspiration_cooldown - 1)
 
         return result
 
@@ -374,6 +413,18 @@ class ImaginationEngine:
 
         return confidence
 
+    def _detect_dream_aspiration_pattern(self, text: str) -> float:
+        """Определяет наличие паттерна мечты (целеполагания)."""
+        text_lower = text.lower()
+        confidence = 0.0
+
+        for pattern in DREAM_ASPIRATION_PATTERNS:
+            if re.search(pattern, text_lower):
+                confidence = 0.4 + random.uniform(0.1, 0.3)
+                break
+
+        return confidence
+
     def _should_show_reproductive(self, reproductive_type: Optional[str]) -> bool:
         if not reproductive_type:
             return False
@@ -409,6 +460,13 @@ class ImaginationEngine:
             return False
         return True
 
+    def _should_show_dream_aspiration(self, confidence: float) -> bool:
+        if confidence < 0.3:
+            return False
+        if self.dream_aspiration_cooldown > 0:
+            return False
+        return True
+
     def _generate_reproductive_response(self, reproductive_type: str) -> Optional[str]:
         responses = REPRODUCTIVE_RESPONSES.get(reproductive_type, [])
         return random.choice(responses) if responses else None
@@ -426,6 +484,9 @@ class ImaginationEngine:
     def _generate_hallucination_response(self) -> Optional[str]:
         return random.choice(HALLUCINATION_RESPONSES)
 
+    def _generate_dream_aspiration_response(self) -> Optional[str]:
+        return random.choice(DREAM_ASPIRATION_RESPONSES)
+
     def _select_dominant_ability(self, result: ImaginativeAbility) -> Optional[str]:
         """Выбирает доминирующий тип воображения."""
         abilities = {
@@ -434,6 +495,7 @@ class ImaginationEngine:
             "dream": result.dream_confidence,
             "daydream": result.daydream_confidence,
             "hallucination": result.hallucination_confidence,
+            "dream_aspiration": result.dream_aspiration_confidence,
         }
 
         best_ability = max(abilities, key=abilities.get)
@@ -451,6 +513,7 @@ class ImaginationEngine:
             "dream": result.dream_confidence > 0,
             "daydream": result.daydream_confidence > 0,
             "hallucination": result.hallucination_confidence > 0,
+            "dream_aspiration": result.dream_aspiration_confidence > 0,
             "selected_ability": result.selected_ability,
         }
         self.imagination_history.append(entry)
@@ -477,6 +540,7 @@ class ImaginationEngine:
             "dream_count": self.dream_count,
             "daydream_count": self.daydream_count,
             "hallucination_count": self.hallucination_count,
+            "dream_aspiration_count": self.dream_aspiration_count,
             # Общие
             "imagination_history_size": len(self.imagination_history),
             "active_images_count": len(self.context_images),
@@ -490,6 +554,7 @@ class ImaginationEngine:
                     "dream": "сновидения",
                     "daydream": "грёзы (мечты)",
                     "hallucination": "галлюцинации",
+                    "dream_aspiration": "мечта (целеполагание)",
                 },
             },
         }
