@@ -253,6 +253,24 @@ async def social_status():
     }
 
 
+# === Эндпоинт: /cognitive — сводка когнитивных способностей ===
+@app.get("/cognitive")
+async def cognitive_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'cognitive_engine'):
+        return {"status": "not available", "detail": "Бот не загружен или когнитивные способности отключены"}
+
+    cognitive_summary = local_bot.cognitive_engine.get_cognitive_summary()
+    return {
+        "status": "ok",
+        "cognitive": cognitive_summary,
+        "enabled": local_bot.cognitive_enabled,
+    }
+
+
 # === Главная страница ===
 @app.get("/")
 def home():

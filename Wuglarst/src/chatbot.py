@@ -13,6 +13,7 @@ from .chat_model import ChatNN
 from .cultural_references import get_cultural_phrase
 from .intuition import IntuitionEngine, IntuitionResult
 from .social_abilities import SocialEngine, SocialAbility
+from .cognitive_abilities import CognitiveEngine, CognitiveAbility
 import sys
 import subprocess
 import threading
@@ -141,6 +142,11 @@ class ChatBot:
         self.social_engine = SocialEngine()
         self.social_enabled = True
         logging.info("🤝 Социальные способности (эмпатия + харизма) инициализированы")
+
+        # === Когнитивные способности ===
+        self.cognitive_engine = CognitiveEngine()
+        self.cognitive_enabled = True
+        logging.info("🧠 Когнитивные способности (логика, креативность, критика, память, внимание) инициализированы")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -479,12 +485,34 @@ class ChatBot:
                         if social_result.should_add_charisma and social_result.charisma_influence:
                             response_extra += f"\n\n✨ {social_result.charisma_influence}"
 
-                        # Прогноз настроения
-                        if social_result.mood_shift_prediction:
-                            logging.info(f"📊 Прогноз настроения: {social_result.mood_shift_prediction}")
+                    # Прогноз настроения
+                    if social_result.mood_shift_prediction:
+                        logging.info(f"📊 Прогноз настроения: {social_result.mood_shift_prediction}")
+
+                    # Когнитивные способности
+                    if self.cognitive_enabled:
+                        cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧠 {cognitive_result.to_log()}")
+
+                        # Добавляем ответ когнитивной способности
+                        if cognitive_result.selected_ability:
+                            response_type = None
+                            if cognitive_result.logical_response:
+                                response_type = cognitive_result.logical_response
+                            elif cognitive_result.creative_response:
+                                response_type = cognitive_result.creative_response
+                            elif cognitive_result.critical_response:
+                                response_type = cognitive_result.critical_response
+                            elif cognitive_result.memory_response:
+                                response_type = cognitive_result.memory_response
+                            elif cognitive_result.attention_response:
+                                response_type = cognitive_result.attention_response
+
+                            if response_type:
+                                response_extra += f"\n\n⚡ {response_type}"
 
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных способностей: {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных: {e}")
 
             total = time.time() - start_mode
             logging.info(f"⏱ chat: {total:.2f} сек | Длина ответа: {len(final_response + response_extra)}")
@@ -539,8 +567,29 @@ class ChatBot:
 
                         if social_result.should_add_charisma and social_result.charisma_influence:
                             response_extra += f"\n\n✨ {social_result.charisma_influence}"
+
+                    # Когнитивные способности
+                    if self.cognitive_enabled:
+                        cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧠 [continue] {cognitive_result.to_log()}")
+
+                        if cognitive_result.selected_ability:
+                            response_type = None
+                            if cognitive_result.logical_response:
+                                response_type = cognitive_result.logical_response
+                            elif cognitive_result.creative_response:
+                                response_type = cognitive_result.creative_response
+                            elif cognitive_result.critical_response:
+                                response_type = cognitive_result.critical_response
+                            elif cognitive_result.memory_response:
+                                response_type = cognitive_result.memory_response
+                            elif cognitive_result.attention_response:
+                                response_type = cognitive_result.attention_response
+
+                            if response_type:
+                                response_extra += f"\n\n⚡ {response_type}"
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных способностей (continue): {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных (continue): {e}")
 
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
             return json.dumps({"response": response + response_extra}, ensure_ascii=False)
