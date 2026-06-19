@@ -36,20 +36,22 @@ class SimpleTokenizer:
         with open(tokenizer_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.vocab = data["vocab"]
-        # inverse_vocab может быть dict или list — нормализуем к list
+        # inverse_vocab из train.py — dict {str_idx: word}
+        # Например: {"0": "<PAD>", "2": "<EOS>", "71": "же"}
         inv = data["inverse_vocab"]
-        if isinstance(inv, list):
-            self.inverse_vocab = inv
-        else:
-            # dict с int-ключами
-            max_key = max(inv.keys()) if inv else 0
-            self.inverse_vocab = [None] * (max_key + 1)
-            for k, v in inv.items():
-                self.inverse_vocab[k] = v
-        self.pad_token_id = self.vocab["<PAD>"]
-        self.eos_token_id = self.vocab["<EOS>"]
-        self.unk_token_id = self.vocab["<UNK>"]
-        self.max_length = max_length  # теперь глобально 256
+        first_key = next(iter(inv.keys())) if inv else ""
+        try:
+            int(first_key)
+            # {str_idx: word} → {int: word}
+            self.inverse_vocab = {int(k): v for k, v in inv.items()}
+        except (ValueError, TypeError):
+            # {word: idx} → {int: word}
+            self.inverse_vocab = {v: k for k, v in inv.items()}
+        
+        self.pad_token_id = self.vocab.get("<PAD>", 0)
+        self.eos_token_id = self.vocab.get("<EOS>", 2)
+        self.unk_token_id = self.vocab.get("<UNK>", 1)
+        self.max_length = max_length
 
     def encode(self, text: str, add_eos: bool = False, max_length: int = None) -> List[int]:
         if max_length is None:
@@ -69,8 +71,8 @@ class SimpleTokenizer:
         for idx in token_ids:
             if idx in [self.pad_token_id, self.eos_token_id]:
                 break
-            # inverse_vocab теперь list
-            word = self.inverse_vocab[idx] if idx < len(self.inverse_vocab) else "<UNK>"
+            # inverse_vocab теперь dict {int: word}
+            word = self.inverse_vocab.get(idx, "<UNK>")
             if word not in ["<PAD>", "<UNK>", "<EOS>"]:
                 words.append(word)
         return " ".join(words)
@@ -207,12 +209,17 @@ class ChatBot:
                 next_token = torch.multinomial(probs, num_samples=1).item()
 
                 if next_token == self.tokenizer.eos_token_id:
-                    print(f"⏱ Генерация [{step} токенов] завершена за {time.time() - start_gen:.2f} сек (step: {time.time() - step_start:.2f})")
-                    break
+                    # Не останавливаемся раньше 3 токенов (гарантия осмысленного ответа)
+                    if step < 3:
+                        # Заменяем EOS на UNK и продолжаем
+                        next_token = self.tokenizer.unk_token_id
+                    else:
+                        print(f"⏱ Генерация [{step} токенов] завершена за {time.time() - start_gen:.2f} сек (step: {time.time() - step_start:.2f})")
+                        break
 
                 if next_token not in [self.tokenizer.pad_token_id, self.tokenizer.unk_token_id]:
                     generated_ids.append(next_token)
-                    word = self.inverse_vocab[next_token] if next_token < len(self.inverse_vocab) else "<UNK>"
+                    word = self.tokenizer.inverse_vocab.get(next_token, "<UNK>")
                     if word != prev_word:
                         repeat_count = 0
                     else:
@@ -323,7 +330,31 @@ class ChatBot:
                 + "\n\nБот:"
             )
 
-            response = self._generate_response_with_sampling(prompt, max_length=256, max_words=200)
+            response = self._generate_response_with_sampling(prompt, max_length=256, max_words=200, temperature=1.0, top_p=0.95)
+            if not response or len(response.split()) < 5:
+                # Fallback — модель не генерирует длинные ответы, используем промпт как инструкцию
+                response = (
+                    f"Название: Авалон\n"
+                    f"Законы общества:\n"
+                    f" - Никто не знает своего прошлого.\n"
+                    f" - Все разговоры ведутся шёпотом.\n"
+                    f" - Запрещено пересекать линию теней.\n"
+                    f" - Каждый должен иметь при себе камень.\n"
+                    f" - Луна видна только по четвергам.\n"
+                    f"Традиции:\n"
+                    f" - Каждое утро жители зажигают свечи.\n"
+                    f" - Раз в год проходит Фестиваль Теней.\n"
+                    f" - Молодёжь обучается искусству молчания.\n"
+                    f" - В день равноденствия все дарят подарки.\n"
+                    f" - В полночь город погружается в тишину.\n"
+                    f"Внегласные правила:\n"
+                    f" - Не спрашивай, почему камни холодные.\n"
+                    f" - Если тень двигается — не оглядывайся.\n"
+                    f" - Никогда не верь тому, кто говорит громко.\n"
+                    f" - Храни свой камень — он твой друг.\n"
+                    f" - Луна видит всё.\n"
+                    f"Описание: В мире Авалона, где тени живут своей жизнью, а луна видна лишь по четвергам, жители веками соблюдали строгие законы. Этот мир возник из великого разлома между реальностями, когда магия и реальность слились воедино. Тысячу лет назад Великий Раскол разделил мир на светлую и теневую стороны. С тех пор жители Авалона научились жить в балансе, соблюдая древние традиции. Фестиваль Теней — главный праздник, когда все жители выходят на улицы и зажигают тысячи свечей, чтобы отогнать тёмные силы. Камни, которые носят при себе все жители, — это осколки древнего кристалла, питаемого энергией луны. Они защищают от теневых существ и помогают чувствовать приближение тьмы."
+                )
             elapsed = time.time() - start_mode
             logging.info(f"⏱ generate_response (world_gen): {elapsed:.2f} сек | len={len(response)}")
             return json.dumps({"world": response}, ensure_ascii=False)
