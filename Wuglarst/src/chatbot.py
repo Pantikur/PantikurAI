@@ -14,6 +14,7 @@ from .cultural_references import get_cultural_phrase
 from .intuition import IntuitionEngine, IntuitionResult
 from .social_abilities import SocialEngine, SocialAbility
 from .cognitive_abilities import CognitiveEngine, CognitiveAbility
+from .social_emotional import EmotionalIntelligenceEngine, EmotionalIntelligence
 import sys
 import subprocess
 import threading
@@ -147,6 +148,11 @@ class ChatBot:
         self.cognitive_engine = CognitiveEngine()
         self.cognitive_enabled = True
         logging.info("🧠 Когнитивные способности (логика, креативность, критика, память, внимание) инициализированы")
+
+        # === Эмоциональный интеллект и саморефлексия ===
+        self.eq_engine = EmotionalIntelligenceEngine()
+        self.eq_enabled = True
+        logging.info("💖 Эмоциональный интеллект (EQ, эмпатия, саморефлексия) инициализирован")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -511,8 +517,29 @@ class ChatBot:
                             if response_type:
                                 response_extra += f"\n\n⚡ {response_type}"
 
+                    # Эмоциональный интеллект и саморефлексия
+                    if self.eq_enabled:
+                        eq_result = self.eq_engine.analyze(last_user_msg, context)
+                        logging.info(f"💖 {eq_result.to_log()}")
+
+                        # Добавляем EQ ответ
+                        if eq_result.should_add_eq and eq_result.eq_response:
+                            response_extra += f"\n\n🎭 {eq_result.eq_response}"
+
+                        # Добавляем эмпатию
+                        if eq_result.should_add_empathy and eq_result.empathy_response:
+                            response_extra += f"\n\n💝 {eq_result.empathy_response}"
+
+                        # Добавляем саморефлексию
+                        if eq_result.should_add_reflection and eq_result.reflection_response:
+                            response_extra += f"\n\n🔍 {eq_result.reflection_response}"
+
+                        # Добавляем управление состоянием
+                        if eq_result.should_add_regulation and eq_result.regulation_response:
+                            response_extra += f"\n\n🌊 {eq_result.regulation_response}"
+
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных: {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ: {e}")
 
             total = time.time() - start_mode
             logging.info(f"⏱ chat: {total:.2f} сек | Длина ответа: {len(final_response + response_extra)}")
@@ -588,8 +615,26 @@ class ChatBot:
 
                             if response_type:
                                 response_extra += f"\n\n⚡ {response_type}"
+
+                    # Эмоциональный интеллект и саморефлексия
+                    if self.eq_enabled:
+                        eq_result = self.eq_engine.analyze(last_user_msg, context)
+                        logging.info(f"💖 [continue] {eq_result.to_log()}")
+
+                        if eq_result.should_add_eq and eq_result.eq_response:
+                            response_extra += f"\n\n🎭 {eq_result.eq_response}"
+
+                        if eq_result.should_add_empathy and eq_result.empathy_response:
+                            response_extra += f"\n\n💝 {eq_result.empathy_response}"
+
+                        if eq_result.should_add_reflection and eq_result.reflection_response:
+                            response_extra += f"\n\n🔍 {eq_result.reflection_response}"
+
+                        if eq_result.should_add_regulation and eq_result.regulation_response:
+                            response_extra += f"\n\n🌊 {eq_result.regulation_response}"
+
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных (continue): {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ (continue): {e}")
 
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
             return json.dumps({"response": response + response_extra}, ensure_ascii=False)

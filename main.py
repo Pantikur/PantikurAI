@@ -271,6 +271,24 @@ async def cognitive_status():
     }
 
 
+# === Эндпоинт: /eq — сводка эмоционального интеллекта ===
+@app.get("/eq")
+async def eq_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'eq_engine'):
+        return {"status": "not available", "detail": "Бот не загружен или эмоциональный интеллект отключён"}
+
+    eq_summary = local_bot.eq_engine.get_eq_summary()
+    return {
+        "status": "ok",
+        "eq": eq_summary,
+        "enabled": local_bot.eq_enabled,
+    }
+
+
 # === Главная страница ===
 @app.get("/")
 def home():
