@@ -197,3 +197,14 @@ SyntaxError: source code string cannot contain null bytes
 2026-06-17 23:37:09,468 | INFO | [AI] Запуск обучения...
 2026-06-18 00:02:12,239 | INFO | [HAPPY] Обучение завершено успешно!
 2026-06-18 00:02:12,239 | INFO | [OK] Успешно: tokenizer.json (129 КБ), chat_model.pth (23752 КБ)
+2026-06-19 16:00:25,382 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-06-19 16:00:45,742 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-19 16:00:45,771 | WARNING | [WARN] RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-06-19 16:00:45,771 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml --verbose
+2026-06-19 16:00:46,085 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (858 строк)
+2026-06-19 16:00:46,093 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-19 16:00:46,104 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-19 16:00:46,106 | INFO | [OK] Токенизатор загружен: 2447 токенов
+2026-06-19 16:00:46,106 | INFO | [AI] Запуск обучения...
+2026-06-19 16:44:39,092 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-19 16:44:39,092 | INFO | [OK] Успешно: tokenizer.json (142 КБ), chat_model.pth (28054 КБ)

@@ -94,8 +94,8 @@ RUN python -c "from main import app; print('✅ Приложение импор�
 # === ОТКРЫВАЕМ ПОРТ ===
 EXPOSE ${PORT}
 
-# === HEALTHCHECK (с улучшенными настройками) ===
-HEALTHCHECK --interval=15s --timeout=10s --start-period=30s --retries=3 \
+# === HEALTHCHECK (увеличен start-period для тяжёлой инициализации: модель + Chrome) ===
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=5 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
 # === 🟢 КОМАНДА ЗАПУСКА ===
