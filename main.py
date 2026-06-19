@@ -433,6 +433,18 @@ async def predict(request: Request):
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ rpg: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
 
+        elif mode == "continue":
+            logger.info("🔧 Режим: continue")
+            valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            start_subgen = asyncio.get_event_loop().time()
+            response = local_bot.generate_response(valid_msgs, mode="continue").strip()
+            elapsed_sub = asyncio.get_event_loop().time() - start_subgen
+            logger.info(f"⏱ continue: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
+
+            if not response:
+                response = random.choice(["Это важно...", "Ты прав...", "Может быть...", "Интересно..."])
+                logger.warning("⚠️ Пустой ответ → fallback")
+
         else:  # chat (остаток)
             logger.info("🔧 Режим: chat")
             # === ПАРСИНГ КОНТЕКСТА ДЛЯ НОВЫХ СЛОВ (только в режиме chat) ===
@@ -496,18 +508,6 @@ async def predict(request: Request):
 
             if not response:
                 response = "Я здесь! 🤖"
-                logger.warning("⚠️ Пустой ответ → fallback")
-
-        elif mode == "continue":
-            logger.info("🔧 Режим: continue")
-            valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
-            start_subgen = asyncio.get_event_loop().time()
-            response = local_bot.generate_response(valid_msgs, mode="continue").strip()
-            elapsed_sub = asyncio.get_event_loop().time() - start_subgen
-            logger.info(f"⏱ continue: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
-
-            if not response:
-                response = random.choice(["Это важно...", "Ты прав...", "Может быть...", "Интересно..."])
                 logger.warning("⚠️ Пустой ответ → fallback")
 
         total_elapsed = asyncio.get_event_loop().time() - start_time
