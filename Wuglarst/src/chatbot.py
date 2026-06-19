@@ -15,6 +15,7 @@ from .intuition import IntuitionEngine, IntuitionResult
 from .social_abilities import SocialEngine, SocialAbility
 from .cognitive_abilities import CognitiveEngine, CognitiveAbility
 from .social_emotional import EmotionalIntelligenceEngine, EmotionalIntelligence
+from .physiological_abilities import PhysiologicalEngine
 import sys
 import subprocess
 import threading
@@ -153,6 +154,11 @@ class ChatBot:
         self.eq_engine = EmotionalIntelligenceEngine()
         self.eq_enabled = True
         logging.info("💖 Эмоциональный интеллект (EQ, эмпатия, саморефлексия) инициализирован")
+
+        # === Физиологические способности ===
+        self.phys_engine = PhysiologicalEngine()
+        self.phys_enabled = True
+        logging.info("🧬 Физиологические способности (выносливость, адаптивность, нейропластичность, биолокация) инициализированы")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -538,103 +544,24 @@ class ChatBot:
                         if eq_result.should_add_regulation and eq_result.regulation_response:
                             response_extra += f"\n\n🌊 {eq_result.regulation_response}"
 
+                    # Физиологические способности
+                    if self.phys_enabled:
+                        phys_result = self.phys_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧬 [continue] {phys_result.to_log()}")
+
+                        if phys_result.stamina_level == "high" and phys_result.stamina_response:
+                            response_extra += f"\n\n🧗‍♂️ {phys_result.stamina_response}"
+
+                        if phys_result.adapt_triggered and phys_result.adapt_response:
+                            response_extra += f"\n\n🌡️ {phys_result.adapt_response}"
+
+                        if phys_result.neuro_active and phys_result.neuro_response:
+                            response_extra += f"\n\n🧬 {phys_result.neuro_response}"
+
+                        if phys_result.bio_triggered and phys_result.bio_response:
+                            response_extra += f"\n\n🔊 {phys_result.bio_response}"
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ: {e}")
-
-            total = time.time() - start_mode
-            logging.info(f"⏱ chat: {total:.2f} сек | Длина ответа: {len(final_response + response_extra)}")
-            return json.dumps({"response": final_response + response_extra}, ensure_ascii=False)
-
-        # === Режим continue ===
-        elif mode == "continue":
-            start_mode = time.time()
-            context_str = "\n".join(context[-6:])
-            prompt = (
-                "Продолжи диалог как бот. Сохраняй стиль, характер, логику и атмосферу. "
-                "Не переспрашивай, не задавай вопросов — просто продолжай.\n"
-                "Твой ответ должен быть логичным продолжением предыдущего сообщения.\n"
-                f"Контекст:\n{context_str}\nБот:"
-            )
-            response = self._generate_response_with_sampling(prompt, max_length=128)
-
-            # Удаляем повторяющиеся слова в начале
-            words = response.split()
-            if len(words) >= 2 and words[0] == words[1]:
-                response = " ".join(words[1:])
-
-            if not response or len(response.split()) < 3:
-                response = (
-                    random.choice([
-                        "Это важно...",
-                        "Ты прав...",
-                        "Может быть...",
-                        "Интересно..."
-                    ]) + " " + response.strip()
-                )
-
-            self.log_interaction(last_user_msg, response)
-
-            # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ СПОСОБНОСТИ (continue) ===
-            response_extra = ""
-            if self.intuition_enabled or self.social_enabled:
-                try:
-                    if self.intuition_enabled:
-                        intuition_result = self.intuition.analyze(last_user_msg, context)
-                        logging.info(f"🔮 [continue] {intuition_result.to_log()}")
-
-                        if intuition_result.should_add_premonition and random.random() < 0.3:
-                            response_extra += f"\n\n🔮 {intuition_result.premonition}"
-
-                    if self.social_enabled:
-                        social_result = self.social_engine.analyze(last_user_msg, context)
-                        logging.info(f"🤝 [continue] {social_result.to_log()}")
-
-                        if social_result.should_add_empathy and social_result.empathy_response:
-                            response_extra += f"\n\n🧠 {social_result.empathy_response}"
-
-                        if social_result.should_add_charisma and social_result.charisma_influence:
-                            response_extra += f"\n\n✨ {social_result.charisma_influence}"
-
-                    # Когнитивные способности
-                    if self.cognitive_enabled:
-                        cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
-                        logging.info(f"🧠 [continue] {cognitive_result.to_log()}")
-
-                        if cognitive_result.selected_ability:
-                            response_type = None
-                            if cognitive_result.logical_response:
-                                response_type = cognitive_result.logical_response
-                            elif cognitive_result.creative_response:
-                                response_type = cognitive_result.creative_response
-                            elif cognitive_result.critical_response:
-                                response_type = cognitive_result.critical_response
-                            elif cognitive_result.memory_response:
-                                response_type = cognitive_result.memory_response
-                            elif cognitive_result.attention_response:
-                                response_type = cognitive_result.attention_response
-
-                            if response_type:
-                                response_extra += f"\n\n⚡ {response_type}"
-
-                    # Эмоциональный интеллект и саморефлексия
-                    if self.eq_enabled:
-                        eq_result = self.eq_engine.analyze(last_user_msg, context)
-                        logging.info(f"💖 [continue] {eq_result.to_log()}")
-
-                        if eq_result.should_add_eq and eq_result.eq_response:
-                            response_extra += f"\n\n🎭 {eq_result.eq_response}"
-
-                        if eq_result.should_add_empathy and eq_result.empathy_response:
-                            response_extra += f"\n\n💝 {eq_result.empathy_response}"
-
-                        if eq_result.should_add_reflection and eq_result.reflection_response:
-                            response_extra += f"\n\n🔍 {eq_result.reflection_response}"
-
-                        if eq_result.should_add_regulation and eq_result.regulation_response:
-                            response_extra += f"\n\n🌊 {eq_result.regulation_response}"
-
-                except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ (continue): {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии (continue): {e}")
 
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
             return json.dumps({"response": response + response_extra}, ensure_ascii=False)

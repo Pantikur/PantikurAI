@@ -289,6 +289,24 @@ async def eq_status():
     }
 
 
+# === Эндпоинт: /physiology — сводка физиологических способностей ===
+@app.get("/physiology")
+async def physiology_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'phys_engine'):
+        return {"status": "not available", "detail": "Бот не загружен или физиологические способности отключены"}
+
+    phys_summary = local_bot.phys_engine.get_physiology_summary()
+    return {
+        "status": "ok",
+        "physiology": phys_summary,
+        "enabled": local_bot.phys_enabled,
+    }
+
+
 # === Главная страница ===
 @app.get("/")
 def home():
