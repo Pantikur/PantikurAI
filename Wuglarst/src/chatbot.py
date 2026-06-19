@@ -326,9 +326,84 @@ class ChatBot:
                     "Традиции:\n - Каждую полночь зажигают свечи за умершие идеи.\n"
                     "Внегласные правила:\n - Не задавай, кто ты на самом деле."
                 )
+
+            response_extra = ""
+
+            # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ + 🧠 КОГНИТИВНЫЕ (narrative) ===
+            if self.intuition_enabled or self.social_enabled or self.cognitive_enabled or self.eq_enabled or self.phys_enabled or self.special_cognitive_enabled:
+                try:
+                    if self.intuition_enabled:
+                        intuition_result = self.intuition.analyze(last_user_msg, context)
+                        logging.info(f"🔮 [narrative] {intuition_result.to_log()}")
+                        if intuition_result.should_add_premonition and random.random() < 0.4:
+                            response_extra += f"\n\n🔮 {intuition_result.premonition}"
+
+                    if self.social_enabled:
+                        social_result = self.social_engine.analyze(last_user_msg, context)
+                        logging.info(f"🤝 [narrative] {social_result.to_log()}")
+                        if social_result.should_add_empathy and social_result.empathy_response:
+                            response_extra += f"\n\n🧠 {social_result.empathy_response}"
+                        if social_result.should_add_charisma and social_result.charisma_influence:
+                            response_extra += f"\n\n✨ {social_result.charisma_influence}"
+
+                    if self.cognitive_enabled:
+                        cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧠 [narrative] {cognitive_result.to_log()}")
+                        if cognitive_result.selected_ability:
+                            response_type = None
+                            if cognitive_result.logical_response:
+                                response_type = cognitive_result.logical_response
+                            elif cognitive_result.creative_response:
+                                response_type = cognitive_result.creative_response
+                            elif cognitive_result.critical_response:
+                                response_type = cognitive_result.critical_response
+                            elif cognitive_result.memory_response:
+                                response_type = cognitive_result.memory_response
+                            elif cognitive_result.attention_response:
+                                response_type = cognitive_result.attention_response
+                            if response_type:
+                                response_extra += f"\n\n⚡ {response_type}"
+
+                    if self.eq_enabled:
+                        eq_result = self.eq_engine.analyze(last_user_msg, context)
+                        logging.info(f"💖 [narrative] {eq_result.to_log()}")
+                        if eq_result.should_add_eq and eq_result.eq_response:
+                            response_extra += f"\n\n🎭 {eq_result.eq_response}"
+                        if eq_result.should_add_empathy and eq_result.empathy_response:
+                            response_extra += f"\n\n💝 {eq_result.empathy_response}"
+                        if eq_result.should_add_reflection and eq_result.reflection_response:
+                            response_extra += f"\n\n🔍 {eq_result.reflection_response}"
+                        if eq_result.should_add_regulation and eq_result.regulation_response:
+                            response_extra += f"\n\n🌊 {eq_result.regulation_response}"
+
+                    if self.phys_enabled:
+                        phys_result = self.phys_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧬 [narrative] {phys_result.to_log()}")
+                        if phys_result.stamina_level == "high" and phys_result.stamina_response:
+                            response_extra += f"\n\n🧗‍♂️ {phys_result.stamina_response}"
+                        if phys_result.adapt_triggered and phys_result.adapt_response:
+                            response_extra += f"\n\n🌡️ {phys_result.adapt_response}"
+                        if phys_result.neuro_active and phys_result.neuro_response:
+                            response_extra += f"\n\n🧬 {phys_result.neuro_response}"
+                        if phys_result.bio_triggered and phys_result.bio_response:
+                            response_extra += f"\n\n🔊 {phys_result.bio_response}"
+
+                    if self.special_cognitive_enabled:
+                        special_result = self.special_cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🌟 [narrative] {special_result.to_log()}")
+                        if special_result.eidetic_triggered and special_result.eidetic_response:
+                            response_extra += f"\n\n👁️‍🗨️ {special_result.eidetic_response}"
+                        if special_result.synesthesia_triggered and special_result.synesthesia_response:
+                            response_extra += f"\n\n🎨 {special_result.synesthesia_response}"
+                        if special_result.learn_triggered and special_result.learn_response:
+                            response_extra += f"\n\n🚀 {special_result.learn_response}"
+
+                except Exception as e:
+                    logging.warning(f"⚠️ Ошибка модулей (narrative): {e}")
+
             elapsed = time.time() - start_mode
-            logging.info(f"⏱ generate_response (narrative): {elapsed:.2f} сек")
-            return json.dumps({"response": response}, ensure_ascii=False)
+            logging.info(f"⏱ generate_response (narrative): {elapsed:.2f} сек | len={len(response)}")
+            return json.dumps({"response": response + response_extra}, ensure_ascii=False)
 
         # === Режим world_gen ===
         elif mode == "world_gen":
@@ -393,7 +468,82 @@ class ChatBot:
                 )
             elapsed = time.time() - start_mode
             logging.info(f"⏱ generate_response (world_gen): {elapsed:.2f} сек | len={len(response)}")
-            return json.dumps({"world": response}, ensure_ascii=False)
+
+            response_extra = ""
+
+            # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ + 🧠 КОГНИТИВНЫЕ (world_gen) ===
+            if self.intuition_enabled or self.social_enabled or self.cognitive_enabled or self.eq_enabled or self.phys_enabled or self.special_cognitive_enabled:
+                try:
+                    if self.intuition_enabled:
+                        intuition_result = self.intuition.analyze(last_user_msg, context)
+                        logging.info(f"🔮 [world_gen] {intuition_result.to_log()}")
+                        if intuition_result.should_add_premonition and random.random() < 0.4:
+                            response_extra += f"\n\n🔮 {intuition_result.premonition}"
+
+                    if self.social_enabled:
+                        social_result = self.social_engine.analyze(last_user_msg, context)
+                        logging.info(f"🤝 [world_gen] {social_result.to_log()}")
+                        if social_result.should_add_empathy and social_result.empathy_response:
+                            response_extra += f"\n\n🧠 {social_result.empathy_response}"
+                        if social_result.should_add_charisma and social_result.charisma_influence:
+                            response_extra += f"\n\n✨ {social_result.charisma_influence}"
+
+                    if self.cognitive_enabled:
+                        cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧠 [world_gen] {cognitive_result.to_log()}")
+                        if cognitive_result.selected_ability:
+                            response_type = None
+                            if cognitive_result.logical_response:
+                                response_type = cognitive_result.logical_response
+                            elif cognitive_result.creative_response:
+                                response_type = cognitive_result.creative_response
+                            elif cognitive_result.critical_response:
+                                response_type = cognitive_result.critical_response
+                            elif cognitive_result.memory_response:
+                                response_type = cognitive_result.memory_response
+                            elif cognitive_result.attention_response:
+                                response_type = cognitive_result.attention_response
+                            if response_type:
+                                response_extra += f"\n\n⚡ {response_type}"
+
+                    if self.eq_enabled:
+                        eq_result = self.eq_engine.analyze(last_user_msg, context)
+                        logging.info(f"💖 [world_gen] {eq_result.to_log()}")
+                        if eq_result.should_add_eq and eq_result.eq_response:
+                            response_extra += f"\n\n🎭 {eq_result.eq_response}"
+                        if eq_result.should_add_empathy and eq_result.empathy_response:
+                            response_extra += f"\n\n💝 {eq_result.empathy_response}"
+                        if eq_result.should_add_reflection and eq_result.reflection_response:
+                            response_extra += f"\n\n🔍 {eq_result.reflection_response}"
+                        if eq_result.should_add_regulation and eq_result.regulation_response:
+                            response_extra += f"\n\n🌊 {eq_result.regulation_response}"
+
+                    if self.phys_enabled:
+                        phys_result = self.phys_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧬 [world_gen] {phys_result.to_log()}")
+                        if phys_result.stamina_level == "high" and phys_result.stamina_response:
+                            response_extra += f"\n\n🧗‍♂️ {phys_result.stamina_response}"
+                        if phys_result.adapt_triggered and phys_result.adapt_response:
+                            response_extra += f"\n\n🌡️ {phys_result.adapt_response}"
+                        if phys_result.neuro_active and phys_result.neuro_response:
+                            response_extra += f"\n\n🧬 {phys_result.neuro_response}"
+                        if phys_result.bio_triggered and phys_result.bio_response:
+                            response_extra += f"\n\n🔊 {phys_result.bio_response}"
+
+                    if self.special_cognitive_enabled:
+                        special_result = self.special_cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🌟 [world_gen] {special_result.to_log()}")
+                        if special_result.eidetic_triggered and special_result.eidetic_response:
+                            response_extra += f"\n\n👁️‍🗨️ {special_result.eidetic_response}"
+                        if special_result.synesthesia_triggered and special_result.synesthesia_response:
+                            response_extra += f"\n\n🎨 {special_result.synesthesia_response}"
+                        if special_result.learn_triggered and special_result.learn_response:
+                            response_extra += f"\n\n🚀 {special_result.learn_response}"
+
+                except Exception as e:
+                    logging.warning(f"⚠️ Ошибка модулей (world_gen): {e}")
+
+            return json.dumps({"world": response + response_extra}, ensure_ascii=False)
 
         # === Режим chat ===
         elif mode == "chat":
