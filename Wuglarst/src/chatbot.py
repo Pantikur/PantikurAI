@@ -644,6 +644,85 @@ class ChatBot:
 
             logging.info(f"⏱ generate_response (rpg): {time.time() - start_mode:.2f} сек")
 
+            response_extra = ""
+
+            # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ + 🧠 КОГНИТИВНЫЕ (rpg) ===
+            if self.intuition_enabled or self.social_enabled or self.cognitive_enabled or self.eq_enabled or self.phys_enabled or self.special_cognitive_enabled:
+                try:
+                    if self.intuition_enabled:
+                        intuition_result = self.intuition.analyze(last_user_msg, context)
+                        logging.info(f"🔮 [rpg] {intuition_result.to_log()}")
+                        if intuition_result.should_add_premonition and random.random() < 0.4:
+                            response_extra += f"\n\n🔮 {intuition_result.premonition}"
+                        if intuition_result.should_initiate and intuition_result.initiative and mode == "chat":
+                            if random.random() < 0.3:
+                                response_extra += f"\n\n💡 {intuition_result.initiative}"
+
+                    if self.social_enabled:
+                        social_result = self.social_engine.analyze(last_user_msg, context)
+                        logging.info(f"🤝 [rpg] {social_result.to_log()}")
+                        if social_result.should_add_empathy and social_result.empathy_response:
+                            response_extra += f"\n\n🧠 {social_result.empathy_response}"
+                        if social_result.should_add_charisma and social_result.charisma_influence:
+                            response_extra += f"\n\n✨ {social_result.charisma_influence}"
+
+                    if self.cognitive_enabled:
+                        cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧠 [rpg] {cognitive_result.to_log()}")
+                        if cognitive_result.selected_ability:
+                            response_type = None
+                            if cognitive_result.logical_response:
+                                response_type = cognitive_result.logical_response
+                            elif cognitive_result.creative_response:
+                                response_type = cognitive_result.creative_response
+                            elif cognitive_result.critical_response:
+                                response_type = cognitive_result.critical_response
+                            elif cognitive_result.memory_response:
+                                response_type = cognitive_result.memory_response
+                            elif cognitive_result.attention_response:
+                                response_type = cognitive_result.attention_response
+                            if response_type:
+                                response_extra += f"\n\n⚡ {response_type}"
+
+                    if self.eq_enabled:
+                        eq_result = self.eq_engine.analyze(last_user_msg, context)
+                        logging.info(f"💖 [rpg] {eq_result.to_log()}")
+                        if eq_result.should_add_eq and eq_result.eq_response:
+                            response_extra += f"\n\n🎭 {eq_result.eq_response}"
+                        if eq_result.should_add_empathy and eq_result.empathy_response:
+                            response_extra += f"\n\n💝 {eq_result.empathy_response}"
+                        if eq_result.should_add_reflection and eq_result.reflection_response:
+                            response_extra += f"\n\n🔍 {eq_result.reflection_response}"
+                        if eq_result.should_add_regulation and eq_result.regulation_response:
+                            response_extra += f"\n\n🌊 {eq_result.regulation_response}"
+
+                    if self.phys_enabled:
+                        phys_result = self.phys_engine.analyze(last_user_msg, context)
+                        logging.info(f"🧬 [rpg] {phys_result.to_log()}")
+                        if phys_result.stamina_level == "high" and phys_result.stamina_response:
+                            response_extra += f"\n\n🧗‍♂️ {phys_result.stamina_response}"
+                        if phys_result.adapt_triggered and phys_result.adapt_response:
+                            response_extra += f"\n\n🌡️ {phys_result.adapt_response}"
+                        if phys_result.neuro_active and phys_result.neuro_response:
+                            response_extra += f"\n\n🧬 {phys_result.neuro_response}"
+                        if phys_result.bio_triggered and phys_result.bio_response:
+                            response_extra += f"\n\n🔊 {phys_result.bio_response}"
+
+                    if self.special_cognitive_enabled:
+                        special_result = self.special_cognitive_engine.analyze(last_user_msg, context)
+                        logging.info(f"🌟 [rpg] {special_result.to_log()}")
+                        if special_result.eidetic_triggered and special_result.eidetic_response:
+                            response_extra += f"\n\n👁️‍🗨️ {special_result.eidetic_response}"
+                        if special_result.synesthesia_triggered and special_result.synesthesia_response:
+                            response_extra += f"\n\n🎨 {special_result.synesthesia_response}"
+                        if special_result.learn_triggered and special_result.learn_response:
+                            response_extra += f"\n\n🚀 {special_result.learn_response}"
+
+                except Exception as e:
+                    logging.warning(f"⚠️ Ошибка модулей (rpg): {e}")
+
+            logging.info(f"⏱ generate_response (rpg) total: {time.time() - start_mode:.2f} сек")
+
             # 🔥 ЗАГРУЗКА СТИЛЬНОГО ПРОМПТА ПО ЖАНРУ (обновлённые промпты)
             genre_prompts = {
                 "киберпанк": [
@@ -977,6 +1056,9 @@ class ChatBot:
                     "- Не пиши 'Я как бот'. Ты часть мира."
                 ]
             }
+
+            final_response = f"📜 **{genre}**\n" + response_extra if response_extra else f"📜 **{genre}**"
+            return json.dumps({"response": final_response}, ensure_ascii=False)
 
         logging.warning(f"⚠️ generate_response: неизвестный mode = '{mode}'")
         return json.dumps({"response": "Привет! Я здесь."}, ensure_ascii=False)
