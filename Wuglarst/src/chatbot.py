@@ -11,6 +11,7 @@ from . import chat_model
 from .chat_model import ChatNN
 # from .web_search import WebSearch  # Отключён — поиск в чате отключён
 from .cultural_references import get_cultural_phrase
+from .intuition import IntuitionEngine, IntuitionResult
 import sys
 import subprocess
 import threading
@@ -129,6 +130,11 @@ class ChatBot:
         # Лог диалогов
         self.conversation_log = "data/user_conversations.jsonl"
         os.makedirs(os.path.dirname(self.conversation_log), exist_ok=True)
+
+        # === Интуиция ===
+        self.intuition = IntuitionEngine()
+        self.intuition_enabled = True
+        logging.info("🔮 Интуиция инициализирована")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -431,7 +437,32 @@ class ChatBot:
             self.log_interaction(last_user_msg, final_response)
             total = time.time() - start_mode
             logging.info(f"⏱ generate_response (chat): {total:.2f} сек")
-            return json.dumps({"response": final_response}, ensure_ascii=False)
+
+            # === 🔮 ИНТИУИЦИЯ ===
+            intuition_response = ""
+            if self.intuition_enabled:
+                try:
+                    intuition_result = self.intuition.analyze(last_user_msg, context)
+                    logging.info(f"🔮 {intuition_result.to_log()}")
+
+                    # Добавляем предчувствие в ответ
+                    if intuition_result.should_add_premonition and random.random() < 0.4:
+                        intuition_response = f"\n\n🔮 {intuition_result.premonition}"
+
+                    # Добавляем инициативу (если не был режим narrative/continue)
+                    if intuition_result.should_initiate and intuition_result.initiative and mode == "chat":
+                        if random.random() < 0.3:  # 30% шанс добавить инициативу
+                            intuition_response += f"\n\n💡 {intuition_result.initiative}"
+
+                    # Лог переключения режима
+                    if intuition_result.suggested_mode:
+                        logging.info(f"➡️ Переключено с '{mode}' → '{intuition_result.suggested_mode}' ({intuition_result.mode_switch_reason})")
+                except Exception as e:
+                    logging.warning(f"⚠️ Ошибка интуиции: {e}")
+
+            total = time.time() - start_mode
+            logging.info(f"⏱ chat: {total:.2f} сек | Длина ответа: {len(final_response + intuition_response)}")
+            return json.dumps({"response": final_response + intuition_response}, ensure_ascii=False)
 
         # === Режим continue ===
         elif mode == "continue":
@@ -461,8 +492,21 @@ class ChatBot:
                 )
 
             self.log_interaction(last_user_msg, response)
+
+            # === 🔮 ИНТИУИЦИЯ (continue) ===
+            intuition_response = ""
+            if self.intuition_enabled:
+                try:
+                    intuition_result = self.intuition.analyze(last_user_msg, context)
+                    logging.info(f"🔮 [continue] {intuition_result.to_log()}")
+
+                    if intuition_result.should_add_premonition and random.random() < 0.3:
+                        intuition_response = f"\n\n🔮 {intuition_result.premonition}"
+                except Exception as e:
+                    logging.warning(f"⚠️ Ошибка интуиции (continue): {e}")
+
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
-            return json.dumps({"response": response}, ensure_ascii=False)
+            return json.dumps({"response": response + intuition_response}, ensure_ascii=False)
 
         # === Режим RPG ===
         elif mode == "rpg":

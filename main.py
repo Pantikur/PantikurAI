@@ -14,6 +14,7 @@ import threading
 import asyncio
 import json
 import re  # Для парсинга жанра и тегов
+import random
 from contextlib import asynccontextmanager
 from pathlib import Path
 from datetime import datetime
@@ -216,6 +217,24 @@ async def health_check():
     return {"status": "ok", "timestamp": datetime.now().isoformat()}
 
 
+# === Эндпоинт: /intuition — сводка настроения ===
+@app.get("/intuition")
+async def intuition_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'intuition'):
+        return {"status": "not available", "detail": "Бот не загружен или интуиция отключена"}
+
+    mood_summary = local_bot.intuition.get_mood_summary()
+    return {
+        "status": "ok",
+        "intuition": mood_summary,
+        "enabled": local_bot.intuition_enabled,
+    }
+
+
 # === Главная страница ===
 @app.get("/")
 def home():
@@ -245,8 +264,8 @@ class ChatRequest(BaseModel):
 
     @validator('mode')
     def mode_must_be_valid(cls, v):
-        if v not in ["chat", "world_gen", "narrative", "rpg"]:
-            raise ValueError("mode должен быть 'chat', 'world_gen', 'narrative' или 'rpg'")
+        if v not in ["chat", "world_gen", "narrative", "rpg", "continue"]:
+            raise ValueError("mode должен быть 'chat', 'world_gen', 'narrative', 'rpg' или 'continue'")
         return v
 
 # === Эндпоинт: /predict и / — оба работают ===
@@ -477,6 +496,18 @@ async def predict(request: Request):
 
             if not response:
                 response = "Я здесь! 🤖"
+                logger.warning("⚠️ Пустой ответ → fallback")
+
+        elif mode == "continue":
+            logger.info("🔧 Режим: continue")
+            valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            start_subgen = asyncio.get_event_loop().time()
+            response = local_bot.generate_response(valid_msgs, mode="continue").strip()
+            elapsed_sub = asyncio.get_event_loop().time() - start_subgen
+            logger.info(f"⏱ continue: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
+
+            if not response:
+                response = random.choice(["Это важно...", "Ты прав...", "Может быть...", "Интересно..."])
                 logger.warning("⚠️ Пустой ответ → fallback")
 
         total_elapsed = asyncio.get_event_loop().time() - start_time
