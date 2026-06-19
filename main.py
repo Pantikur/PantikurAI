@@ -329,6 +329,24 @@ async def special_status():
     }
 
 
+# === Эндпоинт: /imagination — сводка активного воображения ===
+@app.get("/imagination")
+async def imagination_status():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None or not hasattr(local_bot, 'imagination_engine'):
+        return {"status": "not available", "detail": "Бот не загружен или воображение отключено"}
+
+    imagination_summary = local_bot.imagination_engine.get_imagination_summary()
+    return {
+        "status": "ok",
+        "imagination": imagination_summary,
+        "enabled": local_bot.imagination_enabled,
+    }
+
+
 # === Главная страница ===
 @app.get("/")
 def home():

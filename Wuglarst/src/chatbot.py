@@ -17,6 +17,7 @@ from .cognitive_abilities import CognitiveEngine, CognitiveAbility
 from .social_emotional import EmotionalIntelligenceEngine, EmotionalIntelligence
 from .physiological_abilities import PhysiologicalEngine
 from .special_cognitive_abilities import SpecialCognitiveEngine
+from .imaginative_abilities import ImaginationEngine, ImaginativeAbility
 import sys
 import subprocess
 import threading
@@ -165,6 +166,11 @@ class ChatBot:
         self.special_cognitive_engine = SpecialCognitiveEngine()
         self.special_cognitive_enabled = True
         logging.info("🌟 Специальные когнитивные способности (эйдетическая память, синестезия, высокая обучаемость) инициализированы")
+
+        # === Активное воображение ===
+        self.imagination_engine = ImaginationEngine()
+        self.imagination_enabled = True
+        logging.info("🎨 Активное воображение (воссоздающее + творческое) инициализировано")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -398,6 +404,15 @@ class ChatBot:
                         if special_result.learn_triggered and special_result.learn_response:
                             response_extra += f"\n\n🚀 {special_result.learn_response}"
 
+                    # === 🎨 АКТИВНОЕ ВОБРАЖЕНИЕ (narrative) ===
+                    if self.imagination_enabled:
+                        imagination_result = self.imagination_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎨 [narrative] {imagination_result.to_log()}")
+                        if imagination_result.reproductive_triggered and imagination_result.reproductive_response:
+                            response_extra += f"\n\n📖 {imagination_result.reproductive_response}"
+                        if imagination_result.productive_triggered and imagination_result.productive_response:
+                            response_extra += f"\n\n✨ {imagination_result.productive_response}"
+
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (narrative): {e}")
 
@@ -539,6 +554,15 @@ class ChatBot:
                             response_extra += f"\n\n🎨 {special_result.synesthesia_response}"
                         if special_result.learn_triggered and special_result.learn_response:
                             response_extra += f"\n\n🚀 {special_result.learn_response}"
+
+                    # === 🎨 АКТИВНОЕ ВОБРАЖЕНИЕ (world_gen) ===
+                    if self.imagination_enabled:
+                        imagination_result = self.imagination_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎨 [world_gen] {imagination_result.to_log()}")
+                        if imagination_result.reproductive_triggered and imagination_result.reproductive_response:
+                            response_extra += f"\n\n📖 {imagination_result.reproductive_response}"
+                        if imagination_result.productive_triggered and imagination_result.productive_response:
+                            response_extra += f"\n\n✨ {imagination_result.productive_response}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (world_gen): {e}")
@@ -731,8 +755,19 @@ class ChatBot:
                         if special_result.learn_triggered and special_result.learn_response:
                             response_extra += f"\n\n🚀 {special_result.learn_response}"
 
+                    # === 🎨 АКТИВНОЕ ВОБРАЖЕНИЕ (chat) ===
+                    if self.imagination_enabled:
+                        imagination_result = self.imagination_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎨 {imagination_result.to_log()}")
+
+                        if imagination_result.reproductive_triggered and imagination_result.reproductive_response:
+                            response_extra += f"\n\n📖 {imagination_result.reproductive_response}"
+
+                        if imagination_result.productive_triggered and imagination_result.productive_response:
+                            response_extra += f"\n\n✨ {imagination_result.productive_response}"
+
                 except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных: {e}")
+                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных/воображения: {e}")
 
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
             return json.dumps({"response": response + response_extra}, ensure_ascii=False)
@@ -867,6 +902,15 @@ class ChatBot:
                             response_extra += f"\n\n🎨 {special_result.synesthesia_response}"
                         if special_result.learn_triggered and special_result.learn_response:
                             response_extra += f"\n\n🚀 {special_result.learn_response}"
+
+                    # === 🎨 АКТИВНОЕ ВОБРАЖЕНИЕ (rpg) ===
+                    if self.imagination_enabled:
+                        imagination_result = self.imagination_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎨 [rpg] {imagination_result.to_log()}")
+                        if imagination_result.reproductive_triggered and imagination_result.reproductive_response:
+                            response_extra += f"\n\n📖 {imagination_result.reproductive_response}"
+                        if imagination_result.productive_triggered and imagination_result.productive_response:
+                            response_extra += f"\n\n✨ {imagination_result.productive_response}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (rpg): {e}")
