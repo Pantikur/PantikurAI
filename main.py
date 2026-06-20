@@ -196,6 +196,12 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.critical(f"❌ Ошибка инициализации бота: {e}", exc_info=True)
         logger.warning("⚠️ Бот не загружен — API будет работать, но ответы недоступны")
+        logger.info("🔄 Запуск фоновой задачи повторной загрузки бота...")
+        # Запускаем фоновую задачу, которая будет периодически пытаться загрузить бота
+        try:
+            asyncio.create_task(auto_reload_chatbot_loop())
+        except Exception as retry_err:
+            logger.error(f"❌ Не удалось запустить задачу авто-загрузки: {retry_err}")
         # НЕ бросаем ошибку — Uvicorn должен запуститься даже без бота
 
     logger.info(f"✅ Lifespan готов за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
@@ -204,6 +210,41 @@ async def lifespan(app: FastAPI):
 
     # Очистка при остановке
     logger.info("🛑 Чат-бот остановлен. Хорошего дня! 🎈")
+
+
+async def auto_reload_chatbot_loop():
+    """Фоновая задача: периодически проверяет файлы и загружает бота, когда они появятся."""
+    global chatbot
+    check_interval = 10  # секунд
+    max_attempts = 60  # максимум 10 минут (60 * 10с)
+    
+    for attempt in range(1, max_attempts + 1):
+        await asyncio.sleep(check_interval)
+        
+        # Проверяем наличие файлов
+        if not MODEL_PATH.exists():
+            logger.debug(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): модель ещё не найдена")
+            continue
+        if not DATA_PATH.exists():
+            logger.debug(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): токенизатор ещё не найден")
+            continue
+        
+        logger.info(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): файлы найдены, пробуем загрузить бота...")
+        try:
+            load_start = asyncio.get_event_loop().time()
+            ChatBot = import_chatbot()
+            new_bot = ChatBot(str(MODEL_PATH), str(DATA_PATH))
+            load_time = asyncio.get_event_loop().time() - load_start
+            with CHATBOT_LOCK:
+                chatbot = new_bot
+            logger.info(f"✅ Бот успешно загружен авто-загрузкой за {load_time:.2f} сек!")
+            if hasattr(new_bot, 'dataset') and new_bot.dataset is not None:
+                logger.info(f"📚 Обучено на {len(new_bot.dataset)} примерах")
+            return  # Успешно загружено, выходим
+        except Exception as e:
+            logger.error(f"❌ Авто-загрузка бота не удалась (попытка {attempt}): {e}")
+    
+    logger.warning("⚠️ Авто-загрузка бота: исчерпано максимальное число попыток")
 
 
 # === FastAPI приложение ===
@@ -660,6 +701,7 @@ if not RETRAIN_TOKEN:
 
 def run_retrain_sync():
     """Запуск retrain.py в фоне с блокировкой"""
+    global chatbot
     if not RETRAIN_TOKEN:
         logger.error("❌ RETRAIN_TOKEN не задан — дообучение недоступно")
         return
@@ -684,7 +726,6 @@ def run_retrain_sync():
                 ChatBot = import_chatbot()
                 new_bot = ChatBot(str(MODEL_PATH), str(DATA_PATH))
                 with CHATBOT_LOCK:
-                    global chatbot
                     chatbot = new_bot
                 logger.info("🔁 Модель перезагружена после обучения")
             except Exception as e:
