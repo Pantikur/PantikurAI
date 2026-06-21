@@ -1,5 +1,10 @@
 # Wuglarst/src/chatbot.py (обновлённая, production-ready версия)
 
+import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 import torch
 import json
 import os
@@ -19,7 +24,6 @@ from .physiological_abilities import PhysiologicalEngine
 from .special_cognitive_abilities import SpecialCognitiveEngine
 from .imaginative_abilities import ImaginationEngine, ImaginativeAbility
 from .professions import ProfessionEngine
-import sys
 import subprocess
 import threading
 import logging
@@ -97,9 +101,24 @@ class ChatBot:
         self.vocab_size = len(self.tokenizer.vocab)
         self.max_length = RPG_MAX_LENGTH  # теперь 256
 
+        # Определяем vocab_size из checkpoint, чтобы избежать size mismatch
+        checkpoint_vocab_size = None
+        try:
+            temp_sd = torch.load(self.model_path, map_location="cpu", weights_only=True)
+            # embedding.weight[0] = vocab_size
+            checkpoint_vocab_size = temp_sd["embedding.weight"].shape[0]
+            del temp_sd
+        except Exception:
+            pass
+
+        # Используем vocab_size из checkpoint, если он больше текущего
+        model_vocab_size = max(self.vocab_size, checkpoint_vocab_size) if checkpoint_vocab_size else self.vocab_size
+        if checkpoint_vocab_size and checkpoint_vocab_size != self.vocab_size:
+            print(f"[WARN] vocab_size mismatch: checkpoint={checkpoint_vocab_size}, tokenizer={self.vocab_size}, model={model_vocab_size}")
+
         # Загружаем модель
         self.model = ChatNN(
-            vocab_size=self.vocab_size,
+            vocab_size=model_vocab_size,
             embedding_dim=128,
             hidden_dim=512,
             num_layers=2,
@@ -110,7 +129,47 @@ class ChatBot:
 
         try:
             state_dict = torch.load(self.model_path, map_location=self.device, weights_only=True)
-            self.model.load_state_dict(state_dict, strict=False)
+            
+            # Маппинг state_dict: если размеры не совпадают, обрезаем/дополняем
+            mapped_sd = {}
+            for k, v in state_dict.items():
+                if k == "embedding.weight":
+                    if v.shape[0] > self.model.embedding.weight.shape[0]:
+                        # Обрезаем до размера модели
+                        mapped_sd[k] = v[:self.model.embedding.weight.shape[0]]
+                    elif v.shape[0] < self.model.embedding.weight.shape[0]:
+                        # Дополняем случайными значениями
+                        new_weight = torch.zeros(self.model.embedding.weight.shape, dtype=v.dtype, device=self.device)
+                        new_weight[:v.shape[0]] = v
+                        # Копируем первый токен как дефолтный
+                        new_weight[v.shape[0]:] = v[0]
+                        mapped_sd[k] = new_weight
+                    else:
+                        mapped_sd[k] = v
+                elif k == "fc.weight":
+                    if v.shape[0] > self.model.fc.weight.shape[0]:
+                        mapped_sd[k] = v[:self.model.fc.weight.shape[0]]
+                    elif v.shape[0] < self.model.fc.weight.shape[0]:
+                        new_weight = torch.zeros(self.model.fc.weight.shape, dtype=v.dtype, device=self.device)
+                        new_weight[:v.shape[0]] = v
+                        new_weight[v.shape[0]:] = v[0]
+                        mapped_sd[k] = new_weight
+                    else:
+                        mapped_sd[k] = v
+                elif k == "fc.bias":
+                    if v.shape[0] > self.model.fc.bias.shape[0]:
+                        mapped_sd[k] = v[:self.model.fc.bias.shape[0]]
+                    elif v.shape[0] < self.model.fc.bias.shape[0]:
+                        new_bias = torch.zeros(self.model.fc.bias.shape, dtype=v.dtype, device=self.device)
+                        new_bias[:v.shape[0]] = v
+                        new_bias[v.shape[0]:] = v[0]
+                        mapped_sd[k] = new_bias
+                    else:
+                        mapped_sd[k] = v
+                else:
+                    mapped_sd[k] = v
+            
+            self.model.load_state_dict(mapped_sd, strict=False)
             self.model.eval()
             print(f"[OK] Model loaded: {self.model_path} on {self.device}")
         except Exception as e:
