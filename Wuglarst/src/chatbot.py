@@ -530,7 +530,9 @@ class ChatBot:
             )
 
             response = self._generate_response_with_sampling(prompt, max_length=256, max_words=200, temperature=1.0, top_p=0.95)
-            if not response or len(response.split()) < 5:
+            
+            # Fallback если ответ пустой, слишком короткий или нет "Описание:"
+            if not response or len(response.split()) < 5 or "Описание:" not in response:
                 # Fallback — модель не генерирует длинные ответы, используем промпт как инструкцию
                 response = (
                     f"Название: Авалон\n"
