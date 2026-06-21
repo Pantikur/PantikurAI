@@ -264,12 +264,18 @@ class ImaginationEngine:
         # Активное воображение
         self.reproductive_count: int = 0  # счётчик репродуктивных актов
         self.productive_count: int = 0  # счётчик продуктивных актов
+        self.reproductive_cooldown: int = 0
+        self.productive_cooldown: int = 0
 
         # Пассивное воображение
         self.dream_count: int = 0  # счётчик сновидений
         self.daydream_count: int = 0  # счётчик грёз
         self.hallucination_count: int = 0  # счётчик галлюцинаций
         self.dream_aspiration_count: int = 0  # счётчик мечтаний-целеполаганий
+        self.dream_cooldown: int = 0
+        self.daydream_cooldown: int = 0
+        self.hallucination_cooldown: int = 0
+        self.dream_aspiration_cooldown: int = 0
 
         # Общие
         self.imagination_history: List[Dict[str, Any]] = []  # история воображения
