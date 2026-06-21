@@ -80,15 +80,15 @@ default_label: neutral
 
 # Профессии (классификация по предмету труда)
 professions:
-  - filename: data/professions_human_human.json
+  - filename: professions_human_human.json
     category: "Человек — Человек"
-  - filename: data/professions_human_technics.json
+  - filename: professions_human_technics.json
     category: "Человек — Техника"
-  - filename: data/professions_human_nature.json
+  - filename: professions_human_nature.json
     category: "Человек — Природа"
-  - filename: data/professions_human_signs.json
+  - filename: professions_human_signs.json
     category: "Человек — Знаковые системы"
-  - filename: data/professions_human_arts.json
+  - filename: professions_human_arts.json
     category: "Человек — Художественные образы"
-  - filename: data/professions_mixed.json
+  - filename: professions_mixed.json
     category: "Смешанные сферы"

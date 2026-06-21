@@ -180,12 +180,15 @@ async def lifespan(app: FastAPI):
             logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
             
             # 🔴 ДОБАВЛЕНО: загрузка кэша при старте (чтобы избежать ошибок в lookup)
-            try:
-                cache_file = str(BASE_DIR / "data" / "knowledge_cache.json")
-                web_search._load_knowledge_cache(cache_file)
-                logger.info(f"📚 knowledge_cache загружен ({cache_file})")
-            except Exception as e:
-                logger.warning(f"⚠️ Ошибка загрузки knowledge_cache: {e}")
+            if web_search is not None:
+                try:
+                    cache_file = str(BASE_DIR / "data" / "knowledge_cache.json")
+                    web_search._load_knowledge_cache(cache_file)
+                    logger.info(f"📚 knowledge_cache загружен ({cache_file})")
+                except Exception as e:
+                    logger.warning(f"⚠️ Ошибка загрузки knowledge_cache: {e}")
+            else:
+                logger.info("ℹ️ WebSearch отключён — кэш знаний не загружается")
                 
         except Exception as e:
             logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
