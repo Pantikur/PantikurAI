@@ -870,7 +870,7 @@ class ChatBot:
                     logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных/воображения: {e}")
 
             logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
-            return json.dumps({"response": response + response_extra}, ensure_ascii=False)
+            return json.dumps({"response": base_response + response_extra}, ensure_ascii=False)
 
         # === Режим RPG ===
         elif mode == "rpg":
