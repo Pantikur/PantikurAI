@@ -503,8 +503,8 @@ def run_training():
 
         return  # Завершаем — ничего не учим, но файлы созданы
 
-    # === СЛУЧАЙ 2: Есть новые данные → обучаем модель ===
-    print("🧠 Начинаем дообучение...")
+    # === СЛУЧАЙ 2: Есть новые данные → обучаем модель с нуля ===
+    print("🔥 Начинаем ретраин (обучение с нуля)...")
 
     data = joblib.load(temp_data_path)
     model = ChatNN(
@@ -517,36 +517,8 @@ def run_training():
         eos_token_id=data["word_to_idx"]["<EOS>"]
     ).to(DEVICE)
 
-    # Адаптация весов
-    if os.path.exists(MODEL_PATH):
-        try:
-            state_dict = torch.load(MODEL_PATH, map_location=DEVICE)
-            ckpt_vocab_size = state_dict["embedding.weight"].size(0)
-            if ckpt_vocab_size != data["vocab_size"]:
-                print(f"⚠️ Адаптируем веса: {ckpt_vocab_size} → {data['vocab_size']}")
-                old_w_emb = state_dict["embedding.weight"]
-                old_w_fc = state_dict["fc.weight"]
-                old_b_fc = state_dict["fc.bias"]
-
-                new_w_emb = torch.zeros(data["vocab_size"], EMBEDDING_DIM, device=DEVICE)
-                new_w_fc = torch.zeros(data["vocab_size"], HIDDEN_DIM, device=DEVICE)
-                new_b_fc = torch.zeros(data["vocab_size"], device=DEVICE)
-
-                min_size = min(old_w_emb.size(0), data["vocab_size"])
-                new_w_emb[:min_size] = old_w_emb[:min_size]
-                new_w_fc[:min_size] = old_w_fc[:min_size]
-                new_b_fc[:min_size] = old_b_fc[:min_size]
-
-                state_dict["embedding.weight"] = new_w_emb
-                state_dict["fc.weight"] = new_w_fc
-                state_dict["fc.bias"] = new_b_fc
-
-            model.load_state_dict(state_dict, strict=False)
-            print("✅ Веса загружены (с адаптацией)")
-        except Exception as e:
-            print(f"⚠️ Не удалось загрузить веса: {e}")
-    else:
-        print("🆕 Модель инициализирована с нуля")
+    # ПРИ РЕТРАИНЕ: не загружаем старые веса — обучаем с нуля
+    print("🆕 Модель инициализирована с нуля (ретраин)")
 
     train_loader, val_loader = get_dataloaders(
         data["input_sequences"],
@@ -587,7 +559,7 @@ def run_training():
 
     show_sample_responses(model, data["word_to_idx"], data["idx_to_word"], DEVICE)
 
-    print(f"🎉 Модель успешно переобучена и сохранена!")
+    print(f"🎉 Модель успешно переобучена с нуля и сохранена!")
 
 
 # === ТОЧКА ВХОДА ===

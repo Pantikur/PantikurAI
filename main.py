@@ -19,6 +19,9 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from datetime import datetime
 
+# === Импорт модуля параметров человека ===
+from utils.human_params import HumanParams, HumanParamsDetector
+
 # === Настройка логирования ===
 logging.basicConfig(
     level=logging.INFO,
@@ -69,7 +72,7 @@ GIGACHAT_TOKEN = os.getenv("GIGACHAT_TOKEN")
 if GIGACHAT_TOKEN:
     logger.info("✅ GIGACHAT_TOKEN найден — можно настроить self-teaching")
 else:
-    logger.warning("⚠️ GIGACHAT_TOKEN не задан — дообучение без данных от GigaChat")
+    logger.warning("⚠️ GIGACHAT_TOKEN не задан — ретраин без данных от GigaChat")
 # === КОНЕЦ GIGACHAT_TOKEN ===
 
 # === Глобальная переменная бота и блокировка ===
@@ -131,7 +134,7 @@ async def lifespan(app: FastAPI):
 
     logger.info(f"📁 Все необходимые файлы найдены за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
 
-    # === Асинхронный запуск дообучения при старте (не блокирует запуск) ===
+    # === Асинхронный запуск ретраина при старте (не блокирует запуск) ===
     async def launch_retrain_async():
         await asyncio.to_thread(run_retrain_sync)
 
@@ -140,7 +143,7 @@ async def lifespan(app: FastAPI):
             model_mtime = MODEL_PATH.stat().st_mtime
             data_mtime = CONVERSATIONS_JSON.stat().st_mtime
             if data_mtime > model_mtime:
-                logger.warning("🎂 Новые данные в conversations.json — запускаю дообучение в фоне...")
+                logger.warning("🎂 Новые данные в conversations.json — запускаю ретраин в фоне...")
                 asyncio.create_task(launch_retrain_async())  # ← ✅ не блокирует
         except Exception as e:
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
@@ -424,6 +427,15 @@ def home():
 class MessageItem(BaseModel):
     message: str
     is_own: bool
+    gender: str = None  # "мальчик" | "девочка" — необязательное поле
+    skin_tone: str = None  # "светлая" | "смуглая" | "темная" — необязательное поле
+    hair_color: str = None  # "блондин" | "рыжая" | "каштановая" | "чёрная" | "натуральная" | "розовый" | "голубой" | "фиолетовый" | "зеленый" | "радужный" | "разноцветный" | "пепельный" | "крашеный"
+    body_shape: str = None  # "стройное" | "спортивное" | "мускулистое" | "пышное" | "хрупкое" | "среднее" — необязательное поле
+    penis_size: str = None  # "маленький" | "средний" | "большой" | "огромный" — необязательное поле (только для мальчиков)
+    penis_thickness: str = None  # "тонкий" | "средний" | "толстый" | "очень толстый" — необязательное поле (только для мальчиков)
+    penis_shape: str = None  # "прямой" | "изогнутый вверх" | "изогнутый вниз" | "стреловидный" | "булавовидный" | "округлый" — необязательное поле (только для мальчиков)
+    female_anatomy_shape: str = None  # "маленькая" | "средняя" | "пышная" | "симметричная" | "асимметричная" | "чувствительная" — необязательное поле (только для девочек)
+    female_fluid: str = None  # "умеренное" | "обильное" | "минимальное" | "прозрачное" | "молочное" | "вязкое" — необязательное поле (только для девочек)
 
     @validator('message')
     def message_not_empty(cls, v):
@@ -509,6 +521,14 @@ async def predict(request: Request):
             mode = detected
     # === КОНЕЦ RPG-AUTO ===
 
+    # === ОПРЕДЕЛЕНИЕ ВСЕХ ПАРАМЕТРОВ ЧЕЛОВЕКА (используем модуль human_params) ===
+    params = HumanParamsDetector.detect_all_params(req.messages)
+    
+    logger.info(f"👤 Параметры: пол={params.gender}, возраст={params.age}({params.age_years}), "
+                f"кожа={params.skin_tone}, волосы={params.hair_color}, тело={params.body_shape}, "
+                f"грудь={params.breast_size}, ягодицы={params.glute_shape}")
+    # === КОНЕЦ ОПРЕДЕЛЕНИЯ ПАРАМЕТРОВ ===
+
     # Безопасное получение chatbot
     local_bot = None
     with CHATBOT_LOCK:
@@ -555,6 +575,8 @@ async def predict(request: Request):
                 Бот:
             """).strip()
             start_subgen = asyncio.get_event_loop().time()
+            # Передаём все параметры человека в бот
+            HumanParamsDetector.apply_params_to_bot(local_bot, params)
             response = local_bot.generate_response([{"message": prompt_text, "is_own": True}], mode="chat").strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ narrative: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
@@ -582,6 +604,7 @@ async def predict(request: Request):
                 input_msg += f", {tags}"
 
             start_subgen = asyncio.get_event_loop().time()
+            HumanParamsDetector.apply_params_to_bot(local_bot, params)
             response = local_bot.generate_response([{"message": input_msg, "is_own": True}], mode="world_gen").strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ world_gen: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
@@ -602,6 +625,7 @@ async def predict(request: Request):
         elif mode == "rpg":
             logger.info("🔧 Режим: rpg")
             valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            HumanParamsDetector.apply_params_to_bot(local_bot, params)
             start_subgen = asyncio.get_event_loop().time()
             response = local_bot.generate_response(valid_msgs, mode="rpg").strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
@@ -610,6 +634,7 @@ async def predict(request: Request):
         elif mode == "continue":
             logger.info("🔧 Режим: continue")
             valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+            HumanParamsDetector.apply_params_to_bot(local_bot, params)
             start_subgen = asyncio.get_event_loop().time()
             response = local_bot.generate_response(valid_msgs, mode="continue").strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
@@ -676,6 +701,7 @@ async def predict(request: Request):
                 valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
 
             start_subgen = asyncio.get_event_loop().time()
+            HumanParamsDetector.apply_params_to_bot(local_bot, params)
             response = local_bot.generate_response(valid_msgs, mode="chat").strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ chat: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
@@ -693,7 +719,7 @@ async def predict(request: Request):
         return {"response": "Извини, произошла ошибка."}
 
 
-# === Дообучение (защищённое) ===
+# === Ретраин (защищённое) ===
 RETRAIN_LOCK = threading.Lock()
 
 # НЕ выкидываем ошибку здесь — иначе сломается сборка Docker
@@ -706,14 +732,14 @@ def run_retrain_sync():
     """Запуск retrain.py в фоне с блокировкой"""
     global chatbot
     if not RETRAIN_TOKEN:
-        logger.error("❌ RETRAIN_TOKEN не задан — дообучение недоступно")
+        logger.error("❌ RETRAIN_TOKEN не задан — ретраин недоступен")
         return
 
     if not RETRAIN_LOCK.acquire(blocking=False):
-        logger.warning("🔄 Дообучение уже запущено")
+        logger.warning("🔄 Ретраин уже запущено")
         return
 
-    logger.info("🎂 Запускаю дообучение (в честь дня рождения!)...")
+    logger.info("🎂 Запускаю ретраин (обучение с нуля)...")
     try:
         result = subprocess.run(
             [sys.executable, "retrain.py"],
@@ -723,7 +749,7 @@ def run_retrain_sync():
             timeout=600
         )
         if result.returncode == 0:
-            logger.info("🎉 Дообучение завершено успешно!")
+            logger.info("🎉 Ретраин завершён успешно!")
             # Перезагрузка модели
             try:
                 ChatBot = import_chatbot()
@@ -734,7 +760,7 @@ def run_retrain_sync():
             except Exception as e:
                 logger.error(f"❌ Не удалось перезагрузить модель: {e}")
         else:
-            logger.error(f"❌ Ошибка дообучения: {result.stderr}")
+            logger.error(f"❌ Ошибка ретраина: {result.stderr}")
     except subprocess.TimeoutExpired:
         logger.error("⏰ Превышен лимит времени (10 мин)")
     except Exception as e:
@@ -746,13 +772,13 @@ def run_retrain_sync():
 @app.post("/retrain")
 async def trigger_retrain(request: Request, background_tasks: BackgroundTasks):
     if not RETRAIN_TOKEN:
-        raise HTTPException(status_code=503, detail="Дообучение отключено (нет RETRAIN_TOKEN)")
+        raise HTTPException(status_code=503, detail="Ретраин отключен (нет RETRAIN_TOKEN)")
 
     token = request.headers.get("X-Retrain-Token")
     if token != RETRAIN_TOKEN:
         raise HTTPException(status_code=403, detail="Неверный токен 🎂")
 
-    logger.info("🔧 Запрос на дообучение получен — ставим в фон")
+    logger.info("🔧 Запрос на ретраин получен — ставим в фон")
     background_tasks.add_task(run_retrain_sync)
     return {"status": "retrain_started", "detail": "Обучение запущено в фоне!"}
 

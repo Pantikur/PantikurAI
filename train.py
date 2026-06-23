@@ -268,38 +268,11 @@ class ChatDataset(Dataset):
 
 # === Загрузка весов с адаптацией под новый словарь ===
 def load_model_weights(model, path, device):
-    if not os.path.exists(path):
-        safe_print("[INFO] Модель инициализирована с нуля")
-        return model
-
-    try:
-        state_dict = torch.load(path, map_location=device)
-        current_vocab_size = model.vocab_size
-        ckpt_vocab_size = state_dict["embedding.weight"].size(0)
-
-        if current_vocab_size != ckpt_vocab_size:
-            safe_print(f"[WARN] Размер словаря изменился: {ckpt_vocab_size} → {current_vocab_size}. Адаптируем...")
-            old_w_emb = state_dict['embedding.weight']
-            old_w_fc = state_dict['fc.weight']
-            old_b_fc = state_dict['fc.bias']
-
-            new_w_emb = torch.zeros(current_vocab_size, model.embedding_dim, device=device)
-            new_w_fc = torch.zeros(current_vocab_size, model.hidden_dim, device=device)
-            new_b_fc = torch.zeros(current_vocab_size, device=device)
-
-            min_size = min(old_w_emb.size(0), current_vocab_size)
-            new_w_emb[:min_size] = old_w_emb[:min_size]
-            new_w_fc[:min_size] = old_w_fc[:min_size]
-            new_b_fc[:min_size] = old_b_fc[:min_size]
-
-            state_dict['embedding.weight'] = new_w_emb
-            state_dict['fc.weight'] = new_w_fc
-            state_dict['fc.bias'] = new_b_fc
-
-        model.load_state_dict(state_dict, strict=False)
-        safe_print("[OK] Веса загружены (с адаптацией)")
-    except Exception as e:
-        safe_print(f"[WARN] Ошибка загрузки весов: {e}")
+    """
+    ПРИ РЕТРАИНЕ: не загружаем старые веса — обучаем с нуля.
+    Эта функция оставлена для совместимости, но всегда возвращает модель без загрузки.
+    """
+    safe_print("[INFO] РЕТРАИН: модель инициализирована с нуля (старые веса не загружаются)")
     return model
 
 
@@ -361,8 +334,9 @@ def main():
         eos_token_id=temp_data["word_to_idx"]["<EOS>"]
     ).to(DEVICE)
 
-    # Загружаем предыдущие веса
-    model = load_model_weights(model, MODEL_PATH, DEVICE)
+    # ПРИ РЕТРАИНЕ: не загружаем старые веса — обучаем с нуля
+    # model = load_model_weights(model, MODEL_PATH, DEVICE)
+    safe_print("[FIRE] РЕТРАИН: обучение модели с нуля на всех данных")
 
     # Датасет и даталоадер
     dataset = ChatDataset(data_file)

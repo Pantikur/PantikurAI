@@ -3,7 +3,7 @@
 """
 Автоматический цикл обучения чат-бота:
 1. Обновляет систему знаний
-2. Запускает дообучение модели
+2. Запускает ретраин модели
 3. Повторяет цикл
 """
 
@@ -31,9 +31,9 @@ RETRAIN_SCRIPT = "retrain.py"
 
 # Параметры цикла
 CHECK_INTERVAL = 300  # Проверять каждые 5 минут (300 секунд)
-MIN_WORDS_FOR_RETRAIN = 5  # Минимальное количество новых слов для дообучения
+MIN_WORDS_FOR_RETRAIN = 5  # Минимальное количество новых слов для ретраина
 
-# Статус файл для отслеживания последнего дообучения
+# Статус файл для отслеживания последнего ретраина
 STATUS_FILE = "data/knowledge/learning_status.json"
 
 
@@ -114,8 +114,8 @@ def print_cycle_report():
         status = load_status()
         print(f"\n🔄 Статус цикла обучения:")
         print(f"Последняя проверка: {status.get('last_check', 'Нет данных')}")
-        print(f"Последнее дообучение: {status.get('last_retrain', 'Нет данных')}")
-        print(f"Всего дообучений: {status.get('total_retrains', 0)}")
+        print(f"Последний ретраин: {status.get('last_retrain', 'Нет данных')}")
+        print(f"Всего ретраинов: {status.get('total_retrains', 0)}")
         
     except Exception as e:
         logger.error(f"Не удалось напечатать отчет: {e}")
@@ -125,7 +125,7 @@ def main():
     """Основной цикл обучения"""
     logger.info("🚀 Запуск автоматического цикла обучения")
     logger.info(f"Интервал проверки: {CHECK_INTERVAL} секунд")
-    logger.info(f"Минимальное количество слов для дообучения: {MIN_WORDS_FOR_RETRAIN}")
+    logger.info(f"Минимальное количество слов для ретраина: {MIN_WORDS_FOR_RETRAIN}")
     
     # Создаем директорию для данных знаний
     os.makedirs("data/knowledge", exist_ok=True)
@@ -143,23 +143,22 @@ def main():
             current_words = get_word_count()
             logger.info(f"Текущее количество выученных слов: {current_words}")
             
-            # Проверяем, нужно ли дообучение
+            # Проверяем, нужно ли ретраин
             last_retrain_words = status.get('words_at_retrain', 0)
             new_words = current_words - last_retrain_words
             
-            logger.info(f"Новых слов с последнего дообучения: {new_words}")
+            logger.info(f"Новых слов с последнего ретраина: {new_words}")
             
             if current_words >= MIN_WORDS_FOR_RETRAIN and new_words >= MIN_WORDS_FOR_RETRAIN:
-                logger.info(f"🎯 Достаточно новых слов для дообучения ({new_words})")
+                logger.info(f"🎯 Достаточно новых слов для ретраина ({new_words})")
                 
                 # Обновляем систему знаний
                 success, output = run_script(UPDATE_SCRIPT)
                 if not success:
-                    logger.error("❌ Не удалось обновить систему знаний")
-                    time.sleep(CHECK_INTERVAL)
+                    logger.error("❌ Не удалось обновить знания")
                     continue
                 
-                # Запускаем дообучение
+                # Запускаем ретраин
                 success, output = run_script(RETRAIN_SCRIPT)
                 if success:
                     # Обновляем статус
@@ -168,16 +167,16 @@ def main():
                     status["words_at_retrain"] = current_words
                     status["words_learned"] = current_words
                     
-                    logger.info(f"🎉 Успешное дообучение завершено!")
-                    logger.info(f"Всего дообучений: {status['total_retrains']}")
+                    logger.info(f"🎉 Успешный ретраин завершён!")
+                    logger.info(f"Всего ретраинов: {status['total_retrains']}")
                     logger.info(f"Всего выучено слов: {current_words}")
                 else:
-                    logger.error("❌ Дообучение не удалось")
+                    logger.error("❌ Ретраин не удался")
             else:
                 if current_words < MIN_WORDS_FOR_RETRAIN:
-                    logger.info(f"ℹ️ Недостаточно выученных слов для дообучения ({current_words}/{MIN_WORDS_FOR_RETRAIN})")
+                    logger.info(f"ℹ️ Недостаточно выученных слов для ретраина ({current_words}/{MIN_WORDS_FOR_RETRAIN})")
                 else:
-                    logger.info(f"ℹ️ Недостаточно НОВЫХ слов для дообучения ({new_words}/{MIN_WORDS_FOR_RETRAIN})")
+                    logger.info(f"ℹ️ Недостаточно НОВЫХ слов для ретраина ({new_words}/{MIN_WORDS_FOR_RETRAIN})")
                 
             # Сохраняем статус
             save_status(status)

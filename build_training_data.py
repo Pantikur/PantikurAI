@@ -208,6 +208,15 @@ def main():
         responses["neutral"] = "Я слышу тебя. Это важно."
         safe_print("[WARN] Ответ 'neutral' не задан — использован стандартный")
 
+    # === Этап 0: Генерация данных из utils/human_params.py и utils/races.py ===
+    try:
+        safe_print("[DATA] Генерация данных из utils/human_params.py и utils/races.py...")
+        from utils.generate_params_training_data import main as generate_params_data
+        generate_params_data()
+        safe_print("[OK] Данные из utils сгенерированы")
+    except Exception as e:
+        logging.warning(f"[WARN] Не удалось сгенерировать данные из utils: {e}")
+
     # === Этап 1: Очистка файлов ===
     clean_files = config["input_files"].get("clean_files", [])
     cleaned_files = []
@@ -325,7 +334,7 @@ def main():
         safe_print(f"   {cls}: {cnt}")
 
     safe_print("\n[HAPPY] Готово! Все данные собраны.")
-    safe_print("Запустите дообучение модели:")
+    safe_print("Запустите ретраин модели:")
     safe_print("python retrain.py")
 
 

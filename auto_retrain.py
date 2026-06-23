@@ -1,4 +1,4 @@
-# auto_retrain.py — автоматическое дообучение при изменении данных
+# auto_retrain.py — автоматический ретраин при изменении данных
 import time
 import subprocess
 import os
@@ -20,7 +20,7 @@ class RetrainHandler(FileSystemEventHandler):
         filename = os.path.basename(event.src_path)
         if filename in WATCHED_FILES:
             print(f"\n🔥 Изменён файл: {filename}")
-            print("🔄 Запускаем дообучение...")
+            print("🔄 Запускаем ретраин...")
 
             try:
                 result = subprocess.run(
@@ -29,10 +29,10 @@ class RetrainHandler(FileSystemEventHandler):
                     capture_output=True,
                     text=True
                 )
-                print("✅ Дообучение успешно завершено")
+                print("✅ Ретраин успешно завершён")
                 print(result.stdout)
             except subprocess.CalledProcessError as e:
-                print("❌ Ошибка при дообучении")
+                print("❌ Ошибка при ретраине")
                 print(e.stderr)
             except Exception as e:
                 print(f"⚠️ Неизвестная ошибка: {e}")

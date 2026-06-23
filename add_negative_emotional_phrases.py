@@ -67,7 +67,7 @@ if os.path.exists(stats_file):
 else:
     print(f"Файл статистики не найден: {stats_file}")
 
-print("\nГотово! Теперь запустите процесс переобучения:")
+print("\nГотово! Теперь запустите процесс ретраина:")
 print("python retrain.py")
 print("или")
 print("python auto_learn_cycle.py")

@@ -64,7 +64,7 @@ if __name__ == "__main__":
     success = update_knowledge_system()
     
     if success:
-        print("\n📌 Теперь можно запустить дообучение:")
+        print("\n📌 Теперь можно запустить ретраин:")
         print("   python retrain.py")
     else:
         print("\n❌ Обновление не удалось")

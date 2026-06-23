@@ -1,9 +1,9 @@
 """
-Автоматический цикл обучения чат-бота через GigaChat:
-1. Отправляет примеры диалогов в GigaChat
+auto_gigachat_learning.py — автоматическое обучение через GigaChat:
+1. Запускает вопросы через GigaChat API
 2. Анализирует ответы
 3. Сохраняет новые знания
-4. Запускает дообучение модели
+4. Запускает ретраин модели
 5. Повторяет цикл
 6. команда запуска python auto_gigachat_learning.py
 7. для токена python get_gigachat_token.py
@@ -50,8 +50,8 @@ logger = logging.getLogger(__name__)
 # Константы
 GIGACHAT_API_URL = "https://gigachat.devices.sberbank.ru/api/v1/chat/completions"
 CHECK_INTERVAL = 3600  # 1 час
-RETRAIN_TIMEOUT = 3600  # 1 час на дообучение
-MIN_EXAMPLES_FOR_LEARNING = 5  # Минимум примеров для дообучения
+RETRAIN_TIMEOUT = 3600  # 1 час на ретраин
+MIN_EXAMPLES_FOR_LEARNING = 5  # Минимум примеров для ретраина
 
 # Пути
 KNOWLEDGE_DIR = "data/knowledge"
@@ -364,17 +364,17 @@ class GigaChatLearningSystem:
         return True
 
     def _run_retrain(self, epochs: int = 1):
-        """Запуск дообучения модели с проверкой загрузки системы"""
+        """Запуск ретраина модели с проверкой загрузки системы"""
         try:
-            logger.info("🚀 Запуск проверки загрузки системы перед дообучением...")
+            logger.info("🚀 Запуск проверки загрузки системы перед ретраином...")
             if not is_system_idle():
                 logger.info("⏱ Ожидание снижения загрузки системы...")
                 time.sleep(300)
                 if not is_system_idle():
-                    logger.error("❌ Система перегружена, пропускаем дообучение")
+                    logger.error("❌ Система перегружена, пропускаем ретраин")
                     return False
 
-            logger.info(f"🚀 Запуск дообучения модели (количество эпох управляется через retrain.py -> train.py)...")
+            logger.info(f"🚀 Запуск ретраина модели (количество эпох управляется через retrain.py -> train.py)...")
 
             result = subprocess.run(
                 [sys.executable, "retrain.py", "--verbose"],
@@ -385,17 +385,17 @@ class GigaChatLearningSystem:
                 errors='ignore'
             )
             if result.returncode == 0:
-                logger.info("✅ Дообучение завершено успешно")
+                logger.info("✅ Ретраин завершён успешно")
                 self._save_status()
                 return True
             else:
-                logger.error(f"❌ Ошибка дообучения: {result.stderr}")
+                logger.error(f"❌ Ошибка ретраина: {result.stderr}")
                 return False
         except subprocess.TimeoutExpired:
-            logger.error(f"⏰ Дообучение превысило таймаут ({RETRAIN_TIMEOUT} сек)")
+            logger.error(f"⏰ Ретраин превысил таймаут ({RETRAIN_TIMEOUT} сек)")
             return False
         except Exception as e:
-            logger.error(f"❌ Исключение при дообучении: {e}")
+            logger.error(f"❌ Исключение при ретраине: {e}")
             return False
         
     def _get_optimal_epochs(self) -> int:
@@ -405,7 +405,7 @@ class GigaChatLearningSystem:
                 gpu_name = torch.cuda.get_device_name(0)
                 free_mem = torch.cuda.mem_get_info()[0] / (1024**3)
                 optimal = max(1, int(free_mem // 3.5))
-                logger.info(f"📊 {gpu_name} (8GB): рассчитано {optimal} эпох(ы) для дообучения")
+                logger.info(f"📊 {gpu_name} (8GB): рассчитано {optimal} эпох(ы) для ретраина")
                 return optimal
             return 1
         except Exception as e:
@@ -455,7 +455,17 @@ class GigaChatLearningSystem:
             new_examples = self._collect_examples(max_examples=10)
             
             if not new_examples:
-                logger.info("ℹ️ Новые примеры не собраны, пропускаем дообучение")
+                logger.info("ℹ️ Новые примеры не собраны, пропускаем ретраин")
+                return False
+            
+            # Сохраняем примеры
+            self._save_examples_to_file(new_examples)
+            
+            # Проверяем, достаточно ли примеров для ретраина
+            total_examples = len(existing_examples) + len(new_examples)
+            
+            if total_examples < MIN_EXAMPLES_FOR_LEARNING:
+                logger.info(f"ℹ️ Недостаточно примеров для ретраина ({total_examples} < {MIN_EXAMPLES_FOR_LEARNING})")
                 return False
             
             # Сохраняем новые примеры
@@ -475,11 +485,11 @@ class GigaChatLearningSystem:
             
             # Определяем оптимальное количество эпох
             epochs = self._get_optimal_epochs()
-            logger.info(f"📊 Рассчитано {epochs} эпох(ы) для дообучения")
+            logger.info(f"📊 Рассчитано {epochs} эпох(ы) для ретраина")
             
-            # Запускаем дообучение
+            # Запускаем ретраин
             if not self._run_retrain(epochs):
-                logger.error("❌ Ошибка дообучения модели")
+                logger.error("❌ Ошибка ретраина модели")
                 return False
             
             logger.info("🎉 Цикл обучения завершен успешно")
@@ -500,7 +510,7 @@ class GigaChatLearningSystem:
                 if success:
                     logger.info(f"⏳ Ожидание следующего цикла ({interval} сек)...")
                 else:
-                    logger.info(f"⏳ Ожидание следующего цикла ({interval} сек) (без дообучения)...")
+                    logger.info(f"⏳ Ожидание следующего цикла ({interval} сек) (без ретраина)...")
                 
                 time.sleep(interval)
                 

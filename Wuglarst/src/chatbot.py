@@ -95,6 +95,12 @@ class ChatBot:
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.tokenizer_path = data_path
         self.model_path = model_path
+        self._user_gender = None  # "мальчик" | "девочка" — устанавливается из API
+        self._user_skin_tone = None  # "светлая" | "смуглая" | "темная" — устанавливается из API
+        self._user_hair_color = None  # "блондин" | "рыжая" | "каштановая" | "чёрная" | "натуральная" | "розовый" | "голубой" | "фиолетовый" | "зеленый" | "пепельный" | "радужный" | "разноцветный" | "крашеный"
+        self._user_penis_size = None  # "маленький" | "средний" | "большой" | "огромный" — устанавливается из API
+        self._user_penis_thickness = None  # "тонкий" | "средний" | "толстый" | "очень толстый" — устанавливается из API
+        self._user_penis_shape = None  # "прямой" | "изогнутый вверх" | "изогнутый вниз" | "стреловидный" | "булавовидный" | "округлый" — устанавливается из API
 
         # Загружаем токенизатор
         self.tokenizer = SimpleTokenizer(self.tokenizer_path)
@@ -269,6 +275,113 @@ class ChatBot:
         for wrong, right in replacements.items():
             text = text.replace(wrong, right)
         return text
+
+    def _get_gender_prompts(self) -> Dict[str, Any]:
+        """Возвращает промпты, зависящие от пола, цвета кожи и волос пользователя."""
+        gender = getattr(self, '_user_gender', None)
+        skin_tone = getattr(self, '_user_skin_tone', None)
+        hair_color = getattr(self, '_user_hair_color', None)
+        
+        # Определяем описание цвета кожи для промптов
+        skin_description = ""
+        skin_appearance = ""
+        if skin_tone == "светлая":
+            skin_description = "светлой кожи"
+            skin_appearance = "*её светлая кожа сияет в лунном свете*"
+        elif skin_tone == "смуглая":
+            skin_description = "смуглой кожи"
+            skin_appearance = "*её смуглая кожа тепло блестит на солнце*"
+        elif skin_tone == "темная":
+            skin_description = "тёмной кожи"
+            skin_appearance = "*её тёмная кожа красиво переливается в свете звезд*"
+        else:
+            skin_description = ""
+            skin_appearance = ""
+        
+        # Определяем описание цвета волос для промптов
+        hair_description = ""
+        hair_appearance = ""
+        if hair_color == "блондин":
+            hair_description = "блондинки"
+            hair_appearance = "*её светлые волосы мягко сияют на солнце*"
+        elif hair_color == "рыжая":
+            hair_description = "рыжей"
+            hair_appearance = "*её рыжие волосы ярко горят на солнце*"
+        elif hair_color == "каштановая":
+            hair_description = "каштановых волос"
+            hair_appearance = "*её каштановые волосы мягко блестят*"
+        elif hair_color == "чёрная":
+            hair_description = "чёрных волос"
+            hair_appearance = "*её чёрные волосы переливаются в свете*"
+        elif hair_color == "натуральная":
+            hair_description = "натурального цвета"
+            hair_appearance = "*её натуральные волосы мягко лежат на плечах*"
+        elif hair_color == "розовый":
+            hair_description = "розовых волос"
+            hair_appearance = "*её нежно-розовые волосы светились в темноте*"
+        elif hair_color == "голубой":
+            hair_description = "голубых волос"
+            hair_appearance = "*её голубые волосы переливались как океанская волна*"
+        elif hair_color == "фиолетовый":
+            hair_description = "фиолетовых волос"
+            hair_appearance = "*её фиолетовые волосы мерцали таинственным светом*"
+        elif hair_color == "зеленый":
+            hair_description = "зеленых волос"
+            hair_appearance = "*её зелёные волосы напоминали листву весной*"
+        elif hair_color == "пепельный":
+            hair_description = "пепельных волос"
+            hair_appearance = "*её серебристо-пепельные волосы блестели как металл*"
+        elif hair_color in ["радужный", "разноцветный", "крашеный"]:
+            hair_description = "радужных/разноцветных волос"
+            hair_appearance = "*её волосы переливались всеми цветами радуги и неоном*"
+        else:
+            hair_description = ""
+            hair_appearance = ""
+        
+        if gender == "девочка":
+            return {
+                "pronoun_him_her": "она",
+                "pronoun_his_hers": "её",
+                "action_example": "*она отвела взгляд, её пальцы нервно сжались в замок*" + 
+                    (f" ({skin_appearance})" if skin_appearance else "") + 
+                    (f" ({hair_appearance})" if hair_appearance else ""),
+                "narrative_hint": "она пошла, он сказал → она подошла, её глаза блеснули",
+                "address_hint": f"Обращайся к героине как к девушке {f'светлой кожи' if skin_tone == 'светлая' else f'смуглой кожи' if skin_tone == 'смуглая' else f'тёмной кожи' if skin_tone == 'темная' else ''} {f'с волосами {hair_description}' if hair_description else ''}, используй женские формы в описаниях.",
+                "style_tips": [
+                    "Эмоции и чувства — сильная сторона героини.",
+                    "Она замечает детали, которые другие упускают.",
+                    "Её сила — в интуиции и эмпатии, а не только в физической мощи."
+                ]
+            }
+        elif gender == "мальчик":
+            return {
+                "pronoun_him_her": "он",
+                "pronoun_his_hers": "его",
+                "action_example": "*он сжал кулаки, его взгляд стал решительным*" + 
+                    (f" ({skin_appearance})" if skin_appearance else "") + 
+                    (f" ({hair_appearance})" if hair_appearance else ""),
+                "narrative_hint": "она пошла, он сказал → он подошёл, его глаза сузились",
+                "address_hint": f"Обращайся к герою как к парню {f'светлой кожи' if skin_tone == 'светлая' else f'смуглой кожи' if skin_tone == 'смуглая' else f'тёмной кожи' if skin_tone == 'темная' else ''} {f'с волосами {hair_description}' if hair_description else ''}, используй мужские формы в описаниях.",
+                "style_tips": [
+                    "Решительность и действия — сильные стороны героя.",
+                    "Он анализирует ситуацию перед тем, как действовать.",
+                    "Его сила — в логике и стойкости."
+                ]
+            }
+        else:
+            # По умолчанию — нейтральный вариант
+            return {
+                "pronoun_him_her": "персонаж",
+                "pronoun_his_hers": "его/её",
+                "action_example": "*персонаж отвел взгляд, пальцы сжались*" +
+                    (f" ({skin_appearance})" if skin_appearance else "") +
+                    (f" ({hair_appearance})" if hair_appearance else ""),
+                "narrative_hint": "используй нейтральные формы или чередуй он/она",
+                "address_hint": f"Используй нейтральные формы обращения. {f'Персонаж имеет {skin_description}' if skin_description else ''} {f'с волосами {hair_description}' if hair_description else ''}",
+                "style_tips": [
+                    "Описывай действия и эмоции персонажа нейтрально."
+                ]
+            }
 
     # ... existing code ...
 
@@ -501,8 +614,62 @@ class ChatBot:
             genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
             tags = tags_match.group(1).strip() if tags_match else ""
 
+            # === УЧИТЫВАЕМ ПОЛЬЗОВАТЕЛЯ (мальчик/девочка) ===
+            gender_info = self._get_gender_prompts()
+            hero_desc = "девушка-героиня" if gender_info["pronoun_him_her"] == "она" else "юный герой"
+            if not self._user_gender:
+                hero_desc = "герой"
+
+            # Добавляем цвет кожи к описанию героя
+            skin_tone = getattr(self, '_user_skin_tone', None)
+            if skin_tone == "светлая":
+                hero_desc += " светлой кожи"
+            elif skin_tone == "смуглая":
+                hero_desc += " смуглой кожи"
+            elif skin_tone == "темная":
+                hero_desc += " тёмной кожи"
+
+            # Добавляем цвет волос к описанию героя
+            hair_color = getattr(self, '_user_hair_color', None)
+            if hair_color == "блондин":
+                hero_desc += " блондинка"
+            elif hair_color == "рыжая":
+                hero_desc += " рыжая"
+            elif hair_color == "каштановая":
+                hero_desc += " с каштановыми волосами"
+            elif hair_color == "чёрная":
+                hero_desc += " с чёрными волосами"
+            elif hair_color == "натуральная":
+                hero_desc += " с натуральным цветом волос"
+            elif hair_color == "розовый":
+                hero_desc += " с нежно-розовыми волосами"
+            elif hair_color == "голубой":
+                hero_desc += " с голубыми волосами"
+            elif hair_color == "фиолетовый":
+                hero_desc += " с фиолетовыми волосами"
+            elif hair_color == "зеленый":
+                hero_desc += " с зелёными волосами"
+            elif hair_color == "пепельный":
+                hero_desc += " с серебристыми волосами"
+            elif hair_color in ["радужный", "разноцветный", "крашеный"]:
+                hero_desc += " с разноцветными радужными волосами"
+
+            # Добавляем параметры мужского органа (если мальчик)
+            if self._user_gender == "мальчик":
+                penis_thickness = getattr(self, '_user_penis_thickness', None)
+                penis_shape = getattr(self, '_user_penis_shape', None)
+                penis_size = getattr(self, '_user_penis_size', None)
+                
+                if penis_size:
+                    hero_desc += f" с {penis_size} параметрами"
+                if penis_thickness:
+                    hero_desc += f" {penis_thickness}"
+                if penis_shape:
+                    hero_desc += f" {penis_shape} формы"
+
             prompt = (
                 "Ты — мастер вселенных. Создай уникальный мир по запросу.\n"
+                f"Главный герой этого мира — {hero_desc}.\n"
                 "Строго следуй формату:\n"
                 "Название: [имя мира]\n"
                 "Законы общества:\n"
@@ -684,19 +851,40 @@ class ChatBot:
             # Генерация — narrative стиль с описаниями и диалогами
             start_subgen = time.time()
 
+            # === УЧИТЫВАЕМ ПОЛЬЗОВАТЕЛЯ (мальчик/девочка) ===
+            gender_prompts = self._get_gender_prompts()
+            
             # Строим промпт для narrative-стиля
             context_str = "\n".join(context[-5:]) if context else ""
             narrative_prompt = (
                 "Ты — персонаж в ролевой сцене. Отвечай в формате художественной литературы.\n"
                 "Формат ответа:\n"
-                "1. Описания действий и эмоций в звёздочках: *она отвела взгляд, её пальцы сжались*\n"
+                "1. Описания действий и эмоций в звёздочках: " + gender_prompts["action_example"] + "\n"
                 "2. Диалоги в кавычках: «Привет, как дела?»\n"
                 "3. Внутренние мысли в кавычках: «Может, немного...»\n"
                 "4. Пиши развёрнуто, с эмоциями, жестами, микровыражениями\n"
                 "5. Не отвечай односложно — раскрывай характер через действия и слова\n"
-                "6. Используй прошествующее время: она пошла, он сказал, они посмотрели\n"
-                f"\nИстория диалога:\n{context_str}\n\nБот:"
+                "6. Используй прошествующее время: " + gender_prompts["narrative_hint"] + "\n"
+                f"\n{gender_prompts['address_hint']}\n"
+                "Стиль:\n" + "\n".join(f"   - {tip}" for tip in gender_prompts["style_tips"]) +
+                f"\n\nИстория диалога:\n{context_str}\n\nБот:"
             )
+
+            # Добавляем параметры мужского органа в промпт (если мальчик)
+            if self._user_gender == "мальчик":
+                penis_size = getattr(self, '_user_penis_size', None)
+                penis_thickness = getattr(self, '_user_penis_thickness', None)
+                penis_shape = getattr(self, '_user_penis_shape', None)
+                
+                if penis_size or penis_thickness or penis_shape:
+                    params_text = "Параметры героя:\n"
+                    if penis_size:
+                        params_text += f"- Размер: {penis_size}\n"
+                    if penis_thickness:
+                        params_text += f"- Толщина: {penis_thickness}\n"
+                    if penis_shape:
+                        params_text += f"- Форма: {penis_shape}\n"
+                    narrative_prompt += f"\n{params_text}"
 
             base_response = self._generate_response_with_sampling(
                 narrative_prompt,
@@ -1026,6 +1214,60 @@ class ChatBot:
                     logging.warning(f"⚠️ Ошибка модулей (rpg): {e}")
 
             logging.info(f"⏱ generate_response (rpg) total: {time.time() - start_mode:.2f} сек")
+
+            # === УЧИТЫВАЕМ ПОЛА В RPG ===
+            gender_hint = ""
+            if self._user_gender == "девочка":
+                gender_hint = "Ты играешь за девушку-героиню. Используй женские формы глаголов и местоимений в описаниях её действий.\n"
+            elif self._user_gender == "мальчик":
+                gender_hint = "Ты играешь за парня-героя. Используй мужские формы глаголов и местоимений в описаниях его действий.\n"
+
+            # Добавляем цвет кожи к RPG-описанию
+            skin_tone = getattr(self, '_user_skin_tone', None)
+            if skin_tone == "светлая":
+                gender_hint += "Герой/Героиня имеет светлую кожу.\n"
+            elif skin_tone == "смуглая":
+                gender_hint += "Герой/Героиня имеет смуглую кожу.\n"
+            elif skin_tone == "темная":
+                gender_hint += "Герой/Героиня имеет тёмную кожу.\n"
+
+            # Добавляем цвет волос к RPG-описанию
+            hair_color = getattr(self, '_user_hair_color', None)
+            if hair_color == "блондин":
+                gender_hint += "Герой/Героиня — блондинка.\n"
+            elif hair_color == "рыжая":
+                gender_hint += "Герой/Героиня — рыжая.\n"
+            elif hair_color == "каштановая":
+                gender_hint += "Герой/Героиня имеет каштановые волосы.\n"
+            elif hair_color == "чёрная":
+                gender_hint += "Герой/Героиня имеет чёрные волосы.\n"
+            elif hair_color == "натуральная":
+                gender_hint += "Герой/Героиня имеет натуральный цвет волос.\n"
+            elif hair_color == "розовый":
+                gender_hint += "Герой/Героиня имеет нежно-розовые волосы.\n"
+            elif hair_color == "голубой":
+                gender_hint += "Герой/Героиня имеет голубые волосы.\n"
+            elif hair_color == "фиолетовый":
+                gender_hint += "Герой/Героиня имеет фиолетовые волосы.\n"
+            elif hair_color == "зеленый":
+                gender_hint += "Герой/Героиня имеет зелёные волосы.\n"
+            elif hair_color == "пепельный":
+                gender_hint += "Герой/Героиня имеет серебристые волосы.\n"
+            elif hair_color in ["радужный", "разноцветный", "крашеный"]:
+                gender_hint += "Герой/Героиня имеет радужные/разноцветные волосы.\n"
+
+            # Добавляем параметры мужского органа (если мальчик)
+            if self._user_gender == "мальчик":
+                penis_size = getattr(self, '_user_penis_size', None)
+                penis_thickness = getattr(self, '_user_penis_thickness', None)
+                penis_shape = getattr(self, '_user_penis_shape', None)
+                
+                if penis_size:
+                    gender_hint += f"Герой обладает {penis_size} параметрами.\n"
+                if penis_thickness:
+                    gender_hint += f"Герой {penis_thickness}.\n"
+                if penis_shape:
+                    gender_hint += f"Форма: {penis_shape}.\n"
 
             # 🔥 ЗАГРУЗКА СТИЛЬНОГО ПРОМПТА ПО ЖАНРУ (обновлённые промпты)
             genre_prompts = {
@@ -1361,7 +1603,50 @@ class ChatBot:
                 ]
             }
 
-            final_response = f"📜 **{genre}**\n" + response_extra if response_extra else f"📜 **{genre}**"
+            # Добавляем gender_hint к ответу
+            gender_tag = ""
+            skin_tag = ""
+            if self._user_gender == "девочка":
+                gender_tag = " 👧 (героиня)"
+            elif self._user_gender == "мальчик":
+                gender_tag = " 👦 (герой)"
+
+            # Добавляем эмодзи цвета кожи
+            skin_tone = getattr(self, '_user_skin_tone', None)
+            if skin_tone == "светлая":
+                skin_tag = " ☀️"
+            elif skin_tone == "смуглая":
+                skin_tag = " 🌤️"
+            elif skin_tone == "темная":
+                skin_tag = " 🌙"
+
+            # Добавляем эмодзи цвета волос
+            hair_color = getattr(self, '_user_hair_color', None)
+            hair_tag = ""
+            if hair_color == "блондин":
+                hair_tag = " 💛"
+            elif hair_color == "рыжая":
+                hair_tag = " 🧡"
+            elif hair_color == "каштановая":
+                hair_tag = " 🤎"
+            elif hair_color == "чёрная":
+                hair_tag = " 🖤"
+            elif hair_color == "натуральная":
+                hair_tag = " 💚"
+            elif hair_color == "розовый":
+                hair_tag = " 🩷"
+            elif hair_color == "голубой":
+                hair_tag = " 💙"
+            elif hair_color == "фиолетовый":
+                hair_tag = " 💜"
+            elif hair_color == "зеленый":
+                hair_tag = " 💚"
+            elif hair_color == "пепельный":
+                hair_tag = " 🩶"
+            elif hair_color in ["радужный", "разноцветный", "крашеный"]:
+                hair_tag = " 🌈"
+
+            final_response = f"📜 **{genre}**{gender_tag}{skin_tag}{hair_tag}\n" + response_extra if response_extra else f"📜 **{genre}**{gender_tag}{skin_tag}{hair_tag}"
             return json.dumps({"response": final_response}, ensure_ascii=False)
 
         logging.warning(f"⚠️ generate_response: неизвестный mode = '{mode}'")
@@ -1388,7 +1673,7 @@ class ChatBot:
                 timeout=600
             )
             if result.returncode == 0:
-                print("✅ Дообучение завершено")
+                print("✅ Ретраин завершён")
             else:
                 print(f"❌ Ошибка: {result.stderr}")
         except Exception as e:

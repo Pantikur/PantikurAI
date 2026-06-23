@@ -1,4 +1,4 @@
-# knowledge_manager.py — управление знаниями и интеграция с дообучением
+# knowledge_manager.py — управление знаниями и интеграция с ретраином
 
 import json
 import os

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# retrain.py — полный цикл: сборка данных + дообучение модели
+# retrain.py — полный цикл: сборка данных + ретраин модели (обучение с нуля)
 # Поддерживает: data/conversations.json + data/training_pairs.jsonl
 # Запуск: python retrain.py [--config configs/prod.yaml] [--verbose]
 
@@ -84,7 +84,7 @@ def ensure_directories():
 def enrich_with_gigachat(n: int = 10):
     """Запускает сборку данных от GigaChat, если задан токен"""
     if not GIGACHAT_TOKEN:
-        logger.warning("[WARN] GIGACHAT_TOKEN не найден — дообучение без данных от GigaChat")
+        logger.warning("[WARN] GIGACHAT_TOKEN не найден — ретраин без данных от GigaChat")
         return
 
     try:
@@ -133,10 +133,50 @@ def build_training_data(args):
     if args.dry_run:
         cmd.append("--dry-run")
 
-    logger.info(f"[DATA] Сборка данных: {' '.join(cmd)}")  # ← исправлено .join()
+    logger.info(f"[DATA] Сборка данных: {' '.join(cmd)}")
     if args.dry_run:
         logger.info("[TEST] Режим Dry Run: сборка данных пропущена")
         return True
+
+    result = subprocess.run(cmd, capture_output=False)
+    if result.returncode != 0:
+        logger.error("[ERR] Сбор данных не удался.")
+        return False
+
+    line_count = 0
+    if TRAINING_PAIRS_PATH.exists():
+        line_count = sum(1 for _ in open(TRAINING_PAIRS_PATH, 'r', encoding='utf-8'))
+        logger.info(f"[OK] Данные собраны: {TRAINING_PAIRS_PATH} ({line_count} строк)")
+    else:
+        logger.warning("[WARN] Файл training_pairs.jsonl не создан — возможно, нет новых знаний")
+
+    return True
+
+
+def generate_params_training_data():
+    """Генерирует обучающие данные из utils/human_params.py и utils/races.py"""
+    try:
+        logger.info("[DATA] Генерация данных из utils (human_params, races)...")
+        result = subprocess.run(
+            [sys.executable, "utils/generate_params_training_data.py"],
+            capture_output=True,
+            text=True,
+            timeout=120
+        )
+        if result.stdout:
+            for line in result.stdout.split('\n'):
+                if line.strip():
+                    safe_print(line)
+        if result.returncode != 0 and result.stderr:
+            logger.warning(f"[WARN] Генерация данных из utils: {result.stderr[:200]}")
+        logger.info("[OK] Данные из utils сгенерированы")
+        return True
+    except subprocess.TimeoutExpired:
+        logger.warning("[WARN] Генерация данных из utils таймаут (120 сек)")
+        return False
+    except Exception as e:
+        logger.warning(f"[WARN] Генерация данных из utils не удалась: {e}")
+        return False
 
     result = subprocess.run(cmd, capture_output=False)
     if result.returncode != 0:
@@ -202,8 +242,8 @@ def validate_or_create_tokenizer():
 
 
 def run_training():
-    """Запускает обучение через train.py"""
-    logger.info("[AI] Запуск обучения...")
+    """Запускает ретраин (обучение с нуля) через train.py"""
+    logger.info("[FIRE] Запуск ретраина (обучение с нуля)...")
 
     try:
         # Импортируем train.py как модуль
@@ -239,7 +279,7 @@ def restore_backup():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Полный цикл: сбор данных + дообучение модели")
+    parser = argparse.ArgumentParser(description="Полный цикл: сбор данных + ретраин модели (обучение с нуля)")
     parser.add_argument(
         "--config",
         type=str,
@@ -266,6 +306,10 @@ def main():
     args = parser.parse_args()
 
     ensure_directories()
+    
+    # === Этап 0: Генерация данных из utils ===
+    generate_params_training_data()
+    
     if args.generate > 0:
         enrich_with_gigachat(n=args.generate)
     enrich_with_rpg_scenes()
