@@ -54,47 +54,47 @@ class BookLearner:
         # Метаданные обработанных книг
         self.processed_books = self._load_metadata()
         
-        # Темы для поиска книг
+        # Темы для поиска книг (расширенные)
         self.topics = [
             # === ПСИХОЛОГИЯ И ФИЛОСОФИЯ ===
-            "психология общения",
-            "философия жизни",
-            "эмоциональный интеллект",
-            "самопознание",
-            "психология отношений",
-            "экзистенциальная психология",
-            "когнитивная психология",
-            "позитивная психология",
+            "psychology communication",
+            "philosophy life",
+            "emotional intelligence",
+            "self-knowledge",
+            "psychology relationships",
+            "existential psychology",
+            "cognitive psychology",
+            "positive psychology",
             
             # === ФАНТЕЗИ И RPG ===
-            "фэнтези миры",
-            "магические системы",
-            "эльфы и гномы",
-            "драконы и демоны",
-            "RPG приключения",
-            "подземелья и драконы",
-            "средневековое фэнтези",
+            "fantasy worlds",
+            "magic systems",
+            "elves dwarves",
+            "dragons demons",
+            "RPG adventures",
+            "dungeons dragons",
+            "medieval fantasy",
             
             # === НАУЧНАЯ ФАНТАСТИКА ===
-            "научная фантастика",
-            "космос и цивилизации",
-            "искусственный интеллект",
-            "киберпанк",
-            "будущее человечества",
+            "science fiction",
+            "space civilization",
+            "artificial intelligence",
+            "cyberpunk",
+            "future humanity",
             
             # === ЛИТЕРАТУРА ===
-            "классическая литература",
-            "современная проза",
-            "романы о любви",
-            "приключенческие романы",
-            "детективы",
+            "classic literature",
+            "modern prose",
+            "love novels",
+            "adventure novels",
+            "mystery detective",
             
             # === САМОРАЗВИТИЕ ===
-            "мотивация и успех",
-            "тайм-менеджмент",
-            "лидерство",
-            "креативность",
-            "осознанность",
+            "motivation success",
+            "time management",
+            "leadership",
+            "creativity",
+            "mindfulness",
         ]
         
         # Настройки
@@ -191,8 +191,8 @@ class BookLearner:
         safe_print(f"[SEARCH] Поиск в Project Gutenberg: {query}")
         
         try:
-            # Gutenberg API
-            url = f"https://gutendex.com/books?search={urllib.parse.quote(query)}&languages=ru"
+            # Gutenberg API (без языкового фильтра - ищем на всех языках)
+            url = f"https://gutendex.com/books?search={urllib.parse.quote(query)}"
             
             req = urllib.request.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0')
@@ -218,6 +218,89 @@ class BookLearner:
         except Exception as e:
             safe_print(f"[ERR] Ошибка поиска в Gutenberg: {e}")
             return []
+        
+    def search_open_library(self, query: str, max_results: int = 5) -> List[Dict]:
+        """
+        Ищет книги в Open Library (archive.org).
+        :param query: Поисковый запрос
+        :param max_results: Максимум результатов
+        :return: Список книг
+        """
+        safe_print(f"[SEARCH] Поиск в Open Library: {query}")
+        
+        try:
+            # Open Library API
+            url = f"https://openlibrary.org/search.json?q={urllib.parse.quote(query)}&limit={max_results}"
+            
+            req = urllib.request.Request(url)
+            req.add_header('User-Agent', 'Mozilla/5.0')
+            
+            with urllib.request.urlopen(req, timeout=10) as response:
+                data = json.loads(response.read().decode('utf-8'))
+            
+            books = []
+            for item in data.get("docs", [])[:max_results]:
+                # Проверяем, есть ли текст для чтения
+                has_full_text = item.get("has_full_text", False)
+                if not has_full_text:
+                    continue
+                
+                book = {
+                    "id": item.get("key", "").replace("/works/", ""),
+                    "title": item.get("title", "Без названия"),
+                    "authors": item.get("author_name", ["Неизвестно"]),
+                    "languages": item.get("language", []),
+                    "first_publish_year": item.get("first_publish_year", ""),
+                    "subject": item.get("subject", []),
+                    "openlibrary_url": f"https://openlibrary.org{item.get('key', '')}",
+                    "has_full_text": True,
+                }
+                books.append(book)
+            
+            safe_print(f"[OK] Найдено {len(books)} книг в Open Library")
+            return books
+            
+        except Exception as e:
+            safe_print(f"[ERR] Ошибка поиска в Open Library: {e}")
+            return []
+        
+    def download_open_library_text(self, book: Dict) -> Optional[str]:
+        """
+        Скачивает текст книги из Open Library.
+        :param book: Информация о книге
+        :return: Текст книги или None
+        """
+        try:
+            # Open Library предоставляет текст через /works/{id}.json
+            book_id = book.get("id")
+            if not book_id:
+                return None
+            
+            url = f"https://openlibrary.org/works/{book_id}.json"
+            
+            req = urllib.request.Request(url)
+            req.add_header('User-Agent', 'Mozilla/5.0')
+            
+            with urllib.request.urlopen(req, timeout=10) as response:
+                data = json.loads(response.read().decode('utf-8'))
+            
+            # Извлекаем описание
+            description = ""
+            if "description" in data:
+                if isinstance(data["description"], dict):
+                    description = data["description"].get("value", "")
+                elif isinstance(data["description"], str):
+                    description = data["description"]
+            
+            if description and len(description) > self.min_text_length:
+                safe_print(f"[OK] Скачано {len(description)} символов из Open Library")
+                return description
+            
+            return None
+            
+        except Exception as e:
+            safe_print(f"[ERR] Ошибка скачивания из Open Library: {e}")
+            return None
         
     def download_gutenberg_text(self, book: Dict) -> Optional[str]:
         """
@@ -445,7 +528,7 @@ class BookLearner:
             
             safe_print(f"\n[🔍] Тема: {topic}")
             
-            # Поиск в Gutenberg
+            # Поиск в Gutenberg (английские книги)
             gutenberg_books = self.search_gutenberg(topic, max_results=self.max_books_per_topic)
             
             for book in gutenberg_books:
@@ -461,10 +544,63 @@ class BookLearner:
                 # Задержка между запросами
                 time.sleep(random.uniform(1, 3))
             
+            # Поиск в Open Library (если не нашли в Gutenberg)
+            if len(gutenberg_books) == 0:
+                openlib_books = self.search_open_library(topic, max_results=self.max_books_per_topic)
+                
+                for book in openlib_books:
+                    if books_processed >= max_books:
+                        break
+                    
+                    pairs = self.process_openlib_book(book)
+                    if pairs:
+                        all_pairs.extend(pairs)
+                        books_processed += 1
+                        safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг (Open Library)")
+                    
+                    # Задержка между запросами
+                    time.sleep(random.uniform(1, 3))
+            
             # Задержка между темами
             time.sleep(random.uniform(2, 5))
         
         safe_print(f"\n[💾] Всего собрано {len(all_pairs)} обучающих пар из {books_processed} книг")
+        
+        return all_pairs
+
+    def process_openlib_book(self, book: Dict) -> List[Dict]:
+        """
+        Обрабатывает книгу из Open Library.
+        :param book: Информация о книге
+        :return: Список обучающих пар
+        """
+        book_id = book.get("id")
+        
+        if not book_id:
+            return []
+        
+        if self._is_book_processed(book_id):
+            safe_print(f"[INFO] Книга уже обработана: {book.get('title')}")
+            return []
+        
+        safe_print(f"[📖] Обработка книги: {book.get('title')}")
+        
+        all_pairs = []
+        
+        text = self.download_open_library_text(book)
+        if text:
+            chunks = self.extract_chunks(text, book)
+            for chunk_pairs in chunks:
+                if isinstance(chunk_pairs, list):
+                    all_pairs.extend(chunk_pairs)
+            
+            # Сохраняем метаданные
+            self._mark_book_processed(book_id, {
+                "title": book.get("title"),
+                "authors": book.get("authors"),
+                "chunks_count": len(all_pairs),
+                "source": "openlibrary"
+            })
         
         return all_pairs
 
