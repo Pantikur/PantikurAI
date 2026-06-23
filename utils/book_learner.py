@@ -7,6 +7,8 @@ import time
 import random
 import logging
 import hashlib
+import urllib.request
+import urllib.parse
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
@@ -130,9 +132,6 @@ class BookLearner:
         :param max_results: Максимум результатов
         :return: Список книг
         """
-        import urllib.request
-        import urllib.parse
-        
         safe_print(f"[SEARCH] Поиск книг по запросу: {query}")
         
         try:
@@ -214,15 +213,13 @@ class BookLearner:
         except Exception as e:
             safe_print(f"[ERR] Ошибка поиска в Gutenberg: {e}")
             return []
-
+        
     def download_gutenberg_text(self, book: Dict) -> Optional[str]:
         """
         Скачивает текст книги из Project Gutenberg.
         :param book: Информация о книге
         :return: Текст книги или None
         """
-        import urllib.request
-        
         formats = book.get("formats", {})
         text_url = None
         
@@ -231,14 +228,14 @@ class BookLearner:
             if "text/plain" in key and "utf-8" in key.lower():
                 text_url = url
                 break
-        
+            
         if not text_url:
             # Пробуем найти любой text/plain
             for key, url in formats.items():
                 if "text/plain" in key:
                     text_url = url
                     break
-        
+                
         if not text_url:
             safe_print(f"[WARN] Нет текстового формата для {book['title']}")
             return None
