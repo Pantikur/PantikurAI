@@ -72,6 +72,7 @@ RUN pip install --no-cache-dir \
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY main.py ./
 COPY Wuglarst/ ./Wuglarst/
+COPY utils/ ./utils/
 COPY data/ ./data/
 COPY models/ ./models/  
 
