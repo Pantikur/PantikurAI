@@ -237,6 +237,21 @@ def main():
 
     class_counts = {}
 
+    # === Сначала добавляем пары из книг ===
+    books_pairs_file = os.path.join(data_dir, "books_training_pairs.jsonl")
+    if os.path.exists(books_pairs_file):
+        safe_print("[BOOKS] Загрузка пар из книг...")
+        book_count = 0
+        with open(books_pairs_file, "r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    pair = json.loads(line.strip())
+                    all_pairs.append(pair)
+                    book_count += 1
+                except:
+                    continue
+        safe_print(f"[OK] Добавлено {book_count} пар из книг")
+
     for filename in source_files:
         filepath = os.path.join(data_dir, filename)
         if not os.path.exists(filepath):

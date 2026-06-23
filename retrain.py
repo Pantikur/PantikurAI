@@ -154,7 +154,7 @@ def build_training_data(args):
 
 
 def generate_params_training_data():
-    """Генерирует обучающие данные из utils/human_params.py и utils/races.py"""
+    """Генерирует обучающие данные из utils (human_params, races, character)"""
     try:
         logger.info("[DATA] Генерация данных из utils (human_params, races, character)...")
         result = subprocess.run(
@@ -173,6 +173,39 @@ def generate_params_training_data():
         return True
     except subprocess.TimeoutExpired:
         logger.warning("[WARN] Генерация данных из utils таймаут (120 сек)")
+        return False
+    except Exception as e:
+        logger.warning(f"[WARN] Генерация данных из utils не удалась: {e}")
+        return False
+
+
+def learn_from_books(args):
+    """Собирает знания из книг через book_learner.py"""
+    if not args.books:
+        logger.info("[BOOKS] Обучение из книг отключено (используйте --books)")
+        return True
+    
+    try:
+        logger.info("[BOOKS] Запуск автономного обучения из книг...")
+        result = subprocess.run(
+            [sys.executable, "utils/book_learner.py"],
+            capture_output=True,
+            text=True,
+            timeout=600  # 10 минут на сбор книг
+        )
+        if result.stdout:
+            for line in result.stdout.split('\n'):
+                if line.strip():
+                    safe_print(line)
+        if result.returncode != 0 and result.stderr:
+            logger.warning(f"[WARN] Обучение из книг: {result.stderr[:200]}")
+        logger.info("[OK] Обучение из книг завершено")
+        return True
+    except subprocess.TimeoutExpired:
+        logger.warning("[WARN] Обучение из книг таймаут (10 мин)")
+        return False
+    except Exception as e:
+        logger.warning(f"[WARN] Обучение из книг не удалась: {e}")
         return False
     except Exception as e:
         logger.warning(f"[WARN] Генерация данных из utils не удалась: {e}")
@@ -303,12 +336,21 @@ def main():
         help="Количество диалогов для генерации (по умолчанию: 10, 0 = отключить)"
     )
 
+    parser.add_argument(
+        "--books",
+        action="store_true",
+        help="Включить обучение из книг (автономный сбор знаний)"
+    )
+
     args = parser.parse_args()
 
     ensure_directories()
     
     # === Этап 0: Генерация данных из utils ===
     generate_params_training_data()
+    
+    # === Этап 0.5: Обучение из книг (если включено) ===
+    learn_from_books(args)
     
     if args.generate > 0:
         enrich_with_gigachat(n=args.generate)
