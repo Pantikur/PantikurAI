@@ -156,7 +156,7 @@ def build_training_data(args):
 def generate_params_training_data():
     """Генерирует обучающие данные из utils/human_params.py и utils/races.py"""
     try:
-        logger.info("[DATA] Генерация данных из utils (human_params, races)...")
+        logger.info("[DATA] Генерация данных из utils (human_params, races, character)...")
         result = subprocess.run(
             [sys.executable, "utils/generate_params_training_data.py"],
             capture_output=True,

@@ -208,3 +208,41 @@ SyntaxError: source code string cannot contain null bytes
 2026-06-19 16:00:46,106 | INFO | [AI] Запуск обучения...
 2026-06-19 16:44:39,092 | INFO | [HAPPY] Обучение завершено успешно!
 2026-06-19 16:44:39,092 | INFO | [OK] Успешно: tokenizer.json (142 КБ), chat_model.pth (28054 КБ)
+2026-06-23 15:11:01,112 | INFO | [DATA] Генерация данных из utils (human_params, races)...
+2026-06-23 15:11:01,162 | INFO | [OK] Данные из utils сгенерированы
+2026-06-23 15:11:01,162 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-06-23 15:11:21,988 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-23 15:11:22,016 | WARNING | [WARN] RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-06-23 15:11:22,016 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-23 15:11:22,519 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (858 строк)
+2026-06-23 15:11:22,527 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-23 15:11:22,543 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-23 15:11:22,545 | INFO | [OK] Токенизатор загружен: 2447 токенов
+2026-06-23 15:11:22,545 | INFO | [🔥] Запуск ретраина (обучение с нуля)...
+2026-06-23 15:11:27,220 | ERROR | [ERR] Ошибка при обучении: 'charmap' codec can't encode character '\U0001f525' in position 2: character maps to <undefined>
+Traceback (most recent call last):
+  File "D:\NewCod\Pantikur\retrain.py", line 252, in run_training
+    train.main()
+  File "D:\NewCod\Pantikur\train.py", line 339, in main
+    safe_print("[🔥] РЕТРАИН: обучение модели с нуля на всех данных")
+  File "D:\NewCod\Pantikur\train.py", line 47, in safe_print
+    print(msg, flush=True)
+  File "C:\Users\baura\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1251.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f525' in position 2: character maps to <undefined>
+2026-06-23 15:11:27,227 | ERROR | [ERR] Обучение не удалось. Пытаемся восстановить...
+2026-06-23 15:11:27,227 | CRITICAL | [ERR] Не удалось восстановить модель!
+2026-06-23 15:12:02,878 | INFO | [DATA] Генерация данных из utils (human_params, races)...
+2026-06-23 15:12:02,923 | INFO | [OK] Данные из utils сгенерированы
+2026-06-23 15:12:02,923 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-06-23 15:12:23,482 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-23 15:12:23,484 | WARNING | [WARN] RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-06-23 15:12:23,484 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-23 15:12:23,792 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (858 строк)
+2026-06-23 15:12:23,801 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-23 15:12:23,817 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-23 15:12:23,819 | INFO | [OK] Токенизатор загружен: 2447 токенов
+2026-06-23 15:12:23,819 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-06-23 15:55:44,881 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-23 15:55:44,881 | INFO | [OK] Успешно: tokenizer.json (142 КБ), chat_model.pth (28054 КБ)
