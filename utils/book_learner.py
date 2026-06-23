@@ -1,4 +1,9 @@
 # utils/book_learner.py — Автономное обучение из книг
+# Полный ретраин с обучением из книг python retrain.py --books
+
+# Или отдельно собрать книги python utils/book_learner.py
+
+# Затем запустить ретраин python retrain.py
 
 import os
 import sys

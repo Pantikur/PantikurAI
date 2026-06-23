@@ -22,6 +22,10 @@ from datetime import datetime
 # === Импорт модуля параметров человека ===
 from utils.human_params import HumanParams, HumanParamsDetector
 
+# === Автономное обучение из книг (запуск в фоне) ===
+AUTO_BOOK_LEARNING_ENABLED = os.getenv("AUTO_BOOK_LEARNING", "true").lower() in ("true", "1", "yes")
+AUTO_BOOK_LEARNING_INTERVAL = int(os.getenv("AUTO_BOOK_LEARNING_INTERVAL", "1"))  # часов
+
 # === Настройка логирования ===
 logging.basicConfig(
     level=logging.INFO,
@@ -113,6 +117,37 @@ def import_chatbot():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global chatbot
+    
+    # === ЗАПУСК АВТОНОМНОГО ОБУЧЕНИЯ ИЗ КНИГ ===
+    if AUTO_BOOK_LEARNING_ENABLED:
+        logger.info(f"📚 Автономное обучение из книг: ВКЛЮЧЕНО (каждые {AUTO_BOOK_LEARNING_INTERVAL} ч.)")
+
+        async def start_auto_book_learning():
+            """Запускает автообучение в фоне"""
+            try:
+                from utils.auto_book_learning import AutoBookLearning
+                
+                # Небольшая задержка перед стартом
+                await asyncio.sleep(10)
+                
+                controller = AutoBookLearning(
+                    interval_hours=AUTO_BOOK_LEARNING_INTERVAL,
+                    max_books_per_cycle=3,
+                    topics_per_cycle=2
+                )
+                
+                # Запускаем в отдельном потоке
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(None, controller.run_continuous)
+                
+            except Exception as e:
+                logger.error(f"❌ Ошибка автообучения из книг: {e}")
+        
+        # Запускаем фоновую задачу
+        asyncio.create_task(start_auto_book_learning())
+    else:
+        logger.info("📚 Автономное обучение из книг: ОТКЛЮЧЕНО")
+    # === КОНЕЦ АВТОНОМНОГО ОБУЧЕНИЯ ===
     
 
     start_lifespan = asyncio.get_event_loop().time()
