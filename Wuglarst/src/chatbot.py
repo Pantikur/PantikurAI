@@ -234,7 +234,10 @@ class ChatBot:
         logging.info("🌟 Специальные когнитивные способности (эйдетическая память, синестезия, высокая обучаемость) инициализированы")
 
         # === Анализ профессий ===
-        self.profession_engine = ProfessionEngine()
+        # Используем абсолютный путь к data относительно корня проекта
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        data_dir = os.path.join(project_root, "data")
+        self.profession_engine = ProfessionEngine(data_dir=data_dir)
         self.professions_enabled = True
         logging.info("💼 Анализ профессий инициализирован")
 
