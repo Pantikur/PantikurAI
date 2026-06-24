@@ -246,3 +246,41 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f525' in posit
 2026-06-23 15:12:23,819 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
 2026-06-23 15:55:44,881 | INFO | [HAPPY] Обучение завершено успешно!
 2026-06-23 15:55:44,881 | INFO | [OK] Успешно: tokenizer.json (142 КБ), chat_model.pth (28054 КБ)
+2026-06-24 13:48:35,878 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-06-24 13:48:36,306 | INFO | [OK] Данные из utils сгенерированы
+2026-06-24 13:48:36,306 | INFO | [BOOKS] Запуск автономного обучения из книг...
+2026-06-24 13:50:59,949 | WARNING | [WARN] Обучение из книг: Traceback (most recent call last):
+  File "D:\NewCod\Pantikur\utils\book_learner.py", line 907, in <module>
+    main()
+  File "D:\NewCod\Pantikur\utils\book_learner.py", line 891, in main
+    pairs = 
+2026-06-24 13:50:59,949 | INFO | [OK] Обучение из книг завершено
+2026-06-24 13:50:59,949 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-06-24 13:51:20,814 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-24 13:51:20,845 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-24 13:51:20,845 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-24 13:51:21,341 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (862 строк)
+2026-06-24 13:51:21,348 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-24 13:51:21,370 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-24 13:51:21,375 | INFO | [OK] Токенизатор загружен: 10000 токенов
+2026-06-24 13:51:21,375 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-06-24 14:33:24,234 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-24 14:33:24,234 | INFO | [OK] Успешно: tokenizer.json (457 КБ), chat_model.pth (28637 КБ)
+2026-06-24 14:55:12,279 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-06-24 14:55:12,488 | INFO | [OK] Данные из utils сгенерированы
+2026-06-24 14:55:12,488 | INFO | [BOOKS] Запуск автономного обучения из книг...
+2026-06-24 14:57:54,215 | WARNING | [WARN] Обучение из книг: Traceback (most recent call last):
+  File "D:\NewCod\Pantikur\utils\book_learner.py", line 907, in <module>
+    main()
+  File "D:\NewCod\Pantikur\utils\book_learner.py", line 891, in main
+    pairs = 
+2026-06-24 14:57:54,215 | INFO | [OK] Обучение из книг завершено
+2026-06-24 14:57:54,215 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-06-24 14:58:15,035 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-24 14:58:15,037 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-24 14:58:15,037 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-24 14:58:15,375 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (862 строк)
+2026-06-24 14:58:15,382 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-24 14:58:15,404 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-24 14:58:15,410 | INFO | [OK] Токенизатор загружен: 10000 токенов
+2026-06-24 14:58:15,410 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...

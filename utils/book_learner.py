@@ -14,12 +14,40 @@ import logging
 import hashlib
 import urllib.request
 import urllib.parse
+import re
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
+from html.parser import HTMLParser
 
 # Добавляем корень проекта в путь
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+# === HTML Parser для извлечения текста ===
+class LitnetHTMLParser(HTMLParser):
+    """Парсер для извлечения текста книги из HTML Литнета."""
+    def __init__(self):
+        super().__init__()
+        self.text_parts = []
+        self.skip_tags = {'script', 'style', 'nav', 'header', 'footer', 'aside'}
+        self.in_skip = 0
+        
+    def handle_starttag(self, tag, attrs):
+        if tag in self.skip_tags:
+            self.in_skip += 1
+            
+    def handle_endtag(self, tag):
+        if tag in self.skip_tags and self.in_skip > 0:
+            self.in_skip -= 1
+            
+    def handle_data(self, data):
+        if self.in_skip == 0:
+            text = data.strip()
+            if text and len(text) > 10:
+                self.text_parts.append(text)
+    
+    def get_text(self) -> str:
+        return "\n".join(self.text_parts)
 
 # === Safe print для Windows ===
 def safe_print(msg: str):
@@ -65,7 +93,6 @@ class BookLearner:
             "existential psychology",
             "cognitive psychology",
             "positive psychology",
-            
             # === ФАНТЕЗИ И RPG ===
             "fantasy worlds",
             "magic systems",
@@ -74,27 +101,40 @@ class BookLearner:
             "RPG adventures",
             "dungeons dragons",
             "medieval fantasy",
-            
             # === НАУЧНАЯ ФАНТАСТИКА ===
             "science fiction",
             "space civilization",
             "artificial intelligence",
             "cyberpunk",
             "future humanity",
-            
             # === ЛИТЕРАТУРА ===
             "classic literature",
             "modern prose",
             "love novels",
             "adventure novels",
             "mystery detective",
-            
             # === САМОРАЗВИТИЕ ===
             "motivation success",
             "time management",
             "leadership",
             "creativity",
             "mindfulness",
+        ]
+        
+        # Темы для Литнета (на русском) - готовые URL тегов
+        # Формат: (название для лога, URL тега)
+        self.litnet_tags = [
+            ("психология", "https://litnet.com/ru/tag/psihologija-t112"),
+            ("философия", "https://litnet.com/ru/tag/filosofija-t113"),
+            ("любовные романы", "https://litnet.com/ru/tag/ljubovnye-romany-t31"),
+            ("фэнтези", "https://litnet.com/ru/tag/fentezi-t2"),
+            ("попаданцы", "https://litnet.com/ru/tag/popadancy-t101"),
+            ("драмы", "https://litnet.com/ru/tag/dramy-t116"),
+            ("исторические", "https://litnet.com/ru/tag/istoricheskie-t33"),
+            ("детективы", "https://litnet.com/ru/tag/detektivy-t15"),
+            ("приключения", "https://litnet.com/ru/tag/priklyuchenija-t14"),
+            ("буллинг в школе", "https://litnet.com/ru/tag/bulling-v-shkole-t39931635"),
+            ("подростковые", "https://litnet.com/ru/tag/podrostkovye-t39931607"),
         ]
         
         # Настройки
@@ -180,7 +220,7 @@ class BookLearner:
         except Exception as e:
             safe_print(f"[ERR] Ошибка поиска книг: {e}")
             return []
-
+        
     def search_gutenberg(self, query: str, max_results: int = 5) -> List[Dict]:
         """
         Ищет книги в Project Gutenberg.
@@ -219,6 +259,157 @@ class BookLearner:
             safe_print(f"[ERR] Ошибка поиска в Gutenberg: {e}")
             return []
         
+    def search_litnet(self, tag_url: str, tag_name: str = "", max_results: int = 5) -> List[Dict]:
+        """
+        Ищет книги на Литнете по URL тега.
+        :param tag_url: URL тега на Литнете
+        :param tag_name: Название тега для лога
+        :param max_results: Максимум результатов
+        :return: Список книг
+        """
+        safe_print(f"[SEARCH] Поиск на Литнете: {tag_name or tag_url}")
+        books = []
+        
+        try:
+            req = urllib.request.Request(tag_url)
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+            req.add_header('Accept', 'text/html,application/xhtml+xml')
+            req.add_header('Accept-Language', 'ru-RU,ru;q=0.9,en;q=0.8')
+            
+            with urllib.request.urlopen(req, timeout=15) as response:
+                html = response.read().decode('utf-8', errors='ignore')
+            
+            # Ищем все блоки с книгами
+            # Структура: <h4 class="book-title">.*?</h4>.*?<p class="author-wr"[^>]*>.*?</p>
+            book_blocks = re.findall(
+                r'<h4\s+class="book-title">.*?</h4>.*?<p\s+class="author-wr"[^>]*>.*?</p>',
+                html,
+                re.DOTALL
+            )
+            
+            seen_ids = set()
+            for block in book_blocks:
+                # Извлекаем book_id и slug
+                book_match = re.search(r'/ru/book/([\w-]+)-b(\d+)', block)
+                if not book_match:
+                    continue
+                
+                slug, book_id = book_match.groups()
+                
+                # Пропускаем дубли
+                if book_id in seen_ids:
+                    continue
+                seen_ids.add(book_id)
+                
+                # Извлекаем название
+                title_match = re.search(r'<span\s+itemprop="name">([^<]+)</span>', block)
+                if not title_match:
+                    continue
+                
+                title = title_match.group(1).strip()
+                if len(title) < 3:
+                    continue
+                
+                # Извлекаем автора
+                author_match = re.search(r'class="author"[^>]*>[\s\n]*<span\s+itemprop="name">([^<]+)</span>', block)
+                author = author_match.group(1).strip() if author_match else "Неизвестно"
+                
+                book_info = {
+                    "id": f"litnet_{book_id}",
+                    "title": title,
+                    "slug": slug,
+                    "book_id": book_id,
+                    "author": author,
+                    "url": f"https://litnet.com/ru/book/{slug}-b{book_id}",
+                    "reader_url": f"https://litnet.com/ru/reader/{slug}-b{book_id}",
+                    "source": "litnet",
+                }
+                
+                books.append(book_info)
+                safe_print(f"  [📚] Найдена книга: {title} ({author})")
+                
+                if len(books) >= max_results:
+                    break
+                
+            safe_print(f"[OK] Найдено {len(books)} книг на Литнете")
+            return books
+            
+        except Exception as e:
+            safe_print(f"[ERR] Ошибка поиска на Литнете: {e}")
+            return []
+        
+    def download_litnet_text(self, book: Dict) -> Optional[str]:
+        """
+        Скачивает текст книги из читалки Литнета.
+        :param book: Информация о книге
+        :return: Текст книги или None
+        """
+        reader_url = book.get("reader_url")
+        if not reader_url:
+            safe_print(f"[WARN] Нет URL читалки для {book.get('title')}")
+            return None
+        
+        try:
+            safe_print(f"[DOWN] Скачивание: {book['title']}")
+            
+            req = urllib.request.Request(reader_url)
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+            req.add_header('Accept', 'text/html,application/xhtml+xml')
+            req.add_header('Accept-Language', 'ru-RU,ru;q=0.9,en;q=0.8')
+            
+            with urllib.request.urlopen(req, timeout=30) as response:
+                html = response.read().decode('utf-8', errors='ignore')
+            
+            # Парсим текст из HTML
+            parser = LitnetHTMLParser()
+            parser.feed(html)
+            text = parser.get_text()
+            
+            # Очищаем текст
+            text = self._clean_litnet_text(text)
+            
+            if len(text) > self.min_text_length:
+                safe_print(f"[OK] Скачано {len(text)} символов")
+                return text
+            else:
+                safe_print(f"[WARN] Текст слишком короткий: {len(text)} символов")
+                return None
+                
+        except Exception as e:
+            safe_print(f"[ERR] Ошибка скачивания с Литнета: {e}")
+            return None
+    
+    def _clean_litnet_text(self, text: str) -> str:
+        """Очищает текст от служебных элементов Литнета."""
+        # Удаляем служебные фразы
+        skip_phrases = [
+            "Читать онлайн",
+            "Бесплатно",
+            "В процессе",
+            "Полный текст",
+            "Купить",
+            "Войти",
+            "Регистрация",
+            "Жанр",
+            "Теги",
+            "Комментарии",
+            "Оглавление",
+        ]
+        
+        lines = text.split('\n')
+        cleaned_lines = []
+        
+        for line in lines:
+            line = line.strip()
+            # Пропускаем короткие строки и служебные
+            if len(line) < 20:
+                continue
+            if any(phrase in line for phrase in skip_phrases):
+                continue
+            cleaned_lines.append(line)
+        
+        return "\n".join(cleaned_lines)
+    
     def search_open_library(self, query: str, max_results: int = 5) -> List[Dict]:
         """
         Ищет книги в Open Library (archive.org).
@@ -506,65 +697,119 @@ class BookLearner:
         return all_pairs
 
     def learn_from_books(self, topics: Optional[List[str]] = None, 
-                         max_books: int = 10) -> List[Dict]:
+                         max_books: int = 10, use_litnet: bool = True) -> List[Dict]:
         """
         Основной метод обучения из книг.
         :param topics: Темы для поиска (если None, используются self.topics)
         :param max_books: Максимум книг для обработки
+        :param use_litnet: Использовать ли Литнет (русскоязычные книги)
         :return: Список всех обучающих пар
         """
         if topics is None:
             topics = self.topics
         
         safe_print("[🚀] Запуск автономного обучения из книг...")
-        safe_print(f"[ℹ️] Тем: {len(topics)}, Макс книг: {max_books}")
+        safe_print(f"[ℹ️] Тем: {len(topics)}, Макс книг: {max_books}, Литнет: {use_litnet}")
         
         all_pairs = []
         books_processed = 0
         
+        # === Литнет (русскоязычные книги) ===
+        if use_litnet:
+            safe_print("\n[📚] Поиск на Литнете...")
+            for tag_name, tag_url in self.litnet_tags:
+                if books_processed >= max_books:
+                    break
+                
+                safe_print(f"\n[🔍] Тег Литнета: {tag_name}")
+                litnet_books = self.search_litnet(tag_url, tag_name, max_results=self.max_books_per_topic * 3)  # Ищем больше книг
+                
+                for book in litnet_books:
+                    if books_processed >= max_books:
+                        break
+                    pairs = self.process_litnet_book(book)
+                    if pairs:
+                        all_pairs.extend(pairs)
+                        books_processed += 1
+                        safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг")
+                    # Если книга уже обработана — просто идём к следующей (без увеличения счётчика)
+                    
+                    time.sleep(random.uniform(2, 4))
+                
+                time.sleep(random.uniform(3, 5))
+        
+        # === Gutenberg (англоязычные книги) ===
         for topic in topics:
             if books_processed >= max_books:
                 break
             
             safe_print(f"\n[🔍] Тема: {topic}")
             
-            # Поиск в Gutenberg (английские книги)
-            gutenberg_books = self.search_gutenberg(topic, max_results=self.max_books_per_topic)
-            
+            # Поиск в Gutenberg (ищем больше книг, чтобы было из чего выбрать)
+            gutenberg_books = self.search_gutenberg(topic, max_results=self.max_books_per_topic * 3)
             for book in gutenberg_books:
                 if books_processed >= max_books:
                     break
-                
                 pairs = self.process_book(book, source="gutenberg")
                 if pairs:
                     all_pairs.extend(pairs)
                     books_processed += 1
-                    safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг")
-                
-                # Задержка между запросами
-                time.sleep(random.uniform(1, 3))
+                # Если книга уже обработана — просто идём к следующей
+            
+            safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг")
+            time.sleep(random.uniform(1, 3))
             
             # Поиск в Open Library (если не нашли в Gutenberg)
             if len(gutenberg_books) == 0:
-                openlib_books = self.search_open_library(topic, max_results=self.max_books_per_topic)
-                
+                openlib_books = self.search_open_library(topic, max_results=self.max_books_per_topic * 3)  # Ищем больше
                 for book in openlib_books:
                     if books_processed >= max_books:
                         break
-                    
                     pairs = self.process_openlib_book(book)
                     if pairs:
                         all_pairs.extend(pairs)
                         books_processed += 1
-                        safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг (Open Library)")
-                    
-                    # Задержка между запросами
-                    time.sleep(random.uniform(1, 3))
+                    # Если книга уже обработана — просто идём к следующей
+                
+                safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг (Open Library)")
             
-            # Задержка между темами
             time.sleep(random.uniform(2, 5))
         
         safe_print(f"\n[💾] Всего собрано {len(all_pairs)} обучающих пар из {books_processed} книг")
+        return all_pairs
+
+    def process_litnet_book(self, book: Dict) -> List[Dict]:
+        """
+        Обрабатывает книгу из Литнета.
+        :param book: Информация о книге
+        :return: Список обучающих пар
+        """
+        book_id = book.get("id")
+        if not book_id:
+            return []
+        
+        if self._is_book_processed(book_id):
+            safe_print(f"[INFO] Книга уже обработана: {book.get('title')}")
+            return []
+        
+        safe_print(f"[📖] Обработка книги: {book.get('title')}")
+        
+        all_pairs = []
+        
+        text = self.download_litnet_text(book)
+        if text:
+            chunks = self.extract_chunks(text, book)
+            for chunk_pairs in chunks:
+                if isinstance(chunk_pairs, list):
+                    all_pairs.extend(chunk_pairs)
+            
+            # Сохраняем метаданные
+            self._mark_book_processed(book_id, {
+                "title": book.get("title"),
+                "authors": book.get("author", "Неизвестно"),
+                "chunks_count": len(all_pairs),
+                "source": "litnet"
+            })
         
         return all_pairs
 
@@ -575,7 +820,6 @@ class BookLearner:
         :return: Список обучающих пар
         """
         book_id = book.get("id")
-        
         if not book_id:
             return []
         
@@ -638,15 +882,16 @@ def main():
     # Запуск обучения
     safe_print("\n[🧠] Начало сбора знаний из книг...")
     
-    # Можно настроить темы
+    # Темы для англоязычных книг (Gutenberg, Open Library)
     topics = [
-        "психология общения",
-        "философия жизни",
-        "фэнтези миры",
-        "научная фантастика",
+        "psychology communication",
+        "philosophy life",
+        "fantasy worlds",
+        "science fiction",
     ]
     
-    pairs = learner.learn_from_books(topics=topics, max_books=5)
+    # Запуск с поддержкой Литнета (русскоязычные книги)
+    pairs = learner.learn_from_books(topics=topics, max_books=10, use_litnet=True)
     
     if pairs:
         # Сохранение
