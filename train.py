@@ -23,7 +23,6 @@ EMBEDDING_DIM = 128
 HIDDEN_DIM = 512
 NUM_LAYERS = 2
 LEARNING_RATE = 0.0005
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 os.makedirs("models", exist_ok=True)
 
@@ -39,12 +38,22 @@ def safe_print(msg: str):
     """Заменяет эмодзи на ASCII, чтобы не падать в Windows console"""
     emojis = {
         '🚀': '[RUN]', '✅': '[OK]', '❌': '[ERR]', '💾': '[SAVE]',
-        '📦': '[DATA]', '📚': '[LIB]', '🧠': '[AI]', '🔥': '[🔥]',
+        '📦': '[DATA]', '📚': '[LIB]', '🧠': '[AI]', '🔥': '[FIRE]',
         '🎉': '[HAPPY]', '⚠️': '[WARN]', 'ℹ️': '[INFO]', '❤️': '[HEART]'
     }
     for e, t in emojis.items():
         msg = msg.replace(e, t)
     print(msg, flush=True)
+
+
+# === Настройка устройства (GPU/CPU) ===
+if torch.cuda.is_available():
+    DEVICE = torch.device("cuda")
+    safe_print(f"[🔥] GPU обнаружен: {torch.cuda.get_device_name(0)}")
+    safe_print(f"[INFO] Память GPU: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.2f} GB")
+else:
+    DEVICE = torch.device("cpu")
+    safe_print("[INFO] GPU не обнаружен, обучение на CPU")
 
 
 def clean_text(text):
@@ -282,6 +291,10 @@ def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
     criterion = nn.CrossEntropyLoss(ignore_index=0)  # игнорируем <PAD>
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
+    # Mixed Precision Training для GPU (ускоряет обучение в 1.5-2x)
+    use_amp = device.type == "cuda"
+    scaler = torch.cuda.amp.GradScaler() if use_amp else None
+    
     for epoch in range(epochs):
         total_loss = 0
         for batch in dataloader:
@@ -290,15 +303,28 @@ def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
             mask = batch["mask"].to(device)
 
             optimizer.zero_grad()
-            logits = model(input_ids, mask=mask)
-            loss = criterion(logits.view(-1, model.vocab_size), labels.view(-1))
-            loss.backward()
-            optimizer.step()
+            
+            if use_amp and scaler is not None:
+                # Mixed precision forward pass
+                with torch.cuda.amp.autocast():
+                    logits = model(input_ids, mask=mask)
+                    loss = criterion(logits.view(-1, model.vocab_size), labels.view(-1))
+                
+                # Mixed precision backward pass
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                logits = model(input_ids, mask=mask)
+                loss = criterion(logits.view(-1, model.vocab_size), labels.view(-1))
+                loss.backward()
+                optimizer.step()
 
             total_loss += loss.item()
 
         avg_loss = total_loss / len(dataloader)
-        safe_print(f"[INFO] Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}")
+        gpu_info = f" | GPU: {torch.cuda.memory_allocated() / 1024**2:.0f} MB" if device.type == "cuda" else ""
+        safe_print(f"[INFO] Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}{gpu_info}")
 
 
 # === Главная функция ===
