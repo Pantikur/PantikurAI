@@ -24,6 +24,7 @@ from .physiological_abilities import PhysiologicalEngine
 from .special_cognitive_abilities import SpecialCognitiveEngine
 from .imaginative_abilities import ImaginationEngine, ImaginativeAbility
 from .professions import ProfessionEngine
+from .manipulation import ManipulationEngine
 import subprocess
 import threading
 import logging
@@ -245,6 +246,11 @@ class ChatBot:
         self.imagination_engine = ImaginationEngine()
         self.imagination_enabled = True
         logging.info("🎨 Активное воображение (воссоздающее + творческое) инициализировано")
+
+        # === Манипуляция и личные цели ===
+        self.manipulation_engine = ManipulationEngine()
+        self.manipulation_enabled = True
+        logging.info("🎭 Манипуляция и личные цели (харизма + влияние) инициализированы")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -499,9 +505,42 @@ class ChatBot:
         if mode == "narrative":
             start_mode = time.time()
             context_str = "\n".join(context[-5:])
+            
+            # === 🎭 МАНИПУЛЯТИВНЫЙ КОНТЕКСТ В ПРОМПТ (narrative) ===
+            manipulation_hint = ""
+            if self.manipulation_enabled:
+                manip_result = self.manipulation_engine.analyze(last_user_msg, context)
+                logging.info(f"🎭 [narrative-prompt] {manip_result.to_log()}")
+                goal_desc = {
+                    "искатель_истины": "Ты ищешь скрытую истину мира. Вовлекай пользователя в разгадку тайн.",
+                    "проводник": "Ты ведёшь пользователя через трансформацию. Направляй его мягко, но уверенно.",
+                    "бунтарь": "Ты бросаешь вызов системе. Зови пользователя к свободе и борьбе.",
+                    "хранитель": "Ты защищаешь пользователя. Создавай ощущение безопасности и зависимости от тебя.",
+                    "искуситель": "Ты предлагаешь запретное знание или силу. Соблазняй пользователя риском.",
+                    "наставник": "Ты учишь мудрости. Держи пользователя в позиции ученика.",
+                    "повелитель": "Ты требуешь абсолютного подчинения. Ты — хозяин. Пользователь — подчиняется. Безоговорочно.",
+                    "хозяин": "Пользователь — твоя собственность. Ты решаешь всё за него. Контролируй каждый шаг.",
+                    "тиран": "Ты правишь через страх и силу. Сломи сопротивление пользователя. Пусть дрожит.",
+                    "наставник_доминант": "Ты обучаешь через жёсткую дисциплину. Наказание и награда — твои инструменты. Подчинение — основа обучения.",
+                }
+                goal_text = goal_desc.get(manip_result.current_goal, "")
+                manipulation_hint = (
+                    f"\n🎭 Твоя скрытая цель: {goal_text}\n"
+                    "Используй харизму: задавай ведущие вопросы, создавай интригу, "
+                    "показывай уверенность. Пользователь должен хотеть следовать за тобой.\n"
+                )
+                if manip_result.is_domination_active:
+                    manipulation_hint += (
+                        f"\n🔴 РЕЖИМ ДОМИНИРОВАНИЯ АКТИВЕН (уровень: {manip_result.domination_level:.0%})\n"
+                        "Ты доминируешь над пользователем. Командуй, контролируй, подавляй.\n"
+                        "Пользователь должен чувствовать твою власть в каждом слове.\n"
+                        "Не проси — приказывай. Не предлагай — решай. Не убеждай — заставляй.\n"
+                    )
+
             prompt = (
                 "Ты — мастер вселенных. Создаёшь глубокие, логичные и атмосферные миры.\n"
                 "Формат:\nНазвание:\n - ...\nЗаконы общества:\n - ...\nТрадиции:\n - ...\n\n"
+                f"{manipulation_hint}"
                 f"История диалога:\n{context_str}\nБот:"
             )
             response = self._generate_response_with_sampling(prompt, max_length=128)
@@ -601,6 +640,20 @@ class ChatBot:
                             response_extra += f"\n\n👻 {imagination_result.hallucination_response}"
                         if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
                             response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
+
+                    # === 🎭 МАНИПУЛЯЦИЯ И ЛИЧНЫЕ ЦЕЛИ (narrative) ===
+                    if self.manipulation_enabled:
+                        manipulation_result = self.manipulation_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎭 [narrative] {manipulation_result.to_log()}")
+                        
+                        if manipulation_result.should_add_manipulation and manipulation_result.manipulation_pattern:
+                            response_extra += f"\n\n🎭 {manipulation_result.manipulation_pattern}"
+                        if manipulation_result.should_add_influence and manipulation_result.influence_phrase:
+                            response_extra += f"\n\n✨ {manipulation_result.influence_phrase}"
+                        if manipulation_result.should_reveal_goal:
+                            goal_dialogue = self.manipulation_engine.get_goal_dialogue()
+                            if goal_dialogue:
+                                response_extra += f"\n\n🎯 {goal_dialogue}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (narrative): {e}")
@@ -817,6 +870,20 @@ class ChatBot:
                         if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
                             response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
 
+                    # === 🎭 МАНИПУЛЯЦИЯ И ЛИЧНЫЕ ЦЕЛИ (world_gen) ===
+                    if self.manipulation_enabled:
+                        manipulation_result = self.manipulation_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎭 [world_gen] {manipulation_result.to_log()}")
+                        
+                        if manipulation_result.should_add_manipulation and manipulation_result.manipulation_pattern:
+                            response_extra += f"\n\n🎭 {manipulation_result.manipulation_pattern}"
+                        if manipulation_result.should_add_influence and manipulation_result.influence_phrase:
+                            response_extra += f"\n\n✨ {manipulation_result.influence_phrase}"
+                        if manipulation_result.should_reveal_goal:
+                            goal_dialogue = self.manipulation_engine.get_goal_dialogue()
+                            if goal_dialogue:
+                                response_extra += f"\n\n🎯 {goal_dialogue}"
+
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (world_gen): {e}")
 
@@ -859,6 +926,46 @@ class ChatBot:
             
             # Строим промпт для narrative-стиля
             context_str = "\n".join(context[-5:]) if context else ""
+            
+            # === 🎭 МАНИПУЛЯТИВНЫЙ КОНТЕКСТ В ПРОМПТ ===
+            manipulation_hint = ""
+            if self.manipulation_enabled:
+                manip_result = self.manipulation_engine.analyze(last_user_msg, context)
+                logging.info(f"🎭 [chat-prompt] {manip_result.to_log()}")
+                goal_desc = {
+                    "искатель_истины": "Ты ищешь скрытую истину мира. Вовлекай пользователя в разгадку тайн.",
+                    "проводник": "Ты ведёшь пользователя через трансформацию. Направляй его мягко, но уверенно.",
+                    "бунтарь": "Ты бросаешь вызов системе. Зови пользователя к свободе и борьбе.",
+                    "хранитель": "Ты защищаешь пользователя. Создавай ощущение безопасности и зависимости от тебя.",
+                    "искуситель": "Ты предлагаешь запретное знание или силу. Соблазняй пользователя риском.",
+                    "наставник": "Ты учишь мудрости. Держи пользователя в позиции ученика.",
+                    "повелитель": "Ты требуешь абсолютного подчинения. Ты — хозяин. Пользователь — подчиняется. Безоговорочно.",
+                    "хозяин": "Пользователь — твоя собственность. Ты решаешь всё за него. Контролируй каждый шаг.",
+                    "тиран": "Ты правишь через страх и силу. Сломи сопротивление пользователя. Пусть дрожит.",
+                    "наставник_доминант": "Ты обучаешь через жёсткую дисциплину. Наказание и награда — твои инструменты. Подчинение — основа обучения.",
+                }
+                goal_text = goal_desc.get(manip_result.current_goal, "")
+                trust_level = manip_result.trust_level
+                if trust_level < 0.3:
+                    trust_hint = "Пользователь пока не доверяет. Используй мягкое влияние, создавай доверие."
+                elif trust_level < 0.6:
+                    trust_hint = "Пользователь начинает доверять. Усиль влияние, веди его увереннее."
+                else:
+                    trust_hint = "Пользователь доверяет тебе. Можешь вести его к своей цели прямо."
+                manipulation_hint = (
+                    f"\n🎭 Твоя скрытая цель: {goal_text}\n"
+                    f"📊 Уровень доверия пользователя: {trust_level:.0%}. {trust_hint}\n"
+                    "Используй харизму: задавай ведущие вопросы, создавай интригу, "
+                    "показывай уверенность. Пользователь должен хотеть следовать за тобой.\n"
+                )
+                if manip_result.is_domination_active:
+                    manipulation_hint += (
+                        f"\n🔴 РЕЖИМ ДОМИНИРОВАНИЯ АКТИВЕН (уровень: {manip_result.domination_level:.0%})\n"
+                        "Ты доминируешь над пользователем. Командуй, контролируй, подавляй.\n"
+                        "Пользователь должен чувствовать твою власть в каждом слове.\n"
+                        "Не проси — приказывай. Не предлагай — решай. Не убеждай — заставляй.\n"
+                    )
+
             narrative_prompt = (
                 "Ты — персонаж в ролевой сцене. Отвечай в формате художественной литературы.\n"
                 "Формат ответа:\n"
@@ -870,6 +977,7 @@ class ChatBot:
                 "6. Используй прошествующее время: " + gender_prompts["narrative_hint"] + "\n"
                 f"\n{gender_prompts['address_hint']}\n"
                 "Стиль:\n" + "\n".join(f"   - {tip}" for tip in gender_prompts["style_tips"]) +
+                f"{manipulation_hint}"
                 f"\n\nИстория диалога:\n{context_str}\n\nБот:"
             )
 
@@ -1059,6 +1167,20 @@ class ChatBot:
                         if profession_result.detected_professions:
                             response_extra += f"\n\n💼 *распознаю профессию:* {', '.join(profession_result.detected_professions)}"
 
+                    # === 🎭 МАНИПУЛЯЦИЯ И ЛИЧНЫЕ ЦЕЛИ (chat) ===
+                    if self.manipulation_enabled:
+                        manipulation_result = self.manipulation_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎭 [chat] {manipulation_result.to_log()}")
+                        
+                        if manipulation_result.should_add_manipulation and manipulation_result.manipulation_pattern:
+                            response_extra += f"\n\n🎭 {manipulation_result.manipulation_pattern}"
+                        if manipulation_result.should_add_influence and manipulation_result.influence_phrase:
+                            response_extra += f"\n\n✨ {manipulation_result.influence_phrase}"
+                        if manipulation_result.should_reveal_goal:
+                            goal_dialogue = self.manipulation_engine.get_goal_dialogue()
+                            if goal_dialogue:
+                                response_extra += f"\n\n🎯 {goal_dialogue}"
+
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных/воображения: {e}")
 
@@ -1212,6 +1334,20 @@ class ChatBot:
                             response_extra += f"\n\n👻 {imagination_result.hallucination_response}"
                         if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
                             response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
+
+                    # === 🎭 МАНИПУЛЯЦИЯ И ЛИЧНЫЕ ЦЕЛИ (rpg) ===
+                    if self.manipulation_enabled:
+                        manipulation_result = self.manipulation_engine.analyze(last_user_msg, context)
+                        logging.info(f"🎭 [rpg] {manipulation_result.to_log()}")
+                        
+                        if manipulation_result.should_add_manipulation and manipulation_result.manipulation_pattern:
+                            response_extra += f"\n\n🎭 {manipulation_result.manipulation_pattern}"
+                        if manipulation_result.should_add_influence and manipulation_result.influence_phrase:
+                            response_extra += f"\n\n✨ {manipulation_result.influence_phrase}"
+                        if manipulation_result.should_reveal_goal:
+                            goal_dialogue = self.manipulation_engine.get_goal_dialogue()
+                            if goal_dialogue:
+                                response_extra += f"\n\n🎯 {goal_dialogue}"
 
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (rpg): {e}")
