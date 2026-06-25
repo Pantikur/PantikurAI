@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi import WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, validator
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import logging
 import os
 import sys
