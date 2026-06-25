@@ -260,68 +260,73 @@ async def lifespan(app: FastAPI):
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
     # === КОНЕЦ АСИНХРОННОГО ЗАПУСКА ===
 
-    # Загружаем модель
-    try:
-        logger.info("🔁 Загружаю чат-бот...")
-        load_start = asyncio.get_event_loop().time()
-        ChatBot = import_chatbot()
-        new_bot = ChatBot(str(MODEL_PATH), str(DATA_PATH))
-        load_time = asyncio.get_event_loop().time() - load_start
-        logger.info(f"📦 ChatBot загружен за {load_time:.2f} сек")
-
-        with CHATBOT_LOCK:
-            chatbot = new_bot
-        logger.info("✅ Чат-бот успешно загружен!")
+    # === Фоновая загрузка ChatBot + WebSearch (не блокирует запуск сервера) ===
+    async def load_chatbot_background():
+        global chatbot, web_search
         try:
-            logger.info("🔍 Инициализирую WebSearch...")
-            web_search_start = asyncio.get_event_loop().time()
-            from src.web_search import WebSearch
-            global web_search
-            
-            # Создаём объект
-            web_search = WebSearch()
-            
-            # Явно вызываем инициализацию драйвера
-            logger.info("🚀 Вызываю web_search.init_driver()...")
-            web_search.init_driver()
-            
-            # 🔴 ПРОВЕРКА: убедиться, что драйвер запустился
-            if web_search.driver is None:
-                logger.warning("⚠️ init_driver() вернул driver=None — WebSearch отключён")
-                web_search = None
-            
-            web_search_time = asyncio.get_event_loop().time() - web_search_start
-            logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
-            
-            # 🔴 ДОБАВЛЕНО: загрузка кэша при старте (чтобы избежать ошибок в lookup)
-            if web_search is not None:
-                try:
-                    cache_file = str(BASE_DIR / "data" / "knowledge_cache.json")
-                    web_search._load_knowledge_cache(cache_file)
-                    logger.info(f"📚 knowledge_cache загружен ({cache_file})")
-                except Exception as e:
-                    logger.warning(f"⚠️ Ошибка загрузки knowledge_cache: {e}")
-            else:
-                logger.info("ℹ️ WebSearch отключён — кэш знаний не загружается")
-                
+            logger.info("🔁 Загружаю чат-бот (в фоне)...")
+            load_start = asyncio.get_event_loop().time()
+            ChatBot = import_chatbot()
+            new_bot = await asyncio.to_thread(ChatBot, str(MODEL_PATH), str(DATA_PATH))
+            load_time = asyncio.get_event_loop().time() - load_start
+            logger.info(f"📦 ChatBot загружен за {load_time:.2f} сек")
+
+            with CHATBOT_LOCK:
+                chatbot = new_bot
+            logger.info("✅ Чат-бот успешно загружен!")
+
+            if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:
+                logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")
+
+            # === WebSearch инициализация (в фоне, не блокирует) ===
+            try:
+                logger.info("🔍 Инициализирую WebSearch (в фоне)...")
+                web_search_start = asyncio.get_event_loop().time()
+                from src.web_search import WebSearch
+
+                def _init_websearch():
+                    ws = WebSearch()
+                    ws.init_driver()
+                    return ws
+
+                ws_result = await asyncio.to_thread(_init_websearch)
+
+                if ws_result is None or ws_result.driver is None:
+                    logger.warning("⚠️ init_driver() вернул driver=None — WebSearch отключён")
+                else:
+                    with WEBSH_LOCK:
+                        web_search = ws_result
+
+                    # Загрузка кэша
+                    try:
+                        cache_file = str(BASE_DIR / "data" / "knowledge_cache.json")
+                        web_search._load_knowledge_cache(cache_file)
+                        logger.info(f"📚 knowledge_cache загружен ({cache_file})")
+                    except Exception as e:
+                        logger.warning(f"⚠️ Ошибка загрузки knowledge_cache: {e}")
+
+                    web_search_time = asyncio.get_event_loop().time() - web_search_start
+                    logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
+
+            except Exception as e:
+                logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
+                with WEBSH_LOCK:
+                    web_search = None
+                logger.warning("⚠️ WebSearch отключён — поиск слов в интернете недоступен")
+
         except Exception as e:
-            logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
-            web_search = None
-            logger.warning("⚠️ WebSearch отключён — поиск слов в интернете недоступен")
-        if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:
-            logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")
-    except Exception as e:
-        logger.critical(f"❌ Ошибка инициализации бота: {e}", exc_info=True)
-        logger.warning("⚠️ Бот не загружен — API будет работать, но ответы недоступны")
-        logger.info("🔄 Запуск фоновой задачи повторной загрузки бота...")
-        # Запускаем фоновую задачу, которая будет периодически пытаться загрузить бота
-        try:
-            asyncio.create_task(auto_reload_chatbot_loop())
-        except Exception as retry_err:
-            logger.error(f"❌ Не удалось запустить задачу авто-загрузки: {retry_err}")
-        # НЕ бросаем ошибку — Uvicorn должен запуститься даже без бота
+            logger.critical(f"❌ Ошибка инициализации бота: {e}", exc_info=True)
+            logger.warning("⚠️ Бот не загружен — API будет работать, но ответы недоступны")
+            logger.info("🔄 Запуск фоновой задачи повторной загрузки бота...")
+            try:
+                asyncio.create_task(auto_reload_chatbot_loop())
+            except Exception as retry_err:
+                logger.error(f"❌ Не удалось запустить задачу авто-загрузки: {retry_err}")
 
-    logger.info(f"✅ Lifespan готов за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
+    # Запускаем загрузку в фоне — сервер стартует немедленно
+    asyncio.create_task(load_chatbot_background())
+
+    logger.info(f"✅ Lifespan готов за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек (бот грузится в фоне)")
 
     yield
 
@@ -421,8 +426,12 @@ async def security_middleware(request: Request, call_next):
 # === Health Check с деталями ===
 @app.get("/health")
 async def health_check():
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
     return {
         "status": "ok",
+        "bot_ready": local_bot is not None,
         "timestamp": datetime.now().isoformat(),
         "blocked_ips": len(blocked_ips),
         "rate_limit_active": RATE_LIMIT_REQUESTS > 0

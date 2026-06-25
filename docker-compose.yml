@@ -13,7 +13,7 @@ services:
       - ./models:/app/models
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
+      interval: 15s
       timeout: 10s
-      start_period: 120s
-      retries: 5
+      start_period: 30s
+      retries: 10
