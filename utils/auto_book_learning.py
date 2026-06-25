@@ -161,10 +161,12 @@ class AutoBookLearning:
             from utils.book_learner import BookLearner
             from utils.author_today_parser import AuthorTodayParser
             from utils.selenium_parser import SeleniumBookParser
+            # from utils.litnet_parser import LitnetParser  # Litnet требует авторизацию
             
             learner = BookLearner(data_dir=str(self.data_dir))
             at_parser = AuthorTodayParser(data_dir=str(self.data_dir))
             selenium_parser = SeleniumBookParser(data_dir=str(self.data_dir), headless=True)
+            # litnet_parser = LitnetParser(data_dir=str(self.data_dir), headless=True)  # Отключен
             
             all_pairs = []
             
@@ -173,7 +175,7 @@ class AutoBookLearning:
             try:
                 at_pairs = at_parser.learn_from_author_today(
                     genres=topics,
-                    max_books=self.max_books_per_cycle // 2  # Половина лимита
+                    max_books=self.max_books_per_cycle // 2  # Половина
                 )
                 all_pairs.extend(at_pairs)
                 safe_print(f"   [✅] Author.Today: {len(at_pairs)} пар")
@@ -192,6 +194,17 @@ class AutoBookLearning:
                 safe_print(f"   [⚠️] Selenium ошибка: {e}")
             finally:
                 selenium_parser.close_driver()
+            
+            # 3. Litnet — отключен (требует авторизацию/защита от ботов)
+            # safe_print("\n[📚] Источник 3: Litnet (полные тексты)")
+            # try:
+            #     litnet_pairs = litnet_parser.learn_from_litnet(max_books=5)
+            #     all_pairs.extend(litnet_pairs)
+            #     safe_print(f"   [✅] Litnet: {len(litnet_pairs)} пар")
+            # except Exception as e:
+            #     safe_print(f"   [⚠️] Litnet ошибка: {e}")
+            # finally:
+            #     litnet_parser.close_driver()
             
             if all_pairs:
                 # Сохраняем пары
