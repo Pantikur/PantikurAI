@@ -20,7 +20,8 @@ def safe_print(msg: str):
         '📚': '[BOOK]', '🔍': '[SEARCH]', '⬇️': '[DOWN]', '✅': '[OK]',
         '❌': '[ERR]', '💾': '[SAVE]', '📖': '[READ]', '🧠': '[LEARN]',
         '⏳': '[WAIT]', '🚀': '[RUN]', '⚠️': '[WARN]', 'ℹ️': '[INFO]',
-        '🕐': '[TIME]', '🔄': '[LOOP]', '🎯': '[TARGET]'
+        '🕐': '[TIME]', '🔄': '[LOOP]', '🎯': '[TARGET]', '⏱️': '[TIMER]',
+        '📊': '[STATS]', '📈': '[CHART]', '🛑': '[STOP]', '🎉': '[DONE]'
     }
     for e, t in emojis.items():
         msg = msg.replace(e, t)
@@ -30,23 +31,23 @@ def safe_print(msg: str):
 class AutoBookLearning:
     """
     Автономный цикл обучения из книг.
-    Запускается каждый час и собирает новые знания.
+    Работает циклами: 10 минут чтение + обучение.
     """
 
     def __init__(
         self,
-        interval_hours: int = 1,
-        max_books_per_cycle: int = 3,
-        topics_per_cycle: int = 2,
+        cycle_minutes: int = 10,  # Длительность цикла чтения
+        max_books_per_cycle: int = 5,  # Максимум книг за цикл
+        topics_per_cycle: int = 2,  # Тем за цикл
         data_dir: str = "data/books"
     ):
         """
-        :param interval_hours: Интервал между циклами (часы)
+        :param cycle_minutes: Длительность цикла чтения (минуты)
         :param max_books_per_cycle: Максимум книг за один цикл
         :param topics_per_cycle: Сколько тем обрабатывать за цикл
         :param data_dir: Директория для данных
         """
-        self.interval_hours = interval_hours
+        self.cycle_minutes = cycle_minutes
         self.max_books_per_cycle = max_books_per_cycle
         self.topics_per_cycle = topics_per_cycle
         self.data_dir = Path(data_dir)
@@ -70,9 +71,9 @@ class AutoBookLearning:
         self.current_topic_index = self.state.get("current_topic_index", 0)
         
         safe_print(f"[🎯] AutoBookLearning инициализирован")
-        safe_print(f"   Интервал: {interval_hours} ч.")
-        safe_print(f"   Книг за цикл: {max_books_per_cycle}")
-        safe_print(f"   Тем за цикл: {topics_per_cycle}")
+        safe_print(f"   ⏱️ Цикл: {cycle_minutes} минут")
+        safe_print(f"   📚 Книг за цикл: {max_books_per_cycle}")
+        safe_print(f"   🎯 Тем за цикл: {topics_per_cycle}")
 
     def _setup_logging(self):
         """Настраивает логирование."""
@@ -107,23 +108,48 @@ class AutoBookLearning:
             json.dump(self.state, f, ensure_ascii=False, indent=2)
 
     def _get_next_topics(self, count: int) -> list:
-        """Получает следующие N тем (циклически)."""
+        """Получает следующие N тем (циклически) — русские названия."""
+        # Русскоязычные темы для Author.Today
+        ru_topics = [
+            "фэнтези",
+            "попаданцы",
+            "фантастика",
+            "мистика",
+            "детектив",
+            "приключения",
+            "психология",
+            "философия",
+            "современная проза",
+            "боевое фэнтези",
+            "городское фэнтези",
+            "научная фантастика",
+            "альтернативная история",
+            "литрпг",
+            "ужасы",
+            "романтика",
+            "драма",
+            "любовное фэнтези",
+            "историческое фэнтези",
+            "молодежная проза",
+        ]
+        
         topics = []
         for i in range(count):
-            topic_idx = (self.current_topic_index + i) % len(self.all_topics)
-            topics.append(self.all_topics[topic_idx])
+            topic_idx = (self.current_topic_index + i) % len(ru_topics)
+            topics.append(ru_topics[topic_idx])
         
         # Обновляем индекс
-        self.current_topic_index = (self.current_topic_index + count) % len(self.all_topics)
+        self.current_topic_index = (self.current_topic_index + count) % len(ru_topics)
         return topics
 
     def run_learning_cycle(self) -> bool:
         """
-        Запускает один цикл обучения.
+        Запускает один цикл обучения (10 минут чтение + обработка).
         :return: True если успешно
         """
         safe_print(f"\n{'='*60}")
         safe_print(f"[🚀] Запуск цикла обучения: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+        safe_print(f"[⏱️] Длительность цикла: {self.cycle_minutes} минут")
         safe_print(f"{'='*60}")
         
         try:
@@ -131,17 +157,47 @@ class AutoBookLearning:
             topics = self._get_next_topics(self.topics_per_cycle)
             safe_print(f"[📚] Темы цикла: {', '.join(topics)}")
             
-            # Запускаем обучение
-            pairs = self.learner.learn_from_books(
-                topics=topics,
-                max_books=self.max_books_per_cycle
-            )
+            # Запускаем обучение из ВСЕХ русскоязычных источников
+            from utils.book_learner import BookLearner
+            from utils.author_today_parser import AuthorTodayParser
+            from utils.selenium_parser import SeleniumBookParser
             
-            if pairs:
+            learner = BookLearner(data_dir=str(self.data_dir))
+            at_parser = AuthorTodayParser(data_dir=str(self.data_dir))
+            selenium_parser = SeleniumBookParser(data_dir=str(self.data_dir), headless=True)
+            
+            all_pairs = []
+            
+            # 1. Author.Today (описания книг) — быстро, без JS
+            safe_print("\n[📚] Источник 1: Author.Today (описания)")
+            try:
+                at_pairs = at_parser.learn_from_author_today(
+                    genres=topics,
+                    max_books=self.max_books_per_cycle // 2  # Половина лимита
+                )
+                all_pairs.extend(at_pairs)
+                safe_print(f"   [✅] Author.Today: {len(at_pairs)} пар")
+            except Exception as e:
+                safe_print(f"   [⚠️] Author.Today ошибка: {e}")
+            
+            # 2. Selenium: Стихи.ру, Проза.ру, RuLit, LiveLib (полные тексты)
+            safe_print("\n[📚] Источник 2: JavaScript сайты (Selenium)")
+            try:
+                selenium_pairs = selenium_parser.learn_from_all_sources(
+                    max_books=self.max_books_per_cycle // 2  # Вторая половина
+                )
+                all_pairs.extend(selenium_pairs)
+                safe_print(f"   [✅] JavaScript сайты: {len(selenium_pairs)} пар")
+            except Exception as e:
+                safe_print(f"   [⚠️] Selenium ошибка: {e}")
+            finally:
+                selenium_parser.close_driver()
+            
+            if all_pairs:
                 # Сохраняем пары
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 output_file = self.data_dir / f"books_cycle_{timestamp}.jsonl"
-                self.learner.save_training_pairs(pairs, str(output_file))
+                learner.save_training_pairs(all_pairs, str(output_file))
                 
                 # Объединяем с основным файлом
                 self._merge_training_pairs(output_file)
@@ -149,11 +205,11 @@ class AutoBookLearning:
                 # Обновляем состояние
                 self.state["last_cycle"] = datetime.now().isoformat()
                 self.state["total_cycles"] = self.state.get("total_cycles", 0) + 1
-                self.state["total_books"] = self.state.get("total_books", 0) + len(pairs) // 2  # Примерно
+                self.state["total_pairs"] = self.state.get("total_pairs", 0) + len(all_pairs)
                 self._save_state()
                 
-                safe_print(f"[✅] Цикл завершён: {len(pairs)} пар собрано")
-                self.logger.info(f"Cycle completed: {len(pairs)} pairs from {len(topics)} topics")
+                safe_print(f"[✅] Цикл завершён: {len(all_pairs)} пар собрано")
+                self.logger.info(f"Cycle completed: {len(all_pairs)} pairs")
                 
                 return True
             else:
@@ -169,7 +225,7 @@ class AutoBookLearning:
     def _merge_training_pairs(self, new_file: Path):
         """Объединяет новые пары с основным файлом."""
         main_file = Path("data/books_training_pairs.jsonl")
-        
+
         if not new_file.exists():
             return
         
@@ -202,39 +258,41 @@ class AutoBookLearning:
     def run_continuous(self):
         """
         Запускает непрерывный цикл обучения.
-        Работает 24/7 с заданным интервалом.
+        Цикл: 10 минут чтение + обучение → пауза 10 минут → повтор.
         """
         safe_print(f"\n{'='*60}")
         safe_print(f"[🔄] ЗАПУСК НЕПРЕРЫВНОГО ОБУЧЕНИЯ ИЗ КНИГ")
-        safe_print(f"[🕐] Интервал: {self.interval_hours} час(ов)")
+        safe_print(f"[⏱️] Цикл: {self.cycle_minutes} минут чтение + обучение")
+        safe_print(f"[📚] Источники: Author.Today (русскоязычные)")
         safe_print(f"[🎯] Тем всего: {len(self.all_topics)}")
         safe_print(f"{'='*60}\n")
         
-        self.logger.info(f"Starting continuous learning: interval={self.interval_hours}h")
+        self.logger.info(f"Starting continuous learning: cycle={self.cycle_minutes}min")
         
         cycle_count = 0
         
         while True:
             try:
-                # Запускаем цикл
+                # Запускаем цикл чтения + обучения
+                safe_print(f"\n[📖] НАЧАЛО ЦИКЛА #{cycle_count + 1}")
                 success = self.run_learning_cycle()
                 
                 if success:
                     cycle_count += 1
                     safe_print(f"\n[📊] Статистика:")
                     safe_print(f"   Циклов выполнено: {cycle_count}")
-                    safe_print(f"   Всего книг: {self.state.get('total_books', 0)}")
+                    safe_print(f"   Всего пар: {self.state.get('total_pairs', 0)}")
                     safe_print(f"   Последнее обновление: {self.state.get('last_cycle', 'Никогда')}")
                 
-                # Ждём следующий цикл
-                next_run = datetime.now() + timedelta(hours=self.interval_hours)
+                # Пауза между циклами (10 минут)
+                next_run = datetime.now() + timedelta(minutes=self.cycle_minutes)
                 safe_print(f"\n[⏳] Следующий цикл: {next_run.strftime('%Y-%m-%d %H:%M')}")
-                safe_print(f"[🕐] Ожидание {self.interval_hours} час(ов)...\n")
+                safe_print(f"[🕐] Ожидание {self.cycle_minutes} минут...\n")
                 
-                self.logger.info(f"Waiting {self.interval_hours} hours until next cycle")
+                self.logger.info(f"Waiting {self.cycle_minutes} minutes until next cycle")
                 
                 # Сон в секундах
-                time.sleep(self.interval_hours * 3600)
+                time.sleep(self.cycle_minutes * 60)
                 
             except KeyboardInterrupt:
                 safe_print(f"\n[⚠️] Остановка по команде пользователя")
@@ -244,9 +302,9 @@ class AutoBookLearning:
                 safe_print(f"[❌] Критическая ошибка: {e}")
                 self.logger.error(f"Critical error: {e}", exc_info=True)
                 
-                # Ждём 5 минут и пробуем снова
-                safe_print(f"[🕐] Перезапуск через 5 минут...")
-                time.sleep(300)
+                # Ждём 2 минуты и пробуем снова
+                safe_print(f"[🕐] Перезапуск через 2 минуты...")
+                time.sleep(120)
 
     def run_once(self):
         """Запускает один цикл обучения (для тестирования)."""
@@ -265,18 +323,18 @@ def main():
     """Запуск автономного обучения."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="Автономное обучение из книг")
+    parser = argparse.ArgumentParser(description="Автономное обучение из книг (русскоязычные)")
     parser.add_argument(
-        "--interval", "-i",
+        "--cycle", "-c",
         type=int,
-        default=1,
-        help="Интервал между циклами в часах (по умолчанию: 1)"
+        default=10,
+        help="Длительность цикла в минутах (по умолчанию: 10)"
     )
     parser.add_argument(
         "--books", "-b",
         type=int,
-        default=3,
-        help="Максимум книг за цикл (по умолчанию: 3)"
+        default=5,
+        help="Максимум книг за цикл (по умолчанию: 5)"
     )
     parser.add_argument(
         "--topics", "-t",
@@ -293,11 +351,12 @@ def main():
     args = parser.parse_args()
     
     safe_print(f"[RUN] AutoBookLearning — Автономное обучение из книг")
+    safe_print(f"[📚] Источник: Author.Today (русскоязычные бесплатные книги)")
     print("=" * 60)
     
     # Создаём контроллер
     controller = AutoBookLearning(
-        interval_hours=args.interval,
+        cycle_minutes=args.cycle,
         max_books_per_cycle=args.books,
         topics_per_cycle=args.topics
     )

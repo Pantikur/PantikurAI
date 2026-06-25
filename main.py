@@ -3,8 +3,9 @@
 from fastapi import FastAPI, HTTPException, Request, BackgroundTasks
 from fastapi.responses import JSONResponse
 from fastapi import WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, validator
-from typing import List
+from typing import List, Dict
 import logging
 import os
 import sys
@@ -15,16 +16,19 @@ import asyncio
 import json
 import re  # Для парсинга жанра и тегов
 import random
+import time
+from collections import defaultdict
 from contextlib import asynccontextmanager
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # === Импорт модуля параметров человека ===
 from utils.human_params import HumanParams, HumanParamsDetector
 
 # === Автономное обучение из книг (запуск в фоне) ===
 AUTO_BOOK_LEARNING_ENABLED = os.getenv("AUTO_BOOK_LEARNING", "true").lower() in ("true", "1", "yes")
-AUTO_BOOK_LEARNING_INTERVAL = int(os.getenv("AUTO_BOOK_LEARNING_INTERVAL", "1"))  # часов
+AUTO_BOOK_LEARNING_CYCLE = int(os.getenv("AUTO_BOOK_LEARNING_CYCLE", "10"))  # минут
+AUTO_BOOK_MAX_BOOKS = int(os.getenv("AUTO_BOOK_MAX_BOOKS", "5"))  # книг за цикл
 
 # === Настройка логирования ===
 logging.basicConfig(
@@ -36,6 +40,75 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger("main")
+
+# === Rate Limiting и безопасность ===
+RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", "30"))  # запросов в минуту
+RATE_LIMIT_WINDOW = 60  # секунд
+
+# Подозрительные User-Agents (сканеры уязвимостей)
+SUSPICIOUS_UA_PATTERNS = [
+    "python-requests", "curl/", "wget/", "scrapy", "nikto", "nmap",
+    "sqlmap", "masscan", "zgrab", "gobuster", "dirbuster", "wfuzz",
+    "nuclei", "burp", "acunetix", "nessus", "openvas"
+]
+
+# Подозрительные пути (сканирование уязвимостей)
+SUSPICIOUS_PATHS = [
+    ".env", ".git", ".svn", ".hg", "wp-admin", "wp-content", "phpinfo",
+    "phpmyadmin", "adminer", "shell", "cmd", "exec", "eval", "backup",
+    ".sql", ".dump", ".pem", ".key", ".htaccess", ".htpasswd", "config.php",
+    "web.config", ".aws", ".azure", ".docker", "kubernetes", "terraform"
+]
+
+# Хранилище rate limiting: IP -> список временных меток
+rate_limit_store: Dict[str, List[float]] = defaultdict(list)
+rate_limit_lock = threading.Lock()
+
+# Чёрный список IP (автоматически пополняется)
+blocked_ips: Dict[str, datetime] = {}  # IP -> время блокировки
+BLOCK_DURATION = timedelta(hours=24)  # Длительность блокировки
+
+
+def check_rate_limit(client_ip: str) -> bool:
+    """
+    Проверяет rate limit для IP.
+    :return: True если запрос разрешён, False если превышен лимит
+    """
+    now = time.time()
+    window_start = now - RATE_LIMIT_WINDOW
+    
+    with rate_limit_lock:
+        # Очищаем старые записи
+        rate_limit_store[client_ip] = [t for t in rate_limit_store[client_ip] if t > window_start]
+        
+        # Проверяем лимит
+        if len(rate_limit_store[client_ip]) >= RATE_LIMIT_REQUESTS:
+            return False
+        
+        # Добавляем текущую метку
+        rate_limit_store[client_ip].append(now)
+        return True
+
+
+def is_suspicious_request(request: Request) -> Tuple[bool, str]:
+    """
+    Проверяет запрос на подозрительную активность.
+    :return: (is_suspicious, reason)
+    """
+    ua = request.headers.get("User-Agent", "").lower()
+    path = request.url.path.lower()
+    
+    # Проверка User-Agent
+    for pattern in SUSPICIOUS_UA_PATTERNS:
+        if pattern in ua:
+            return True, f"Suspicious UA: {pattern}"
+    
+    # Проверка пути
+    for suspicious in SUSPICIOUS_PATHS:
+        if suspicious in path:
+            return True, f"Suspicious path: {suspicious}"
+    
+    return False, ""
 
 # Создаём папку для логов (если нужно)
 if not os.path.exists("logs"):
@@ -120,7 +193,10 @@ async def lifespan(app: FastAPI):
     
     # === ЗАПУСК АВТОНОМНОГО ОБУЧЕНИЯ ИЗ КНИГ ===
     if AUTO_BOOK_LEARNING_ENABLED:
-        logger.info(f"📚 Автономное обучение из книг: ВКЛЮЧЕНО (каждые {AUTO_BOOK_LEARNING_INTERVAL} ч.)")
+        logger.info(f"📚 Автономное обучение из книг: ВКЛЮЧЕНО")
+        logger.info(f"   ⏱️ Цикл: {AUTO_BOOK_LEARNING_CYCLE} минут")
+        logger.info(f"   📚 Книг за цикл: {AUTO_BOOK_MAX_BOOKS}")
+        logger.info(f"   🌐 Источник: Author.Today (русскоязычные)")
 
         async def start_auto_book_learning():
             """Запускает автообучение в фоне"""
@@ -131,8 +207,8 @@ async def lifespan(app: FastAPI):
                 await asyncio.sleep(10)
                 
                 controller = AutoBookLearning(
-                    interval_hours=AUTO_BOOK_LEARNING_INTERVAL,
-                    max_books_per_cycle=3,
+                    cycle_minutes=AUTO_BOOK_LEARNING_CYCLE,
+                    max_books_per_cycle=AUTO_BOOK_MAX_BOOKS,
                     topics_per_cycle=2
                 )
                 
@@ -297,10 +373,105 @@ app = FastAPI(
 )
 
 
+# === Middleware: Rate Limiting + Защита от сканирования ===
+@app.middleware("http")
+async def security_middleware(request: Request, call_next):
+    client_ip = request.client.host if request.client else "unknown"
+    
+    # Проверка на заблокированные IP
+    if client_ip in blocked_ips:
+        block_time = blocked_ips[client_ip]
+        if datetime.now() < block_time + BLOCK_DURATION:
+            remaining = (block_time + BLOCK_DURATION - datetime.now()).seconds // 60
+            logger.warning(f"🚫 Заблокирован IP {client_ip} (осталось {remaining} мин)")
+            return JSONResponse(
+                status_code=403,
+                content={"detail": f"IP заблокирован. Осталось минут: {remaining}"}
+            )
+        else:
+            # Снимаем блокировку
+            del blocked_ips[client_ip]
+            logger.info(f"✅ Снята блокировка с IP {client_ip}")
+    
+    # Проверка на подозрительные запросы (сканирование уязвимостей)
+    is_suspicious, reason = is_suspicious_request(request)
+    if is_suspicious:
+        # Блокируем IP на 24 часа
+        blocked_ips[client_ip] = datetime.now()
+        logger.warning(f"🚫 Блокировка IP {client_ip}: {reason}")
+        return JSONResponse(
+            status_code=403,
+            content={"detail": "Доступ запрещён: подозрительная активность"}
+        )
+    
+    # Rate limiting (не применяем к health check)
+    if request.url.path != "/health":
+        if not check_rate_limit(client_ip):
+            logger.warning(f"⚠️ Rate limit превышен для IP {client_ip}")
+            return JSONResponse(
+                status_code=429,
+                content={"detail": "Слишком много запросов. Повторите через минуту."}
+            )
+    
+    # Продолжаем обработку
+    response = await call_next(request)
+    return response
+
+
 # === Health Check с деталями ===
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "timestamp": datetime.now().isoformat()}
+    return {
+        "status": "ok",
+        "timestamp": datetime.now().isoformat(),
+        "blocked_ips": len(blocked_ips),
+        "rate_limit_active": RATE_LIMIT_REQUESTS > 0
+    }
+
+
+# === Endpoint: мониторинг безопасности ===
+@app.get("/security")
+async def security_status():
+    """Показывает статус безопасности: заблокированные IP, rate limit."""
+    now = datetime.now()
+    active_blocks = {}
+    for ip, block_time in blocked_ips.items():
+        expires = block_time + BLOCK_DURATION
+        if now < expires:
+            remaining = (expires - now).seconds // 60
+            active_blocks[ip] = f"{remaining} мин"
+    
+    return {
+        "status": "ok",
+        "rate_limit": {
+            "requests_per_minute": RATE_LIMIT_REQUESTS,
+            "window_seconds": RATE_LIMIT_WINDOW
+        },
+        "blocked_ips": {
+            "count": len(active_blocks),
+            "active_blocks": active_blocks
+        },
+        "suspicious_patterns": {
+            "ua_patterns": len(SUSPICIOUS_UA_PATTERNS),
+            "path_patterns": len(SUSPICIOUS_PATHS)
+        }
+    }
+
+
+# === Endpoint: разблокировать IP (админский) ===
+@app.post("/security/unblock/{ip}")
+async def unblock_ip(ip: str, request: Request):
+    """Разблокирует IP адрес."""
+    token = request.headers.get("X-Retrain-Token")
+    if token != RETRAIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Неверный токен")
+
+    if ip in blocked_ips:
+        del blocked_ips[ip]
+        logger.info(f"✅ IP {ip} разблокирован администратором")
+        return {"status": "ok", "detail": f"IP {ip} разблокирован"}
+    else:
+        return {"status": "ok", "detail": f"IP {ip} не был заблокирован"}
 
 
 # === Эндпоинт: /intuition — сводка настроения ===
@@ -497,7 +668,9 @@ async def predict(request: Request):
     logger.info(f"📥 Запрос /predict | UA: {request.headers.get('User-Agent', 'unknown')}")
 
     user_agent = request.headers.get("User-Agent", "")
-    if "PantikurBot" not in user_agent:
+    # Разрешаем PantikurBot или стандартные браузерные UA (для тестирования)
+    # Middleware уже отфильтровал подозрительные UA
+    if "PantikurBot" not in user_agent and "Mozilla" not in user_agent:
         logger.warning(f"🚫 Заблокирован User-Agent: {user_agent}")
         raise HTTPException(status_code=403, detail="Доступ запрещён")
 

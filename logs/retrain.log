@@ -284,3 +284,18 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f525' in posit
 2026-06-24 14:58:15,404 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
 2026-06-24 14:58:15,410 | INFO | [OK] Токенизатор загружен: 10000 токенов
 2026-06-24 14:58:15,410 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-06-24 15:19:03,226 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-06-24 15:19:03,504 | INFO | [OK] Данные из utils сгенерированы
+2026-06-24 15:19:03,504 | INFO | [BOOKS] Запуск автономного обучения из книг...
+2026-06-24 15:20:30,212 | INFO | [OK] Обучение из книг завершено
+2026-06-24 15:20:30,212 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-06-24 15:20:50,813 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-06-24 15:20:50,821 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-06-24 15:20:50,822 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-06-24 15:20:51,189 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (878 строк)
+2026-06-24 15:20:51,195 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-06-24 15:20:51,210 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-06-24 15:20:51,214 | INFO | [OK] Токенизатор загружен: 5731 токенов
+2026-06-24 15:20:51,214 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-06-24 15:59:35,974 | INFO | [HAPPY] Обучение завершено успешно!
+2026-06-24 15:59:35,974 | INFO | [OK] Успешно: tokenizer.json (343 КБ), chat_model.pth (28637 КБ)

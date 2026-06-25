@@ -55,7 +55,11 @@ def safe_print(msg: str):
     emojis = {
         '📚': '[BOOK]', '🔍': '[SEARCH]', '⬇️': '[DOWN]', '✅': '[OK]',
         '❌': '[ERR]', '💾': '[SAVE]', '📖': '[READ]', '🧠': '[LEARN]',
-        '⏳': '[WAIT]', '🚀': '[RUN]', '⚠️': '[WARN]', 'ℹ️': '[INFO]'
+        '⏳': '[WAIT]', '🚀': '[RUN]', '⚠️': '[WARN]', 'ℹ️': '[INFO]',
+        '🕐': '[TIME]', '🔄': '[LOOP]', '🎯': '[TARGET]', '⏱️': '[TIMER]',
+        '📊': '[STATS]', '📈': '[CHART]', '🛑': '[STOP]', '🎉': '[DONE]',
+        '🧪': '[TEST]', '📁': '[FOLDER]', '🔧': '[TOOLS]', '💡': '[IDEA]',
+        '🎂': '[CAKE]', '🌐': '[WEB]', '📝': '[MEMO]', '🔥': '[FIRE]',
     }
     for e, t in emojis.items():
         msg = msg.replace(e, t)
@@ -123,18 +127,20 @@ class BookLearner:
         
         # Темы для Литнета (на русском) - готовые URL тегов
         # Формат: (название для лога, URL тега)
+        # Примечание: Литнет может менять структуру URL, поэтому добавляем несколько вариантов
         self.litnet_tags = [
             ("психология", "https://litnet.com/ru/tag/psihologija-t112"),
             ("философия", "https://litnet.com/ru/tag/filosofija-t113"),
-            ("любовные романы", "https://litnet.com/ru/tag/ljubovnye-romany-t31"),
+            ("любовное фэнтези", "https://litnet.com/ru/tag/ljubovnoe-fentezi-t39931609"),
             ("фэнтези", "https://litnet.com/ru/tag/fentezi-t2"),
             ("попаданцы", "https://litnet.com/ru/tag/popadancy-t101"),
-            ("драмы", "https://litnet.com/ru/tag/dramy-t116"),
-            ("исторические", "https://litnet.com/ru/tag/istoricheskie-t33"),
-            ("детективы", "https://litnet.com/ru/tag/detektivy-t15"),
+            ("драма", "https://litnet.com/ru/tag/drama-t116"),
+            ("историческое фэнтези", "https://litnet.com/ru/tag/istoricheskoe-fentezi-t39931610"),
+            ("детектив", "https://litnet.com/ru/tag/detektiv-t15"),
             ("приключения", "https://litnet.com/ru/tag/priklyuchenija-t14"),
-            ("буллинг в школе", "https://litnet.com/ru/tag/bulling-v-shkole-t39931635"),
-            ("подростковые", "https://litnet.com/ru/tag/podrostkovye-t39931607"),
+            ("современная проза", "https://litnet.com/ru/tag/sovremennaja-proza-t39931608"),
+            ("молодежная проза", "https://litnet.com/ru/tag/molodezhnaja-proza-t39931642"),
+            ("самиздат", "https://litnet.com/ru/samizdat"),
         ]
         
         # Настройки
@@ -142,6 +148,7 @@ class BookLearner:
         self.min_text_length = 1000  # Минимальная длина текста
         self.chunk_size = 500  # Размер чанка для обработки
         self.max_chunks_per_book = 20  # Максимум чанков на книгу
+        self.topics_per_cycle = 2  # Тем за цикл обучения (для Author.Today)
 
     def _load_metadata(self) -> Dict:
         """Загружает метаданные обработанных книг."""
@@ -272,47 +279,83 @@ class BookLearner:
         
         try:
             req = urllib.request.Request(tag_url)
-            req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
-            req.add_header('Accept', 'text/html,application/xhtml+xml')
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+            req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
             req.add_header('Accept-Language', 'ru-RU,ru;q=0.9,en;q=0.8')
+            req.add_header('Referer', 'https://litnet.com/')
+            req.add_header('Connection', 'keep-alive')
             
-            with urllib.request.urlopen(req, timeout=15) as response:
-                html = response.read().decode('utf-8', errors='ignore')
+            try:
+                with urllib.request.urlopen(req, timeout=15) as response:
+                    if response.status != 200:
+                        safe_print(f"[WARN] HTTP {response.status} для {tag_name}")
+                        return []
+                    html = response.read().decode('utf-8', errors='ignore')
+            except urllib.error.HTTPError as e:
+                if e.code == 404:
+                    safe_print(f"[WARN] Тег не найден (404): {tag_name}")
+                else:
+                    safe_print(f"[ERR] HTTP ошибка {e.code}: {tag_name}")
+                return []
+            except urllib.error.URLError as e:
+                safe_print(f"[ERR] Ошибка соединения: {e.reason}")
+                return []
             
-            # Ищем все блоки с книгами
-            # Структура: <h4 class="book-title">.*?</h4>.*?<p class="author-wr"[^>]*>.*?</p>
-            book_blocks = re.findall(
-                r'<h4\s+class="book-title">.*?</h4>.*?<p\s+class="author-wr"[^>]*>.*?</p>',
-                html,
-                re.DOTALL
-            )
+            # === РАЗБИВАЕМ HTML НА БЛОКИ ПО КНИГАМ ===
+            # Литнет теперь использует JavaScript для рендеринга, поэтому urllib не работает
+            # Возвращаем пустой список — книги будут искаться в Gutenberg/Open Library
+            safe_print(f"  [WARN] Литнет требует JavaScript — пропускаем")
+            return []  # Пустой список — книги будут из других источников
             
             seen_ids = set()
-            for block in book_blocks:
-                # Извлекаем book_id и slug
-                book_match = re.search(r'/ru/book/([\w-]+)-b(\d+)', block)
-                if not book_match:
+            
+            # Пропускаем первую часть (до первой книги)
+            for i, part in enumerate(parts[1:], 1):
+                if len(books) >= max_results:
+                    break
+                
+                # Берём первые 2000 символов блока
+                block = part[:2000]
+                
+                # 1. Извлекаем book_id из data-bookItemId
+                book_id_match = re.search(r'data-bookItemId="(\d+)"', block)
+                if not book_id_match:
                     continue
+                book_id = book_id_match.group(1)
                 
-                slug, book_id = book_match.groups()
-                
-                # Пропускаем дубли
                 if book_id in seen_ids:
                     continue
                 seen_ids.add(book_id)
                 
-                # Извлекаем название
+                # 2. Извлекаем slug из href
+                href_match = re.search(r'href="(/ru/book/([\w-]+)-b' + book_id + r')"', block)
+                if not href_match:
+                    # Пробуем без book_id в паттерне
+                    href_match = re.search(r'href="(/ru/book/([\w-]+)-b(\d+))"', block)
+                    if not href_match:
+                        continue
+                full_url = href_match.group(1)
+                slug = href_match.group(2)
+                
+                # 3. Извлекаем название из <span itemprop="name">
                 title_match = re.search(r'<span\s+itemprop="name">([^<]+)</span>', block)
                 if not title_match:
                     continue
-                
                 title = title_match.group(1).strip()
-                if len(title) < 3:
+                
+                if len(title) < 3 or len(title) > 200:
                     continue
                 
-                # Извлекаем автора
-                author_match = re.search(r'class="author"[^>]*>[\s\n]*<span\s+itemprop="name">([^<]+)</span>', block)
-                author = author_match.group(1).strip() if author_match else "Неизвестно"
+                # 4. Извлекаем автора из <a class="author">
+                author = "Неизвестно"
+                author_match = re.search(r'<a\s+class="author"[^>]*>([^<]+)', block)
+                if author_match:
+                    author = author_match.group(1).strip()
+                else:
+                    # Пробуем внутри author-wr
+                    author_match = re.search(r'class="author"[^>]*>.*?<span\s+itemprop="name">([^<]+)</span>', block, re.DOTALL)
+                    if author_match:
+                        author = author_match.group(1).strip()
                 
                 book_info = {
                     "id": f"litnet_{book_id}",
@@ -320,22 +363,19 @@ class BookLearner:
                     "slug": slug,
                     "book_id": book_id,
                     "author": author,
-                    "url": f"https://litnet.com/ru/book/{slug}-b{book_id}",
+                    "url": f"https://litnet.com{full_url}",
                     "reader_url": f"https://litnet.com/ru/reader/{slug}-b{book_id}",
                     "source": "litnet",
                 }
                 
                 books.append(book_info)
                 safe_print(f"  [📚] Найдена книга: {title} ({author})")
-                
-                if len(books) >= max_results:
-                    break
-                
+            
             safe_print(f"[OK] Найдено {len(books)} книг на Литнете")
             return books
             
         except Exception as e:
-            safe_print(f"[ERR] Ошибка поиска на Литнете: {e}")
+            safe_print(f"[ERR] Ошибка поиска на Литнете: {type(e).__name__}: {e}")
             return []
         
     def download_litnet_text(self, book: Dict) -> Optional[str]:
@@ -348,7 +388,7 @@ class BookLearner:
         if not reader_url:
             safe_print(f"[WARN] Нет URL читалки для {book.get('title')}")
             return None
-        
+            
         try:
             safe_print(f"[DOWN] Скачивание: {book['title']}")
             
@@ -378,7 +418,7 @@ class BookLearner:
         except Exception as e:
             safe_print(f"[ERR] Ошибка скачивания с Литнета: {e}")
             return None
-    
+
     def _clean_litnet_text(self, text: str) -> str:
         """Очищает текст от служебных элементов Литнета."""
         # Удаляем служебные фразы
@@ -575,57 +615,70 @@ class BookLearner:
         Разбивает текст на чанки для обучения.
         :param text: Текст книги
         :param book_metadata: Метаданные книги
-        :return: Список чанков
+        :return: Список обучающих пар (плоский список)
         """
-        chunks = []
+        all_pairs = []
         
-        # Разбиваем на абзацы
-        paragraphs = [p.strip() for p in text.split('\n\n') if len(p.strip()) > 50]
+        # Очищаем текст от лишних пробелов и пустых строк
+        lines = [line.strip() for line in text.split('\n') if line.strip() and len(line.strip()) > 20]
         
-        current_chunk = []
+        if not lines:
+            safe_print(f"  [WARN] Нет подходящих строк для чанков")
+            return []
+        
+        # Разбиваем на сегменты по ~chunk_size символов
+        current_segment = []
         current_length = 0
         
-        for para in paragraphs:
-            current_chunk.append(para)
-            current_length += len(para)
+        for line in lines:
+            current_segment.append(line)
+            current_length += len(line)
             
+            # Когда набрали достаточно символов — создаём чанк
             if current_length >= self.chunk_size:
-                chunk_text = "\n".join(current_chunk)
-                chunk = self._create_training_chunk(chunk_text, book_metadata)
-                if chunk:
-                    chunks.append(chunk)
+                chunk_text = " ".join(current_segment)
+                pairs = self._create_training_chunk(chunk_text, book_metadata)
+                if pairs:
+                    all_pairs.extend(pairs)
                 
-                current_chunk = []
+                current_segment = []
                 current_length = 0
                 
-                if len(chunks) >= self.max_chunks_per_book:
+                if len(all_pairs) >= self.max_chunks_per_book * 2:  # *2 т.к. каждый чанк даёт 2 пары
                     break
         
-        # Последний чанк
-        if current_chunk:
-            chunk_text = "\n".join(current_chunk)
-            chunk = self._create_training_chunk(chunk_text, book_metadata)
-            if chunk:
-                chunks.append(chunk)
+        # Обрабатываем остаток
+        if current_segment and len(all_pairs) < self.max_chunks_per_book * 2:
+            chunk_text = " ".join(current_segment)
+            pairs = self._create_training_chunk(chunk_text, book_metadata)
+            if pairs:
+                all_pairs.extend(pairs)
         
-        return chunks
+        safe_print(f"  [OK] Создано {len(all_pairs)} обучающих пар из {len(text)} символов")
+        return all_pairs
 
-    def _create_training_chunk(self, text: str, book_metadata: Dict) -> Optional[Dict]:
+    def _create_training_chunk(self, text: str, book_metadata: Dict) -> List[Dict]:
         """
-        Создаёт обучающий чанк из текста.
+        Создаёт обучающие чанки из текста.
         :param text: Текст чанка
         :param book_metadata: Метаданные книги
-        :return: Обучающая пара или None
+        :return: Список обучающих пар (может быть пустым)
         """
-        if len(text) < self.min_text_length:
-            return None
+        # Уменьшаем минимальную длину для чанка
+        if len(text) < 300:
+            return []
         
         # Создаём хэш для уникальности
         text_hash = hashlib.md5(text.encode('utf-8')).hexdigest()[:12]
         
         # Формируем контекст
         title = book_metadata.get("title", "Неизвестно")
-        authors = ", ".join(book_metadata.get("authors", ["Неизвестно"]))
+        author = book_metadata.get("author", book_metadata.get("authors", "Неизвестно"))
+        if isinstance(author, list):
+            author = ", ".join(author)
+        
+        # Обрезаем текст до разумной длины
+        bot_text = text[:800] + "..." if len(text) > 800 else text
         
         # Создаём несколько вариантов обучающих пар
         pairs = []
@@ -633,26 +686,37 @@ class BookLearner:
         # Вариант 1: Прямое цитирование
         pairs.append({
             "user": f"Расскажи что-то из книги \"{title}\".",
-            "bot": text[:500] + "..." if len(text) > 500 else text,
+            "bot": bot_text,
             "source": {
                 "type": "book",
                 "title": title,
-                "authors": authors,
+                "author": author,
                 "chunk_id": text_hash
             }
         })
         
-        # Вариант 2: Вопрос-ответ
-        # Берём первое предложение как контекст
-        first_sentence = text.split('.')[0] + "."
+        # Вариант 2: Вопрос по содержанию
+        first_sentence = text.split('.')[0][:150] + "..." if len(text.split('.')[0]) > 150 else text.split('.')[0]
         pairs.append({
-            "user": f"Что говорится о \"{first_sentence[:100]}...\"?",
-            "bot": text,
+            "user": f"Что говорится о \"{first_sentence}\"?",
+            "bot": bot_text,
             "source": {
                 "type": "book",
                 "title": title,
-                "authors": authors,
+                "author": author,
                 "chunk_id": text_hash + "_qa"
+            }
+        })
+        
+        # Вариант 3: Контекстный вопрос
+        pairs.append({
+            "user": f"Продолжи мысль из книги \"{title}\": {bot_text[:200]}",
+            "bot": text[200:1000] if len(text) > 200 else bot_text,
+            "source": {
+                "type": "book",
+                "title": title,
+                "author": author,
+                "chunk_id": text_hash + "_ctx"
             }
         })
         
@@ -662,7 +726,7 @@ class BookLearner:
         """
         Обрабатывает книгу: скачивает и извлекает чанки.
         :param book: Информация о книге
-        :param source: Источник (gutenberg, google)
+        :param source: Источник (gutenberg, openlibrary)
         :return: Список обучающих пар
         """
         book_id = book.get("id")
@@ -676,104 +740,119 @@ class BookLearner:
         
         safe_print(f"[📖] Обработка книги: {book.get('title')}")
         
-        all_pairs = []
-        
+        text = None
         if source == "gutenberg":
             text = self.download_gutenberg_text(book)
-            if text:
-                chunks = self.extract_chunks(text, book)
-                for chunk_pairs in chunks:
-                    if isinstance(chunk_pairs, list):
-                        all_pairs.extend(chunk_pairs)
-                
-                # Сохраняем метаданные
-                self._mark_book_processed(book_id, {
-                    "title": book.get("title"),
-                    "authors": book.get("authors"),
-                    "chunks_count": len(all_pairs),
-                    "source": source
-                })
+        elif source == "openlibrary":
+            text = self.download_open_library_text(book)
+        
+        if not text:
+            safe_print(f"  [WARN] Не удалось скачать текст")
+            return []
+        
+        # extract_chunks теперь возвращает плоский список пар
+        all_pairs = self.extract_chunks(text, book)
+        
+        if all_pairs:
+            # Сохраняем метаданные
+            self._mark_book_processed(book_id, {
+                "title": book.get("title"),
+                "authors": book.get("authors", "Неизвестно"),
+                "pairs_count": len(all_pairs),
+                "source": source,
+                "text_length": len(text)
+            })
+            safe_print(f"  [✅] Обработано: {len(all_pairs)} пар")
+        else:
+            safe_print(f"  [WARN] Не удалось создать обучающие пары")
         
         return all_pairs
 
     def learn_from_books(self, topics: Optional[List[str]] = None, 
-                         max_books: int = 10, use_litnet: bool = True) -> List[Dict]:
+                         max_books: int = 10, use_litnet: bool = False, 
+                         use_author_today: bool = True, use_gutenberg: bool = False) -> List[Dict]:
         """
         Основной метод обучения из книг.
         :param topics: Темы для поиска (если None, используются self.topics)
         :param max_books: Максимум книг для обработки
-        :param use_litnet: Использовать ли Литнет (русскоязычные книги)
+        :param use_litnet: Использовать ли Литнет (отключено — требует JS)
+        :param use_author_today: Использовать ли Author.Today (русскоязычные книги)
+        :param use_gutenberg: Использовать ли Gutenberg (англоязычные — по умолчанию отключено)
         :return: Список всех обучающих пар
         """
         if topics is None:
             topics = self.topics
         
         safe_print("[🚀] Запуск автономного обучения из книг...")
-        safe_print(f"[ℹ️] Тем: {len(topics)}, Макс книг: {max_books}, Литнет: {use_litnet}")
+        safe_print(f"[ℹ️] Тем: {len(topics)}, Макс книг: {max_books}, Author.Today: {use_author_today}, Gutenberg: {use_gutenberg}")
         
         all_pairs = []
         books_processed = 0
         
-        # === Литнет (русскоязычные книги) ===
+        # === Author.Today (русскоязычные книги с бесплатным доступом) ===
+        if use_author_today:
+            try:
+                from utils.author_today_parser import AuthorTodayParser
+                
+                safe_print("\n[📚] Поиск на Author.Today (русскоязычные книги)...")
+                at_parser = AuthorTodayParser(data_dir=str(self.data_dir))
+                
+                # Используем первые topics_per_cycle тем
+                at_topics = topics[:self.topics_per_cycle] if topics else []
+                
+                pairs = at_parser.learn_from_author_today(
+                    genres=at_topics,
+                    max_books=max_books  # Все книги из Author.Today
+                )
+                
+                if pairs:
+                    all_pairs.extend(pairs)
+                    books_processed += len(pairs) // 3  # Примерно пар на книгу
+                    safe_print(f"[✅] Author.Today: {len(pairs)} пар")
+                
+            except Exception as e:
+                safe_print(f"[⚠️] Author.Today ошибка: {e}")
+        
+        # === Литнет (отключено — требует JavaScript) ===
         if use_litnet:
-            safe_print("\n[📚] Поиск на Литнете...")
-            for tag_name, tag_url in self.litnet_tags:
+            safe_print("\n[⚠️] Литнет отключён — требует JavaScript")
+        
+        # === Gutenberg (англоязычные книги — по умолчанию отключено) ===
+        if use_gutenberg:
+            safe_print("\n[📚] Поиск в Gutenberg (англоязычные книги)...")
+            for topic in topics:
                 if books_processed >= max_books:
                     break
                 
-                safe_print(f"\n[🔍] Тег Литнета: {tag_name}")
-                litnet_books = self.search_litnet(tag_url, tag_name, max_results=self.max_books_per_topic * 3)  # Ищем больше книг
+                safe_print(f"\n[🔍] Тема: {topic}")
                 
-                for book in litnet_books:
+                # Поиск в Gutenberg
+                gutenberg_books = self.search_gutenberg(topic, max_results=self.max_books_per_topic * 3)
+                for book in gutenberg_books:
                     if books_processed >= max_books:
                         break
-                    pairs = self.process_litnet_book(book)
+                    pairs = self.process_book(book, source="gutenberg")
                     if pairs:
                         all_pairs.extend(pairs)
                         books_processed += 1
                         safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг")
-                    # Если книга уже обработана — просто идём к следующей (без увеличения счётчика)
-                    
-                    time.sleep(random.uniform(2, 4))
                 
-                time.sleep(random.uniform(3, 5))
-        
-        # === Gutenberg (англоязычные книги) ===
-        for topic in topics:
-            if books_processed >= max_books:
-                break
-            
-            safe_print(f"\n[🔍] Тема: {topic}")
-            
-            # Поиск в Gutenberg (ищем больше книг, чтобы было из чего выбрать)
-            gutenberg_books = self.search_gutenberg(topic, max_results=self.max_books_per_topic * 3)
-            for book in gutenberg_books:
-                if books_processed >= max_books:
-                    break
-                pairs = self.process_book(book, source="gutenberg")
-                if pairs:
-                    all_pairs.extend(pairs)
-                    books_processed += 1
-                # Если книга уже обработана — просто идём к следующей
-            
-            safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг")
-            time.sleep(random.uniform(1, 3))
-            
-            # Поиск в Open Library (если не нашли в Gutenberg)
-            if len(gutenberg_books) == 0:
-                openlib_books = self.search_open_library(topic, max_results=self.max_books_per_topic * 3)  # Ищем больше
-                for book in openlib_books:
-                    if books_processed >= max_books:
-                        break
-                    pairs = self.process_openlib_book(book)
-                    if pairs:
-                        all_pairs.extend(pairs)
-                        books_processed += 1
-                    # Если книга уже обработана — просто идём к следующей
+                # Поиск в Open Library
+                if len(gutenberg_books) == 0 or books_processed < max_books:
+                    openlib_books = self.search_open_library(topic, max_results=self.max_books_per_topic * 3)
+                    for book in openlib_books:
+                        if books_processed >= max_books:
+                            break
+                        pairs = self.process_openlib_book(book)
+                        if pairs:
+                            all_pairs.extend(pairs)
+                            books_processed += 1
+                            safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг (Open Library)")
                 
-                safe_print(f"[✅] Обработано: {books_processed}/{max_books} книг (Open Library)")
-            
-            time.sleep(random.uniform(2, 5))
+                time.sleep(random.uniform(2, 5))
+        else:
+            if not use_author_today:
+                safe_print("[⚠️] Все источники отключены!")
         
         safe_print(f"\n[💾] Всего собрано {len(all_pairs)} обучающих пар из {books_processed} книг")
         return all_pairs
@@ -794,22 +873,26 @@ class BookLearner:
         
         safe_print(f"[📖] Обработка книги: {book.get('title')}")
         
-        all_pairs = []
-        
         text = self.download_litnet_text(book)
-        if text:
-            chunks = self.extract_chunks(text, book)
-            for chunk_pairs in chunks:
-                if isinstance(chunk_pairs, list):
-                    all_pairs.extend(chunk_pairs)
-            
+        if not text:
+            safe_print(f"  [WARN] Не удалось скачать текст")
+            return []
+        
+        # extract_chunks теперь возвращает плоский список пар
+        all_pairs = self.extract_chunks(text, book)
+        
+        if all_pairs:
             # Сохраняем метаданные
             self._mark_book_processed(book_id, {
                 "title": book.get("title"),
-                "authors": book.get("author", "Неизвестно"),
-                "chunks_count": len(all_pairs),
-                "source": "litnet"
+                "author": book.get("author", "Неизвестно"),
+                "pairs_count": len(all_pairs),
+                "source": "litnet",
+                "text_length": len(text)
             })
+            safe_print(f"  [✅] Обработано: {len(all_pairs)} пар")
+        else:
+            safe_print(f"  [WARN] Не удалось создать обучающие пары")
         
         return all_pairs
 
@@ -829,22 +912,26 @@ class BookLearner:
         
         safe_print(f"[📖] Обработка книги: {book.get('title')}")
         
-        all_pairs = []
-        
         text = self.download_open_library_text(book)
-        if text:
-            chunks = self.extract_chunks(text, book)
-            for chunk_pairs in chunks:
-                if isinstance(chunk_pairs, list):
-                    all_pairs.extend(chunk_pairs)
-            
+        if not text:
+            safe_print(f"  [WARN] Не удалось скачать текст")
+            return []
+        
+        # extract_chunks теперь возвращает плоский список пар
+        all_pairs = self.extract_chunks(text, book)
+        
+        if all_pairs:
             # Сохраняем метаданные
             self._mark_book_processed(book_id, {
                 "title": book.get("title"),
                 "authors": book.get("authors"),
-                "chunks_count": len(all_pairs),
-                "source": "openlibrary"
+                "pairs_count": len(all_pairs),
+                "source": "openlibrary",
+                "text_length": len(text)
             })
+            safe_print(f"  [✅] Обработано: {len(all_pairs)} пар")
+        else:
+            safe_print(f"  [WARN] Не удалось создать обучающие пары")
         
         return all_pairs
 
