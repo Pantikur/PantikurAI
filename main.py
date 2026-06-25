@@ -383,6 +383,11 @@ app = FastAPI(
 async def security_middleware(request: Request, call_next):
     client_ip = request.client.host if request.client else "unknown"
     
+    # Health check полностью минует security-проверки (нужен для Docker/Timeweb)
+    if request.url.path == "/health":
+        response = await call_next(request)
+        return response
+    
     # Проверка на заблокированные IP
     if client_ip in blocked_ips:
         block_time = blocked_ips[client_ip]
