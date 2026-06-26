@@ -817,39 +817,37 @@ async def predict(request: Request):
         elif mode == "world_gen":
             logger.info("🔧 Режим: world_gen")
             last_msg = req.messages[-1].message
+            
+            # Парсим жанр и тег
             genre = "Фэнтези"
-            tags = ""
-
-            genre_match = re.search(r"Жанр:\s*([^.\n]+)", last_msg, re.IGNORECASE)
+            tag = ""
+            
+            genre_match = re.search(r"Жанр[:\s]+([^.\n]+)", last_msg, re.IGNORECASE)
             if genre_match:
                 genre = genre_match.group(1).strip()
-
-            tags_match = re.search(r"Темы:\s*([^.\n]+)", last_msg, re.IGNORECASE)
-            if tags_match:
-                tags = tags_match.group(1).strip()
-
-            input_msg = f"Создай мир: {genre}"
-            if tags:
-                input_msg += f", {tags}"
-
+            else:
+                # Если нет явного указания "Жанр:", берём первое слово/фразу
+                genre = last_msg.strip()[:50]
+            
+            tag_match = re.search(r"Тег[:\s]+([^.\n]+)", last_msg, re.IGNORECASE)
+            if tag_match:
+                tag = tag_match.group(1).strip()
+            
+            # Формируем промпт для бота
+            prompt = f"Создай мир в жанре {genre}. Дополнительный тег: {tag if tag else 'нет'}. " \
+                     "Ответь только названием мира и подробным описанием (3-5 абзацев)."
+            
             start_subgen = asyncio.get_event_loop().time()
             HumanParamsDetector.apply_params_to_bot(local_bot, params)
-            response = local_bot.generate_response([{"message": input_msg, "is_own": True}], mode="world_gen").strip()
+            response = local_bot.generate_response([{"message": prompt, "is_own": True}], mode="world_gen").strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ world_gen: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
-
-            if not any(kw in response for kw in ["Название:", "Законы общества:", "Традиции:"]):
-                response = textwrap.dedent(f"""
-                    Название:
-                     - {genre}-Мир
-                    Законы общества:
-                     - Только избранные могут входить в сеть
-                    Традиции:
-                     - Ежегодный ритуал подключения
-                    Внегласные правила:
-                     - Слабых отключают без предупреждения
-                """).strip()
-                logger.warning("⚠️ Неверный формат → fallback")
+            
+            # Fallback если ответ слишком короткий
+            if len(response) < 50:
+                response = f"{genre} — мир, где {tag if tag else 'происходят удивительные события'}. " \
+                           "Здесь всё иначе: законы физики подчиняются воле жителей, а небо окрашено в цвета, которых нет на Земле."
+                logger.warning("⚠️ Слишком короткий ответ → fallback")
 
         elif mode == "rpg":
             logger.info("🔧 Режим: rpg")
