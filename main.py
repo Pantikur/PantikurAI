@@ -68,6 +68,9 @@ rate_limit_lock = threading.Lock()
 blocked_ips: Dict[str, datetime] = {}  # IP -> время блокировки
 BLOCK_DURATION = timedelta(hours=24)  # Длительность блокировки
 
+# Белый список IP (минует все проверки безопасности)
+WHITELISTED_IPS = set(os.getenv("WHITELISTED_IPS", "127.0.0.1,172.18.0.2").split(","))
+
 
 def check_rate_limit(client_ip: str) -> bool:
     """
@@ -389,6 +392,10 @@ async def security_middleware(request: Request, call_next):
         return response
     
     # Проверка на заблокированные IP
+    if client_ip in WHITELISTED_IPS:
+        response = await call_next(request)
+        return response
+    
     if client_ip in blocked_ips:
         block_time = blocked_ips[client_ip]
         if datetime.now() < block_time + BLOCK_DURATION:
