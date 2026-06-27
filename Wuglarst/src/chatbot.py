@@ -666,153 +666,31 @@ class ChatBot:
         elif mode == "world_gen":
             start_mode = time.time()
             
-            # Парсим новый формат: "Жанр: X, Тег: Y"
+            # Парсим жанр и тег
             genre_match = re.search(r"Жанр[:\s]+([^.\n]+)", last_user_msg, re.IGNORECASE)
             tag_match = re.search(r"Тег[:\s]+([^.\n]+)", last_user_msg, re.IGNORECASE)
             
             genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
             tag = tag_match.group(1).strip() if tag_match else ""
 
-            # === УЧИТЫВАЕМ ПОЛЬЗОВАТЕЛЯ (мальчик/девочка) ===
-            gender_info = self._get_gender_prompts()
-            hero_desc = "девушка-героиня" if gender_info["pronoun_him_her"] == "она" else "юный герой"
-            if not self._user_gender:
-                hero_desc = "герой"
-
-            # Добавляем цвет кожи к описанию героя
-            skin_tone = getattr(self, '_user_skin_tone', None)
-            if skin_tone == "светлая":
-                hero_desc += " светлой кожи"
-            elif skin_tone == "смуглая":
-                hero_desc += " смуглой кожи"
-            elif skin_tone == "темная":
-                hero_desc += " тёмной кожи"
-
-            # Добавляем цвет волос к описанию героя
-            hair_color = getattr(self, '_user_hair_color', None)
-            if hair_color == "блондин":
-                hero_desc += " блондинка"
-            elif hair_color == "рыжая":
-                hero_desc += " рыжая"
-            elif hair_color == "каштановая":
-                hero_desc += " с каштановыми волосами"
-            elif hair_color == "чёрная":
-                hero_desc += " с чёрными волосами"
-            elif hair_color == "натуральная":
-                hero_desc += " с натуральным цветом волос"
-            elif hair_color == "розовый":
-                hero_desc += " с нежно-розовыми волосами"
-            elif hair_color == "голубой":
-                hero_desc += " с голубыми волосами"
-            elif hair_color == "фиолетовый":
-                hero_desc += " с фиолетовыми волосами"
-            elif hair_color == "зеленый":
-                hero_desc += " с зелёными волосами"
-            elif hair_color == "пепельный":
-                hero_desc += " с серебристыми волосами"
-            elif hair_color in ["радужный", "разноцветный", "крашеный"]:
-                hero_desc += " с разноцветными радужными волосами"
-
-            # Добавляем параметры мужского органа (если мальчик)
-            if self._user_gender == "мальчик":
-                penis_thickness = getattr(self, '_user_penis_thickness', None)
-                penis_shape = getattr(self, '_user_penis_shape', None)
-                penis_size = getattr(self, '_user_penis_size', None)
-                
-                if penis_size:
-                    hero_desc += f" с {penis_size} параметрами"
-                if penis_thickness:
-                    hero_desc += f" {penis_thickness}"
-                if penis_shape:
-                    hero_desc += f" {penis_shape} формы"
-
-            # Сокращённый промпт — больше токенов на контент
-            # Добавляем случайный элемент для разнообразия
-            world_seed = random.randint(0, 999)
-            world_mood = random.choice([
-                "мрачная и таинственная",
-                "светлая и радостная",
-                "драматичная и напряжённая",
-                "загадочная и невероятная",
-                "мирная и гармоничная",
-                "хаотичная и непредсказуемая"
-            ])
+            # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ ШАБЛОНЫ (не через модель) ===
+            try:
+                from .world_gen_templates import generate_world
+                response = generate_world(genre, tag)
+            except ImportError:
+                # Fallback если файл не найден
+                response = (
+                    f"Название: {random.choice(['Тёмный', 'Сияющий', 'Забытый', 'Вечный'])} {random.choice(['Хранитель', 'Звёзд', 'Теней', 'Мечты'])}\n\n"
+                    f"Общее описание мира: В мире {genre} {tag if tag else 'магия'} стала основой существования.\n\n"
+                    f"Локальное описание: Ты стоишь на краю обрыва перед кристальным городом.\n\n"
+                    f"Сюжетная вводная: Ты не помнишь, как сюда попал, но чувствуешь: здесь начинается приключение."
+                )
             
-            prompt = (
-                "Мир в жанре {genre}, тег: {tag}. "
-                "Атмосфера: {mood}. Сид: {seed}.\n"
-                "Формат:\n"
-                "Общее описание мира:\n"
-                "Локальное описание:\n"
-                "Сюжетная вводная:\n"
-                f"Жанр: {genre}, Тег: {tag}\nБот:"
-            ).format(genre=genre, tag=tag if tag else "нет", mood=world_mood, seed=world_seed)
-
-            response = self._generate_response_with_sampling(
-                prompt,
-                max_length=512,
-                max_words=300,
-                temperature=1.2,
-                top_p=0.95
-            )
-
-            # Fallback — полностью зависит от жанра/тега, с рандомизацией
-            fallback_name = f"{random.choice(['Тёмный', 'Сияющий', 'Забытый', 'Вечный', 'Падший', 'Звёздный', 'Багровый', 'Ледяной'])} {genre.title()}"
-            sky_options = [
-                f"небо окрашено в цвета, которых нет на Земле",
-                "время течёт иначе",
-                "города растут как деревья",
-                "океаны состоят из жидкого света",
-                "луна раскололась на три части",
-                "звёзды двигаются по невидимым дорожкам",
-                "небо покрыто вечными aurora-витками",
-                "день и ночь чередуются каждые два часа"
-            ]
-            ground_options = [
-                "земля пульсирует теплом",
-                "растения светятся изнутри",
-                "каждый камень хранит воспоминание",
-                "ветер несёт голоса из прошлого",
-                "почва переливается как масло",
-                "дороги меняют направление сами",
-                "тени двигаются отдельно от предметов"
-            ]
-            artifact_options = [
-                "странный артефакт, пульсирующий теплом",
-                "письмо с незнакомым почерком",
-                "ключ, который не подходит ни к одному замку",
-                "зеркало, показывающее не тебя",
-                "монета с символом, который ты уже видел",
-                "фляга с жидкостью, похожей на воду, но не водой"
-            ]
-            
-            fallback_desc = (
-                f"Общее описание мира: В мире {genre} {tag if tag else 'тайна'} стала основой существования. "
-                f"Здесь {random.choice(sky_options)}. "
-                f"{random.choice(ground_options)}. "
-                f"Жители научились использовать {tag if tag else 'магию'} как основу существования.\n\n"
-                f"Локальное описание: Ты стоишь на {random.choice(['площади забытого города', 'мосту через бездну', 'тропе между двух гор', 'берегу кристального озера', 'развилке трёх дорог'])} "
-                f"Вокруг — {random.choice(['тишина, нарушаемая лишь шёпотом ветра', 'шум рынка с незнакомыми товарами', 'звуки далёких барабанов', 'свечение неизвестных существ'])}\n\n"
-                f"Сюжетная вводная: Ты очнулся здесь с {random.choice(artifact_options)}. "
-                f"Перед тобой — {random.choice(['незнакомый город', 'глубокая пещера', 'заброшенная башня', 'светящийся лес', 'древний храм'])}. "
-                f"Кто-то или что-то ждёт тебя."
-            )
-
-            # Fallback если ответ пустой, слишком короткий или нет обязательных разделов
-            has_all_sections = (
-                "Общее описание мира" in response and
-                "Локальное описание" in response and
-                "Сюжетная вводная" in response
-            )
-            if not response or len(response.split()) < 10 or not has_all_sections:
-                response = f"Название: {fallback_name}\n\nОбщее описание мира:\n{fallback_desc}"
-                
             elapsed = time.time() - start_mode
             logging.info(f"⏱ generate_response (world_gen): {elapsed:.2f} сек | len={len(response)}")
 
-            response_extra = ""
-
             # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ + 🧠 КОГНИТИВНЫЕ (world_gen) ===
+            response_extra = ""
             if self.intuition_enabled or self.social_enabled or self.cognitive_enabled or self.eq_enabled or self.phys_enabled or self.special_cognitive_enabled:
                 try:
                     if self.intuition_enabled:
