@@ -673,18 +673,41 @@ class ChatBot:
             genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
             tag = tag_match.group(1).strip() if tag_match else ""
 
-            # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ ШАБЛОНЫ (не через модель) ===
+            # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ БАЗУ ЗНАНИЙ (не шаблоны!) ===
             try:
-                from .world_gen_templates import generate_world
-                response = generate_world(genre, tag)
-            except ImportError:
-                # Fallback если файл не найден
-                response = (
-                    f"Название: {random.choice(['Тёмный', 'Сияющий', 'Забытый', 'Вечный'])} {random.choice(['Хранитель', 'Звёзд', 'Теней', 'Мечты'])}\n\n"
-                    f"Общее описание мира: В мире {genre} {tag if tag else 'магия'} стала основой существования.\n\n"
-                    f"Локальное описание: Ты стоишь на краю обрыва перед кристальным городом.\n\n"
-                    f"Сюжетная вводная: Ты не помнишь, как сюда попал, но чувствуешь: здесь начинается приключение."
+                from .world_gen_knowledge import WorldGenKnowledgeEngine
+                
+                # Получаем путь к data
+                project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                data_dir = os.path.join(project_root, "data")
+                
+                # Создаём движок знаний и собираем все данные
+                knowledge_engine = WorldGenKnowledgeEngine(data_dir=data_dir)
+                knowledge = knowledge_engine.collect_all_knowledge(genre, tag)
+                
+                # Строим промпт на основе ВСЕХ знаний
+                prompt = knowledge_engine.build_world_gen_prompt(knowledge)
+                
+                logging.info(f"📚 world_gen: собрано {len(knowledge['books_content'])} книжных концепций, "
+                           f"{len(knowledge['conversations'])} диалогов, "
+                           f"{len(knowledge['emotional_atmosphere'])} эмоциональных фраз, "
+                           f"{len(knowledge['knowledge_words'])} знаний о словах")
+                
+                # Генерируем ответ через модель с высокими параметрами разнообразия
+                response = self._generate_response_with_sampling(
+                    prompt,
+                    max_length=1024,
+                    max_words=600,
+                    temperature=1.4,  # Очень высокая температура для креативности
+                    top_p=0.98
                 )
+            
+            except ImportError as e:
+                logging.warning(f"⚠️ world_gen_knowledge не найден: {e} → fallback")
+                response = self._generate_fallback_world(genre, tag)
+            except Exception as e:
+                logging.error(f"❌ Ошибка генерации мира: {e}")
+                response = self._generate_fallback_world(genre, tag)
             
             elapsed = time.time() - start_mode
             logging.info(f"⏱ generate_response (world_gen): {elapsed:.2f} сек | len={len(response)}")

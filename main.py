@@ -832,18 +832,32 @@ async def predict(request: Request):
             if tag_match:
                 tag = tag_match.group(1).strip()
             
-            # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ ШАБЛОНЫ (не через модель) ===
+            # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ БАЗУ ЗНАНИЙ (не шаблоны!) ===
             try:
-                from Wuglarst.src.world_gen_templates import generate_world
-                response = generate_world(genre, tag)
-            except ImportError:
-                logger.warning("⚠️ world_gen_templates не найден → fallback")
+                # Вызываем метод бота, который использует все источники знаний
+                response = local_bot.generate_response(
+                    [{"message": last_msg, "is_own": True}],
+                    mode="world_gen"
+                )
+                # Ответ приходит в формате JSON
+                import json
+                parsed = json.loads(response)
+                response = parsed.get("world", parsed.get("response", ""))
+                logger.info(f"📚 world_gen: сгенерирован мир '{genre}' (тег: '{tag}')")
+            except ImportError as e:
+                logger.warning(f"⚠️ world_gen_knowledge не найден: {e} → fallback")
                 response = (
                     f"Название: {random.choice(['Тёмный', 'Сияющий', 'Забытый', 'Вечный'])} {random.choice(['Хранитель', 'Звёзд', 'Теней', 'Мечты'])}\n\n"
                     f"Общее описание мира: В мире {genre} {tag if tag else 'магия'} стала основой существования.\n\n"
                     f"Локальное описание: Ты стоишь на краю обрыва перед кристальным городом.\n\n"
                     f"Сюжетная вводная: Ты не помнишь, как сюда попал, но чувствуешь: здесь начинается приключение."
                 )
+            except json.JSONDecodeError:
+                logger.warning("⚠️ world_gen: ответ не JSON → fallback")
+                response = f"В мире {genre} {tag if tag else 'что-то необычное'} происходит магия. Ты стоишь перед городом..."
+            except Exception as e:
+                logger.error(f"❌ Ошибка генерации мира: {e}")
+                response = f"В мире {genre} {tag if tag else 'неизвестные силы'} творят чудеса. Опиши, что ты видишь..."
             
             start_subgen = asyncio.get_event_loop().time()
             HumanParamsDetector.apply_params_to_bot(local_bot, params)
