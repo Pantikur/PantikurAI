@@ -399,7 +399,7 @@ class SocialEngine:
             style_scores[style] += random.uniform(0.0, 0.3)
 
         # Выбираем стиль с максимальным баллом
-        best_style = max(style_scores, key=style_scores.get)
+        best_style = max(style_scores, key=style_scores.get)  # type: ignore[call-overload]
         best_confidence = style_scores[best_style] / 2.0  # нормализация
 
         return best_style, min(best_confidence, 1.0)

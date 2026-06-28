@@ -473,11 +473,15 @@ class ImaginationEngine:
             return False
         return True
 
-    def _generate_reproductive_response(self, reproductive_type: str) -> Optional[str]:
+    def _generate_reproductive_response(self, reproductive_type: str | None) -> Optional[str]:
+        if not reproductive_type:
+            return None
         responses = REPRODUCTIVE_RESPONSES.get(reproductive_type, [])
         return random.choice(responses) if responses else None
 
-    def _generate_productive_response(self, productive_type: str) -> Optional[str]:
+    def _generate_productive_response(self, productive_type: str | None) -> Optional[str]:
+        if not productive_type:
+            return None
         responses = PRODUCTIVE_RESPONSES.get(productive_type, [])
         return random.choice(responses) if responses else None
 
@@ -504,7 +508,7 @@ class ImaginationEngine:
             "dream_aspiration": result.dream_aspiration_confidence,
         }
 
-        best_ability = max(abilities, key=abilities.get)
+        best_ability = max(abilities, key=abilities.get)  # type: ignore[call-overload]
         if abilities[best_ability] > 0.3:
             return best_ability
         return None

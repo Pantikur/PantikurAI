@@ -246,7 +246,7 @@ class IntuitionEngine:
             mood = entry["mood"]
             mood_counts[mood] = mood_counts.get(mood, 0) + 1
 
-        dominant_mood = max(mood_counts, key=mood_counts.get)
+        dominant_mood = max(mood_counts, key=mood_counts.get)  # type: ignore[call-overload]
         return {
             "dominant_mood": dominant_mood,
             "mood_distribution": mood_counts,

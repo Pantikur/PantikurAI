@@ -35,12 +35,14 @@ RPG_TEMPERATURE = 0.85
 RPG_TOP_P = 0.92
 
 # Импортируем KnowledgeManager
+KnowledgeManager: Any = None  # type: ignore
 try:
-    from knowledge_manager import KnowledgeManager
+    from knowledge_manager import KnowledgeManager as _KnowledgeManager  # type: ignore
     knowledge_manager_available = True
 except ImportError:
     print("⚠️ knowledge_manager не найден. Установите сначала.")
     knowledge_manager_available = False
+    _KnowledgeManager = None
 
 
 class SimpleTokenizer:
@@ -66,7 +68,7 @@ class SimpleTokenizer:
         self.unk_token_id = self.vocab.get("<UNK>", 1)
         self.max_length = max_length
 
-    def encode(self, text: str, add_eos: bool = False, max_length: int = None) -> List[int]:
+    def encode(self, text: str, add_eos: bool = False, max_length: int | None = None) -> List[int]:
         if max_length is None:
             max_length = self.max_length
         words = text.lower().split()
@@ -85,14 +87,14 @@ class SimpleTokenizer:
             if idx in [self.pad_token_id, self.eos_token_id]:
                 break
             # inverse_vocab теперь dict {int: word}
-            word = self.inverse_vocab.get(idx, "<UNK>")
+            word = self.inverse_vocab.get(int(idx), "<UNK>")  # type: ignore[arg-type]
             if word not in ["<PAD>", "<UNK>", "<EOS>"]:
                 words.append(word)
         return " ".join(words)
 
 
 class ChatBot:
-    def __init__(self, model_path: str, data_path: str, device=None):
+    def __init__(self, model_path: str, data_path: str, device: str | None = None):
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.tokenizer_path = data_path
         self.model_path = model_path
@@ -190,11 +192,11 @@ class ChatBot:
         self._load_knowledge_cache()
 
         # Менеджер знаний
-        self.knowledge_manager = None
+        self.knowledge_manager: Any = None
         self.use_knowledge_manager = knowledge_manager_available
-        if self.use_knowledge_manager:
+        if self.use_knowledge_manager and _KnowledgeManager is not None:
             try:
-                self.knowledge_manager = KnowledgeManager("data/knowledge")
+                self.knowledge_manager = _KnowledgeManager("data/knowledge")
                 print("🧠 Менеджер знаний инициализирован")
             except Exception as e:
                 print(f"❌ Ошибка инициализации менеджера знаний: {e}")
@@ -435,7 +437,7 @@ class ChatBot:
                 logits[0, indices_to_remove] = float('-inf')
 
                 probs = torch.softmax(logits, dim=-1)
-                next_token = torch.multinomial(probs, num_samples=1).item()
+                next_token = int(torch.multinomial(probs, num_samples=1).item())
 
                 if next_token == self.tokenizer.eos_token_id:
                     # Не останавливаемся раньше 3 токенов (гарантия осмысленного ответа)
@@ -478,7 +480,7 @@ class ChatBot:
         return decoded
 
 
-    def generate_response(self, messages: List[Dict[str, str]], mode: str = "chat") -> str:
+    def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat") -> str:  # type: ignore[complexity]
         import time
         start_total = time.time()
         logging.info(f"⏱ generate_response(start_total): {time.time() - start_total:.2f} сек | mode={mode}")
@@ -1152,7 +1154,7 @@ class ChatBot:
                     "фантастика": ["фантастика", "невероятный", "сказка", "волшебство", "чудо", "загадка", "сюжет", "мировоззрение", "фантазия", "выдумка"],
                     "исекай": ["исекай", "другой мир", "перерождение", "мечта", "книга", "пиксель", "карта", "quest", "гильдия", "квест"],
                     "обратный исекай": ["обратный исекай", "вернулся", "домой", "мир", "технология", "странный", "чужак", "посторонний", "чудо", "чудесный", "глаз"],
-                    "повседневность": ["повседневность", "кофе", "квартира", "дом", "семья", "работа", "суббота", "воскресенье", "погода", "дома", "свет"]
+                    "повседневность": ["повседневность", "быт", "будни", "тишина", "уют", "семейный", "обыденный", "простой", "расслабл", "прогулка", "магазин", "кафе", "завтрак", "ужин", "чай", "кофе", "книга", "фильм", "выходной", "отдых", "домашний", "спокойный", "расслаб", "диван", "тепло", "мирный", "обычный", "рутина", "семья", "друзья", "вечер", "утро", "день", "планы", "работа", "учёба", "школа", "универ", "парк", "дождь", "окно", "лампа", "плед", "музыка", "готовка", "доставка", "серии", "подкаст"]
                 }
 
                 # Быстрый поиск по всем ключевым словам
@@ -1666,7 +1668,9 @@ class ChatBot:
                     "Инвентарь: {items}",
                     "",
                     "Правила:",
-                    "- Используй слова: кофе, диван, дом, погода, соседи.",
+                    "- Используй слова: быт, будни, уют, тишина, семейный, простой, спокойный.",
+                    "- Описывай обычные ситуации: завтрак, прогулка, разговор, отдых, хобби.",
+                    "- ЗАПРЕЩЕНО: магия, мистика, фантастика, приключения, драка, чудеса, сверхъестественное.",
                     "- Не пиши 'Я как бот'. Ты часть мира."
                 ]
             }
@@ -1721,7 +1725,7 @@ class ChatBot:
         return json.dumps({"response": "Привет! Я здесь."}, ensure_ascii=False)
 
     def _trigger_knowledge_learning(self, word: str, definition: str):
-        if self.use_knowledge_manager:
+        if self.use_knowledge_manager and self.knowledge_manager is not None:
             try:
                 self.knowledge_manager.add_word_knowledge(word, definition, source="web_search")
                 count = self.knowledge_manager.get_stats().get('total_words', 0)

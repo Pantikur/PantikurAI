@@ -1,0 +1,34 @@
+{
+    "pythonVersion": "3.11",
+    "executionEnvironments": [
+        {
+            "root": "."
+        },
+        {
+            "root": "Wuglarst/src",
+            "extraPaths": ["Wuglarst/src"]
+        }
+    ],
+    "include": [
+        ".",
+        "Wuglarst/src"
+    ],
+    "ignore": [
+        "utils/litnet_parser.py",
+        "utils/ruslit_parser.py",
+        "utils/russian_books_parser.py",
+        "utils/selenium_parser.py",
+        "utils/book_learner.py",
+        "Wuglarst/src/chat_model.py",
+        "Wuglarst/src/test_websearch.py",
+        "auto_gigachat_learning.py",
+        "create_theme.py",
+        "debug_litnet.py",
+        "generate_training_data.py",
+        "learn_knowledge_from_web.py",
+        "retrain.py",
+        "train_narrative.py",
+        "update_gigachat_token.py",
+        "utils/generate_params_training_data.py"
+    ]
+}

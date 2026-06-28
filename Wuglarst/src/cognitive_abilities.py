@@ -459,28 +459,38 @@ class CognitiveEngine:
             return False
         return True
 
-    def _generate_logical_response(self, logical_type: str) -> Optional[str]:
+    def _generate_logical_response(self, logical_type: str | None) -> Optional[str]:
         """Генерирует логический ответ."""
+        if not logical_type:
+            return None
         responses = LOGICAL_RESPONSES.get(logical_type, [])
         return random.choice(responses) if responses else None
 
-    def _generate_creative_response(self, creative_type: str) -> Optional[str]:
+    def _generate_creative_response(self, creative_type: str | None) -> Optional[str]:
         """Генерирует креативный ответ."""
+        if not creative_type:
+            return None
         responses = CREATIVE_RESPONSES.get(creative_type, [])
         return random.choice(responses) if responses else None
 
-    def _generate_critical_response(self, critical_type: str) -> Optional[str]:
+    def _generate_critical_response(self, critical_type: str | None) -> Optional[str]:
         """Генерирует критический ответ."""
+        if not critical_type:
+            return None
         responses = CRITICAL_RESPONSES.get(critical_type, [])
         return random.choice(responses) if responses else None
 
-    def _generate_memory_response(self, memory_type: str) -> Optional[str]:
+    def _generate_memory_response(self, memory_type: str | None) -> Optional[str]:
         """Генерирует ответ памяти."""
+        if not memory_type:
+            return None
         responses = MEMORY_RESPONSES.get(memory_type, [])
         return random.choice(responses) if responses else None
 
-    def _generate_attention_response(self, attention_type: str) -> Optional[str]:
+    def _generate_attention_response(self, attention_type: str | None) -> Optional[str]:
         """Генерирует ответ внимания."""
+        if not attention_type:
+            return None
         responses = ATTENTION_RESPONSES.get(attention_type, [])
         return random.choice(responses) if responses else None
 
@@ -494,7 +504,7 @@ class CognitiveEngine:
             "attention": result.attention_confidence,
         }
 
-        best_ability = max(abilities, key=abilities.get)
+        best_ability = max(abilities, key=abilities.get)  # type: ignore[call-overload]
         if abilities[best_ability] > 0.3:
             return best_ability
         return None

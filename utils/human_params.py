@@ -353,8 +353,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('gender'):
                 return msg['gender'].lower()
-            elif hasattr(msg, 'gender') and msg.gender:
-                return msg.gender.lower()
+            elif hasattr(msg, 'gender') and msg.gender:  # type: ignore
+                return msg.gender.lower()  # type: ignore
         
         # Ищем в контексте
         context_text = " ".join([
@@ -379,8 +379,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('skin_tone'):
                 return msg['skin_tone'].lower()
-            elif hasattr(msg, 'skin_tone') and msg.skin_tone:
-                return msg.skin_tone.lower()
+            elif hasattr(msg, 'skin_tone') and msg.skin_tone:  # type: ignore
+                return msg.skin_tone.lower()  # type: ignore
         
         context_text = " ".join([
             m.get('message', '') if isinstance(m, dict) else m.message
@@ -404,8 +404,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('hair_color'):
                 return msg['hair_color'].lower()
-            elif hasattr(msg, 'hair_color') and msg.hair_color:
-                return msg.hair_color.lower()
+            elif hasattr(msg, 'hair_color') and msg.hair_color:  # type: ignore
+                return msg.hair_color.lower()  # type: ignore
         
         context_text = " ".join([
             m.get('message', '') if isinstance(m, dict) else m.message
@@ -438,8 +438,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('penis_thickness'):
                 return msg['penis_thickness'].lower()
-            elif hasattr(msg, 'penis_thickness') and msg.penis_thickness:
-                return msg.penis_thickness.lower()
+            elif hasattr(msg, 'penis_thickness') and msg.penis_thickness:  # type: ignore
+                return msg.penis_thickness.lower()  # type: ignore
         
         context_text = " ".join([
             m.get('message', '') if isinstance(m, dict) else m.message
@@ -465,8 +465,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('penis_size'):
                 return msg['penis_size'].lower()
-            elif hasattr(msg, 'penis_size') and msg.penis_size:
-                return msg.penis_size.lower()
+            elif hasattr(msg, 'penis_size') and msg.penis_size:  # type: ignore
+                return msg.penis_size.lower()  # type: ignore
         
         context_text = " ".join([
             m.get('message', '') if isinstance(m, dict) else m.message
@@ -492,8 +492,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('penis_shape'):
                 return msg['penis_shape'].lower()
-            elif hasattr(msg, 'penis_shape') and msg.penis_shape:
-                return msg.penis_shape.lower()
+            elif hasattr(msg, 'penis_shape') and msg.penis_shape:  # type: ignore
+                return msg.penis_shape.lower()  # type: ignore
         
         context_text = " ".join([
             m.get('message', '') if isinstance(m, dict) else m.message
@@ -579,8 +579,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('body_shape'):
                 return msg['body_shape'].lower()
-            elif hasattr(msg, 'body_shape') and msg.body_shape:
-                return msg.body_shape.lower()
+            elif hasattr(msg, 'body_shape') and msg.body_shape:  # type: ignore
+                return msg.body_shape.lower()  # type: ignore
         
         context_text = " ".join([
             m.get('message', '') if isinstance(m, dict) else m.message
@@ -706,8 +706,8 @@ class HumanParamsDetector:
         for msg in messages:
             if isinstance(msg, dict) and msg.get('glute_shape'):
                 return msg['glute_shape'].lower()
-            elif hasattr(msg, 'glute_shape') and msg.glute_shape:
-                return msg.glute_shape.lower()
+            elif hasattr(msg, 'glute_shape') and msg.glute_shape:  # type: ignore
+                return msg.glute_shape.lower()  # type: ignore
         
         context_text = " ".join([
             m.get('message', '') if isinstance(m, dict) else m.message

@@ -162,11 +162,17 @@ CHATBOT_LOCK = threading.RLock()  # Защита при доступе и пер
 web_search = None
 WEBSH_LOCK = threading.Lock()  # Защита при доступе к web_search
 
+# === Автопоиск новых слов (запуск в фоне) ===
+AUTO_WEB_SEARCH_ENABLED = os.getenv("AUTO_WEB_SEARCH", "true").lower() in ("true", "1", "yes")
+AUTO_WEB_SEARCH_INTERVAL = int(os.getenv("AUTO_WEB_SEARCH_INTERVAL", "3600"))  # секунд (по умолчанию 1 час)
+AUTO_WEB_SEARCH_BATCH_SIZE = int(os.getenv("AUTO_WEB_SEARCH_BATCH_SIZE", "10"))  # слов за цикл
+AUTO_WEB_SEARCH_MIN_LENGTH = int(os.getenv("AUTO_WEB_SEARCH_MIN_LENGTH", "5"))  # минимальная длина слова
+
 # === Импорт ChatBot с резервом ===
 def import_chatbot():
     global chatbot
     try:
-        from src.chatbot import ChatBot
+        from src.chatbot import ChatBot  # type: ignore
         logger.info("✅ Импортирован: src.chatbot.ChatBot")
         return ChatBot
     except ImportError as e:
@@ -179,6 +185,8 @@ def import_chatbot():
             raise FileNotFoundError(f"Файл не найден: {chatbot_path}")
 
         spec = importlib.util.spec_from_file_location("src.chatbot", chatbot_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError(f"Не удалось создать spec для {chatbot_path}")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         sys.modules["src.chatbot"] = module
@@ -278,14 +286,14 @@ async def lifespan(app: FastAPI):
                 chatbot = new_bot
             logger.info("✅ Чат-бот успешно загружен!")
 
-            if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:
-                logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")
+            if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
+                logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
 
             # === WebSearch инициализация (в фоне, не блокирует) ===
             try:
                 logger.info("🔍 Инициализирую WebSearch (в фоне)...")
                 web_search_start = asyncio.get_event_loop().time()
-                from src.web_search import WebSearch
+                from src.web_search import WebSearch  # type: ignore
 
                 def _init_websearch():
                     ws = WebSearch()
@@ -310,6 +318,39 @@ async def lifespan(app: FastAPI):
 
                     web_search_time = asyncio.get_event_loop().time() - web_search_start
                     logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
+
+                    # === ЗАПУСК АВТОНОМНОГО ПОИСКА СЛОВ ===
+                    if AUTO_WEB_SEARCH_ENABLED:
+                        logger.info(f"🔍 Автопоиск слов: ВКЛЮЧЕНО")
+                        logger.info(f"   ⏱️ Интервал: {AUTO_WEB_SEARCH_INTERVAL // 60} минут")
+                        logger.info(f"   📝 Слов за цикл: {AUTO_WEB_SEARCH_BATCH_SIZE}")
+
+                        async def start_auto_web_search():
+                            """Запускает автопоиск слов в фоне"""
+                            try:
+                                from utils.auto_web_search import AutoWebSearch
+                                
+                                # Небольшая задержка перед стартом (ждем полной загрузки)
+                                await asyncio.sleep(30)
+                                
+                                controller = AutoWebSearch(
+                                    interval_seconds=AUTO_WEB_SEARCH_INTERVAL,
+                                    batch_size=AUTO_WEB_SEARCH_BATCH_SIZE,
+                                    min_word_length=AUTO_WEB_SEARCH_MIN_LENGTH,
+                                    project_root=str(BASE_DIR)
+                                )
+                                
+                                # Запускаем в отдельном потоке
+                                loop = asyncio.get_event_loop()
+                                await loop.run_in_executor(None, controller.run_continuous)
+                                
+                            except Exception as e:
+                                logger.error(f"❌ Ошибка автопоиска слов: {e}")
+                        
+                        # Запускаем фоновую задачу
+                        asyncio.create_task(start_auto_web_search())
+                    else:
+                        logger.info("🔍 Автопоиск слов: ОТКЛЮЧЁН")
 
             except Exception as e:
                 logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
@@ -363,8 +404,8 @@ async def auto_reload_chatbot_loop():
             with CHATBOT_LOCK:
                 chatbot = new_bot
             logger.info(f"✅ Бот успешно загружен авто-загрузкой за {load_time:.2f} сек!")
-            if hasattr(new_bot, 'dataset') and new_bot.dataset is not None:
-                logger.info(f"📚 Обучено на {len(new_bot.dataset)} примерах")
+            if hasattr(new_bot, 'dataset') and new_bot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
+                logger.info(f"📚 Обучено на {len(new_bot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
             return  # Успешно загружено, выходим
         except Exception as e:
             logger.error(f"❌ Авто-загрузка бота не удалась (попытка {attempt}): {e}")
@@ -505,11 +546,11 @@ async def intuition_status():
     if local_bot is None or not hasattr(local_bot, 'intuition'):
         return {"status": "not available", "detail": "Бот не загружен или интуиция отключена"}
 
-    mood_summary = local_bot.intuition.get_mood_summary()
+    mood_summary = local_bot.intuition.get_mood_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "intuition": mood_summary,
-        "enabled": local_bot.intuition_enabled,
+        "enabled": local_bot.intuition_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -523,11 +564,11 @@ async def social_status():
     if local_bot is None or not hasattr(local_bot, 'social_engine'):
         return {"status": "not available", "detail": "Бот не загружен или социальные способности отключены"}
 
-    social_summary = local_bot.social_engine.get_social_summary()
+    social_summary = local_bot.social_engine.get_social_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "social": social_summary,
-        "enabled": local_bot.social_enabled,
+        "enabled": local_bot.social_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -541,11 +582,11 @@ async def cognitive_status():
     if local_bot is None or not hasattr(local_bot, 'cognitive_engine'):
         return {"status": "not available", "detail": "Бот не загружен или когнитивные способности отключены"}
 
-    cognitive_summary = local_bot.cognitive_engine.get_cognitive_summary()
+    cognitive_summary = local_bot.cognitive_engine.get_cognitive_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "cognitive": cognitive_summary,
-        "enabled": local_bot.cognitive_enabled,
+        "enabled": local_bot.cognitive_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -559,11 +600,11 @@ async def eq_status():
     if local_bot is None or not hasattr(local_bot, 'eq_engine'):
         return {"status": "not available", "detail": "Бот не загружен или эмоциональный интеллект отключён"}
 
-    eq_summary = local_bot.eq_engine.get_eq_summary()
+    eq_summary = local_bot.eq_engine.get_eq_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "eq": eq_summary,
-        "enabled": local_bot.eq_enabled,
+        "enabled": local_bot.eq_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -577,11 +618,11 @@ async def physiology_status():
     if local_bot is None or not hasattr(local_bot, 'phys_engine'):
         return {"status": "not available", "detail": "Бот не загружен или физиологические способности отключены"}
 
-    phys_summary = local_bot.phys_engine.get_physiology_summary()
+    phys_summary = local_bot.phys_engine.get_physiology_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "physiology": phys_summary,
-        "enabled": local_bot.phys_enabled,
+        "enabled": local_bot.phys_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -595,11 +636,11 @@ async def special_status():
     if local_bot is None or not hasattr(local_bot, 'special_cognitive_engine'):
         return {"status": "not available", "detail": "Бот не загружен или специальные способности отключены"}
 
-    special_summary = local_bot.special_cognitive_engine.get_special_cognitive_summary()
+    special_summary = local_bot.special_cognitive_engine.get_special_cognitive_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "special": special_summary,
-        "enabled": local_bot.special_cognitive_enabled,
+        "enabled": local_bot.special_cognitive_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -613,11 +654,11 @@ async def professions_status():
     if local_bot is None or not hasattr(local_bot, 'profession_engine'):
         return {"status": "not available", "detail": "Бот не загружен или анализ профессий отключён"}
 
-    profession_summary = local_bot.profession_engine.get_profession_summary()
+    profession_summary = local_bot.profession_engine.get_profession_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "professions": profession_summary,
-        "enabled": local_bot.professions_enabled,
+        "enabled": local_bot.professions_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -631,11 +672,11 @@ async def imagination_status():
     if local_bot is None or not hasattr(local_bot, 'imagination_engine'):
         return {"status": "not available", "detail": "Бот не загружен или воображение отключено"}
 
-    imagination_summary = local_bot.imagination_engine.get_imagination_summary()
+    imagination_summary = local_bot.imagination_engine.get_imagination_summary()  # type: ignore[reportAttributeAccessIssue]
     return {
         "status": "ok",
         "imagination": imagination_summary,
-        "enabled": local_bot.imagination_enabled,
+        "enabled": local_bot.imagination_enabled,  # type: ignore[reportAttributeAccessIssue]
     }
 
 
@@ -654,15 +695,15 @@ def home():
 class MessageItem(BaseModel):
     message: str
     is_own: bool
-    gender: str = None  # "мальчик" | "девочка" — необязательное поле
-    skin_tone: str = None  # "светлая" | "смуглая" | "темная" — необязательное поле
-    hair_color: str = None  # "блондин" | "рыжая" | "каштановая" | "чёрная" | "натуральная" | "розовый" | "голубой" | "фиолетовый" | "зеленый" | "радужный" | "разноцветный" | "пепельный" | "крашеный"
-    body_shape: str = None  # "стройное" | "спортивное" | "мускулистое" | "пышное" | "хрупкое" | "среднее" — необязательное поле
-    penis_size: str = None  # "маленький" | "средний" | "большой" | "огромный" — необязательное поле (только для мальчиков)
-    penis_thickness: str = None  # "тонкий" | "средний" | "толстый" | "очень толстый" — необязательное поле (только для мальчиков)
-    penis_shape: str = None  # "прямой" | "изогнутый вверх" | "изогнутый вниз" | "стреловидный" | "булавовидный" | "округлый" — необязательное поле (только для мальчиков)
-    female_anatomy_shape: str = None  # "маленькая" | "средняя" | "пышная" | "симметричная" | "асимметричная" | "чувствительная" — необязательное поле (только для девочек)
-    female_fluid: str = None  # "умеренное" | "обильное" | "минимальное" | "прозрачное" | "молочное" | "вязкое" — необязательное поле (только для девочек)
+    gender: str | None = None  # "мальчик" | "девочка" — необязательное поле
+    skin_tone: str | None = None  # "светлая" | "смуглая" | "темная" — необязательное поле
+    hair_color: str | None = None  # "блондин" | "рыжая" | "каштановая" | "чёрная" | "натуральная" | "розовый" | "голубой" | "фиолетовый" | "зеленый" | "радужный" | "разноцветный" | "пепельный" | "крашеный"
+    body_shape: str | None = None  # "стройное" | "спортивное" | "мускулистое" | "пышное" | "хрупкое" | "среднее" — необязательное поле
+    penis_size: str | None = None  # "маленький" | "средний" | "большой" | "огромный" — необязательное поле (только для мальчиков)
+    penis_thickness: str | None = None  # "тонкий" | "средний" | "толстый" | "очень толстый" — необязательное поле (только для мальчиков)
+    penis_shape: str | None = None  # "прямой" | "изогнутый вверх" | "изогнутый вниз" | "стреловидный" | "булавовидный" | "округлый" — необязательное поле (только для мальчиков)
+    female_anatomy_shape: str | None = None  # "маленькая" | "средняя" | "пышная" | "симметричная" | "асимметричная" | "чувствительная" — необязательное поле (только для девочек)
+    female_fluid: str | None = None  # "умеренное" | "обильное" | "минимальное" | "прозрачное" | "молочное" | "вязкое" — необязательное поле (только для девочек)
 
     @validator('message')
     def message_not_empty(cls, v):
@@ -751,7 +792,9 @@ async def predict(request: Request):
     # === КОНЕЦ RPG-AUTO ===
 
     # === ОПРЕДЕЛЕНИЕ ВСЕХ ПАРАМЕТРОВ ЧЕЛОВЕКА (используем модуль human_params) ===
-    params = HumanParamsDetector.detect_all_params(req.messages)
+    # Преобразуем MessageItem в Dict для совместимости с HumanParamsDetector
+    messages_dicts = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
+    params = HumanParamsDetector.detect_all_params(messages_dicts)
     
     logger.info(f"👤 Параметры: пол={params.gender}, возраст={params.age}({params.age_years}), "
                 f"кожа={params.skin_tone}, волосы={params.hair_color}, тело={params.body_shape}, "
@@ -840,7 +883,6 @@ async def predict(request: Request):
                     mode="world_gen"
                 )
                 # Ответ приходит в формате JSON
-                import json
                 parsed = json.loads(response)
                 response = parsed.get("world", parsed.get("response", ""))
                 logger.info(f"📚 world_gen: сгенерирован мир '{genre}' (тег: '{tag}')")
@@ -915,8 +957,8 @@ async def predict(request: Request):
                             lookup_start = asyncio.get_event_loop().time()
                             knowledge_cache = getattr(local_bot, 'knowledge_cache', None)
                             save_cache_func = None
-                            if knowledge_cache and hasattr(local_bot, 'save_knowledge_cache'):
-                                save_cache_func = local_bot.save_knowledge_cache
+                            if knowledge_cache and hasattr(local_bot, 'save_knowledge_cache'):  # type: ignore[reportAttributeAccessIssue]
+                                save_cache_func = local_bot.save_knowledge_cache  # type: ignore[reportAttributeAccessIssue]
 
                             definition = local_ws.lookup(
                                 word_to_lookup,
@@ -926,7 +968,10 @@ async def predict(request: Request):
                             )
                             if definition:
                                 lookup_result = definition
-                                logger.info(f"✅ lookup('{word_to_lookup}'): '{definition[:50]}...'")
+                                if isinstance(definition, str):
+                                    logger.info(f"✅ lookup('{word_to_lookup}'): '{definition[:50]}...'")
+                                else:
+                                    logger.info(f"✅ lookup('{word_to_lookup}'): '{str(definition)[:50]}...'")
                         except Exception as e:
                             logger.error(f"❌ Ошибка lookup: {e}")
                 # === КОНЕЦ ПАРСИНГА СЛОВ ===
@@ -936,8 +981,9 @@ async def predict(request: Request):
                 # Создаем новый контекст с определением слова
                 modified_messages = list(req.messages)
                 # Вставляем определение перед последним сообщением пользователя
-                modified_messages.insert(-1, MessageItem(message=f"Словарное определение: {lookup_result}", is_own=False))
-                logger.info(f"🔍 Вставляю определение в контекст: '{lookup_result[:50]}...'")
+                result_text = str(lookup_result)
+                modified_messages.insert(-1, MessageItem(message=f"Словарное определение: {result_text}", is_own=False))
+                logger.info(f"🔍 Вставляю определение в контекст: '{result_text[:50]}...'")
                 valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in modified_messages]
             else:
                 valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]

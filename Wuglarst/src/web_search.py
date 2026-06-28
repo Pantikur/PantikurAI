@@ -63,8 +63,8 @@ class SimpleTrainer:
 
 # 📊 Метаданные для тестов (если нужен батч-поиск + анализ)
 class TestResult:
-    def __init__(self, word: str, success: bool, score: float = None, source: str = None,
-                 definition: str = None, weights: Dict = None, time_ms: int = None, error: str = None):
+    def __init__(self, word: str, success: bool, score: float | None = None, source: str | None = None,
+                 definition: str | None = None, weights: Dict[str, Any] | None = None, time_ms: int | None = None, error: str | None = None):
         self.word = word
         self.success = success
         self.score = score
@@ -308,7 +308,7 @@ class WebSearch:
             'error': 'Определения не найдены',
         }
 
-    def _calculate_weights(self, text: str, word: str) -> Dict[str, any]:
+    def _calculate_weights(self, text: str, word: str) -> Dict[str, Any]:
         """
         Рассчитывает веса текста как определения слова.
         Пример: {'word_start': True, 'pattern_is': True, 'clean_text': True, 'good_length': True, ...}
@@ -578,36 +578,19 @@ class WebSearch:
 
         return {'score': score, 'weights': weights}
     
-    def _fetch_with_selenium(self, url: str, params: Dict[str, str], timeout: float = 3.0) -> Optional[str]:
-        if not self.driver:
-            logger.error("❌ _fetch_with_selenium: драйвер не инициализирован")
-            return None
-        try:
-            logger.debug(f"🚀 _fetch_with_selenium: GET {url}")
-            self.driver.get(f"{url}?{'&'.join(f'{k}={v}' for k, v in params.items())}")
-            # 🔧 FIXED: адаптивное ожидание
-            remaining = timeout - 0.1  # запас 0.1 сек на запрос
-            time.sleep(min(1.5, max(0.0, remaining)))
-            return self.driver.page_source
-        except Exception as e:
-            logger.error(f"❌ _fetch_with_selenium: ошибка при загрузке {url}: {e}")
-            return None
-
     def _clean_definition(self, definition: str) -> str:
         """Очистка текста определения от лишних символов и тегов"""
-        # Удаляем [1], [2], [3] и т.д.
         cleaned = re.sub(r'\[\d+\]', '', definition)
-        # Удаляем лишние пробелы и переносы строк
         cleaned = ' '.join(cleaned.split())
         return cleaned.strip()
-    
-    def set_trainer(self, trainer):
+
+    def set_trainer(self, trainer: Any) -> None:
         """Подключает внешнюю систему дообучения (например, логгера в JSON, базу, или ML-модель)."""
         self.trainer = trainer
         logger.info(f"🧠 WebSearch подключен к тренеру: {type(trainer).__name__ if trainer else 'None'}")
 
-    def lookup(self, word: str, timeout: float = 2.5, knowledge_cache: Dict = None,
-               save_knowledge_cache_func=None, return_weights: bool = False) -> Optional[str]:
+    def lookup(self, word: str, timeout: float = 2.5, knowledge_cache: Dict[str, str] | None = None,
+               save_knowledge_cache_func=None, return_weights: bool = False) -> str | Dict[str, Any] | None:
         """
         Основной метод — ищет определение слова, возвращает строку.
 

@@ -571,7 +571,7 @@ class ManipulationEngine:
         
         # Выбор цели с наибольшим количеством упоминаний
         if self.conversation_goals:
-            best_goal = max(self.conversation_goals, key=self.conversation_goals.get)
+            best_goal = max(self.conversation_goals, key=self.conversation_goals.get)  # type: ignore[call-overload]
             if random.random() < 0.3:  # 30% шанс сменить цель
                 self.current_goal = best_goal
         
@@ -633,7 +633,7 @@ class ManipulationEngine:
         if self.last_technique in technique_scores:
             technique_scores[self.last_technique] -= 0.3
         
-        best_technique = max(technique_scores, key=technique_scores.get)
+        best_technique = max(technique_scores, key=technique_scores.get)  # type: ignore[call-overload]
         description = MANIPULATION_TECHNIQUES[best_technique]["description"]
         
         return best_technique, description
@@ -883,7 +883,7 @@ class ManipulationEngine:
         if self.last_domination_technique in scores:
             scores[self.last_domination_technique] -= 0.3
         
-        best = max(scores, key=scores.get)
+        best = max(scores, key=scores.get)  # type: ignore[call-overload]
         
         # Получаем фразу
         if best in dom_techniques:

@@ -262,7 +262,7 @@ class CharacterDetector:
         :return: Словарь с detected character types
         """
         text_lower = text.lower()
-        result = {
+        result: Dict[str, Optional[str]] = {
             "temperament": None,
             "sociality": None,
             "emotionality": None,
@@ -280,7 +280,7 @@ class CharacterDetector:
             "меланхолик": sum(1 for kw in cls.MELANCHOLIC_KEYWORDS if kw in text_lower),
         }
         if max(temperament_scores.values()) > 0:
-            result["temperament"] = max(temperament_scores, key=temperament_scores.get)
+            result["temperament"] = max(temperament_scores, key=temperament_scores.get)  # type: ignore[call-overload]
 
         # === СОЦИАЛЬНОСТЬ ===
         sociality_scores = {
@@ -289,7 +289,7 @@ class CharacterDetector:
             "амбиверт": sum(1 for kw in cls.AMBIVERT_KEYWORDS if kw in text_lower),
         }
         if max(sociality_scores.values()) > 0:
-            result["sociality"] = max(sociality_scores, key=sociality_scores.get)
+            result["sociality"] = max(sociality_scores, key=sociality_scores.get)  # type: ignore[call-overload]
 
         # === ЭМОЦИОНАЛЬНОСТЬ ===
         emotionality_scores = {
@@ -297,7 +297,7 @@ class CharacterDetector:
             "рациональный": sum(1 for kw in cls.RATIONAL_KEYWORDS if kw in text_lower),
         }
         if max(emotionality_scores.values()) > 0:
-            result["emotionality"] = max(emotionality_scores, key=emotionality_scores.get)
+            result["emotionality"] = max(emotionality_scores, key=emotionality_scores.get)  # type: ignore[call-overload]
 
         # === ОТНОШЕНИЕ К МИРУ ===
         worldview_scores = {
@@ -306,7 +306,7 @@ class CharacterDetector:
             "реалист": sum(1 for kw in cls.REALIST_KEYWORDS if kw in text_lower),
         }
         if max(worldview_scores.values()) > 0:
-            result["worldview"] = max(worldview_scores, key=worldview_scores.get)
+            result["worldview"] = max(worldview_scores, key=worldview_scores.get)  # type: ignore[call-overload]
 
         # === ДОМИНИРОВАНИЕ ===
         dominance_scores = {
@@ -314,7 +314,7 @@ class CharacterDetector:
             "сабмиссивный": sum(1 for kw in cls.SUBMISSIVE_KEYWORDS if kw in text_lower),
         }
         if max(dominance_scores.values()) > 0:
-            result["dominance"] = max(dominance_scores, key=dominance_scores.get)
+            result["dominance"] = max(dominance_scores, key=dominance_scores.get)  # type: ignore[call-overload]
 
         # === ОТНОШЕНИЕ К ПЕРЕМЕНАМ ===
         change_scores = {
@@ -322,7 +322,7 @@ class CharacterDetector:
             "прогрессивный": sum(1 for kw in cls.PROGRESSIVE_KEYWORDS if kw in text_lower),
         }
         if max(change_scores.values()) > 0:
-            result["change_attitude"] = max(change_scores, key=change_scores.get)
+            result["change_attitude"] = max(change_scores, key=change_scores.get)  # type: ignore[call-overload]
 
         # === СЛОЖНОСТЬ ===
         complexity_score = sum(1 for kw in cls.COMPLEX_KEYWORDS if kw in text_lower)
@@ -332,7 +332,7 @@ class CharacterDetector:
         return result
 
     @classmethod
-    def get_all_character_types(cls) -> Dict[str, List[str]]:
+    def get_all_character_types(cls) -> Dict[str, Dict[str, List[str]]]:
         """Возвращает все типы характеров с ключевыми словами."""
         return {
             "temperament": {
