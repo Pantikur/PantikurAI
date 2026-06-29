@@ -11,6 +11,10 @@ import json
 from typing import Dict, List, Optional, Set
 from pathlib import Path
 from collections import deque
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Wuglarst.src.web_search import WebSearch  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +107,7 @@ class AutoWebSearch:
         self.project_root = project_root
         
         # Экземпляр WebSearch для поиска
-        self.web_search = None
+        self.web_search: Optional["WebSearch"] = None
         
         # Кэш знаний (слово -> определение)
         self.knowledge_cache: Dict[str, str] = {}
