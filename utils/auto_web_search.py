@@ -267,8 +267,9 @@ class AutoWebSearch:
             
             if result and result != "Слово не найдено в словаре.":
                 self.searched_words.add(word_lower)
-                logger.info(f"✅ Найдено определение для '{word}': {result[:50]}...")
-                return result
+                result_text = str(result) if not isinstance(result, str) else result
+                logger.info(f"✅ Найдено определение для '{word}': {result_text[:50]}...")
+                return result if isinstance(result, str) else str(result)
             else:
                 logger.debug(f"❌ Не найдено определение для '{word}'")
                 self.searched_words.add(word_lower)
