@@ -1,19 +1,47 @@
+version: '3.8'
+
 services:
   chatbot-api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pantikurai/chatbot-api:latest
+    container_name: pantikur-chatbot
     ports:
-      - "${PORT:-8000}:${PORT:-8000}"
+      - "${PORT:-8000}:8000"
     environment:
-      - PORT=${PORT:-8000}
+      - PORT=8000
+      - PYTHONUNBUFFERED=1
+      - HOST=0.0.0.0
+      # Переменные окружения из .env
+      - GIGACHAT_TOKEN=${GIGACHAT_TOKEN:-}
+      - RETRAIN_TOKEN=${RETRAIN_TOKEN:-}
+      # Автообучение из книг
+      - AUTO_BOOK_LEARNING=${AUTO_BOOK_LEARNING:-true}
+      - AUTO_BOOK_LEARNING_CYCLE=${AUTO_BOOK_LEARNING_CYCLE:-10}
+      - AUTO_BOOK_MAX_BOOKS=${AUTO_BOOK_MAX_BOOKS:-5}
+      - AUTO_BOOK_TOPICS=${AUTO_BOOK_TOPICS:-2}
+      # Rate limiting
+      - RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-30}
+      # Автопоиск слов
+      - AUTO_WEB_SEARCH=${AUTO_WEB_SEARCH:-true}
+      - AUTO_WEB_SEARCH_INTERVAL=${AUTO_WEB_SEARCH_INTERVAL:-3600}
+      - AUTO_WEB_SEARCH_BATCH_SIZE=${AUTO_WEB_SEARCH_BATCH_SIZE:-10}
+      - AUTO_WEB_SEARCH_MIN_LENGTH=${AUTO_WEB_SEARCH_MIN_LENGTH:-2}
+      - AUTO_WEB_SEARCH_EXTRACT_DEPTH=${AUTO_WEB_SEARCH_EXTRACT_DEPTH:-1}
+      - AUTO_WEB_SEARCH_MAX_NEW_WORDS=${AUTO_WEB_SEARCH_MAX_NEW_WORDS:-10}
     env_file:
       - .env
     restart: unless-stopped
     volumes:
       - ./logs:/app/logs
       - ./models:/app/models
+      - ./data:/app/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 15s
       timeout: 10s
-      start_period: 30s
+      start_period: 60s
       retries: 10
+    stdin_open: true
+    tty: true
