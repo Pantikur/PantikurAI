@@ -10,15 +10,18 @@ learn_knowledge_from_web.py - Автопоиск определений для �
 Цикл:
   1. Загружает все слова из data/knowledge/learned_words.json
   2. Для каждого слова ищет определение через API
-  3. Сохраняет найденные определения обратно в learned_words.json
-  4. Генерирует обучающие пары (training_pairs.jsonl)
-  5. Объединяет пары с существующими данными
+  3. Извлекает ВСЕ слова из определений (включая предлоги, союзы, местоимения, служебные)
+  4. Повторяет для всех найденных слов (с ограничением глубины)
+  5. Сохраняет найденные определения обратно в learned_words.json
+  6. Генерирует обучающие пары (training_pairs.jsonl)
+  7. Объединяет пары с существующими данными
 
 Запуск:
   python learn_knowledge_from_web.py              # Все слова (GigaChat)
   python learn_knowledge_from_web.py --max 50     # Только первые 50
   python learn_knowledge_from_web.py --selenium   # Через Selenium + Yandex
   python learn_knowledge_from_web.py --retrain    # Сразу после поиска запустить переобучение
+  python learn_knowledge_from_web.py --extract-depth 2  # Извлекать слова 2 уровня глубины
 """
 
 import os
@@ -54,10 +57,71 @@ except ImportError:
     _HAS_WEB_SEARCH = False
 
 
+# ==================== ИЗВЛЕЧЕНИЕ СЛОВ ИЗ ТЕКСТА ====================
+
+# Слова, которые НЕ стоит добавлять (слишком общие/бессмысленные даже для изучения)
+ONLY_EXCLUDE = {
+    '...', '..', '—', '–',
+}
+
+
+def extract_words_from_text(text: str, min_length: int = 2, max_per_text: int = 10) -> List[str]:
+    """
+    Извлекает ВСЕ слова из текста определения, включая:
+    - Существительные, глаголы, прилагательные
+    - Предлоги, союзы, местоимения
+    - Служебные слова
+    
+    Это нужно, чтобы бот понимал НЕ ТОЛЬКО значения слов,
+    но и грамматику, синтаксис, структуру предложений.
+    
+    Правила:
+    - Минимальная длина слова: min_length (по умолчанию 2)
+    - Исключаем только символы-разделители из ONLY_EXCLUDE
+    - Возвращаем не более max_per_text слов
+    
+    Пример:
+        text = "Эгоизм — это стремление к личному благополучию"
+        → ["Эгоизм", "это", "стремление", "к", "личному", "благополучию"]
+    """
+    # Убираем кавычки, тире и другие символы-разделители
+    cleaned = re.sub(r'[—–"\']', ' ', text)
+    
+    # Извлекаем все слова длиной >= min_length
+    words = re.findall(r'\b([а-яА-ЯёЁ]{2,})\b', cleaned)
+    
+    if not words:
+        return []
+    
+    # Нормализуем и фильтруем
+    seen = set()
+    result = []
+    
+    for w in words:
+        w_lower = w.lower()
+        
+        # Пропускаем дубликаты
+        if w_lower in seen:
+            continue
+        
+        # Пропускаем только явные символы-разделители
+        if w_lower in ONLY_EXCLUDE:
+            continue
+        
+        seen.add(w_lower)
+        result.append(w)
+        
+        if len(result) >= max_per_text:
+            break
+    
+    return result
+
+
 # ==================== ПОИСК ЧЕРЕЗ GIGACHAT ====================
 
 def search_word_gigachat(word: str) -> Optional[str]:
-    """Ищет определение слова через GigaChat API."""
+    """Ищет комплексную информацию о слове через GigaChat API:
+    определение, примеры использования, контекст, обстоятельства, уместность."""
     token = os.getenv("GIGACHAT_TOKEN")
     if not token:
         return None
@@ -77,8 +141,13 @@ def search_word_gigachat(word: str) -> Optional[str]:
                     {
                         "role": "user",
                         "content": (
-                            f"Дай краткое, точное определение слова '{word}'. "
-                            f"Только 1-2 предложения, без лишних слов. Формат: Слово - это ..."
+                            f"Дай комплексную информацию о слове '{word}'. "
+                            f"Ответь кратко, структурированно, в одном абзаце:\n"
+                            f"1) Определение: что это такое\n"
+                            f"2) Примеры использования: как и в каких фразах применяют\n"
+                            f"3) Контекст и обстоятельства: когда уместно говорить/писать\n"
+                            f"4) Уместность и стиль: разговорное, официальное, нейтральное и т.д.\n"
+                            f"Используй разделители: 'Определение:', 'Примеры:', 'Контекст:', 'Уместность:'"
                         )
                     }
                 ],
@@ -93,8 +162,6 @@ def search_word_gigachat(word: str) -> Optional[str]:
             data = resp.json()
             if data.get("choices"):
                 text = data["choices"][0]["message"]["content"].strip()
-                # Очистка: убираем самоцитирование слова в начале
-                text = re.sub(r'^' + re.escape(word) + r'\s*-\s*', '', text, flags=re.IGNORECASE)
                 return text.strip()
         else:
             print(f"  [GigaChat] HTTP {resp.status_code}: {resp.text[:100]}")
@@ -140,6 +207,12 @@ def generate_training_pairs_from_words(words: List[Dict]) -> int:
     """
     Генерирует обучающие пары из слов с определениями.
     Возвращает количество созданных пар.
+    
+    Теперь включает:
+    - Определения
+    - Примеры использования
+    - Контекст и обстоятельства
+    - Уместность и стиль
     """
     pairs = []
     now = datetime.now().isoformat()
@@ -151,8 +224,13 @@ def generate_training_pairs_from_words(words: List[Dict]) -> int:
         if not word or not definition:
             continue
         
-        # Различные варианты вопросов
-        questions = [
+        # Проверяем, является ли определение комплексным (с разделителями секций)
+        has_context = "Контекст" in definition or "обстоятел" in definition.lower()
+        has_usage = "Пример" in definition or "например" in definition.lower()
+        has_register = "Уместн" in definition or "стиль" in definition.lower() or "регистр" in definition.lower()
+        
+        # --- Определения ---
+        def_questions = [
             f"что такое {word}?",
             f"какое значение у слова {word}?",
             f"объясни слово {word}",
@@ -165,27 +243,113 @@ def generate_training_pairs_from_words(words: List[Dict]) -> int:
             f"что значит {word}?",
         ]
         
-        # Различные варианты ответов
-        answers = [
-            f"{word} - это {definition}",
+        def_answers = [
+            f"{word} — это {definition.lower()[0].upper() + definition.lower()[1:] if definition else ''}",
             f"Термин '{word}' означает: {definition}",
             f"Слово '{word}' значит: {definition}",
             f"{definition}",
             f"Вот что такое {word}: {definition}",
         ]
         
-        # Генерируем пары (ограничиваем количество на слово)
-        max_pairs = 3
-        for i in range(min(max_pairs, len(questions))):
+        for i in range(min(3, len(def_questions))):
             pair = {
-                "user": questions[i],
-                "bot": answers[i % len(answers)],
+                "user": def_questions[i],
+                "bot": def_answers[i % len(def_answers)],
                 "source": "learn_knowledge_from_web",
                 "word": word,
+                "type": "definition",
                 "difficulty": word_data.get("difficulty_level", "medium"),
                 "generated_at": now,
             }
             pairs.append(pair)
+    
+        # --- Примеры использования ---
+        if has_usage:
+            usage_questions = [
+                f"как использовать слово {word}?",
+                f"приведи примеры слова {word}",
+                f"в каких фразах используют {word}?",
+                f"как правильно сказать с {word}?",
+                f"применение слова {word}",
+            ]
+            usage_answers = [
+                f"Примеры использования слова '{word}': {definition}",
+                f"Вот как применяют '{word}': {definition}",
+            ]
+            for i in range(min(2, len(usage_questions))):
+                pair = {
+                    "user": usage_questions[i],
+                    "bot": usage_answers[i % len(usage_answers)],
+                    "source": "learn_knowledge_from_web",
+                    "word": word,
+                    "type": "usage",
+                    "difficulty": word_data.get("difficulty_level", "medium"),
+                    "generated_at": now,
+                }
+                pairs.append(pair)
+        
+        # --- Контекст и обстоятельства ---
+        if has_context:
+            context_questions = [
+                f"в каком контексте используют {word}?",
+                f"когда уместно говорить {word}?",
+                f"при каких обстоятельствах используют {word}?",
+                f"когда можно сказать {word}?",
+                f"в каких ситуациях уместен {word}?",
+            ]
+            context_answers = [
+                f"Слово '{word}' уместно в контексте: {definition}",
+                f"Контекст употребления '{word}': {definition}",
+            ]
+            for i in range(min(2, len(context_questions))):
+                pair = {
+                    "user": context_questions[i],
+                    "bot": context_answers[i % len(context_answers)],
+                    "source": "learn_knowledge_from_web",
+                    "word": word,
+                    "type": "context",
+                    "difficulty": word_data.get("difficulty_level", "medium"),
+                    "generated_at": now,
+                }
+                pairs.append(pair)
+        
+        # --- Уместность и стиль ---
+        if has_register:
+            register_questions = [
+                f"какой стиль у слова {word}?",
+                f"это слово формальное или разговорное?",
+                f"какой регистр у слова {word}?",
+                f"уместно ли использовать {word} в официальной речи?",
+                f"подходит ли {word} для делового общения?",
+            ]
+            register_answers = [
+                f"Стиль и уместность слова '{word}': {definition}",
+                f"Регистр '{word}': {definition}",
+            ]
+            for i in range(min(2, len(register_questions))):
+                pair = {
+                    "user": register_questions[i],
+                    "bot": register_answers[i % len(register_answers)],
+                    "source": "learn_knowledge_from_web",
+                    "word": word,
+                    "type": "register",
+                    "difficulty": word_data.get("difficulty_level", "medium"),
+                    "generated_at": now,
+                }
+                pairs.append(pair)
+        
+        # --- Комплексный ответ (если определение комплексное) ---
+        if has_context or has_usage or has_register:
+            complex_pair = {
+                "user": f"расскажи всё о слове {word} — значение, примеры, контекст, уместность",
+                "bot": definition,
+                "source": "learn_knowledge_from_web",
+                "word": word,
+                "type": "comprehensive",
+                "difficulty": word_data.get("difficulty_level", "medium"),
+                "generated_at": now,
+            }
+            pairs.append(complex_pair)
     
     if not pairs:
         print("[WARN] Не сгенерировано ни одной пары - нет слов с определениями")
@@ -236,6 +400,7 @@ def update_knowledge_stats(words: List[Dict]):
         "difficulty_distribution": {"simple": 0, "medium": 0, "complex": 0},
         "with_definition": 0,
         "without_definition": 0,
+        "pair_types": {"definition": 0, "usage": 0, "context": 0, "register": 0, "comprehensive": 0},
     }
     
     for w in words:
@@ -245,6 +410,14 @@ def update_knowledge_stats(words: List[Dict]):
         
         if w.get("definition", ""):
             stats["with_definition"] += 1
+            # Подсчёт типов пар по содержимому определения
+            def_text = w.get("definition", "").lower()
+            if "пример" in def_text or "например" in def_text:
+                stats["pair_types"]["usage"] += 1
+            if "контекст" in def_text or "обстоятел" in def_text:
+                stats["pair_types"]["context"] += 1
+            if "уместн" in def_text or "стиль" in def_text or "регистр" in def_text:
+                stats["pair_types"]["register"] += 1
         else:
             stats["without_definition"] += 1
     
@@ -281,6 +454,41 @@ def print_report(words: List[Dict]):
     print(f"\nРаспределение по сложности:")
     for d, c in diff_counts.items():
         print(f"  {d:10s}: {c}")
+    
+    # Распределение по типам пар
+    if stats.get("pair_types"):
+        print(f"\nРаспределение по типам знаний:")
+        type_labels = {
+            "definition": "определения",
+            "usage": "примеры использования",
+            "context": "контекст/обстоятельства",
+            "register": "уместность/стиль",
+            "comprehensive": "комплексные",
+        }
+        for t, c in stats["pair_types"].items():
+            label = type_labels.get(t, t)
+            if c > 0:
+                print(f"  {label:30s}: {c}")
+    
+    # Глубина знаний
+    depth_counts = {"base": 0, "depth1": 0, "depth2": 0, "depth3+": 0}
+    for w in words:
+        d = w.get("depth", 0)
+        if d == 0 or d is None:
+            depth_counts["base"] += 1
+        elif d == 1:
+            depth_counts["depth1"] += 1
+        elif d == 2:
+            depth_counts["depth2"] += 1
+        else:
+            depth_counts["depth3+"] += 1
+    
+    if any(v > 0 for k, v in depth_counts.items() if k != "base"):
+        print(f"\nРаспределение по глубине знаний:")
+        print(f"  {'Базовые (исходные)':30s}: {depth_counts['base']}")
+        print(f"  {'Глубина 1 (из определений)':30s}: {depth_counts['depth1']}")
+        print(f"  {'Глубина 2 (из найденных слов)':30s}: {depth_counts['depth2']}")
+        print(f"  {'Глубина 3+':30s}: {depth_counts['depth3+']}")
     
     # Топ-10 самых используемых слов
     sorted_words = sorted(words, key=lambda x: x.get("usage_count", 0), reverse=True)
@@ -321,6 +529,12 @@ def main():
                         help="Задержка между запросами (сек)")
     parser.add_argument("--batch", type=int, default=5,
                         help="Размер батча: после каждого N слов сохраняется промежуточный результат")
+    parser.add_argument("--extract-depth", type=int, default=1,
+                        help="Глубина извлечения слов из определений (1 = только из первых определений, 2 = и из найденных слов тоже)")
+    parser.add_argument("--max-new-words", type=int, default=10,
+                        help="Максимум новых слов для извлечения из одного определения")
+    parser.add_argument("--min-word-length", type=int, default=2,
+                        help="Минимальная длина слова для извлечения (2 = включая короткие предлоги/союзы)")
     
     args = parser.parse_args()
     
@@ -382,6 +596,11 @@ def main():
     print("\n[3/5] Подготовка списка слов...")
     words_to_process = [w for w in words if w.get("word", "")]
     
+    # Создаём словарь для быстрого доступа по слову (по lowercase)
+    words_dict = {}
+    for w in words_to_process:
+        words_dict[w["word"].lower()] = w
+    
     if args.max > 0:
         words_to_process = words_to_process[:args.max]
     
@@ -391,17 +610,36 @@ def main():
         print("[INFO] Нечего обрабатывать")
         return
     
-    # 4. Ищем определения
-    print(f"\n[4/5] Поиск определений...")
-    print(f"{'N':>4} | {'Слово':<30} | {'Статус':<8} | Определение")
+    # 4. Ищем определения (с извлечением новых слов)
+    print(f"\n[4/5] Поиск определений (с извлечением новых слов)...")
+    print(f"{'Глуб':>4} | {'Слово':<30} | {'Статус':<8} | Определение")
     print("-" * 80)
     
     found_count = 0
     error_count = 0
     batch_num = 0
+    extracted_new_words = set()  # слова, извлечённые из определений
+    newly_added_words = []  # слова, добавленные в обработку
     
-    for i, word_data in enumerate(words_to_process, 1):
+    # Очередь на обработку (используем deque для эффективности)
+    from collections import deque
+    processing_queue = deque(words_to_process)
+    
+    # Отслеживаем, какие слова уже обработаны
+    processed_words = set()
+    
+    while processing_queue:
+        word_data = processing_queue.popleft()
         word = word_data["word"]
+        
+        # Пропускаем уже обработанные
+        if word.lower() in processed_words:
+            continue
+        processed_words.add(word.lower())
+        
+        # Определяем глубину этого слова
+        word_depth = word_data.get("depth", 0) or 0
+        
         status = "?"
         
         if args.selenium and search_instance:
@@ -416,20 +654,60 @@ def main():
             word_data["source"] = source_name
             status = "OK"
             found_count += 1
+            
+            # === ИЗВЛЕЧЕНИЕ НОВЫХ СЛОВ ИЗ ОПРЕДЕЛЕНИЯ ===
+            if word_depth < args.extract_depth:
+                new_words = extract_words_from_text(
+                    definition,
+                    min_length=args.min_word_length,
+                    max_per_text=args.max_new_words
+                )
+                
+                added = 0
+                for nw in new_words:
+                    nw_lower = nw.lower()
+                    # Пропускаем если:
+                    # - уже в processed_words
+                    # - уже в processing_queue
+                    # - уже в extracted_new_words
+                    if (nw_lower in processed_words or 
+                        nw_lower in extracted_new_words or
+                        any(w["word"].lower() == nw_lower for w in processing_queue)):
+                        continue
+                    
+                    # Добавляем новое слово в базу
+                    new_word_data = {
+                        "word": nw,
+                        "depth": word_depth + 1,
+                        "extracted_from": word,
+                        "definition": "",
+                        "difficulty_level": "medium",
+                        "usage_count": 0,
+                    }
+                    
+                    # Добавляем в основной список слов
+                    words.append(new_word_data)
+                    # Добавляем в очередь на обработку
+                    processing_queue.append(new_word_data)
+                    extracted_new_words.add(nw_lower)
+                    newly_added_words.append(nw)
+                    added += 1
+                
+                if added > 0:
+                    print(f"  [EXTRACT] Из '{word}' (глубина {word_depth}) извлечено {added} новых слов: {', '.join(new_words[:5])}...")
         else:
             status = "FAIL"
             error_count += 1
         
-        # Печатаем прогресс каждые N слов
-        if i % 20 == 1 or i == len(words_to_process):
-            print(f"[PROGRESS] {i}/{len(words_to_process)} | "
-                  f"OK: {found_count} | FAIL: {error_count}")
+        # Печатаем прогресс
+        queue_size = len(processing_queue)
+        print(f"[{word_data.get('depth', 0)}] {word_data['word']:<30s} {status:<8s} | {definition[:60] if definition else 'N/A'}...")
         
         # Промежуточное сохранение каждые N слов
-        if args.batch > 0 and i % args.batch == 0:
+        if args.batch > 0 and (found_count + error_count) % args.batch == 0:
             save_words(words)
             batch_num += 1
-            print(f"[SAVE] Промежуточное сохранение (батч #{batch_num})")
+            print(f"[SAVE] Промежуточное сохранение (батч #{batch_num}, очередь: {queue_size})")
         
         # Задержка между запросами
         time.sleep(args.delay)
@@ -450,10 +728,17 @@ def main():
     
     # Итоговая статистика этого запуска
     print("\n[SUMMARY] Статистика запуска:")
-    print(f"  Обработано слов:      {len(words_to_process)}")
+    print(f"  Обработано слов:      {len(processed_words)}")
     print(f"  Найдено определений:  {found_count}")
     print(f"  Не найдено:           {error_count}")
     print(f"  Создано пар:          {pairs_count}")
+    
+    if newly_added_words:
+        print(f"\n[NEW] Извлечено {len(newly_added_words)} новых слов из определений:")
+        for nw in newly_added_words[:20]:
+            print(f"    - {nw}")
+        if len(newly_added_words) > 20:
+            print(f"    ... и ещё {len(newly_added_words) - 20}")
     
     if pairs_count > 0:
         print(f"\n[INFO] Для переобучения запустите:")

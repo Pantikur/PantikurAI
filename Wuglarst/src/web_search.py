@@ -220,8 +220,17 @@ class WebSearch:
         all_dict_results = []
         search_queries = []
 
-        # 🔧 Упрощённые запросы: только один популярный паттерн
-        query_variants = [f'{word} — это']
+        # 🔧 Расширенные запросы: определение + контекст + уместность
+        query_variants = [
+            f'{word} — это',
+            f'{word} определение',
+            f'{word} примеры использования',
+            f'{word} контекст употребления',
+            f'{word} уместно',
+            f'{word} стиль речи',
+            f'{word} регистр',
+            f'{word} значение и употребление',
+        ]
 
         # 🔧 Только Яндекс (быстрее и надёжнее, чем Google/Yandex вместе)
         for engine, config in [('yandex', self.yandex_config)]:
@@ -257,9 +266,11 @@ class WebSearch:
                     if text and len(text) > 10:
                         weights_info = self._calculate_weights(text, word)
                         score = weights_info['total_score']
+                        category = self._categorize_snippet(text, word)
                         all_definitions.append({
                             'text': text, 'source': engine,
                             'weights': weights_info['weights'], 'score': score,
+                            'category': category,
                         })
 
                 # 🔍 Ищем ссылки на словари
@@ -283,18 +294,61 @@ class WebSearch:
 
         if all_definitions:
             sorted_defs = sorted(all_definitions, key=lambda x: x['score'], reverse=True)
-            top_definitions = []
-            for d in sorted_defs[:2]:
-                top_definitions.append({
+            
+            # Разделяем по категориям
+            definitions = []
+            usage_examples = []
+            contexts = []
+            register_info = []
+            
+            for d in sorted_defs:
+                cat = d.get('category', 'definition')
+                item = {
                     'text': d['text'], 'source': d['source'],
                     'score': round(d['score'], 2), 'weights': d['weights'],
                     'explanation': self._explain_weights(d['weights'], d['score']),
-                })
-
-            return {
-                'word': word, 'status': 'success', 'definitions': top_definitions,
-                'dictionary_sources': all_dict_results[:3], 'search_queries': search_queries,
+                }
+                if cat == 'definition':
+                    definitions.append(item)
+                elif cat == 'usage':
+                    usage_examples.append(item)
+                elif cat == 'context':
+                    contexts.append(item)
+                elif cat == 'register':
+                    register_info.append(item)
+                elif cat == 'circumstance':
+                    contexts.append(item)
+            
+            # Берём топ-1 определение, топ-3 примера использования, топ-2 контекста, топ-1 информации о регистре
+            top_result = {
+                'definitions': definitions[:1],
+                'usage_examples': usage_examples[:3],
+                'contexts': contexts[:2],
+                'register_info': register_info[:1],
+                'dictionary_sources': all_dict_results[:3],
+                'search_queries': search_queries,
                 'total_definitions_found': len(all_definitions),
+            }
+
+            # Если нет явных определений, берём первое подходящее
+            if not top_result['definitions'] and definitions:
+                top_result['definitions'] = [definitions[0]]
+            
+            # Если нет примеров использования, берём из определений те, что содержат примеры
+            if not top_result['usage_examples']:
+                for d in sorted_defs:
+                    text = d['text']
+                    if any(kw in text.lower() for kw in ['например', 'к примеру', 'как правило', 'включает', 'состоит из', 'применяется']):
+                        top_result['usage_examples'].append({
+                            'text': d['text'], 'source': d['source'],
+                            'score': round(d['score'], 2), 'weights': d['weights'],
+                        })
+                        if len(top_result['usage_examples']) >= 3:
+                            break
+            
+            return {
+                'word': word, 'status': 'success',
+                **top_result,
             }
 
         # 🔧 FIXED: добавлено явное 'error' при отсутствии определений
@@ -316,7 +370,7 @@ class WebSearch:
         text_lower = text.lower()
         word_lower = word.lower()
         weights = {}
-
+        
         # 1. Слово в начале
         weights['word_start'] = text_lower.strip().startswith(word_lower)
 
@@ -523,6 +577,126 @@ class WebSearch:
         logger.info(f"📊 run_test: завершено за {total_time:.1f} сек | {len(results)} слов")
         return results
 
+    def _categorize_snippet(self, text: str, word: str) -> str:
+        """
+        Определяет категорию текста:
+        - 'definition' — прямое определение (слово — это ...)
+        - 'usage' — примеры использования, как применять
+        - 'context' — контекст/обстоятельства употребления
+        - 'register' — информация о стиле, уместности, регистре
+        - 'definition' (fallback)
+        """
+        text_lower = text.lower()
+        
+        # Регистрация / уместность / стиль
+        register_keywords = [
+            'стиль речи', 'разговорн', 'официал', 'деловой стиль', 'нейтральн',
+            'литературн', 'простореч', 'жаргон', 'профессион', 'термин',
+            'уместн', 'неуместн', 'подходит', 'не подходит', 'в общении',
+            'в разговоре', 'в тексте', 'в письме', 'в речи',
+            'в официал', 'в неформал', 'в повседнев', 'в научн',
+            'степень формальности', 'уровень вежливости', 'контекст уместности',
+        ]
+        if any(kw in text_lower for kw in register_keywords):
+            return 'register'
+        
+        # Контекст / обстоятельства
+        context_keywords = [
+            'контекст', 'обстоятел', 'в ситуации', 'при этом', 'в случае',
+            'когда используют', 'когда говорят', 'когда пишут',
+            'применяется в', 'употребляется в', 'используется при',
+            'в зависимости от', 'в определённ', 'в определенных',
+            'ситуации', 'окружени', 'поле', 'сфера', 'область',
+        ]
+        if any(kw in text_lower for kw in context_keywords):
+            return 'context'
+        
+        # Примеры использования
+        usage_keywords = [
+            'например', 'к примеру', 'как пример', 'приведём',
+            'скажем', 'возьмём', 'допустим', 'к примеру',
+            'часто говорят', 'обычно говорят', 'применяется',
+            'используется для', 'служит для', 'применяют для',
+            'включает', 'состоит из', 'выражает', 'означает что',
+        ]
+        if any(kw in text_lower for kw in usage_keywords):
+            return 'usage'
+        
+        # Определение (по умолчанию)
+        def_keywords = [
+            '— это', 'означает', 'обозначает', 'значит',
+            'подразумевает', 'определяет', 'термин',
+            'слово означает', 'понятие',
+        ]
+        if any(kw in text_lower for kw in def_keywords):
+            return 'definition'
+        
+        # Fallback — определение, если содержит слово и похоже на определение
+        word_lower = word.lower()
+        if text_lower.strip().startswith(word_lower):
+            return 'definition'
+        
+        return 'definition'
+    
+    def _build_comprehensive_answer(self, word: str, result: Dict) -> str:
+        """
+        Формирует комплексный ответ о слове:
+        1. Определение
+        2. Примеры использования
+        3. Контекст и обстоятельства употребления
+        4. Уместность, стиль, регистр
+        """
+        parts = []
+        
+        # 1. Определение
+        definitions = result.get('definitions', [])
+        if definitions:
+            def_text = self._clean_definition(definitions[0]['text'])
+            parts.append(f"Определение: {word} — это {def_text.lower()[0].upper() + def_text.lower()[1:]}")
+        
+        # 2. Примеры использования
+        usage = result.get('usage_examples', [])
+        if usage:
+            examples = []
+            for u in usage[:3]:
+                cleaned = self._clean_definition(u['text'])
+                # Берём первое предложение или весь короткий текст
+                sentences = re.split(r'[.!?]', cleaned)
+                sentences = [s.strip() for s in sentences if s.strip()]
+                examples.append(sentences[0] if sentences else cleaned)
+            parts.append(f"Примеры использования: {'; '.join(examples)}")
+        
+        # 3. Контекст и обстоятельства
+        contexts = result.get('contexts', [])
+        if contexts:
+            ctx_texts = []
+            for c in contexts[:2]:
+                cleaned = self._clean_definition(c['text'])
+                sentences = re.split(r'[.!?]', cleaned)
+                sentences = [s.strip() for s in sentences if s.strip()]
+                ctx_texts.append(sentences[0] if sentences else cleaned)
+            parts.append(f"Контекст и обстоятельства: {'; '.join(ctx_texts)}")
+        
+        # 4. Уместность, стиль, регистр
+        register = result.get('register_info', [])
+        if register:
+            reg_texts = []
+            for r in register[:1]:
+                cleaned = self._clean_definition(r['text'])
+                sentences = re.split(r'[.!?]', cleaned)
+                sentences = [s.strip() for s in sentences if s.strip()]
+                reg_texts.append(sentences[0] if sentences else cleaned)
+            parts.append(f"Уместность и стиль: {'; '.join(reg_texts)}")
+        
+        if not parts:
+            # Fallback: просто первое определение
+            if definitions:
+                cleaned = self._clean_definition(definitions[0]['text'])
+                return cleaned
+            return f"Слово '{word}' — подробная информация не найдена."
+        
+        return ' '.join(parts)
+    
     def _calculate_relevance(self, text: str, word: str) -> Dict[str, Any]:
         """
         Рассчитывает релевантность текста как определения слова (альтернативный/резервный метод).
@@ -606,7 +780,7 @@ class WebSearch:
         - или dict с метаданными (если `return_weights=True`) — для анализа
         """
         logger.info(f"📥 lookup('{word}') начал")
-
+        
         # 🔁 1. Ищем в temp_cache
         if word in self.temp_cache:
             cached = self.temp_cache[word]
@@ -656,7 +830,7 @@ class WebSearch:
             return None
 
         # Обработка результата
-        if result['status'] == 'success' and result['definitions']:
+        if result['status'] == 'success' and result.get('definitions'):
             top_def = result['definitions'][0]
 
             # 🔁 Отправляем в тренера
@@ -674,29 +848,27 @@ class WebSearch:
                 except Exception as e:
                     logger.warning(f"⚠️ trainer.log_success failed: {e}")
 
-            # Очистка и укорачивание
-            cleaned = self._clean_definition(top_def['text'])
-            sentences = re.split(r'[.!?]', cleaned)
-            sentences = [s.strip() for s in sentences if s.strip()]
-            short_def = '. '.join(sentences[:2]) + '.' if len(sentences) > 1 else (sentences[0] if sentences else cleaned)
+            # Формируем комплексный ответ
+            full_answer = self._build_comprehensive_answer(word, result)
 
             # Сохраняем в кэши
-            self.temp_cache[word] = short_def.strip()
+            self.temp_cache[word] = full_answer
             if knowledge_cache and save_knowledge_cache_func:
-                knowledge_cache[word] = short_def.strip()
+                knowledge_cache[word] = full_answer
                 save_knowledge_cache_func()
 
-            logger.info(f"✅ lookup('{word}'): найдено определение за {elapsed:.1f} сек → '{short_def[:80]}...'")
+            logger.info(f"✅ lookup('{word}'): комплексный ответ за {elapsed:.1f} сек → '{full_answer[:80]}...'")
 
             # Возвращаем по запросу
             if return_weights:
                 return {
-                    'text': short_def.strip(),
+                    'text': full_answer,
                     'weights': top_def['weights'],
                     'score': round(top_def['score'], 2),
                     'source': top_def['source'],
+                    'structured': result,  # полная структура
                 }
-            return short_def.strip()
+            return full_answer
 
         # Сохраняем как "не найдено"
         logger.info(f"ℹ️ lookup('{word}'): не найдено, сохранено в temp_cache")

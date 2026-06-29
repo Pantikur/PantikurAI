@@ -166,7 +166,9 @@ WEBSH_LOCK = threading.Lock()  # Защита при доступе к web_searc
 AUTO_WEB_SEARCH_ENABLED = os.getenv("AUTO_WEB_SEARCH", "true").lower() in ("true", "1", "yes")
 AUTO_WEB_SEARCH_INTERVAL = int(os.getenv("AUTO_WEB_SEARCH_INTERVAL", "3600"))  # секунд (по умолчанию 1 час)
 AUTO_WEB_SEARCH_BATCH_SIZE = int(os.getenv("AUTO_WEB_SEARCH_BATCH_SIZE", "10"))  # слов за цикл
-AUTO_WEB_SEARCH_MIN_LENGTH = int(os.getenv("AUTO_WEB_SEARCH_MIN_LENGTH", "5"))  # минимальная длина слова
+AUTO_WEB_SEARCH_MIN_LENGTH = int(os.getenv("AUTO_WEB_SEARCH_MIN_LENGTH", "2"))  # минимальная длина слова
+AUTO_WEB_SEARCH_EXTRACT_DEPTH = int(os.getenv("AUTO_WEB_SEARCH_EXTRACT_DEPTH", "1"))  # глубина извлечения слов
+AUTO_WEB_SEARCH_MAX_NEW_WORDS = int(os.getenv("AUTO_WEB_SEARCH_MAX_NEW_WORDS", "10"))  # макс новых слов из определения
 
 # === Импорт ChatBot с резервом ===
 def import_chatbot():
@@ -337,8 +339,14 @@ async def lifespan(app: FastAPI):
                                     interval_seconds=AUTO_WEB_SEARCH_INTERVAL,
                                     batch_size=AUTO_WEB_SEARCH_BATCH_SIZE,
                                     min_word_length=AUTO_WEB_SEARCH_MIN_LENGTH,
+                                    extract_depth=AUTO_WEB_SEARCH_EXTRACT_DEPTH,
+                                    max_new_words_per_def=AUTO_WEB_SEARCH_MAX_NEW_WORDS,
                                     project_root=str(BASE_DIR)
                                 )
+                                
+                                # Подключаем web_search (если инициализирован)
+                                with WEBSH_LOCK:
+                                    controller.web_search = web_search
                                 
                                 # Запускаем в отдельном потоке
                                 loop = asyncio.get_event_loop()
