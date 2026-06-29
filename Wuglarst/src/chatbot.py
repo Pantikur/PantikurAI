@@ -25,6 +25,7 @@ from .special_cognitive_abilities import SpecialCognitiveEngine
 from .imaginative_abilities import ImaginationEngine, ImaginativeAbility
 from .professions import ProfessionEngine
 from .manipulation import ManipulationEngine
+from .context_analyzer import ContextAnalyzer
 import subprocess
 import threading
 import logging
@@ -253,6 +254,11 @@ class ChatBot:
         self.manipulation_engine = ManipulationEngine()
         self.manipulation_enabled = True
         logging.info("🎭 Манипуляция и личные цели (харизма + влияние) инициализированы")
+
+        # === Анализ контекста и логики диалога ===
+        self.context_analyzer = ContextAnalyzer()
+        self.context_enabled = True
+        logging.info("📊 Анализ контекста и логики диалога инициализирован")
 
     def _load_knowledge_cache(self):
         if os.path.exists(self.knowledge_file):
@@ -503,6 +509,35 @@ class ChatBot:
             logging.warning("⏱ generate_response: пустой last_user_msg → fallback")
             return json.dumps({"response": "Я здесь! 🤖"}, ensure_ascii=False)
 
+        # === 📊 АНАЛИЗ КОНТЕКСТА ===
+        context_analysis = None
+        context_hint = ""
+        if self.context_enabled:
+            try:
+                context_analysis = self.context_analyzer.analyze_context(messages)
+                self.context_analyzer.update_memory(context_analysis)
+                
+                # Формируем подсказку для промпта
+                topics = context_analysis.get("topics", [])
+                emotion = context_analysis.get("emotion_trend", {})
+                logic = context_analysis.get("logic_summary", {})
+                suggestions = context_analysis.get("suggestions", [])
+                
+                if topics:
+                    topic_names = [t["topic"] for t in topics[:3]]
+                    context_hint += f"📌 Темы диалога: {', '.join(topic_names)}\n"
+                if emotion.get("dominant"):
+                    context_hint += f"🎭 Эмоциональный фон: {emotion['dominant']} (тренд: {emotion.get('trend', 'N/A')})\n"
+                if logic.get("type"):
+                    context_hint += f"🧠 Логический тип: {logic['type']}\n"
+                if suggestions:
+                    context_hint += "💡 Рекомендации: " + "; ".join(suggestions[:2]) + "\n"
+                
+                logging.info(f"📊 Context analysis complete: {len(topics)} topics, emotion={emotion.get('dominant')}")
+            except Exception as e:
+                logging.warning(f"⚠️ Ошибка анализа контекста: {e}")
+                context_analysis = None
+
         # === Режим narrative ===
         if mode == "narrative":
             start_mode = time.time()
@@ -542,6 +577,7 @@ class ChatBot:
             prompt = (
                 "Ты — мастер вселенных. Создаёшь глубокие, логичные и атмосферные миры.\n"
                 "Формат:\nНазвание:\n - ...\nЗаконы общества:\n - ...\nТрадиции:\n - ...\n\n"
+                f"{context_hint}"
                 f"{manipulation_hint}"
                 f"История диалога:\n{context_str}\nБот:"
             )
@@ -908,6 +944,7 @@ class ChatBot:
                 "6. Используй прошествующее время: " + gender_prompts["narrative_hint"] + "\n"
                 f"\n{gender_prompts['address_hint']}\n"
                 "Стиль:\n" + "\n".join(f"   - {tip}" for tip in gender_prompts["style_tips"]) +
+                f"\n\nКонтекст диалога:\n{context_hint}"
                 f"{manipulation_hint}"
                 f"\n\nИстория диалога:\n{context_str}\n\nБот:"
             )
@@ -1284,6 +1321,13 @@ class ChatBot:
                     logging.warning(f"⚠️ Ошибка модулей (rpg): {e}")
 
             logging.info(f"⏱ generate_response (rpg) total: {time.time() - start_mode:.2f} сек")
+
+            # === 📊 ДОБАВЛЯЕМ КОНТЕКСТ В RPG ===
+            rpg_context_hint = ""
+            if context_analysis and context_hint:
+                rpg_context_hint = f"\n\n📊 Контекст диалога:\n{context_hint}"
+                # Добавляем контекст в response_extra
+                response_extra = rpg_context_hint + response_extra
 
             # === УЧИТЫВАЕМ ПОЛА В RPG ===
             gender_hint = ""
