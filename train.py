@@ -23,6 +23,7 @@ EMBEDDING_DIM = 128
 HIDDEN_DIM = 512
 NUM_LAYERS = 2
 LEARNING_RATE = 0.0005
+MAX_GRAD_NORM = 1.0  # Gradient clipping для стабильности
 
 os.makedirs("models", exist_ok=True)
 
@@ -60,18 +61,52 @@ def clean_text(text):
     if not isinstance(text, str) or not text.strip():
         return ""
     text = text.lower()
-    text = re.sub(r'[^а-яёa-z0-9\s?!,.]', '', text)
+    text = re.sub(r'[^а-яёa-z0-9\s?!,.\-:;]', '', text)
     text = re.sub(r'\s+', ' ', text).strip()
 
     replacements = {
+        # Разделённые слова
         "яне": "я не", "тыне": "ты не", "онне": "он не", "она нее": "она не",
         "мыне": "мы не", "выне": "вы не", "онине": "они не",
         "чтобы": "чтобы", "потомучто": "потому что", "вотже": "вот же",
         "нука": "ну ка", "давайка": "давай ка", "подожди": "подожди",
         "ага": "ага", "угу": "угу", "ии": "и", "ещё": "ещё", "конечно": "конечно",
         "блин": "блин", "чёрт": "чёрт", "класс": "класс", "прикольно": "прикольно",
-        "незнаю": "не знаю", "хз": "не знаю", "ок": "окей", "спс": "спасибо",
-        "прив": "привет", "пока": "пока", "здарова": "здравствуй", "здравствуйте": "здравствуйте"
+        # Сленг и сокращения
+        "незнаю": "не знаю", "не могу": "не могу", "хз": "не знаю",
+        "ок": "окей", "спс": "спасибо", "прив": "привет", "пока": "пока",
+        "здарова": "здравствуй", "здравствуйте": "здравствуйте",
+        "как дела": "как дела", "что делаешь": "что делаешь", "чем занят": "чем занят",
+        "извини": "извини", "извиняй": "извини", "сорри": "извини",
+        "спасиб": "спасибо", "благодар": "спасибо",
+        "да": "да", "нет": "нет", "может": "может быть", "можно": "можно",
+        "хорошо": "хорошо", "отлично": "отлично", "замечательно": "замечательно",
+        "плохо": "плохо", "грустно": "грустно", "весело": "весело",
+        "люблю": "люблю", "нрав": "нравится", "хочу": "хочу", "надо": "надо",
+        "нужно": "нужно", "должен": "должен", "могу": "могу", "умею": "умею",
+        "думаю": "думаю", "считаю": "считаю", "верю": "верю",
+        "знаю": "знаю", "помню": "помню", "забыл": "забыл",
+        "понял": "понял", "понимаю": "понимаю", "не понимаю": "не понимаю",
+        "скучно": "скучно", "интересно": "интересно", "странно": "странно",
+        "важно": "важно", "важное": "важное", "главное": "главное",
+        "потом": "потом", "сейчас": "сейчас", "вчера": "вчера", "завтра": "завтра",
+        "сегодня": "сегодня", "утро": "утром", "вечер": "вечером", "ночь": "ночью",
+        "день": "днём", "всегда": "всегда", "никогда": "никогда", "часто": "часто",
+        "редко": "редко", "иногда": "иногда", "вдруг": "вдруг", "вдруг": "вдруг",
+        "может быть": "может быть", "возможно": "возможно", "наверное": "наверное",
+        "конечно": "конечно", "точно": "точно", "правда": "правда",
+        "серьёзно": "серьёзно", "честно": "честно", "искренне": "искренне",
+        "рад": "рад", "счастлив": "счастлив", "доволен": "доволен",
+        "злюсь": "злюсь", "раздражён": "раздражён", "бесит": "бесит",
+        "боюсь": "боюсь", "пугаюсь": "пугаюсь", "тревожусь": "тревожусь",
+        "надеюсь": "надеюсь", "жду": "жду", "скучаю": "скучаю",
+        "тоскую": "тоскую", "грущу": "грущу", "плачу": "плачу",
+        "смеюсь": "смеюсь", "радуюсь": "радуюсь", "люблю": "люблю",
+        "уважаю": "уважаю", "доверяю": "доверяю", "ненавижу": "ненавижу",
+        "разочарован": "разочарован", "восторжен": "восторжен",
+        # Повторяющиеся слова (устранение)
+        "очень очень": "очень", "самый самый": "самый",
+        "очень очень очень": "очень",
     }
     for wrong, right in replacements.items():
         text = text.replace(wrong, right)
@@ -289,11 +324,16 @@ def load_model_weights(model, path, device):
 def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
     model.train()
     criterion = nn.CrossEntropyLoss(ignore_index=0)  # игнорируем <PAD>
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)  # weight decay для регуляризации
+    
+    # Cosine annealing scheduler — плавно снижает lr
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-6)
+    
     # Mixed Precision Training для GPU (ускоряет обучение в 1.5-2x)
     use_amp = device.type == "cuda"
     scaler = torch.cuda.amp.GradScaler() if use_amp else None
+    
+    best_loss = float('inf')
     
     for epoch in range(epochs):
         total_loss = 0
@@ -312,19 +352,39 @@ def train_model(model, dataloader, epochs, device, lr=LEARNING_RATE):
                 
                 # Mixed precision backward pass
                 scaler.scale(loss).backward()
+                
+                # Gradient clipping — предотвращает взрыв градиентов
+                scaler.unscale_(optimizer)
+                torch.nn.utils.clip_grad_norm_(model.parameters(), MAX_GRAD_NORM)
+                
                 scaler.step(optimizer)
                 scaler.update()
             else:
                 logits = model(input_ids, mask=mask)
                 loss = criterion(logits.view(-1, model.vocab_size), labels.view(-1))
                 loss.backward()
+                
+                # Gradient clipping
+                torch.nn.utils.clip_grad_norm_(model.parameters(), MAX_GRAD_NORM)
+                
                 optimizer.step()
 
             total_loss += loss.item()
 
         avg_loss = total_loss / len(dataloader)
+        scheduler.step()  # Снижаем lr
+        
+        # Получаем текущий lr
+        current_lr = optimizer.param_groups[0]['lr']
+        
         gpu_info = f" | GPU: {torch.cuda.memory_allocated() / 1024**2:.0f} MB" if device.type == "cuda" else ""
-        safe_print(f"[INFO] Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}{gpu_info}")
+        
+        # Сохраняем лучшую модель
+        if avg_loss < best_loss:
+            best_loss = avg_loss
+            torch.save(model.state_dict(), MODEL_PATH + ".best")
+        
+        safe_print(f"[INFO] Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}, LR: {current_lr:.6f}, Best: {best_loss:.4f}{gpu_info}")
 
 
 # === Главная функция ===

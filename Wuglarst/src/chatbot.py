@@ -126,15 +126,17 @@ class ChatBot:
         if checkpoint_vocab_size and checkpoint_vocab_size != self.vocab_size:
             print(f"[WARN] vocab_size mismatch: checkpoint={checkpoint_vocab_size}, tokenizer={self.vocab_size}, model={model_vocab_size}")
 
-        # Загружаем модель
+        # Загружаем модель — улучшенные параметры по умолчанию
         self.model = ChatNN(
             vocab_size=model_vocab_size,
             embedding_dim=128,
             hidden_dim=512,
-            num_layers=2,
+            num_layers=4,        # Улучшено: 4 слоя вместо 2
             max_length=self.max_length,
             pad_token_id=self.tokenizer.pad_token_id,
-            eos_token_id=self.tokenizer.eos_token_id
+            eos_token_id=self.tokenizer.eos_token_id,
+            head_count=4,         # Multi-head attention
+            dropout=0.1           # Улучшено: 0.1 вместо 0.3
         ).to(self.device)
 
         try:
@@ -408,9 +410,16 @@ class ChatBot:
         max_length: int = RPG_MAX_LENGTH,
         temperature: float = RPG_TEMPERATURE,
         top_p: float = RPG_TOP_P,
-        max_words: int = 40
+        max_words: int = 80,
+        min_words: int = 5
     ) -> str:
-        """Генерация ответа с nucleus sampling"""
+        """
+        Генерация с улучшенным nucleus sampling.
+        Улучшения:
+        - Убран repeat_count (был false positive на повторяющихся предлогах)
+        - Better temperature scaling
+        - Min words guarantee
+        """
         self.model.eval()
         tokens = self._clean_text(input_text).split()
         input_ids = self.tokenizer.encode(" ".join(tokens), add_eos=False)
@@ -426,16 +435,20 @@ class ChatBot:
 
         word_count = 0
         prev_word = ""
-        repeat_count = 0
 
         with torch.no_grad():
             for step in range(max_length):
                 step_start = time.time()
                 logits = self.model(current_input, mask=current_mask)[:, -1, :]
-                logits = logits / temperature
-
+                
+                # Temperature scaling с penalty для повторений
+                logits = logits / max(temperature, 0.1)
+                
+                # Nucleus sampling (top_p)
                 sorted_logits, sorted_indices = torch.sort(logits, descending=True)
                 cumulative_probs = torch.softmax(sorted_logits, dim=-1).cumsum(dim=-1)
+                
+                # Remove tokens below top_p
                 sorted_indices_to_remove = cumulative_probs > top_p
                 sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
                 sorted_indices_to_remove[..., 0] = 0
@@ -443,30 +456,39 @@ class ChatBot:
                 logits[0, indices_to_remove] = float('-inf')
 
                 probs = torch.softmax(logits, dim=-1)
+                
+                # Penalty for repeating last 3 words
+                if word_count >= 3 and generated_ids:
+                    recent_words = []
+                    for gid in generated_ids[-10:]:
+                        w = self.tokenizer.inverse_vocab.get(int(gid), "")
+                        if w and w not in ["<PAD>", "<UNK>", "<EOS>"]:
+                            recent_words.append(w)
+                    # Последние 3 уникальных слова
+                    recent_unique = list(set(recent_words[-3:]))
+                    for gid in generated_ids[-10:]:
+                        w = self.tokenizer.inverse_vocab.get(int(gid), "")
+                        if w in recent_unique and w not in ["<PAD>", "<UNK>", "<EOS>"]:
+                            probs[0, gid] *= 0.3  # penalty 70%
+
                 next_token = int(torch.multinomial(probs, num_samples=1).item())
 
                 if next_token == self.tokenizer.eos_token_id:
-                    # Не останавливаемся раньше 3 токенов (гарантия осмысленного ответа)
-                    if step < 3:
-                        # Заменяем EOS на UNK и продолжаем
+                    # Не останавливаемся раньше min_words
+                    if word_count < min_words:
                         next_token = self.tokenizer.unk_token_id
                     else:
-                        print(f"⏱ Генерация [{step} токенов] завершена за {time.time() - start_gen:.2f} сек (step: {time.time() - step_start:.2f})")
                         break
 
                 if next_token not in [self.tokenizer.pad_token_id, self.tokenizer.unk_token_id]:
                     generated_ids.append(next_token)
                     word = self.tokenizer.inverse_vocab.get(next_token, "<UNK>")
                     if word != prev_word:
-                        repeat_count = 0
-                    else:
-                        repeat_count += 1
-                    prev_word = word
+                        prev_word = word
                     word_count += 1
 
-                    # Ранняя остановка: макс слов или 3 одинаковых подряд
-                    if word_count >= max_words or repeat_count >= 3:
-                        print(f"⏱ Ранняя остановка: {word_count} слов, repeat={repeat_count} за {time.time() - start_gen:.2f} сек")
+                    # Ранняя остановка: макс слов
+                    if word_count >= max_words:
                         break
 
                 new_token = torch.tensor([[next_token]], device=self.device)
@@ -477,12 +499,7 @@ class ChatBot:
                 current_mask = torch.cat([current_mask, new_mask], dim=1)
                 current_mask = current_mask[:, -self.max_length:]
 
-                step_time = time.time() - step_start
-                if step_time > 0.5:
-                    print(f"⚠️ Долгий шаг генерации: {step_time:.2f} сек на токен {step}")
-
         decoded = self.tokenizer.decode(generated_ids).strip()
-        print(f"⏱ Генерация завершена за {time.time() - start_gen:.2f} сек | Длина: {len(decoded)} | слов: {word_count}")
         return decoded
 
 
@@ -992,168 +1009,62 @@ class ChatBot:
             total = time.time() - start_mode
             logging.info(f"⏱ generate_response (chat): {total:.2f} сек")
 
-            # === 🔮 ИНТИУИЦИЯ + 🤝 СОЦИАЛЬНЫЕ СПОСОБНОСТИ ===
-            response_extra = ""
-            if self.intuition_enabled or self.social_enabled:
-                try:
-                    # Интуиция
-                    if self.intuition_enabled:
-                        intuition_result = self.intuition.analyze(last_user_msg, context)
-                        logging.info(f"🔮 {intuition_result.to_log()}")
+            # === Улучшенная генерация: модули влияют на следующий ответ, а не добавляются в текущий ===
+            # Все engines работают в фоне для обучения и анализа, но НЕ добавляют мусор в ответ
+            # Это критически важно для качества — ответ должен быть единым связным текстом
+            try:
+                # Интуиция — анализирует, но НЕ добавляет в ответ
+                if self.intuition_enabled:
+                    intuition_result = self.intuition.analyze(last_user_msg, context)
+                    logging.info(f"🔮 [chat-analyze] {intuition_result.to_log()}")
+                    if intuition_result.suggested_mode:
+                        logging.info(f"➡️ Сuggested mode: {intuition_result.suggested_mode}")
 
-                        # Добавляем предчувствие в ответ
-                        if intuition_result.should_add_premonition and random.random() < 0.4:
-                            response_extra += f"\n\n🔮 {intuition_result.premonition}"
+                # Социальные — анализируют для будущего контекста
+                if self.social_enabled:
+                    social_result = self.social_engine.analyze(last_user_msg, context)
+                    logging.info(f"🤝 [chat-analyze] {social_result.to_log()}")
 
-                        # Добавляем инициативу (если не был режим narrative/continue)
-                        if intuition_result.should_initiate and intuition_result.initiative and mode == "chat":
-                            if random.random() < 0.3:  # 30% шанс добавить инициативу
-                                response_extra += f"\n\n💡 {intuition_result.initiative}"
+                # Когнитивные — анализируют
+                if self.cognitive_enabled:
+                    cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
+                    logging.info(f"🧠 [chat-analyze] {cognitive_result.to_log()}")
 
-                        # Лог переключения режима
-                        if intuition_result.suggested_mode:
-                            logging.info(f"➡️ Переключено с '{mode}' → '{intuition_result.suggested_mode}' ({intuition_result.mode_switch_reason})")
+                # EQ — анализирует
+                if self.eq_enabled:
+                    eq_result = self.eq_engine.analyze(last_user_msg, context)
+                    logging.info(f"💖 [chat-analyze] {eq_result.to_log()}")
 
-                    # Социальные способности
-                    if self.social_enabled:
-                        social_result = self.social_engine.analyze(last_user_msg, context)
-                        logging.info(f"🤝 {social_result.to_log()}")
+                # Физиологические
+                if self.phys_enabled:
+                    phys_result = self.phys_engine.analyze(last_user_msg, context)
+                    logging.info(f"🧬 [chat-analyze] {phys_result.to_log()}")
 
-                        # Добавляем эмпатический отклик
-                        if social_result.should_add_empathy and social_result.empathy_response:
-                            response_extra += f"\n\n🧠 {social_result.empathy_response}"
+                # Специальные когнитивные
+                if self.special_cognitive_enabled:
+                    special_result = self.special_cognitive_engine.analyze(last_user_msg, context)
+                    logging.info(f"🌟 [chat-analyze] {special_result.to_log()}")
 
-                        # Добавляем харизматическое влияние
-                        if social_result.should_add_charisma and social_result.charisma_influence:
-                            response_extra += f"\n\n✨ {social_result.charisma_influence}"
+                # Воображение
+                if self.imagination_enabled:
+                    imagination_result = self.imagination_engine.analyze(last_user_msg, context)
+                    logging.info(f"🎨 [chat-analyze] {imagination_result.to_log()}")
 
-                    # Прогноз настроения
-                    if social_result.mood_shift_prediction:
-                        logging.info(f"📊 Прогноз настроения: {social_result.mood_shift_prediction}")
+                # Профессии
+                if self.professions_enabled:
+                    profession_result = self.profession_engine.analyze(last_user_msg)
+                    logging.info(f"💼 [chat-analyze] {profession_result.to_log()}")
 
-                    # Когнитивные способности
-                    if self.cognitive_enabled:
-                        cognitive_result = self.cognitive_engine.analyze(last_user_msg, context)
-                        logging.info(f"🧠 {cognitive_result.to_log()}")
+                # Манипуляция
+                if self.manipulation_enabled:
+                    manipulation_result = self.manipulation_engine.analyze(last_user_msg, context)
+                    logging.info(f"🎭 [chat-analyze] {manipulation_result.to_log()}")
 
-                        # Добавляем ответ когнитивной способности
-                        if cognitive_result.selected_ability:
-                            response_type = None
-                            if cognitive_result.logical_response:
-                                response_type = cognitive_result.logical_response
-                            elif cognitive_result.creative_response:
-                                response_type = cognitive_result.creative_response
-                            elif cognitive_result.critical_response:
-                                response_type = cognitive_result.critical_response
-                            elif cognitive_result.memory_response:
-                                response_type = cognitive_result.memory_response
-                            elif cognitive_result.attention_response:
-                                response_type = cognitive_result.attention_response
+            except Exception as e:
+                logging.warning(f"⚠️ Ошибка анализа модулей (chat): {e}")
 
-                            if response_type:
-                                response_extra += f"\n\n⚡ {response_type}"
-
-                    # Эмоциональный интеллект и саморефлексия
-                    if self.eq_enabled:
-                        eq_result = self.eq_engine.analyze(last_user_msg, context)
-                        logging.info(f"💖 {eq_result.to_log()}")
-
-                        # Добавляем EQ ответ
-                        if eq_result.should_add_eq and eq_result.eq_response:
-                            response_extra += f"\n\n🎭 {eq_result.eq_response}"
-
-                        # Добавляем эмпатию
-                        if eq_result.should_add_empathy and eq_result.empathy_response:
-                            response_extra += f"\n\n💝 {eq_result.empathy_response}"
-
-                        # Добавляем саморефлексию
-                        if eq_result.should_add_reflection and eq_result.reflection_response:
-                            response_extra += f"\n\n🔍 {eq_result.reflection_response}"
-
-                        # Добавляем управление состоянием
-                        if eq_result.should_add_regulation and eq_result.regulation_response:
-                            response_extra += f"\n\n🌊 {eq_result.regulation_response}"
-
-                    # Физиологические способности
-                    if self.phys_enabled:
-                        phys_result = self.phys_engine.analyze(last_user_msg, context)
-                        logging.info(f"🧬 {phys_result.to_log()}")
-
-                        if phys_result.stamina_level == "high" and phys_result.stamina_response:
-                            response_extra += f"\n\n🧗‍♂️ {phys_result.stamina_response}"
-
-                        if phys_result.adapt_triggered and phys_result.adapt_response:
-                            response_extra += f"\n\n🌡️ {phys_result.adapt_response}"
-
-                        if phys_result.neuro_active and phys_result.neuro_response:
-                            response_extra += f"\n\n🧬 {phys_result.neuro_response}"
-
-                        if phys_result.bio_triggered and phys_result.bio_response:
-                            response_extra += f"\n\n🔊 {phys_result.bio_response}"
-
-                    # Специальные когнитивные способности
-                    if self.special_cognitive_enabled:
-                        special_result = self.special_cognitive_engine.analyze(last_user_msg, context)
-                        logging.info(f"🌟 {special_result.to_log()}")
-
-                        if special_result.eidetic_triggered and special_result.eidetic_response:
-                            response_extra += f"\n\n👁️‍🗨️ {special_result.eidetic_response}"
-
-                        if special_result.synesthesia_triggered and special_result.synesthesia_response:
-                            response_extra += f"\n\n🎨 {special_result.synesthesia_response}"
-
-                        if special_result.learn_triggered and special_result.learn_response:
-                            response_extra += f"\n\n🚀 {special_result.learn_response}"
-
-                    # === 🎨 АКТИВНОЕ ВОБРАЖЕНИЕ (chat) ===
-                    if self.imagination_enabled:
-                        imagination_result = self.imagination_engine.analyze(last_user_msg, context)
-                        logging.info(f"🎨 {imagination_result.to_log()}")
-
-                        if imagination_result.reproductive_triggered and imagination_result.reproductive_response:
-                            response_extra += f"\n\n📖 {imagination_result.reproductive_response}"
-
-                        if imagination_result.productive_triggered and imagination_result.productive_response:
-                            response_extra += f"\n\n✨ {imagination_result.productive_response}"
-
-                        if imagination_result.dream_triggered and imagination_result.dream_response:
-                            response_extra += f"\n\n🌙 {imagination_result.dream_response}"
-
-                        if imagination_result.daydream_triggered and imagination_result.daydream_response:
-                            response_extra += f"\n\n💭 {imagination_result.daydream_response}"
-
-                        if imagination_result.hallucination_triggered and imagination_result.hallucination_response:
-                            response_extra += f"\n\n👻 {imagination_result.hallucination_response}"
-
-                        if imagination_result.dream_aspiration_triggered and imagination_result.dream_aspiration_response:
-                            response_extra += f"\n\n🌠 {imagination_result.dream_aspiration_response}"
-
-                    # === 💼 АНАЛИЗ ПРОФЕССИЙ (chat) ===
-                    if self.professions_enabled:
-                        profession_result = self.profession_engine.analyze(last_user_msg)
-                        logging.info(f"💼 [chat] {profession_result.to_log()}")
-                        if profession_result.detected_professions:
-                            response_extra += f"\n\n💼 *распознаю профессию:* {', '.join(profession_result.detected_professions)}"
-
-                    # === 🎭 МАНИПУЛЯЦИЯ И ЛИЧНЫЕ ЦЕЛИ (chat) ===
-                    if self.manipulation_enabled:
-                        manipulation_result = self.manipulation_engine.analyze(last_user_msg, context)
-                        logging.info(f"🎭 [chat] {manipulation_result.to_log()}")
-                        
-                        if manipulation_result.should_add_manipulation and manipulation_result.manipulation_pattern:
-                            response_extra += f"\n\n🎭 {manipulation_result.manipulation_pattern}"
-                        if manipulation_result.should_add_influence and manipulation_result.influence_phrase:
-                            response_extra += f"\n\n✨ {manipulation_result.influence_phrase}"
-                        if manipulation_result.should_reveal_goal:
-                            goal_dialogue = self.manipulation_engine.get_goal_dialogue()
-                            if goal_dialogue:
-                                response_extra += f"\n\n🎯 {goal_dialogue}"
-
-                except Exception as e:
-                    logging.warning(f"⚠️ Ошибка интуиции/социальных/когнитивных/EQ/физиологии/специальных/воображения: {e}")
-
-            logging.info(f"⏱ generate_response (continue): {time.time() - start_mode:.2f} сек")
-            return json.dumps({"response": base_response + response_extra}, ensure_ascii=False)
+            logging.info(f"⏱ generate_response (chat): {time.time() - start_mode:.2f} сек")
+            return json.dumps({"response": base_response}, ensure_ascii=False)
 
         # === Режим RPG ===
         elif mode == "rpg":

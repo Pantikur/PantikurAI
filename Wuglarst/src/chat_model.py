@@ -1,115 +1,215 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Optional, Literal
+from typing import Optional, Literal, Tuple
 
 
-# === Rotary Positional Embedding (RoPE) — корректная версия для (B, T, C) ===
+# === RMSNorm — улучшенная нормализация ===
+class RMSNorm(nn.Module):
+    """
+    Root Mean Square Layer Normalization.
+    Стабильнее чем LayerNorm для генерации текста.
+    """
+    def __init__(self, dim: int, eps: float = 1e-6):
+        super().__init__()
+        self.eps = eps
+        self.weight = nn.Parameter(torch.ones(dim))
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # RMS = sqrt(mean(x^2))
+        norm = x.pow(2).mean(-1, keepdim=True).add(self.eps).rsqrt()
+        return x * norm * self.weight
+
+
+# === Rotary Positional Embedding (RoPE) — универсальная версия ===
 def apply_rope(q, k, dim=64):
     """
     Применяет Rotary Position Embedding к первым `dim` измерениям Q и K.
-    :param q: (B, T, C)
-    :param k: (B, T, C)
-    :param dim: размерность для RoPE (должна быть <= C)
-    :return: q_rot, k_rot — вращённые тензоры той же формы
+    Работает с 3D (B, T, C) и 4D (B, heads, T, C).
     """
     device = q.device
-    B, T, C = q.shape
+    ndim = q.ndim  # 3 или 4
+    
+    if ndim == 3:
+        B, T, C = q.shape
+        # Добавляем head dimension
+        q = q.unsqueeze(1)  # (B, 1, T, C)
+        k = k.unsqueeze(1)
+        ndim = 4
+    else:
+        B, heads, T, C = q.shape
+    
     if dim > C:
         raise ValueError(f"dim={dim} > C={C}")
     half_dim = dim // 2
 
-    # Генерируем частоты: (half_dim//2,)
+    # Генерируем частоты
     theta = torch.arange(0, half_dim, 2, dtype=torch.float32, device=device)
-    theta = 1.0 / (10000 ** (theta / half_dim))  # (half_dim//2,)
+    theta = 1.0 / (10000 ** (theta / half_dim))
 
-    # Позиции: (T,)
+    # Позиции
     pos = torch.arange(T, device=device).float()
-    freqs = pos.unsqueeze(-1) * theta.unsqueeze(0)  # (T, half_dim//2)
+    freqs = pos.unsqueeze(-1) * theta.unsqueeze(0)
 
-    # Создаём sin и cos: (T, half_dim)
-    sin = torch.sin(freqs).repeat_interleave(2, dim=-1)  # (T, half_dim)
-    cos = torch.cos(freqs).repeat_interleave(2, dim=-1)  # (T, half_dim)
+    # Создаём sin и cos
+    sin = torch.sin(freqs).repeat_interleave(2, dim=-1)
+    cos = torch.cos(freqs).repeat_interleave(2, dim=-1)
 
-    # Добавляем batch: (1, T, half_dim)
-    cos = cos.unsqueeze(0)
-    sin = sin.unsqueeze(0)
+    # Добавляем batch и heads dimensions
+    cos = cos.unsqueeze(0).unsqueeze(0)  # (1, 1, T, half_dim)
+    sin = sin.unsqueeze(0).unsqueeze(0)
 
-    # Разделяем только первую часть
-    q1 = q[..., :half_dim]          # (B, T, half_dim)
-    q2 = q[..., half_dim:dim]       # (B, T, half_dim)
-    q_rest = q[..., dim:]           # (B, T, C-dim)
+    # Разделяем
+    q1 = q[..., :half_dim]
+    q2 = q[..., half_dim:dim]
+    q_rest = q[..., dim:]
 
     k1 = k[..., :half_dim]
     k2 = k[..., half_dim:dim]
     k_rest = k[..., dim:]
 
     # Применяем поворот
-    q_rot_part = torch.cat([q1 * cos - q2 * sin, q1 * sin + q2 * cos], dim=-1)  # (B, T, dim)
-    q_rot = torch.cat([q_rot_part, q_rest], dim=-1)  # (B, T, C)
+    q_rot_part = torch.cat([q1 * cos - q2 * sin, q1 * sin + q2 * cos], dim=-1)
+    q_rot = torch.cat([q_rot_part, q_rest], dim=-1)
 
     k_rot_part = torch.cat([k1 * cos - k2 * sin, k1 * sin + k2 * cos], dim=-1)
     k_rot = torch.cat([k_rot_part, k_rest], dim=-1)
 
+    # Если было 3D, убираем head dimension
+    if ndim == 3:
+        q_rot = q_rot.squeeze(1)
+        k_rot = k_rot.squeeze(1)
+
     return q_rot, k_rot
 
 
-# === Attention Layer с маской — только 3D ===
-class AttentionLayer(nn.Module):
-    def __init__(self, hidden_dim):
+# === Multi-Head Attention — улучшенная версия ===
+class MultiHeadAttention(nn.Module):
+    """
+    Multi-Head Attention с RoPE.
+    Разбивает hidden_dim на head_count голов, каждая работает в своём подпространстве.
+    """
+    def __init__(self, hidden_dim: int, head_count: int = 4, dropout: float = 0.1):
         super().__init__()
+        assert hidden_dim % head_count == 0, "hidden_dim должен делиться на head_count"
+        
         self.hidden_dim = hidden_dim
-        self.q_proj = nn.Linear(hidden_dim, hidden_dim)
-        self.k_proj = nn.Linear(hidden_dim, hidden_dim)
-        self.v_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.head_count = head_count
+        self.head_dim = hidden_dim // head_count
+        self.dropout = nn.Dropout(dropout)
+        
+        # Все проекции в одну линейную layer для эффективности
+        self.qkv_proj = nn.Linear(hidden_dim, hidden_dim * 3)
         self.out_proj = nn.Linear(hidden_dim, hidden_dim)
-
-    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor] = None):
-        """
-        :param x: (B, T, C)
-        :param mask: (B, T) — 1 если токен валиден
-        :return: (B, T, C)
-        """
+        
+        # RoPE применяется к каждой голове
+        self.rope_dim = self.head_dim  # размер для поворота
+        
+    def _reshape_for_heads(self, x: torch.Tensor) -> torch.Tensor:
+        """(B, T, H) → (B, heads, T, head_dim)"""
+        B, T, H = x.shape
+        x = x.view(B, T, self.head_count, self.head_dim)
+        return x.transpose(1, 2)  # (B, heads, T, head_dim)
+    
+    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor] = None) -> torch.Tensor:
         B, T, C = x.shape
-
-        # Проекции
-        Q = self.q_proj(x)  # (B, T, C)
-        K = self.k_proj(x)
-        V = self.v_proj(x)
-
-        # RoPE
-        Q, K = apply_rope(Q, K, dim=C)
-
-        # Scaled dot-product attention: (B, T, T)
-        attn_weights = Q @ K.transpose(-2, -1) / (C ** 0.5)
-
-        # Маска
+        
+        # Q, K, V проекции
+        qkv = self.qkv_proj(x)  # (B, T, 3*H)
+        q, k, v = qkv.chunk(3, dim=-1)  # каждый (B, T, H)
+        
+        # reshaping для multi-head
+        q = self._reshape_for_heads(q)  # (B, heads, T, head_dim)
+        k = self._reshape_for_heads(k)
+        v = self._reshape_for_heads(v)
+        
+        # RoPE на каждую голову
+        q, k = apply_rope(q, k, dim=self.rope_dim)
+        
+        # Scaled dot-product attention
+        attn_scores = (q @ k.transpose(-2, -1)) / (self.head_dim ** 0.5)  # (B, heads, T, T)
+        
+        # Mask: (B, 1, T) → (B, 1, 1, T)
         if mask is not None:
-            mask = mask.unsqueeze(1)  # (B, 1, T)
-            attn_weights = attn_weights.masked_fill(mask == 0, float('-inf'))
-
-        attn_weights = F.softmax(attn_weights, dim=-1)
-        out = attn_weights @ V  # (B, T, C)
-
+            mask = mask.unsqueeze(1).unsqueeze(1)  # (B, 1, 1, T)
+            attn_scores = attn_scores.masked_fill(mask == 0, float('-inf'))
+        
+        attn_weights = F.softmax(attn_scores, dim=-1)
+        attn_weights = self.dropout(attn_weights)
+        
+        out = attn_weights @ v  # (B, heads, T, head_dim)
+        
+        # Back to (B, T, H)
+        out = out.transpose(1, 2).contiguous().view(B, T, C)
+        
         return self.out_proj(out)
 
 
-# === Основная модель: ChatNN ===
+# === Feed-Forward Network — улучшенная версия (GLU) ===
+class FeedForward(nn.Module):
+    """
+    Improved Feed-Forward с Gated Linear Unit (GLU).
+    Расширяет dim в 2x и применяет gating для лучшего обучения.
+    """
+    def __init__(self, hidden_dim: int, ff_dim: int = None, dropout: float = 0.1):
+        super().__init__()
+        self.ff_dim = ff_dim or hidden_dim * 4
+        self.w1 = nn.Linear(hidden_dim, self.ff_dim)
+        self.w2 = nn.Linear(self.ff_dim, hidden_dim)
+        self.w_gate = nn.Linear(hidden_dim, self.ff_dim)
+        self.dropout = nn.Dropout(dropout)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # GLU: w2(GELU(w1(x)) * sigmoid(w_gate(x)))
+        gate = torch.sigmoid(self.w_gate(x))
+        activated = F.gelu(self.w1(x))
+        out = activated * gate
+        return self.dropout(self.w2(out))
+
+
+# === Improved Transformer Block ===
+class TransformerBlock(nn.Module):
+    """
+    Transformer block: MultiHeadAttention + FFN с LayerNorm и residual.
+    Pre-LN (LayerNorm перед каждым блоком) — стабильнее при обучении.
+    """
+    def __init__(self, hidden_dim: int, head_count: int = 4, ff_dim: int = None, dropout: float = 0.1):
+        super().__init__()
+        self.attention = MultiHeadAttention(hidden_dim, head_count, dropout)
+        self.ffn = FeedForward(hidden_dim, ff_dim, dropout)
+        self.norm_attn = nn.LayerNorm(hidden_dim)
+        self.norm_ffn = nn.LayerNorm(hidden_dim)
+        self.dropout = nn.Dropout(dropout)
+    
+    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor] = None) -> torch.Tensor:
+        # Pre-LN Attention
+        attn_out = self.attention(self.norm_attn(x), mask=mask)
+        x = x + self.dropout(attn_out)
+        
+        # Pre-LN FFN
+        ffn_out = self.ffn(self.norm_ffn(x))
+        x = x + self.dropout(ffn_out)
+        
+        return x
+
+
+# === Основная модель: ChatNN (улучшенная) ===
 class ChatNN(nn.Module):
     def __init__(
         self,
         vocab_size: int,
         embedding_dim: int = 128,
         hidden_dim: int = 256,
-        num_layers: int = 2,
-        max_length: int = 64,
+        num_layers: int = 4,        # Увеличено с 2 до 4
+        max_length: int = 256,       # Увеличено с 64 до 256
         pad_token_id: int = 0,
-        eos_token_id: int = 0
+        eos_token_id: int = 0,
+        head_count: int = 4,         # Multi-head attention heads
+        ff_dim: int = None,          # Feed-forward dim (по умолч. hidden*4)
+        dropout: float = 0.1         # Уменьшено с 0.3 до 0.1
     ):
         """
-        :param vocab_size: размер словаря
-        :param pad_token_id: ID для <PAD> (обычно 0)
-        :param eos_token_id: ID для <EOS> (можно тот же, что и PAD)
+        Улучшенная модель с Multi-Head Attention и GLU FFN.
         """
         super().__init__()
         self.vocab_size = vocab_size
@@ -118,10 +218,14 @@ class ChatNN(nn.Module):
         self.max_length = max_length
         self.pad_token_id = pad_token_id
         self.eos_token_id = eos_token_id
+        self.head_count = head_count
 
         # Эмбеддинги
         self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=pad_token_id)
         self.pos_embedding = nn.Embedding(max_length, embedding_dim)
+
+        # RMSNorm (стабильнее чем LayerNorm для генерации)
+        self.norm_input = RMSNorm(embedding_dim)
 
         # Адаптация размера
         if embedding_dim != hidden_dim:
@@ -129,14 +233,18 @@ class ChatNN(nn.Module):
         else:
             self.input_proj = None
 
-        # Трансформерные слои
+        # Улучшенные трансформерные слои
+        ff_dim = ff_dim or hidden_dim * 4
         self.layers = nn.ModuleList([
-            AttentionLayer(hidden_dim) for _ in range(num_layers)
+            TransformerBlock(hidden_dim, head_count, ff_dim, dropout)
+            for _ in range(num_layers)
         ])
 
-        self.norm = nn.LayerNorm(hidden_dim)
+        self.norm_final = RMSNorm(hidden_dim)
         self.fc = nn.Linear(hidden_dim, vocab_size)
-        self.dropout = nn.Dropout(0.3)
+        
+        # Weight tying — только если embedding_dim == hidden_dim
+        self.weight_tying = (embedding_dim == hidden_dim)
 
     def forward(self, input_ids: torch.LongTensor, mask: Optional[torch.Tensor] = None):
         """
@@ -154,24 +262,26 @@ class ChatNN(nn.Module):
         x = self.embedding(input_ids)  # (B, T, E)
         x = x + self.pos_embedding(pos)  # (B, T, E)
 
-        # Адаптация
+        # Нормализация входных данных
+        x = self.norm_input(x)
+
+        # Адаптация размера
         if self.input_proj is not None:
             x = self.input_proj(x)  # (B, T, H)
 
-        # Нормализация
-        x = self.norm(x)
-        x = self.dropout(x)
-
         # Проход по слоям
         for layer in self.layers:
-            residual = x
-            x = layer(self.norm(x), mask=mask)
-            x = residual + x
-            x = self.dropout(x)
+            x = layer(x, mask=mask)
 
         # Финальная нормализация и выход
-        x = self.norm(x)
-        logits = self.fc(x)  # (B, T, V)
+        x = self.norm_final(x)
+        
+        # Weight tying: используем weights embedding для проекции на vocab
+        if self.weight_tying:
+            logits = torch.matmul(x, self.embedding.weight.T)  # (B, T, V)
+        else:
+            logits = self.fc(x)  # (B, T, V)
+        
         return logits
 
     # --- BEAM SEARCH ---
