@@ -688,14 +688,259 @@ async def imagination_status():
     }
 
 
+# ========================
+# WorldEngine Endpoints
+# ========================
+
+# === Эндпоинт: /world/create — создать мир ===
+@app.post("/world/create")
+async def world_create(request: Request):
+    """Создаёт новый мир"""
+    try:
+        body = await request.json()
+        genre = body.get("genre", "Фэнтези")
+        tag = body.get("tag", "магия")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Невалидный JSON")
+
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        raise HTTPException(status_code=503, detail="WorldEngine не доступен")
+
+    try:
+        result = local_bot.create_world(genre, tag)
+        return {"status": "ok", "message": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /worlds — список всех миров ===
+@app.get("/worlds")
+async def worlds_list():
+    """Возвращает список всех миров"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.get_all_worlds()
+        return {"status": "ok", "worlds": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/{name} — информация о мире ===
+@app.get("/world/{world_name}")
+async def world_info(world_name: str):
+    """Возвращает информацию о мире"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.get_world_info(world_name)
+        return {"status": "ok", "info": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/{name}/event — генерация события ===
+@app.post("/world/{world_name}/event")
+async def world_generate_event(world_name: str):
+    """Генерирует событие в мире"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.generate_event(world_name)
+        return {"status": "ok", "event": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/{name}/events — последние события ===
+@app.get("/world/{world_name}/events")
+async def world_get_events(world_name: str, limit: int = 10):
+    """Возвращает последние события мира"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.get_world_events(world_name, limit)
+        return {"status": "ok", "events": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/{name}/consistency — проверка консистентности ===
+@app.get("/world/{world_name}/consistency")
+async def world_check_consistency(world_name: str):
+    """Проверяет консистентность лора мира"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.check_consistency(world_name)
+        return {"status": "ok", "consistency": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/{name}/npc/{npc_name} — информация о NPC ===
+@app.get("/world/{world_name}/npc/{npc_name}")
+async def world_get_npc(world_name: str, npc_name: str):
+    """Возвращает информацию о NPC"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.get_npc_info(world_name, npc_name)
+        return {"status": "ok", "npc": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/start-cycle — запуск фонового цикла ===
+@app.post("/world/start-cycle")
+async def world_start_cycle():
+    """Запускает фоновый цикл развития миров"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = await local_bot.start_background_cycle()
+        return {"status": "ok", "message": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/stop-cycle — остановка фонового цикла ===
+@app.post("/world/stop-cycle")
+async def world_stop_cycle():
+    """Останавливает фоновый цикл развития миров"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.stop_background_cycle()
+        return {"status": "ok", "message": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/status — статус WorldEngine ===
+@app.get("/world/status")
+async def world_status():
+    """Возвращает статус всех систем WorldEngine"""
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        return {"status": "not available", "detail": "WorldEngine не доступен"}
+
+    try:
+        result = local_bot.get_world_status()
+        return {"status": "ok", "status": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # === Главная страница ===
 @app.get("/")
 def home():
     return {
         "message": "🎉 С Днём Рождения! ChatBot API работает!",
         "version": app.version,
-        "endpoints": ["/predict", "/retrain", "/enrich", "/ws", "/health"],
-        "docs": "/docs"
+        "endpoints": [
+            "/predict", "/",
+            "/retrain", "/enrich",
+            "/ws", "/health",
+            "/world/create", "/worlds", "/world/{name}",
+            "/world/{name}/event", "/world/{name}/events",
+            "/world/{name}/consistency", "/world/{name}/npc/{npc_name}",
+            "/world/start-cycle", "/world/stop-cycle", "/world/status",
+            "/docs"
+        ],
+        "world_engine": {
+            "enabled": True,
+            "description": "Полная система управления мирами: создание, события, NPC, лор, фоновый цикл",
+            "endpoints": [
+                "POST /world/create - Создать мир",
+                "GET /worlds - Список всех миров",
+                "GET /world/{name} - Информация о мире",
+                "POST /world/{name}/event - Генерировать событие",
+                "GET /world/{name}/events - Последние события",
+                "GET /world/{name}/consistency - Проверка лора",
+                "GET /world/{name}/npc/{npc_name} - Информация о NPC",
+                "POST /world/start-cycle - Запуск фонового цикла",
+                "POST /world/stop-cycle - Остановка фонового цикла",
+                "GET /world/status - Статус WorldEngine"
+            ]
+        }
     }
 
 
@@ -726,8 +971,8 @@ class ChatRequest(BaseModel):
 
     @validator('mode')
     def mode_must_be_valid(cls, v):
-        if v not in ["chat", "world_gen", "narrative", "rpg", "continue"]:
-            raise ValueError("mode должен быть 'chat', 'world_gen', 'narrative', 'rpg' или 'continue'")
+        if v not in ["chat", "world_gen", "narrative", "rpg", "continue", "world"]:
+            raise ValueError("mode должен быть 'chat', 'world_gen', 'narrative', 'rpg', 'continue' или 'world'")
         return v
 
 # === Эндпоинт: /predict и / — оба работают ===
@@ -784,9 +1029,9 @@ async def predict(request: Request):
         if any(kw in context_snippet for kw in rpg_keywords):
             return "rpg"
         
-        # Специфичные фразы → narrative/world_gen
+        # Специфичные фразы → narrative/world_gen/world
         if any(kw in context_snippet for kw in ["создай", "мир", "вселенная"]):
-            return "world_gen" if "жанр" in context_snippet else "narrative"
+            return "world" if ("жанр" in context_snippet or "тег" in context_snippet) else ("world_gen" if "жанр" in context_snippet else "narrative")
 
         return "chat"
 
@@ -797,6 +1042,7 @@ async def predict(request: Request):
         if detected in ["rpg", "world_gen", "narrative"]:
             logger.info(f"➡️ Переключено с 'chat' → '{detected}' (RPG-сигналы)")
             mode = detected
+    
     # === КОНЕЦ RPG-AUTO ===
 
     # === ОПРЕДЕЛЕНИЕ ВСЕХ ПАРАМЕТРОВ ЧЕЛОВЕКА (используем модуль human_params) ===
@@ -827,7 +1073,31 @@ async def predict(request: Request):
         start_gen = asyncio.get_event_loop().time()
         response = ""
 
-        if mode == "narrative":
+        if mode == "world":
+            logger.info("🔧 Режим: world (создание мира)")
+            # Создаём мир через WorldEngine
+            if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+                raise HTTPException(status_code=503, detail="WorldEngine не доступен")
+            
+            # Парсим жанр из сообщения
+            genre = "Фэнтези"
+            tag = ""
+            
+            genre_match = re.search(r"Жанр[:\s]+([^.\n]+)", req.messages[-1].message, re.IGNORECASE)
+            if genre_match:
+                genre = genre_match.group(1).strip()
+            else:
+                genre = req.messages[-1].message.strip()[:50]
+            
+            tag_match = re.search(r"Тег[:\s]+([^.\n]+)", req.messages[-1].message, re.IGNORECASE)
+            if tag_match:
+                tag = tag_match.group(1).strip()
+            
+            result = local_bot.create_world(genre, tag)
+            response = json.dumps({"response": result}, ensure_ascii=False)
+            logger.info(f"📚 world: {result}")
+
+        elif mode == "narrative":
             logger.info("🔧 Режим: narrative")
             context = "\n".join([
                 f"{'Пользователь' if m.is_own else 'Бот'}: {m.message}"
