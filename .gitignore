@@ -50,6 +50,10 @@ models/*.bin
 # Исключение: tokenizer.json разрешён
 !data/tokenizer.json
 
+# === World Engine ===
+data/worlds/
+data/books/books_cycle_*.jsonl
+
 # === Артефакты (полный запрет) ===
 *.joblib
 *.bin
