@@ -591,6 +591,345 @@ class WorldFactory:
     }
 
     @classmethod
+    def create_world_from_books(cls, genre: Optional[str] = None, tag: Optional[str] = None, book_titles: Optional[List[str]] = None) -> Dict:
+        """Создаёт мир на основе прочитанных книг"""
+        # Извлекаем знания из книг
+        book_knowledge = cls._extract_knowledge_from_books(book_titles)
+
+        # Определяем жанр из книг, если не указан
+        if not genre:
+            genre = book_knowledge.get("dominant_genre", "Фэнтези")
+        if not tag:
+            tag = book_knowledge.get("dominant_tag", "магия")
+
+        # Создаём базовый мир
+        world = cls.create_world(str(genre or "Фэнтези"), str(tag or "магия"))
+
+        # Переопределяем данные из книг
+        if book_knowledge.get("geography"):
+            world["geography"] = book_knowledge["geography"]
+
+        if book_knowledge.get("laws"):
+            world["laws"] = book_knowledge["laws"]
+
+        if book_knowledge.get("traditions"):
+            world["traditions"] = book_knowledge["traditions"]
+
+        if book_knowledge.get("unspoken_rules"):
+            world["unspoken_rules"] = book_knowledge["unspoken_rules"]
+
+        if book_knowledge.get("npcs"):
+            world["npcs"] = book_knowledge["npcs"]
+
+        if book_knowledge.get("factions"):
+            world["factions"] = book_knowledge["factions"]
+
+        # Обновляем уровни технологий и магии из книг
+        if book_knowledge.get("technology_level") is not None:
+            world["technology_level"] = book_knowledge["technology_level"]
+        if book_knowledge.get("magic_level") is not None:
+            world["magic_level"] = book_knowledge["magic_level"]
+
+        # Генерируем новое описание с учётом книг
+        world["description"] = cls._generate_description_from_books(world, book_knowledge)
+
+        # Добавляем факты из книг
+        world["facts"].extend(cls._extract_book_facts(world["name"], book_knowledge))
+
+        # Обновляем название мира из книг
+        if book_knowledge.get("world_name"):
+            world["name"] = book_knowledge["world_name"]
+
+        return world
+
+    @classmethod
+    def _extract_knowledge_from_books(cls, book_titles: Optional[List[str]] = None) -> Dict:
+        """Извлекает знания из прочитанных книг"""
+        books_dir = Path("data/books")
+        knowledge = {
+            "geography": [],
+            "laws": [],
+            "traditions": [],
+            "unspoken_rules": [],
+            "npcs": [],
+            "factions": [],
+            "world_name": None,
+            "dominant_genre": "Фэнтези",
+            "dominant_tag": "магия",
+            "technology_level": None,
+            "magic_level": None,
+        }
+
+        # Собираем все JSONL файлы
+        jsonl_files = list(books_dir.glob("books_cycle_*.jsonl"))
+        if not jsonl_files:
+            return knowledge
+
+        # Словари для сбора уникальных элементов
+        locations = set()
+        laws = set()
+        traditions = set()
+        rules = set()
+        npc_names = set()
+        npc_roles = set()
+        npc_personalities = set()
+        faction_names = set()
+        faction_types = set()
+        genre_keywords = {"фэнтези": 0, "киберпанк": 0, "пост апокалипсис": 0, "научная фантастика": 0, "стимпанк": 0}
+        location_list = []
+
+        # Читаем все файлы
+        for jsonl_file in jsonl_files:
+            try:
+                with open(jsonl_file, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        try:
+                            entry = json.loads(line)
+                            bot_response = entry.get("bot", "")
+
+                            # Извлекаем названия книг
+                            source = entry.get("source", {})
+                            book_title = source.get("title", "")
+
+                            # Ищем ключевые слова для жанра
+                            bot_lower = bot_response.lower()
+                            if "магия" in bot_lower or "чародей" in bot_lower or "дракон" in bot_lower:
+                                genre_keywords["фэнтези"] += 1
+                                knowledge["dominant_tag"] = "магия"
+                            if "имплант" in bot_lower or "корпорация" in bot_lower or "хакер" in bot_lower:
+                                genre_keywords["киберпанк"] += 1
+                                knowledge["dominant_tag"] = "технологии"
+                            if "постапокалипс" in bot_lower or "пустош" in bot_lower:
+                                genre_keywords["пост апокалипсис"] += 1
+                            if "космос" in bot_lower or "планет" in bot_lower or "корабль" in bot_lower:
+                                genre_keywords["научная фантастика"] += 1
+
+                            # Извлекаем локации
+                            location_patterns = [
+                                r"(?:в|на|из|к|от|до|через|у)\s+([А-ЯЁ][а-яё]+(?:\s+[А-ЯЁ][а-яё]+)*)",
+                                r"(?:город|деревня|крепость|башня|храм|лаборатория|фабрика|бар|рынок)\s+([А-ЯЁ][а-яё]+)",
+                            ]
+                            for pattern in location_patterns:
+                                matches = re.findall(pattern, bot_response)
+                                for match in matches:
+                                    if len(match) > 2 and len(match) < 30:
+                                        locations.add(match)
+
+                            # Извлекаем персонажей
+                            name_patterns = [
+                                r"([А-ЯЁ][а-яё]+\s+[А-ЯЁ][а-яё]+)",
+                                r"([А-ЯЁ][а-яё]+)\s+(?:был|стал|работал|живёт|служит)",
+                            ]
+                            for pattern in name_patterns:
+                                matches = re.findall(pattern, bot_response)
+                                for match in matches:
+                                    if len(match.split()) == 2 and len(match) < 40:
+                                        npc_names.add(match)
+
+                            # Извлекаем роли и профессии
+                            role_keywords = ["врач", "хирург", "маг", "воин", "торговец", "инженер",
+                                           "учёный", "король", "принц", "принцесса", "рыцарь",
+                                           "хакер", "наёмник", "детектив", "бард", "жрец"]
+                            for role in role_keywords:
+                                if role in bot_lower:
+                                    npc_roles.add(role)
+
+                            # Извлекаем законы и правила
+                            law_patterns = [
+                                r"(?:запрещено|разрешено|обязан|карается|наказуем|должен)\s+([^.!?]+)",
+                                r"(?:никто|все|каждый)\s+([^.!?]+(?:не|без|без)\s+[^.!?]+)",
+                            ]
+                            for pattern in law_patterns:
+                                matches = re.findall(pattern, bot_response)
+                                for match in matches:
+                                    match = match.strip()
+                                    if len(match) > 10 and len(match) < 200:
+                                        laws.add(match)
+
+                            # Извлекаем традиции
+                            tradition_patterns = [
+                                r"(?:каждый\s+\w+\s+|перед\s+|после\s+|во\s+ время)\s+([^.!?]+(?:праздник|традиция|обряд|церемония)[^.!?]*)",
+                            ]
+                            for pattern in tradition_patterns:
+                                matches = re.findall(pattern, bot_response)
+                                for match in matches:
+                                    match = match.strip()
+                                    if len(match) > 10 and len(match) < 200:
+                                        traditions.add(match)
+
+                            # Извлекаем фракции и организации
+                            faction_patterns = [
+                                r"(?:орден|гильдия|корпорация|клуб|организация|фракция|бандa|цех|совет|царство|империя)\s+([А-ЯЁ][а-яё]+(?:\s+[А-ЯЁ][а-яё]+)*)",
+                            ]
+                            for pattern in faction_patterns:
+                                matches = re.findall(pattern, bot_response)
+                                for match in matches:
+                                    if len(match) > 2 and len(match) < 40:
+                                        faction_names.add(match)
+
+                        except json.JSONDecodeError:
+                            continue
+            except Exception as e:
+                print(f"⚠️ Ошибка чтения {jsonl_file}: {e}")
+
+        # Формируем географию
+        if locations:
+            location_list = list(locations)[:10]
+            for loc in location_list:
+                knowledge["geography"].append(f"В мире существует {loc}.")
+
+        # Формируем законы
+        if laws:
+            law_list = list(laws)[:8]
+            knowledge["laws"] = law_list
+
+        # Формируем традиции
+        if traditions:
+            trad_list = list(traditions)[:5]
+            knowledge["traditions"] = trad_list
+
+        # Формируем негласные правила
+        if laws:
+            for law in list(laws)[:3]:
+                knowledge["unspoken_rules"].append(f"Никто не говорит вслух о: {law[:50]}...")
+
+        # Формируем NPC
+        if npc_names:
+            name_list = list(npc_names)[:8]
+            personality_list = [
+                "амбициозный и хитрый", "добрый, но наивный", "мрачный циник",
+                "весёлый безбашенный", "строгий и справедливый", "загадочный и отстранённый",
+            ]
+            for i, name in enumerate(name_list):
+                role = random.choice(list(npc_roles) if npc_roles else ["странник", "воин", "торговец"])
+                knowledge["npcs"].append({
+                    "name": name,
+                    "age": random.randint(18, 80),
+                    "race": "человек",
+                    "role": role,
+                    "personality": personality_list[i % len(personality_list)],
+                    "skills": random.sample(["combat", "magic", "diplomacy", "stealth"], k=random.randint(1, 2)),
+                    "secrets": [f"Скрывает {random.choice(['прошлое', 'тайну', 'происхождение'])}"],
+                    "goals": [f"Хочет {random.choice(['найти себя', 'стать сильным', 'спасти мир'])}"],
+                    "relations": {},
+                    "memories": [],
+                    "location": random.choice(location_list) if location_list else "Неизвестно",
+                    "alive": True,
+                    "created_at": datetime.now().isoformat(),
+                    "last_seen": datetime.now().isoformat(),
+                    "influence": round(random.uniform(0.1, 0.9), 2),
+                    "mood": random.choice(["neutral", "happy", "anxious", "curious"]),
+                })
+
+        # Формируем фракции
+        if faction_names:
+            faction_list = list(faction_names)[:5]
+            faction_types_list = [
+                {"type": "military", "description": "Военная организация"},
+                {"type": "economic", "description": "Торговая организация"},
+                {"type": "religious", "description": "Религиозная организация"},
+                {"type": "political", "description": "Политическая организация"},
+            ]
+            for i, name in enumerate(faction_list):
+                ft = faction_types_list[i % len(faction_types_list)]
+                knowledge["factions"].append({
+                    "name": f"{name}",
+                    "type": ft["type"],
+                    "description": ft["description"],
+                    "created_at": datetime.now().isoformat(),
+                    "power": round(random.uniform(0.3, 0.9), 2),
+                    "allies": [],
+                    "enemies": [],
+                })
+
+        # Определяем доминирующий жанр
+        if genre_keywords:
+            dominant = max(genre_keywords.items(), key=lambda x: x[1])[0]
+            knowledge["dominant_genre"] = dominant.capitalize() if dominant != "пост апокалипсис" else "Постапокалипсис"
+
+        # Определяем уровни технологий и магии на основе жанра
+        if knowledge["dominant_genre"] == "Киберпанк":
+            knowledge["technology_level"] = 0.9
+            knowledge["magic_level"] = 0.0
+        elif knowledge["dominant_genre"] == "Фэнтези":
+            knowledge["technology_level"] = 0.1
+            knowledge["magic_level"] = 0.8
+        elif knowledge["dominant_genre"] == "Постапокалипсис":
+            knowledge["technology_level"] = 0.2
+            knowledge["magic_level"] = 0.1
+        elif knowledge["dominant_genre"] == "Научная фантастика":
+            knowledge["technology_level"] = 0.8
+            knowledge["magic_level"] = 0.0
+        else:
+            knowledge["technology_level"] = 0.5
+            knowledge["magic_level"] = 0.3
+
+        return knowledge
+
+    @classmethod
+    def _extract_book_facts(cls, world_name: str, book_knowledge: Dict) -> List[Dict]:
+        """Извлекает факты из знаний, полученных из книг"""
+        facts = []
+
+        # Географические факты
+        for geo in book_knowledge.get("geography", []):
+            fact_id = hashlib.md5(f"{world_name}:book:geo:{geo[:50]}".encode()).hexdigest()[:12]
+            facts.append({
+                "id": fact_id,
+                "world_name": world_name,
+                "statement": geo,
+                "category": "geography",
+                "confidence": 0.8,
+                "sources": ["book_reading"],
+                "created_at": datetime.now().isoformat(),
+                "last_verified": datetime.now().isoformat(),
+                "contradicts": [],
+                "verified": True
+            })
+
+        # Факты о законах
+        for law in book_knowledge.get("laws", []):
+            fact_id = hashlib.md5(f"{world_name}:book:law:{law[:50]}".encode()).hexdigest()[:12]
+            facts.append({
+                "id": fact_id,
+                "world_name": world_name,
+                "statement": f"В мире действует закон: {law}",
+                "category": "politics",
+                "confidence": 0.85,
+                "sources": ["book_reading"],
+                "created_at": datetime.now().isoformat(),
+                "last_verified": datetime.now().isoformat(),
+                "contradicts": [],
+                "verified": True
+            })
+
+        return facts
+
+    @classmethod
+    def _generate_description_from_books(cls, world: Dict, book_knowledge: Dict) -> str:
+        """Генерирует описание мира на основе книг"""
+        parts = []
+
+        if world.get("geography"):
+            parts.append(world["geography"][0])
+
+        if world.get("laws"):
+            parts.append(f"В этом мире действуют строгие законы: {world['laws'][0]}.")
+
+        if world.get("factions"):
+            factions = [f["name"] for f in world["factions"][:2]]
+            parts.append(f"На сцене доминируют {', '.join(factions)}.")
+
+        if world.get("npcs"):
+            key_npc = world["npcs"][0]
+            parts.append(f"Ключевая фигура — {key_npc['name']}, {key_npc['role']}, {key_npc['personality']}.")
+
+        return " ".join(parts)
+
+    @classmethod
     def create_world(cls, genre: str, tag: str, existing_facts: Optional[List[WorldFact]] = None) -> Dict:
         """Создаёт новый мир на основе шаблонов и знаний"""
 
@@ -1778,6 +2117,34 @@ class WorldEngine:
     def create_world(self, genre: str, tag: str) -> str:
         """Создаёт новый мир"""
         return self.world_db.create_world(genre, tag)
+
+    def create_world_from_books(self, genre: Optional[str] = None, tag: Optional[str] = None, book_titles: Optional[List[str]] = None) -> Dict:
+        """Создаёт новый мир на основе прочитанных книг"""
+        world_data = WorldFactory.create_world_from_books(genre, tag, book_titles)
+        world_name = world_data["name"]
+
+        # Сохраняем мир
+        self.save_world(world_name, world_data)
+
+        # Обновляем индекс
+        self.world_db.index["worlds"][world_name] = {
+            "genre": world_data.get("genre", genre or "unknown"),
+            "tag": world_data.get("tags", ["unknown"])[0] if world_data.get("tags") else (tag or "unknown"),
+            "created_at": world_data.get("created_at", ""),
+            "last_updated": world_data.get("last_updated", ""),
+            "state": world_data.get("state", "draft"),
+            "npc_count": len(world_data.get("npcs", [])),
+            "event_count": len(world_data.get("events", [])),
+            "fact_count": len(world_data.get("facts", [])),
+        }
+        self.world_db._save_index()
+
+        print(f"📚 Создан мир из книг: {world_name}")
+        return world_data
+
+    def save_world(self, world_name: str, world_data: Dict):
+        """Сохраняет мир в JSON-файл"""
+        self.world_db.save_world(world_name, world_data)
 
     def get_world(self, world_name: str) -> Optional[Dict]:
         """Загружает мир"""

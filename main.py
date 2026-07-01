@@ -720,6 +720,35 @@ async def world_create(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# === Эндпоинт: /world/create-from-books — создать мир из книг ===
+@app.post("/world/create-from-books")
+async def world_create_from_books(request: Request):
+    """Создаёт новый мир на основе прочитанных книг"""
+    try:
+        body = await request.json()
+        genre = body.get("genre")  # Опционально
+        tag = body.get("tag")  # Опционально
+        book_titles = body.get("book_titles")  # Список названий книг (опционально)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Невалидный JSON")
+
+    local_bot = None
+    with CHATBOT_LOCK:
+        local_bot = chatbot
+
+    if local_bot is None:
+        raise HTTPException(status_code=500, detail="Бот не загружен")
+
+    if not hasattr(local_bot, 'world_engine') or not local_bot.world_engine_enabled:
+        raise HTTPException(status_code=503, detail="WorldEngine не доступен")
+
+    try:
+        result = local_bot.create_world_from_books(genre, tag, book_titles)
+        return {"status": "ok", "message": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # === Эндпоинт: /worlds — список всех миров ===
 @app.get("/worlds")
 async def worlds_list():
@@ -930,6 +959,7 @@ def home():
             "description": "Полная система управления мирами: создание, события, NPC, лор, фоновый цикл",
             "endpoints": [
                 "POST /world/create - Создать мир",
+                "POST /world/create-from-books - Создать мир из книг",
                 "GET /worlds - Список всех миров",
                 "GET /world/{name} - Информация о мире",
                 "POST /world/{name}/event - Генерировать событие",

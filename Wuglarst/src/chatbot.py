@@ -11,7 +11,7 @@ import os
 import re
 import random
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from . import chat_model
 from .chat_model import ChatNN
 # from .web_search import WebSearch  # Отключён — поиск в чате отключён
@@ -1762,6 +1762,35 @@ class ChatBot:
             return f"✅ Мир '{world_name}' создан!"
         except Exception as e:
             return f"❌ Ошибка создания мира: {e}"
+
+    def create_world_from_books(self, genre: Optional[str] = None, tag: Optional[str] = None, book_titles: Optional[List[str]] = None) -> Dict:
+        """Создаёт новый мир на основе прочитанных книг"""
+        if not self.world_engine_enabled or self.world_engine is None:
+            raise RuntimeError("WorldEngine не доступен")
+        try:
+            world_data = self.world_engine.create_world_from_books(genre, tag, book_titles)
+            world_name = world_data["name"]
+
+            # Сохраняем мир
+            self.world_engine.save_world(world_name, world_data)
+
+            # Обновляем индекс
+            self.world_engine.world_db.index["worlds"][world_name] = {
+                "genre": world_data.get("genre", genre or "unknown"),
+                "tag": world_data.get("tags", ["unknown"])[0] if world_data.get("tags") else (tag or "unknown"),
+                "created_at": world_data.get("created_at", ""),
+                "last_updated": world_data.get("last_updated", ""),
+                "state": world_data.get("state", "draft"),
+                "npc_count": len(world_data.get("npcs", [])),
+                "event_count": len(world_data.get("events", [])),
+                "fact_count": len(world_data.get("facts", [])),
+            }
+            self.world_engine.world_db._save_index()
+
+            print(f"📚 Создан мир из книг: {world_name}")
+            return world_data
+        except Exception as e:
+            raise RuntimeError(f"Ошибка создания мира из книг: {e}")
 
     def get_world_info(self, world_name: str) -> str:
         """Возвращает информацию о мире"""
