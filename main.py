@@ -1169,6 +1169,8 @@ async def predict(request: Request):
             logger.info("🔧 Режим: world_gen")
             last_msg = req.messages[-1].message
             
+            logger.info(f"[main] world_gen last_msg: '{last_msg}'")
+            
             # Парсим жанр и тег
             genre = "Фэнтези"
             tag = ""
@@ -1176,8 +1178,10 @@ async def predict(request: Request):
             genre_match = re.search(r"Жанр[:\s]+([^.;\n]+)", last_msg, re.IGNORECASE)
             if genre_match:
                 genre = genre_match.group(1).strip()
+                logger.info(f"[main] parsed genre: '{genre}'")
             else:
                 genre = last_msg.strip()[:50]
+                logger.info(f"[main] genre fallback: '{genre}'")
             
             tag_match = re.search(r"Тег[иаеs]*[:\s]+([^.;\n]+)", last_msg, re.IGNORECASE)
             if tag_match:
