@@ -416,6 +416,45 @@ class ChatBot:
                 ]
             }
 
+    @staticmethod
+    def _detect_genre_category(genre: str, tag: str) -> str:
+        """Определяет категорию жанра для выбора шаблонов"""
+        genre_lower = genre.lower()
+        tag_lower = tag.lower()
+
+        # Гибридные жанры
+        is_cyber = "киберпанк" in genre_lower
+        is_fantasy = "фэнтези" in genre_lower or "фэнтези" in tag_lower
+        is_magic = "магия" in tag_lower or "мистик" in tag_lower
+
+        if is_cyber and (is_fantasy or is_magic):
+            return "cyberfantasy"
+        if "пост" in genre_lower and (is_fantasy or is_magic):
+            return "postfantasy"
+
+        # Чистые жанры
+        if is_cyber:
+            return "cyberpunk"
+        if is_fantasy:
+            return "fantasy"
+        if "пост" in genre_lower:
+            return "postapoc"
+        if "научная фантастика" in genre_lower or "sci-fi" in genre_lower:
+            return "scifi"
+        if "стимпанк" in genre_lower:
+            return "steampunk"
+        if "повседневность" in genre_lower:
+            return "slice_of_life"
+        if "альтернатив" in genre_lower:
+            return "alt_reality"
+        if "реальност" in genre_lower or "реальный мир" in genre_lower:
+            return "reality"
+        if "школа" in tag_lower or "учеб" in tag_lower:
+            return "slice_of_life"  # Школьные темы — повседневность
+
+        # По умолчанию — фэнтези
+        return "fantasy"
+
     def _generate_world_from_templates(self, genre: str, tag: str, templates: Dict, category: str) -> str:
         """Генерирует структурированный мир на основе шаблонов WorldFactory"""
         import random
@@ -877,12 +916,14 @@ class ChatBot:
             # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ ШАБЛОНЫ WorldFactory + ЗНАНИЯ ===
             try:
                 # Определяем категорию жанра
-                category = self.world_engine.world_factory._detect_genre_category(genre, tag) if self.world_engine else "fantasy"
+                category = self._detect_genre_category(genre, tag)
                 
                 # Получаем шаблоны для жанра
-                templates = self.world_engine.world_factory.GENRE_TEMPLATES.get(category, self.world_engine.world_factory.GENRE_TEMPLATES["fantasy"]) if self.world_engine else None
+                templates = None
+                if self.world_engine and hasattr(self.world_engine, 'world_factory'):
+                    templates = self.world_engine.world_factory.GENRE_TEMPLATES.get(category)
                 
-                if templates:
+                if templates and len(templates) > 0:
                     # Генерируем мир на основе шаблонов
                     response = self._generate_world_from_templates(genre, tag, templates, category)
                     logging.info(f"📚 world_gen: сгенерирован мир из шаблонов '{category}' (жанр: {genre}, тег: {tag})")
