@@ -1754,12 +1754,12 @@ class ChatBot:
     # ========================
 
     def create_world(self, genre: str, tag: str) -> str:
-        """Создаёт новый мир через WorldEngine"""
+        """Создаёт новый мир через WorldEngine (с полным описанием)"""
         if not self.world_engine_enabled or self.world_engine is None:
             return "❌ WorldEngine не доступен"
         try:
-            world_name = self.world_engine.create_world(genre, tag)
-            return f"✅ Мир '{world_name}' создан!"
+            result = self.world_engine.create_world(genre, tag)
+            return result
         except Exception as e:
             return f"❌ Ошибка создания мира: {e}"
 
