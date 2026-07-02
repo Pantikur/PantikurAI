@@ -416,7 +416,139 @@ class ChatBot:
                 ]
             }
 
-    # ... existing code ...
+    def _generate_world_from_templates(self, genre: str, tag: str, templates: Dict, category: str) -> str:
+        """Генерирует структурированный мир на основе шаблонов WorldFactory"""
+        import random
+        
+        # Вспомогательные функции для заполнения шаблонов
+        def fill_template(template: str) -> str:
+            """Заполняет шаблон случайными значениями"""
+            replacements = {
+                "{name}": random.choice(["Элдория", "Валерия", "Ардония", "Северия", "Тэммора", "Астра", "Небесный Предел", "Тихий Угол", "Стальной Горизонт", "Новая Земля"]),
+                "{number}": str(random.randint(3, 12)),
+                "{height}": str(random.randint(500, 5000)),
+                "{depth}": str(random.randint(1, 50)),
+                "{plant}": random.choice(["вечным туманом", "серебристым мхом", "кристальными цветами", "светящимся лишайником", "древними папоротниками"]),
+                "{location}": random.choice(["Запретной Зоны", "Пустошей", "Горизонта Событий", "Мёртвого Города", "Древних Руин"]),
+            }
+            result = template
+            for key, value in replacements.items():
+                result = result.replace(key, value)
+            return result
+        
+        # Генерируем географию (1-2 шаблона)
+        geography = random.sample(templates.get("geography", []), min(len(templates.get("geography", [])), 2))
+        geography_text = "\n".join([f"   - {fill_template(g)}" for g in geography])
+        
+        # Генерируем законы (2-3 шаблона)
+        laws = random.sample(templates.get("laws", []), min(len(templates.get("laws", [])), 3))
+        laws_text = "\n".join([f"   - {fill_template(l)}" for l in laws])
+        
+        # Генерируем традиции (2-3 шаблона)
+        traditions = random.sample(templates.get("traditions", []), min(len(templates.get("traditions", [])), 3))
+        traditions_text = "\n".join([f"   - {fill_template(t)}" for t in traditions])
+        
+        # Генерируем негласные правила (1-2 шаблона)
+        unspoken = random.sample(templates.get("unspoken_rules", []), min(len(templates.get("unspoken_rules", [])), 2))
+        unspoken_text = "\n".join([f"   - {fill_template(u)}" for u in unspoken])
+        
+        # Генерируем название мира
+        world_name = fill_template("{name}")
+        if category == "fantasy":
+            world_name = random.choice(["Элдория", "Валерия", "Ардония", "Северия", "Тэммора", "Драконий Предел", "Лес Теней", "Королевство Света"])
+        elif category == "cyberpunk":
+            world_name = random.choice(["Нео-Токио", "Стальной Горизонт", "Хром-Сити", "Глитч-Зона", "Кибер-Предел"])
+        elif category == "cyberfantasy":
+            world_name = random.choice(["Арк-Сити", "Техно-Магия", "Нео-Ардония", "Кристалл-Град", "Эфир-Сити"])
+        elif category == "postapoc":
+            world_name = random.choice(["Пустошь-7", "Бункер-Сити", "Новый Рассвет", "Зона Выживания", "Последний Оплот"])
+        elif category == "scifi":
+            world_name = random.choice(["Колония Альфа", "Звёздный Предел", "Орбита-7", "Новая Земля", "Галактический Пост"])
+        elif category == "reality" or category == "slice_of_life":
+            world_name = random.choice(["Тихий Город", "Обычный Мир", "Наша Реальность", "Повседневность", "Знакомый Город"])
+        elif category == "alt_reality":
+            world_name = random.choice(["Альтернатива-42", "Параллель", "Другая Версия", "Реальность-X", "Мир Наизнанку"])
+        
+        # Формируем структурированный ответ
+        response = f"""Название: {world_name}
+
+Жанр: {genre}
+Тег: {tag if tag else 'общий'}
+Категория: {category}
+
+📍 География мира:
+{geography_text}
+
+⚖️ Законы общества:
+{laws_text}
+
+🎭 Традиции и обычаи:
+{traditions_text}
+
+🤫 Негласные правила:
+{unspoken_text}
+
+👥 Типичные роли персонажей:
+{chr(10).join(['   - ' + r for r in random.sample(templates.get('npc_roles', []), min(len(templates.get('npc_roles', [])), 5))])}
+
+🏛️ Фракции:
+{chr(10).join(['   - ' + f['name'].format(name=random.choice(['Стальная', 'Теней', 'Света', 'Древняя', 'Новая'])) + ' — ' + f['description'] for f in random.sample(templates.get('faction_types', []), min(len(templates.get('faction_types', [])), 3))])}
+
+📊 Уровень технологий: {templates.get('technology_level', 0.5) * 100:.0f}%
+✨ Уровень магии: {templates.get('magic_level', 0.0) * 100:.0f}%
+
+📖 Сюжетная вводная:
+Ты стоишь на пороге нового мира. {fill_template(random.choice(templates.get('geography', ['Мир открыт перед тобой.'])))} Твоё приключение начинается здесь."""
+
+        return response
+
+    def _generate_world_from_knowledge(self, genre: str, tag: str) -> str:
+        """Генерирует мир на основе знаний из world_gen_knowledge.py (fallback)"""
+        try:
+            from .world_gen_knowledge import WorldGenKnowledgeEngine
+            
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            data_dir = os.path.join(project_root, "data")
+            
+            knowledge_engine = WorldGenKnowledgeEngine(data_dir=data_dir)
+            knowledge = knowledge_engine.collect_all_knowledge(genre, tag)
+            prompt = knowledge_engine.build_world_gen_prompt(knowledge)
+            
+            logging.info(f"📚 _generate_world_from_knowledge: собрано {len(knowledge['books_content'])} книжных концепций")
+            
+            # Генерируем через модель
+            response = self._generate_response_with_sampling(prompt, max_length=512, max_words=400, temperature=1.2, top_p=0.95)
+            return response
+        except Exception as e:
+            logging.error(f"❌ _generate_world_from_knowledge: {e}")
+            return self._generate_fallback_world(genre, tag)
+
+    def _generate_fallback_world(self, genre: str, tag: str) -> str:
+        """Простой fallback для генерации мира"""
+        import random
+        
+        world_name = random.choice(["Эхо", "Предел", "Горизонт", "Тени", "Свет", "Ветер", "Сталь", "Кристалл"])
+        world_adj = random.choice(["Забытый", "Вечный", "Скрытый", "Новый", "Древний", "Таинственный"])
+        
+        return f"""Название: {world_adj} {world_name}
+
+Жанр: {genre}
+Тег: {tag if tag else 'общий'}
+
+📍 География мира:
+   - Мир раскинулся на бескрайних просторах, где каждый уголок хранит свои тайны.
+   - Ландшафт меняется от суровых гор до тихих долин.
+
+⚖️ Законы общества:
+   - Каждый отвечает за свои поступки.
+   - Сила слова важнее силы оружия.
+
+🎭 Традиции и обычаи:
+   - Праздник Первого Света — начало нового года.
+   - Обмен дарами в день полнолуния.
+
+📖 Сюжетная вводная:
+Ты стоишь на пороге неизвестного. {world_adj} {world_name} ждёт своего героя. Что ты выберешь?"""
 
     def _generate_response_with_sampling(
         self,
@@ -742,38 +874,22 @@ class ChatBot:
             genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
             tag = tag_match.group(1).strip() if tag_match else ""
 
-            # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ БАЗУ ЗНАНИЙ (не шаблоны!) ===
+            # === ГЕНЕРАЦИЯ МИРА ЧЕРЕЗ ШАБЛОНЫ WorldFactory + ЗНАНИЯ ===
             try:
-                from .world_gen_knowledge import WorldGenKnowledgeEngine
+                # Определяем категорию жанра
+                category = self.world_engine.world_factory._detect_genre_category(genre, tag) if self.world_engine else "fantasy"
                 
-                # Получаем путь к data
-                project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-                data_dir = os.path.join(project_root, "data")
+                # Получаем шаблоны для жанра
+                templates = self.world_engine.world_factory.GENRE_TEMPLATES.get(category, self.world_engine.world_factory.GENRE_TEMPLATES["fantasy"]) if self.world_engine else None
                 
-                # Создаём движок знаний и собираем все данные
-                knowledge_engine = WorldGenKnowledgeEngine(data_dir=data_dir)
-                knowledge = knowledge_engine.collect_all_knowledge(genre, tag)
-                
-                # Строим промпт на основе ВСЕХ знаний
-                prompt = knowledge_engine.build_world_gen_prompt(knowledge)
-                
-                logging.info(f"📚 world_gen: собрано {len(knowledge['books_content'])} книжных концепций, "
-                           f"{len(knowledge['conversations'])} диалогов, "
-                           f"{len(knowledge['emotional_atmosphere'])} эмоциональных фраз, "
-                           f"{len(knowledge['knowledge_words'])} знаний о словах")
-                
-                # Генерируем ответ через модель с высокими параметрами разнообразия
-                response = self._generate_response_with_sampling(
-                    prompt,
-                    max_length=1024,
-                    max_words=600,
-                    temperature=1.4,  # Очень высокая температура для креативности
-                    top_p=0.98
-                )
+                if templates:
+                    # Генерируем мир на основе шаблонов
+                    response = self._generate_world_from_templates(genre, tag, templates, category)
+                    logging.info(f"📚 world_gen: сгенерирован мир из шаблонов '{category}' (жанр: {genre}, тег: {tag})")
+                else:
+                    # Fallback на генерацию через знания
+                    response = self._generate_world_from_knowledge(genre, tag)
             
-            except ImportError as e:
-                logging.warning(f"⚠️ world_gen_knowledge не найден: {e} → fallback")
-                response = self._generate_fallback_world(genre, tag)
             except Exception as e:
                 logging.error(f"❌ Ошибка генерации мира: {e}")
                 response = self._generate_fallback_world(genre, tag)
