@@ -1179,7 +1179,7 @@ async def predict(request: Request):
             else:
                 genre = last_msg.strip()[:50]
             
-            tag_match = re.search(r"Тег[:\s]+([^.\n]+)", last_msg, re.IGNORECASE)
+            tag_match = re.search(r"Тег[иаеs]*[:\s]+([^.\n]+)", last_msg, re.IGNORECASE)
             if tag_match:
                 tag = tag_match.group(1).strip()
             

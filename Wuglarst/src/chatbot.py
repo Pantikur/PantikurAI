@@ -421,6 +421,7 @@ class ChatBot:
         """Определяет категорию жанра для выбора шаблонов"""
         genre_lower = genre.lower()
         tag_lower = tag.lower()
+        logging.debug(f"[genre_detect] genre='{genre_lower}', tag='{tag_lower}'")
 
         # Гибридные жанры
         is_cyber = "киберпанк" in genre_lower
@@ -908,7 +909,7 @@ class ChatBot:
             
             # Парсим жанр и тег
             genre_match = re.search(r"Жанр[:\s]+([^.\n]+)", last_user_msg, re.IGNORECASE)
-            tag_match = re.search(r"Тег[:\s]+([^.\n]+)", last_user_msg, re.IGNORECASE)
+            tag_match = re.search(r"Тег[иаеs]*[:\s]+([^.\n]+)", last_user_msg, re.IGNORECASE)
             
             genre = genre_match.group(1).strip() if genre_match else "Фэнтези"
             tag = tag_match.group(1).strip() if tag_match else ""
