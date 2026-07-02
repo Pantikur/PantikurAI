@@ -907,6 +907,8 @@ class ChatBot:
         elif mode == "world_gen":
             start_mode = time.time()
             
+            logging.info(f"[world_gen] last_user_msg: '{last_user_msg}'")
+            
             # Парсим жанр и тег
             genre_match = re.search(r"Жанр[:\s]+([^.;\n]+)", last_user_msg, re.IGNORECASE)
             tag_match = re.search(r"Тег[иаеs]*[:\s]+([^.;\n]+)", last_user_msg, re.IGNORECASE)
