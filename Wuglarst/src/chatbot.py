@@ -918,10 +918,9 @@ class ChatBot:
                 # Определяем категорию жанра
                 category = self._detect_genre_category(genre, tag)
                 
-                # Получаем шаблоны для жанра
-                templates = None
-                if self.world_engine and hasattr(self.world_engine, 'world_factory'):
-                    templates = self.world_engine.world_factory.GENRE_TEMPLATES.get(category)
+                # Импортируем WorldFactory напрямую и получаем шаблоны
+                from .world_engine import WorldFactory
+                templates = WorldFactory.GENRE_TEMPLATES.get(category, {})
                 
                 if templates and len(templates) > 0:
                     # Генерируем мир на основе шаблонов
@@ -1042,7 +1041,7 @@ class ChatBot:
                 except Exception as e:
                     logging.warning(f"⚠️ Ошибка модулей (world_gen): {e}")
 
-            return json.dumps({"world": response + response_extra}, ensure_ascii=False)
+            return json.dumps({"response": response + response_extra}, ensure_ascii=False)
 
         # === Режим chat ===
         elif mode == "chat":
