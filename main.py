@@ -938,6 +938,150 @@ async def world_status():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ========================
+# People Generator Endpoints
+# ========================
+
+# === Эндпоинт: /generate/person — сгенерировать человека ===
+@app.post("/generate/person")
+async def generate_person(request: Request):
+    """Генерирует одного человека на основе знаний"""
+    try:
+        from utils.world_people_generator import PeopleGenerator
+        
+        body = await request.json() if request.method == "POST" else {}
+        age_min = body.get("age_min", 18)
+        age_max = body.get("age_max", 40)
+        gender = body.get("gender")  # "мужской" или "женский"
+        archetype = body.get("archetype")
+        
+        generator = PeopleGenerator()
+        person = generator.generate_person(
+            age_range=(age_min, age_max),
+            gender=gender,
+            archetype=archetype
+        )
+        
+        return {"status": "ok", "person": person.to_dict()}
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации человека: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /generate/family — сгенерировать семью ===
+@app.post("/generate/family")
+async def generate_family(request: Request):
+    """Генерирует семью на основе знаний"""
+    try:
+        from utils.world_people_generator import PeopleGenerator
+        
+        body = await request.json() if request.method == "POST" else {}
+        size = body.get("size", 4)
+        region = body.get("region")
+        
+        generator = PeopleGenerator()
+        family = generator.generate_family(size=size, region=region)
+        
+        return {"status": "ok", "family": family.to_dict()}
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации семьи: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /generate/organization — сгенерировать организацию ===
+@app.post("/generate/organization")
+async def generate_organization(request: Request):
+    """Генерирует организацию на основе знаний"""
+    try:
+        from utils.world_people_generator import PeopleGenerator
+        
+        body = await request.json() if request.method == "POST" else {}
+        org_type = body.get("type")  # company, government, ngo, club, criminal
+        size = body.get("size")  # small, medium, large, corporation
+        
+        generator = PeopleGenerator()
+        organization = generator.generate_organization(type=org_type, size=size)
+        
+        return {"status": "ok", "organization": organization.to_dict()}
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации организации: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /generate/country — сгенерировать страну ===
+@app.post("/generate/country")
+async def generate_country(request: Request):
+    """Генерирует страну на основе знаний"""
+    try:
+        from utils.world_people_generator import PeopleGenerator
+        
+        body = await request.json() if request.method == "POST" else {}
+        pop_min = body.get("population_min", 1000000)
+        pop_max = body.get("population_max", 100000000)
+        
+        generator = PeopleGenerator()
+        country = generator.generate_country(population_range=(pop_min, pop_max))
+        
+        return {"status": "ok", "country": country.to_dict()}
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации страны: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /generate/world-population — сгенерировать популяцию мира ===
+@app.post("/generate/world-population")
+async def generate_world_population(request: Request):
+    """Генерирует полную популяцию мира: люди, семьи, организации, страны"""
+    try:
+        from utils.world_people_generator import PeopleGenerator
+        
+        body = await request.json() if request.method == "POST" else {}
+        num_people = body.get("people", 50)
+        num_families = body.get("families", 10)
+        num_organizations = body.get("organizations", 5)
+        num_countries = body.get("countries", 3)
+        
+        generator = PeopleGenerator()
+        world_data = generator.generate_world_population(
+            num_people=num_people,
+            num_families=num_families,
+            num_organizations=num_organizations,
+            num_countries=num_countries
+        )
+        
+        # Возвращаем только статистику, чтобы не перегружать ответ
+        return {
+            "status": "ok",
+            "stats": world_data["stats"],
+            "output_file": f"data/generated_worlds/world_population_*.json"
+        }
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации популяции: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /world/{name}/add-people — добавить людей в мир ===
+@app.post("/world/{world_name}/add-people")
+async def world_add_people(world_name: str, request: Request):
+    """Добавляет сгенерированных людей в существующий мир"""
+    try:
+        from utils.world_people_generator import WorldEngineIntegration
+        
+        body = await request.json() if request.method == "POST" else {}
+        num_people = body.get("num", 10)
+        
+        integration = WorldEngineIntegration()
+        success = integration.add_people_to_world(world_name, num_people=num_people)
+        
+        if success:
+            return {"status": "ok", "detail": f"Добавлено {num_people} персонажей в мир {world_name}"}
+        else:
+            raise HTTPException(status_code=404, detail=f"Мир {world_name} не найден")
+    except Exception as e:
+        logger.error(f"❌ Ошибка добавления людей в мир: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # === Главная страница ===
 @app.get("/")
 def home():
@@ -952,6 +1096,9 @@ def home():
             "/world/{name}/event", "/world/{name}/events",
             "/world/{name}/consistency", "/world/{name}/npc/{npc_name}",
             "/world/start-cycle", "/world/stop-cycle", "/world/status",
+            "/generate/person", "/generate/family", "/generate/organization",
+            "/generate/country", "/generate/world-population",
+            "/world/{name}/add-people",
             "/docs"
         ],
         "world_engine": {
@@ -969,6 +1116,28 @@ def home():
                 "POST /world/start-cycle - Запуск фонового цикла",
                 "POST /world/stop-cycle - Остановка фонового цикла",
                 "GET /world/status - Статус WorldEngine"
+            ]
+        },
+        "people_generator": {
+            "enabled": True,
+            "description": "Генерация людей, семей, организаций и стран на основе 8 файлов знаний",
+            "knowledge_files": [
+                "human_adolescence.md",
+                "human_early_development.md",
+                "human_emerging_adulthood.md",
+                "human_late_adolescence.md",
+                "human_middle_childhood.md",
+                "human_24_years.md",
+                "human_daily_life.md",
+                "human_daily_routine.md"
+            ],
+            "endpoints": [
+                "POST /generate/person - Сгенерировать человека",
+                "POST /generate/family - Сгенерировать семью",
+                "POST /generate/organization - Сгенерировать организацию",
+                "POST /generate/country - Сгенерировать страну",
+                "POST /generate/world-population - Сгенерировать популяцию мира",
+                "POST /world/{name}/add-people - Добавить людей в мир"
             ]
         }
     }

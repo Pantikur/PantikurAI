@@ -147,6 +147,12 @@ def get_response_for_class(label: str, responses: Dict[str, str]) -> str:
 
     # Категории с ключевыми словами
     rules = [
+        (["bullying_critical", "bullying_severe"], "bullying_critical"),
+        (["bullying_moderate"], "bullying_moderate"),
+        (["bullying_light"], "bullying_light"),
+        (["bullying_victim"], "bullying_victim"),
+        (["bullying_perpetrator"], "bullying_perpetrator"),
+        (["bullying_witness", "bullying_aftermath"], "bullying_aftermath"),
         (["hope", "faith", "light"], "hope"),
         (["rage", "anger", "wrath", "explosion"], "rage"),
         (["loneliness", "isolation", "alone"], "loneliness"),

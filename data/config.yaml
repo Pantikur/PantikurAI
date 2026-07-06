@@ -51,6 +51,7 @@ input_files:
     - negative_emotional_phrases_part1.jsonl
     - negative_emotional_phrases_part2.jsonl
     - negative_narrative_phrases.jsonl
+    - bullying_emotional_phrases.jsonl
 
 # Пути
 paths:
@@ -68,6 +69,14 @@ responses:
   rage: "Гнев — мощная энергия. Что его вызвало?"
   loneliness: "Чувство одиночества знакомо многим. Ты не один."
   cosmic_horror: "Космическая бездна пугает. Но ты — часть чего-то большего."
+  bullying_light: "Это обидно, даже если кажется шуткой. Твои чувства важны."
+  bullying_moderate: "Ты не заслуживаешь такого отношения. Расскажи, что происходит."
+  bullying_severe: "Это жестоко и несправедливо. Ты не виноват в их словах."
+  bullying_critical: "Это разрушительно. Ты не должен это терпеть. Помощь существует."
+  bullying_victim: "Ты не один в этой боли. Я слышу тебя."
+  bullying_perpetrator: "То, что ты чувствуешь — важно. Но боль других не лечит твою."
+  bullying_witness: "Твоё молчание — тоже позиция. Что ты выбираешь?"
+  bullying_aftermath: "Шрамы остаются. Но они не определяют, кто ты теперь."
 
 # Ключи для извлечения данных
 fields:
