@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi import WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, validator
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Any, Optional
 import logging
 import os
 import sys
@@ -1082,6 +1082,385 @@ async def world_add_people(world_name: str, request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ========================
+# Kotlin Assistant Endpoints
+# ========================
+
+# === Модели запросов для Kotlin Assistant ===
+class KotlinGenerateRequest(BaseModel):
+    """Запрос на генерацию Kotlin-кода"""
+    description: str
+    template_type: str | None = None  # activity, fragment, viewmodel, repository, dataclass, etc.
+    package_name: str = "com.example.app"
+    class_name: str = "MyClass"
+    additional_context: str | None = None
+
+
+class KotlinEditRequest(BaseModel):
+    """Запрос на редактирование Kotlin-кода"""
+    existing_code: str
+    instructions: str
+    file_path: str | None = None
+
+
+class KotlinAnalyzeRequest(BaseModel):
+    """Запрос на анализ Kotlin-кода"""
+    code: str
+    file_path: str | None = None
+
+
+class KotlinRefactorRequest(BaseModel):
+    """Запрос на рефакторинг Kotlin-кода"""
+    code: str
+    refactor_type: str  # extract_function, rename, simplify, modernize
+    file_path: str | None = None
+
+
+class KotlinAutocompleteRequest(BaseModel):
+    """Запрос на автодополнение Kotlin-кода"""
+    code_prefix: str
+    context: str | None = None
+
+
+class KotlinContextRequest(BaseModel):
+    """Запрос на сохранение контекста файла"""
+    file_path: str
+    code: str
+
+
+# === Эндпоинт: /kotlin/generate — генерация кода ===
+@app.post("/kotlin/generate")
+async def kotlin_generate(request: KotlinGenerateRequest):
+    """
+    Генерирует Kotlin-код по описанию.
+    
+    Поддерживаемые шаблоны:
+    - activity, fragment, viewmodel, repository
+    - dataclass, retrofit_api, room_dao
+    - singleton, coroutine_worker, compose_ui
+    - compose_viewmodel, dependency_injection, navigation_graph
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        result = assistant.generate_code(  # type: ignore[reportAttributeAccessIssue]
+            description=request.description,
+            template_type=request.template_type,
+            package_name=request.package_name,
+            class_name=request.class_name,
+            additional_context=request.additional_context
+        )
+        
+        logger.info(f"✅ Kotlin генерация: {request.class_name} ({request.template_type or 'custom'})")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации Kotlin: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin/edit — редактирование кода ===
+@app.post("/kotlin/edit")
+async def kotlin_edit(request: KotlinEditRequest):
+    """
+    Редактирует существующий Kotlin-код по инструкции.
+    
+    Примеры инструкций:
+    - "Добавь комментарий к классу"
+    - "Добавь импорт lifecycleScope"
+    - "Добавь функцию loadData()"
+    - "Удали все TODO комментарии"
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        result = assistant.edit_code(  # type: ignore[reportAttributeAccessIssue]
+            existing_code=request.existing_code,
+            instructions=request.instructions,
+            file_path=request.file_path
+        )
+        
+        logger.info(f"✅ Kotlin редактирование: {len(request.existing_code)} символов")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка редактирования Kotlin: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin/analyze — анализ кода ===
+@app.post("/kotlin/analyze")
+async def kotlin_analyze(request: KotlinAnalyzeRequest):
+    """
+    Анализирует Kotlin-код на ошибки и проблемы.
+    
+    Возвращает:
+    - errors: список ошибок синтаксиса
+    - warnings: предупреждения стиля
+    - suggestions: предложения по улучшению
+    - metrics: метрики кода (строки, классы, функции, сложность)
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        result = assistant.analyze_code(  # type: ignore[reportAttributeAccessIssue]
+            code=request.code,
+            file_path=request.file_path
+        )
+        
+        logger.info(f"✅ Kotlin анализ: {result['metrics'].get('lines', 0)} строк, {len(result['errors'])} ошибок")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка анализа Kotlin: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin/refactor — рефакторинг кода ===
+@app.post("/kotlin/refactor")
+async def kotlin_refactor(request: KotlinRefactorRequest):
+    """
+    Выполняет рефакторинг Kotlin-кода.
+    
+    Типы рефакторинга:
+    - extract_function: извлечение функции
+    - rename: переименование
+    - simplify: упрощение кода
+    - modernize: модернизация (устаревшие конструкции)
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        result = assistant.refactor_code(  # type: ignore[reportAttributeAccessIssue]
+            code=request.code,
+            refactor_type=request.refactor_type,
+            file_path=request.file_path
+        )
+        
+        logger.info(f"✅ Kotlin рефакторинг: {request.refactor_type}")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка рефакторинга Kotlin: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin/autocomplete — автодополнение ===
+@app.post("/kotlin/autocomplete")
+async def kotlin_autocomplete(request: KotlinAutocompleteRequest):
+    """
+    Автодополнение Kotlin-кода.
+    
+    Возвращает список вариантов продолжения кода
+    на основе префикса и контекста.
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        result = assistant.autocomplete(  # type: ignore[reportAttributeAccessIssue]
+            code_prefix=request.code_prefix,
+            context=request.context
+        )
+        
+        logger.info(f"✅ Kotlin автодополнение: {len(result['suggestions'])} вариантов")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка автодополнения Kotlin: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Глобальный инстанс Kotlin Assistant для контекста ===
+_kotlin_assistant_instance: Optional[Any] = None
+
+
+def get_kotlin_assistant():
+    """Получает или создаёт инстанс KotlinAssistant."""
+    global _kotlin_assistant_instance
+    if _kotlin_assistant_instance is None:
+        from utils.kotlin_assistant import KotlinAssistant
+        _kotlin_assistant_instance = KotlinAssistant(project_root=str(BASE_DIR))
+    return _kotlin_assistant_instance
+        
+
+# === Эндпоинт: /kotlin/context/save — сохранить контекст ===
+@app.post("/kotlin/context/save")
+async def kotlin_context_save(request: KotlinContextRequest):
+    """
+    Сохраняет контекст файла для последующего использования.
+    
+    Полезно при редактировании нескольких связанных файлов.
+    """
+    try:
+        assistant = get_kotlin_assistant()
+        assistant.store_context(  # type: ignore[reportAttributeAccessIssue]
+            file_path=request.file_path,
+            code=request.code
+        )
+        
+        logger.info(f"✅ Kotlin контекст сохранён: {request.file_path}")
+        return {"status": "ok", "detail": f"Контекст сохранён: {request.file_path}"}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка сохранения контекста: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin/context/get — получить контекст ===
+@app.get("/kotlin/context/get/{file_path:path}")
+async def kotlin_context_get(file_path: str):
+    """
+    Получает сохранённый контекст файла.
+    
+    file_path должен быть URL-encoded.
+    """
+    try:
+        assistant = get_kotlin_assistant()
+        code = assistant.get_context(file_path)  # type: ignore[reportAttributeAccessIssue]
+        
+        if code:
+            logger.info(f"✅ Kotlin контекст получен: {file_path}")
+            return {"status": "ok", "file_path": file_path, "code": code}
+        else:
+            return {"status": "not_found", "detail": f"Контекст не найден: {file_path}"}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка получения контекста: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin/context/clear — очистить контекст ===
+@app.post("/kotlin/context/clear")
+async def kotlin_context_clear():
+    """
+    Очищает всё хранилище контекста.
+    """
+    try:
+        assistant = get_kotlin_assistant()
+        assistant.clear_context()  # type: ignore[reportAttributeAccessIssue]
+        
+        logger.info("✅ Kotlin контекст очищен")
+        return {"status": "ok", "detail": "Контекст очищен"}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка очистки контекста: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin/templates — список шаблонов ===
+@app.get("/kotlin/templates")
+async def kotlin_templates():
+    """
+    Возвращает список доступных шаблонов Kotlin.
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        templates = list(assistant.templates.keys())  # type: ignore[reportAttributeAccessIssue]
+        
+        return {
+            "status": "ok",
+            "templates": templates,
+            "description": {
+                "activity": "Android Activity",
+                "fragment": "Android Fragment",
+                "viewmodel": "Android ViewModel",
+                "repository": "Repository pattern",
+                "dataclass": "Data class",
+                "retrofit_api": "Retrofit API interface",
+                "room_dao": "Room DAO interface",
+                "singleton": "Singleton object",
+                "coroutine_worker": "CoroutineWorker",
+                "compose_ui": "Jetpack Compose UI",
+                "compose_viewmodel": "Compose ViewModel",
+                "dependency_injection": "Koin DI module",
+                "navigation_graph": "Navigation Compose"
+            }
+        }
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка получения шаблонов: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin-v2/generate — генерация кода (V2) ===
+@app.post("/kotlin-v2/generate")
+async def kotlin_v2_generate(request: KotlinGenerateRequest):
+    """
+    Генерирует Kotlin-код (улучшенная версия V2).
+    
+    Особенности V2:
+    - Умное кэширование
+    - 20+ расширенных шаблонов
+    - Улучшенная AI генерация
+    - Статистика использования
+    """
+    try:
+        from utils.kotlin_assistant_v2 import KotlinAssistantV2
+        
+        assistant = KotlinAssistantV2(project_root=str(BASE_DIR))
+        result = assistant.generate_code(  # type: ignore[reportAttributeAccessIssue]
+            description=request.description,
+            template_type=request.template_type,
+            package_name=request.package_name,
+            class_name=request.class_name,
+            additional_context=request.additional_context
+        )
+        
+        logger.info(f"✅ Kotlin V2 генерация: {request.class_name} ({request.template_type or 'custom'})")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации Kotlin V2: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin-v2/statistics — статистика ===
+@app.get("/kotlin-v2/statistics")
+async def kotlin_v2_statistics():
+    """
+    Возвращает статистику использования Kotlin Assistant V2.
+    """
+    try:
+        from utils.kotlin_assistant_v2 import KotlinAssistantV2
+        
+        # Создаём временный инстанс для получения статистики
+        assistant = KotlinAssistantV2(project_root=str(BASE_DIR))
+        stats = assistant.get_statistics()  # type: ignore[reportAttributeAccessIssue]
+        
+        return {"status": "ok", "statistics": stats}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка получения статистики: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /kotlin-v2/cache/clear — очистить кэш ===
+@app.post("/kotlin-v2/cache/clear")
+async def kotlin_v2_cache_clear():
+    """
+    Очищает кэш Kotlin Assistant V2.
+    """
+    try:
+        from utils.kotlin_assistant_v2 import KotlinAssistantV2
+        
+        assistant = KotlinAssistantV2(project_root=str(BASE_DIR))
+        assistant.clear_cache()  # type: ignore[reportAttributeAccessIssue]
+        
+        logger.info("✅ Kotlin V2 кэш очищен")
+        return {"status": "ok", "detail": "Кэш очищен"}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка очистки кэша: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # === Главная страница ===
 @app.get("/")
 def home():
@@ -1099,6 +1478,8 @@ def home():
             "/generate/person", "/generate/family", "/generate/organization",
             "/generate/country", "/generate/world-population",
             "/world/{name}/add-people",
+            "/kotlin/generate", "/kotlin/edit", "/kotlin/analyze",
+            "/kotlin/refactor", "/kotlin/autocomplete", "/kotlin/templates",
             "/docs"
         ],
         "world_engine": {
@@ -1139,6 +1520,40 @@ def home():
                 "POST /generate/world-population - Сгенерировать популяцию мира",
                 "POST /world/{name}/add-people - Добавить людей в мир"
             ]
+        },
+        "kotlin_assistant": {
+            "enabled": True,
+            "description": "AI-помощник для генерации, редактирования и анализа Kotlin-кода. Интеграция с Android Studio.",
+            "features": [
+                "Генерация кода по описанию (12+ шаблонов)",
+                "Редактирование кода по инструкции",
+                "Анализ ошибок и стиля кода",
+                "Рефакторинг (extract, rename, simplify, modernize)",
+                "Автодополнение кода",
+                "Управление контекстом файлов"
+            ],
+            "templates": [
+                "activity", "fragment", "viewmodel", "repository",
+                "dataclass", "retrofit_api", "room_dao", "singleton",
+                "coroutine_worker", "compose_ui", "compose_viewmodel",
+                "dependency_injection", "navigation_graph"
+            ],
+            "endpoints": [
+                "POST /kotlin/generate - Генерация кода",
+                "POST /kotlin/edit - Редактирование кода",
+                "POST /kotlin/analyze - Анализ кода",
+                "POST /kotlin/refactor - Рефакторинг",
+                "POST /kotlin/autocomplete - Автодополнение",
+                "GET /kotlin/templates - Список шаблонов",
+                "POST /kotlin/context/save - Сохранить контекст",
+                "GET /kotlin/context/get/{path} - Получить контекст",
+                "POST /kotlin/context/clear - Очистить контекст"
+            ],
+            "android_studio_integration": {
+                "description": "Используйте Retrofit для подключения к API из Android Studio",
+                "example_dependency": "implementation 'com.squareup.retrofit2:retrofit:2.9.0'",
+                "base_url": "http://your-server:8000/"
+            }
         }
     }
 
