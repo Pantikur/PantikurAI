@@ -122,6 +122,46 @@ class AssistantApiService(private val project: com.intellij.openapi.project.Proj
         Result.failure(e)
     }
 
+    /**
+     * Умное редактирование кода — как Koda.
+     * Отправляет код с инструкцией и получает исправленную версию.
+     */
+    suspend fun editCode(code: String, instruction: String, filePath: String? = null): Result<String> = try {
+        val prompt = buildString {
+            appendLine("Ты — профессиональный AI-ассистент для разработчиков (как Koda).")
+            appendLine("Задача: $instruction")
+            appendLine()
+            appendLine("Код:")
+            appendLine("```")
+            appendLine(code)
+            appendLine("```")
+            if (filePath != null) appendLine("Файл: $filePath")
+            appendLine()
+            appendLine("Верни только исправленный код без объяснений.")
+        }
+
+        val body = buildJsonObject {
+            put("messages", JsonArray(listOf(buildJsonObject {
+                put("message", prompt)
+                put("is_own", true)
+            })))
+            put("mode", "chat")
+        }
+        val response = makeRequest("/chat", body)
+        if (response.isSuccessful) {
+            val json = Json.parseToJsonElement(response.body).jsonObject
+            val rawResponse = json.str("response") ?: code
+            // Извлекаем код из markdown блока если есть
+            val codeMatch = Regex("```\\w*\\n([\\s\\S]*?)```").find(rawResponse)
+            Result.success(codeMatch?.groupValues?.get(1)?.trim() ?: rawResponse)
+        } else {
+            Result.failure(Exception("HTTP ${response.statusCode}"))
+        }
+    } catch (e: Exception) {
+        thisLogger().error("Edit code error", e)
+        Result.failure(e)
+    }
+
     suspend fun explainCode(code: String, filePath: String? = null): Result<String> = try {
         val body = buildJsonObject {
             put("code", code)

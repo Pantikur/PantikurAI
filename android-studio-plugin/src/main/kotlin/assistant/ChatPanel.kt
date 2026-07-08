@@ -7,22 +7,24 @@ import com.intellij.util.ui.UIUtil
 import kotlinx.coroutines.*
 import java.awt.BorderLayout
 import java.awt.FlowLayout
+import java.awt.Font
 import javax.swing.*
 import javax.swing.text.DefaultCaret
 
 /**
- * Панель чата — основная функция плагина.
- * Поддерживает историю сообщений и все типы запросов.
+ * Умная панель чата — как Koda.
+ * Понимает контекст файла, выделение, проект.
  */
 class ChatPanel(private val project: Project, private val apiService: AssistantApiService) {
 
     val component: JPanel = JPanel(BorderLayout())
+    private val editorService = SmartEditorService(project)
 
     private val messageArea: JTextArea = JTextArea().apply {
         isEditable = false
         lineWrap = true
         wrapStyleWord = true
-        font = java.awt.Font("Monospaced", java.awt.Font.PLAIN, 13)
+        font = Font("Monospaced", Font.PLAIN, 13)
     }
 
     private val inputField: JTextField = JTextField()
@@ -45,39 +47,87 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
             addActionListener { send_message() }
         }
 
-        // Кнопки быстрых действий
+        // Умные кнопки действий
         val quickActions = JPanel(FlowLayout(FlowLayout.LEFT))
+        
+        val btnContext = JButton("📄 +Контекст файла")
         val btnExplain = JButton("📖 Explain")
+        val btnFix = JButton("🔧 Fix")
+        val btnReview = JButton("🔍 Review")
         val btnGenerate = JButton("⚡ Generate")
-        val btnRPG = JButton("🎮 RPG")
 
+        // +Контекст файла — добавляет текущий файл в чат
+        btnContext.addActionListener {
+            val fileText = editorService.getFileWithLineNumbers()
+            val filePath = editorService.getCurrentFilePath() ?: "unknown"
+            if (fileText.isNotBlank()) {
+                val contextMessage = "Контекст файла ($filePath):\n\n${fileText.take(1000)}..."
+                chatHistory.add(ChatMessage("user", contextMessage))
+                appendToChat("Вы", "📄 Добавлен контекст: ${filePath.substringAfterLast('/')}")
+                Messages.showInfoMessage(
+                    "Контекст файла добавлен в чат (${fileText.length} символов)",
+                    "Pantikur AI"
+                )
+            } else {
+                Messages.showWarningDialog("Нет открытого файла", "Pantikur AI")
+            }
+        }
+
+        // Explain — объяснить выделенный код
         btnExplain.addActionListener {
-            val selection = project.getSelectedText()
+            val selection = editorService.getSelectedText()
             if (selection.isNullOrEmpty()) {
                 Messages.showInfoMessage("Выделите код для объяснения", "Pantikur AI")
             } else {
                 chatHistory.add(ChatMessage("user", "Объясни этот код:\n$selection"))
-                appendToChat("Вы", "Объясни этот код:\n$selection")
-                send_message(explain = true, code = selection)
+                appendToChat("Вы", "📖 Explain: ${selection.take(50)}...")
+                send_message(customMessage = "Объясни этот код подробно:\n$selection")
             }
         }
 
+        // Fix — исправить ошибки в выделенном коде
+        btnFix.addActionListener {
+            val selection = editorService.getSelectedText()
+            if (selection.isNullOrEmpty()) {
+                Messages.showInfoMessage("Выделите код для исправления", "Pantikur AI")
+            } else {
+                chatHistory.add(ChatMessage("user", "Исправь ошибки:\n$selection"))
+                appendToChat("Вы", "🔧 Fix: ${selection.take(50)}...")
+                send_message(customMessage = "Найди и исправь ошибки в этом коде. Верни только исправленный код:\n$selection")
+            }
+        }
+
+        // Review — код-ревью выделенного кода
+        btnReview.addActionListener {
+            val selection = editorService.getSelectedText()
+            if (selection.isNullOrEmpty()) {
+                Messages.showInfoMessage("Выделите код для ревью", "Pantikur AI")
+            } else {
+                chatHistory.add(ChatMessage("user", "Сделай code review:\n$selection"))
+                appendToChat("Вы", "🔍 Review: ${selection.take(50)}...")
+                send_message(customMessage = "Сделай профессиональное code review этого кода. Найди ошибки, предупреждения, предложи улучшения:\n$selection")
+            }
+        }
+
+        // Generate — сгенерировать код
         btnGenerate.addActionListener {
-            val selection = project.getSelectedText()
-            chatHistory.add(ChatMessage("user", "Сгенерируй код (контекст: $selection)"))
-            appendToChat("Вы", "Сгенерируй код (контекст: ${selection?.take(50)}...)")
-            send_message(generate = true, context = selection)
+            val context = editorService.getContextAroundCursor(5, 5)
+            val selection = editorService.getSelectedText()
+            val prompt = if (selection.isNullOrEmpty()) {
+                "Сгенерируй код для этого контекста:\n$context"
+            } else {
+                "Дополни/улучши этот код:\n$selection"
+            }
+            chatHistory.add(ChatMessage("user", prompt))
+            appendToChat("Вы", "⚡ Generate: ${prompt.take(50)}...")
+            send_message(customMessage = prompt)
         }
 
-        btnRPG.addActionListener {
-            chatHistory.add(ChatMessage("user", "🎮 Начни RPG сессию"))
-            appendToChat("Вы", "🎮 Начни RPG сессию")
-            send_message(rpg = true)
-        }
-
+        quickActions.add(btnContext)
         quickActions.add(btnExplain)
+        quickActions.add(btnFix)
+        quickActions.add(btnReview)
         quickActions.add(btnGenerate)
-        quickActions.add(btnRPG)
 
         inputPanel.add(inputField, BorderLayout.CENTER)
         inputPanel.add(sendButton, BorderLayout.EAST)
@@ -86,71 +136,68 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
         component.add(quickActions, BorderLayout.NORTH)
         component.add(inputPanel, BorderLayout.SOUTH)
 
-        // Приветственное сообщение
-        appendToChat("🤖", "Привет! Я — Pantikur AI Assistant.\n\n" +
+        // Приветственное сообщение с умными фичами
+        appendToChat("🤖", "Привет! Я — Pantikur AI Assistant (Pro).\n\n" +
                 "Я могу:\n" +
-                "• 💬 Отвечать на вопросы\n" +
-                "• ⚡ Генерировать Kotlin/Java код\n" +
-                "• 🔍 Анализировать и рефакторить код\n" +
-                "• 🎮 Создавать RPG миры и персонажей\n\n" +
-                "Напиши сообщение или используй кнопки выше!")
+                "• 💬 Отвечать на вопросы с контекстом файла\n" +
+                "• 📄 Видеть текущий файл и проект\n" +
+                "• 🔍 Делать профессиональное code review\n" +
+                "• 🔧 Автоматически исправлять ошибки\n" +
+                "• ⚡ Генерировать и вставлять код\n" +
+                "• 📖 Объяснять сложные участки\n\n" +
+                "Используй кнопки выше или напиши сообщение!\n\n" +
+                "💡 Совет: нажми '+Контекст файла' чтобы я видел весь файл.")
 
         // Автопрокрутка
         val caret: DefaultCaret = messageArea.caret as DefaultCaret
         caret.updatePolicy = DefaultCaret.ALWAYS_UPDATE
     }
 
-    private fun send_message(
-        explain: Boolean = false,
-        generate: Boolean = false,
-        rpg: Boolean = false,
-        code: String? = null,
-        context: String? = null
-    ) {
-        val text = inputField.text.trim()
-        if (text.isEmpty() && !explain && !generate && !rpg) return
+    private fun send_message(customMessage: String? = null) {
+        val text = customMessage ?: inputField.text.trim()
+        if (text.isEmpty()) return
 
-        val userMessage = if (explain) "Объясни код: $code"
-        else if (generate) "Сгенерируй код: $context"
-        else if (rpg) "🎮 RPG сессия"
-        else text
-
+        val userMessage = text
         chatHistory.add(ChatMessage("user", userMessage))
-        appendToChat("Вы", text)
-        inputField.text = ""
+        
+        if (customMessage == null) {
+            appendToChat("Вы", text)
+            inputField.text = ""
+        }
 
         // Индикатор загрузки
         appendToChat("🤖", "⏳ Думаю...")
 
-        // Запрос к API
+        // Запрос к API с умным контекстом
         CoroutineScope(Dispatchers.Main).launch {
-            val job = CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val result = if (explain && code != null) {
-                        apiService.explainCode(code)
-                    } else if (rpg) {
-                        apiService.chat("🎮 Начни RPG сессию. Создай интересный мир и персонажей.")
-                    } else {
-                        apiService.chat(userMessage, chatHistory.takeLast(10))
-                    }
+            try {
+                // Добавляем контекст файла если он есть
+                val fileContext = editorService.getContextAroundCursor(3, 3)
+                val enhancedMessage = if (fileContext.isNotBlank() && customMessage != null) {
+                    "$text\n\n[Контекст файла]:\n$fileContext"
+                } else {
+                    text
+                }
 
-                    result.onSuccess { response ->
-                        // Удалить "думаю..."
-                        chatHistory.removeLast()
-                        messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
-                        chatHistory.add(ChatMessage("assistant", response))
-                        appendToChat("🤖", response)
-                    }.onFailure { error ->
-                        chatHistory.removeLast()
-                        messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
-                        chatHistory.add(ChatMessage("assistant", "❌ Ошибка: ${error.message}"))
-                        appendToChat("🤖", "❌ Ошибка: ${error.message}")
-                    }
-                } catch (e: Exception) {
+                val result = withContext(Dispatchers.IO) {
+                    apiService.chat(enhancedMessage, chatHistory.takeLast(10))
+                }
+
+                result.onSuccess { response ->
+                    // Удалить "думаю..."
                     chatHistory.removeLast()
                     messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
-                    appendToChat("🤖", "❌ Ошибка: ${e.message}")
+                    chatHistory.add(ChatMessage("assistant", response))
+                    appendToChat("🤖", response)
+                }.onFailure { error ->
+                    chatHistory.removeLast()
+                    messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
+                    appendToChat("🤖", "❌ Ошибка: ${error.message}")
                 }
+            } catch (e: Exception) {
+                chatHistory.removeLast()
+                messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
+                appendToChat("🤖", "❌ Ошибка: ${e.message}")
             }
         }
     }
@@ -163,11 +210,3 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
     }
 }
 
-/**
- * Получить выделенный текст в редакторе
- */
-private fun Project.getSelectedText(): String? {
-    val editor = com.intellij.openapi.editor.EditorFactory
-        .getInstance().allEditors.firstOrNull()
-    return editor?.selectionModel?.selectedText?.trim()
-}

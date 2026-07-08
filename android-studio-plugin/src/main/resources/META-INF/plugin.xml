@@ -5,23 +5,41 @@
     <vendor email="support@pantikur.dev" url="https://pantikur.dev">Pantikur AI</vendor>
 
     <description><![CDATA[
-    AI-ассистент для Android Studio с профессиональными и развлекательными функциями.
+    <h1>🤖 Pantikur AI Assistant — Профессиональный AI-помощник для разработчиков</h1>
+    
+    <p>AI-ассистент уровня Koda для Android Studio с профессиональными функциями для разработки кода.</p>
 
-    <b>Профессиональные функции:</b>
+    <h2>🚀 Профессиональные функции:</h2>
     <ul>
-        <li>Генерация Kotlin/Java кода по описанию</li>
-        <li>Анализ и рефакторинг кода</li>
-        <li>Автодополнение и исправление ошибок</li>
-        <li>Объяснение кода</li>
+        <li><b>🔍 Professional Code Review</b> — детальный анализ кода с ошибками, предупреждениями и предложениями</li>
+        <li><b>🔧 Auto Fix</b> — автоматическое исправление ошибок в один клик</li>
+        <li><b>📖 Quick Explain</b> — быстрое объяснение выделенного кода</li>
+        <li><b>⚡ Smart Insert</b> — генерация и вставка кода в позицию курсора</li>
+        <li><b>💬 Smart Chat</b> — умный чат с контекстом файла и проекта</li>
+        <li><b>📄 File Context</b> — понимание текущего файла, структуры и зависимостей</li>
+        <li><b>🔍 Code Analysis</b> — анализ ошибок, стиля, метрик кода</li>
+        <li><b>⚡ Code Generation</b> — генерация Kotlin/Java кода по описанию (20+ шаблонов)</li>
+        <li><b>🔄 Refactoring</b> — умный рефакторинг кода</li>
+        <li><b>📱 App Generator</b> — генерация полноценных Android-приложений</li>
     </ul>
 
-    <b>Развлекательные функции:</b>
+    <h2>🎮 Развлекательные функции:</h2>
     <ul>
-        <li>Генерация RPG миров и персонажей</li>
-        <li>Чат с AI-компаньоном</li>
-        <li>Создание сюжетных линий</li>
-        <li>WorldEngine — развитие миров</li>
+        <li><b>WorldEngine</b> — создание и развитие RPG миров</li>
+        <li><b>Character Generator</b> — генерация персонажей с параметрами</li>
+        <li><b>Story Mode</b> — интерактивные приключения</li>
     </ul>
+
+    <h2>⌨️ Горячие клавиши:</h2>
+    <ul>
+        <li><b>Ctrl+Alt+R</b> — Professional Code Review</li>
+        <li><b>Ctrl+Alt+F</b> — Auto Fix Errors</li>
+        <li><b>Ctrl+Alt+E</b> — Quick Explain</li>
+        <li><b>Ctrl+Alt+I</b> — Smart Insert</li>
+        <li><b>Ctrl+Alt+G</b> — Generate Code</li>
+    </ul>
+
+    <p><b>Как Koda:</b> понимает контекст, редактирует код, исправляет ошибки, делает всё правильно и профессионально!</p>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -35,12 +53,56 @@
     </extensions>
 
     <actions>
+        <!-- === PROFESSIONAL AI ACTIONS === -->
+        
+        <!-- Code Review -->
+        <action id="assistant.CodeReview"
+                class="assistant.actions.CodeReviewAction"
+                text="🔍 Professional Code Review"
+                description="Профессиональное код-ревью с детальным анализом">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt R"/>
+        </action>
+
+        <!-- Auto Fix -->
+        <action id="assistant.AutoFix"
+                class="assistant.actions.AutoFixAction"
+                text="🔧 Auto Fix Errors"
+                description="Автоматическое исправление ошибок">
+            <add-to-group group-id="EditorPopupMenu" anchor="after"
+                         relative-to-action="assistant.CodeReview"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt F"/>
+        </action>
+
+        <!-- Quick Explain -->
+        <action id="assistant.QuickExplain"
+                class="assistant.actions.QuickExplainAction"
+                text="📖 Quick Explain"
+                description="Быстрое объяснение выделенного кода">
+            <add-to-group group-id="EditorPopupMenu" anchor="after"
+                         relative-to-action="assistant.AutoFix"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt E"/>
+        </action>
+
+        <!-- Smart Insert -->
+        <action id="assistant.SmartInsert"
+                class="assistant.actions.SmartInsertAction"
+                text="⚡ Smart Insert"
+                description="Вставить AI-код в позицию курсора">
+            <add-to-group group-id="EditorPopupMenu" anchor="after"
+                         relative-to-action="assistant.QuickExplain"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt I"/>
+        </action>
+
+        <!-- === LEGACY ACTIONS === -->
+        
         <!-- Генерация кода -->
         <action id="assistant.GenerateCode"
                 class="assistant.actions.GenerateCodeAction"
                 text="Generate Code with AI"
                 description="Генерация Kotlin/Java кода с помощью AI">
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after"
+                         relative-to-action="assistant.SmartInsert"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt G"/>
         </action>
 
