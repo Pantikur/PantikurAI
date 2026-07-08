@@ -69,7 +69,8 @@ blocked_ips: Dict[str, datetime] = {}  # IP -> время блокировки
 BLOCK_DURATION = timedelta(hours=24)  # Длительность блокировки
 
 # Белый список IP (минует все проверки безопасности)
-WHITELISTED_IPS = set(os.getenv("WHITELISTED_IPS", "127.0.0.1,172.18.0.2").split(","))
+WHITELISTED_IPS_RAW = os.getenv("WHITELISTED_IPS", "127.0.0.1,::1,172.18.0.2")
+WHITELISTED_IPS = set(ip.strip() for ip in WHITELISTED_IPS_RAW.split(","))
 
 
 def check_rate_limit(client_ip: str) -> bool:

@@ -14,7 +14,6 @@ class AssistantApiService(private val project: com.intellij.openapi.project.Proj
 
     var baseUrl: String = DEFAULT_BASE_URL
 
-    // Вспомогательные функции для JSON
     private fun JsonObject?.str(key: String): String? =
         this?.get(key)?.jsonPrimitive?.contentOrNull
 
@@ -22,21 +21,28 @@ class AssistantApiService(private val project: com.intellij.openapi.project.Proj
         this?.get(key)?.jsonPrimitive?.contentOrNull == "true"
 
     suspend fun chat(message: String, history: List<ChatMessage> = emptyList()): Result<String> = try {
-        val body = buildJsonObject {
-            put("message", message)
-            put("history", buildJsonArray {
-                history.forEach { msg ->
-                    add(buildJsonObject {
-                        put("role", msg.role)
-                        put("content", msg.content)
-                    })
-                }
+        val messagesList = mutableListOf<JsonObject>()
+
+        history.forEach { msg ->
+            messagesList.add(buildJsonObject {
+                put("message", msg.content)
+                put("is_own", msg.role == "user")
             })
+        }
+
+        messagesList.add(buildJsonObject {
+            put("message", message)
+            put("is_own", true)
+        })
+
+        val body = buildJsonObject {
+            put("messages", JsonArray(messagesList))
+            put("mode", "chat")
         }
         val response = makeRequest("/chat", body)
         if (response.isSuccessful) {
             val json = Json.parseToJsonElement(response.body).jsonObject
-            Result.success(json.str("answer") ?: "Ответ не получен")
+            Result.success(json.str("response") ?: "Ответ не получен")
         } else {
             Result.failure(Exception("HTTP ${response.statusCode}"))
         }
@@ -223,7 +229,7 @@ class AssistantApiService(private val project: com.intellij.openapi.project.Proj
             put("app_name", appName)
             put("app_type", appType)
             put("package_name", packageName)
-            put("features", buildJsonArray { features.forEach { add(it) } })
+            put("features", JsonArray(features.map { JsonPrimitive(it) }))
         }
         val response = makeRequest("/app/generate", body)
         if (response.isSuccessful) {
@@ -257,6 +263,7 @@ class AssistantApiService(private val project: com.intellij.openapi.project.Proj
                     .uri(java.net.URI.create(url))
                     .header("Content-Type", "application/json")
                     .header("Accept", "application/json")
+                    .header("User-Agent", "PantikurBot/1.0 (Android-Studio-Plugin)")
                 val request = if (method == "POST" && body != null) {
                     requestBuilder.POST(java.net.http.HttpRequest.BodyPublishers.ofString(body.toString())).build()
                 } else {
