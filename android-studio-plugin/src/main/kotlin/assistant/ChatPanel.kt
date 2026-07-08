@@ -19,6 +19,8 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
 
     val component: JPanel = JPanel(BorderLayout())
     private val editorService = SmartEditorService(project)
+    private val navigatorService = ProjectNavigatorService(project)
+    private val terminalService = TerminalService(project)
 
     private val messageArea: JTextArea = JTextArea().apply {
         isEditable = false
@@ -50,13 +52,111 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
         // Умные кнопки действий
         val quickActions = JPanel(FlowLayout(FlowLayout.LEFT))
         
-        val btnContext = JButton("📄 +Контекст файла")
+        val btnFiles = JButton("📁 Файлы")
+        val btnContext = JButton("📄 +Контекст")
+        val btnTerminal = JButton("💻 Терминал")
         val btnExplain = JButton("📖 Explain")
         val btnFix = JButton("🔧 Fix")
         val btnReview = JButton("🔍 Review")
         val btnGenerate = JButton("⚡ Generate")
 
-        // +Контекст файла — добавляет текущий файл в чат
+        // 📁 Файлы — навигация по проекту
+        btnFiles.addActionListener {
+            val structure = navigatorService.getProjectStructure()
+            val allFiles = navigatorService.getAllFiles()
+            val fileList = allFiles.take(50).joinToString("\n") { "📄 ${it.path}" }
+            
+            val options = arrayOf(
+                "📊 Показать структуру проекта",
+                "🔍 Найти файл",
+                "📂 Открыть файл по пути",
+                "📋 Список всех файлов (${allFiles.size})"
+            )
+            
+            val choice = JOptionPane.showInputDialog(
+                component,
+                "Навигация по проекту:\n\n${allFiles.size} файлов найдено",
+                "Файлы проекта",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]
+            )
+            
+            when (choice) {
+                options[0] -> {
+                    appendToChat("🤖", "Структура проекта:\n\n```\n$structure```")
+                }
+                options[1] -> {
+                    val pattern = JOptionPane.showInputDialog(component, "Введите имя файла (или часть):")
+                    if (!pattern.isNullOrBlank()) {
+                        val found = navigatorService.findFilesByName(pattern)
+                        if (found.isNotEmpty()) {
+                            val list = found.joinToString("\n") { "📄 ${it.path}" }
+                            appendToChat("🤖", "Найдено ${found.size} файлов:\n\n$list")
+                            
+                            if (found.size == 1) {
+                                val open = JOptionPane.showConfirmDialog(
+                                    component,
+                                    "Открыть ${found.first().name}?",
+                                    "Открыть файл",
+                                    JOptionPane.YES_NO_OPTION
+                                )
+                                if (open == JOptionPane.YES_OPTION) {
+                                    navigatorService.openFile(found.first())
+                                }
+                            }
+                        } else {
+                            Messages.showWarningDialog("Файлы не найдены", "Pantikur AI")
+                        }
+                    }
+                }
+                options[2] -> {
+                    val path = JOptionPane.showInputDialog(component, "Введите путь к файлу:")
+                    if (!path.isNullOrBlank()) {
+                        if (navigatorService.openFileByPath(path)) {
+                            val content = runBlocking { navigatorService.getFileContentByPath(path) }
+                            appendToChat("🤖", "✅ Файл открыт: $path\n\n```kotlin\n${content.take(500)}...```")
+                        } else {
+                            Messages.showWarningDialog("Файл не найден: $path", "Pantangur AI")
+                        }
+                    }
+                }
+                options[3] -> {
+                    appendToChat("🤖", "Все файлы проекта (${allFiles.size}):\n\n```\n$fileList```")
+                }
+            }
+        }
+
+        // 💻 Терминал — выполнение команд
+        btnTerminal.addActionListener {
+            val command = JOptionPane.showInputDialog(
+                component,
+                "Введите команду для выполнения:",
+                "Терминал",
+                JOptionPane.QUESTION_MESSAGE
+            )
+            
+            if (!command.isNullOrBlank()) {
+                appendToChat("Вы", "💻 `$command`")
+                appendToChat("🤖", "⏳ Выполняю...")
+                
+                CoroutineScope(Dispatchers.Main).launch {
+                    val result = terminalService.executeCommand(command, terminalService.getWorkingDirectory())
+                    
+                    // Удаляем "Выполняю..."
+                    messageArea.text = messageArea.text.replace("⏳ Выполняю...\n", "")
+                    
+                    if (result.success) {
+                        appendToChat("🤖", "✅ Код выхода: ${result.exitCode}\n\n```bash\n${result.output.take(2000)}```")
+                    } else {
+                        appendToChat("🤖", "❌ Ошибка (код ${result.exitCode}):\n\n```bash\n${result.fullOutput.take(2000)}```")
+                    }
+                }
+            }
+        }
+
+        // 📄 +Контекст — добавляет текущий файл в чат
         btnContext.addActionListener {
             val fileText = editorService.getFileWithLineNumbers()
             val filePath = editorService.getCurrentFilePath() ?: "unknown"
@@ -123,7 +223,9 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
             send_message(customMessage = prompt)
         }
 
+        quickActions.add(btnFiles)
         quickActions.add(btnContext)
+        quickActions.add(btnTerminal)
         quickActions.add(btnExplain)
         quickActions.add(btnFix)
         quickActions.add(btnReview)
@@ -140,13 +242,18 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
         appendToChat("🤖", "Привет! Я — Pantikur AI Assistant (Pro).\n\n" +
                 "Я могу:\n" +
                 "• 💬 Отвечать на вопросы с контекстом файла\n" +
+                "• 📁 Навигация по файлам проекта\n" +
+                "• 💻 Выполнять команды в терминале\n" +
                 "• 📄 Видеть текущий файл и проект\n" +
                 "• 🔍 Делать профессиональное code review\n" +
                 "• 🔧 Автоматически исправлять ошибки\n" +
                 "• ⚡ Генерировать и вставлять код\n" +
                 "• 📖 Объяснять сложные участки\n\n" +
                 "Используй кнопки выше или напиши сообщение!\n\n" +
-                "💡 Совет: нажми '+Контекст файла' чтобы я видел весь файл.")
+                "💡 Советы:\n" +
+                "• 📁 Кнопка 'Файлы' — навигация по проекту\n" +
+                "• 💻 Кнопка 'Терминал' — выполнение команд\n" +
+                "• 📄 Кнопка '+Контекст' — добавить файл в чат")
 
         // Автопрокрутка
         val caret: DefaultCaret = messageArea.caret as DefaultCaret
