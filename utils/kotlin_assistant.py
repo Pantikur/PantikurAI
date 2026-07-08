@@ -1787,6 +1787,599 @@ class {class_name} {{
         
         return suggestions
 
+    def explain_code(
+        self,
+        code: str,
+        file_path: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Объясняет Kotlin-код простым языком.
+        
+        :param code: Код для объяснения
+        :param file_path: Путь к файлу (для контекста)
+        :return: Словарь с объяснением
+        """
+        result = {
+            "success": True,
+            "explanation": "",
+            "lines": len(code.splitlines())
+        }
+
+        # Если есть GigaChat — используем его
+        if USE_GIGACHAT:
+            try:
+                explanation = self._explain_with_gigachat(code)
+                if explanation:
+                    result["explanation"] = explanation
+                    result["success"] = True
+                    return result
+            except Exception as e:
+                logger.error(f"Ошибка объяснения через GigaChat: {e}")
+
+        # Локальное объяснение
+        explanation = self._explain_local(code)
+        result["explanation"] = explanation
+        result["success"] = True
+        
+        return result
+
+    def _explain_with_gigachat(self, code: str) -> Optional[str]:
+        """Объясняет код через GigaChat API."""
+        try:
+            import requests
+            
+            prompt = f"""Объясни этот Kotlin-код простым языком.
+
+Код:
+```kotlin
+{code}
+```
+
+Объясни:
+1. Что делает этот код
+2. Как работают ключевые части
+3. Какие паттерны используются
+4. Что можно улучшить
+
+Ответь на русском языке."""
+
+            response = requests.post(
+                "https://gigachat.devices.sberbank.ru/api/v2/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {GIGACHAT_TOKEN}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": "GigaChat",
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.7,
+                    "max_tokens": 2000
+                },
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                return data["choices"][0]["message"]["content"]
+                
+        except Exception as e:
+            logger.error(f"GigaChat API ошибка: {e}")
+        
+        return None
+
+    def _explain_local(self, code: str) -> str:
+        """Локальное объяснение кода (базовое)."""
+        lines = code.splitlines()
+        explanation_parts = []
+        
+        # Определяем тип кода
+        if re.search(r'class\s+\w+\s*:\s*AppCompatActivity', code):
+            explanation_parts.append("Это Android Activity — экран приложения.")
+        elif re.search(r'class\s+\w+\s*:\s*Fragment', code):
+            explanation_parts.append("Это Fragment — переиспользуемый компонент UI.")
+        elif re.search(r'class\s+\w+\s*:\s*ViewModel', code):
+            explanation_parts.append("Это ViewModel — управляет данными экрана.")
+        elif re.search(r'object\s+\w+', code):
+            explanation_parts.append("Это Singleton object — глобальный доступ.")
+        elif re.search(r'interface\s+\w+', code):
+            explanation_parts.append("Это интерфейс — контракт для реализации.")
+        elif re.search(r'data\s+class\s+\w+', code):
+            explanation_parts.append("Это data class — класс данных с автогенерацией методов.")
+        else:
+            explanation_parts.append("Это Kotlin-код.")
+        
+        # Подсчёт элементов
+        classes = len(re.findall(r'\b(class|object|interface)\s+\w+', code))
+        functions = len(re.findall(r'\bfun\s+\w+', code))
+        
+        explanation_parts.append(f"Содержит {classes} класс(ов) и {functions} функция(ий).")
+        explanation_parts.append(f"Общая длина: {len(lines)} строк.")
+        
+        # Проверка на TODO
+        todos = re.findall(r'//\s*TODO[^\\n]*', code)
+        if todos:
+            explanation_parts.append(f"Найдено {len(todos)} TODO: {', '.join(todos[:3])}")
+        
+        return " ".join(explanation_parts)
+
+    def generate_app(
+        self,
+        app_name: str,
+        app_type: str,
+        package_name: str = "com.example.app",
+        features: Optional[List[str]] = None
+    ) -> Dict[str, Any]:
+        """
+        Генерирует полноценное Android-приложение.
+        
+        :param app_name: Имя приложения
+        :param app_type: Тип приложения (todo, notes, gallery, chat, weather, etc.)
+        :param package_name: Пакет приложения
+        :param features: Список функций (auth, offline, api, etc.)
+        :return: Словарь с кодом всех файлов
+        """
+        result = {
+            "success": True,
+            "app_name": app_name,
+            "files": {},
+            "description": ""
+        }
+
+        # Генерация файлов для каждого типа приложения
+        if app_type == "todo":
+            result["files"] = self._generate_todo_app(app_name, package_name)
+        elif app_type == "notes":
+            result["files"] = self._generate_notes_app(app_name, package_name)
+        elif app_type == "gallery":
+            result["files"] = self._generate_gallery_app(app_name, package_name)
+        elif app_type == "weather":
+            result["files"] = self._generate_weather_app(app_name, package_name)
+        elif app_type == "chat":
+            result["files"] = self._generate_chat_app(app_name, package_name)
+        else:
+            # Базовый шаблон
+            result["files"] = self._generate_base_app(app_name, package_name)
+        
+        result["description"] = f"Приложение '{app_name}' ({app_type}) сгенерировано"
+        
+        return result
+
+    def _generate_todo_app(self, app_name: str, package_name: str) -> Dict[str, str]:
+        """Генерирует приложение Todo List."""
+        return {
+            "MainActivity.kt": f'''
+package {package_name}
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
+class MainActivity : AppCompatActivity() {{
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: TodoAdapter
+    private val todoList = mutableListOf<TodoItem>()
+    
+    override fun onCreate(savedInstanceState: Bundle?) {{
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = TodoAdapter(todoList) {{ item ->
+            // Обработка клика
+        }}
+        recyclerView.adapter = adapter
+        
+        findViewById<FloatingActionButton>(R.id.fabAdd).setOnClickListener {{
+            // Добавить новый элемент
+        }}
+    }}
+}}
+''',
+            "TodoItem.kt": f'''
+package {package_name}
+
+data class TodoItem(
+    val id: Long = 0,
+    val title: String = "",
+    val description: String? = null,
+    val isCompleted: Boolean = false,
+    val createdAt: Long = System.currentTimeMillis()
+)
+''',
+            "TodoAdapter.kt": f'''
+package {package_name}
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+
+class TodoAdapter(
+    private val items: List<TodoItem>,
+    private val onItemClick: (TodoItem) -> Unit
+) : RecyclerView.Adapter<TodoAdapter.ViewHolder>() {{
+    
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {{
+        val title: TextView = view.findViewById(R.id.tvTitle)
+        val description: TextView = view.findViewById(R.id.tvDescription)
+        val checkbox: CheckBox = view.findViewById(R.id.cbCompleted)
+    }}
+    
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {{
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_todo, parent, false)
+        return ViewHolder(view)
+    }}
+    
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {{
+        val item = items[position]
+        holder.title.text = item.title
+        holder.description.text = item.description ?: ""
+        holder.checkbox.isChecked = item.isCompleted
+        
+        holder.itemView.setOnClickListener {{ onItemClick(item) }}
+    }}
+    
+    override fun getItemCount() = items.size
+}}
+''',
+            "TodoViewModel.kt": f'''
+package {package_name}
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+
+class TodoViewModel : ViewModel() {{
+    
+    private val _todos = MutableStateFlow<List<TodoItem>>(emptyList())
+    val todos: StateFlow<List<TodoItem>> = _todos
+    
+    fun addTodo(title: String, description: String? = null) {{
+        viewModelScope.launch {{
+            val newTodo = TodoItem(
+                id = System.currentTimeMillis(),
+                title = title,
+                description = description
+            )
+            _todos.value = _todos.value + newTodo
+        }}
+    }}
+    
+    fun toggleTodo(todo: TodoItem) {{
+        viewModelScope.launch {{
+            val updated = _todos.value.map {{
+                if (it.id == todo.id) it.copy(isCompleted = !it.isCompleted) else it
+            }}
+            _todos.value = updated
+        }}
+    }}
+}}
+''',
+            "activity_main.xml": f'''
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:srcCompat="@android:drawable/ic_input_add"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+''',
+            "item_todo.xml": f'''
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/cbCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+'''
+        }
+
+    def _generate_notes_app(self, app_name: str, package_name: str) -> Dict[str, str]:
+        """Генерирует приложение Notes."""
+        return {
+            "MainActivity.kt": f'''
+package {package_name}
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
+class MainActivity : AppCompatActivity() {{
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: NotesAdapter
+    
+    override fun onCreate(savedInstanceState: Bundle?) {{
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = NotesAdapter(mutableListOf()) {{ note ->
+            // Открыть заметку
+        }}
+        recyclerView.adapter = adapter
+        
+        findViewById<FloatingActionButton>(R.id.fabAdd).setOnClickListener {{
+            // Создать новую заметку
+        }}
+    }}
+}}
+''',
+            "NoteItem.kt": f'''
+package {package_name}
+
+data class NoteItem(
+    val id: Long = 0,
+    val title: String = "",
+    val content: String = "",
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis()
+)
+'''
+        }
+
+    def _generate_gallery_app(self, app_name: str, package_name: str) -> Dict[str, str]:
+        """Генерирует приложение Gallery."""
+        return {
+            "MainActivity.kt": f'''
+package {package_name}
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
+class MainActivity : AppCompatActivity() {{
+    override fun onCreate(savedInstanceState: Bundle?) {{
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.adapter = GalleryAdapter(emptyList()) {{ image ->
+            // Показать изображение
+        }}
+    }}
+}}
+''',
+            "GalleryItem.kt": f'''
+package {package_name}
+
+data class GalleryItem(
+    val id: Long = 0,
+    val imageUrl: String = "",
+    val thumbnailUrl: String = "",
+    val title: String = "",
+    val description: String? = null
+)
+'''
+        }
+
+    def _generate_weather_app(self, app_name: str, package_name: str) -> Dict[str, str]:
+        """Генерирует приложение Weather."""
+        return {
+            "MainActivity.kt": f'''
+package {package_name}
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
+import android.widget.ImageView
+
+class MainActivity : AppCompatActivity() {{
+    private lateinit var tvTemperature: TextView
+    private lateinit var tvCity: TextView
+    private lateinit var ivWeather: ImageView
+    
+    override fun onCreate(savedInstanceState: Bundle?) {{
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        tvTemperature = findViewById(R.id.tvTemperature)
+        tvCity = findViewById(R.id.tvCity)
+        ivWeather = findViewById(R.id.ivWeather)
+        
+        loadWeather("Москва")
+    }}
+    
+    private fun loadWeather(city: String) {{
+        // Загрузка погоды через API
+    }}
+}}
+''',
+            "WeatherData.kt": f'''
+package {package_name}
+
+data class WeatherData(
+    val city: String,
+    val temperature: Double,
+    val humidity: Int,
+    val windSpeed: Double,
+    val condition: String,
+    val icon: Int
+)
+'''
+        }
+
+    def _generate_chat_app(self, app_name: str, package_name: str) -> Dict[str, str]:
+        """Генерирует приложение Chat."""
+        return {
+            "MainActivity.kt": f'''
+package {package_name}
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
+
+class MainActivity : AppCompatActivity() {{
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var chatAdapter: ChatAdapter
+    private lateinit var etMessage: TextInputEditText
+    
+    override fun onCreate(savedInstanceState: Bundle?) {{
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        chatAdapter = ChatAdapter(mutableListOf())
+        recyclerView.adapter = chatAdapter
+        
+        etMessage = findViewById(R.id.etMessage)
+        findViewById<View>(R.id.btnSend).setOnClickListener {{
+            sendMessage()
+        }}
+    }}
+    
+    private fun sendMessage() {{
+        val text = etMessage.text?.toString() ?: return
+        if (text.isNotBlank()) {{
+            chatAdapter.addMessage(text, isOwn = true)
+            etMessage.text?.clear()
+        }}
+    }}
+}}
+''',
+            "ChatMessage.kt": f'''
+package {package_name}
+
+data class ChatMessage(
+    val id: Long = 0,
+    val text: String = "",
+    val isOwn: Boolean = false,
+    val timestamp: Long = System.currentTimeMillis()
+)
+''',
+            "ChatAdapter.kt": f'''
+package {package_name}
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+
+class ChatAdapter(
+    private val messages: MutableList<ChatMessage>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {{
+    
+    companion object {{
+        private const val VIEW_TYPE_OWN = 1
+        private const val VIEW_TYPE_OTHER = 2
+    }}
+    
+    override fun getItemViewType(position: Int): Int {{
+        return if (messages[position].isOwn) VIEW_TYPE_OWN else VIEW_TYPE_OTHER
+    }}
+    
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {{
+        val layout = if (viewType == VIEW_TYPE_OWN) {{
+            R.layout.item_message_own
+        }} else {{
+            R.layout.item_message_other
+        }}
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        return MessageViewHolder(view)
+    }}
+    
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {{
+        val holder = holder as MessageViewHolder
+        val message = messages[position]
+        holder.tvText.text = message.text
+    }}
+    
+    override fun getItemCount() = messages.size
+    
+    fun addMessage(text: String, isOwn: Boolean) {{
+        messages.add(ChatMessage(text = text, isOwn = isOwn))
+        notifyItemInserted(messages.size - 1)
+    }}
+    
+    class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {{
+        val tvText: TextView = view.findViewById(android.R.id.text1)
+    }}
+}}
+'''
+        }
+
+    def _generate_base_app(self, app_name: str, package_name: str) -> Dict[str, str]:
+        """Генерирует базовое приложение."""
+        return {
+            "MainActivity.kt": f'''
+package {package_name}
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {{
+    override fun onCreate(savedInstanceState: Bundle?) {{
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // TODO: Инициализация
+    }}
+}}
+'''
+        }
+
     def store_context(self, file_path: str, code: str):
         """Сохраняет контекст файла для последующего использования."""
         self.code_context[file_path] = code

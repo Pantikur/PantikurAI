@@ -1389,6 +1389,102 @@ async def kotlin_templates():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# === Эндпоинт: /kotlin/explain — объяснение кода ===
+@app.post("/kotlin/explain")
+async def kotlin_explain(request: KotlinAnalyzeRequest):
+    """
+    Объясняет Kotlin-код простым языком.
+    
+    Возвращает подробное объяснение:
+    - Что делает код
+    - Как работают ключевые части
+    - Какие паттерны используются
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        result = assistant.explain_code(  # type: ignore[reportAttributeAccessIssue]
+            code=request.code,
+            file_path=request.file_path
+        )
+        
+        logger.info(f"✅ Kotlin объяснение: {result.get('lines', 0)} строк")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка объяснения Kotlin: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ========================
+# App Generator Endpoints
+# ========================
+
+class AppGenerateRequest(BaseModel):
+    """Запрос на генерацию Android-приложения"""
+    app_name: str
+    app_type: str  # todo, notes, gallery, weather, chat, custom
+    package_name: str = "com.example.app"
+    features: List[str] = []  # auth, offline, api, database, etc.
+
+
+# === Эндпоинт: /app/generate — генерация приложения ===
+@app.post("/app/generate")
+async def app_generate(request: AppGenerateRequest):
+    """
+    Генерирует полноценное Android-приложение.
+    
+    Поддерживаемые типы:
+    - todo: Todo List (список задач)
+    - notes: Заметки
+    - gallery: Галерея изображений
+    - weather: Погода
+    - chat: Чат
+    - custom: Пользовательский
+    
+    Возвращает:
+    - files: словарь с кодом всех файлов
+    - description: описание приложения
+    """
+    try:
+        from utils.kotlin_assistant import KotlinAssistant
+        
+        assistant = KotlinAssistant(project_root=str(BASE_DIR))
+        result = assistant.generate_app(  # type: ignore[reportAttributeAccessIssue]
+            app_name=request.app_name,
+            app_type=request.app_type,
+            package_name=request.package_name,
+            features=request.features
+        )
+        
+        logger.info(f"✅ Приложение '{request.app_name}' ({request.app_type}) сгенерировано")
+        return {"status": "ok", **result}
+    
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации приложения: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /app/templates — список шаблонов приложений ===
+@app.get("/app/templates")
+async def app_templates():
+    """
+    Возвращает список доступных шаблонов приложений.
+    """
+    return {
+        "status": "ok",
+        "templates": [
+            {"type": "todo", "name": "Todo List", "description": "Список задач с отметками"},
+            {"type": "notes", "name": "Notes", "description": "Заметки с Rich Text"},
+            {"type": "gallery", "name": "Gallery", "description": "Галерея изображений"},
+            {"type": "weather", "name": "Weather", "description": "Прогноз погоды"},
+            {"type": "chat", "name": "Chat", "description": "Мессенджер"},
+            {"type": "custom", "name": "Custom", "description": "Пользовательский шаблон"}
+        ]
+    }
+
+
 # === Эндпоинт: /kotlin-v2/generate — генерация кода (V2) ===
 @app.post("/kotlin-v2/generate")
 async def kotlin_v2_generate(request: KotlinGenerateRequest):
@@ -1467,10 +1563,10 @@ def home():
     return {
         "message": "🎉 С Днём Рождения! ChatBot API работает!",
         "version": app.version,
-        "endpoints": [
-            "/predict", "/",
-            "/retrain", "/enrich",
-            "/ws", "/health",
+            "endpoints": [
+                "/predict", "/", "/chat",
+                "/retrain", "/enrich",
+                "/ws", "/health",
             "/world/create", "/worlds", "/world/{name}",
             "/world/{name}/event", "/world/{name}/events",
             "/world/{name}/consistency", "/world/{name}/npc/{npc_name}",
@@ -1543,6 +1639,7 @@ def home():
                 "POST /kotlin/edit - Редактирование кода",
                 "POST /kotlin/analyze - Анализ кода",
                 "POST /kotlin/refactor - Рефакторинг",
+                "POST /kotlin/explain - Объяснение кода",
                 "POST /kotlin/autocomplete - Автодополнение",
                 "GET /kotlin/templates - Список шаблонов",
                 "POST /kotlin/context/save - Сохранить контекст",
@@ -1592,6 +1689,7 @@ class ChatRequest(BaseModel):
 # === Эндпоинт: /predict и / — оба работают ===
 @app.post("/predict")
 @app.post("/")  # Совместимость с Android
+@app.post("/chat")  # Алиас для Android Studio плагина
 async def predict(request: Request):
     start_time = asyncio.get_event_loop().time()
     logger.info(f"📥 Запрос /predict | UA: {request.headers.get('User-Agent', 'unknown')}")

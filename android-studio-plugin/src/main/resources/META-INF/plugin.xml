@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+    <id>assistant.pantikur</id>
+    <name>Pantikur AI Assistant</name>
+    <vendor email="support@pantikur.dev" url="https://pantikur.dev">Pantikur AI</vendor>
+
+    <description><![CDATA[
+    AI-ассистент для Android Studio с профессиональными и развлекательными функциями.
+
+    <b>Профессиональные функции:</b>
+    <ul>
+        <li>Генерация Kotlin/Java кода по описанию</li>
+        <li>Анализ и рефакторинг кода</li>
+        <li>Автодополнение и исправление ошибок</li>
+        <li>Объяснение кода</li>
+    </ul>
+
+    <b>Развлекательные функции:</b>
+    <ul>
+        <li>Генерация RPG миров и персонажей</li>
+        <li>Чат с AI-компаньоном</li>
+        <li>Создание сюжетных линий</li>
+        <li>WorldEngine — развитие миров</li>
+    </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Боковая панель плагина -->
+        <toolWindow id="Pantikur AI"
+                    icon="/icons/plugin.svg"
+                    anchor="right"
+                    factoryClass="assistant.PantikurToolWindowFactory"/>
+    </extensions>
+
+    <actions>
+        <!-- Генерация кода -->
+        <action id="assistant.GenerateCode"
+                class="assistant.actions.GenerateCodeAction"
+                text="Generate Code with AI"
+                description="Генерация Kotlin/Java кода с помощью AI">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt G"/>
+        </action>
+
+        <!-- Анализ кода -->
+        <action id="assistant.AnalyzeCode"
+                class="assistant.actions.AnalyzeCodeAction"
+                text="Analyze Code with AI"
+                description="Анализ кода с помощью AI">
+            <add-to-group group-id="EditorPopupMenu" anchor="after"
+                         relative-to-action="assistant.GenerateCode"/>
+        </action>
+
+        <!-- Рефакторинг -->
+        <action id="assistant.RefactorCode"
+                class="assistant.actions.RefactorCodeAction"
+                text="Refactor Code with AI"
+                description="Рефакторинг кода с помощью AI">
+            <add-to-group group-id="EditorPopupMenu" anchor="after"
+                         relative-to-action="assistant.AnalyzeCode"/>
+        </action>
+
+        <!-- Объяснение кода -->
+        <action id="assistant.ExplainCode"
+                class="assistant.actions.ExplainCodeAction"
+                text="Explain Code with AI"
+                description="Объяснение кода с помощью AI">
+            <add-to-group group-id="EditorPopupMenu" anchor="after"
+                         relative-to-action="assistant.RefactorCode"/>
+        </action>
+
+        <!-- RPG Генератор -->
+        <action id="assistant.RPGGenerator"
+                class="assistant.actions.RPGGeneratorAction"
+                text="RPG World Generator"
+                description="Генерация RPG миров и персонажей">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+        </action>
+
+        <!-- WorldEngine -->
+        <action id="assistant.WorldEngine"
+                class="assistant.actions.WorldEngineAction"
+                text="WorldEngine"
+                description="Управление миром WorldEngine">
+            <add-to-group group-id="MainMenu" anchor="after"
+                         relative-to-action="assistant.RPGGenerator"/>
+        </action>
+    </actions>
+</idea-plugin>

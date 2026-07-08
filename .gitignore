@@ -88,3 +88,15 @@ azure-pipelines.yml
 venv/Lib/site-packages/torch/lib/*.dll
 venv/Lib/site-packages/torch/lib/*.so
 venv/Lib/site-packages/torch/lib/*.dylib
+# === Gradle ===
+gradle-8.5/
+gradle-8.5-bin.zip
+.gradle/
+
+# === Android Studio Plugin ===
+android-studio-plugin/build/
+android-studio-plugin/.gradle/
+
+# === Temp files ===
+temp_*.txt
+test_request.json
