@@ -50,7 +50,12 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
         component.add(scrollPane, BorderLayout.CENTER)
         component.add(inputPanel, BorderLayout.SOUTH)
 
-        appendToChat("🤖", "Привет! Напиши \"проверь проект\" — и я всё сделаю сам.")
+        appendToChat("🤖", "Привет! Я профессиональный AI-ассистент для Android-разработки.\n" +
+                "Опиши проблему — я найду её в коде и исправлю.\n\n" +
+                "Команды:\n" +
+                "• \"проверь проект\" — полный анализ\n" +
+                "• \"исправь\" — авто-исправление\n" +
+                "• Или просто опиши проблему (например: \"выкидывает из JanrNovActivity\")")
 
         val caret: DefaultCaret = messageArea.caret as DefaultCaret
         caret.updatePolicy = DefaultCaret.ALWAYS_UPDATE
@@ -68,35 +73,18 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                // Проверяем на автоматические команды
                 when {
                     text.contains("проверь", ignoreCase = true) || 
-                    text.contains("анализ", ignoreCase = true) ||
-                    text.contains("анализируй", ignoreCase = true) -> {
-                        // Автоматический анализ проекта
+                    text.contains("анализ", ignoreCase = true) -> {
                         check_project()
                     }
                     text.contains("исправь", ignoreCase = true) || 
                     text.contains("fix", ignoreCase = true) -> {
-                        // Автоматическое исправление
                         fix_project()
                     }
                     else -> {
-                        // Обычный чат
-                        val result = withContext(Dispatchers.IO) {
-                            apiService.chat(text, chatHistory.takeLast(10))
-                        }
-
-                        result.onSuccess { response ->
-                            chatHistory.removeLast()
-                            messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
-                            chatHistory.add(ChatMessage("assistant", response))
-                            appendToChat("🤖", response)
-                        }.onFailure { error ->
-                            chatHistory.removeLast()
-                            messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
-                            appendToChat("🤖", "❌ Ошибка: ${error.message}")
-                        }
+                        // Умный чат с авто-контекстом проекта
+                        smart_chat(text)
                     }
                 }
             } catch (e: Exception) {
@@ -108,61 +96,276 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
     }
 
     /**
-     * Автоматическая проверка всего проекта.
-     * Обходит все файлы, читает содержимое, находит ошибки.
+     * Умный чат — автоматически добавляет контекст Android-проекта.
+     * Ищет файлы упомянутые в вопросе и читает их содержимое.
      */
-    private suspend fun check_project() {
-        messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
-        appendToChat("🤖", "🔍 Начинаю проверку проекта...")
-
-        try {
-            // 1. Получаем структуру
+    private suspend fun smart_chat(userMessage: String) {
+        // Собираем контекст проекта
+        val projectContext = buildString {
+            appendLine("=== КОНТЕКСТ ANDROID-ПРОЕКТА ===")
+            appendLine()
+            
+            // Структура проекта
             val structure = navigatorService.getProjectStructure()
-            appendToChat("🤖", "📁 Структура:\n```\n$structure\n```")
-
-            // 2. Получаем все файлы
+            appendLine("📁 Структура проекта:")
+            appendLine(structure.take(2000))
+            appendLine()
+            
+            // Ищем файлы упомянутые в вопросе
             val allFiles = navigatorService.getAllFiles()
-            appendToChat("🤖", "📄 Найдено файлов: ${allFiles.size}")
-
-            // 3. Анализируем каждый файл кода
-            val codeFiles = allFiles.filter { it.extension in listOf("kt", "kts", "java", "py") }
-            appendToChat("🤖", "💻 Файлов кода: ${codeFiles.size}")
-
-            var totalErrors = 0
-            var totalWarnings = 0
-
-            for (file in codeFiles.take(20)) { // Максимум 20 файлов за раз
-                val content = navigatorService.getFileContentByPath(file.path)
-                if (content.isNotBlank()) {
-                    appendToChat("🤖", "⏳ Анализирую ${file.name}...")
-                    
-                    val analysis = withContext(Dispatchers.IO) {
-                        apiService.analyzeCode(content, file.path)
+            val mentionedFiles = mutableListOf<com.intellij.openapi.vfs.VirtualFile>()
+            
+            // Извлекаем имена классов из вопроса (Activity, Fragment, и т.д.)
+            val classNames = Regex("[A-Z][a-zA-Z]+(?:Activity|Fragment|ViewModel|Adapter|Service)").findAll(userMessage)
+                .map { it.value }
+                .toList()
+            
+            // Также ищем простые имена файлов
+            val simpleNames = userMessage.split(" ", ".", ",", "(", ")")
+                .filter { it.length > 3 && it[0].isUpperCase() }
+                .map { it.trim() }
+            
+            val searchNames = (classNames + simpleNames).distinct()
+            
+            if (searchNames.isNotEmpty()) {
+                appendLine("🔎 Найденные файлы по вопросу:")
+                for (name in searchNames) {
+                    val found = allFiles.filter { 
+                        it.nameWithoutExtension == name || 
+                        it.nameWithoutExtension.contains(name) ||
+                        name.contains(it.nameWithoutExtension)
                     }
-
-                    analysis.onSuccess { result ->
-                        val errors = result.errors.count { it == '\n' }.coerceAtMost(5)
-                        val warnings = result.warnings.count { it == '\n' }.coerceAtMost(5)
-                        totalErrors += errors
-                        totalWarnings += warnings
-
-                        if (result.errors.isNotBlank() || result.warnings.isNotBlank()) {
-                            appendToChat("🤖", "**${file.name}**\n" +
-                                    "❌ Ошибки: ${if (result.errors.isNotBlank()) "да" else "нет"}\n" +
-                                    "⚠️ Предупреждения: ${if (result.warnings.isNotBlank()) "да" else "нет"}\n")
+                    found.forEach { file ->
+                        if (file.extension in listOf("kt", "java", "xml")) {
+                            mentionedFiles.add(file)
+                            appendLine("  📄 ${file.name} (${file.path})")
                         }
                     }
                 }
+                appendLine()
+            }
+            
+            // Читаем содержимое упомянутых файлов
+            if (mentionedFiles.isNotEmpty()) {
+                appendLine("📂 Содержимое релевантных файлов:")
+                for (file in mentionedFiles.distinct().take(5)) {
+                    val content = navigatorService.getFileContentByPath(file.path)
+                    if (content.isNotBlank()) {
+                        appendLine("--- ${file.name} ---")
+                        appendLine(content.take(3000))
+                        appendLine()
+                    }
+                }
+            }
+            
+            // Читаем AndroidManifest
+            val manifests = allFiles.filter { it.name == "AndroidManifest.xml" }
+            if (manifests.isNotEmpty()) {
+                appendLine("📋 AndroidManifest.xml:")
+                val manifestContent = navigatorService.getFileContentByPath(manifests.first().path)
+                appendLine(manifestContent.take(2000))
+                appendLine()
+            }
+                
+            // Текущий открытый файл
+            val currentFile = editorService.getCurrentFilePath()
+            if (currentFile != null) {
+                appendLine("📍 Текущий открытый файл: $currentFile")
+                val content = editorService.getFileText()
+                if (!content.isNullOrBlank()) {
+                    appendLine("Содержимое:")
+                    appendLine(content.take(2000))
+                }
+                appendLine()
+            }
+            
+            // Выделенный код
+            val selection = editorService.getSelectedText()
+            if (!selection.isNullOrBlank()) {
+                appendLine("✂️ Выделенный код:")
+                appendLine(selection)
+                appendLine()
+            }
+            
+            appendLine("=== КОНЕЦ КОНТЕКСТА ===")
+        }
+
+        // Формируем умный промпт
+        val enhancedPrompt = buildString {
+            appendLine("Ты — профессиональный AI-ассистент для Android-разработки (уровня Koda).")
+            appendLine("Ты эксперт в Kotlin, Java, Android SDK, Activity lifecycle, Intent, Navigation.")
+            appendLine()
+            appendLine("ВОПРОС ПОЛЬЗОВАТЕЛЯ:")
+            appendLine(userMessage)
+            appendLine()
+            appendLine(projectContext)
+            appendLine()
+            appendLine("ИНСТРУКЦИЯ:")
+            appendLine("1. Проанализируй вопрос и контекст проекта")
+            appendLine("2. Найди причину проблемы в коде")
+            appendLine("3. Дай конкретное решение с кодом")
+            appendLine("4. Укажи точные названия файлов, строк, методов")
+            appendLine("5. Не пиши бессмысленный текст — только по делу")
+        }
+
+        // Отправляем на API
+        val result = withContext(Dispatchers.IO) {
+            apiService.chat(enhancedPrompt, emptyList())
+        }
+
+        result.onSuccess { response ->
+            chatHistory.removeLast()
+            messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
+            appendToChat("🤖", response)
+        }.onFailure { error ->
+            chatHistory.removeLast()
+            messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
+            appendToChat("🤖", "❌ Ошибка: ${error.message}")
+        }
+    }
+
+    /**
+     * Автоматическая проверка Android-проекта.
+     * Анализирует Activity, Manifest, Intent, навигацию.
+     */
+    private suspend fun check_project() {
+        messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
+        appendToChat("🤖", "🔍 Начинаю проверку Android-проекта...")
+
+        try {
+            val allFiles = navigatorService.getAllFiles()
+            
+            // Ищем ключевые файлы Android
+            val activities = allFiles.filter { it.name.endsWith("Activity.kt") || it.name.endsWith("Activity.java") }
+            val manifests = allFiles.filter { it.name == "AndroidManifest.xml" }
+            val viewModels = allFiles.filter { it.name.endsWith("ViewModel.kt") }
+            val adapters = allFiles.filter { it.name.endsWith("Adapter.kt") }
+            val fragments = allFiles.filter { it.name.endsWith("Fragment.kt") }
+            
+            appendToChat("🤖", "📊 Структура проекта:")
+            appendToChat("🤖", "• Activity: ${activities.size}")
+            appendToChat("🤖", "• Fragment: ${fragments.size}")
+            appendToChat("🤖", "• ViewModel: ${viewModels.size}")
+            appendToChat("🤖", "• Adapter: ${adapters.size}")
+            appendToChat("🤖", "• Manifest: ${manifests.size}")
+            appendToChat("🤖", "")
+
+            // Проверяем Manifest
+            if (manifests.isNotEmpty()) {
+                appendToChat("🤖", "⏳ Проверка AndroidManifest.xml...")
+                val manifestContent = navigatorService.getFileContentByPath(manifests.first().path)
+                
+                // Проверяем permissions
+                val permissions = Regex("<uses-permission.*?android:name=\"(.*?)\"").findAll(manifestContent)
+                appendToChat("🤖", "✅ Permissions: ${permissions.count()}")
+                
+                // Проверяем declared activities
+                val declaredActivities = Regex("<activity.*?android:name=\"(.*?)\"").findAll(manifestContent)
+                appendToChat("🤖", "✅ Зарегистрировано Activity: ${declaredActivities.count()}")
+                
+                // Проверяем launcher activity
+                if (manifestContent.contains("android.intent.action.MAIN") && 
+                    manifestContent.contains("android.intent.category.LAUNCHER")) {
+                    appendToChat("🤖", "✅ Launcher Activity найден")
+                } else {
+                    appendToChat("🤖", "⚠️ Launcher Activity не найден!")
+                }
+                appendToChat("🤖", "")
             }
 
-            appendToChat("🤖", "✅ Проверка завершена!\n\n" +
-                    "📊 Итого:\n" +
-                    "• Файлов проверено: ${codeFiles.size.coerceAtMost(20)}\n" +
-                    "• Ошибок: $totalErrors\n" +
-                    "• Предупреждений: $totalWarnings\n\n" +
-                    "Напиши \"исправь ошибки\" — и я всё исправлю.")
+            // Проверяем Activity
+            var activityIssues = 0
+            for (activity in activities.take(10)) {
+                val content = navigatorService.getFileContentByPath(activity.path)
+                val issues = mutableListOf<String>()
+                
+                // Проверяем onCreate
+                if (!content.contains("override fun onCreate")) {
+                    issues.add("❌ Нет onCreate")
+                }
+                
+                // Проверяем setContentView
+                if (!content.contains("setContentView") && !content.contains("viewBinding") && !content.contains("findViewById")) {
+                    issues.add("⚠️ Нет setContentView")
+                }
+                
+                // Проверяем утечки Context
+                if (content.contains("Companion object") && content.contains("Context")) {
+                    issues.add("⚠️ Возможна утечка Context")
+                }
+                
+                if (issues.isNotEmpty()) {
+                    activityIssues++
+                    appendToChat("🤖", "**${activity.name}**:")
+                    issues.forEach { appendToChat("🤖", "  $it") }
+                }
+            }
+            
+            if (activityIssues == 0) {
+                appendToChat("🤖", "✅ Activity: проблем не найдено")
+            } else {
+                appendToChat("🤖", "⚠️ Activity с проблемами: $activityIssues")
+            }
+            appendToChat("🤖", "")
 
-            chatHistory.add(ChatMessage("assistant", "Проверка завершена"))
+            // Проверяем навигацию (Intent)
+            appendToChat("🤖", "⏳ Проверка навигации (Intent)...")
+            var intentIssues = 0
+            
+            for (activity in activities.take(10)) {
+                val content = navigatorService.getFileContentByPath(activity.path)
+                
+                // Ищем Intent
+                val intents = Regex("Intent\\(.*?\\)").findAll(content)
+                
+                // Проверяем на явные Intent
+                val explicitIntents = intents.filter { it.value.contains("this@") || it.value.contains("this,") }
+                
+                // Проверяем на putExtra без проверки
+                val putExtras = Regex("putExtra\\(").findAll(content)
+                
+                if (putExtras.count() > 3 && !content.contains("getIntent()?.getStringExtra")) {
+                    intentIssues++
+                    appendToChat("🤖", "⚠️ ${activity.name}: возможные проблемы с передачей данных")
+                }
+            }
+            
+            if (intentIssues == 0) {
+                appendToChat("🤖", "✅ Навигация: проблем не найдено")
+            }
+            appendToChat("🤖", "")
+
+            // Ищем явные проблемы в коде
+            appendToChat("🤖", "⏳ Поиск распространённых ошибок...")
+            
+            var totalIssues = 0
+            
+            for (file in allFiles.filter { it.extension in listOf("kt", "java") }.take(30)) {
+                val content = navigatorService.getFileContentByPath(file.path)
+                
+                // TODO без реализации
+                val todos = Regex("// TODO").findAll(content).count()
+                if (todos > 0) {
+                    totalIssues += todos
+                }
+                
+                // PrintStacktrace без обработки
+                if (content.contains("printStackTrace()") && !content.contains("Timber") && !content.contains("Log.e")) {
+                    totalIssues++
+                }
+                
+                // Force unwrap в Kotlin
+                if (file.extension == "kt" && content.contains("!!") && !content.contains("?: run {")) {
+                    totalIssues++
+                }
+            }
+            
+            appendToChat("🤖", "")
+            appendToChat("🤖", "📊 ИТОГО:")
+            appendToChat("🤖", "• Файлов проверено: ${allFiles.size}")
+            appendToChat("🤖", "• Найдено проблем: $totalIssues")
+            appendToChat("🤖", "")
+            appendToChat("🤖", "Напиши конкретную проблему (например: 'выкидывает из JanrNovActivity') — и я исправлю.")
 
         } catch (e: Exception) {
             appendToChat("🤖", "❌ Ошибка проверки: ${e.message}")
@@ -170,50 +373,40 @@ class ChatPanel(private val project: Project, private val apiService: AssistantA
     }
 
     /**
-     * Автоматическое исправление ошибок во всём проекте.
+     * Автоматическое исправление проблем в Android-проекте.
      */
     private suspend fun fix_project() {
         messageArea.text = messageArea.text.replace("⏳ Думаю...\n", "")
-        appendToChat("🤖", "🔧 Начинаю исправление...")
+        appendToChat("🤖", "🔧 Начинаю исправление Android-проекта...")
 
         try {
             val allFiles = navigatorService.getAllFiles()
-            val codeFiles = allFiles.filter { it.extension in listOf("kt", "kts", "java", "py") }
-
+            val activities = allFiles.filter { it.name.endsWith("Activity.kt") }
+            
             var fixedCount = 0
 
-            for (file in codeFiles.take(10)) { // Максимум 10 файлов
-                val content = navigatorService.getFileContentByPath(file.path)
+            for (activity in activities.take(10)) {
+                val content = navigatorService.getFileContentByPath(activity.path)
                 if (content.isNotBlank()) {
-                    appendToChat("🤖", "⏳ Исправляю ${file.name}...")
-
-                    // Анализируем
-                    val analysis = withContext(Dispatchers.IO) {
-                        apiService.analyzeCode(content, file.path)
+                    val fixed = withContext(Dispatchers.IO) {
+                        apiService.editCode(
+                            content, 
+                            "Исправь ошибки Android Activity: утечки Context, lifecycle, Intent, null safety. Верни полный код Activity.",
+                            activity.path
+                        )
                     }
 
-                    if (analysis.isSuccess && analysis.getOrNull()?.errors?.isNotBlank() == true) {
-                        // Исправляем
-                        val fixed = withContext(Dispatchers.IO) {
-                            apiService.editCode(content, "Исправь все ошибки", file.path)
-                        }
-
-                        fixed.onSuccess { fixedContent ->
-                            // Сохраняем исправленный файл
-                            val saved = fileWriter.saveFile(file, fixedContent)
-                            if (saved) {
-                                fixedCount++
-                                appendToChat("🤖", "✅ ${file.name} — исправлено и сохранено")
-                            } else {
-                                appendToChat("🤖", "⚠️ ${file.name} — исправлено, но не сохранено")
-                            }
+                    fixed.onSuccess { fixedContent ->
+                        val saved = fileWriter.saveFile(activity, fixedContent)
+                        if (saved) {
+                            fixedCount++
+                            appendToChat("🤖", "✅ ${activity.name} — исправлено")
                         }
                     }
                 }
             }
 
-            appendToChat("🤖", "✅ Исправление завершено!\nИсправлено файлов: $fixedCount")
-            chatHistory.add(ChatMessage("assistant", "Исправление завершено"))
+            appendToChat("🤖", "✅ Исправление завершено! Исправлено: $fixedCount файлов")
 
         } catch (e: Exception) {
             appendToChat("🤖", "❌ Ошибка: ${e.message}")
