@@ -5,41 +5,41 @@
     <vendor email="support@pantikur.dev" url="https://pantikur.dev">Pantikur AI</vendor>
 
     <description><![CDATA[
-    <h1>🤖 Pantikur AI Assistant — Профессиональный AI-помощник для разработчиков</h1>
-    
-    <p>AI-ассистент уровня Koda для Android Studio с профессиональными функциями для разработки кода.</p>
+    <h1>🧠 AI Assistant — Профессиональный AI-помощник для Android-разработчиков</h1>
 
-    <h2>🚀 Профессиональные функции:</h2>
+    <p>Полноценный AI-ассистент для Android Studio. Анализирует код локально (50+ правил),
+    отвечает на вопросы из встроенной базы знаний, объясняет и исправляет код —
+    <b>без RPG-ответов</b>, только профессиональный анализ.</p>
+
+    <h2>🧠 Локальный интеллект (работает офлайн):</h2>
     <ul>
-        <li><b>🔍 Professional Code Review</b> — детальный анализ кода с ошибками, предупреждениями и предложениями</li>
-        <li><b>🔧 Auto Fix</b> — автоматическое исправление ошибок в один клик</li>
-        <li><b>📖 Quick Explain</b> — быстрое объяснение выделенного кода</li>
-        <li><b>⚡ Smart Insert</b> — генерация и вставка кода в позицию курсора</li>
-        <li><b>💬 Smart Chat</b> — умный чат с контекстом файла и проекта</li>
-        <li><b>📄 File Context</b> — понимание текущего файла, структуры и зависимостей</li>
-        <li><b>🔍 Code Analysis</b> — анализ ошибок, стиля, метрик кода</li>
-        <li><b>⚡ Code Generation</b> — генерация Kotlin/Java кода по описанию (20+ шаблонов)</li>
-        <li><b>🔄 Refactoring</b> — умный рефакторинг кода</li>
-        <li><b>📱 App Generator</b> — генерация полноценных Android-приложений</li>
+        <li><b>🔍 Code Review</b> — 50+ правил: null safety, lifecycle, утечки памяти, безопасность, производительность, Kotlin идиомы, deprecated API</li>
+        <li><b>🔧 Auto Fix</b> — конкретный план исправления для каждой проблемы с решением</li>
+        <li><b>📖 Quick Explain</b> — структура, метрики, ключевые элементы, замечания</li>
+        <li><b>💬 Smart Chat</b> — база знаний по Kotlin, Android, архитектуре, крашам, корутинам, Room, Retrofit, Compose, Hilt и др.</li>
+        <li><b>⚡ Анализ проекта</b> — полный скан всех файлов с отчётом по ошибкам</li>
+        <li><b>🔄 Refactoring</b> — рекомендации по улучшению структуры кода</li>
+        <li><b>📋 Метрики кода</b> — сложность, вложенность, длина методов, покрытие</li>
     </ul>
 
-    <h2>🎮 Развлекательные функции:</h2>
+    <h2>🌐 Сетевые функции (через сервер):</h2>
     <ul>
-        <li><b>WorldEngine</b> — создание и развитие RPG миров</li>
-        <li><b>Character Generator</b> — генерация персонажей с параметрами</li>
-        <li><b>Story Mode</b> — интерактивные приключения</li>
+        <li><b>⚡ Smart Insert</b> — генерация и вставка кода</li>
+        <li><b>📱 App Generator</b> — генерация Android-приложений</li>
+        <li><b>🎮 RPG/WorldEngine</b> — только для творческих запросов (отдельно от кода)</li>
     </ul>
 
     <h2>⌨️ Горячие клавиши:</h2>
     <ul>
-        <li><b>Ctrl+Alt+R</b> — Professional Code Review</li>
-        <li><b>Ctrl+Alt+F</b> — Auto Fix Errors</li>
-        <li><b>Ctrl+Alt+E</b> — Quick Explain</li>
-        <li><b>Ctrl+Alt+I</b> — Smart Insert</li>
+        <li><b>Ctrl+Alt+R</b> — Code Review (локальный анализ)</li>
+        <li><b>Ctrl+Alt+F</b> — Auto Fix (план исправления)</li>
+        <li><b>Ctrl+Alt+E</b> — Quick Explain (объяснение кода)</li>
+        <li><b>Ctrl+Alt+I</b> — Smart Insert (генерация кода)</li>
         <li><b>Ctrl+Alt+G</b> — Generate Code</li>
     </ul>
 
-    <p><b>Как Koda:</b> понимает контекст, редактирует код, исправляет ошибки, делает всё правильно и профессионально!</p>
+    <p><b>Принцип:</b> программистские вопросы обрабатываются локально — мгновенно и профессионально.
+    RPG-движок используется только для творческих запросов и полностью отделён от анализа кода.</p>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>

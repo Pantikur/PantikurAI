@@ -36,9 +36,9 @@ class SettingsPanel(private val project: Project, private val apiService: Assist
 
         val infoPanel = JPanel(BorderLayout())
         infoPanel.border = BorderFactory.createTitledBorder("ℹ️ О плагине")
-        infoPanel.add(JLabel("Pantikur AI Assistant v1.0"), BorderLayout.NORTH)
-        infoPanel.add(JLabel("Профессиональные и развлекательные AI-функции"), BorderLayout.CENTER)
-        infoPanel.add(JLabel("Поддерживает: Чат, Генерация кода, Анализ, RPG, WorldEngine"), BorderLayout.SOUTH)
+        infoPanel.add(JLabel("AI Assistant v2.0 — Professional Edition"), BorderLayout.NORTH)
+        infoPanel.add(JLabel("Локальный анализ кода: 50+ правил, база знаний, метрики"), BorderLayout.CENTER)
+        infoPanel.add(JLabel("Код анализируется локально — без RPG-ответов"), BorderLayout.SOUTH)
 
         statusPanel.border = BorderFactory.createTitledBorder("Статус подключения")
         statusPanel.add(statusLabel)

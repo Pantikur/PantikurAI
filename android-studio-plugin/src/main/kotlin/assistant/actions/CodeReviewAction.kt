@@ -1,6 +1,7 @@
 package assistant.actions
 
 import assistant.SmartEditorService
+import assistant.LocalCodeAnalyzer
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
@@ -14,36 +15,40 @@ import java.awt.*
 import javax.swing.*
 
 /**
- * Профессиональный код-ревью с детальным анализом.
- * Как Koda: находит ошибки, предупреждения, предлагает улучшения.
+ * Профессиональный код-ревью через локальный статический анализатор.
+ * 50+ правил: null safety, lifecycle, утечки, безопасность, производительность.
+ * Работает мгновенно — без RPG-модели.
  */
 class CodeReviewAction : AnAction() {
 
+    private val analyzer = LocalCodeAnalyzer()
+
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val apiService = project.getService(AssistantApiService::class.java)
         val editorService = SmartEditorService(project)
 
-        val code = editorService.getFileWithLineNumbers()
+        val code = editorService.getFileText() ?: return
         val filePath = editorService.getCurrentFilePath() ?: "unknown"
+        val language = editorService.getFileLanguage() ?: "kotlin"
+        val fileName = filePath.substringAfterLast("/")
 
         if (code.isBlank()) {
-            Messages.showWarningDialog("Откройте файл с кодом для ревью", "Pantikur AI")
+            Messages.showWarningDialog("Откройте файл с кодом для ревью", "AI Assistant")
             return
         }
 
-        showReviewDialog(project, apiService, code, filePath, editorService)
+        showReviewDialog(project, code, fileName, language, editorService)
     }
 
     private fun showReviewDialog(
         project: Project,
-        apiService: AssistantApiService,
         code: String,
-        filePath: String,
+        fileName: String,
+        language: String,
         editorService: SmartEditorService
     ) {
         val frame = WindowManager.getInstance().getFrame(project)
-        val dialog = JDialog(frame, "🔍 Code Review", true)
+        val dialog = JDialog(frame, "🔍 Code Review — $fileName", true)
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE)
         dialog.setSize(900, 700)
         dialog.setLocationRelativeTo(frame)
@@ -52,7 +57,6 @@ class CodeReviewAction : AnAction() {
         mainPanel.background = UIUtil.getPanelBackground()
         mainPanel.border = BorderFactory.createEmptyBorder(15, 15, 15, 15)
 
-        // Заголовок
         val headerPanel = JPanel(BorderLayout())
         headerPanel.background = UIUtil.getPanelBackground()
         val titleLabel = JLabel("🔍 Профессиональное Code Review")
@@ -62,7 +66,6 @@ class CodeReviewAction : AnAction() {
         headerPanel.add(titleLabel, BorderLayout.WEST)
         headerPanel.add(statusLabel, BorderLayout.EAST)
 
-        // Область результатов
         val resultArea = JTextArea()
         resultArea.isEditable = false
         resultArea.lineWrap = true
@@ -73,18 +76,10 @@ class CodeReviewAction : AnAction() {
         val scrollPane = JBScrollPane(resultArea)
         scrollPane.preferredSize = Dimension(800, 500)
 
-        // Кнопки
         val buttonPanel = JPanel(FlowLayout(FlowLayout.RIGHT, 10, 0))
         buttonPanel.background = UIUtil.getPanelBackground()
-
-        val btnApply = JButton("✅ Применить исправления")
-        btnApply.isEnabled = false
-        btnApply.toolTipText = "Применить предложенные исправления"
-
         val btnCopy = JButton("📋 Копировать")
         val btnClose = JButton("Закрыть")
-
-        buttonPanel.add(btnApply)
         buttonPanel.add(btnCopy)
         buttonPanel.add(btnClose)
 
@@ -94,99 +89,74 @@ class CodeReviewAction : AnAction() {
 
         dialog.contentPane.add(mainPanel)
 
-        var originalCode = ""
-
-        // Запуск анализа
+        // Локальный анализ — мгновенно, без API
         CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val result = withContext(Dispatchers.IO) {
-                    apiService.analyzeCode(code, filePath)
-                }
-
-                result.onSuccess { analysis ->
-                    statusLabel.text = "✅ Анализ завершён"
-                    statusLabel.foreground = Color.GREEN
-
-                    val formattedResult = buildString {
-                        appendLine("═".repeat(80))
-                        appendLine("📊 ОБЩАЯ ОЦЕНКА")
-                        appendLine("═".repeat(80))
-                        appendLine(analysis.overall ?: "Анализ завершён")
-                        appendLine()
-
-                        if (analysis.errors.isNotBlank()) {
-                            appendLine("═".repeat(80))
-                            appendLine("❌ ОШИБКИ (требуют исправления)")
-                            appendLine("═".repeat(80))
-                            appendLine(analysis.errors)
-                            appendLine()
-                        }
-
-                        if (analysis.warnings.isNotBlank()) {
-                            appendLine("═".repeat(80))
-                            appendLine("⚠️ ПРЕДУПРЕЖДЕНИЯ")
-                            appendLine("═".repeat(80))
-                            appendLine(analysis.warnings)
-                            appendLine()
-                        }
-
-                        if (analysis.suggestions.isNotBlank()) {
-                            appendLine("═".repeat(80))
-                            appendLine("💡 ПРЕДЛОЖЕНИЯ ПО УЛУЧШЕНИЮ")
-                            appendLine("═".repeat(80))
-                            appendLine(analysis.suggestions)
-                            appendLine()
-                        }
-
-                        if (analysis.metrics.isNotBlank()) {
-                            appendLine("═".repeat(80))
-                            appendLine("📈 МЕТРИКИ КОДА")
-                            appendLine("═".repeat(80))
-                            appendLine(analysis.metrics)
-                        }
-                    }
-
-                    resultArea.text = formattedResult
-                    btnApply.isEnabled = analysis.errors.isNotEmpty() || analysis.warnings.isNotEmpty()
-                    originalCode = code
-                }.onFailure { error ->
-                    statusLabel.text = "❌ Ошибка"
-                    statusLabel.foreground = Color.RED
-                    resultArea.text = "Ошибка анализа: ${error.message}"
-                }
-            } catch (e: Exception) {
-                statusLabel.text = "❌ Ошибка"
-                statusLabel.foreground = Color.RED
-                resultArea.text = "Ошибка: ${e.message}"
+            val result = withContext(Dispatchers.Default) {
+                analyzer.analyze(code, fileName, language)
             }
+
+            statusLabel.text = "✅ Анализ завершён"
+            statusLabel.foreground = Color.GREEN
+
+            val formattedResult = buildString {
+                appendLine(result.summary)
+                appendLine()
+
+                if (result.errors.isNotEmpty()) {
+                    appendLine("═══════════════════════════════════════════")
+                    appendLine("❌ ОШИБКИ (${result.errors.size})")
+                    appendLine("═══════════════════════════════════════════")
+                    result.errors.forEach { issue ->
+                        appendLine()
+                        appendLine("  [${issue.rule}] ${issue.message}")
+                        if (issue.line > 0) appendLine("  Строка: ${issue.line}")
+                        if (issue.lineSnippet.isNotBlank()) appendLine("  Код: ${issue.lineSnippet.take(100)}")
+                        if (issue.fix.isNotBlank()) appendLine("  ✅ Решение: ${issue.fix}")
+                    }
+                    appendLine()
+                }
+
+                if (result.warnings.isNotEmpty()) {
+                    appendLine("═══════════════════════════════════════════")
+                    appendLine("⚠️ ПРЕДУПРЕЖДЕНИЯ (${result.warnings.size})")
+                    appendLine("═══════════════════════════════════════════")
+                    result.warnings.forEach { issue ->
+                        appendLine()
+                        appendLine("  [${issue.rule}] ${issue.message}")
+                        if (issue.line > 0) appendLine("  Строка: ${issue.line}")
+                        if (issue.fix.isNotBlank()) appendLine("  → ${issue.fix}")
+                    }
+                    appendLine()
+                }
+
+                if (result.suggestions.isNotEmpty()) {
+                    appendLine("═══════════════════════════════════════════")
+                    appendLine("💡 ПРЕДЛОЖЕНИЯ (${result.suggestions.size})")
+                    appendLine("═══════════════════════════════════════════")
+                    result.suggestions.forEach { issue ->
+                        appendLine("  • ${issue.message}")
+                        if (issue.fix.isNotBlank()) appendLine("    → ${issue.fix}")
+                    }
+                }
+
+                if (!result.hasIssues) {
+                    appendLine()
+                    appendLine("🎉 Код чистый! Проблем не найдено.")
+                }
+            }
+
+            resultArea.text = formattedResult
         }
 
         btnCopy.addActionListener {
             val clipboard = Toolkit.getDefaultToolkit().systemClipboard
             val selection = java.awt.datatransfer.StringSelection(resultArea.text)
             clipboard.setContents(selection, null)
-            Messages.showInfoMessage("Результаты скопированы в буфер обмена", "Pantikur AI")
-        }
-
-        btnApply.addActionListener {
-            val fixedCode = Messages.showInputDialog(
-                project,
-                "Введите исправленный код:",
-                "Применить исправления",
-                Messages.getQuestionIcon(),
-                originalCode,
-                null
-            )
-            if (fixedCode != null) {
-                editorService.replaceFileContent(fixedCode)
-                Messages.showInfoMessage("Код обновлён", "Pantikur AI")
-                dialog.setVisible(false)
-                dialog.dispose()
-            }
+            Messages.showInfoMessage("Результаты скопированы", "AI Assistant")
         }
 
         btnClose.addActionListener {
-            dialog.setVisible(false)
+            dialog.isVisible = false
             dialog.dispose()
         }
 
