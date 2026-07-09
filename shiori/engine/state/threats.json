@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-07-09T22:48:44.403775",
+  "threats": [
+    {
+      "id": "THR-20260709224840-4848",
+      "category": "unauthorized_access",
+      "level": "L3",
+      "source": "192.168.37.125",
+      "description": "Обнаружена угроза: unauthorized_access",
+      "timestamp": "2026-07-09T22:48:40.394959",
+      "confidence": 0.8232711339895727,
+      "affected_components": [
+        "network",
+        "core",
+        "core"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via I001"
+    },
+    {
+      "id": "THR-20260709224841-7853",
+      "category": "internal_anomaly",
+      "level": "L1",
+      "source": "192.168.50.29",
+      "description": "Обнаружена угроза: internal_anomaly",
+      "timestamp": "2026-07-09T22:48:41.396701",
+      "confidence": 0.8796981388740293,
+      "affected_components": [
+        "api"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via I001"
+    },
+    {
+      "id": "THR-20260709224841-4656",
+      "category": "unauthorized_access",
+      "level": "L3",
+      "source": "192.168.154.75",
+      "description": "Обнаружена угроза: unauthorized_access",
+      "timestamp": "2026-07-09T22:48:41.396701",
+      "confidence": 0.8023650397785512,
+      "affected_components": [
+        "database",
+        "network"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via I001"
+    },
+    {
+      "id": "THR-20260709224843-2593",
+      "category": "malware",
+      "level": "L3",
+      "source": "192.168.26.143",
+      "description": "Обнаружена угроза: malware",
+      "timestamp": "2026-07-09T22:48:43.398708",
+      "confidence": 0.8206150451448989,
+      "affected_components": [
+        "api",
+        "core",
+        "api"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via I001"
+    }
+  ]
+}

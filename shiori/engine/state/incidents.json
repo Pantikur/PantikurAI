@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-07-09T22:48:44.404782",
+  "incidents": [
+    {
+      "id": "INC-20260709224840-4319",
+      "type": "I001",
+      "threat_id": "THR-20260709224840-4848",
+      "severity": "L3",
+      "description": "Инцидент на основе угрозы THR-20260709224840-4848",
+      "timestamp": "2026-07-09T22:48:40.394959",
+      "status": "contained",
+      "response_actions": [
+        "Blocked source: 192.168.37.125",
+        "Quarantined affected files"
+      ],
+      "resolved_at": null,
+      "root_cause": null
+    },
+    {
+      "id": "INC-20260709224841-9501",
+      "type": "I001",
+      "threat_id": "THR-20260709224841-7853",
+      "severity": "L1",
+      "description": "Инцидент на основе угрозы THR-20260709224841-7853",
+      "timestamp": "2026-07-09T22:48:41.396701",
+      "status": "resolved",
+      "response_actions": [
+        "Logged for analysis"
+      ],
+      "resolved_at": "2026-07-09T22:48:41.396701",
+      "root_cause": null
+    },
+    {
+      "id": "INC-20260709224841-4516",
+      "type": "I001",
+      "threat_id": "THR-20260709224841-4656",
+      "severity": "L3",
+      "description": "Инцидент на основе угрозы THR-20260709224841-4656",
+      "timestamp": "2026-07-09T22:48:41.396701",
+      "status": "contained",
+      "response_actions": [
+        "Blocked source: 192.168.154.75",
+        "Quarantined affected files"
+      ],
+      "resolved_at": null,
+      "root_cause": null
+    },
+    {
+      "id": "INC-20260709224843-3604",
+      "type": "I001",
+      "threat_id": "THR-20260709224843-2593",
+      "severity": "L3",
+      "description": "Инцидент на основе угрозы THR-20260709224843-2593",
+      "timestamp": "2026-07-09T22:48:43.398708",
+      "status": "contained",
+      "response_actions": [
+        "Blocked source: 192.168.26.143",
+        "Quarantined affected files"
+      ],
+      "resolved_at": null,
+      "root_cause": null
+    }
+  ]
+}
