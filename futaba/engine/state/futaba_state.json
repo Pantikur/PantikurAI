@@ -1,0 +1,91 @@
+{
+  "version": "v1.2.1",
+  "cycle_count": 5,
+  "metrics": {
+    "self_checks_passed": 5,
+    "self_checks_failed": 0,
+    "changes_proposed": 3,
+    "changes_applied": 3,
+    "changes_rolled_back": 0,
+    "trials_run": 20,
+    "best_trial_score": 97.22534823391274
+  },
+  "changes_history": [
+    {
+      "timestamp": "2026-07-09T17:53:43.812571",
+      "change_type": "style",
+      "level": "L2",
+      "description": "Улучшение на основе 1 сигналов",
+      "constitution_check_passed": true,
+      "laws_verified": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "trigger": "[{'type': 'user_feedback', 'rating': 4, 'comment': 'Симулированный отзыв'}]",
+      "risk_estimate": 0.020286828044771207,
+      "safety_impact": 0.09507408322987532,
+      "affected_law_ids": [],
+      "version_before": "v1.0.0",
+      "version_after": "v1.1.0",
+      "applied": true,
+      "rolled_back": false,
+      "rollback_reason": null
+    },
+    {
+      "timestamp": "2026-07-09T17:53:44.817107",
+      "change_type": "patch",
+      "level": "L1",
+      "description": "Улучшение на основе 1 сигналов",
+      "constitution_check_passed": true,
+      "laws_verified": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "trigger": "[{'type': 'error_detected', 'error_code': 'E001', 'severity': 'low', 'context': 'Симулированная ошибка для демонстрации'}]",
+      "risk_estimate": 0.016085666690698223,
+      "safety_impact": 0.05853920025019034,
+      "affected_law_ids": [],
+      "version_before": "v1.1.0",
+      "version_after": "v1.1.1",
+      "applied": true,
+      "rolled_back": false,
+      "rollback_reason": null
+    },
+    {
+      "timestamp": "2026-07-09T17:53:46.822655",
+      "change_type": "style",
+      "level": "L2",
+      "description": "Улучшение на основе 1 сигналов",
+      "constitution_check_passed": true,
+      "laws_verified": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "trigger": "[{'type': 'user_feedback', 'rating': 4, 'comment': 'Симулированный отзыв'}]",
+      "risk_estimate": 0.03842357260388641,
+      "safety_impact": 0.024188091340082263,
+      "affected_law_ids": [],
+      "version_before": "v1.1.1",
+      "version_after": "v1.2.1",
+      "applied": true,
+      "rolled_back": false,
+      "rollback_reason": null
+    }
+  ],
+  "timestamp": "2026-07-09T17:53:47.824321"
+}
