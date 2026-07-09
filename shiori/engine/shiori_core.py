@@ -43,7 +43,7 @@ class ShioriCore:
     """
     
     def __init__(self, config: Optional[ShioriConfig] = None):
-        self.config = config or FutabaConfig.default()
+        self.config = config or ShioriConfig.default()
         self.constitution = Constitution(version=self.config.version)
         self.current_version = self.config.version
         
