@@ -1,0 +1,81 @@
+{
+  "system_state": {
+    "initialized_at": 1783688219.0688286,
+    "total_bodies_designed": 0,
+    "total_research_cycles": 1,
+    "total_evolution_transitions": 1,
+    "current_focus": "autonomous_learning",
+    "integration_status": {
+      "chatbot": false,
+      "internet_learning": true,
+      "body_factory": true
+    }
+  },
+  "event_log": [
+    {
+      "type": "AUTO_LEARNING_STARTED",
+      "message": "Автономное обучение запущено, интервал: 15 мин",
+      "data": {},
+      "timestamp": 1783689543.4606385,
+      "datetime": "2026-07-10T23:19:03.460638"
+    },
+    {
+      "type": "STUDY_CYCLE_COMPLETED",
+      "message": "Цикл обучения завершён",
+      "data": {
+        "total_topics": 5,
+        "completed": 5,
+        "results": [
+          {
+            "topic": "human skeletal system anatomy",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 3
+          },
+          {
+            "topic": "human muscular system anatomy",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 3
+          },
+          {
+            "topic": "human nervous system neuroanatomy",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 3
+          },
+          {
+            "topic": "human cardiovascular system",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 3
+          },
+          {
+            "topic": "human respiratory system",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 3
+          }
+        ]
+      },
+      "timestamp": 1783689569.9384055,
+      "datetime": "2026-07-10T23:19:29.938405"
+    }
+  ],
+  "saved_at": 1783689569.9404051
+}

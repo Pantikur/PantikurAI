@@ -1,0 +1,97 @@
+{
+  "mechanical": {
+    "skeletal_system": {
+      "material": "titanium_alloy_ti64",
+      "weight_kg": 60,
+      "strength_n": 50000,
+      "joints": "hydraulic_servo",
+      "modular": true
+    },
+    "muscular_system": {
+      "actuator_type": "electromechanical",
+      "force_n": 500,
+      "speed_ms": 2.0,
+      "efficiency_percent": 85
+    },
+    "nervous_system": {
+      "processor": "neural_chip_fpga",
+      "latency_ms": 1,
+      "bandwidth_tbps": 10,
+      "ai_model": "custom_rnn_lstm"
+    },
+    "cardiovascular_system": {
+      "pump_type": "electromagnetic",
+      "flow_l_min": 5,
+      "power_w": 50
+    },
+    "metabolic_system": {
+      "power_source": "lipo_battery_5kwh",
+      "efficiency_percent": 90,
+      "charging_hours": 2
+    }
+  },
+  "bionic": {
+    "skeletal_system": {
+      "material": "carbon_fiber_titanium",
+      "weight_kg": 50,
+      "osseo_integration": true,
+      "bio_compatible": true
+    },
+    "muscular_system": {
+      "organic_muscle_percent": 60,
+      "artificial_muscle_percent": 40,
+      "artificial_type": "electroactive_polymer"
+    },
+    "nervous_system": {
+      "neural_interface": "implantable_electrodes",
+      "bio_signal_processing": true,
+      "feedback_sensors": true
+    },
+    "cardiovascular_system": {
+      "organic_heart": true,
+      "assist_device": "vadc",
+      "bio_artificial_kidney": false
+    },
+    "metabolic_system": {
+      "organic_digestion": true,
+      "artificial_support": [
+        "artificial_pancreas",
+        "dialysis"
+      ]
+    }
+  },
+  "organic": {
+    "skeletal_system": {
+      "genetic_modifications": [
+        "enhanced_density",
+        "rapid_healing"
+      ],
+      "growth_method": "tissue_engineering",
+      "donor_cells": "iPSC_reprogrammed"
+    },
+    "muscular_system": {
+      "gene_therapy": [
+        "myostatin_inhibition",
+        "hypertrophy_boost"
+      ],
+      "cell_source": "autologous_stem_cells",
+      "vascularization": "3d_bioprinted"
+    },
+    "nervous_system": {
+      "brain_source": "stem_cell_differentiated",
+      "neural_connections": "synthetic_guidance",
+      "cognitive_enhancement": true
+    },
+    "cardiovascular_system": {
+      "heart_method": "bioartificial_or_cloned",
+      "vessel_engineering": "decellularization_recellularization"
+    },
+    "metabolic_system": {
+      "organ_source": [
+        "3d_bioprinted",
+        "xenotransplant"
+      ],
+      "immune_suppression": "gene_edited"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "system_state": {
+    "initialized_at": 1783688219.0818172,
+    "total_knowledge_points": 0,
+    "total_research_cycles": 1,
+    "current_focus": "autonomous_learning",
+    "integration_status": {
+      "chatbot": false,
+      "internet_learning": true
+    }
+  },
+  "event_log": [
+    {
+      "type": "AUTO_LEARNING_STARTED",
+      "message": "Автономное обучение запущено, интервал: 15 мин",
+      "data": {},
+      "timestamp": 1783689552.3166118,
+      "datetime": "2026-07-10T23:19:12.316611"
+    },
+    {
+      "type": "STUDY_CYCLE_COMPLETED",
+      "message": "Цикл обучения завершён",
+      "data": {
+        "total_topics": 5,
+        "completed": 5,
+        "results": [
+          {
+            "topic": "human touch physiology C-tactile fibers",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 2
+          },
+          {
+            "topic": "skin receptor density distribution",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 3
+          },
+          {
+            "topic": "tactile deprivation effects psychology",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 5
+          },
+          {
+            "topic": "oral sensory cortex representation",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 3
+          },
+          {
+            "topic": "cutaneous mechanoreceptors types",
+            "nodes_added": 0,
+            "confidence_improved": 0.0,
+            "sources": [
+              "arxiv"
+            ],
+            "facts_count": 6
+          }
+        ]
+      },
+      "timestamp": 1783689579.0928712,
+      "datetime": "2026-07-10T23:19:39.092871"
+    }
+  ],
+  "saved_at": 1783689579.0928712
+}

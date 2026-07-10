@@ -2152,6 +2152,508 @@ async def enrich_gigachat(request: Request):
 #         logger.info("👋 Клиент отключён")
 
 
+# === Интеграция Latislane (система изучения тела и проектирования) ===
+LATISLANE_ENABLED = os.getenv("LATISLANE_ENABLED", "true").lower() in ("true", "1", "yes")
+latislane_core = None
+LATISLANE_LOCK = threading.Lock()
+
+if LATISLANE_ENABLED:
+    try:
+        import sys
+        sys.path.insert(0, str(BASE_DIR))
+        from latislane import LatislaneCore
+        latislane_core = LatislaneCore(project_root=str(BASE_DIR), demo_mode=True)
+        logger.info("🧬 Latislane инициализирован (изучение тела + проектирование)")
+    except Exception as e:
+        logger.warning(f"⚠️ Latislane не загружен: {e}")
+# === КОНЕЦ ИНТЕГРАЦИИ LATISLANE ===
+
+# === Интеграция Celesta (система изучения интимной жизни) ===
+CELESTA_ENABLED = os.getenv("CELESTA_ENABLED", "true").lower() in ("true", "1", "yes")
+celesta_core = None
+CELESTA_LOCK = threading.Lock()
+
+if CELESTA_ENABLED:
+    try:
+        import sys
+        sys.path.insert(0, str(BASE_DIR))
+        from celesta import CelestaCore
+        celesta_core = CelestaCore(project_root=str(BASE_DIR), demo_mode=True)
+        logger.info("🌹 Celesta инициализирована (изучение интимной жизни)")
+    except Exception as e:
+        logger.warning(f"⚠️ Celesta не загружена: {e}")
+# === КОНЕЦ ИНТЕГРАЦИИ CELESTA ===
+
+# ========================
+# Latislane Endpoints (Система изучения тела и проектирования)
+# ========================
+
+# === Эндпоинт: /latislane/status — статус системы ===
+@app.get("/latislane/status")
+async def latislane_status():
+    """Статус системы Латислейн."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        return {"status": "not available", "detail": "Latislane не загружен"}
+    
+    try:
+        status = local_latislane.get_system_status()
+        return {"status": "ok", "latislane": status}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/anatomy — отчёт по анатомии ===
+@app.get("/latislane/anatomy")
+async def latislane_anatomy():
+    """Отчёт по изученной анатомии."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        return {"status": "not available", "detail": "Latislane не загружен"}
+    
+    try:
+        report = local_latislane.get_anatomy_report()
+        return {"status": "ok", "anatomy": report}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/study — запуск цикла обучения ===
+@app.post("/latislane/study")
+async def latislane_study(request: Request):
+    """Запустить цикл обучения."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json() if request.method == "POST" else {}
+        topics = body.get("topics")  # Список тем (опционально)
+        batch_size = body.get("batch_size", 3)
+        
+        # Запуск в фоне
+        async def _run_study():
+            await local_latislane.run_study_cycle(topics=topics, batch_size=batch_size)
+        
+        asyncio.create_task(_run_study())
+        
+        return {"status": "ok", "message": "Цикл обучения запущен в фоне"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/design/mechanical — проектирование механического тела ===
+@app.post("/latislane/design/mechanical")
+async def latislane_design_mechanical(request: Request):
+    """Спроектировать механическое тело."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json() if request.method == "POST" else {}
+        name = body.get("name", f"Mechanical-{int(time.time())}")
+        
+        spec = local_latislane.design_mechanical_body(name=name)
+        return {"status": "ok", "body": spec.to_dict()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/design/bionic — проектирование бионического тела ===
+@app.post("/latislane/design/bionic")
+async def latislane_design_bionic(request: Request):
+    """Спроектировать бионическое тело."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json() if request.method == "POST" else {}
+        name = body.get("name", f"Bionic-{int(time.time())}")
+        
+        spec = local_latislane.design_bionic_body(name=name)
+        return {"status": "ok", "body": spec.to_dict()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/design/organic — проектирование органического тела ===
+@app.post("/latislane/design/organic")
+async def latislane_design_organic(request: Request):
+    """Спроектировать органическое тело."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json() if request.method == "POST" else {}
+        name = body.get("name", f"Organic-{int(time.time())}")
+        
+        spec = local_latislane.design_organic_body(name=name)
+        return {"status": "ok", "body": spec.to_dict()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/chat — чат с Латислейн ===
+@app.post("/latislane/chat")
+async def latislane_chat(request: Request):
+    """Чат с системой Латислейн."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json()
+        message = body.get("message", "")
+        
+        response = local_latislane.chat_response(message)
+        return {"status": "ok", "response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/learn — начать изучение анатомии ===
+@app.post("/latislane/learn")
+async def latislane_learn():
+    """Начать изучение анатомии."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        local_latislane.start_anatomy_study()
+        return {"status": "ok", "message": "Изучение анатомии начато"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/evolution — статус эволюции ===
+@app.get("/latislane/evolution")
+async def latislane_evolution():
+    """Статус эволюции Латислейн."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        return {"status": "not available", "detail": "Latislane не загружен"}
+    
+    try:
+        report = local_latislane.evolution.get_evolution_report()
+        return {"status": "ok", "evolution": report}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/evolve — перейти к следующему этапу ===
+@app.post("/latislane/evolve")
+async def latislane_evolve():
+    """Принудительно перейти к следующему этапу эволюции."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        # Проверка возможности перехода
+        learned_topics = len(local_latislane.learning_engine.topic_progress)
+        
+        if local_latislane.evolution.can_advance(learned_topics):
+            local_latislane.evolution.advance(reason="api_request")
+            return {
+                "status": "ok",
+                "message": f"Эволюция: {local_latislane.evolution.current_stage.value}",
+                "evolution": local_latislane.evolution.get_current_stage_info()
+            }
+        else:
+            return {
+                "status": "not_ready",
+                "message": "Ещё рано переходить к следующему этапу",
+                "current_stage": local_latislane.evolution.get_current_stage_info()
+            }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/autonomous — запуск автономного обучения ===
+@app.post("/latislane/autonomous")
+async def latislane_autonomous(request: Request):
+    """Запустить автономное обучение."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json() if request.method == "POST" else {}
+        interval = body.get("interval_minutes", 10)
+        
+        local_latislane.start_autonomous_learning(interval_minutes=interval)
+        return {"status": "ok", "message": f"Автономное обучение запущено (интервал: {interval} мин)"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/self-improve — саморазвитие ===
+@app.post("/latislane/self-improve")
+async def latislane_self_improve():
+    """Запустить саморазвитие."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        async def _run_improve():
+            await local_latislane.self_improve()
+        
+        asyncio.create_task(_run_improve())
+        return {"status": "ok", "message": "Саморазвитие запущено"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ========================
+# Celesta Endpoints (Система изучения интимной жизни)
+# ========================
+
+# === Эндпоинт: /celesta/status — статус системы ===
+@app.get("/celesta/status")
+async def celesta_status():
+    """Статус системы Селеста."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        return {"status": "not available", "detail": "Celesta не загружена"}
+    
+    try:
+        status = local_celesta.get_system_status()
+        return {"status": "ok", "celesta": status}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/intimacy — отчёт по интимным знаниям ===
+@app.get("/celesta/intimacy")
+async def celesta_intimacy():
+    """Отчёт по изученной интимной жизни."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        return {"status": "not available", "detail": "Celesta не загружена"}
+    
+    try:
+        report = local_celesta.get_intimacy_report()
+        return {"status": "ok", "intimacy": report}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/stage/{stage} — детали этапа ===
+@app.get("/celesta/stage/{stage}")
+async def celesta_stage(stage: str):
+    """Детали конкретного этапа интимной жизни."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        from celesta.intimacy_modules import IntimacyStage
+        intimacy_stage = IntimacyStage(stage)
+        details = local_celesta.get_stage_details(intimacy_stage)
+        return {"status": "ok", "stage": details}
+    except ValueError:
+        raise HTTPException(status_code=400, detail=f"Неизвестный этап: {stage}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/consequences — последствия ===
+@app.post("/celesta/consequences")
+async def celesta_consequences(request: Request):
+    """Получить информацию о последствиях."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        body = await request.json()
+        scenario = body.get("scenario", "normal")  # "excessive", "interrupted", "normal"
+        
+        info = local_celesta.get_consequences_info(scenario)
+        return {"status": "ok", "consequences": info}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/race/{race} — особенности расы ===
+@app.get("/celesta/race/{race}")
+async def celesta_race(race: str):
+    """Получить информацию об особенностях расы."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        info = local_celesta.get_race_specific_info(race)
+        return {"status": "ok", "race": race, "info": info}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/study — запуск цикла обучения ===
+@app.post("/celesta/study")
+async def celesta_study(request: Request):
+    """Запустить цикл обучения."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        body = await request.json() if request.method == "POST" else {}
+        topics = body.get("topics")
+        batch_size = body.get("batch_size", 3)
+        
+        async def _run_study():
+            await local_celesta.run_study_cycle(topics=topics, batch_size=batch_size)
+        
+        asyncio.create_task(_run_study())
+        
+        return {"status": "ok", "message": "Цикл обучения запущен в фоне"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/chat — чат с Селестой ===
+@app.post("/celesta/chat")
+async def celesta_chat(request: Request):
+    """Чат с системой Селеста."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        body = await request.json()
+        message = body.get("message", "")
+        
+        response = local_celesta.chat_response(message)
+        return {"status": "ok", "response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/learn — начать изучение ===
+@app.post("/celesta/learn")
+async def celesta_learn():
+    """Начать изучение интимной жизни."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        local_celesta.start_intimacy_study()
+        return {"status": "ok", "message": "Изучение интимной жизни начато"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/autonomous — запуск автономного обучения ===
+@app.post("/celesta/autonomous")
+async def celesta_autonomous(request: Request):
+    """Запустить автономное обучение."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        body = await request.json() if request.method == "POST" else {}
+        interval = body.get("interval_minutes", 10)
+        
+        local_celesta.start_autonomous_learning(interval_minutes=interval)
+        return {"status": "ok", "message": f"Автономное обучение запущено (интервал: {interval} мин)"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /celesta/self-improve — саморазвитие ===
+@app.post("/celesta/self-improve")
+async def celesta_self_improve():
+    """Запустить саморазвитие."""
+    local_celesta = None
+    with CELESTA_LOCK:
+        local_celesta = celesta_core
+    
+    if local_celesta is None:
+        raise HTTPException(status_code=503, detail="Celesta не загружена")
+    
+    try:
+        async def _run_improve():
+            await local_celesta.self_improve()
+        
+        asyncio.create_task(_run_improve())
+        return {"status": "ok", "message": "Саморазвитие запущено"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ========================
 # === Запуск (для uvicorn) ===
 if __name__ == "__main__":
     import uvicorn
