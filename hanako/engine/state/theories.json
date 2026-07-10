@@ -1,0 +1,112 @@
+{
+  "theories": [
+    {
+      "id": "fbeba931",
+      "name": "Общая теория относительности",
+      "description": "Гравитация как искривление пространства-времени",
+      "category": "relativity",
+      "timestamp": "2026-07-10T15:51:45.582613",
+      "equations": [
+        "R_μν - ½Rg_μν = 8πG/c⁴ * T_μν"
+      ],
+      "predictions": [
+        "Гравитационные волны",
+        "Чёрные дыры"
+      ],
+      "experimental_evidence": [
+        "LIGO",
+        "EHT"
+      ],
+      "compatibility_score": 1.0,
+      "scientific_value": 0.8596414276334617,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "ee4d6504",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-10T15:51:47.588002",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.6801736277522964,
+      "scientific_value": 0.7502512435309441,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "9c063422",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-10T15:51:49.592440",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.8628032766003493,
+      "scientific_value": 0.730514533163222,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "723772ad",
+      "name": "Модифицированная ньютоновская динамика",
+      "description": "Альтернатива тёмной материи",
+      "category": "modified",
+      "timestamp": "2026-07-10T15:51:51.598687",
+      "equations": [
+        "μ(a/a₀)a = F_N"
+      ],
+      "predictions": [
+        "Кривые вращения галактик"
+      ],
+      "experimental_evidence": [
+        "Наблюдения галактик"
+      ],
+      "compatibility_score": 0.9144631213035295,
+      "scientific_value": 0.9441903710440194,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "036c2b86",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-10T15:51:53.602878",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.7723539703260747,
+      "scientific_value": 0.7343152948103614,
+      "validated": false,
+      "source": "original"
+    }
+  ],
+  "updated": "2026-07-10T15:51:55.609587"
+}

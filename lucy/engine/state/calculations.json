@@ -1,0 +1,148 @@
+{
+  "calculations": [
+    {
+      "id": "a4059815",
+      "calculation_type": "efficiency",
+      "timestamp": "2026-07-10T15:32:31.564691",
+      "input_params": {
+        "thrust": 728.5709177755236,
+        "power": 450223872.77975386,
+        "isp": 4874.776715756376
+      },
+      "result": 0.038680200818684084,
+      "units": "dimensionless",
+      "precision": 10,
+      "confidence": 0.8749298752003638,
+      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+    },
+    {
+      "id": "dd195e56",
+      "calculation_type": "power",
+      "timestamp": "2026-07-10T15:32:33.568321",
+      "input_params": {
+        "thrust": 7716.706640366805,
+        "isp": 1025.571219071288
+      },
+      "result": 38805072.115430735,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.9065738593956654,
+      "notes": "P = F * g_0 * I_sp / 2"
+    },
+    {
+      "id": "cd33711d",
+      "calculation_type": "specific_impulse",
+      "timestamp": "2026-07-10T15:32:35.575227",
+      "input_params": {
+        "exhaust_velocity": 66213.07336373342
+      },
+      "result": 6751.854442009598,
+      "units": "s",
+      "precision": 10,
+      "confidence": 0.9812614954947579,
+      "notes": "I_sp = v_e / g_0"
+    },
+    {
+      "id": "e47d8c44",
+      "calculation_type": "power",
+      "timestamp": "2026-07-10T15:32:37.579452",
+      "input_params": {
+        "thrust": 9743.60215265036,
+        "isp": 4299.859870655526
+      },
+      "result": 205430311.68182924,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.913040482199704,
+      "notes": "P = F * g_0 * I_sp / 2"
+    },
+    {
+      "id": "b7f11247",
+      "calculation_type": "efficiency",
+      "timestamp": "2026-07-10T15:32:39.582776",
+      "input_params": {
+        "thrust": 2814.207593018437,
+        "power": 602078534.9731485,
+        "isp": 1379.4510945128816
+      },
+      "result": 0.03161549415408095,
+      "units": "dimensionless",
+      "precision": 10,
+      "confidence": 0.8629592488252551,
+      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+    },
+    {
+      "id": "e0d8eef1",
+      "calculation_type": "power",
+      "timestamp": "2026-07-10T15:48:52.179013",
+      "input_params": {
+        "thrust": 4321.127124338948,
+        "isp": 3475.971500576976
+      },
+      "result": 73648504.08089684,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.9492633677232021,
+      "notes": "P = F * g_0 * I_sp / 2"
+    },
+    {
+      "id": "bf6e3519",
+      "calculation_type": "efficiency",
+      "timestamp": "2026-07-10T15:48:54.182361",
+      "input_params": {
+        "thrust": 3261.6311353128135,
+        "power": 720628484.4787536,
+        "isp": 1027.7687018401384
+      },
+      "result": 0.022809170295549595,
+      "units": "dimensionless",
+      "precision": 10,
+      "confidence": 0.8742254110143877,
+      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+    },
+    {
+      "id": "4201ddf5",
+      "calculation_type": "thrust",
+      "timestamp": "2026-07-10T15:48:56.184777",
+      "input_params": {
+        "mass_flow": 42.273838040459786,
+        "exhaust_velocity": 13256.452406026558
+      },
+      "result": 560401.1220034302,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.9768019231244571,
+      "notes": "F = ṁ * v_e"
+    },
+    {
+      "id": "b0aa89ff",
+      "calculation_type": "efficiency",
+      "timestamp": "2026-07-10T15:48:58.195617",
+      "input_params": {
+        "thrust": 758.552215836363,
+        "power": 779793848.6583302,
+        "isp": 4987.569220025396
+      },
+      "result": 0.023789498800040575,
+      "units": "dimensionless",
+      "precision": 10,
+      "confidence": 0.9268074760296168,
+      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+    },
+    {
+      "id": "673579cd",
+      "calculation_type": "thrust",
+      "timestamp": "2026-07-10T15:49:00.203142",
+      "input_params": {
+        "mass_flow": 77.61829590919554,
+        "exhaust_velocity": 43395.409517853186
+      },
+      "result": 3368277.7370574493,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.960692625895381,
+      "notes": "F = ṁ * v_e"
+    }
+  ],
+  "updated": "2026-07-10T15:49:02.211387"
+}

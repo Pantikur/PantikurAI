@@ -1,0 +1,226 @@
+{
+  "theories": [
+    {
+      "id": "518cb10f",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-10T15:24:39.298297",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 1.0,
+      "scientific_value": 0.7216910458335455,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "3ad0b4e1",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-10T15:24:41.301349",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.8666056289683552,
+      "scientific_value": 0.8741521452771543,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "19ef7481",
+      "name": "Теория спрайтов и джетов",
+      "description": "Верхнеатмосферные разряды",
+      "category": "sprites",
+      "timestamp": "2026-07-10T15:24:43.303482",
+      "equations": [
+        "E_ionosphere = V/d"
+      ],
+      "predictions": [
+        "Красные спрайты",
+        "Синие джеты"
+      ],
+      "experimental_evidence": [
+        "Спутниковые наблюдения"
+      ],
+      "compatibility_score": 0.6229319418270203,
+      "scientific_value": 0.7038391985882341,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "497c8a94",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-10T15:24:45.307137",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.7438829073591282,
+      "scientific_value": 0.7913378385807588,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "8a039620",
+      "name": "Теория спрайтов и джетов",
+      "description": "Верхнеатмосферные разряды",
+      "category": "sprites",
+      "timestamp": "2026-07-10T15:24:47.312507",
+      "equations": [
+        "E_ionosphere = V/d"
+      ],
+      "predictions": [
+        "Красные спрайты",
+        "Синие джеты"
+      ],
+      "experimental_evidence": [
+        "Спутниковые наблюдения"
+      ],
+      "compatibility_score": 0.7118579061043757,
+      "scientific_value": 0.8099878123188115,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "7f1e1a91",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-10T15:52:08.170257",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.6479826432095113,
+      "scientific_value": 0.6363417610465657,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "63fe5687",
+      "name": "Теория разряда молнии",
+      "description": "Механизм формирования молнии",
+      "category": "lightning",
+      "timestamp": "2026-07-10T15:52:10.174190",
+      "equations": [
+        "E_breakdown = 3×10⁶ В/м",
+        "I = V/R"
+      ],
+      "predictions": [
+        "Лидеры",
+        "Обратный разряд"
+      ],
+      "experimental_evidence": [
+        "Фотографии молний",
+        "Измерения тока"
+      ],
+      "compatibility_score": 0.7542848123302933,
+      "scientific_value": 0.9432048589043098,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "68e185f1",
+      "name": "Теория атмосферного потенциала",
+      "description": "Глобальная электрическая цепь атмосферы",
+      "category": "atmospheric",
+      "timestamp": "2026-07-10T15:52:12.179116",
+      "equations": [
+        "J = σE",
+        "∇·J = -∂ρ/∂t"
+      ],
+      "predictions": [
+        "Ионосферный потенциал",
+        "Токи утечки"
+      ],
+      "experimental_evidence": [
+        "Измерения потенциала"
+      ],
+      "compatibility_score": 0.8151441566366058,
+      "scientific_value": 0.6749225246331593,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "55445d83",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-10T15:52:14.181322",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.9249004013948918,
+      "scientific_value": 0.785867794014681,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "80df5fc3",
+      "name": "Теория атмосферного потенциала",
+      "description": "Глобальная электрическая цепь атмосферы",
+      "category": "atmospheric",
+      "timestamp": "2026-07-10T15:52:16.184683",
+      "equations": [
+        "J = σE",
+        "∇·J = -∂ρ/∂t"
+      ],
+      "predictions": [
+        "Ионосферный потенциал",
+        "Токи утечки"
+      ],
+      "experimental_evidence": [
+        "Измерения потенциала"
+      ],
+      "compatibility_score": 0.6135767511935751,
+      "scientific_value": 0.6652871657204971,
+      "validated": false,
+      "source": "original"
+    }
+  ],
+  "updated": "2026-07-10T15:52:18.191531"
+}

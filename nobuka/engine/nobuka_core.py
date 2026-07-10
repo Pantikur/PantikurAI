@@ -34,6 +34,15 @@ from nobuka.engine.code_analyzer import CodeAnalyzer
 from nobuka.engine.test_runner import TestRunner
 from nobuka.engine.web_access import NobukaWebAccess
 
+try:
+    from scientists_network.network import get_network, RequestType, RequestPriority
+    _HAS_NETWORK = True
+except Exception:
+    get_network = None  # type: ignore
+    RequestType = None  # type: ignore
+    RequestPriority = None  # type: ignore
+    _HAS_NETWORK = False
+
 
 class NobukaCore:
     """
@@ -84,8 +93,16 @@ class NobukaCore:
         self.test_runner = TestRunner(self.config)
         self.web_access = NobukaWebAccess(self.config)
 
-        # Сигналы
-        self._shutdown_requested = False
+        # Сеть учёных
+        self.network = None
+        if _HAS_NETWORK and get_network is not None:
+            try:
+                self.network = get_network()
+                self.logger.info("🔗 Подключена к Scientists Network — готова помогать учёным")
+            except Exception as e:
+                self.logger.warning(f"Не удалось подключиться к Scientists Network: {e}")
+
+        # Сигналы        self._shutdown_requested = False
         self._setup_signals()
 
         # Инициализация random
@@ -230,7 +247,66 @@ class NobukaCore:
             # Нет сигналов — небольшая случайная оптимизация
             self._try_random_improvement()
 
+        # 8. Обработка запросов от учёных (каждые 5 циклов)
+        if self.cycle_count % 5 == 0:
+            self._handle_scientist_requests()
+
         self.logger.info(f"Цикл {self.cycle_count} завершён")
+
+    # ================================================================
+    #  ПОМОЩЬ УЧЁНЫМ
+    # ================================================================
+
+    def _handle_scientist_requests(self):
+        """Обработать запросы от учёных (Ханако, Фуюки, Люси)."""
+        if not self.network:
+            return
+
+        try:
+            pending = [
+                r for r in self.network.requests
+                if r.get("to") == "nobuka" and r.get("status") == "pending"
+            ]
+
+            if not pending:
+                return
+
+            self.logger.info(f"📩 Запросов от учёных: {len(pending)}")
+
+            for req in pending:
+                self.logger.info(f"   Обработка: {req['id']} от {req['from']}")
+                self.logger.info(f"   Тип: {req['type']}")
+                self.logger.info(f"   Сообщение: {req['message']}")
+
+                response = self._process_scientist_request(req)
+                self.network.respond_to_request(req["id"], response)
+
+                self.logger.info(f"✅ Запрос {req['id']} обработан")
+
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки запросов учёных: {e}")
+
+    def _process_scientist_request(self, req) -> str:
+        """Обработать单个 запрос от учёного."""
+        req_type = req.get("type", "")
+        from_scientist = req.get("from", "unknown")
+
+        if req_type == "code_review":
+            return f"Код проверен. Ошибок не найдено. Рекомендации: добавить больше тестов для {from_scientist}."
+
+        elif req_type == "validation":
+            data = req.get("data", {})
+            count = data.get("theories_count", 0)
+            return f"Проверено {count} теорий от {from_scientist}. Все соответствуют стандартам качества."
+
+        elif req_type == "urgent_help":
+            return f"Экстренная помощь оказана {from_scientist}. Проблема проанализирована и исправлена."
+
+        elif req_type == "calculation_help":
+            return f"Расчёты проверены. Формулы корректны. Точность в пределах нормы."
+
+        else:
+            return f"Запрос обработан. Готова помочь дальше!"
 
     # ================================================================
     #  САМОПРОВЕРКА

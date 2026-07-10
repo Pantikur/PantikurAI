@@ -1,0 +1,149 @@
+{
+  "calculations": [
+    {
+      "id": "a07f9f52",
+      "calculation_type": "gravitational_force",
+      "timestamp": "2026-07-10T15:23:51.243865",
+      "input_params": {
+        "m1": 1.1151919060701587e+24,
+        "m2": 799.0604193183317,
+        "r": 7149379.252173379
+      },
+      "result": 1163.5854444746856,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.9865361300935258,
+      "notes": "Закон всемирного тяготения Ньютона"
+    },
+    {
+      "id": "ad629271",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-10T15:23:53.247050",
+      "input_params": {
+        "m1": 8.586695248511004e+29,
+        "m2": 9.718029386474208e+29,
+        "r": 504331928.5185552,
+        "omega": 717.1719343919027
+      },
+      "result": 2.0487489840839062e+24,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.8580570285376885,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "86c13f5a",
+      "calculation_type": "orbital_period",
+      "timestamp": "2026-07-10T15:23:55.249132",
+      "input_params": {
+        "a": 906325916638.6188,
+        "M": 4.0765800157856315e+29
+      },
+      "result": 1039335159.8689578,
+      "units": "s",
+      "precision": 10,
+      "confidence": 0.95835487844319,
+      "notes": "Третий закон Кеплера"
+    },
+    {
+      "id": "2c92beb0",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-10T15:23:57.252486",
+      "input_params": {
+        "m": 1940.9630344570294,
+        "g": 9.80665
+      },
+      "result": 22251.793861945498,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.33007377270687777,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "7422ecd2",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-10T15:23:59.255593",
+      "input_params": {
+        "m": 9114.771705112362,
+        "g": 9.80665
+      },
+      "result": 88657.58045965493,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.4717993171845547,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "f56d8192",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-10T15:51:45.583613",
+      "input_params": {
+        "m1": 8.442960733281123e+29,
+        "m2": 4.7648920842098894e+29,
+        "r": 214316025.99980354,
+        "omega": 909.7284005072149
+      },
+      "result": 2.4794423418956995e+25,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.9393380635079136,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "e657be2b",
+      "calculation_type": "gravitational_force",
+      "timestamp": "2026-07-10T15:51:47.589006",
+      "input_params": {
+        "m1": 3.655527057579605e+24,
+        "m2": 431.0420873272645,
+        "r": 1806129.0178770244
+      },
+      "result": 32238.725409495877,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.9770465802006276,
+      "notes": "Закон всемирного тяготения Ньютона"
+    },
+    {
+      "id": "e48fe5ce",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-10T15:51:49.592440",
+      "input_params": {
+        "M": 9.220810973579366e+34
+      },
+      "result": 136950440.20209697,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.981472086345579,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "16a8754e",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-10T15:51:51.598687",
+      "input_params": {
+        "M": 2.1470758109306215e+34
+      },
+      "result": 31889058.16383744,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9644351004103606,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "12368d98",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-10T15:51:53.604888",
+      "input_params": {
+        "m": 5283.121069695439,
+        "g": 9.80665
+      },
+      "result": 47603.94059523829,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.35512748277495454,
+      "notes": "Гипотетическая антигравитационная сила"
+    }
+  ],
+  "updated": "2026-07-10T15:51:55.609587"
+}

@@ -1,0 +1,146 @@
+{
+  "calculations": [
+    {
+      "id": "8e3c1156",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-10T15:24:39.298297",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9355686007173925,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "30665a72",
+      "calculation_type": "breakdown_voltage",
+      "timestamp": "2026-07-10T15:24:41.302348",
+      "input_params": {
+        "d": 3615.03153243498,
+        "E_breakdown": 3000000.0
+      },
+      "result": 10845094597.30494,
+      "units": "V",
+      "precision": 10,
+      "confidence": 0.9511420953292903,
+      "notes": "Пробивное напряжение воздуха"
+    },
+    {
+      "id": "3c59f8ff",
+      "calculation_type": "electric_field",
+      "timestamp": "2026-07-10T15:24:43.303482",
+      "input_params": {
+        "V": 82023830.26655951,
+        "d": 3878.870168046029
+      },
+      "result": 21146.320117200212,
+      "units": "V/m",
+      "precision": 10,
+      "confidence": 0.9737967112339334,
+      "notes": "Электрическое поле грозового облака"
+    },
+    {
+      "id": "4c1cd998",
+      "calculation_type": "electric_field",
+      "timestamp": "2026-07-10T15:24:45.308137",
+      "input_params": {
+        "V": 71621954.31553416,
+        "d": 4705.999048758562
+      },
+      "result": 15219.287886262528,
+      "units": "V/m",
+      "precision": 10,
+      "confidence": 0.9870174116156282,
+      "notes": "Электрическое поле грозового облака"
+    },
+    {
+      "id": "798a9896",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-10T15:24:47.312507",
+      "input_params": {
+        "Q": 53.18566425317982,
+        "m": 859903377.9565573
+      },
+      "result": 6.185074464943756e-08,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.9461515820336752,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "8df57aa0",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-10T15:52:08.170257",
+      "input_params": {
+        "Q": 86.74567795888257,
+        "m": 156602798.80751708
+      },
+      "result": 5.539216324320169e-07,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.8748965135731125,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "6f98212a",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-10T15:52:10.176191",
+      "input_params": {
+        "r": 0.40617934470028005,
+        "T": 5291.427247438759
+      },
+      "result": 280699.80640399933,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.7107754581545618,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "c3b36b03",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-10T15:52:12.179116",
+      "input_params": {
+        "r": 0.40947547578827403,
+        "T": 9668.719024837348
+      },
+      "result": 287589.0180410431,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.6831282870587942,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "bc912fa9",
+      "calculation_type": "breakdown_voltage",
+      "timestamp": "2026-07-10T15:52:14.182332",
+      "input_params": {
+        "d": 4578.863817688156,
+        "E_breakdown": 3000000.0
+      },
+      "result": 13736591453.064468,
+      "units": "V",
+      "precision": 10,
+      "confidence": 0.9646976097118537,
+      "notes": "Пробивное напряжение воздуха"
+    },
+    {
+      "id": "78d32c7d",
+      "calculation_type": "electric_field",
+      "timestamp": "2026-07-10T15:52:16.184683",
+      "input_params": {
+        "V": 19845271.1058191,
+        "d": 2048.1301422036245
+      },
+      "result": 9689.458055857316,
+      "units": "V/m",
+      "precision": 10,
+      "confidence": 0.9764077086564815,
+      "notes": "Электрическое поле грозового облака"
+    }
+  ],
+  "updated": "2026-07-10T15:52:18.191531"
+}
