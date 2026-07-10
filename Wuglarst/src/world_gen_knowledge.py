@@ -4,7 +4,7 @@ import os
 import json
 import random
 import re
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from pathlib import Path
 
 
@@ -240,7 +240,7 @@ class WorldGenKnowledgeEngine:
         
         return elements
 
-    def collect_all_knowledge(self, genre: str, tag: str) -> Dict[str, any]:
+    def collect_all_knowledge(self, genre: str, tag: str) -> Dict[str, Any]:
         """
         Собирает ВСЕ знания из всех источников
         """
