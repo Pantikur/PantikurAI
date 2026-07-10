@@ -1,0 +1,6 @@
+{
+  "cache": {
+    "vuln:numpy": "[{\"cve_id\": \"CVE-2024-94329\", \"severity\": \"critical\", \"description\": \"Обнаружена уязвимость в numpy\", \"cvss_score\": 6.907953694706323, \"affected_versions\": \"<2.7.9\", \"fixed_version\": \"3.2.4\", \"exploit_available\": false, \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2024-43509\"}]"
+  },
+  "updated": "2026-07-10T13:51:17.490591"
+}

@@ -26,6 +26,7 @@ from shiori.engine.models import (
 )
 from shiori.engine.threat_hunter import ThreatHunter
 from shiori.engine.patch_manager import PatchManager
+from shiori.engine.web_access import ShioriWebAccess
 
 
 class ShioriCore:
@@ -69,6 +70,7 @@ class ShioriCore:
         # Компоненты
         self.threat_hunter = ThreatHunter(self.config)
         self.patch_manager = PatchManager(self.config)
+        self.web_access = ShioriWebAccess(self.config)
         
         # Состояние безопасности
         self.security_state = SecurityState(version=self.config.version)
@@ -172,6 +174,10 @@ class ShioriCore:
         # 2. Обнаружение угроз
         threats = self._detect_threats(scan_result)
         self.metrics["threats_detected"] += len(threats)
+        
+        # 2.5. Поиск улучшений защиты в интернете (периодически)
+        if self.cycle_count % 3 == 0:
+            self._collect_web_improvements()
         
         # 3. Реагирование на угрозы
         for threat in threats:
@@ -320,6 +326,48 @@ class ShioriCore:
         threat.mitigated = True
         threat.mitigation_action = f"Responded via {incident.type.value}"
         self.metrics["threats_mitigated"] += 1
+    
+    def _collect_web_improvements(self):
+        """Собирает улучшения защиты из интернета."""
+        try:
+            # Получаем предложения из веба
+            web_improvements = self.web_access.propose_improvements_from_web()
+            
+            if not web_improvements:
+                return
+            
+            self.logger.info(f"🌐 Найдено {len(web_improvements)} улучшений защиты из интернета")
+            
+            # Анализируем и фильтруем
+            analyzed = self.web_access.analyze_found_improvements(web_improvements)
+            
+            # Берём топ-2 улучшения
+            for imp in analyzed[:2]:
+                if imp.get("confidence", 0) < 0.7:
+                    continue
+                
+                self.logger.info(f"🛡️ Предложение защиты из веба: {imp['description'][:50]}...")
+                
+                # Создаём инцидент для отслеживания
+                incident = Incident(
+                    id=f"WEB-{self.cycle_count}-{random.randint(1000, 9999)}",
+                    type=IncidentType.I005_API_ABUSE,
+                    threat_id=None,
+                    severity=ThreatLevel.L1_LOW,
+                    description=f"Улучшение защиты из веба: {imp['description']}",
+                    timestamp=datetime.now().isoformat(),
+                    status="resolved",
+                    resolved_at=datetime.now().isoformat(),
+                    response_actions=[f"Applied from web: {imp['type']}"],
+                )
+                
+                self.incidents_history.append(incident)
+                self.metrics["incidents_resolved"] += 1
+                
+                self.logger.info(f"✅ Защита улучшена: {imp['description'][:60]}")
+                    
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка сбора улучшений из веба: {e}")
     
     def _block_threat(self, threat: Threat, incident: Incident):
         """Блокировка угрозы (L3+)."""

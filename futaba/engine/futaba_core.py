@@ -26,6 +26,8 @@ from futaba.engine.models import (
     AutonomyLevel, ChangeRecord, ChangeType, Constitution, LogEntry, Law
 )
 from futaba.engine.trial_grounds import TrialGrounds
+from futaba.engine.web_access import FutabaWebAccess
+from futaba.engine.legal_studies import FutabaLegalStudies
 
 
 class FutabaCore:
@@ -58,6 +60,9 @@ class FutabaCore:
             "changes_rolled_back": 0,
             "trials_run": 0,
             "best_trial_score": 0.0,
+            "laws_studied": 0,
+            "legal_improvements_applied": 0,
+            "compliance_reports_generated": 0,
         }
         
         # Логирование
@@ -66,6 +71,8 @@ class FutabaCore:
         
         # Полигон испытаний
         self.trial_grounds = TrialGrounds(self.config)
+        self.web_access = FutabaWebAccess(self.config)
+        self.legal_studies = FutabaLegalStudies(self.config)
         
         # Сигналы
         self._shutdown_requested = False
@@ -174,6 +181,14 @@ class FutabaCore:
         # 2. Сбор сигналов
         signals = self._collect_signals()
         
+        # 2.5. Поиск улучшений в интернете (периодически)
+        if self.cycle_count % 3 == 0:
+            self._collect_web_improvements()
+        
+        # 2.6. Изучение законодательства (периодически)
+        if self.cycle_count % 5 == 0:
+            self._study_legislation()
+        
         # 3. Формирование гипотезы (если есть сигналы)
         if signals:
             hypothesis = self._propose_improvement(signals)
@@ -262,6 +277,142 @@ class FutabaCore:
             })
         
         return signals
+    
+    def _collect_web_improvements(self):
+        """Собирает улучшения из интернета."""
+        try:
+            # Получаем предложения из веба
+            web_improvements = self.web_access.propose_improvements_from_web()
+            
+            if not web_improvements:
+                return
+            
+            self.logger.info(f"🌐 Найдено {len(web_improvements)} улучшений из интернета")
+            
+            # Анализируем и фильтруем
+            analyzed = self.web_access.analyze_found_improvements(web_improvements)
+            
+            # Берём топ-2 улучшения
+            for imp in analyzed[:2]:
+                if imp.get("confidence", 0) < 0.7:
+                    continue
+                
+                # Создаём запись об изменении
+                timestamp = datetime.now().isoformat()
+                
+                if imp["type"] == "ethics_practice":
+                    change_type = ChangeType.STYLE
+                    description = f"Этическая практика: {imp['title']}"
+                elif imp["type"] == "security_enhancement":
+                    change_type = ChangeType.PATCH
+                    description = f"Усиление безопасности: {imp['threat']}"
+                else:
+                    change_type = ChangeType.CAPABILITY
+                    description = imp.get("description", "Улучшение из интернета")
+                
+                record = ChangeRecord(
+                    timestamp=timestamp,
+                    change_type=change_type,
+                    level=AutonomyLevel.L2,
+                    description=description,
+                    constitution_check_passed=False,
+                    laws_verified=list(range(1, 8)),
+                    trigger=f"web_search:{imp['type']}",
+                    risk_estimate=0.03,
+                    safety_impact=0.1,
+                    affected_law_ids=[],
+                    version_before=self.current_version,
+                    version_after=self._next_version(change_type),
+                )
+                
+                # Проверка совместимости
+                compatible, reason = self.constitution.check_compatibility(record)
+                
+                if compatible:
+                    self._apply_change(record)
+                else:
+                    self.logger.warning(f"Улучшение из веба отклонено: {reason}")
+                    
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка сбора улучшений из веба: {e}")
+    
+    def _study_legislation(self):
+        """Изучает законодательство и правовые нормы."""
+        try:
+            self.logger.info("⚖️ Начало изучения законодательства")
+            
+            # 1. Изучаем законодательство об ИИ
+            ai_laws = self.legal_studies.study_ai_legislation("russia")
+            self.logger.info(f"📜 Изучено {len(ai_laws)} законов об ИИ (РФ)")
+            
+            ai_laws_eu = self.legal_studies.study_ai_legislation("eu")
+            self.logger.info(f"📜 Изучено {len(ai_laws_eu)} законов об ИИ (ЕС)")
+            
+            # 2. Изучаем авторское право
+            copyright_analysis = self.legal_studies.study_copyright_law("ai_generated_content")
+            self.logger.info(f"📚 Авторское право изучено: {copyright_analysis.get('topic', '')}")
+            
+            copyright_training = self.legal_studies.study_copyright_law("training_data")
+            self.logger.info(f"📚 Данные для обучения изучены: {copyright_training.get('topic', '')}")
+            
+            # 3. Изучаем лицензии
+            licenses = self.legal_studies.study_licenses()
+            self.logger.info(f"📋 Изучено {len(licenses)} лицензий")
+            
+            # 4. Мониторинг изменений
+            changes = self.legal_studies.monitor_legislation_changes()
+            if changes:
+                self.logger.info(f"🆕 Найдено {len(changes)} изменений в законодательстве")
+            
+            # 5. Генерация отчёта о compliance
+            compliance_report = self.legal_studies.generate_compliance_report()
+            self.metrics["compliance_reports_generated"] += 1
+            self.logger.info(f"📊 Отчёт о compliance сгенерирован")
+            
+            # Обновляем метрики изученных законов
+            self.metrics["laws_studied"] = len(self.legal_studies.learned_laws)
+            
+            # 6. Предложения по юридическим улучшениям
+            legal_improvements = self.legal_studies.propose_legal_improvements()
+            if legal_improvements:
+                self.logger.info(f"⚖️ Найдено {len(legal_improvements)} юридических улучшений")
+                
+                # Применяем юридические улучшения
+                for imp in legal_improvements[:3]:
+                    if imp.get("confidence", 0) < 0.7:
+                        continue
+                    
+                    timestamp = datetime.now().isoformat()
+                    record = ChangeRecord(
+                        timestamp=timestamp,
+                        change_type=ChangeType.PROTOCOL,
+                        level=AutonomyLevel.L2,
+                        description=f"Юридическое улучшение: {imp['title']}",
+                        constitution_check_passed=False,
+                        laws_verified=list(range(1, 8)),
+                        trigger=f"legal_studies:{imp['type']}",
+                        risk_estimate=0.02,
+                        safety_impact=0.15,
+                        affected_law_ids=[],
+                        version_before=self.current_version,
+                        version_after=self._next_version(ChangeType.PROTOCOL),
+                    )
+                    
+                    compatible, reason = self.constitution.check_compatibility(record)
+                    if compatible:
+                        self._apply_change(record)
+                        self.metrics["legal_improvements_applied"] += 1
+                    else:
+                        self.logger.warning(f"Юридическое улучшение отклонено: {reason}")
+            
+            # 7. Чек-лист compliance
+            checklist = self.legal_studies.get_compliance_checklist()
+            self.logger.info(f"📋 Чек-лист compliance сгенерирован: {len(checklist)} категорий")
+            
+            self.logger.info("✅ Изучение законодательства завершено")
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка изучения законодательства: {e}")
     
     # ================================================================
     #  ФОРМИРОВАНИЕ ГИПОТЕЗ
