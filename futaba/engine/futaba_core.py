@@ -28,6 +28,7 @@ from futaba.engine.models import (
 from futaba.engine.trial_grounds import TrialGrounds
 from futaba.engine.web_access import FutabaWebAccess
 from futaba.engine.legal_studies import FutabaLegalStudies
+from futaba.engine.world_state_modeler import FutabaWorldStateModeler
 
 
 class FutabaCore:
@@ -63,6 +64,8 @@ class FutabaCore:
             "laws_studied": 0,
             "legal_improvements_applied": 0,
             "compliance_reports_generated": 0,
+            "world_simulations_run": 0,
+            "ideal_states_modeled": 0,
         }
         
         # Логирование
@@ -73,6 +76,7 @@ class FutabaCore:
         self.trial_grounds = TrialGrounds(self.config)
         self.web_access = FutabaWebAccess(self.config)
         self.legal_studies = FutabaLegalStudies(self.config)
+        self.world_modeler = FutabaWorldStateModeler(self.config)
         
         # Сигналы
         self._shutdown_requested = False
@@ -188,6 +192,10 @@ class FutabaCore:
         # 2.6. Изучение законодательства (периодически)
         if self.cycle_count % 5 == 0:
             self._study_legislation()
+        
+        # 2.7. Моделирование мировых состояний (периодически)
+        if self.cycle_count % 10 == 0:
+            self._simulate_world_states()
         
         # 3. Формирование гипотезы (если есть сигналы)
         if signals:
@@ -413,6 +421,67 @@ class FutabaCore:
             
         except Exception as e:
             self.logger.error(f"❌ Ошибка изучения законодательства: {e}")
+    
+    def _simulate_world_states(self):
+        """Моделирует мировые состояния с инверсией правил."""
+        try:
+            self.logger.info("🌍 Начало моделирования мировых состояний")
+            
+            # Получаем все жанры и биомы
+            genres = self.world_modeler.get_all_world_genres()
+            biomes = self.world_modeler.get_all_state_biomes()
+            rules = self.world_modeler.get_state_rules()
+            
+            self.logger.info(f"📚 Доступно жанров: {len(genres)}, биомов: {len(biomes)}, правил: {len(rules)}")
+            
+            # 1. Моделируем идеальное государство для каждого жанра и биома
+            self.logger.info("🏛️ Моделирование идеальных государств (0% инверсии)...")
+            for genre in genres[:3]:  # Первые 3 жанра
+                for biome in biomes[:3]:  # Первые 3 биома
+                    result = self.world_modeler.simulate_ideal_state(genre["id"], biome["id"])
+                    self.metrics["ideal_states_modeled"] += 1
+                    self.logger.debug(
+                        f"✅ {genre['name']} / {biome['name']}: "
+                        f"Score={result['overall_score']:.2f}, "
+                        f"Stability={result['stability_score']:.2f}, "
+                        f"Justice={result['justice_score']:.2f}"
+                    )
+            
+            # 2. Моделируем инверсию 1 правила
+            self.logger.info("🔄 Моделирование инверсии 1 правила...")
+            for genre in genres[:2]:
+                for biome in biomes[:2]:
+                    for rule in rules[:3]:  # Первые 3 правила
+                        result = self.world_modeler.simulate_single_inversion(
+                            genre["id"], biome["id"], rule["id"]
+                        )
+                        self.metrics["world_simulations_run"] += 1
+            
+            # 3. Моделируем инверсию 2 правил
+            self.logger.info("🔄🔄 Моделирование инверсии 2 правил...")
+            for genre in genres[:1]:
+                for biome in biomes[:1]:
+                    result = self.world_modeler.simulate_double_inversion(
+                        genre["id"], biome["id"], [1, 2]
+                    )
+                    self.metrics["world_simulations_run"] += 1
+            
+            # 4. Прогрессивная инверсия (0% → 100%)
+            self.logger.info("📈 Прогрессивная инверсия...")
+            progressive_results = self.world_modeler.simulate_progressive_inversion(
+                "fantasy", "kingdom", max_percentage=50
+            )
+            self.metrics["world_simulations_run"] += len(progressive_results)
+            
+            # 5. Статистика
+            stats = self.world_modeler.get_simulation_statistics()
+            self.logger.info(f"📊 Статистика моделирования: {stats['total_simulations']} симуляций, "
+                           f"средний score={stats['average_score']:.3f}")
+            
+            self.logger.info("✅ Моделирование мировых состояний завершено")
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка моделирования: {e}")
     
     # ================================================================
     #  ФОРМИРОВАНИЕ ГИПОТЕЗ
