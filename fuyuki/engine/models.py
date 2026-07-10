@@ -91,7 +91,7 @@ class ElectricityTheory:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "ElectricityTheory":
         """Создать теорию из словаря."""
-        category = data.get("category")
+        category = data.get("category", ElectricityTheoryCategory.CLASSICAL)
         if isinstance(category, str):
             try:
                 category = ElectricityTheoryCategory(category)
@@ -143,7 +143,7 @@ class Calculation:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Calculation":
         """Создать вычисление из словаря."""
-        calc_type = data.get("calculation_type")
+        calc_type = data.get("calculation_type", CalculationType.LIGHTNING_ENERGY)
         if isinstance(calc_type, str):
             try:
                 calc_type = CalculationType(calc_type)

@@ -90,7 +90,7 @@ class GravityTheory:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "GravityTheory":
         """Создать теорию из словаря."""
-        category = data.get("category")
+        category = data.get("category", TheoryCategory.SPECULATIVE)
         if isinstance(category, str):
             try:
                 category = TheoryCategory(category)
@@ -142,7 +142,7 @@ class Calculation:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Calculation":
         """Создать вычисление из словаря."""
-        calc_type = data.get("calculation_type")
+        calc_type = data.get("calculation_type", CalculationType.GRAVITATIONAL_FORCE)
         if isinstance(calc_type, str):
             try:
                 calc_type = CalculationType(calc_type)

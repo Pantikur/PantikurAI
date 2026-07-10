@@ -104,14 +104,14 @@ class EngineDesign:
     def from_dict(cls, data: Dict[str, Any]) -> "EngineDesign":
         """Создать проект из словаря."""
         # Безопасное преобразование строк в Enum
-        engine_type = data.get("engine_type")
+        engine_type = data.get("engine_type", EngineType.CHEMICAL)
         if isinstance(engine_type, str):
             try:
                 engine_type = EngineType(engine_type)
             except ValueError:
                 engine_type = EngineType.CHEMICAL
         
-        principle = data.get("principle")
+        principle = data.get("principle", PropulsionPrinciple.REACTION)
         if isinstance(principle, str):
             try:
                 principle = PropulsionPrinciple(principle)
