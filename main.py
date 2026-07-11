@@ -1652,6 +1652,35 @@ def home():
                 "example_dependency": "implementation 'com.squareup.retrofit2:retrofit:2.9.0'",
                 "base_url": "http://your-server:8000/"
             }
+        },
+        "research_monitor": {
+            "enabled": True,
+            "description": "Мониторинг исследований учёных (Ханако-гравитация, Фуюки-электричество, Люси-двигатели, Футаба-саморазвитие, Шиори-безопасность, Нобука-улучшения, Латислейн-тело, Селеста-интимная жизнь, Аква-математика/физика, Юи-сознание). Все подключены к Scientists Network.",
+            "scientists": ["hanako", "fuyuki", "lucy", "futaba", "shiori", "nobuka", "latislane", "celest", "akva", "yu"],
+            "features": [
+                "Запуск/остановка исследований",
+                "Статус и метрики в реальном времени",
+                "События (теории, вычисления, циклы, открытия)",
+                "Логи исследований",
+                "Результаты (теории, вычисления, статьи)",
+                "История исследований",
+                "Потоковая передача событий (SSE)"
+            ],
+            "endpoints": [
+                "GET /research/status - Статус всех ядер",
+                "POST /research/start/{scientist} - Запустить исследования",
+                "POST /research/stop/{scientist} - Остановить исследования",
+                "GET /research/{scientist}/summary - Полная сводка",
+                "GET /research/{scientist}/status - Детальный статус",
+                "GET /research/{scientist}/events - События",
+                "GET /research/{scientist}/logs - Логи",
+                "GET /research/{scientist}/theories - Теории",
+                "GET /research/{scientist}/calculations - Вычисления",
+                "GET /research/{scientist}/papers - Статьи",
+                "GET /research/{scientist}/history - История",
+                "GET /research/live/{scientist} - SSE поток событий",
+                "GET /research/live/all - SSE поток всех ядер"
+            ]
         }
     }
 
@@ -2185,6 +2214,26 @@ if CELESTA_ENABLED:
 # === КОНЕЦ ИНТЕГРАЦИИ CELESTA ===
 
 # ========================
+# Research Monitor — мониторинг исследований учёных (Ханако, Фуюки, Люси, Футаба, Шиори, Нобука, Латислейн, Селеста, Аква, Юи)
+# ========================
+RESEARCH_MONITOR_ENABLED = os.getenv("RESEARCH_MONITOR_ENABLED", "true").lower() in ("true", "1", "yes")
+research_monitor = None
+RESEARCH_MONITOR_LOCK = threading.Lock()
+
+if RESEARCH_MONITOR_ENABLED:
+    try:
+        import sys
+        sys.path.insert(0, str(BASE_DIR))
+        from scientists_network.research_monitor import ResearchMonitor
+        research_monitor = ResearchMonitor()
+        research_monitor.initialize()
+        logger.info("🔬 ResearchMonitor инициализирован (Ханако, Фуюки, Люси, Футаба, Шиори, Нобука, Латислейн, Селеста, Аква, Юи)")
+    except Exception as e:
+        logger.warning(f"⚠️ ResearchMonitor не загружен: {e}")
+# === КОНЕЦ ИНТЕГРАЦИИ RESEARCH MONITOR ===
+
+
+# ========================
 # Latislane Endpoints (Система изучения тела и проектирования)
 # ========================
 
@@ -2651,6 +2700,493 @@ async def celesta_self_improve():
         return {"status": "ok", "message": "Саморазвитие запущено"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ========================
+# Research Monitor Endpoints — мониторинг исследований учёных
+# ========================
+
+# === Эндпоинт: /research/status — статус всех ядер ===
+@app.get("/research/status")
+async def research_status():
+    """Статус всех ядер учёных (Ханако, Фуюки, Люси, Футаба, Шиори, Нобука, Латислейн, Селеста, Аква, Юи)."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            return {"status": "not available", "detail": "ResearchMonitor не загружен"}
+        
+        assert research_monitor is not None
+        
+        try:
+            status = research_monitor.get_all_status()
+            return {"status": "ok", "research": status}
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /research/start — запуск исследований ядра ===
+@app.post("/research/start/{scientist}")
+async def research_start(scientist: str):
+    """Запустить исследования указанного ядра (hanako/fuyuki/lucy/futaba/shiori/nobuka/latislane/celest/akva)."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        result = research_monitor.start_research(scientist)
+        
+        if result["status"] == "error":
+            raise HTTPException(status_code=400, detail=result["detail"])
+        
+        return result
+
+
+# === Эндпоинт: /research/stop — остановка исследований ядра ===
+@app.post("/research/stop/{scientist}")
+async def research_stop(scientist: str):
+    """Остановить исследования указанного ядра (hanako/fuyuki/lucy/futaba/shiori/nobuka/latislane/celest/akva)."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        result = research_monitor.stop_research(scientist)
+        
+        if result["status"] == "error":
+            raise HTTPException(status_code=400, detail=result["detail"])
+        
+        return result
+
+
+# === Эндпоинт: /research/{scientist}/summary — полная сводка по ядру ===
+@app.get("/research/{scientist}/summary")
+async def research_summary(scientist: str):
+    """Получить полную сводку по исследованиям ядра."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        summary = research_monitor.get_research_summary(scientist)
+        
+        if summary is None:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        return {"status": "ok", "scientist": scientist, "summary": summary}
+
+
+# === Эндпоинт: /research/{scientist}/events — события ядра ===
+@app.get("/research/{scientist}/events")
+async def research_events(scientist: str, limit: int = 50, event_type: Optional[str] = None):
+    """Получить события ядра (теории, вычисления, циклы и т.д.)."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        events = core.get_all_events(limit=limit, event_type=event_type)
+        live_events = core.get_events(limit=10)
+        
+        return {
+            "status": "ok",
+            "scientist": scientist,
+            "events": events,
+            "live_events": live_events,
+            "total_events": len(events),
+        }
+
+
+# === Эндпоинт: /research/{scientist}/data — данные Юи (сознание, перенос) ===
+@app.get("/research/{scientist}/data")
+async def research_data(scientist: str):
+    """Получить специализированные данные ядра."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        if scientist.lower() == 'yu':
+            consciousness_models = core.get_consciousness_models(limit=20)
+            embodiments = core.get_embodiments(limit=20)
+            transfer_records = core.get_transfer_records(limit=20)
+            
+            return {
+                "status": "ok",
+                "scientist": scientist,
+                "consciousness_models": consciousness_models,
+                "embodiments": embodiments,
+                "transfer_records": transfer_records,
+                "count": {
+                    "models": len(consciousness_models),
+                    "embodiments": len(embodiments),
+                    "transfers": len(transfer_records),
+                }
+            }
+        else:
+            raise HTTPException(status_code=400, detail="Этот эндпоинт только для Юи")
+
+
+# === Эндпоинт: /research/{scientist}/logs — логи ядра ===
+@app.get("/research/{scientist}/logs")
+async def research_logs(scientist: str, limit: int = 100):
+    """Получить последние логи ядра."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        logs = core.get_logs(limit=limit)
+        
+        return {
+            "status": "ok",
+            "scientist": scientist,
+            "logs": logs,
+            "count": len(logs),
+        }
+
+
+# === Эндпоинт: /research/{scientist}/theories — теории ядра ===
+@app.get("/research/{scientist}/theories")
+async def research_theories(scientist: str, limit: int = 20):
+    """Получить теории, построенные ядром."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        theories = core.get_theories(limit=limit)
+        
+        return {
+            "status": "ok",
+            "scientist": scientist,
+            "theories": theories,
+            "count": len(theories),
+        }
+
+
+# === Эндпоинт: /research/{scientist}/calculations — вычисления ядра ===
+@app.get("/research/{scientist}/calculations")
+async def research_calculations(scientist: str, limit: int = 20):
+    """Получить вычисления, выполненные ядром."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        calculations = core.get_calculations(limit=limit)
+        
+        return {
+            "status": "ok",
+            "scientist": scientist,
+            "calculations": calculations,
+            "count": len(calculations),
+        }
+
+
+# === Эндпоинт: /research/{scientist}/papers — статьи ядра ===
+@app.get("/research/{scientist}/papers")
+async def research_papers(scientist: str, limit: int = 20):
+    """Получить статьи, изученные ядром."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        papers = core.get_papers(limit=limit)
+        
+        return {
+            "status": "ok",
+            "scientist": scientist,
+            "papers": papers,
+            "count": len(papers),
+        }
+
+
+# === Эндпоинт: /research/{scientist}/history — история исследований ===
+@app.get("/research/{scientist}/history")
+async def research_history(scientist: str, limit: int = 50):
+    """Получить историю исследований ядра."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        history = core.get_research_history(limit=limit)
+        
+        return {
+            "status": "ok",
+            "scientist": scientist,
+            "history": history,
+            "count": len(history),
+        }
+
+
+# === Эндпоинт: /research/{scientist}/status — детальное состояние ядра ===
+@app.get("/research/{scientist}/status")
+async def research_core_status(scientist: str):
+    """Получить детальное состояние ядра."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        return {
+            "status": "ok",
+            "scientist": scientist,
+            "core": core.get_status(),
+        }
+
+
+# === Эндпоинт: /research/live — поток событий в реальном времени (SSE) ===
+@app.get("/research/live/{scientist}")
+async def research_live(scientist: str):
+    """
+    Stream событий ядра в реальном времени (Server-Sent Events).
+    
+    Поддерживаемые типы событий:
+    - STARTED / STOPPED — запуск/остановка
+    - CYCLE — начало цикла исследований
+    - THEORY — построение новой теории
+    - CALCULATION — выполнение вычисления
+    - PAPERS — обнаружение новых статей
+    - DISCOVERY — находка (секреты молний/гравитации)
+    - ERROR — ошибка
+    """
+    from fastapi.responses import StreamingResponse
+    
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        core = research_monitor.get_core(scientist)
+        if not core:
+            raise HTTPException(status_code=404, detail=f"Ядро '{scientist}' не найдено")
+        
+        def event_stream():
+            """Генератор событий для SSE."""
+            assert core is not None
+            while True:
+                try:
+                    # Получаем новые события из очереди
+                    events = core.get_events(limit=10)
+                    
+                    for event in events:
+                        yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+                    
+                    # Проверяем статус ядра
+                    status = core.get_status()
+                    status_event = {
+                        "type": "status",
+                        "scientist": scientist,
+                        "data": status,
+                    }
+                    yield f"data: {json.dumps(status_event, ensure_ascii=False)}\n\n"
+                    
+                    time.sleep(2)  # Интервал обновления
+                
+                except GeneratorExit:
+                    break
+                except Exception as e:
+                    error_event = {
+                        "type": "error",
+                        "scientist": scientist,
+                        "data": {"error": str(e)},
+                    }
+                    yield f"data: {json.dumps(error_event, ensure_ascii=False)}\n\n"
+                    time.sleep(5)
+        
+        return StreamingResponse(
+            event_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",  # Отключаем буферизацию Nginx
+            }
+        )
+
+
+# === Эндпоинт: /research/live/all — поток событий всех ядер ===
+@app.get("/research/live/all")
+async def research_live_all():
+    """
+    Поток событий всех ядер учёных в реальном времени (SSE).
+    """
+    from fastapi.responses import StreamingResponse
+    
+    if research_monitor is None:
+        raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+    
+    assert research_monitor is not None
+    
+    with RESEARCH_MONITOR_LOCK:
+        assert research_monitor is not None
+        
+        def event_stream():
+            """Генератор событий для SSE."""
+            assert research_monitor is not None
+            while True:
+                try:
+                    for name, core in research_monitor.cores.items():
+                        events = core.get_events(limit=5)
+                        
+                        for event in events:
+                            yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+                    
+                    # Общий статус
+                    status = research_monitor.get_all_status()
+                    status_event = {
+                        "type": "status",
+                        "data": status,
+                    }
+                    yield f"data: {json.dumps(status_event, ensure_ascii=False)}\n\n"
+                    
+                    time.sleep(2)
+                
+                except GeneratorExit:
+                    break
+                except Exception as e:
+                    error_event = {
+                        "type": "error",
+                        "data": {"error": str(e)},
+                    }
+                    yield f"data: {json.dumps(error_event, ensure_ascii=False)}\n\n"
+                    time.sleep(5)
+        
+        return StreamingResponse(
+            event_stream(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            }
+        )
+
+
+# ========================
+# Scientists Network API — коммуникация между учёными
+# ========================
+
+# === Эндпоинт: /network/status — статус сети ===
+@app.get("/network/status")
+async def network_status():
+    """Статус Scientists Network и коммуникации."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            return {"status": "not available", "detail": "ResearchMonitor не загружен"}
+        
+        assert research_monitor is not None
+        
+        try:
+            stats = research_monitor.network.get_stats()
+            return {"status": "ok", "network": stats}
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /network/history — история сообщений ===
+@app.get("/network/history")
+async def network_history(limit: int = 50, sender: Optional[str] = None):
+    """Получить историю сообщений между учёными."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        
+        try:
+            messages = research_monitor.network.get_message_history(
+                limit=limit,
+                sender=sender,
+            )
+            return {
+                "status": "ok",
+                "messages": messages,
+                "count": len(messages),
+            }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /network/send — отправить сообщение ===
+@app.post("/network/send")
+async def network_send(
+    sender: str,
+    recipient: str,
+    content: str,
+    message_type: str = "message",
+    priority: str = "normal",
+):
+    """Отправить сообщение от одного учёного другому."""
+    with RESEARCH_MONITOR_LOCK:
+        if research_monitor is None:
+            raise HTTPException(status_code=503, detail="ResearchMonitor не загружен")
+        
+        assert research_monitor is not None
+        
+        try:
+            from scientists_network.network import Message, MessageType, RequestPriority
+            
+            msg_type = MessageType(message_type)
+            msg_priority = RequestPriority(priority)
+            
+            message = Message(
+                message_type=msg_type,
+                sender=sender,
+                recipient=recipient,
+                content=content,
+                priority=msg_priority,
+            )
+            
+            success = research_monitor.network.send_message(message)
+            
+            if success:
+                return {
+                    "status": "ok",
+                    "message": "Сообщение отправлено",
+                    "sender": sender,
+                    "recipient": recipient,
+                }
+            else:
+                raise HTTPException(status_code=400, detail="Не удалось отправить сообщение")
+        
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=f"Ошибка типа сообщения: {e}")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
 
 
 # ========================

@@ -25,7 +25,7 @@ from fuyuki.engine.models import (
 from fuyuki.engine.web_access import FuyukiWebAccess
 from fuyuki.engine.theorist import ElectricityTheorist
 from fuyuki.engine.calculator import ElectricityCalculator
-from scientists_network.network import get_network, RequestType, RequestPriority
+from scientists_network.network import get_network, Message, MessageType, RequestPriority
 
 
 class FuyukiCore:
@@ -72,7 +72,7 @@ class FuyukiCore:
         self.logger.info(f"Фуюки {self.config.version} инициализирована")
         self.logger.info(f"Фокус исследований: {self.config.research_focus}")
         self.logger.info("🔗 Подключена к Scientists Network")
-        self.network.print_mission_reminder()
+        self.logger.info("🎯 Миссия: исследование электричества для реального мира!")
     
     def _setup_logging(self):
         """Настроить логирование."""
@@ -181,22 +181,30 @@ class FuyukiCore:
             new_theories = [t for t in self.theories[-5:] if t.scientific_value > 0.8]
             if new_theories:
                 for theory in new_theories:
-                    self.network.notify_discovery(
-                        from_scientist="fuyuki",
-                        discovery=f"Теория: {theory.name} (ценность: {theory.scientific_value:.2f})",
-                        importance="high" if theory.scientific_value > 0.9 else "normal"
+                    self.network.broadcast_theory(
+                        "fuyuki",
+                        {
+                            "name": theory.name,
+                            "value": theory.scientific_value,
+                            "importance": "high" if theory.scientific_value > 0.9 else "normal"
+                        }
                     )
             
             # Запрос помощи если нужно
             if len(self.theories) > 0 and len(self.theories) % 20 == 0:
-                self.network.create_request(
-                    from_scientist="fuyuki",
-                    to_scientist="nobuka",
-                    request_type=RequestType.VALIDATION,
-                    message=f"Проверь последние 20 теорий электричества",
+                # Отправляем запрос через Scientists Network
+                message = Message(
+                    message_type=MessageType.REQUEST,
+                    sender="fuyuki",
+                    recipient="nobuka",
+                    content="📋 Запрос данных: code_analysis",
+                    data={
+                        "request_type": "code_analysis",
+                        "description": "Проверь последние 20 теорий электричества",
+                    },
                     priority=RequestPriority.NORMAL,
-                    data={"theories_count": len(self.theories)}
                 )
+                self.network.send_message(message)
             
         except Exception as e:
             self.logger.error(f"Ошибка синхронизации: {e}")

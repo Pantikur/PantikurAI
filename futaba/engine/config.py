@@ -39,6 +39,17 @@ class FutabaConfig:
     max_autonomy_level: str = "L3"       # L0-L4 (см. протокол саморазвития)
     require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
     
+    # === Интернет ===
+    web_search_enabled: bool = True      # доступ к интернету
+    web_search_interval: int = 5         # каждые N циклов веб-поиск
+    max_search_results: int = 10         # максимум результатов поиска
+    research_databases: list[str] = field(default_factory=lambda: [
+        "self_development",   # Саморазвитие
+        "political_theory",   # Политическая теория
+        "governance",         # Управление
+        "evolution",          # Эволюция
+    ])
+    
     # === Полигон испытаний ===
     trial_worlds_per_batch: int = 3      # сколько миров генерировать за один запуск полигона
     trial_epochs_per_world: int = 20     # сколько эпох симулировать на мир

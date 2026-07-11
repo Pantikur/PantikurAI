@@ -143,7 +143,549 @@
       "precision": 10,
       "confidence": 0.35512748277495454,
       "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "0349002a",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-11T22:04:37.404999",
+      "input_params": {
+        "m1": 8.113729356440003e+29,
+        "m2": 8.554016389097225e+29,
+        "r": 97461729.9869688,
+        "omega": 886.936725428481
+      },
+      "result": 4.7883604077497666e+27,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.9311819553515637,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "5699cb7a",
+      "calculation_type": "time_dilation",
+      "timestamp": "2026-07-11T22:04:39.413990",
+      "input_params": {
+        "M": 2.5403932048798038e+29,
+        "r": 2207172.824385694
+      },
+      "result": 0.9999145233522894,
+      "units": "dimensionless",
+      "precision": 10,
+      "confidence": 0.905359998115544,
+      "notes": "Гравитационное замедление времени (ОТО)"
+    },
+    {
+      "id": "10286d17",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-11T22:04:55.372607",
+      "input_params": {
+        "M": 1.3255289480356106e+33
+      },
+      "result": 1968718.081893742,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9841179182773865,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "c5068b19",
+      "calculation_type": "time_dilation",
+      "timestamp": "2026-07-11T22:04:57.378694",
+      "input_params": {
+        "M": 7.71136613226222e+29,
+        "r": 4270227.510879127
+      },
+      "result": 0.9998658861126816,
+      "units": "dimensionless",
+      "precision": 10,
+      "confidence": 0.9201408063202423,
+      "notes": "Гравитационное замедление времени (ОТО)"
+    },
+    {
+      "id": "b0b5f1a6",
+      "calculation_type": "gravitational_force",
+      "timestamp": "2026-07-11T22:04:59.391305",
+      "input_params": {
+        "m1": 7.279290240020813e+24,
+        "m2": 692.8442204080375,
+        "r": 9638793.31628911
+      },
+      "result": 3623.1392215687215,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.9513286367145234,
+      "notes": "Закон всемирного тяготения Ньютона"
+    },
+    {
+      "id": "327e2ed9",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-11T22:05:01.398628",
+      "input_params": {
+        "M": 4.23876938864781e+34
+      },
+      "result": 62955561.64786556,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9561524304771191,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "81e16803",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-11T22:05:03.406666",
+      "input_params": {
+        "m1": 4.884707891563148e+28,
+        "m2": 6.991247303828968e+29,
+        "r": 189654760.10574007,
+        "omega": 584.3551298697255
+      },
+      "result": 1.864457000577593e+23,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.8590081606250535,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "a2d559bd",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:05:05.412598",
+      "input_params": {
+        "m": 9110.888514913935,
+        "g": 9.80665
+      },
+      "result": 81896.36022138312,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.4326577578307298,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "443abac0",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-11T22:05:07.427241",
+      "input_params": {
+        "m1": 3.7947489640821155e+28,
+        "m2": 5.0581386274628674e+29,
+        "r": 525686843.30622566,
+        "omega": 492.8548453584132
+      },
+      "result": 2.6170963383339267e+20,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.8935410350576117,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "a2cc489a",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-11T22:05:27.580969",
+      "input_params": {
+        "M": 8.851729382523259e+34
+      },
+      "result": 131468722.10696903,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9881739957375001,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "a855fd80",
+      "calculation_type": "escape_velocity",
+      "timestamp": "2026-07-11T22:05:29.590526",
+      "input_params": {
+        "M": 4.398328703716954e+27,
+        "R": 547181411.796361
+      },
+      "result": 32756.38999910622,
+      "units": "m/s",
+      "precision": 10,
+      "confidence": 0.9798492005851313,
+      "notes": "Вторая космическая скорость"
+    },
+    {
+      "id": "d6a156f1",
+      "calculation_type": "orbital_period",
+      "timestamp": "2026-07-11T22:05:31.596557",
+      "input_params": {
+        "a": 222003223515.758,
+        "M": 6.633927227196179e+28
+      },
+      "result": 312342135.84592485,
+      "units": "s",
+      "precision": 10,
+      "confidence": 0.9576324889041583,
+      "notes": "Третий закон Кеплера"
+    },
+    {
+      "id": "c9921500",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-11T22:05:33.604031",
+      "input_params": {
+        "m1": 5.622731309706468e+29,
+        "m2": 4.022075187368405e+28,
+        "r": 157037798.98663995,
+        "omega": 444.42841663498706
+      },
+      "result": 1.692100012404568e+23,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.9058554307187947,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "4ee17144",
+      "calculation_type": "time_dilation",
+      "timestamp": "2026-07-11T22:05:35.610948",
+      "input_params": {
+        "M": 8.525787457387828e+29,
+        "r": 9407260.4289418
+      },
+      "result": 0.9999326945444817,
+      "units": "dimensionless",
+      "precision": 10,
+      "confidence": 0.9383241698409726,
+      "notes": "Гравитационное замедление времени (ОТО)"
+    },
+    {
+      "id": "45bbedeb",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-11T22:05:37.615195",
+      "input_params": {
+        "M": 8.18771181220052e+34
+      },
+      "result": 121606520.30951418,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9883489124399538,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "64c8710c",
+      "calculation_type": "gravitational_force",
+      "timestamp": "2026-07-11T22:05:39.620015",
+      "input_params": {
+        "m1": 1.6506664035833424e+24,
+        "m2": 916.862227741836,
+        "r": 3871350.813192904
+      },
+      "result": 6739.754250180845,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.9661956893562197,
+      "notes": "Закон всемирного тяготения Ньютона"
+    },
+    {
+      "id": "55206b7b",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:05:55.087132",
+      "input_params": {
+        "m": 834.188000666777,
+        "g": 9.80665
+      },
+      "result": 9528.115560249274,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.5700784312278492,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "91dacbe8",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:05:57.091943",
+      "input_params": {
+        "m": 187.96128124869875,
+        "g": 9.80665
+      },
+      "result": 1984.2131464228044,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.3184759348465783,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "023dd2e0",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-11T22:05:59.105386",
+      "input_params": {
+        "M": 3.8564436218500644e+34
+      },
+      "result": 57277136.80935807,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9533114704807788,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "b38836e8",
+      "calculation_type": "escape_velocity",
+      "timestamp": "2026-07-11T22:06:01.122186",
+      "input_params": {
+        "M": 5.56783373180787e+29,
+        "R": 207010398.15707543
+      },
+      "result": 599190.4849431526,
+      "units": "m/s",
+      "precision": 10,
+      "confidence": 0.9649317224320959,
+      "notes": "Вторая космическая скорость"
+    },
+    {
+      "id": "2d8e9dd1",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:06:03.126419",
+      "input_params": {
+        "m": 4609.982487269264,
+        "g": 9.80665
+      },
+      "result": 43356.411312708464,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.5370193801638962,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "c4d5d33f",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:06:05.134900",
+      "input_params": {
+        "m": 4549.156354930642,
+        "g": 9.80665
+      },
+      "result": 45222.6478716038,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.333014485535578,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "606e7e2b",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:06:07.142291",
+      "input_params": {
+        "m": 9750.9009263671,
+        "g": 9.80665
+      },
+      "result": 85190.3854016813,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.5574953173348186,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "f11f6993",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:06:28.246244",
+      "input_params": {
+        "m": 2252.0477283490727,
+        "g": 9.80665
+      },
+      "result": 25699.05992639985,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.4793795126944146,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "6d8455cb",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:06:30.255889",
+      "input_params": {
+        "m": 931.7454645846707,
+        "g": 9.80665
+      },
+      "result": 10188.548376039826,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.47296157630830193,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "c199953c",
+      "calculation_type": "orbital_period",
+      "timestamp": "2026-07-11T22:06:32.262482",
+      "input_params": {
+        "a": 126685478094.40414,
+        "M": 7.10552507719744e+29
+      },
+      "result": 41140462.56216578,
+      "units": "s",
+      "precision": 10,
+      "confidence": 0.9542808223750467,
+      "notes": "Третий закон Кеплера"
+    },
+    {
+      "id": "2ade4e01",
+      "calculation_type": "escape_velocity",
+      "timestamp": "2026-07-11T22:06:34.270350",
+      "input_params": {
+        "M": 1.2734941847903266e+29,
+        "R": 36126746.880128644
+      },
+      "result": 685964.9326603648,
+      "units": "m/s",
+      "precision": 10,
+      "confidence": 0.9613294012856463,
+      "notes": "Вторая космическая скорость"
+    },
+    {
+      "id": "3dd79b8c",
+      "calculation_type": "gravitational_force",
+      "timestamp": "2026-07-11T22:06:36.275526",
+      "input_params": {
+        "m1": 8.367104437065591e+24,
+        "m2": 836.4845011272264,
+        "r": 6608407.952949806
+      },
+      "result": 10696.584384311118,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.9720199820125726,
+      "notes": "Закон всемирного тяготения Ньютона"
+    },
+    {
+      "id": "376ff84c",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:06:38.281506",
+      "input_params": {
+        "m": 2816.4997719495595,
+        "g": 9.80665
+      },
+      "result": 30624.93555132219,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.5385374857864358,
+      "notes": "Гипотетическая антигравитационная сила"
+    },
+    {
+      "id": "8622d227",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-11T22:06:40.287372",
+      "input_params": {
+        "m1": 8.766609760800948e+29,
+        "m2": 9.988305681598404e+28,
+        "r": 642792986.1947256,
+        "omega": 879.3272900180787
+      },
+      "result": 3.578347696969276e+21,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.9230220007753644,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "a6e28b5d",
+      "calculation_type": "gravitational_force",
+      "timestamp": "2026-07-11T22:06:42.292665",
+      "input_params": {
+        "m1": 9.346548695016474e+24,
+        "m2": 387.9699653587927,
+        "r": 5595682.415788926
+      },
+      "result": 7729.457019773226,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.9721095631706838,
+      "notes": "Закон всемирного тяготения Ньютона"
+    },
+    {
+      "id": "beb34650",
+      "calculation_type": "orbital_period",
+      "timestamp": "2026-07-11T22:14:15.226083",
+      "input_params": {
+        "a": 293761024275.6561,
+        "M": 5.2693099828762045e+29
+      },
+      "result": 168690798.21666634,
+      "units": "s",
+      "precision": 10,
+      "confidence": 0.9554807947129709,
+      "notes": "Третий закон Кеплера"
+    },
+    {
+      "id": "8ddf7bb1",
+      "calculation_type": "orbital_period",
+      "timestamp": "2026-07-11T22:15:01.946336",
+      "input_params": {
+        "a": 378416513909.67444,
+        "M": 3.973083258243236e+29
+      },
+      "result": 284032668.6836509,
+      "units": "s",
+      "precision": 10,
+      "confidence": 0.9527644783027146,
+      "notes": "Третий закон Кеплера"
+    },
+    {
+      "id": "842adcaf",
+      "calculation_type": "escape_velocity",
+      "timestamp": "2026-07-11T22:15:03.954935",
+      "input_params": {
+        "M": 5.672434424312485e+29,
+        "R": 969872995.1228886
+      },
+      "result": 279412.07341634994,
+      "units": "m/s",
+      "precision": 10,
+      "confidence": 0.9529855615820857,
+      "notes": "Вторая космическая скорость"
+    },
+    {
+      "id": "74c20043",
+      "calculation_type": "orbital_period",
+      "timestamp": "2026-07-11T22:15:05.964702",
+      "input_params": {
+        "a": 918047416048.3531,
+        "M": 8.192911006639876e+29
+      },
+      "result": 747404238.9461648,
+      "units": "s",
+      "precision": 10,
+      "confidence": 0.9754335324908502,
+      "notes": "Третий закон Кеплера"
+    },
+    {
+      "id": "52a8d5a5",
+      "calculation_type": "black_hole",
+      "timestamp": "2026-07-11T22:15:07.970383",
+      "input_params": {
+        "M": 3.4214474791970206e+34
+      },
+      "result": 50816434.66577825,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9668331792642686,
+      "notes": "Радиус Шварцшильда"
+    },
+    {
+      "id": "a79e633a",
+      "calculation_type": "gravitational_waves",
+      "timestamp": "2026-07-11T22:15:09.979473",
+      "input_params": {
+        "m1": 5.473477939198211e+29,
+        "m2": 2.5213419555465907e+29,
+        "r": 848371488.8705328,
+        "omega": 397.4292092636576
+      },
+      "result": 1.817054525746196e+21,
+      "units": "W",
+      "precision": 10,
+      "confidence": 0.8580155007160294,
+      "notes": "Мощность гравитационных волн"
+    },
+    {
+      "id": "e03d376f",
+      "calculation_type": "anti_gravity",
+      "timestamp": "2026-07-11T22:15:11.988806",
+      "input_params": {
+        "m": 5956.518164215662,
+        "g": 9.80665
+      },
+      "result": 47752.69050103225,
+      "units": "N",
+      "precision": 10,
+      "confidence": 0.4099342138027807,
+      "notes": "Гипотетическая антигравитационная сила"
     }
   ],
-  "updated": "2026-07-10T15:51:55.609587"
+  "updated": "2026-07-11T22:15:11.991399"
 }

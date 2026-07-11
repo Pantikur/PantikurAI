@@ -31,6 +31,10 @@ class FuyukiConfig:
     web_search_enabled: bool = True
     web_search_interval: int = 3  # каждые 3 цикла
     
+    # === Автономность ===
+    max_autonomy_level: str = "L3"        # L0-L4 (см. протокол саморазвития)
+    require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
+    
     # Теории
     max_theories: int = 100
     theory_validation_threshold: float = 0.7

@@ -41,6 +41,17 @@ class NobukaConfig:
     max_autonomy_level: str = "L3"        # L0-L4 (см. протокол саморазвития)
     require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
 
+    # === Интернет ===
+    web_search_enabled: bool = True       # доступ к интернету
+    web_search_interval: int = 5          # каждые N циклов веб-поиск
+    max_search_results: int = 10          # максимум результатов поиска
+    research_databases: list[str] = field(default_factory=lambda: [
+        "code_quality",       # Качество кода
+        "best_practices",     # Лучшие практики
+        "refactoring",        # Рефакторинг
+        "testing_strategies", # Стратегии тестирования
+    ])
+
     # === Анализ кода ===
     project_root: Path = field(default_factory=lambda: Path("."))
     scan_directories: list[str] = field(default_factory=lambda: [

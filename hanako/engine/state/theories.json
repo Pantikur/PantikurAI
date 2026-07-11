@@ -106,7 +106,814 @@
       "scientific_value": 0.7343152948103614,
       "validated": false,
       "source": "original"
+    },
+    {
+      "id": "80e345e2",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-11T22:04:37.404999",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.6585558439655644,
+      "scientific_value": 0.8401556304813242,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "4ec25d80",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-11T22:04:39.411995",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.8450314478445351,
+      "scientific_value": 0.7669628112892193,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "0a47464b",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:04:55.371606",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.8752946920115736,
+      "scientific_value": 0.7491988728725135,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "a881b876",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:04:57.376675",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.7111064111132257,
+      "scientific_value": 0.6246958953748276,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "d241cc28",
+      "name": "Антигравитационный двигатель",
+      "description": "Гипотетическое устройство для управления гравитацией",
+      "category": "speculative",
+      "timestamp": "2026-07-11T22:04:59.391305",
+      "equations": [
+        "F_anti = -G * (m1 * m2) / r^2 * α"
+      ],
+      "predictions": [
+        "Левитация",
+        "Гравитационная тяга"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные попытки"
+      ],
+      "compatibility_score": 0.9228577638743691,
+      "scientific_value": 0.8820558388395425,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "670c1ce0",
+      "name": "Антигравитационный двигатель",
+      "description": "Гипотетическое устройство для управления гравитацией",
+      "category": "speculative",
+      "timestamp": "2026-07-11T22:05:01.397631",
+      "equations": [
+        "F_anti = -G * (m1 * m2) / r^2 * α"
+      ],
+      "predictions": [
+        "Левитация",
+        "Гравитационная тяга"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные попытки"
+      ],
+      "compatibility_score": 0.8095296465197013,
+      "scientific_value": 0.9388701636855528,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "da145630",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:05:03.405667",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.6752473897738062,
+      "scientific_value": 0.7126428454990985,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "6d6b710e",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:05:05.412598",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.823338022498121,
+      "scientific_value": 0.7433348412539518,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "e8c06b9a",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:05:07.423247",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.6567020456503924,
+      "scientific_value": 0.676348859802552,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "da88eb58",
+      "name": "Модифицированная ньютоновская динамика",
+      "description": "Альтернатива тёмной материи",
+      "category": "modified",
+      "timestamp": "2026-07-11T22:05:27.580969",
+      "equations": [
+        "μ(a/a₀)a = F_N"
+      ],
+      "predictions": [
+        "Кривые вращения галактик"
+      ],
+      "experimental_evidence": [
+        "Наблюдения галактик"
+      ],
+      "compatibility_score": 0.7141899567443889,
+      "scientific_value": 0.800425966977651,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "5d5f4a7f",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:05:29.588522",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.9205660739997816,
+      "scientific_value": 0.7052588854693901,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "e5598958",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-11T22:05:31.595559",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.6021152769186899,
+      "scientific_value": 0.8278457106874444,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "9514a834",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:05:33.604031",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.9211505460730511,
+      "scientific_value": 0.8719588640568603,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "36f0a0d2",
+      "name": "Общая теория относительности",
+      "description": "Гравитация как искривление пространства-времени",
+      "category": "relativity",
+      "timestamp": "2026-07-11T22:05:35.609939",
+      "equations": [
+        "R_μν - ½Rg_μν = 8πG/c⁴ * T_μν"
+      ],
+      "predictions": [
+        "Гравитационные волны",
+        "Чёрные дыры"
+      ],
+      "experimental_evidence": [
+        "LIGO",
+        "EHT"
+      ],
+      "compatibility_score": 0.7904577039286109,
+      "scientific_value": 0.8346432497778287,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "d99aa57f",
+      "name": "Модифицированная ньютоновская динамика",
+      "description": "Альтернатива тёмной материи",
+      "category": "modified",
+      "timestamp": "2026-07-11T22:05:37.614188",
+      "equations": [
+        "μ(a/a₀)a = F_N"
+      ],
+      "predictions": [
+        "Кривые вращения галактик"
+      ],
+      "experimental_evidence": [
+        "Наблюдения галактик"
+      ],
+      "compatibility_score": 0.7000613070797156,
+      "scientific_value": 0.9417687066806517,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "16e399fa",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:05:39.619010",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.6989545967316169,
+      "scientific_value": 0.752365022859967,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "66040505",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:05:55.087132",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.7601496533982154,
+      "scientific_value": 0.9189725681254499,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "280e7ecd",
+      "name": "Антигравитационный двигатель",
+      "description": "Гипотетическое устройство для управления гравитацией",
+      "category": "speculative",
+      "timestamp": "2026-07-11T22:05:57.091943",
+      "equations": [
+        "F_anti = -G * (m1 * m2) / r^2 * α"
+      ],
+      "predictions": [
+        "Левитация",
+        "Гравитационная тяга"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные попытки"
+      ],
+      "compatibility_score": 0.7562081963419576,
+      "scientific_value": 0.6795596319929189,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "70736b77",
+      "name": "Модифицированная ньютоновская динамика",
+      "description": "Альтернатива тёмной материи",
+      "category": "modified",
+      "timestamp": "2026-07-11T22:05:59.099389",
+      "equations": [
+        "μ(a/a₀)a = F_N"
+      ],
+      "predictions": [
+        "Кривые вращения галактик"
+      ],
+      "experimental_evidence": [
+        "Наблюдения галактик"
+      ],
+      "compatibility_score": 0.8580717194200702,
+      "scientific_value": 0.9233024836177688,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "89b4f442",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:06:01.118218",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.8874600119987139,
+      "scientific_value": 0.607322230117613,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "d03ee0c0",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:06:03.126419",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.8691144274305136,
+      "scientific_value": 0.6930408459140321,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "bb242a3b",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-11T22:06:05.132890",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.7615004798951871,
+      "scientific_value": 0.5589899976451725,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "a071a195",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:06:07.141278",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.7195431850166659,
+      "scientific_value": 0.8293317363359025,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "6ce7d3b8",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:06:28.246244",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.6687288448126025,
+      "scientific_value": 0.9410759694537888,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "1dbf41e9",
+      "name": "Классическая гравитация Ньютона",
+      "description": "Закон всемирного тяготения",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:06:30.255889",
+      "equations": [
+        "F = G * (m1 * m2) / r^2"
+      ],
+      "predictions": [
+        "Орбиты планет",
+        "Приливы"
+      ],
+      "experimental_evidence": [
+        "Наблюдения Кеплера"
+      ],
+      "compatibility_score": 0.6881199797772888,
+      "scientific_value": 0.8303320016552671,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "5c07adcb",
+      "name": "Общая теория относительности",
+      "description": "Гравитация как искривление пространства-времени",
+      "category": "relativity",
+      "timestamp": "2026-07-11T22:06:32.262482",
+      "equations": [
+        "R_μν - ½Rg_μν = 8πG/c⁴ * T_μν"
+      ],
+      "predictions": [
+        "Гравитационные волны",
+        "Чёрные дыры"
+      ],
+      "experimental_evidence": [
+        "LIGO",
+        "EHT"
+      ],
+      "compatibility_score": 0.7889120291381782,
+      "scientific_value": 0.536499610267441,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "2c50906b",
+      "name": "Антигравитационный двигатель",
+      "description": "Гипотетическое устройство для управления гравитацией",
+      "category": "speculative",
+      "timestamp": "2026-07-11T22:06:34.270350",
+      "equations": [
+        "F_anti = -G * (m1 * m2) / r^2 * α"
+      ],
+      "predictions": [
+        "Левитация",
+        "Гравитационная тяга"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные попытки"
+      ],
+      "compatibility_score": 0.8074296578828029,
+      "scientific_value": 0.5765191642244987,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "c022db8a",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-11T22:06:36.274207",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.7699578216915068,
+      "scientific_value": 0.856367471668352,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "e22f17c2",
+      "name": "Антигравитационный двигатель",
+      "description": "Гипотетическое устройство для управления гравитацией",
+      "category": "speculative",
+      "timestamp": "2026-07-11T22:06:38.280506",
+      "equations": [
+        "F_anti = -G * (m1 * m2) / r^2 * α"
+      ],
+      "predictions": [
+        "Левитация",
+        "Гравитационная тяга"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные попытки"
+      ],
+      "compatibility_score": 0.9355621740284091,
+      "scientific_value": 0.906093692342429,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "4ba357ad",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-11T22:06:40.287372",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.7088053260286801,
+      "scientific_value": 0.611960694372454,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "20a3ce51",
+      "name": "Общая теория относительности",
+      "description": "Гравитация как искривление пространства-времени",
+      "category": "relativity",
+      "timestamp": "2026-07-11T22:06:42.292665",
+      "equations": [
+        "R_μν - ½Rg_μν = 8πG/c⁴ * T_μν"
+      ],
+      "predictions": [
+        "Гравитационные волны",
+        "Чёрные дыры"
+      ],
+      "experimental_evidence": [
+        "LIGO",
+        "EHT"
+      ],
+      "compatibility_score": 0.8946849237632996,
+      "scientific_value": 0.5676291572055541,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "bdc72c59",
+      "name": "Антигравитационный двигатель",
+      "description": "Гипотетическое устройство для управления гравитацией",
+      "category": "speculative",
+      "timestamp": "2026-07-11T22:14:15.226083",
+      "equations": [
+        "F_anti = -G * (m1 * m2) / r^2 * α"
+      ],
+      "predictions": [
+        "Левитация",
+        "Гравитационная тяга"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные попытки"
+      ],
+      "compatibility_score": 0.6185451657809721,
+      "scientific_value": 0.581773518690559,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "5e605521",
+      "name": "Общая теория относительности",
+      "description": "Гравитация как искривление пространства-времени",
+      "category": "relativity",
+      "timestamp": "2026-07-11T22:15:01.945336",
+      "equations": [
+        "R_μν - ½Rg_μν = 8πG/c⁴ * T_μν"
+      ],
+      "predictions": [
+        "Гравитационные волны",
+        "Чёрные дыры"
+      ],
+      "experimental_evidence": [
+        "LIGO",
+        "EHT"
+      ],
+      "compatibility_score": 0.824293092383977,
+      "scientific_value": 0.8130849806986455,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "31b21c9a",
+      "name": "Антигравитационный двигатель",
+      "description": "Гипотетическое устройство для управления гравитацией",
+      "category": "speculative",
+      "timestamp": "2026-07-11T22:15:03.952905",
+      "equations": [
+        "F_anti = -G * (m1 * m2) / r^2 * α"
+      ],
+      "predictions": [
+        "Левитация",
+        "Гравитационная тяга"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные попытки"
+      ],
+      "compatibility_score": 0.8165155701293579,
+      "scientific_value": 0.6752514737019858,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "a7e54dfa",
+      "name": "Петлевая квантовая гравитация",
+      "description": "Квантование пространства-времени",
+      "category": "quantum",
+      "timestamp": "2026-07-11T22:15:05.963734",
+      "equations": [
+        "ĤΨ = 0",
+        "[Â, Ê] = iℏ"
+      ],
+      "predictions": [
+        "Кванты пространства",
+        "Отсутствие сингулярностей"
+      ],
+      "experimental_evidence": [
+        "Теоретические"
+      ],
+      "compatibility_score": 0.707571726888781,
+      "scientific_value": 0.6161481071832414,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "23e6d04d",
+      "name": "Общая теория относительности",
+      "description": "Гравитация как искривление пространства-времени",
+      "category": "relativity",
+      "timestamp": "2026-07-11T22:15:07.970383",
+      "equations": [
+        "R_μν - ½Rg_μν = 8πG/c⁴ * T_μν"
+      ],
+      "predictions": [
+        "Гравитационные волны",
+        "Чёрные дыры"
+      ],
+      "experimental_evidence": [
+        "LIGO",
+        "EHT"
+      ],
+      "compatibility_score": 0.6075393332849892,
+      "scientific_value": 0.5057191798926698,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "bb50dd49",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:15:09.978456",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.7565831976685631,
+      "scientific_value": 0.5512506269330343,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "9a637c1b",
+      "name": "Теория всего",
+      "description": "Объединение гравитации с другими силами",
+      "category": "unified",
+      "timestamp": "2026-07-11T22:15:11.988287",
+      "equations": [
+        "S = ∫d⁴x √(-g) (R + L_matter + L_unification)"
+      ],
+      "predictions": [
+        "Единое поле",
+        "Суперсимметрия"
+      ],
+      "experimental_evidence": [
+        "Поиск"
+      ],
+      "compatibility_score": 0.782641597647261,
+      "scientific_value": 0.5585216105924297,
+      "validated": false,
+      "source": "original"
     }
   ],
-  "updated": "2026-07-10T15:51:55.609587"
+  "updated": "2026-07-11T22:15:11.989327"
 }

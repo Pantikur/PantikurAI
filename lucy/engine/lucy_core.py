@@ -26,7 +26,7 @@ from lucy.engine.models import (
 from lucy.engine.web_access import LucyWebAccess
 from lucy.engine.designer import EngineDesigner
 from lucy.engine.calculator import EngineCalculator
-from scientists_network.network import get_network, RequestType, RequestPriority
+from scientists_network.network import get_network, Message, MessageType, RequestPriority
 
 
 class LucyCore:
@@ -90,7 +90,7 @@ class LucyCore:
         self.logger.info("🔗 Подключена к Scientists Network")
         self.logger.info(f"   Теорий Ханако: {len(self.hanako_theories)}")
         self.logger.info(f"   Теорий Фуюки: {len(self.fuyuki_theories)}")
-        self.network.print_mission_reminder()
+        self.logger.info("🎯 Миссия: проектирование двигателей для реального мира!")
     
     def _setup_logging(self):
         """Настроить логирование."""
@@ -131,32 +131,32 @@ class LucyCore:
                 self.calculations = []
     
     def _load_sisters_data(self):
-        """Загрузить данные от Ханако и Фуюки через сеть."""
+        """Загрузить данные от Ханако и Фуюки через сеть (или напрямую из файлов)."""
         try:
-            self.hanako_theories = self.network.get_hanako_theories()
-            self.fuyuki_theories = self.network.get_fuyuki_theories()
+            # Пытаемся загрузить из файлов (fallback)
+            hanako_theories_file = Path("hanako/engine/state/theories.json")
+            fuyuki_theories_file = Path("fuyuki/engine/state/theories.json")
+            
+            self.hanako_theories = []
+            self.fuyuki_theories = []
+            
+            if hanako_theories_file.exists():
+                with open(hanako_theories_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    self.hanako_theories = data.get("theories", [])
+            
+            if fuyuki_theories_file.exists():
+                with open(fuyuki_theories_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    self.fuyuki_theories = data.get("theories", [])
+            
             self.metrics["hanako_theories_analyzed"] = len(self.hanako_theories)
             self.metrics["fuyuki_theories_analyzed"] = len(self.fuyuki_theories)
+            
         except Exception as e:
             self.logger.warning(f"Ошибка загрузки данных сестёр: {e}")
-            # Fallback на прямое чтение
-            hanako_theories_file = Path("hanako/engine/state/theories.json")
-            if hanako_theories_file.exists():
-                try:
-                    with open(hanako_theories_file, "r", encoding="utf-8") as f:
-                        data = json.load(f)
-                        self.hanako_theories = data.get("theories", [])
-                except Exception:
-                    pass
-            
-            fuyuki_theories_file = Path("fuyuki/engine/state/theories.json")
-            if fuyuki_theories_file.exists():
-                try:
-                    with open(fuyuki_theories_file, "r", encoding="utf-8") as f:
-                        data = json.load(f)
-                        self.fuyuki_theories = data.get("theories", [])
-                except Exception:
-                    pass
+            self.hanako_theories = []
+            self.fuyuki_theories = []
     
     def _save_state(self):
         """Сохранить состояние."""
@@ -234,8 +234,22 @@ class LucyCore:
         try:
             self.logger.info("🔗 Обновление данных от сестёр")
             
-            new_hanako = self.network.get_hanako_theories()
-            new_fuyuki = self.network.get_fuyuki_theories()
+            # Загружаем из файлов
+            hanako_file = Path("hanako/engine/state/theories.json")
+            fuyuki_file = Path("fuyuki/engine/state/theories.json")
+            
+            new_hanako = []
+            new_fuyuki = []
+            
+            if hanako_file.exists():
+                with open(hanako_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    new_hanako = data.get("theories", [])
+            
+            if fuyuki_file.exists():
+                with open(fuyuki_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    new_fuyuki = data.get("theories", [])
             
             if len(new_hanako) > len(self.hanako_theories):
                 self.logger.info(f"   Ханако: {len(self.hanako_theories)} → {len(new_hanako)} теорий (+{len(new_hanako) - len(self.hanako_theories)})")
@@ -259,42 +273,54 @@ class LucyCore:
             new_designs = [d for d in self.designs[-5:] if d.feasibility_score > 0.5]
             if new_designs:
                 for design in new_designs:
-                    self.network.notify_discovery(
-                        from_scientist="lucy",
-                        discovery=f"Двигатель: {design.name} (тяга: {design.thrust:.1f} N, Isp: {design.specific_impulse:.1f} s)",
-                        importance="high" if design.feasibility_score > 0.7 else "normal"
+                    self.network.broadcast_design(
+                        "lucy",
+                        {
+                            "name": design.name,
+                            "thrust": design.thrust,
+                            "specific_impulse": design.specific_impulse,
+                            "feasibility": design.feasibility_score
+                        }
                     )
             
             # Запрос помощи у Нобуки при критических проблемах
             low_feasibility = [d for d in self.designs[-10:] if d.feasibility_score < 0.2]
             if len(low_feasibility) > 5:
-                self.network.create_request(
-                    from_scientist="lucy",
-                    to_scientist="nobuka",
-                    request_type=RequestType.CODE_REVIEW,
-                    message=f"Слишком много нереализуемых проектов ({len(low_feasibility)} из 10). Нужен анализ!",
+                message = Message(
+                    message_type=MessageType.REQUEST,
+                    sender="lucy",
+                    recipient="nobuka",
+                    content="⚠️ Слишком много нереализуемых проектов. Нужен анализ!",
+                    data={
+                        "request_type": "code_analysis",
+                        "description": f"Анализ {len(low_feasibility)} нереализуемых проектов",
+                    },
                     priority=RequestPriority.HIGH,
-                    data={"low_feasibility_count": len(low_feasibility)}
                 )
+                self.network.send_message(message)
             
             # Запрос новых теорий у сестёр
             if len(self.hanako_theories) < 5:
-                self.network.create_request(
-                    from_scientist="lucy",
-                    to_scientist="hanako",
-                    request_type=RequestType.THEORY_REQUEST,
-                    message="Нужно больше теорий гравитации для проектирования двигателей!",
-                    priority=RequestPriority.NORMAL
+                message = Message(
+                    message_type=MessageType.REQUEST,
+                    sender="lucy",
+                    recipient="hanako",
+                    content="📋 Запрос данных: theories — Нужно больше теорий гравитации!",
+                    data={"request_type": "theories"},
+                    priority=RequestPriority.NORMAL,
                 )
+                self.network.send_message(message)
             
             if len(self.fuyuki_theories) < 5:
-                self.network.create_request(
-                    from_scientist="lucy",
-                    to_scientist="fuyuki",
-                    request_type=RequestType.THEORY_REQUEST,
-                    message="Нужно больше теорий электричества для проектирования двигателей!",
-                    priority=RequestPriority.NORMAL
+                message = Message(
+                    message_type=MessageType.REQUEST,
+                    sender="lucy",
+                    recipient="fuyuki",
+                    content="📋 Запрос данных: theories — Нужно больше теорий электричества!",
+                    data={"request_type": "theories"},
+                    priority=RequestPriority.NORMAL,
                 )
+                self.network.send_message(message)
             
         except Exception as e:
             self.logger.error(f"Ошибка синхронизации: {e}")

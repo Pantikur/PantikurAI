@@ -140,7 +140,490 @@
       "precision": 10,
       "confidence": 0.9764077086564815,
       "notes": "Электрическое поле грозового облака"
+    },
+    {
+      "id": "69fb3eb1",
+      "calculation_type": "breakdown_voltage",
+      "timestamp": "2026-07-11T22:04:38.412457",
+      "input_params": {
+        "d": 135.7190839290604,
+        "E_breakdown": 3000000.0
+      },
+      "result": 407157251.78718114,
+      "units": "V",
+      "precision": 10,
+      "confidence": 0.9501815152305223,
+      "notes": "Пробивное напряжение воздуха"
+    },
+    {
+      "id": "516d7cbe",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-11T22:04:40.416760",
+      "input_params": {
+        "r": 0.3653440927517261,
+        "T": 7450.52766124729
+      },
+      "result": 204265.43263120617,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.7729120375881255,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "c7b442ad",
+      "calculation_type": "electric_field",
+      "timestamp": "2026-07-11T22:04:56.404221",
+      "input_params": {
+        "V": 63287007.31974712,
+        "d": 6207.136989549346
+      },
+      "result": 10195.845109637561,
+      "units": "V/m",
+      "precision": 10,
+      "confidence": 0.9807016202811313,
+      "notes": "Электрическое поле грозового облака"
+    },
+    {
+      "id": "69837999",
+      "calculation_type": "energy_harvesting",
+      "timestamp": "2026-07-11T22:04:58.409911",
+      "input_params": {
+        "E_lightning": 1000000000.0,
+        "efficiency": 0.4924625998257912
+      },
+      "result": 492462599.82579124,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.606908173531796,
+      "notes": "Собранная энергия (гипотетически)"
+    },
+    {
+      "id": "bb0f6f2f",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-11T22:05:00.422752",
+      "input_params": {
+        "Q": 73.38769759053955,
+        "m": 520195523.5795042
+      },
+      "result": 1.4107714169770882e-07,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.8798343737145002,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "da67f3a1",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-11T22:05:02.427788",
+      "input_params": {
+        "Q": 28.897051243224013,
+        "m": 782288875.8661721
+      },
+      "result": 3.693910540556823e-08,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.8794653713594481,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "140e4b44",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-11T22:05:04.438869",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9087705921395923,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "16d31c99",
+      "calculation_type": "lightning_path",
+      "timestamp": "2026-07-11T22:05:06.447198",
+      "input_params": {
+        "h": 4416.051077845079,
+        "n_bends": 17
+      },
+      "result": 7256.312371292256,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.893823866654546,
+      "notes": "Длина канала молнии"
+    },
+    {
+      "id": "ac55a9d8",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-11T22:05:28.608865",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9366016152652281,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "724112e7",
+      "calculation_type": "electric_field",
+      "timestamp": "2026-07-11T22:05:30.615066",
+      "input_params": {
+        "V": 33573461.84820822,
+        "d": 3818.6327255621977
+      },
+      "result": 8792.01124095153,
+      "units": "V/m",
+      "precision": 10,
+      "confidence": 0.9854910400816448,
+      "notes": "Электрическое поле грозового облака"
+    },
+    {
+      "id": "82917e2d",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-11T22:05:32.629474",
+      "input_params": {
+        "r": 0.49771067453548523,
+        "T": 14363.92037126996
+      },
+      "result": 516439.5275224342,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.6290304313731887,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "1058010d",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-11T22:05:34.640948",
+      "input_params": {
+        "Q": 63.24077944998054,
+        "m": 37406925.03562692
+      },
+      "result": 1.6906168948596836e-06,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.8886164783982101,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "732b8aa0",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-11T22:05:36.648991",
+      "input_params": {
+        "Q": 76.25010444024412,
+        "m": 941842515.0718162
+      },
+      "result": 8.095844392247465e-08,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.9354932953989017,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "0806782c",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-11T22:05:38.657604",
+      "input_params": {
+        "r": 0.24861171435642235,
+        "T": 9239.365549546546
+      },
+      "result": 64365.533654976905,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.7644157118326176,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "c00e465b",
+      "calculation_type": "breakdown_voltage",
+      "timestamp": "2026-07-11T22:05:56.113705",
+      "input_params": {
+        "d": 6851.98834366829,
+        "E_breakdown": 3000000.0
+      },
+      "result": 20555965031.00487,
+      "units": "V",
+      "precision": 10,
+      "confidence": 0.9769548493906867,
+      "notes": "Пробивное напряжение воздуха"
+    },
+    {
+      "id": "baf8c476",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-11T22:05:58.121552",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9312917666050778,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "5216ac47",
+      "calculation_type": "energy_harvesting",
+      "timestamp": "2026-07-11T22:06:00.133985",
+      "input_params": {
+        "E_lightning": 1000000000.0,
+        "efficiency": 0.42403840330002673
+      },
+      "result": 424038403.3000267,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.6497346983760037,
+      "notes": "Собранная энергия (гипотетически)"
+    },
+    {
+      "id": "9e1c3619",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-11T22:06:02.140612",
+      "input_params": {
+        "r": 0.26247047296182824,
+        "T": 7234.393126212314
+      },
+      "result": 75740.81444516433,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.7391581164827601,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "44b7f4d5",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-11T22:06:04.149700",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9119805109323142,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "149786a0",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-11T22:06:06.159948",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9071505280345432,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "0a3c60d5",
+      "calculation_type": "breakdown_voltage",
+      "timestamp": "2026-07-11T22:06:29.274966",
+      "input_params": {
+        "d": 7404.289163056316,
+        "E_breakdown": 3000000.0
+      },
+      "result": 22212867489.16895,
+      "units": "V",
+      "precision": 10,
+      "confidence": 0.976971666232733,
+      "notes": "Пробивное напряжение воздуха"
+    },
+    {
+      "id": "8c3432f0",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-11T22:06:31.284030",
+      "input_params": {
+        "Q": 92.81773396931132,
+        "m": 158949777.12181556
+      },
+      "result": 5.839437818033421e-07,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.8501558032834977,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "a3fd48a7",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-11T22:06:33.295818",
+      "input_params": {
+        "Q": 89.73843948756424,
+        "m": 248034209.1180123
+      },
+      "result": 3.6179863981934663e-07,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.9407248071961388,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "5e061eb2",
+      "calculation_type": "electric_field",
+      "timestamp": "2026-07-11T22:06:35.301150",
+      "input_params": {
+        "V": 95974817.12762503,
+        "d": 9318.06764644142
+      },
+      "result": 10299.862672093599,
+      "units": "V/m",
+      "precision": 10,
+      "confidence": 0.9817927056564426,
+      "notes": "Электрическое поле грозового облака"
+    },
+    {
+      "id": "ba2362e1",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-11T22:06:37.309582",
+      "input_params": {
+        "r": 0.21053472149192365,
+        "T": 11649.5898090424
+      },
+      "result": 39089.4715930635,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.7758647450444436,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "a7d51e01",
+      "calculation_type": "lightning_path",
+      "timestamp": "2026-07-11T22:06:39.321454",
+      "input_params": {
+        "h": 9770.215611015294,
+        "n_bends": 14
+      },
+      "result": 15135.952940127183,
+      "units": "m",
+      "precision": 10,
+      "confidence": 0.9132465451774197,
+      "notes": "Длина канала молнии"
+    },
+    {
+      "id": "bf7e8ef5",
+      "calculation_type": "ball_lightning",
+      "timestamp": "2026-07-11T22:06:41.328750",
+      "input_params": {
+        "r": 0.40814640685564874,
+        "T": 11085.07261437095
+      },
+      "result": 284797.74208766717,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.6822386878472775,
+      "notes": "Энергия шаровой молнии (оценка)"
+    },
+    {
+      "id": "94948099",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-11T22:14:15.249084",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9258588567014797,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "fd1bc0b6",
+      "calculation_type": "electric_field",
+      "timestamp": "2026-07-11T22:15:01.964336",
+      "input_params": {
+        "V": 95535241.0187576,
+        "d": 4469.9227664127
+      },
+      "result": 21372.90642617269,
+      "units": "V/m",
+      "precision": 10,
+      "confidence": 0.9541789297977945,
+      "notes": "Электрическое поле грозового облака"
+    },
+    {
+      "id": "c0399f2f",
+      "calculation_type": "charge_separation",
+      "timestamp": "2026-07-11T22:15:03.970455",
+      "input_params": {
+        "Q": 72.9129156441036,
+        "m": 47819825.32586042
+      },
+      "result": 1.5247424085565016e-06,
+      "units": "C/kg",
+      "precision": 10,
+      "confidence": 0.9290290617594559,
+      "notes": "Плотность заряда в облаке"
+    },
+    {
+      "id": "ef86e49e",
+      "calculation_type": "energy_harvesting",
+      "timestamp": "2026-07-11T22:15:05.976210",
+      "input_params": {
+        "E_lightning": 1000000000.0,
+        "efficiency": 0.21471706180301176
+      },
+      "result": 214717061.80301175,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.5721254683144715,
+      "notes": "Собранная энергия (гипотетически)"
+    },
+    {
+      "id": "1c463c9b",
+      "calculation_type": "energy_harvesting",
+      "timestamp": "2026-07-11T22:15:07.980926",
+      "input_params": {
+        "E_lightning": 1000000000.0,
+        "efficiency": 0.15409923974418913
+      },
+      "result": 154099239.7441891,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.5848190274413063,
+      "notes": "Собранная энергия (гипотетически)"
+    },
+    {
+      "id": "4101ab89",
+      "calculation_type": "lightning_energy",
+      "timestamp": "2026-07-11T22:15:09.986998",
+      "input_params": {
+        "I": 30000,
+        "V": 100000000.0,
+        "t": 0.0003
+      },
+      "result": 899999999.9999999,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.9188624258181739,
+      "notes": "Энергия типичной молнии"
+    },
+    {
+      "id": "e05c7e11",
+      "calculation_type": "energy_harvesting",
+      "timestamp": "2026-07-11T22:15:11.993402",
+      "input_params": {
+        "E_lightning": 1000000000.0,
+        "efficiency": 0.122949265676864
+      },
+      "result": 122949265.676864,
+      "units": "J",
+      "precision": 10,
+      "confidence": 0.5104651015214868,
+      "notes": "Собранная энергия (гипотетически)"
     }
   ],
-  "updated": "2026-07-10T15:52:18.191531"
+  "updated": "2026-07-11T22:15:11.995399"
 }

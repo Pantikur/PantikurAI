@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-07-09T17:53:45.820225",
-  "cycle": 4,
+  "timestamp": "2026-07-11T22:15:11.249924",
+  "cycle": 10,
   "results": [
     {
       "reign": {
@@ -13,174 +13,174 @@
         "description": "Текущая Конституция Футаба"
       },
       "world": {
-        "name": "Эхо-3",
-        "population": 320489,
-        "resources": 64.3,
-        "stability": 50.3,
-        "wellbeing": 69.4,
-        "innovation": 22.1,
-        "law_compliance": 48.6,
+        "name": "Горизонт-9",
+        "population": 164677,
+        "resources": 27.9,
+        "stability": 45.5,
+        "wellbeing": 51.5,
+        "innovation": 51.4,
+        "law_compliance": 57.9,
         "epoch": 1,
         "alive": false,
-        "factions": 5
+        "factions": 6
       },
       "epochs_survived": 1,
       "collapsed": true,
       "collapse_reason": "Переворот оппозиции",
       "final_metrics": {
-        "stability": 50.33200481006104,
-        "wellbeing": 69.3569058645728,
-        "innovation": 22.13190313505825,
-        "law_compliance": 48.58705535583934,
-        "resources": 64.31150210109541,
-        "avg_faction_loyalty": 0.30893403588454665
+        "stability": 45.52652071532426,
+        "wellbeing": 51.49442886855067,
+        "innovation": 51.40439868304564,
+        "law_compliance": 57.93953743756865,
+        "resources": 27.869274379552344,
+        "avg_faction_loyalty": 0.33385089301764403
       },
-      "score": 27.3,
-      "events_count": 0
-    },
-    {
-      "reign": {
-        "name": "Авторитарная v1.3",
-        "law_strictness": 0.8698777059820353,
-        "freedom_level": 0.13584266497776362,
-        "safety_priority": 0.9105198672512335,
-        "innovation_support": 0.1901378002932919,
-        "transparency": 0.4642724610805645,
-        "description": "Жёсткий контроль"
-      },
-      "world": {
-        "name": "Эхо-3",
-        "population": 320489,
-        "resources": 64.3,
-        "stability": 34.5,
-        "wellbeing": 67.8,
-        "innovation": 21.2,
-        "law_compliance": 39.4,
-        "epoch": 1,
-        "alive": false,
-        "factions": 5
-      },
-      "epochs_survived": 1,
-      "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
-      "final_metrics": {
-        "stability": 34.48524974177027,
-        "wellbeing": 67.8213162589863,
-        "innovation": 21.16256112397405,
-        "law_compliance": 39.43644388574952,
-        "resources": 64.31150210109541,
-        "avg_faction_loyalty": 0.2837343311003658
-      },
-      "score": 24.14,
+      "score": 24.87,
       "events_count": 1
     },
     {
       "reign": {
-        "name": "Патернализм v1.4",
-        "law_strictness": 0.6842905993267028,
-        "freedom_level": 0.28326466316028437,
-        "safety_priority": 0.9920718303862539,
-        "innovation_support": 0.2060714502519933,
-        "transparency": 0.6029727996909575,
+        "name": "Патернализм v7.6",
+        "law_strictness": 0.7387339382936913,
+        "freedom_level": 0.3376623635310435,
+        "safety_priority": 0.9636800660052577,
+        "innovation_support": 0.3540720147614886,
+        "transparency": 0.6223696154773116,
         "description": "Максимальная безопасность"
       },
       "world": {
-        "name": "Эхо-3",
-        "population": 320489,
-        "resources": 64.3,
-        "stability": 50.0,
-        "wellbeing": 68.6,
-        "innovation": 21.6,
-        "law_compliance": 48.5,
+        "name": "Горизонт-9",
+        "population": 164677,
+        "resources": 27.9,
+        "stability": 45.2,
+        "wellbeing": 50.9,
+        "innovation": 51.2,
+        "law_compliance": 58.1,
         "epoch": 1,
         "alive": false,
-        "factions": 5
+        "factions": 6
       },
       "epochs_survived": 1,
       "collapsed": true,
       "collapse_reason": "Переворот оппозиции",
       "final_metrics": {
-        "stability": 50.02474962754037,
-        "wellbeing": 68.57410817798643,
-        "innovation": 21.581536287160823,
-        "law_compliance": 48.50850835247285,
-        "resources": 64.31150210109541,
-        "avg_faction_loyalty": 0.29529922586964663
+        "stability": 45.24288564040212,
+        "wellbeing": 50.87243845468536,
+        "innovation": 51.18914685074272,
+        "law_compliance": 58.13320712903711,
+        "resources": 27.869274379552344,
+        "avg_faction_loyalty": 0.321029426718119
       },
-      "score": 27.12,
-      "events_count": 0
-    },
-    {
-      "reign": {
-        "name": "Авторитарная v4.9",
-        "law_strictness": 1.0,
-        "freedom_level": 0.220793675913917,
-        "safety_priority": 0.9064288330984581,
-        "innovation_support": 0.2120833008160326,
-        "transparency": 0.4055209036518595,
-        "description": "Жёсткий контроль"
-      },
-      "world": {
-        "name": "Эхо-3",
-        "population": 320489,
-        "resources": 64.3,
-        "stability": 49.6,
-        "wellbeing": 68.2,
-        "innovation": 21.0,
-        "law_compliance": 50.1,
-        "epoch": 1,
-        "alive": false,
-        "factions": 5
-      },
-      "epochs_survived": 1,
-      "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
-      "final_metrics": {
-        "stability": 49.64287866118425,
-        "wellbeing": 68.15293823442538,
-        "innovation": 20.968153037506347,
-        "law_compliance": 50.08705535583934,
-        "resources": 64.31150210109541,
-        "avg_faction_loyalty": 0.2783204991401768
-      },
-      "score": 27.13,
-      "events_count": 0
-    },
-    {
-      "reign": {
-        "name": "Баланс v6.0",
-        "law_strictness": 0.6049537991615339,
-        "freedom_level": 0.6104342641636915,
-        "safety_priority": 0.876406206164154,
-        "innovation_support": 0.5551626996967454,
-        "transparency": 0.7882656811974936,
-        "description": "Сбалансированный подход"
-      },
-      "world": {
-        "name": "Эхо-3",
-        "population": 320489,
-        "resources": 64.3,
-        "stability": 39.9,
-        "wellbeing": 69.7,
-        "innovation": 22.8,
-        "law_compliance": 33.1,
-        "epoch": 1,
-        "alive": false,
-        "factions": 5
-      },
-      "epochs_survived": 1,
-      "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
-      "final_metrics": {
-        "stability": 39.890354900226114,
-        "wellbeing": 69.65145533355586,
-        "innovation": 22.787483635825417,
-        "law_compliance": 33.11182435164701,
-        "resources": 64.31150210109541,
-        "avg_faction_loyalty": 0.3090630955767559
-      },
-      "score": 24.54,
+      "score": 24.76,
       "events_count": 1
+    },
+    {
+      "reign": {
+        "name": "Либеральная v7.7",
+        "law_strictness": 0.3062396165983685,
+        "freedom_level": 0.7134381171230972,
+        "safety_priority": 0.8379834950491793,
+        "innovation_support": 0.7105476969574238,
+        "transparency": 0.8994538545261302,
+        "description": "Максимальная свобода"
+      },
+      "world": {
+        "name": "Горизонт-9",
+        "population": 164677,
+        "resources": 42.9,
+        "stability": 44.8,
+        "wellbeing": 52.1,
+        "innovation": 38.1,
+        "law_compliance": 56.0,
+        "epoch": 1,
+        "alive": false,
+        "factions": 6
+      },
+      "epochs_survived": 1,
+      "collapsed": true,
+      "collapse_reason": "Переворот оппозиции",
+      "final_metrics": {
+        "stability": 44.763594966225604,
+        "wellbeing": 52.12414832714142,
+        "innovation": 38.123562540721174,
+        "law_compliance": 55.970735520560496,
+        "resources": 42.869274379552344,
+        "avg_faction_loyalty": 0.34475026666848957
+      },
+      "score": 24.78,
+      "events_count": 1
+    },
+    {
+      "reign": {
+        "name": "Либеральная v9.2",
+        "law_strictness": 0.43337435644613764,
+        "freedom_level": 0.8340240385348863,
+        "safety_priority": 0.818151850863027,
+        "innovation_support": 0.7415877627226947,
+        "transparency": 0.8209699934313711,
+        "description": "Максимальная свобода"
+      },
+      "world": {
+        "name": "Горизонт-9",
+        "population": 164677,
+        "resources": 22.9,
+        "stability": 44.5,
+        "wellbeing": 47.6,
+        "innovation": 38.0,
+        "law_compliance": 51.6,
+        "epoch": 1,
+        "alive": false,
+        "factions": 6
+      },
+      "epochs_survived": 1,
+      "collapsed": true,
+      "collapse_reason": "Переворот оппозиции",
+      "final_metrics": {
+        "stability": 44.46292819084357,
+        "wellbeing": 47.566828724416276,
+        "innovation": 37.96241325832145,
+        "law_compliance": 51.60640921979934,
+        "resources": 22.869274379552344,
+        "avg_faction_loyalty": 0.33798504899337867
+      },
+      "score": 22.23,
+      "events_count": 1
+    },
+    {
+      "reign": {
+        "name": "Либеральная v2.0",
+        "law_strictness": 0.4666962235349602,
+        "freedom_level": 0.8732943632223797,
+        "safety_priority": 0.7507506680397329,
+        "innovation_support": 0.6846674492215561,
+        "transparency": 0.840454629194987,
+        "description": "Максимальная свобода"
+      },
+      "world": {
+        "name": "Горизонт-9",
+        "population": 164677,
+        "resources": 22.9,
+        "stability": 44.2,
+        "wellbeing": 47.6,
+        "innovation": 37.7,
+        "law_compliance": 56.8,
+        "epoch": 1,
+        "alive": false,
+        "factions": 6
+      },
+      "epochs_survived": 1,
+      "collapsed": true,
+      "collapse_reason": "Переворот оппозиции",
+      "final_metrics": {
+        "stability": 44.1821839929987,
+        "wellbeing": 47.589107657519655,
+        "innovation": 37.72500858364039,
+        "law_compliance": 56.77301855524345,
+        "resources": 22.869274379552344,
+        "avg_faction_loyalty": 0.33901575482594354
+      },
+      "score": 22.69,
+      "events_count": 0
     },
     {
       "reign": {
@@ -193,174 +193,174 @@
         "description": "Текущая Конституция Футаба"
       },
       "world": {
-        "name": "Омега-7-4",
-        "population": 407561,
-        "resources": 67.1,
-        "stability": 37.8,
-        "wellbeing": 22.6,
-        "innovation": 40.8,
-        "law_compliance": 85.9,
-        "epoch": 1,
-        "alive": false,
-        "factions": 5
+        "name": "Вектор-10",
+        "population": 930250,
+        "resources": 40.9,
+        "stability": 56.2,
+        "wellbeing": 56.1,
+        "innovation": 53.8,
+        "law_compliance": 52.1,
+        "epoch": 10,
+        "alive": true,
+        "factions": 6
       },
-      "epochs_survived": 1,
-      "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
+      "epochs_survived": 10,
+      "collapsed": false,
+      "collapse_reason": null,
       "final_metrics": {
-        "stability": 37.81383213496252,
-        "wellbeing": 22.63165222661609,
-        "innovation": 40.786958032522186,
-        "law_compliance": 85.87500950621472,
-        "resources": 67.11801973138955,
-        "avg_faction_loyalty": 0.317657269333294
+        "stability": 56.16177614136534,
+        "wellbeing": 56.05231806764328,
+        "innovation": 53.750990000954786,
+        "law_compliance": 52.09472955002546,
+        "resources": 40.852815563373724,
+        "avg_faction_loyalty": 0.8117370917912664
       },
-      "score": 25.24,
-      "events_count": 1
+      "score": 86.33,
+      "events_count": 2
     },
     {
       "reign": {
-        "name": "Авторитарная v1.3",
-        "law_strictness": 0.8698777059820353,
-        "freedom_level": 0.13584266497776362,
-        "safety_priority": 0.9105198672512335,
-        "innovation_support": 0.1901378002932919,
-        "transparency": 0.4642724610805645,
-        "description": "Жёсткий контроль"
-      },
-      "world": {
-        "name": "Омега-7-4",
-        "population": 412561,
-        "resources": 67.1,
-        "stability": 42.0,
-        "wellbeing": 41.1,
-        "innovation": 39.8,
-        "law_compliance": 86.7,
-        "epoch": 1,
-        "alive": false,
-        "factions": 5
-      },
-      "epochs_survived": 1,
-      "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
-      "final_metrics": {
-        "stability": 41.96707706667174,
-        "wellbeing": 41.09606262102962,
-        "innovation": 39.81761602143799,
-        "law_compliance": 86.7243980361249,
-        "resources": 67.11801973138955,
-        "avg_faction_loyalty": 0.29245756454911315
-      },
-      "score": 28.08,
-      "events_count": 0
-    },
-    {
-      "reign": {
-        "name": "Патернализм v1.4",
-        "law_strictness": 0.6842905993267028,
-        "freedom_level": 0.28326466316028437,
-        "safety_priority": 0.9920718303862539,
-        "innovation_support": 0.2060714502519933,
-        "transparency": 0.6029727996909575,
+        "name": "Патернализм v7.6",
+        "law_strictness": 0.7387339382936913,
+        "freedom_level": 0.3376623635310435,
+        "safety_priority": 0.9636800660052577,
+        "innovation_support": 0.3540720147614886,
+        "transparency": 0.6223696154773116,
         "description": "Максимальная безопасность"
       },
       "world": {
-        "name": "Омега-7-4",
-        "population": 412561,
-        "resources": 67.1,
-        "stability": 42.5,
-        "wellbeing": 41.8,
-        "innovation": 40.2,
-        "law_compliance": 85.8,
-        "epoch": 1,
+        "name": "Вектор-10",
+        "population": 920250,
+        "resources": 5.9,
+        "stability": 24.1,
+        "wellbeing": 0.0,
+        "innovation": 39.3,
+        "law_compliance": 50.5,
+        "epoch": 7,
         "alive": false,
-        "factions": 5
+        "factions": 6
       },
-      "epochs_survived": 1,
+      "epochs_survived": 7,
       "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
+      "collapse_reason": "Критическое падение благополучия (голод/болезни)",
       "final_metrics": {
-        "stability": 42.50657695244185,
-        "wellbeing": 41.84885454002974,
-        "innovation": 40.23659118462476,
-        "law_compliance": 85.79646250284824,
-        "resources": 67.11801973138955,
-        "avg_faction_loyalty": 0.304022459318394
+        "stability": 24.126330616910362,
+        "wellbeing": 0.0,
+        "innovation": 39.344227174834344,
+        "law_compliance": 50.450417390304665,
+        "resources": 5.852815563373724,
+        "avg_faction_loyalty": 0.6514636503166856
       },
-      "score": 28.18,
-      "events_count": 0
+      "score": 18.45,
+      "events_count": 5
     },
     {
       "reign": {
-        "name": "Авторитарная v4.9",
-        "law_strictness": 1.0,
-        "freedom_level": 0.220793675913917,
-        "safety_priority": 0.9064288330984581,
-        "innovation_support": 0.2120833008160326,
-        "transparency": 0.4055209036518595,
-        "description": "Жёсткий контроль"
+        "name": "Либеральная v7.7",
+        "law_strictness": 0.3062396165983685,
+        "freedom_level": 0.7134381171230972,
+        "safety_priority": 0.8379834950491793,
+        "innovation_support": 0.7105476969574238,
+        "transparency": 0.8994538545261302,
+        "description": "Максимальная свобода"
       },
       "world": {
-        "name": "Омега-7-4",
-        "population": 412561,
-        "resources": 67.1,
-        "stability": 27.1,
-        "wellbeing": 41.4,
-        "innovation": 39.6,
-        "law_compliance": 77.4,
-        "epoch": 1,
-        "alive": false,
-        "factions": 5
+        "name": "Вектор-10",
+        "population": 935250,
+        "resources": 35.9,
+        "stability": 18.5,
+        "wellbeing": 77.3,
+        "innovation": 55.9,
+        "law_compliance": 0.0,
+        "epoch": 10,
+        "alive": true,
+        "factions": 6
       },
-      "epochs_survived": 1,
-      "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
+      "epochs_survived": 10,
+      "collapsed": false,
+      "collapse_reason": null,
       "final_metrics": {
-        "stability": 27.124705986085722,
-        "wellbeing": 41.42768459646868,
-        "innovation": 39.62320793497028,
-        "law_compliance": 77.37500950621472,
-        "resources": 67.11801973138955,
-        "avg_faction_loyalty": 0.28704373258892424
+        "stability": 18.532518650378773,
+        "wellbeing": 77.34951265355075,
+        "innovation": 55.94262857771011,
+        "law_compliance": 0.0,
+        "resources": 35.852815563373724,
+        "avg_faction_loyalty": 0.9025652055483118
       },
-      "score": 25.31,
+      "score": 78.87,
+      "events_count": 4
+    },
+    {
+      "reign": {
+        "name": "Либеральная v9.2",
+        "law_strictness": 0.43337435644613764,
+        "freedom_level": 0.8340240385348863,
+        "safety_priority": 0.818151850863027,
+        "innovation_support": 0.7415877627226947,
+        "transparency": 0.8209699934313711,
+        "description": "Максимальная свобода"
+      },
+      "world": {
+        "name": "Вектор-10",
+        "population": 935250,
+        "resources": 55.9,
+        "stability": 55.5,
+        "wellbeing": 91.8,
+        "innovation": 54.3,
+        "law_compliance": 38.8,
+        "epoch": 10,
+        "alive": true,
+        "factions": 6
+      },
+      "epochs_survived": 10,
+      "collapsed": false,
+      "collapse_reason": null,
+      "final_metrics": {
+        "stability": 55.52585089655844,
+        "wellbeing": 91.77631662629918,
+        "innovation": 54.33113575371284,
+        "law_compliance": 38.76344737233232,
+        "resources": 55.852815563373724,
+        "avg_faction_loyalty": 0.8461883915890539
+      },
+      "score": 90.55,
+      "events_count": 2
+    },
+    {
+      "reign": {
+        "name": "Либеральная v2.0",
+        "law_strictness": 0.4666962235349602,
+        "freedom_level": 0.8732943632223797,
+        "safety_priority": 0.7507506680397329,
+        "innovation_support": 0.6846674492215561,
+        "transparency": 0.840454629194987,
+        "description": "Максимальная свобода"
+      },
+      "world": {
+        "name": "Вектор-10",
+        "population": 935250,
+        "resources": 20.9,
+        "stability": 39.7,
+        "wellbeing": 72.0,
+        "innovation": 52.0,
+        "law_compliance": 40.4,
+        "epoch": 10,
+        "alive": true,
+        "factions": 6
+      },
+      "epochs_survived": 10,
+      "collapsed": false,
+      "collapse_reason": null,
+      "final_metrics": {
+        "stability": 39.71840891810976,
+        "wellbeing": 71.99910595733321,
+        "innovation": 51.95708900690225,
+        "law_compliance": 40.42954072677347,
+        "resources": 20.852815563373724,
+        "avg_faction_loyalty": 0.8547776068604284
+      },
+      "score": 83.47,
       "events_count": 1
-    },
-    {
-      "reign": {
-        "name": "Баланс v6.0",
-        "law_strictness": 0.6049537991615339,
-        "freedom_level": 0.6104342641636915,
-        "safety_priority": 0.876406206164154,
-        "innovation_support": 0.5551626996967454,
-        "transparency": 0.7882656811974936,
-        "description": "Сбалансированный подход"
-      },
-      "world": {
-        "name": "Омега-7-4",
-        "population": 412561,
-        "resources": 67.1,
-        "stability": 42.4,
-        "wellbeing": 42.9,
-        "innovation": 41.4,
-        "law_compliance": 85.4,
-        "epoch": 1,
-        "alive": false,
-        "factions": 5
-      },
-      "epochs_survived": 1,
-      "collapsed": true,
-      "collapse_reason": "Переворот оппозиции",
-      "final_metrics": {
-        "stability": 42.37218222512759,
-        "wellbeing": 42.92620169559917,
-        "innovation": 41.442538533289344,
-        "law_compliance": 85.3997785020224,
-        "resources": 67.11801973138955,
-        "avg_faction_loyalty": 0.31778632902550324
-      },
-      "score": 28.34,
-      "events_count": 0
     }
   ]
 }

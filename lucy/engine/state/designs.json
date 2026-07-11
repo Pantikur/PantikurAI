@@ -148,7 +148,958 @@
         "Перегрузка"
       ],
       "validated": true
+    },
+    {
+      "id": "805e74af",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "electric",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:04:39.433989",
+      "thrust": 3574826.8214852423,
+      "specific_impulse": 346.9029355468614,
+      "power_requirement": 49014651.3924272,
+      "mass": 8474.452326749884,
+      "efficiency": 0.4713739929174005,
+      "feasibility_score": 0.47249050962432665,
+      "gravity_theory_used": "Петлевая квантовая гравитация",
+      "electricity_theory_used": "Теория шаровой молнии",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
+    },
+    {
+      "id": "534df288",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "photon",
+      "principle": "light_pressure",
+      "timestamp": "2026-07-11T22:04:57.442190",
+      "thrust": 5014224.282015025,
+      "specific_impulse": 399.60412884051823,
+      "power_requirement": 88709257.65737543,
+      "mass": 7431.35606379914,
+      "efficiency": 0.41639108330711905,
+      "feasibility_score": 0.5823140775530055,
+      "gravity_theory_used": "Общая теория относительности",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
+    },
+    {
+      "id": "dd22425b",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "photon",
+      "principle": "light_pressure",
+      "timestamp": "2026-07-11T22:04:59.444524",
+      "thrust": 9546419.24638254,
+      "specific_impulse": 406.98525741040044,
+      "power_requirement": 91325940.01209627,
+      "mass": 3383.7965324531137,
+      "efficiency": 0.4477677170407675,
+      "feasibility_score": 0.5698887508043512,
+      "gravity_theory_used": "Классическая гравитация Ньютона",
+      "electricity_theory_used": "Теория шаровой молнии",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
+    },
+    {
+      "id": "48bfc8ca",
+      "name": "Плазменный двигатель VASIMR",
+      "description": "Двигатель с плазменным ускорением",
+      "engine_type": "plasma",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:05:01.448663",
+      "thrust": 16.28706857339281,
+      "specific_impulse": 8805.814466618178,
+      "power_requirement": 6454783.795489554,
+      "mass": 978.6976079793196,
+      "efficiency": 0.6478906163938504,
+      "feasibility_score": 0.8091554186781423,
+      "gravity_theory_used": "Петлевая квантовая гравитация",
+      "electricity_theory_used": "Теория атмосферного потенциала",
+      "equations": [
+        "P = n k T",
+        "F = ṁ * v_exhaust"
+      ],
+      "components": [
+        "RF антенна",
+        "Магнитное сопло",
+        "Ионизатор"
+      ],
+      "risks": [
+        "Перегрев",
+        "Потери плазмы"
+      ],
+      "validated": false
+    },
+    {
+      "id": "fc2c3141",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "electric",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:05:03.453104",
+      "thrust": 8540042.039778667,
+      "specific_impulse": 342.7465261479027,
+      "power_requirement": 96369816.45051831,
+      "mass": 4280.4001367024775,
+      "efficiency": 0.33184961416336284,
+      "feasibility_score": 0.5004199088774193,
+      "gravity_theory_used": "Петлевая квантовая гравитация",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
+    },
+    {
+      "id": "bcc306b0",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "electric",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:05:05.474639",
+      "thrust": 2062565.7523360886,
+      "specific_impulse": 313.9518442054037,
+      "power_requirement": 40961991.306698576,
+      "mass": 3284.283088239392,
+      "efficiency": 0.431149593982927,
+      "feasibility_score": 0.5306637262755349,
+      "gravity_theory_used": "Петлевая квантовая гравитация",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": false
+    },
+    {
+      "id": "a114e66a",
+      "name": "Гибридный гравитационно-электрический двигатель",
+      "description": "Комбинированный двигатель (гравитация + электричество)",
+      "engine_type": "hybrid",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:05:07.479094",
+      "thrust": 2628013.572535027,
+      "specific_impulse": 8421533.031624362,
+      "power_requirement": 17465220915.98114,
+      "mass": 2513.7366363276665,
+      "efficiency": 0.45926730632086726,
+      "feasibility_score": 0.3290058886622947,
+      "gravity_theory_used": "Петлевая квантовая гравитация",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "F_total = F_gravity + F_electric",
+        "η = P_out / P_in"
+      ],
+      "components": [
+        "Гравитационный модуль",
+        "Электрический ускоритель",
+        "Контроллер"
+      ],
+      "risks": [
+        "Взаимодействие полей",
+        "Перегрузка систем"
+      ],
+      "validated": false
+    },
+    {
+      "id": "f75f0f42",
+      "name": "Гравитационный двигатель",
+      "description": "Двигатель на основе управления гравитацией",
+      "engine_type": "gravity",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:05:29.643025",
+      "thrust": 171042.17590091017,
+      "specific_impulse": 603517092.0069239,
+      "power_requirement": 553092574228.763,
+      "mass": 718.5021325415337,
+      "efficiency": 0.2591069003010782,
+      "feasibility_score": 0.18672743945548742,
+      "gravity_theory_used": "Модифицированная ньютоновская динамика",
+      "electricity_theory_used": "Теория атмосферного потенциала",
+      "equations": [
+        "F = -∇Φ",
+        "g_μν = η_μν + h_μν"
+      ],
+      "components": [
+        "Гравитационный модулятор",
+        "Полевой генератор"
+      ],
+      "risks": [
+        "Неконтролируемая гравитация",
+        "Пространственные аномалии"
+      ],
+      "validated": true
+    },
+    {
+      "id": "183f678c",
+      "name": "Гравитационный двигатель",
+      "description": "Двигатель на основе управления гравитацией",
+      "engine_type": "gravity",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:05:31.648590",
+      "thrust": 809955.5441800617,
+      "specific_impulse": 742052670.6397136,
+      "power_requirement": 524572040331.5329,
+      "mass": 1769.9000631821311,
+      "efficiency": 0.17158820566466143,
+      "feasibility_score": 0.19796178339087755,
+      "gravity_theory_used": "Классическая гравитация Ньютона",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F = -∇Φ",
+        "g_μν = η_μν + h_μν"
+      ],
+      "components": [
+        "Гравитационный модулятор",
+        "Полевой генератор"
+      ],
+      "risks": [
+        "Неконтролируемая гравитация",
+        "Пространственные аномалии"
+      ],
+      "validated": false
+    },
+    {
+      "id": "dc41ae02",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "chemical",
+      "principle": "reaction",
+      "timestamp": "2026-07-11T22:05:33.653091",
+      "thrust": 3129882.9698972446,
+      "specific_impulse": 367.30559042291924,
+      "power_requirement": 68960468.23580986,
+      "mass": 9124.88095554214,
+      "efficiency": 0.34463268329966285,
+      "feasibility_score": 0.9912381069857622,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
+    },
+    {
+      "id": "36372314",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "photon",
+      "principle": "light_pressure",
+      "timestamp": "2026-07-11T22:05:35.656986",
+      "thrust": 3995742.663060474,
+      "specific_impulse": 384.51712858387316,
+      "power_requirement": 70199119.32581504,
+      "mass": 9258.91641788902,
+      "efficiency": 0.36329718150613205,
+      "feasibility_score": 0.6025487238380841,
+      "gravity_theory_used": "Общая теория относительности",
+      "electricity_theory_used": "Теория шаровой молнии",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": false
+    },
+    {
+      "id": "43e3055e",
+      "name": "Ионный двигатель",
+      "description": "Электрический двигатель с ионизацией газа",
+      "engine_type": "ion",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:05:37.675592",
+      "thrust": 0.8799819721844078,
+      "specific_impulse": 3820.980752626737,
+      "power_requirement": 9158.17385577483,
+      "mass": 36.99778693073591,
+      "efficiency": 0.7263763021975596,
+      "feasibility_score": 0.8262072077465616,
+      "gravity_theory_used": "Классическая гравитация Ньютона",
+      "electricity_theory_used": "Теория разряда молнии",
+      "equations": [
+        "F = q * E",
+        "I_sp = sqrt(2qV/m_i)"
+      ],
+      "components": [
+        "Ионизатор",
+        "Ускоритель",
+        "Нейтрализатор"
+      ],
+      "risks": [
+        "Эрозия сетки",
+        "Накопление заряда"
+      ],
+      "validated": true
+    },
+    {
+      "id": "1ad31bdc",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "electric",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:05:39.680632",
+      "thrust": 1188055.9552197987,
+      "specific_impulse": 376.9050753149758,
+      "power_requirement": 71139497.9986655,
+      "mass": 1835.7539467667,
+      "efficiency": 0.4952786465333062,
+      "feasibility_score": 0.4583442417594282,
+      "gravity_theory_used": "Антигравитационный двигатель",
+      "electricity_theory_used": "Теория разряда молнии",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
+    },
+    {
+      "id": "2ae62225",
+      "name": "Гравитационный двигатель",
+      "description": "Двигатель на основе управления гравитацией",
+      "engine_type": "gravity",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:05:57.150592",
+      "thrust": 212254.89135483096,
+      "specific_impulse": 250019211.05964166,
+      "power_requirement": 584930817544.6005,
+      "mass": 150.26623442526903,
+      "efficiency": 0.10057812065150329,
+      "feasibility_score": 0.21346054579096965,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F = -∇Φ",
+        "g_μν = η_μν + h_μν"
+      ],
+      "components": [
+        "Гравитационный модулятор",
+        "Полевой генератор"
+      ],
+      "risks": [
+        "Неконтролируемая гравитация",
+        "Пространственные аномалии"
+      ],
+      "validated": true
+    },
+    {
+      "id": "d5b1c23f",
+      "name": "Антигравитационный двигатель",
+      "description": "Двигатель на основе антигравитации",
+      "engine_type": "anti_gravity",
+      "principle": "space_time",
+      "timestamp": "2026-07-11T22:05:59.154769",
+      "thrust": 65930767.80719078,
+      "specific_impulse": Infinity,
+      "power_requirement": 442435343539507.75,
+      "mass": 696.0970397050917,
+      "efficiency": 0.4638601813651212,
+      "feasibility_score": 0.10326879618094026,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "F_anti = -G * m1 * m2 / r^2",
+        "Λ > 0"
+      ],
+      "components": [
+        "Антигравитационный генератор",
+        "Стабилизатор"
+      ],
+      "risks": [
+        "Пространственно-временные искажения",
+        "Энергетический коллапс"
+      ],
+      "validated": false
+    },
+    {
+      "id": "ab170a40",
+      "name": "Плазменный двигатель VASIMR",
+      "description": "Двигатель с плазменным ускорением",
+      "engine_type": "plasma",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:06:01.160232",
+      "thrust": 40.23991270705328,
+      "specific_impulse": 5717.74482271387,
+      "power_requirement": 9400927.75873778,
+      "mass": 862.3168291260699,
+      "efficiency": 0.7311104524801084,
+      "feasibility_score": 0.7333267710389744,
+      "gravity_theory_used": "Модифицированная ньютоновская динамика",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "P = n k T",
+        "F = ṁ * v_exhaust"
+      ],
+      "components": [
+        "RF антенна",
+        "Магнитное сопло",
+        "Ионизатор"
+      ],
+      "risks": [
+        "Перегрев",
+        "Потери плазмы"
+      ],
+      "validated": true
+    },
+    {
+      "id": "ac59402a",
+      "name": "Ионный двигатель",
+      "description": "Электрический двигатель с ионизацией газа",
+      "engine_type": "ion",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:06:03.164069",
+      "thrust": 0.052146612254762,
+      "specific_impulse": 4586.452719742307,
+      "power_requirement": 83039.94838705483,
+      "mass": 76.46683747994183,
+      "efficiency": 0.6777036628084292,
+      "feasibility_score": 0.9317517115533079,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Теория разряда молнии",
+      "equations": [
+        "F = q * E",
+        "I_sp = sqrt(2qV/m_i)"
+      ],
+      "components": [
+        "Ионизатор",
+        "Ускоритель",
+        "Нейтрализатор"
+      ],
+      "risks": [
+        "Эрозия сетки",
+        "Накопление заряда"
+      ],
+      "validated": false
+    },
+    {
+      "id": "4f7b9495",
+      "name": "Ионный двигатель",
+      "description": "Электрический двигатель с ионизацией газа",
+      "engine_type": "ion",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:06:05.182913",
+      "thrust": 0.04310760042646903,
+      "specific_impulse": 4880.534242662562,
+      "power_requirement": 16930.31680613033,
+      "mass": 23.070120504049292,
+      "efficiency": 0.6750938190408181,
+      "feasibility_score": 0.9110406046006452,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F = q * E",
+        "I_sp = sqrt(2qV/m_i)"
+      ],
+      "components": [
+        "Ионизатор",
+        "Ускоритель",
+        "Нейтрализатор"
+      ],
+      "risks": [
+        "Эрозия сетки",
+        "Накопление заряда"
+      ],
+      "validated": true
+    },
+    {
+      "id": "9e12b80c",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "chemical",
+      "principle": "reaction",
+      "timestamp": "2026-07-11T22:06:07.189343",
+      "thrust": 9506728.901030468,
+      "specific_impulse": 253.6895884243545,
+      "power_requirement": 34115257.88232257,
+      "mass": 1505.291238812894,
+      "efficiency": 0.4730097756550723,
+      "feasibility_score": 1.0160507285353548,
+      "gravity_theory_used": "Модифицированная ньютоновская динамика",
+      "electricity_theory_used": "Теория атмосферного потенциала",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": false
+    },
+    {
+      "id": "bd0a2555",
+      "name": "Ионный двигатель",
+      "description": "Электрический двигатель с ионизацией газа",
+      "engine_type": "ion",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:06:30.314410",
+      "thrust": 0.7296183612641378,
+      "specific_impulse": 3775.5977721625195,
+      "power_requirement": 7946.555334373324,
+      "mass": 41.52612487418415,
+      "efficiency": 0.6387995173295423,
+      "feasibility_score": 0.8893363931405475,
+      "gravity_theory_used": "Петлевая квантовая гравитация",
+      "electricity_theory_used": "Теория шаровой молнии",
+      "equations": [
+        "F = q * E",
+        "I_sp = sqrt(2qV/m_i)"
+      ],
+      "components": [
+        "Ионизатор",
+        "Ускоритель",
+        "Нейтрализатор"
+      ],
+      "risks": [
+        "Эрозия сетки",
+        "Накопление заряда"
+      ],
+      "validated": false
+    },
+    {
+      "id": "8932d782",
+      "name": "Молниевый двигатель",
+      "description": "Двигатель на энергии атмосферных разрядов",
+      "engine_type": "lightning",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:06:32.320060",
+      "thrust": 92131.98008041622,
+      "specific_impulse": 834927.034529312,
+      "power_requirement": 676569611627.4106,
+      "mass": 942.7477892163361,
+      "efficiency": 0.4669762977028819,
+      "feasibility_score": 0.2664971749586283,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Теория шаровой молнии",
+      "equations": [
+        "E = V * I * t",
+        "F = dP/dt"
+      ],
+      "components": [
+        "Накопитель молний",
+        "Разрядник",
+        "Ускоритель"
+      ],
+      "risks": [
+        "Неконтролируемые разряды",
+        "Перегрузка"
+      ],
+      "validated": false
+    },
+    {
+      "id": "b42798d6",
+      "name": "Гравитационный двигатель",
+      "description": "Двигатель на основе управления гравитацией",
+      "engine_type": "gravity",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:06:34.325072",
+      "thrust": 933134.6174290483,
+      "specific_impulse": 437928673.8562384,
+      "power_requirement": 441249094403.06635,
+      "mass": 1317.0318769396306,
+      "efficiency": 0.32609524940313106,
+      "feasibility_score": 0.18226653553620234,
+      "gravity_theory_used": "Классическая гравитация Ньютона",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "F = -∇Φ",
+        "g_μν = η_μν + h_μν"
+      ],
+      "components": [
+        "Гравитационный модулятор",
+        "Полевой генератор"
+      ],
+      "risks": [
+        "Неконтролируемая гравитация",
+        "Пространственные аномалии"
+      ],
+      "validated": true
+    },
+    {
+      "id": "5ae87abb",
+      "name": "Молниевый двигатель",
+      "description": "Двигатель на энергии атмосферных разрядов",
+      "engine_type": "lightning",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:06:36.334255",
+      "thrust": 41656.25853382869,
+      "specific_impulse": 522833.24675323936,
+      "power_requirement": 91542599983.00153,
+      "mass": 1946.6843349732083,
+      "efficiency": 0.5366607203435332,
+      "feasibility_score": 0.24473818355270913,
+      "gravity_theory_used": "Общая теория относительности",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "E = V * I * t",
+        "F = dP/dt"
+      ],
+      "components": [
+        "Накопитель молний",
+        "Разрядник",
+        "Ускоритель"
+      ],
+      "risks": [
+        "Неконтролируемые разряды",
+        "Перегрузка"
+      ],
+      "validated": true
+    },
+    {
+      "id": "377277c8",
+      "name": "Антигравитационный двигатель",
+      "description": "Двигатель на основе антигравитации",
+      "engine_type": "anti_gravity",
+      "principle": "space_time",
+      "timestamp": "2026-07-11T22:06:38.355724",
+      "thrust": 33146373.80609491,
+      "specific_impulse": Infinity,
+      "power_requirement": 462390982200103.75,
+      "mass": 376.8395802831978,
+      "efficiency": 0.2372694955219279,
+      "feasibility_score": 0.09961055166686353,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F_anti = -G * m1 * m2 / r^2",
+        "Λ > 0"
+      ],
+      "components": [
+        "Антигравитационный генератор",
+        "Стабилизатор"
+      ],
+      "risks": [
+        "Пространственно-временные искажения",
+        "Энергетический коллапс"
+      ],
+      "validated": false
+    },
+    {
+      "id": "6ae4772d",
+      "name": "Гибридный гравитационно-электрический двигатель",
+      "description": "Комбинированный двигатель (гравитация + электричество)",
+      "engine_type": "hybrid",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:06:40.361511",
+      "thrust": 9153684.92461977,
+      "specific_impulse": 29154817.37558354,
+      "power_requirement": 17859541377.34732,
+      "mass": 2158.566271224826,
+      "efficiency": 0.5627705510805744,
+      "feasibility_score": 0.279326913385333,
+      "gravity_theory_used": "Классическая гравитация Ньютона",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "F_total = F_gravity + F_electric",
+        "η = P_out / P_in"
+      ],
+      "components": [
+        "Гравитационный модуль",
+        "Электрический ускоритель",
+        "Контроллер"
+      ],
+      "risks": [
+        "Взаимодействие полей",
+        "Перегрузка систем"
+      ],
+      "validated": true
+    },
+    {
+      "id": "c1fc6cf1",
+      "name": "Гравитационный двигатель",
+      "description": "Двигатель на основе управления гравитацией",
+      "engine_type": "gravity",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:06:42.366994",
+      "thrust": 985086.3078692198,
+      "specific_impulse": 305772460.44492644,
+      "power_requirement": 650504496672.7753,
+      "mass": 1662.6080685843408,
+      "efficiency": 0.14659203321801453,
+      "feasibility_score": 0.2022953537308279,
+      "gravity_theory_used": "Петлевая квантовая гравитация",
+      "electricity_theory_used": "Теория разряда молнии",
+      "equations": [
+        "F = -∇Φ",
+        "g_μν = η_μν + h_μν"
+      ],
+      "components": [
+        "Гравитационный модулятор",
+        "Полевой генератор"
+      ],
+      "risks": [
+        "Неконтролируемая гравитация",
+        "Пространственные аномалии"
+      ],
+      "validated": false
+    },
+    {
+      "id": "4b509d11",
+      "name": "Антигравитационный двигатель",
+      "description": "Двигатель на основе антигравитации",
+      "engine_type": "anti_gravity",
+      "principle": "space_time",
+      "timestamp": "2026-07-11T22:14:15.283082",
+      "thrust": 17586415.32706923,
+      "specific_impulse": Infinity,
+      "power_requirement": 24516103860868.523,
+      "mass": 654.4445149185632,
+      "efficiency": 0.2347088167785489,
+      "feasibility_score": 0.10707613289291472,
+      "gravity_theory_used": "Классическая гравитация Ньютона",
+      "electricity_theory_used": "Теория разряда молнии",
+      "equations": [
+        "F_anti = -G * m1 * m2 / r^2",
+        "Λ > 0"
+      ],
+      "components": [
+        "Антигравитационный генератор",
+        "Стабилизатор"
+      ],
+      "risks": [
+        "Пространственно-временные искажения",
+        "Энергетический коллапс"
+      ],
+      "validated": false
+    },
+    {
+      "id": "7c82204e",
+      "name": "Гравитационный двигатель",
+      "description": "Двигатель на основе управления гравитацией",
+      "engine_type": "gravity",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:15:02.002353",
+      "thrust": 320841.5715697385,
+      "specific_impulse": 63129125.24069061,
+      "power_requirement": 590356042224.8354,
+      "mass": 4408.960732283306,
+      "efficiency": 0.2549007664659029,
+      "feasibility_score": 0.21249031875198324,
+      "gravity_theory_used": "Классическая гравитация Ньютона",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F = -∇Φ",
+        "g_μν = η_μν + h_μν"
+      ],
+      "components": [
+        "Гравитационный модулятор",
+        "Полевой генератор"
+      ],
+      "risks": [
+        "Неконтролируемая гравитация",
+        "Пространственные аномалии"
+      ],
+      "validated": true
+    },
+    {
+      "id": "3d7a6c9c",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "chemical",
+      "principle": "reaction",
+      "timestamp": "2026-07-11T22:15:04.011107",
+      "thrust": 9995371.135074893,
+      "specific_impulse": 342.84568342377094,
+      "power_requirement": 67649224.03996497,
+      "mass": 9339.342281320482,
+      "efficiency": 0.469610210456348,
+      "feasibility_score": 0.8876287740542744,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
+    },
+    {
+      "id": "a309c797",
+      "name": "Гибридный гравитационно-электрический двигатель",
+      "description": "Комбинированный двигатель (гравитация + электричество)",
+      "engine_type": "hybrid",
+      "principle": "gravitational",
+      "timestamp": "2026-07-11T22:15:06.015750",
+      "thrust": 6832970.7253960725,
+      "specific_impulse": 75691662.11380866,
+      "power_requirement": 82882499827.32314,
+      "mass": 1187.3245167862235,
+      "efficiency": 0.5587449540783179,
+      "feasibility_score": 0.27602431081784035,
+      "gravity_theory_used": "Общая теория относительности",
+      "electricity_theory_used": "Классическая электродинамика Максвелла",
+      "equations": [
+        "F_total = F_gravity + F_electric",
+        "η = P_out / P_in"
+      ],
+      "components": [
+        "Гравитационный модуль",
+        "Электрический ускоритель",
+        "Контроллер"
+      ],
+      "risks": [
+        "Взаимодействие полей",
+        "Перегрузка систем"
+      ],
+      "validated": false
+    },
+    {
+      "id": "a9ff9419",
+      "name": "Плазменный двигатель VASIMR",
+      "description": "Двигатель с плазменным ускорением",
+      "engine_type": "plasma",
+      "principle": "electromagnetic",
+      "timestamp": "2026-07-11T22:15:08.020463",
+      "thrust": 58.449107014444216,
+      "specific_impulse": 8286.510308078658,
+      "power_requirement": 964999.7704177594,
+      "mass": 442.3672250714311,
+      "efficiency": 0.751930214458312,
+      "feasibility_score": 0.6767171053395976,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Теория шаровой молнии",
+      "equations": [
+        "P = n k T",
+        "F = ṁ * v_exhaust"
+      ],
+      "components": [
+        "RF антенна",
+        "Магнитное сопло",
+        "Ионизатор"
+      ],
+      "risks": [
+        "Перегрев",
+        "Потери плазмы"
+      ],
+      "validated": true
+    },
+    {
+      "id": "837cfb23",
+      "name": "Химический ракетный двигатель",
+      "description": "Классический двигатель на химическом топливе",
+      "engine_type": "chemical",
+      "principle": "reaction",
+      "timestamp": "2026-07-11T22:15:10.039600",
+      "thrust": 9675829.577123526,
+      "specific_impulse": 429.4730182827087,
+      "power_requirement": 86637095.84166853,
+      "mass": 1680.2730965735957,
+      "efficiency": 0.46407634754410054,
+      "feasibility_score": 0.9978359568077416,
+      "gravity_theory_used": "Теория всего",
+      "electricity_theory_used": "Теория спрайтов и джетов",
+      "equations": [
+        "F = ṁ * v_e",
+        "I_sp = v_e / g_0"
+      ],
+      "components": [
+        "Камера сгорания",
+        "Сопло",
+        "Турбонасос"
+      ],
+      "risks": [
+        "Взрыв топлива",
+        "Перегрев"
+      ],
+      "validated": true
     }
   ],
-  "updated": "2026-07-10T15:49:02.209373"
+  "updated": "2026-07-11T22:15:10.040600"
 }

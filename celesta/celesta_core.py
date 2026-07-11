@@ -42,6 +42,11 @@ class CelestaCore:
         self.project_root = Path(project_root)
         self.demo_mode = demo_mode
         
+        # === Автономность ===
+        self.max_autonomy_level = "L3"        # L0-L4
+        self.autonomy_level = "L0"            # текущий уровень
+        self.require_confirmation_above = "L2"  # выше этого уровня — запрос подтверждения
+        
         # Директория данных
         self.data_dir = self.project_root / "data" / "celesta"
         self.data_dir.mkdir(parents=True, exist_ok=True)

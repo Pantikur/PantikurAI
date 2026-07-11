@@ -220,7 +220,765 @@
       "scientific_value": 0.6652871657204971,
       "validated": false,
       "source": "original"
+    },
+    {
+      "id": "e06f45ba",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:04:38.411456",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.7007470224145701,
+      "scientific_value": 0.5238234341287183,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "e0319274",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:04:40.416760",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.7976531540811629,
+      "scientific_value": 0.7640615440063581,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "2fb158aa",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:04:56.404221",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.700494421389156,
+      "scientific_value": 0.5210580572788552,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "d48dd514",
+      "name": "Теория разряда молнии",
+      "description": "Механизм формирования молнии",
+      "category": "lightning",
+      "timestamp": "2026-07-11T22:04:58.408904",
+      "equations": [
+        "E_breakdown = 3×10⁶ В/м",
+        "I = V/R"
+      ],
+      "predictions": [
+        "Лидеры",
+        "Обратный разряд"
+      ],
+      "experimental_evidence": [
+        "Фотографии молний",
+        "Измерения тока"
+      ],
+      "compatibility_score": 0.629902572713477,
+      "scientific_value": 0.5867639585666836,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "dcb2b9bd",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:05:00.418774",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.8711208845210079,
+      "scientific_value": 0.6458358559774622,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "6bffe471",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:05:02.426790",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.9312621967254424,
+      "scientific_value": 0.5052017511904949,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "1caf7941",
+      "name": "Теория спрайтов и джетов",
+      "description": "Верхнеатмосферные разряды",
+      "category": "sprites",
+      "timestamp": "2026-07-11T22:05:04.434864",
+      "equations": [
+        "E_ionosphere = V/d"
+      ],
+      "predictions": [
+        "Красные спрайты",
+        "Синие джеты"
+      ],
+      "experimental_evidence": [
+        "Спутниковые наблюдения"
+      ],
+      "compatibility_score": 0.6573637694513921,
+      "scientific_value": 0.5563502675747501,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "228b44f8",
+      "name": "Теория разряда молнии",
+      "description": "Механизм формирования молнии",
+      "category": "lightning",
+      "timestamp": "2026-07-11T22:05:06.446200",
+      "equations": [
+        "E_breakdown = 3×10⁶ В/м",
+        "I = V/R"
+      ],
+      "predictions": [
+        "Лидеры",
+        "Обратный разряд"
+      ],
+      "experimental_evidence": [
+        "Фотографии молний",
+        "Измерения тока"
+      ],
+      "compatibility_score": 0.8747433394247737,
+      "scientific_value": 0.7953932029204305,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "b9267665",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:05:28.608865",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.7756002619743728,
+      "scientific_value": 0.8599649084979404,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "69cd3220",
+      "name": "Сбор энергии молний",
+      "description": "Технологии захвата энергии разрядов",
+      "category": "harvesting",
+      "timestamp": "2026-07-11T22:05:30.614029",
+      "equations": [
+        "E = ∫V·I·dt",
+        "C = Q/V"
+      ],
+      "predictions": [
+        "Конденсаторы высокой ёмкости",
+        "Накопители"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные установки"
+      ],
+      "compatibility_score": 0.6035567950059995,
+      "scientific_value": 0.8944818432343165,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "9d5b2796",
+      "name": "Теория спрайтов и джетов",
+      "description": "Верхнеатмосферные разряды",
+      "category": "sprites",
+      "timestamp": "2026-07-11T22:05:32.628455",
+      "equations": [
+        "E_ionosphere = V/d"
+      ],
+      "predictions": [
+        "Красные спрайты",
+        "Синие джеты"
+      ],
+      "experimental_evidence": [
+        "Спутниковые наблюдения"
+      ],
+      "compatibility_score": 0.7408160814321358,
+      "scientific_value": 0.5471078096365403,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "a8d8a6b6",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:05:34.638947",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.9182426358540273,
+      "scientific_value": 0.6740386725062383,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "6b9fc70c",
+      "name": "Теория разряда молнии",
+      "description": "Механизм формирования молнии",
+      "category": "lightning",
+      "timestamp": "2026-07-11T22:05:36.646999",
+      "equations": [
+        "E_breakdown = 3×10⁶ В/м",
+        "I = V/R"
+      ],
+      "predictions": [
+        "Лидеры",
+        "Обратный разряд"
+      ],
+      "experimental_evidence": [
+        "Фотографии молний",
+        "Измерения тока"
+      ],
+      "compatibility_score": 0.6986438876940375,
+      "scientific_value": 0.6442796851890786,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "02baf862",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:05:38.656604",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.7192544928510369,
+      "scientific_value": 0.9025229072276744,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "ac57388a",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:05:56.113705",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.7288496951181522,
+      "scientific_value": 0.5913004682015961,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "846fd75d",
+      "name": "Сбор энергии молний",
+      "description": "Технологии захвата энергии разрядов",
+      "category": "harvesting",
+      "timestamp": "2026-07-11T22:05:58.121552",
+      "equations": [
+        "E = ∫V·I·dt",
+        "C = Q/V"
+      ],
+      "predictions": [
+        "Конденсаторы высокой ёмкости",
+        "Накопители"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные установки"
+      ],
+      "compatibility_score": 0.7733722968273449,
+      "scientific_value": 0.8239386767593997,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "d5b6267d",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:06:00.133007",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.7723816424280059,
+      "scientific_value": 0.6346534966948691,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "b40e8fd4",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:06:02.139592",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.8481751515875808,
+      "scientific_value": 0.5877420821030371,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "07b21ce4",
+      "name": "Теория разряда молнии",
+      "description": "Механизм формирования молнии",
+      "category": "lightning",
+      "timestamp": "2026-07-11T22:06:04.147692",
+      "equations": [
+        "E_breakdown = 3×10⁶ В/м",
+        "I = V/R"
+      ],
+      "predictions": [
+        "Лидеры",
+        "Обратный разряд"
+      ],
+      "experimental_evidence": [
+        "Фотографии молний",
+        "Измерения тока"
+      ],
+      "compatibility_score": 0.6075657128769888,
+      "scientific_value": 0.9271775231280475,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "739e018a",
+      "name": "Управление молниями",
+      "description": "Методы контроля разрядов",
+      "category": "control",
+      "timestamp": "2026-07-11T22:06:06.158924",
+      "equations": [
+        "E_laser = E_breakdown"
+      ],
+      "predictions": [
+        "Лазерная ионизация",
+        "Направленные разряды"
+      ],
+      "experimental_evidence": [
+        "Эксперименты с лазерами"
+      ],
+      "compatibility_score": 0.7868570128590899,
+      "scientific_value": 0.6933294194151935,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "23a3ceac",
+      "name": "Управление молниями",
+      "description": "Методы контроля разрядов",
+      "category": "control",
+      "timestamp": "2026-07-11T22:06:29.274966",
+      "equations": [
+        "E_laser = E_breakdown"
+      ],
+      "predictions": [
+        "Лазерная ионизация",
+        "Направленные разряды"
+      ],
+      "experimental_evidence": [
+        "Эксперименты с лазерами"
+      ],
+      "compatibility_score": 0.7972186044035567,
+      "scientific_value": 0.926154812659258,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "0f0de738",
+      "name": "Классическая электродинамика Максвелла",
+      "description": "Уравнения электромагнитного поля",
+      "category": "classical",
+      "timestamp": "2026-07-11T22:06:31.282007",
+      "equations": [
+        "∇·E = ρ/ε₀",
+        "∇×E = -∂B/∂t"
+      ],
+      "predictions": [
+        "Электромагнитные волны",
+        "Излучение"
+      ],
+      "experimental_evidence": [
+        "Эксперименты Герца"
+      ],
+      "compatibility_score": 0.8230936089494414,
+      "scientific_value": 0.5072592859778795,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "1c89afb4",
+      "name": "Теория разряда молнии",
+      "description": "Механизм формирования молнии",
+      "category": "lightning",
+      "timestamp": "2026-07-11T22:06:33.292819",
+      "equations": [
+        "E_breakdown = 3×10⁶ В/м",
+        "I = V/R"
+      ],
+      "predictions": [
+        "Лидеры",
+        "Обратный разряд"
+      ],
+      "experimental_evidence": [
+        "Фотографии молний",
+        "Измерения тока"
+      ],
+      "compatibility_score": 0.6467640239389572,
+      "scientific_value": 0.9306692137215413,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "548009cf",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:06:35.301150",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.7385224372690422,
+      "scientific_value": 0.5566451114872103,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "48b3e2a9",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:06:37.307569",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.7637853147746956,
+      "scientific_value": 0.5007587822889003,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "02f580c0",
+      "name": "Сбор энергии молний",
+      "description": "Технологии захвата энергии разрядов",
+      "category": "harvesting",
+      "timestamp": "2026-07-11T22:06:39.320441",
+      "equations": [
+        "E = ∫V·I·dt",
+        "C = Q/V"
+      ],
+      "predictions": [
+        "Конденсаторы высокой ёмкости",
+        "Накопители"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные установки"
+      ],
+      "compatibility_score": 0.9249545979293068,
+      "scientific_value": 0.7783908553539785,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "476b69c6",
+      "name": "Сбор энергии молний",
+      "description": "Технологии захвата энергии разрядов",
+      "category": "harvesting",
+      "timestamp": "2026-07-11T22:06:41.327742",
+      "equations": [
+        "E = ∫V·I·dt",
+        "C = Q/V"
+      ],
+      "predictions": [
+        "Конденсаторы высокой ёмкости",
+        "Накопители"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные установки"
+      ],
+      "compatibility_score": 0.7987314623567935,
+      "scientific_value": 0.7400644172284635,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "4fbd1d9c",
+      "name": "Сбор энергии молний",
+      "description": "Технологии захвата энергии разрядов",
+      "category": "harvesting",
+      "timestamp": "2026-07-11T22:14:15.249084",
+      "equations": [
+        "E = ∫V·I·dt",
+        "C = Q/V"
+      ],
+      "predictions": [
+        "Конденсаторы высокой ёмкости",
+        "Накопители"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные установки"
+      ],
+      "compatibility_score": 0.647310242276846,
+      "scientific_value": 0.8831697558105431,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "e549b8ab",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:15:01.963335",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.7476260730336656,
+      "scientific_value": 0.6128985557067989,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "376bc76a",
+      "name": "Теория атмосферного потенциала",
+      "description": "Глобальная электрическая цепь атмосферы",
+      "category": "atmospheric",
+      "timestamp": "2026-07-11T22:15:03.970455",
+      "equations": [
+        "J = σE",
+        "∇·J = -∂ρ/∂t"
+      ],
+      "predictions": [
+        "Ионосферный потенциал",
+        "Токи утечки"
+      ],
+      "experimental_evidence": [
+        "Измерения потенциала"
+      ],
+      "compatibility_score": 0.8731579583355125,
+      "scientific_value": 0.5301310268484654,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "355330d1",
+      "name": "Теория спрайтов и джетов",
+      "description": "Верхнеатмосферные разряды",
+      "category": "sprites",
+      "timestamp": "2026-07-11T22:15:05.976210",
+      "equations": [
+        "E_ionosphere = V/d"
+      ],
+      "predictions": [
+        "Красные спрайты",
+        "Синие джеты"
+      ],
+      "experimental_evidence": [
+        "Спутниковые наблюдения"
+      ],
+      "compatibility_score": 0.8035530804749293,
+      "scientific_value": 0.5946275092503752,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "7229cec5",
+      "name": "Теория атмосферного потенциала",
+      "description": "Глобальная электрическая цепь атмосферы",
+      "category": "atmospheric",
+      "timestamp": "2026-07-11T22:15:07.980926",
+      "equations": [
+        "J = σE",
+        "∇·J = -∂ρ/∂t"
+      ],
+      "predictions": [
+        "Ионосферный потенциал",
+        "Токи утечки"
+      ],
+      "experimental_evidence": [
+        "Измерения потенциала"
+      ],
+      "compatibility_score": 0.9459966344277435,
+      "scientific_value": 0.5499314082419289,
+      "validated": false,
+      "source": "original"
+    },
+    {
+      "id": "46820af3",
+      "name": "Сбор энергии молний",
+      "description": "Технологии захвата энергии разрядов",
+      "category": "harvesting",
+      "timestamp": "2026-07-11T22:15:09.986998",
+      "equations": [
+        "E = ∫V·I·dt",
+        "C = Q/V"
+      ],
+      "predictions": [
+        "Конденсаторы высокой ёмкости",
+        "Накопители"
+      ],
+      "experimental_evidence": [
+        "Экспериментальные установки"
+      ],
+      "compatibility_score": 0.7320311468584172,
+      "scientific_value": 0.7926429309110106,
+      "validated": true,
+      "source": "original"
+    },
+    {
+      "id": "2c9166cc",
+      "name": "Теория шаровой молнии",
+      "description": "Природа шаровой молнии",
+      "category": "ball_lightning",
+      "timestamp": "2026-07-11T22:15:11.993402",
+      "equations": [
+        "E = mc²",
+        "P = nRT/V"
+      ],
+      "predictions": [
+        "Стабильная плазма",
+        "Химические реакции"
+      ],
+      "experimental_evidence": [
+        "Наблюдения",
+        "Видео"
+      ],
+      "compatibility_score": 0.6890932582578562,
+      "scientific_value": 0.5971324543297412,
+      "validated": false,
+      "source": "original"
     }
   ],
-  "updated": "2026-07-10T15:52:18.191531"
+  "updated": "2026-07-11T22:15:11.994399"
 }
