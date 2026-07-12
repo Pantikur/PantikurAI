@@ -67,6 +67,9 @@ COPY Wuglarst/ ./Wuglarst/
 COPY utils/ ./utils/
 COPY data/ ./data/
 COPY models/ ./models/
+COPY web_researcher.py ./
+COPY web_researcher_demo.py ./
+COPY web_researcher_README.md ./
 
 # === КОПИРУЕМ ВСЕ МОДУЛИ УЧЁНЫХ (12 девочек) ===
 COPY hanako/ ./hanako/
