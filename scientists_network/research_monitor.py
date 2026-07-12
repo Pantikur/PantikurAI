@@ -650,6 +650,16 @@ class ResearchMonitor:
         except Exception as e:
             self.logger.warning(f"⚠️ Ядро Наото не загружено: {e}")
         
+        try:
+            from ayiko.engine import Ayiko
+            from ayiko.engine.config import AyikoConfig
+            ayiko_config = AyikoConfig()
+            ayiko_core = Ayiko(ayiko_config)
+            self.cores["ayiko"] = ScientistCoreProxy("Ayiko", Ayiko, ayiko_config)
+            self.logger.info("✅ Ядро Айко (чтение книг, обучение модели) — с интернетом")
+        except Exception as e:
+            self.logger.warning(f"⚠️ Ядро Айко не загружено: {e}")
+        
         self._initialized = True
         self.logger.info(f"📊 Инициализировано ядер: {len(self.cores)}")
     

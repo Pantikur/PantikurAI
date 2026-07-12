@@ -78,12 +78,18 @@ class UniversalAnalyzer:
         '.jar', '.class', '.dll', '.so', '.dylib',  # Бинарные
         '.bin', '.dat', '.db', '.sqlite',  # Бинарные данные
         '.pkl', '.pickle', '.serial',  # Python pickle
+        # 🧠 ML-модели (нейросети, веса)
+        '.pth', '.pt', '.onnx', '.h5', '.keras', '.pb', '.tflite', '.safetensors',  # PyTorch, ONNX, TensorFlow
+        # Изображения
         '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.svg',  # Изображения
+        # Медиа
         '.mp3', '.mp4', '.avi', '.mov', '.wav',  # Медиа
+        # Архивы
         '.zip', '.tar', '.gz', '.rar', '.7z',  # Архивы
+        # Исполняемые
         '.exe', '.msi', '.dmg', '.apk',  # Исполняемые
+        # Объектные файлы
         '.o', '.a', '.lib',  # Объектные файлы
-        '.class',  # Java bytecode
     }
 
     def __init__(self, config: NobukaConfig):

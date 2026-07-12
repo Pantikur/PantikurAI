@@ -34,6 +34,7 @@ from nobuka.engine.code_analyzer import CodeAnalyzer
 from nobuka.engine.test_runner import TestRunner
 from nobuka.engine.web_access import NobukaWebAccess
 from nobuka.engine.universal_analyzer import UniversalAnalyzer
+from nobuka.engine.ml_optimizer import MLOptimizer
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
@@ -92,6 +93,7 @@ class NobukaCore:
         # Анализатор и тестировщик
         self.code_analyzer = CodeAnalyzer(self.config)
         self.universal_analyzer = UniversalAnalyzer(self.config)
+        self.ml_optimizer = MLOptimizer(self.config)
         self.test_runner = TestRunner(self.config)
         self.web_access = NobukaWebAccess(self.config)
 
@@ -253,6 +255,10 @@ class NobukaCore:
         # 8. Обработка запросов от учёных (каждые 5 циклов)
         if self.cycle_count % 5 == 0:
             self._handle_scientist_requests()
+        
+        # 9. ML-оптимизация (каждые 10 циклов)
+        if self.cycle_count % 10 == 0:
+            self._optimize_ml_pipeline()
 
         self.logger.info(f"Цикл {self.cycle_count} завершён")
 
@@ -480,6 +486,27 @@ class NobukaCore:
             f.write(human_report)
         
         self.logger.info(f"📄 Отчёт сохранён: {self.config.state_dir / 'project_report.txt'}")
+
+    def _optimize_ml_pipeline(self):
+        """Оптимизация процесса машинного обучения."""
+        self.logger.info("🧠 Запуск ML-оптимизации...")
+        
+        # Запуск ML-оптимизатора
+        report = self.ml_optimizer.analyze_and_optimize()
+        
+        # Сохранение отчёта
+        ml_report_path = self.config.state_dir / "ml_optimization_report.json"
+        with open(ml_report_path, "w", encoding="utf-8") as f:
+            json.dump(report, f, ensure_ascii=False, indent=2)
+        
+        # Генерация и сохранение человекочитаемого отчёта
+        human_report = self.ml_optimizer.generate_optimization_report(report)
+        ml_report_txt = self.config.state_dir / "ml_optimization_report.txt"
+        with open(ml_report_txt, "w", encoding="utf-8") as f:
+            f.write(human_report)
+        
+        self.logger.info(f"📄 ML-отчёт сохранён: {ml_report_txt}")
+        self.logger.info(f"✅ Применено оптимизаций: {len(report.get('optimizations', []))}")
 
     def _scan_files(self, dir_path: Path) -> list[Path]:
         """Сканировать файлы в директории."""

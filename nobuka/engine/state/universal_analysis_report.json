@@ -1,14 +1,14 @@
 {
-  "total_files": 659,
+  "total_files": 660,
   "by_extension": {
     ".jsonl": 215,
     ".py": 191,
-    ".json": 116,
+    ".json": 117,
     ".md": 87,
     ".log": 15,
     "(no extension)": 9,
+    ".txt": 6,
     ".yaml": 5,
-    ".txt": 5,
     ".html": 3,
     ".kt": 2,
     ".backup": 2,
@@ -16,17 +16,16 @@
     ".example": 1,
     ".yml": 1,
     ".bat": 1,
-    ".pth": 1,
     ".best": 1,
     ".jsonl,": 1,
     ".bak": 1
   },
   "by_size": {
     "< 1KB": 60,
-    "1-10KB": 239,
+    "1-10KB": 240,
     "10-100KB": 329,
-    "100KB-1MB": 24,
-    "> 1MB": 7
+    "100KB-1MB": 25,
+    "> 1MB": 6
   },
   "issues": [
     {
@@ -1011,13 +1010,13 @@
     {
       "path": "nobuka\\engine\\universal_analyzer.py",
       "extension": ".py",
-      "size": 22618,
-      "lines": 602,
+      "size": 22907,
+      "lines": 608,
       "issues": [
         {
           "type": "large_file",
           "severity": "warning",
-          "message": "Файл слишком большой: 602 строк"
+          "message": "Файл слишком большой: 608 строк"
         },
         {
           "type": "trailing_whitespace",
@@ -1628,7 +1627,7 @@
       ]
     }
   ],
-  "text_files_analyzed": 424,
+  "text_files_analyzed": 426,
   "python_files": [
     {
       "path": "add_anatomy_knowledge.py",
@@ -2985,13 +2984,13 @@
     {
       "path": "nobuka\\engine\\universal_analyzer.py",
       "extension": ".py",
-      "size": 22618,
-      "lines": 602,
+      "size": 22907,
+      "lines": 608,
       "issues": [
         {
           "type": "large_file",
           "severity": "warning",
-          "message": "Файл слишком большой: 602 строк"
+          "message": "Файл слишком большой: 608 строк"
         },
         {
           "type": "trailing_whitespace",
@@ -4556,6 +4555,13 @@
       "issues": []
     },
     {
+      "path": "nobuka\\engine\\state\\universal_analysis_report.json",
+      "extension": ".json",
+      "size": 145891,
+      "lines": 5832,
+      "issues": []
+    },
+    {
       "path": "nobuka\\engine\\state\\web_cache.json",
       "extension": ".json",
       "size": 1570,
@@ -5085,8 +5091,8 @@
     {
       "path": "nobuka\\README.md",
       "extension": ".md",
-      "size": 12106,
-      "lines": 275,
+      "size": 13951,
+      "lines": 310,
       "issues": []
     },
     {
@@ -5711,13 +5717,6 @@
       "extension": ".jsonl",
       "size": 5453932,
       "modified": 1782631992.4242055
-    },
-    {
-      "path": "models\\chat_model.pth",
-      "name": "chat_model.pth",
-      "extension": ".pth",
-      "size": 54546741,
-      "modified": 1782807377.8945303
     },
     {
       "path": "models\\chat_model.pth.backup",

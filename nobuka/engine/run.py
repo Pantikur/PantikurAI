@@ -26,6 +26,7 @@ from nobuka.engine.nobuka_core import NobukaCore
 from nobuka.engine.code_analyzer import CodeAnalyzer
 from nobuka.engine.test_runner import TestRunner
 from nobuka.engine.universal_analyzer import UniversalAnalyzer
+from nobuka.engine.ml_optimizer import MLOptimizer
 
 
 def cmd_run(config: NobukaConfig):
@@ -93,6 +94,31 @@ def cmd_universal_analyze(config: NobukaConfig):
     print(f"\n💾 JSON-отчёт сохранён: {report_path}")
 
     txt_path = config.state_dir / "project_report.txt"
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write(human_report)
+    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
+
+
+def cmd_ml_optimize(config: NobukaConfig):
+    """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
+    print("=" * 80)
+    print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
+    print("=" * 80)
+
+    optimizer = MLOptimizer(config)
+    report = optimizer.analyze_and_optimize()
+
+    # Вывести отчёт
+    human_report = optimizer.generate_optimization_report(report)
+    print(human_report)
+
+    # Сохранить отчёты
+    report_path = config.state_dir / "ml_optimization_report.json"
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
+
+    txt_path = config.state_dir / "ml_optimization_report.txt"
     with open(txt_path, "w", encoding="utf-8") as f:
         f.write(human_report)
     print(f"📄 Текстовый отчёт сохранён: {txt_path}")
@@ -175,6 +201,11 @@ def main():
         help="Универсальный анализ всех файлов проекта"
     )
     parser.add_argument(
+        "--ml",
+        action="store_true",
+        help="ML-оптимизатор: улучшение процесса обучения модели"
+    )
+    parser.add_argument(
         "--status",
         action="store_true",
         help="Показать текущее состояние"
@@ -206,7 +237,9 @@ def main():
         config.max_cycles = args.max_cycles
 
     # Команды
-    if args.universal:
+    if args.ml:
+        cmd_ml_optimize(config)
+    elif args.universal:
         cmd_universal_analyze(config)
     elif args.status:
         cmd_status(config)

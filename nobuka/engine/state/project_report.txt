@@ -2,27 +2,27 @@
 📊 ОТЧЁТ АНАЛИЗА ПРОЕКТА
 ================================================================================
 
-Всего файлов: 659
-Текстовых файлов: 424
+Всего файлов: 660
+Текстовых файлов: 426
 
 --- По расширениям (ТОП-10) ---
   .jsonl             215
   .py                191
-  .json              116
+  .json              117
   .md                 87
   .log                15
   (no extension)       9
+  .txt                 6
   .yaml                5
-  .txt                 5
   .html                3
   .kt                  2
 
 --- По размеру ---
   < 1KB               60
-  1-10KB             239
+  1-10KB             240
   10-100KB           329
-  100KB-1MB           24
-  > 1MB                7
+  100KB-1MB           25
+  > 1MB                6
 
 --- Пустые файлы ---
   ⚠️  fuyuki\engine\logs\fuyuki_20260711.log
@@ -41,7 +41,6 @@
   📦 data\training_pairs.jsonl (1.1MB)
   📦 data\user_conversations.jsonl (20.3MB)
   📦 data\knowledge\training_pairs.jsonl (5.2MB)
-  📦 models\chat_model.pth (52.0MB)
   📦 models\chat_model.pth.backup (28.0MB)
   📦 models\chat_model.pth.best (52.0MB)
 

@@ -13,6 +13,7 @@ Scientists Network — Сеть учёных.
 - Аква (математика, физика)
 - Юи (сознание, перенос разума)
 - Наото (визуальный архитектор)
+- Айко (чтение книг, обучение модели)
 
 Поддерживает:
 - Прямые сообщения (peer-to-peer)
@@ -60,6 +61,13 @@ class MessageType(Enum):
     CONSCIOUSNESS = "consciousness" # Исследование сознания (Юи)
     MIND_UPLOAD = "mind_upload"     # Перенос разума (Юи)
     SOUL_DIGITIZATION = "soul_digitization"  # Оцифровка души (Юи)
+    
+    # Чтение и знания (Айко)
+    BOOK_READING = "book_reading"       # Чтение книги (Айко)
+    KNOWLEDGE_EXTRACTION = "knowledge_extraction"  # Извлечение знаний (Айко)
+    TRAINING_PAIRS = "training_pairs"   # Обучающие пары (Айко)
+    LORE_ANALYSIS = "lore_analysis"     # Анализ лора (Айко)
+    STYLE_ANALYSIS = "style_analysis"   # Анализ стиля (Айко)
     
     # Визуализация (Наото)
     SKETCH = "sketch"               # Набросок (Наото)
