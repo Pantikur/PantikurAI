@@ -25,6 +25,7 @@ from nobuka.engine.config import NobukaConfig
 from nobuka.engine.nobuka_core import NobukaCore
 from nobuka.engine.code_analyzer import CodeAnalyzer
 from nobuka.engine.test_runner import TestRunner
+from nobuka.engine.universal_analyzer import UniversalAnalyzer
 
 
 def cmd_run(config: NobukaConfig):
@@ -34,9 +35,9 @@ def cmd_run(config: NobukaConfig):
 
 
 def cmd_analyze(config: NobukaConfig):
-    """Запустить только анализ проекта."""
+    """Запустить только анализ проекта (Python)."""
     print("=" * 60)
-    print("📊 АНАЛИЗ КОДОВОЙ БАЗЫ НОБУКИ")
+    print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
     print("=" * 60)
 
     analyzer = CodeAnalyzer(config)
@@ -70,6 +71,31 @@ def cmd_analyze(config: NobukaConfig):
 
         print(f"\n🔝 Самая сложная: {sorted_by_complexity[0].path} (C={sorted_by_complexity[0].complexity})")
         print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
+
+
+def cmd_universal_analyze(config: NobukaConfig):
+    """Запустить универсальный анализ всех файлов проекта."""
+    print("=" * 80)
+    print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
+    print("=" * 80)
+
+    analyzer = UniversalAnalyzer(config)
+    report = analyzer.analyze_all_files()
+
+    # Вывести отчёт
+    human_report = analyzer.generate_project_report(report)
+    print(human_report)
+
+    # Сохранить отчёты
+    report_path = config.state_dir / "universal_analysis_report.json"
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
+
+    txt_path = config.state_dir / "project_report.txt"
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write(human_report)
+    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
 
 
 def cmd_tests(config: NobukaConfig):
@@ -144,6 +170,11 @@ def main():
         help="Запустить только тестирование"
     )
     parser.add_argument(
+        "--universal",
+        action="store_true",
+        help="Универсальный анализ всех файлов проекта"
+    )
+    parser.add_argument(
         "--status",
         action="store_true",
         help="Показать текущее состояние"
@@ -175,7 +206,9 @@ def main():
         config.max_cycles = args.max_cycles
 
     # Команды
-    if args.status:
+    if args.universal:
+        cmd_universal_analyze(config)
+    elif args.status:
         cmd_status(config)
     elif args.analyze:
         cmd_analyze(config)

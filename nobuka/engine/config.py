@@ -55,11 +55,24 @@ class NobukaConfig:
     # === Анализ кода ===
     project_root: Path = field(default_factory=lambda: Path("."))
     scan_directories: list[str] = field(default_factory=lambda: [
-        ".", "Wuglarst", "utils", "shiori", "futaba",
+        ".",           # корневая папка (все .py файлы)
+        "hanako",      # Ханако — гравитация
+        "fuyuki",      # Фуюки — электричество
+        "lucy",        # Люси — двигатели
+        "futaba",      # Футаба — управление
+        "shiori",      # Шиори — защита
+        "nobuka",      # Нобука — улучшения
+        "akva",        # Аква — математика, физика
+        "latislane",   # Latislane — проектирование тел
+        "celesta",     # Селеста — интимная жизнь
+        "naoto",       # Наото — визуальный архитектор
+        "yu",          # Юи — сознание, перенос
+        "scientists_network",  # Scientists Network
     ])
     exclude_patterns: list[str] = field(default_factory=lambda: [
         "__pycache__", "*.pyc", ".git", "node_modules", "venv",
         "*.egg-info", "build", "dist", "*.egg",
+        "android-studio-plugin",  # Android-проект, не Python
     ])
     max_file_lines: int = 300
     max_function_lines: int = 50
@@ -113,5 +126,9 @@ class NobukaConfig:
             cycle_interval=2.0,
             analysis_interval=2,
             log_level="DEBUG",
-            scan_directories=[".", "Wuglarst"],
+            scan_directories=[
+                ".", "hanako", "fuyuki", "lucy", "futaba",
+                "shiori", "nobuka", "akva", "latislane",
+                "celesta", "naoto", "yu", "scientists_network",
+            ],
         )

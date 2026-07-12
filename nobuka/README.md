@@ -54,10 +54,21 @@ nobuka/
     ├── config.py              # Конфигурация
     ├── models.py              # Модели данных
     ├── nobuka_core.py         # Ядро постоянной работы
-    ├── code_analyzer.py       # Статический анализ кода
+    ├── code_analyzer.py       # Статический анализ Python-кода
+    ├── universal_analyzer.py  # Универсальный анализ ВСЕХ файлов
     ├── test_runner.py         # Тестирование и бенчмарки
+    ├── web_access.py          # Доступ в интернет
     └── run.py                 # Точка входа
 ```
+
+### Что умеет Нобука
+
+| Модуль | Что делает |
+|--------|------------|
+| **CodeAnalyzer** | Анализ Python-кода (AST, сложность, метрики) |
+| **UniversalAnalyzer** | Анализ ВСЕХ файлов (.py, .json, .md, .yaml, .xml, .html, .js, .ts, .env и др.) |
+| **TestRunner** | Юнит-тесты, интеграционные тесты, бенчмарки |
+| **WebAccess** | Поиск лучших практик в интернете |
 
 ---
 
@@ -185,8 +196,11 @@ python -m nobuka.engine.run
 # Демо-режим (5 циклов, короткие интервалы)
 python -m nobuka.engine.run --demo
 
-# Только анализ проекта
+# Анализ только Python-кода
 python -m nobuka.engine.run --analyze
+
+# Универсальный анализ ВСЕХ файлов проекта (.py, .json, .md, .yaml, .xml, .html и др.)
+python -m nobuka.engine.run --universal
 
 # Только тестирование
 python -m nobuka.engine.run --tests
@@ -196,6 +210,27 @@ python -m nobuka.engine.run --status
 
 # Свои параметры
 python -m nobuka.engine.run --interval 5 --max-cycles 100
+```
+
+### Что делает универсальный анализатор
+
+```
+АНАЛИЗИРУЕТ ВСЕ ТИПЫ ФАЙЛОВ:
+  ✅ Python (.py) — AST, сложность, метрики
+  ✅ JSON (.json, .jsonl) — валидность, глубина вложенности
+  ✅ Markdown (.md) — заголовки, ссылки, изображения
+  ✅ YAML (.yaml, .yml) — табы, длина строк
+  ✅ HTML (.html) — закрытые теги
+  ✅ JavaScript/TypeScript (.js, .ts) — console.log, длина строк
+  ✅ Конфиги (.env, .properties) — дубликаты ключей
+  ✅ Текстовые (.txt, .log) — размер, структура
+
+ПОИСК ПРОБЛЕМ:
+  🔍 Пустые файлы
+  📦 Большие файлы (>1MB)
+  🗑️  Устаревшие файлы (.bak, .backup)
+  🔄 Дубликаты файлов (по содержимому)
+  ⚠️  Проблемы форматирования
 ```
 
 ### Что делает ядро

@@ -33,6 +33,7 @@ from nobuka.engine.models import (
 from nobuka.engine.code_analyzer import CodeAnalyzer
 from nobuka.engine.test_runner import TestRunner
 from nobuka.engine.web_access import NobukaWebAccess
+from nobuka.engine.universal_analyzer import UniversalAnalyzer
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
@@ -90,6 +91,7 @@ class NobukaCore:
 
         # Анализатор и тестировщик
         self.code_analyzer = CodeAnalyzer(self.config)
+        self.universal_analyzer = UniversalAnalyzer(self.config)
         self.test_runner = TestRunner(self.config)
         self.web_access = NobukaWebAccess(self.config)
 
@@ -417,36 +419,67 @@ class NobukaCore:
     # ================================================================
 
     def _analyze_project(self):
-        """Полный анализ кодовой базы."""
-        all_analyses: list[FileAnalysis] = []
-        total_issues = 0
-
-        # Сканирование директорий
+        """Полный анализ кодовой базы (все типы файлов)."""
+        
+        # 1. Универсальный анализ всех файлов
+        self.logger.info("🔍 Запуск универсального анализа всех файлов...")
+        universal_report = self.universal_analyzer.analyze_all_files()
+        
+        # 2. Python-специфичный анализ (для детальной проверки)
+        python_analyses: list[FileAnalysis] = []
+        python_issues = 0
+        
         for dir_name in self.config.scan_directories:
             dir_path = Path(dir_name)
             if not dir_path.exists():
                 continue
-
+            
             files = self._scan_files(dir_path)
             for file_path in files:
                 analysis = self.code_analyzer.analyze_file(file_path)
-                all_analyses.append(analysis)
-                total_issues += len(analysis.issues)
+                python_analyses.append(analysis)
+                python_issues += len(analysis.issues)
                 self.metrics["files_analyzed"] += 1
-
-        self.logger.info(f"📊 Анализ завершён: {len(all_analyses)} файлов, {total_issues} проблем")
-
-        # Сохранить отчёт
-        if all_analyses:
-            report = {
+        
+        # 3. Объединённый отчёт
+        total_files = universal_report.get('total_files', 0)
+        text_files = universal_report.get('text_files_analyzed', 0)
+        universal_issues = len(universal_report.get('issues', []))
+        total_issues = python_issues + universal_issues
+        
+        self.logger.info(f"📊 Анализ завершён:")
+        self.logger.info(f"   Всего файлов: {total_files}")
+        self.logger.info(f"   Текстовых файлов: {text_files}")
+        self.logger.info(f"   Python-файлов: {len(python_analyses)}")
+        self.logger.info(f"   Проблем Python: {python_issues}")
+        self.logger.info(f"   Проблем других файлов: {universal_issues}")
+        self.logger.info(f"   ИТОГО проблем: {total_issues}")
+        
+        # 4. Сохранить отчёты
+        # Python-отчёт
+        if python_analyses:
+            python_report = {
                 "timestamp": datetime.now().isoformat(),
                 "cycle": self.cycle_count,
-                "files_count": len(all_analyses),
-                "total_issues": total_issues,
-                "files": [f.snapshot() for f in all_analyses],
+                "files_count": len(python_analyses),
+                "total_issues": python_issues,
+                "files": [f.snapshot() for f in python_analyses],
             }
             with open(self.config.analysis_report_path, "w", encoding="utf-8") as f:
-                json.dump(report, f, ensure_ascii=False, indent=2)
+                json.dump(python_report, f, ensure_ascii=False, indent=2)
+        
+        # Универсальный отчёт
+        universal_report["timestamp"] = datetime.now().isoformat()
+        universal_report["cycle"] = self.cycle_count
+        with open(self.config.state_dir / "universal_analysis_report.json", "w", encoding="utf-8") as f:
+            json.dump(universal_report, f, ensure_ascii=False, indent=2)
+        
+        # 5. Сгенерировать человекочитаемый отчёт
+        human_report = self.universal_analyzer.generate_project_report(universal_report)
+        with open(self.config.state_dir / "project_report.txt", "w", encoding="utf-8") as f:
+            f.write(human_report)
+        
+        self.logger.info(f"📄 Отчёт сохранён: {self.config.state_dir / 'project_report.txt'}")
 
     def _scan_files(self, dir_path: Path) -> list[Path]:
         """Сканировать файлы в директории."""
