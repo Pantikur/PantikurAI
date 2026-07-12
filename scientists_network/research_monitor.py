@@ -640,6 +640,16 @@ class ResearchMonitor:
         except Exception as e:
             self.logger.warning(f"⚠️ Ядро Юи не загружено: {e}")
         
+        try:
+            from naoto.engine.config import NaotoConfig
+            from naoto.engine import Naoto
+            naoto_config = NaotoConfig()
+            naoto_core = Naoto(naoto_config)
+            self.cores["naoto"] = ScientistCoreProxy("Naoto", Naoto, naoto_config)
+            self.logger.info("✅ Ядро Наото (визуальный архитектор) — с интернетом")
+        except Exception as e:
+            self.logger.warning(f"⚠️ Ядро Наото не загружено: {e}")
+        
         self._initialized = True
         self.logger.info(f"📊 Инициализировано ядер: {len(self.cores)}")
     

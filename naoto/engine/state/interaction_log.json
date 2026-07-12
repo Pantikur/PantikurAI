@@ -1,0 +1,719 @@
+{
+  "interactions": [
+    {
+      "timestamp": "2026-07-12T18:01:40.893672",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-3937",
+        "from": "Наото",
+        "to": "Фуюки",
+        "task_type": "3d",
+        "description": "Визуализация гравитационного поля для модели Ханако",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:01:40.893672"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:01:40.894673",
+      "type": "request_received",
+      "data": {
+        "request_id": "REQ-20260712-001",
+        "from": "Люси",
+        "task_type": "drawing",
+        "description": "Технический чертёж механизма двигателя",
+        "priority": "high",
+        "context": {
+          "project": "engine_v2"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:02:05.887689",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-3273",
+        "from": "Наото",
+        "to": "Фуюки",
+        "task_type": "3d",
+        "description": "Визуализация гравитационного поля для модели Ханако",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:02:05.887689"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:02:05.888686",
+      "type": "request_received",
+      "data": {
+        "request_id": "REQ-20260712-001",
+        "from": "Люси",
+        "task_type": "drawing",
+        "description": "Технический чертёж механизма двигателя",
+        "priority": "high",
+        "context": {
+          "project": "engine_v2"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.136250",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-3854",
+        "from": "Наото",
+        "to": "Фуюки",
+        "task_type": "drawing",
+        "description": "Визуализация электрической схемы для проекта",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:06:34.136250"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.137250",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-6854",
+        "from": "Наото",
+        "to": "Люси",
+        "task_type": "3d",
+        "description": "3D-модель механизма двигателя",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:06:34.137250"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.137250",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-2639",
+        "from": "Наото",
+        "to": "Ханако",
+        "task_type": "sketch",
+        "description": "Эскиз гравитационного поля",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:06:34.137250"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.138250",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-7343",
+        "from": "Наото",
+        "to": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж аэродинамической трубы",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:06:34.138250"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.139252",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-4870",
+        "from": "Наото",
+        "to": "Селеста",
+        "task_type": "sketch",
+        "description": "Анатомический набросок мышечной системы",
+        "priority": "low",
+        "context": {},
+        "timestamp": "2026-07-12T18:06:34.139252"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.140250",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-7693",
+        "from": "Наото",
+        "to": "Latislane",
+        "task_type": "3d",
+        "description": "3D-модель бионического скелета",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:06:34.140250"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.141250",
+      "type": "request_received",
+      "data": {
+        "request_id": "REQ-20260712-001",
+        "from": "Люси",
+        "task_type": "drawing",
+        "description": "Технический чертёж механизма двигателя",
+        "priority": "high",
+        "context": {
+          "project": "engine_v2"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:06:34.145262",
+      "type": "visual_request",
+      "data": {
+        "from": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж формулы сопротивления материалов",
+        "priority": "high"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.753899",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-3044",
+        "from": "Наото",
+        "to": "Фуюки",
+        "task_type": "drawing",
+        "description": "Визуализация электрической схемы для проекта",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:12:37.753899"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.754883",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-4791",
+        "from": "Наото",
+        "to": "Люси",
+        "task_type": "3d",
+        "description": "3D-модель механизма двигателя",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:12:37.754883"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.755889",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-8456",
+        "from": "Наото",
+        "to": "Ханако",
+        "task_type": "sketch",
+        "description": "Эскиз гравитационного поля",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:12:37.755889"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.756885",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-9415",
+        "from": "Наото",
+        "to": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж аэродинамической трубы",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:12:37.756885"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.757886",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-5416",
+        "from": "Наото",
+        "to": "Селеста",
+        "task_type": "sketch",
+        "description": "Анатомический набросок мышечной системы",
+        "priority": "low",
+        "context": {},
+        "timestamp": "2026-07-12T18:12:37.757886"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.758884",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-5991",
+        "from": "Наото",
+        "to": "Latislane",
+        "task_type": "3d",
+        "description": "3D-модель бионического скелета",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:12:37.758884"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.759887",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-3607",
+        "from": "Наото",
+        "to": "Юи",
+        "task_type": "3d",
+        "description": "Визуализация модели сознания и переноса разума",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:12:37.759887"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.760897",
+      "type": "request_received",
+      "data": {
+        "request_id": "REQ-20260712-001",
+        "from": "Люси",
+        "task_type": "drawing",
+        "description": "Технический чертёж механизма двигателя",
+        "priority": "high",
+        "context": {
+          "project": "engine_v2"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:12:37.764883",
+      "type": "visual_request",
+      "data": {
+        "from": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж формулы сопротивления материалов",
+        "priority": "high"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.668740",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-7617",
+        "from": "Наото",
+        "to": "Фуюки",
+        "task_type": "drawing",
+        "description": "Визуализация электрической схемы для проекта",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:13:09.668740"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.668740",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-5282",
+        "from": "Наото",
+        "to": "Люси",
+        "task_type": "3d",
+        "description": "3D-модель механизма двигателя",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:13:09.668740"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.669741",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-4527",
+        "from": "Наото",
+        "to": "Ханако",
+        "task_type": "sketch",
+        "description": "Эскиз гравитационного поля",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:13:09.669741"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.670741",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-8012",
+        "from": "Наото",
+        "to": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж аэродинамической трубы",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:13:09.670741"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.671740",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-5477",
+        "from": "Наото",
+        "to": "Селеста",
+        "task_type": "sketch",
+        "description": "Анатомический набросок мышечной системы",
+        "priority": "low",
+        "context": {},
+        "timestamp": "2026-07-12T18:13:09.671740"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.672755",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-8575",
+        "from": "Наото",
+        "to": "Latislane",
+        "task_type": "3d",
+        "description": "3D-модель бионического скелета",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:13:09.672755"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.673741",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-5030",
+        "from": "Наото",
+        "to": "Юи",
+        "task_type": "3d",
+        "description": "Визуализация модели сознания и переноса разума",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:13:09.673741"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.673741",
+      "type": "request_received",
+      "data": {
+        "request_id": "REQ-20260712-001",
+        "from": "Люси",
+        "task_type": "drawing",
+        "description": "Технический чертёж механизма двигателя",
+        "priority": "high",
+        "context": {
+          "project": "engine_v2"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:13:09.680740",
+      "type": "visual_request",
+      "data": {
+        "from": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж формулы сопротивления материалов",
+        "priority": "high"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.444168",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-8882",
+        "from": "Наото",
+        "to": "Фуюки",
+        "task_type": "drawing",
+        "description": "Визуализация электрической схемы для проекта",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:14:54.444168"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.445169",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-3194",
+        "from": "Наото",
+        "to": "Люси",
+        "task_type": "3d",
+        "description": "3D-модель механизма двигателя",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:14:54.445169"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.446167",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-7301",
+        "from": "Наото",
+        "to": "Ханако",
+        "task_type": "sketch",
+        "description": "Эскиз гравитационного поля",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:14:54.446167"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.447166",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-6895",
+        "from": "Наото",
+        "to": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж аэродинамической трубы",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:14:54.447166"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.448167",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-4575",
+        "from": "Наото",
+        "to": "Селеста",
+        "task_type": "sketch",
+        "description": "Анатомический набросок мышечной системы",
+        "priority": "low",
+        "context": {},
+        "timestamp": "2026-07-12T18:14:54.448167"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.449166",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-7451",
+        "from": "Наото",
+        "to": "Latislane",
+        "task_type": "3d",
+        "description": "3D-модель бионического скелета",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:14:54.449166"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.450208",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-2723",
+        "from": "Наото",
+        "to": "Юи",
+        "task_type": "3d",
+        "description": "Визуализация модели сознания и переноса разума",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:14:54.450208"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.451165",
+      "type": "request_received",
+      "data": {
+        "request_id": "REQ-20260712-001",
+        "from": "Люси",
+        "task_type": "drawing",
+        "description": "Технический чертёж механизма двигателя",
+        "priority": "high",
+        "context": {
+          "project": "engine_v2"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:14:54.461165",
+      "type": "visual_request",
+      "data": {
+        "from": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж формулы сопротивления материалов",
+        "priority": "high"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.404936",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-1692",
+        "from": "Наото",
+        "to": "Фуюки",
+        "task_type": "drawing",
+        "description": "Визуализация электрической схемы для проекта",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:17:22.404936"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.406939",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-7450",
+        "from": "Наото",
+        "to": "Люси",
+        "task_type": "3d",
+        "description": "3D-модель механизма двигателя",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:17:22.406939"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.407939",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-9952",
+        "from": "Наото",
+        "to": "Ханако",
+        "task_type": "sketch",
+        "description": "Эскиз гравитационного поля",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:17:22.407939"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.409937",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-9340",
+        "from": "Наото",
+        "to": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж аэродинамической трубы",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:17:22.409937"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.411937",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-8969",
+        "from": "Наото",
+        "to": "Селеста",
+        "task_type": "sketch",
+        "description": "Анатомический набросок мышечной системы",
+        "priority": "low",
+        "context": {},
+        "timestamp": "2026-07-12T18:17:22.411937"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.413937",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-5923",
+        "from": "Наото",
+        "to": "Latislane",
+        "task_type": "3d",
+        "description": "3D-модель бионического скелета",
+        "priority": "medium",
+        "context": {},
+        "timestamp": "2026-07-12T18:17:22.413937"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.415938",
+      "type": "request_sent",
+      "data": {
+        "request_id": "REQ-20260712-3793",
+        "from": "Наото",
+        "to": "Юи",
+        "task_type": "3d",
+        "description": "Визуализация модели сознания и переноса разума",
+        "priority": "high",
+        "context": {},
+        "timestamp": "2026-07-12T18:17:22.415938"
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.416937",
+      "type": "request_received",
+      "data": {
+        "request_id": "REQ-20260712-001",
+        "from": "Люси",
+        "task_type": "drawing",
+        "description": "Технический чертёж механизма двигателя",
+        "priority": "high",
+        "context": {
+          "project": "engine_v2"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-12T18:17:22.424951",
+      "type": "visual_request",
+      "data": {
+        "from": "Аква",
+        "task_type": "drawing",
+        "description": "Чертёж формулы сопротивления материалов",
+        "priority": "high"
+      }
+    }
+  ],
+  "sister_status": {
+    "Футаба": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.384939",
+      "requests_sent": 0,
+      "requests_received": 0
+    },
+    "Фуюки": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.404936",
+      "requests_sent": 7,
+      "requests_received": 0
+    },
+    "Люси": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.416937",
+      "requests_sent": 5,
+      "requests_received": 7
+    },
+    "Ханако": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.407939",
+      "requests_sent": 5,
+      "requests_received": 0
+    },
+    "Шиори": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.384939",
+      "requests_sent": 0,
+      "requests_received": 0
+    },
+    "Нобука": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.384939",
+      "requests_sent": 0,
+      "requests_received": 0
+    },
+    "Аква": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.424951",
+      "requests_sent": 5,
+      "requests_received": 0
+    },
+    "Селеста": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.411937",
+      "requests_sent": 5,
+      "requests_received": 0
+    },
+    "Latislane": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.413937",
+      "requests_sent": 5,
+      "requests_received": 0
+    },
+    "Юи": {
+      "status": "online",
+      "last_contact": "2026-07-12T18:17:22.415938",
+      "requests_sent": 4,
+      "requests_received": 0
+    }
+  },
+  "updated": "2026-07-12T18:17:22.430951"
+}

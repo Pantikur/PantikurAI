@@ -38,7 +38,7 @@ def demo():
     
     # Подключаем учёных к сети
     print("\n[NETWORK] Подключение учёных к Scientists Network...")
-    scientists = ['hanako', 'fuyuki', 'lucy', 'akva', 'nobuka', 'shiori', 'yu']
+    scientists = ['hanako', 'fuyuki', 'lucy', 'akva', 'nobuka', 'shiori', 'yu', 'naoto']
     
     for name in scientists:
         core = rm.get_core(name)
@@ -57,6 +57,7 @@ def demo():
         Message(MessageType.GREETING, "lucy", "all", "🚀 Привет! Я Люси, проектирую двигатели!"),
         Message(MessageType.GREETING, "akva", "all", "📐 Привет! Я Аква, математика и физика!"),
         Message(MessageType.GREETING, "yu", "all", "🧠 Привет! Я Юи, изучаю перенос сознания и души!"),
+        Message(MessageType.GREETING, "naoto", "all", "🎨 Привет! Я Наото, визуальный архитектор — наброски, чертежи, 3D!"),
     ]
     
     for msg in greetings:

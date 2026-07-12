@@ -11,6 +11,8 @@ Scientists Network — Сеть учёных.
 - Латислейн (тело)
 - Селеста (интимная жизнь)
 - Аква (математика, физика)
+- Юи (сознание, перенос разума)
+- Наото (визуальный архитектор)
 
 Поддерживает:
 - Прямые сообщения (peer-to-peer)
@@ -58,6 +60,12 @@ class MessageType(Enum):
     CONSCIOUSNESS = "consciousness" # Исследование сознания (Юи)
     MIND_UPLOAD = "mind_upload"     # Перенос разума (Юи)
     SOUL_DIGITIZATION = "soul_digitization"  # Оцифровка души (Юи)
+    
+    # Визуализация (Наото)
+    SKETCH = "sketch"               # Набросок (Наото)
+    DRAWING = "drawing"             # Чертёж (Наото)
+    MODEL_3D = "model_3d"           # 3D-модель (Наото)
+    VISUAL_REFERENCE = "visual_reference"  # Визуальный референс (Наото)
     
     # Координация
     REQUEST = "request"             # Запрос
