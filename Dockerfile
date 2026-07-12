@@ -66,7 +66,22 @@ COPY main.py ./
 COPY Wuglarst/ ./Wuglarst/
 COPY utils/ ./utils/
 COPY data/ ./data/
-COPY models/ ./models/  
+COPY models/ ./models/
+
+# === КОПИРУЕМ ВСЕ МОДУЛИ УЧЁНЫХ (12 девочек) ===
+COPY hanako/ ./hanako/
+COPY fuyuki/ ./fuyuki/
+COPY lucy/ ./lucy/
+COPY futaba/ ./futaba/
+COPY shiori/ ./shiori/
+COPY nobuka/ ./nobuka/
+COPY akva/ ./akva/
+COPY latislane/ ./latislane/
+COPY celesta/ ./celesta/
+COPY naoto/ ./naoto/
+COPY yu/ ./yu/
+COPY ayiko/ ./ayiko/
+COPY scientists_network/ ./scientists_network/
 
 # === ВАЛИДАЦИЯ ===
 RUN ls -la /app/models/ && \
@@ -82,6 +97,7 @@ ENV PYTHONUNBUFFERED=1
 ENV HOST=0.0.0.0
 ENV SELENIUM_REMOTE_URL=""
 ENV CHROME_BIN=/usr/bin/google-chrome
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 # === ПРОВЕРКА ИМПОРТА ===
 RUN python -c "from main import app; print('✅ Приложение импортировано')" || (echo "❌ Ошибка импорта" && exit 1)

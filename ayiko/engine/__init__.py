@@ -57,7 +57,7 @@ class Ayiko:
         self.style_db: list[StyleEntry] = []
         self.books_metadata: dict[str, BookMetadata] = {}
         self.books_summaries: dict[str, BookSummary] = {}
-        self.books_thoughts: dict[str, BookThought] = []
+        self.books_thoughts: list[BookThought] = []
         
         # Модули
         self.book_reader = None  # Инициализируется при первом использовании
@@ -99,11 +99,13 @@ class Ayiko:
         pairs = self._generate_training_pairs(knowledge)
         
         # 4. Анализ стиля
+        styles: list[StyleEntry] = []
         if self.config.enable_style_learning:
             styles = self._analyze_style(text)
             self.style_db.extend(styles)
         
         # 5. Разбор лора
+        lore: list[LoreEntry] = []
         if self.config.enable_lore_extraction:
             lore = self._extract_lore(text, book_path)
             self.lore_db.extend(lore)
