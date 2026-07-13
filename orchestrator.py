@@ -89,7 +89,7 @@ def start_girl(girl_name: str, demo: bool = False):
             env=env,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            text=True,
+            text=False,
             bufsize=1,
         )
 
@@ -100,9 +100,13 @@ def start_girl(girl_name: str, demo: bool = False):
         def read_output():
             if process.stdout:
                 for line in process.stdout:
-                    prefix = f"[{girl_name}] "
-                    sys.stdout.write(prefix + line)
-                    sys.stdout.flush()
+                    try:
+                        decoded = line.decode('utf-8', errors='replace')
+                        prefix = f"[{girl_name}] "
+                        sys.stdout.write(prefix + decoded)
+                        sys.stdout.flush()
+                    except Exception:
+                        pass
 
         import threading
         thread = threading.Thread(target=read_output, daemon=True)
