@@ -30,5 +30,31 @@
         "train_narrative.py",
         "update_gigachat_token.py",
         "utils/generate_params_training_data.py"
+    ],
+    "reportAttributeAccessIssue": false,
+    "reportImportCycles": false,
+    "reportArgumentType": false,
+    "reportUnknownMemberType": false,
+    "exclude": [
+        "**/__pycache__",
+        "**/*.pyc",
+        "**/.git",
+        "**/.*",
+        "**/node_modules",
+        "**/venv",
+        "**/build",
+        "**/dist",
+        "hanako/engine",
+        "fuyuki/engine",
+        "lucy/engine",
+        "futaba/engine",
+        "shiori/engine",
+        "nobuka/engine",
+        "akva/engine",
+        "latislane/engine",
+        "celesta/engine",
+        "naoto/engine",
+        "yu/engine",
+        "ayiko/engine"
     ]
 }

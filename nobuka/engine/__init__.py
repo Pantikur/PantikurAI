@@ -4,9 +4,5 @@ Nobuka — система улучшений, тестирования и мод
 
 from __future__ import annotations
 
-from nobuka.engine.config import NobukaConfig
-from nobuka.engine.nobuka_core import NobukaCore
-from nobuka.engine.code_analyzer import CodeAnalyzer
-from nobuka.engine.test_runner import TestRunner
-
-__all__ = ["NobukaConfig", "NobukaCore", "CodeAnalyzer", "TestRunner"]
+# Модули импортируются напрямую из run.py
+# Чтобы избежать circular import
