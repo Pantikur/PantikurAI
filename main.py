@@ -156,6 +156,59 @@ else:
     logger.warning("⚠️ GIGACHAT_TOKEN не задан — ретраин без данных от GigaChat")
 # === КОНЕЦ GIGACHAT_TOKEN ===
 
+# === Автономный запуск девочек (оркестратор) ===
+AUTO_GIRLS_ENABLED = os.getenv("AUTO_GIRLS_ENABLED", "true").lower() in ("true", "1", "yes")
+GIRLS_TO_RUN = [g.strip() for g in os.getenv("GIRLS_TO_RUN", "hanako,fuyuki,lucy,futaba,shiori,nobuka,akva,latislane,celesta,naoto,yu,ayiko").split(",") if g.strip()]
+
+def start_girls_orchestrator():
+    """Запуск оркестратора всех девочек в фоне."""
+    if not AUTO_GIRLS_ENABLED:
+        logger.info("🔮 Автозапуск девочек: ОТКЛЮЧЁН")
+        return
+    
+    logger.info(f"🔮 Автозапуск девочек: ВКЛЮЧЕНО ({len(GIRLS_TO_RUN)} девочек)")
+    logger.info(f"   Список: {', '.join(GIRLS_TO_RUN)}")
+    
+    try:
+        # Небольшая задержка перед стартом (ждем полной загрузки сервера)
+        time.sleep(15)
+        
+        import subprocess
+        
+        orchestrator_path = Path(__file__).parent / "orchestrator.py"
+        if not orchestrator_path.exists():
+            logger.warning("⚠️ orchestrator.py не найден — девочки не запущены")
+            return
+        
+        cmd = [sys.executable, str(orchestrator_path)] + GIRLS_TO_RUN
+        
+        logger.info(f"🚀 Запуск оркестратора: {' '.join(cmd)}")
+        
+        # Запускаем в фоне
+        process = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+        )
+        
+        # Читаем вывод в реальном времени
+        def read_output():
+            if process.stdout:
+                for line in process.stdout:
+                    prefix = "[Orchestrator] "
+                    sys.stdout.write(prefix + line)
+                    sys.stdout.flush()
+        
+        reader_thread = threading.Thread(target=read_output, daemon=True)
+        reader_thread.start()
+        
+        logger.info(f"✅ Оркестратор запущен (PID: {process.pid})")
+        
+    except Exception as e:
+        logger.error(f"❌ Ошибка запуска оркестратора: {e}")
+
 # === Глобальная переменная бота и блокировка ===
 chatbot = None
 CHATBOT_LOCK = threading.RLock()  # Защита при доступе и перезагрузке
@@ -238,6 +291,11 @@ async def lifespan(app: FastAPI):
     else:
         logger.info("📚 Автономное обучение из книг: ОТКЛЮЧЕНО")
     # === КОНЕЦ АВТОНОМНОГО ОБУЧЕНИЯ ===
+    
+    # === АВТОЗАПУСК ДЕВОЧЕК ===
+    logger.info("🔮 Запуск оркестратора девочек...")
+    start_girls_orchestrator()
+    # === КОНЕЦ АВТОЗАПУСКА ДЕВОЧЕК ===
     
 
     start_lifespan = asyncio.get_event_loop().time()
@@ -494,6 +552,8 @@ async def health_check():
     return {
         "status": "ok",
         "bot_ready": local_bot is not None,
+        "girls_enabled": AUTO_GIRLS_ENABLED,
+        "girls_count": len(GIRLS_TO_RUN),
         "timestamp": datetime.now().isoformat(),
         "blocked_ips": len(blocked_ips),
         "rate_limit_active": RATE_LIMIT_REQUESTS > 0
@@ -543,6 +603,35 @@ async def unblock_ip(ip: str, request: Request):
         return {"status": "ok", "detail": f"IP {ip} разблокирован"}
     else:
         return {"status": "ok", "detail": f"IP {ip} не был заблокирован"}
+
+
+# === Эндпоинт: /girls/status — статус оркестратора ===
+@app.get("/girls")
+async def girls_status():
+    """Показывает статус оркестратора девочек."""
+    return {
+        "status": "ok",
+        "enabled": AUTO_GIRLS_ENABLED,
+        "girls": GIRLS_TO_RUN,
+        "count": len(GIRLS_TO_RUN),
+        "message": "Девочки запущены автоматически при старте сервера"
+    }
+
+
+# === Эндпоинт: /girls/restart — перезапуск девочек ===
+@app.post("/girls/restart")
+async def girls_restart(request: Request):
+    """Перезапускает оркестратор девочек."""
+    token = request.headers.get("X-Retrain-Token")
+    if token != RETRAIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Неверный токен")
+    
+    if not AUTO_GIRLS_ENABLED:
+        return {"status": "ok", "detail": "Автозапуск девочек отключён"}
+    
+    logger.info("🔄 Перезапуск оркестратора девочек...")
+    start_girls_orchestrator()
+    return {"status": "ok", "detail": f"Оркестратор перезапущен ({len(GIRLS_TO_RUN)} девочек)"}
 
 
 # === Эндпоинт: /intuition — сводка настроения ===
