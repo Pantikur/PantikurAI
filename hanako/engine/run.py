@@ -1,13 +1,12 @@
 """
-Точка входа для запуска автономного ядра Ханако.
+Точка входа для запуска автономного ядра Нобука.
 
 Использование:
-    python -m hanako.engine.run              # постоянная работа
-    python -m hanako.engine.run --demo       # демо-режим (5 циклов)
-    python -m hanako.engine.run --research   # только изучение в интернете
-    python -m hanako.engine.run --theories   # только построение теорий
-    python -m hanako.engine.run --calc       # только вычисления
-    python -m hanako.engine.run --status     # показать состояние
+    python -m nobuka.engine.run              # постоянная работа
+    python -m nobuka.engine.run --demo       # демо-режим (5 циклов)
+    python -m nobuka.engine.run --analyze    # только анализ проекта
+    python -m nobuka.engine.run --tests      # только тестирование
+    python -m nobuka.engine.run --status     # показать состояние
 """
 
 from __future__ import annotations
@@ -16,135 +15,200 @@ import json
 import sys
 from pathlib import Path
 
-# Принудительный UTF-8 для вывода
+# Добавляем текущую директорию и папку engine в path
+_script_dir = Path(__file__).parent.resolve()
+if str(_script_dir) not in sys.path:
+    sys.path.insert(0, str(_script_dir))
+
+# Принудительный UTF-8 для вывода (Windows-консоль использует cp1251)
 for _stream in (sys.stdout, sys.stderr):
     _reconfigure = getattr(_stream, "reconfigure", None)
     if _reconfigure is not None:
         _reconfigure(encoding="utf-8")
 
-from hanako.engine.config import HanakoConfig
-from hanako.engine.hanako_core import HanakoCore
+from config import NobukaConfig
+from nobuka_core import NobukaCore
+from code_analyzer import CodeAnalyzer
+from test_runner import TestRunner
+from universal_analyzer import UniversalAnalyzer
+from ml_optimizer import MLOptimizer
 
 
-def cmd_run(config: HanakoConfig):
-    """Запустить постоянную работу Ханако."""
-    core = HanakoCore(config)
+def cmd_run(config: NobukaConfig):
+    """Запустить постоянную работу Нобука."""
+    core = NobukaCore(config)
     core.run()
 
 
-def cmd_research(config: HanakoConfig):
-    """Запустить только изучение в интернете."""
+def cmd_analyze(config: NobukaConfig):
+    """Запустить только анализ проекта (Python)."""
     print("=" * 60)
-    print("🌸 ИССЛЕДОВАНИЕ ГРАВИТАЦИИ")
+    print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
     print("=" * 60)
-    
-    core = HanakoCore(config)
-    
-    print("\nПоиск статей о гравитации...")
-    papers = core.web_access.search_gravity_papers()
-    
-    for i, paper in enumerate(papers, 1):
-        print(f"\n{i}. {paper.title}")
-        print(f"   Авторы: {', '.join(paper.authors[:3])}{'...' if len(paper.authors) > 3 else ''}")
-        print(f"   Журнал: {paper.journal} ({paper.year})")
-        print(f"   Цитирований: {paper.citations}")
-        print(f"   Релевантность: {paper.relevance_score:.2f}")
-    
-    print(f"\n✅ Найдено статей: {len(papers)}")
+
+    analyzer = CodeAnalyzer(config)
+    all_analyses = []
+    total_issues = 0
+
+    for dir_name in config.scan_directories:
+        dir_path = Path(dir_name)
+        if not dir_path.exists():
+            continue
+
+        files = analyzer._scan_files(dir_path)
+        print(f"\n📁 {dir_name}: {len(files)} файлов")
+
+        for file_path in files[:20]:  # Лимит для демо
+            analysis = analyzer.analyze_file(file_path)
+            all_analyses.append(analysis)
+            total_issues += len(analysis.issues)
+
+            if analysis.issues:
+                print(f"  ⚠️  {file_path.name}: {len(analysis.issues)} проблем")
+                for issue in analysis.issues[:3]:
+                    print(f"     - {issue}")
+
+    print(f"\n📊 ИТОГО: {len(all_analyses)} файлов, {total_issues} проблем")
+
+    # Показать лучших и худших
+    if all_analyses:
+        sorted_by_complexity = sorted(all_analyses, key=lambda a: a.complexity, reverse=True)
+        sorted_by_lines = sorted(all_analyses, key=lambda a: a.lines, reverse=True)
+
+        print(f"\n🔝 Самая сложная: {sorted_by_complexity[0].path} (C={sorted_by_complexity[0].complexity})")
+        print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
 
 
-def cmd_theories(config: HanakoConfig):
-    """Запустить только построение теорий."""
-    print("=" * 60)
-    print("🔬 ПОСТРОЕНИЕ ГРАВИТАЦИОННЫХ ТЕОРИЙ")
-    print("=" * 60)
-    
-    core = HanakoCore(config)
-    
-    # Получение статей
-    papers = core.web_access.search_gravity_papers()
-    
-    print("\nПостроение теорий...")
-    for i in range(3):
-        theory = core.theorist.generate_theory(papers, core.theories)
-        if theory:
-            print(f"\n{i+1}. {theory.name}")
-            print(f"   Категория: {theory.category.value}")
-            print(f"   Описание: {theory.description}")
-            print(f"   Уравнения: {', '.join(theory.equations)}")
-            print(f"   Научная ценность: {theory.scientific_value:.2f}")
-            print(f"   Совместимость: {theory.compatibility_score:.2f}")
-    
-    print(f"\n✅ Построено теорий: {len(core.theories)}")
+def cmd_universal_analyze(config: NobukaConfig):
+    """Запустить универсальный анализ всех файлов проекта."""
+    print("=" * 80)
+    print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
+    print("=" * 80)
+
+    analyzer = UniversalAnalyzer(config)
+    report = analyzer.analyze_all_files()
+
+    # Вывести отчёт
+    human_report = analyzer.generate_project_report(report)
+    print(human_report)
+
+    # Сохранить отчёты
+    report_path = config.state_dir / "universal_analysis_report.json"
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
+
+    txt_path = config.state_dir / "project_report.txt"
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write(human_report)
+    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
 
 
-def cmd_calc(config: HanakoConfig):
-    """Запустить только вычисления."""
-    print("=" * 60)
-    print("🧮 ГРАВИТАЦИОННЫЕ ВЫЧИСЛЕНИЯ")
-    print("=" * 60)
-    
-    core = HanakoCore(config)
-    
-    from hanako.engine.models import CalculationType
-    
-    calc_types = list(CalculationType)
-    
-    print("\nВыполнение вычислений...")
-    for calc_type in calc_types[:5]:
-        calc = core.calculator.calculate(calc_type)
-        if calc:
-            print(f"\n{calc_type.value}:")
-            print(f"   Результат: {calc.result:.6e} {calc.units}")
-            print(f"   Точность: {calc.precision} знаков")
-            print(f"   Уверенность: {calc.confidence:.2f}")
-    
-    print(f"\n✅ Выполнено вычислений: {len(calc_types)}")
+def cmd_ml_optimize(config: NobukaConfig):
+    """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
+    print("=" * 80)
+    print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
+    print("=" * 80)
+
+    optimizer = MLOptimizer(config)
+    report = optimizer.analyze_and_optimize()
+
+    # Вывести отчёт
+    human_report = optimizer.generate_optimization_report(report)
+    print(human_report)
+
+    # Сохранить отчёты
+    report_path = config.state_dir / "ml_optimization_report.json"
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
+
+    txt_path = config.state_dir / "ml_optimization_report.txt"
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write(human_report)
+    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
 
 
-def cmd_status(config: HanakoConfig):
-    """Показать состояние."""
-    core = HanakoCore(config)
-    status = core.get_status()
-    
+def cmd_tests(config: NobukaConfig):
+    """Запустить только тестирование."""
     print("=" * 60)
-    print("🌸 СТАТУС ХАНАКО")
+    print("🧪 ТЕСТИРОВАНИЕ НОБУКИ")
     print("=" * 60)
-    print(f"Имя: {status['name']}")
-    print(f"Версия: {status['version']}")
-    print(f"Циклов: {status['cycle_count']}")
-    print(f"\nМетрики:")
-    for key, value in status['metrics'].items():
-        print(f"  - {key}: {value}")
-    print(f"\nТеорий: {status['theories_count']}")
-    print(f"Вычислений: {status['calculations_count']}")
-    print(f"Статей: {status['papers_count']}")
+
+    runner = TestRunner(config)
+    report = runner.run_pytest()
+
+    print(f"\n📊 Результат:")
+    print(f"  Всего тестов: {report.total}")
+    print(f"  Пройдено: {report.passed}")
+    print(f"  Провалено: {report.failed}")
+    print(f"  Покрытие: {report.coverage:.1f}%")
+    print(f"  Время: {report.duration_seconds:.1f}с")
+
+
+def cmd_status(config: NobukaConfig):
+    """Показать текущее состояние Нобука."""
+    state_path = config.state_path
+
+    if not state_path.exists():
+        print("Нобука ещё не запускалась. Состояние отсутствует.")
+        return
+
+    with open(state_path, "r", encoding="utf-8") as f:
+        state = json.load(f)
+
+    print("=" * 60)
+    print("📊 СОСТОЯНИЕ НОБУКИ")
+    print("=" * 60)
+    print(f"Версия: {state.get('version', '?')}")
+    print(f"Циклов выполнено: {state.get('cycle_count', 0)}")
+    print(f"Последнее обновление: {state.get('timestamp', '?')}")
+    print()
+    print("Метрики:")
+    for key, value in state.get("metrics", {}).items():
+        print(f"  {key}: {value}")
+    print()
+
+    improvements = state.get("improvements_history", [])
+    if improvements:
+        print(f"Последние улучшения ({len(improvements)}):")
+        for imp in improvements[-5:]:
+            status = "✅" if imp.get("applied") else "⏸️"
+            print(f"  {status} {imp.get('version_after', '?')}: "
+                  f"{imp.get('description', '?')}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Ханако — автономный исследователь гравитации"
+        description="Нобука — автономная система улучшений и модернизации",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__
     )
-    
+
     parser.add_argument(
         "--demo",
         action="store_true",
         help="Демо-режим: 5 циклов с короткими интервалами"
     )
     parser.add_argument(
-        "--research",
+        "--analyze",
         action="store_true",
-        help="Запустить только изучение в интернете"
+        help="Запустить только анализ проекта"
     )
     parser.add_argument(
-        "--theories",
+        "--tests",
         action="store_true",
-        help="Запустить только построение теорий"
+        help="Запустить только тестирование"
     )
     parser.add_argument(
-        "--calc",
+        "--universal",
         action="store_true",
-        help="Запустить только вычисления"
+        help="Универсальный анализ всех файлов проекта"
+    )
+    parser.add_argument(
+        "--ml",
+        action="store_true",
+        help="ML-оптимизатор: улучшение процесса обучения модели"
     )
     parser.add_argument(
         "--status",
@@ -163,30 +227,31 @@ def main():
         default=None,
         help="Максимальное количество циклов"
     )
-    
+
     args = parser.parse_args()
-    
+
     # Конфигурация
     if args.demo:
-        config = HanakoConfig.demo()
+        config = NobukaConfig.demo()
     else:
-        config = HanakoConfig.default()
-    
+        config = NobukaConfig.default()
+
     if args.interval is not None:
         config.cycle_interval = args.interval
-    
     if args.max_cycles is not None:
         config.max_cycles = args.max_cycles
-    
-    # Выполнение команды
-    if args.research:
-        cmd_research(config)
-    elif args.theories:
-        cmd_theories(config)
-    elif args.calc:
-        cmd_calc(config)
+
+    # Команды
+    if args.ml:
+        cmd_ml_optimize(config)
+    elif args.universal:
+        cmd_universal_analyze(config)
     elif args.status:
         cmd_status(config)
+    elif args.analyze:
+        cmd_analyze(config)
+    elif args.tests:
+        cmd_tests(config)
     else:
         cmd_run(config)
 
