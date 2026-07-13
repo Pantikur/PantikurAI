@@ -1,0 +1,5831 @@
+{
+  "total_files": 660,
+  "by_extension": {
+    ".jsonl": 215,
+    ".py": 191,
+    ".json": 117,
+    ".md": 87,
+    ".log": 15,
+    "(no extension)": 9,
+    ".txt": 6,
+    ".yaml": 5,
+    ".html": 3,
+    ".kt": 2,
+    ".backup": 2,
+    ".py,": 2,
+    ".example": 1,
+    ".yml": 1,
+    ".bat": 1,
+    ".best": 1,
+    ".jsonl,": 1,
+    ".bak": 1
+  },
+  "by_size": {
+    "< 1KB": 60,
+    "1-10KB": 240,
+    "10-100KB": 329,
+    "100KB-1MB": 25,
+    "> 1MB": 6
+  },
+  "issues": [
+    {
+      "path": "add_anatomy_knowledge.py",
+      "extension": ".py",
+      "size": 99017,
+      "lines": 848,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 848 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "24 строк длиннее 120 символов"
+        }
+      ]
+    },
+    {
+      "path": "add_races_to_conversations.py",
+      "extension": ".py",
+      "size": 19461,
+      "lines": 315,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "49 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "auto_gigachat_learning.py",
+      "extension": ".py",
+      "size": 25583,
+      "lines": 547,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 547 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "50 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "auto_learn_cycle.py",
+      "extension": ".py",
+      "size": 8789,
+      "lines": 208,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "celesta_demo.py",
+      "extension": ".py",
+      "size": 4857,
+      "lines": 132,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "15 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "debug_litnet.py",
+      "extension": ".py",
+      "size": 5166,
+      "lines": 129,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "generate_training_data.py",
+      "extension": ".py",
+      "size": 10643,
+      "lines": 289,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "23 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "inference.py",
+      "extension": ".py",
+      "size": 14774,
+      "lines": 304,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "init_knowledge_system.py",
+      "extension": ".py",
+      "size": 6200,
+      "lines": 168,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "knowledge_manager.py",
+      "extension": ".py",
+      "size": 13891,
+      "lines": 306,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "38 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane_demo.py",
+      "extension": ".py",
+      "size": 8288,
+      "lines": 220,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "learn_from_web.py",
+      "extension": ".py",
+      "size": 9814,
+      "lines": 290,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "31 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "learn_knowledge_from_web.py",
+      "extension": ".py",
+      "size": 34346,
+      "lines": 769,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 769 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "88 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "main.py",
+      "extension": ".py",
+      "size": 142279,
+      "lines": 3198,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 3198 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "20 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "238 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "network_demo.py",
+      "extension": ".py",
+      "size": 5607,
+      "lines": 146,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "research_monitor_demo.py",
+      "extension": ".py",
+      "size": 6076,
+      "lines": 156,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "train.py",
+      "extension": ".py",
+      "size": 20438,
+      "lines": 452,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "14 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "train_logic.py",
+      "extension": ".py",
+      "size": 25566,
+      "lines": 573,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 573 строк"
+        }
+      ]
+    },
+    {
+      "path": "update_gigachat_token.py",
+      "extension": ".py",
+      "size": 3753,
+      "lines": 119,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "12 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "web_researcher.py",
+      "extension": ".py",
+      "size": 12852,
+      "lines": 297,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "9 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "47 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "web_researcher_demo.py",
+      "extension": ".py",
+      "size": 3063,
+      "lines": 93,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "yu_demo.py",
+      "extension": ".py",
+      "size": 3035,
+      "lines": 94,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "akva\\engine\\akva_core.py",
+      "extension": ".py",
+      "size": 22553,
+      "lines": 493,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "70 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "akva\\engine\\config.py",
+      "extension": ".py",
+      "size": 5990,
+      "lines": 133,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "18 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "celesta\\celesta_core.py",
+      "extension": ".py",
+      "size": 24642,
+      "lines": 530,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 530 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "73 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "celesta\\intimacy_learning.py",
+      "extension": ".py",
+      "size": 20079,
+      "lines": 447,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "9 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "69 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "celesta\\intimacy_modules.py",
+      "extension": ".py",
+      "size": 17236,
+      "lines": 373,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "17 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "data\\cache\\litnet_debug.html",
+      "extension": ".html",
+      "size": 120325,
+      "lines": 2414,
+      "issues": [
+        {
+          "type": "unclosed_tags",
+          "severity": "warning",
+          "message": "Возможно, есть незакрытые теги"
+        }
+      ]
+    },
+    {
+      "path": "data\\cache\\litnet_search.html",
+      "extension": ".html",
+      "size": 72782,
+      "lines": 1543,
+      "issues": [
+        {
+          "type": "unclosed_tags",
+          "severity": "warning",
+          "message": "Возможно, есть незакрытые теги"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\config.py",
+      "extension": ".py",
+      "size": 4445,
+      "lines": 90,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\futaba_core.py",
+      "extension": ".py",
+      "size": 29796,
+      "lines": 638,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 638 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "116 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\legal_studies.py",
+      "extension": ".py",
+      "size": 83427,
+      "lines": 1633,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 1633 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "90 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\run.py",
+      "extension": ".py",
+      "size": 6098,
+      "lines": 174,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\trial_grounds.py",
+      "extension": ".py",
+      "size": 22850,
+      "lines": 538,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 538 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "83 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 24243,
+      "lines": 601,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 601 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "61 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\world_state_modeler.py",
+      "extension": ".py",
+      "size": 39061,
+      "lines": 862,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 862 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "89 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\calculator.py",
+      "extension": ".py",
+      "size": 7297,
+      "lines": 182,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "25 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\config.py",
+      "extension": ".py",
+      "size": 3285,
+      "lines": 92,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\fuyuki_core.py",
+      "extension": ".py",
+      "size": 12904,
+      "lines": 297,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "50 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\run.py",
+      "extension": ".py",
+      "size": 6632,
+      "lines": 193,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\theorist.py",
+      "extension": ".py",
+      "size": 5882,
+      "lines": 125,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "12 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 4782,
+      "lines": 122,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\calculator.py",
+      "extension": ".py",
+      "size": 7609,
+      "lines": 191,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\config.py",
+      "extension": ".py",
+      "size": 3242,
+      "lines": 92,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\hanako_core.py",
+      "extension": ".py",
+      "size": 15274,
+      "lines": 352,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\run.py",
+      "extension": ".py",
+      "size": 6644,
+      "lines": 195,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\theorist.py",
+      "extension": ".py",
+      "size": 5719,
+      "lines": 130,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 5723,
+      "lines": 149,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\body_factory.py",
+      "extension": ".py",
+      "size": 11324,
+      "lines": 284,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "35 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\body_modules.py",
+      "extension": ".py",
+      "size": 17788,
+      "lines": 346,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "14 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "39 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\evolution_manager.py",
+      "extension": ".py",
+      "size": 16520,
+      "lines": 371,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "44 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\internet_learning.py",
+      "extension": ".py",
+      "size": 25283,
+      "lines": 547,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 547 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "12 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "91 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\latislane_core.py",
+      "extension": ".py",
+      "size": 23115,
+      "lines": 505,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 505 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "91 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\calculator.py",
+      "extension": ".py",
+      "size": 6313,
+      "lines": 181,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "15 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\config.py",
+      "extension": ".py",
+      "size": 3437,
+      "lines": 98,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "14 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\designer.py",
+      "extension": ".py",
+      "size": 10969,
+      "lines": 214,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "17 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\lucy_core.py",
+      "extension": ".py",
+      "size": 19722,
+      "lines": 442,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "73 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\run.py",
+      "extension": ".py",
+      "size": 7579,
+      "lines": 217,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "24 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 4700,
+      "lines": 122,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\communication.py",
+      "extension": ".py",
+      "size": 17538,
+      "lines": 426,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\config.py",
+      "extension": ".py",
+      "size": 3078,
+      "lines": 93,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\monitoring.py",
+      "extension": ".py",
+      "size": 14288,
+      "lines": 348,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "32 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\naoto_core.py",
+      "extension": ".py",
+      "size": 23379,
+      "lines": 567,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 567 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "67 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\run.py",
+      "extension": ".py",
+      "size": 11975,
+      "lines": 282,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "33 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\self_learning.py",
+      "extension": ".py",
+      "size": 13885,
+      "lines": 343,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "34 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 12167,
+      "lines": 302,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "30 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 17073,
+      "lines": 426,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "68 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "nobuka\\engine\\nobuka_core.py",
+      "extension": ".py",
+      "size": 36575,
+      "lines": 798,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 798 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "28 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "nobuka\\engine\\universal_analyzer.py",
+      "extension": ".py",
+      "size": 22907,
+      "lines": 608,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 608 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "54 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "nobuka\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 29819,
+      "lines": 714,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 714 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "75 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "scientists_network\\network.py",
+      "extension": ".py",
+      "size": 30251,
+      "lines": 650,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 650 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "82 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "scientists_network\\research_monitor.py",
+      "extension": ".py",
+      "size": 34558,
+      "lines": 794,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 794 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "115 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\config.py",
+      "extension": ".py",
+      "size": 5431,
+      "lines": 103,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "15 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\patch_manager.py",
+      "extension": ".py",
+      "size": 8139,
+      "lines": 227,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "40 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\run.py",
+      "extension": ".py",
+      "size": 7114,
+      "lines": 198,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\shiori_core.py",
+      "extension": ".py",
+      "size": 24161,
+      "lines": 538,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 538 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "98 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\threat_hunter.py",
+      "extension": ".py",
+      "size": 10777,
+      "lines": 276,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "40 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 21973,
+      "lines": 531,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 531 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\author_today_parser.py",
+      "extension": ".py",
+      "size": 16797,
+      "lines": 353,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\auto_book_learning.py",
+      "extension": ".py",
+      "size": 16845,
+      "lines": 386,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "40 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\auto_web_search.py",
+      "extension": ".py",
+      "size": 18939,
+      "lines": 440,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "74 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\book_learner.py",
+      "extension": ".py",
+      "size": 43449,
+      "lines": 997,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 997 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "144 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\generate_params_training_data.py",
+      "extension": ".py",
+      "size": 22557,
+      "lines": 490,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "45 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\human_params.py",
+      "extension": ".py",
+      "size": 62702,
+      "lines": 1195,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 1195 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "12 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "160 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\kotlin_assistant.py",
+      "extension": ".py",
+      "size": 81140,
+      "lines": 2395,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 2395 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "210 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\kotlin_assistant_v2.py",
+      "extension": ".py",
+      "size": 31600,
+      "lines": 900,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 900 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "90 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\litnet_parser.py",
+      "extension": ".py",
+      "size": 13728,
+      "lines": 361,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "72 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\races.py",
+      "extension": ".py",
+      "size": 55189,
+      "lines": 1017,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 1017 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "60 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\ruslit_parser.py",
+      "extension": ".py",
+      "size": 23671,
+      "lines": 582,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 582 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "117 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\russian_books_parser.py",
+      "extension": ".py",
+      "size": 27520,
+      "lines": 655,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 655 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "127 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\selenium_parser.py",
+      "extension": ".py",
+      "size": 23914,
+      "lines": 629,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 629 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "135 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\world_people_generator.py",
+      "extension": ".py",
+      "size": 40441,
+      "lines": 854,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 854 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "10 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "118 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\chatbot.py",
+      "extension": ".py",
+      "size": 137132,
+      "lines": 2136,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 2136 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "61 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "44 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\chat_model.py",
+      "extension": ".py",
+      "size": 16322,
+      "lines": 444,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "24 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\cognitive_abilities.py",
+      "extension": ".py",
+      "size": 28862,
+      "lines": 543,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 543 строк"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\context_analyzer.py",
+      "extension": ".py",
+      "size": 16432,
+      "lines": 334,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "56 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\cultural_references.py",
+      "extension": ".py",
+      "size": 71600,
+      "lines": 775,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 775 строк"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\imaginative_abilities.py",
+      "extension": ".py",
+      "size": 32298,
+      "lines": 570,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 570 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "13 строк длиннее 120 символов"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\manipulation.py",
+      "extension": ".py",
+      "size": 57197,
+      "lines": 947,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 947 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "95 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\preprocess.py",
+      "extension": ".py",
+      "size": 2983,
+      "lines": 92,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\web_search.py",
+      "extension": ".py",
+      "size": 46098,
+      "lines": 946,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 946 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "28 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_engine.py",
+      "extension": ".py",
+      "size": 190498,
+      "lines": 2954,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 2954 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "93 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_gen_knowledge.py",
+      "extension": ".py",
+      "size": 18684,
+      "lines": 407,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "39 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_gen_templates.py",
+      "extension": ".py",
+      "size": 26577,
+      "lines": 121,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "73 строк длиннее 120 символов"
+        }
+      ]
+    },
+    {
+      "path": "yu\\engine\\config.py",
+      "extension": ".py",
+      "size": 6071,
+      "lines": 126,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "17 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "yu\\engine\\yu_core.py",
+      "extension": ".py",
+      "size": 23508,
+      "lines": 544,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 544 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "79 строк с пробелами в конце"
+        }
+      ]
+    }
+  ],
+  "text_files_analyzed": 426,
+  "python_files": [
+    {
+      "path": "add_anatomy_knowledge.py",
+      "extension": ".py",
+      "size": 99017,
+      "lines": 848,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 848 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "24 строк длиннее 120 символов"
+        }
+      ]
+    },
+    {
+      "path": "add_disturbing_phrases.py",
+      "extension": ".py",
+      "size": 1823,
+      "lines": 47,
+      "issues": []
+    },
+    {
+      "path": "add_negative_emotional_phrases.py",
+      "extension": ".py",
+      "size": 2998,
+      "lines": 73,
+      "issues": []
+    },
+    {
+      "path": "add_races_knowledge.py",
+      "extension": ".py",
+      "size": 17367,
+      "lines": 290,
+      "issues": []
+    },
+    {
+      "path": "add_races_to_conversations.py",
+      "extension": ".py",
+      "size": 19461,
+      "lines": 315,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "49 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "analyze_at.py",
+      "extension": ".py",
+      "size": 2140,
+      "lines": 63,
+      "issues": []
+    },
+    {
+      "path": "analyze_html.py",
+      "extension": ".py",
+      "size": 2413,
+      "lines": 60,
+      "issues": []
+    },
+    {
+      "path": "auto_gigachat_learning.py",
+      "extension": ".py",
+      "size": 25583,
+      "lines": 547,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 547 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "50 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "auto_learn_cycle.py",
+      "extension": ".py",
+      "size": 8789,
+      "lines": 208,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "auto_retrain.py",
+      "extension": ".py",
+      "size": 2025,
+      "lines": 61,
+      "issues": []
+    },
+    {
+      "path": "auto_train.py",
+      "extension": ".py",
+      "size": 2229,
+      "lines": 66,
+      "issues": []
+    },
+    {
+      "path": "bot_learns_from_gigachat.py",
+      "extension": ".py",
+      "size": 6014,
+      "lines": 145,
+      "issues": []
+    },
+    {
+      "path": "build_training_data.py",
+      "extension": ".py",
+      "size": 15360,
+      "lines": 363,
+      "issues": []
+    },
+    {
+      "path": "celesta_demo.py",
+      "extension": ".py",
+      "size": 4857,
+      "lines": 132,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "15 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "check_all_scientists.py",
+      "extension": ".py",
+      "size": 6528,
+      "lines": 161,
+      "issues": []
+    },
+    {
+      "path": "check_split.py",
+      "extension": ".py",
+      "size": 1045,
+      "lines": 32,
+      "issues": []
+    },
+    {
+      "path": "clean_pride_phrases.py",
+      "extension": ".py",
+      "size": 1592,
+      "lines": 43,
+      "issues": []
+    },
+    {
+      "path": "create_data.py",
+      "extension": ".py",
+      "size": 938,
+      "lines": 39,
+      "issues": []
+    },
+    {
+      "path": "create_theme.py",
+      "extension": ".py",
+      "size": 2544,
+      "lines": 57,
+      "issues": []
+    },
+    {
+      "path": "dataset.py",
+      "extension": ".py",
+      "size": 1736,
+      "lines": 46,
+      "issues": []
+    },
+    {
+      "path": "debug_at.py",
+      "extension": ".py",
+      "size": 1823,
+      "lines": 57,
+      "issues": []
+    },
+    {
+      "path": "debug_at_book.py",
+      "extension": ".py",
+      "size": 4395,
+      "lines": 111,
+      "issues": []
+    },
+    {
+      "path": "debug_at_chapter.py",
+      "extension": ".py",
+      "size": 2103,
+      "lines": 65,
+      "issues": []
+    },
+    {
+      "path": "debug_litnet.py",
+      "extension": ".py",
+      "size": 5166,
+      "lines": 129,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "edit_chatbot.py",
+      "extension": ".py",
+      "size": 1842,
+      "lines": 39,
+      "issues": []
+    },
+    {
+      "path": "final_test.py",
+      "extension": ".py",
+      "size": 4773,
+      "lines": 130,
+      "issues": []
+    },
+    {
+      "path": "fine_tune_rugpt.py",
+      "extension": ".py",
+      "size": 2760,
+      "lines": 78,
+      "issues": []
+    },
+    {
+      "path": "fix_and_merge.py",
+      "extension": ".py",
+      "size": 2864,
+      "lines": 63,
+      "issues": []
+    },
+    {
+      "path": "fix_chatbot.py",
+      "extension": ".py",
+      "size": 606,
+      "lines": 12,
+      "issues": []
+    },
+    {
+      "path": "fix_chatbot2.py",
+      "extension": ".py",
+      "size": 1084,
+      "lines": 19,
+      "issues": []
+    },
+    {
+      "path": "generate_training_data.py",
+      "extension": ".py",
+      "size": 10643,
+      "lines": 289,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "23 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "generate_worlds.py",
+      "extension": ".py",
+      "size": 6129,
+      "lines": 71,
+      "issues": []
+    },
+    {
+      "path": "get_gigachat_token.py",
+      "extension": ".py",
+      "size": 2795,
+      "lines": 75,
+      "issues": []
+    },
+    {
+      "path": "inference.py",
+      "extension": ".py",
+      "size": 14774,
+      "lines": 304,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "init_knowledge_system.py",
+      "extension": ".py",
+      "size": 6200,
+      "lines": 168,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "inspect_data.py",
+      "extension": ".py",
+      "size": 513,
+      "lines": 17,
+      "issues": []
+    },
+    {
+      "path": "knowledge_manager.py",
+      "extension": ".py",
+      "size": 13891,
+      "lines": 306,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "38 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane_demo.py",
+      "extension": ".py",
+      "size": 8288,
+      "lines": 220,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "learn_from_web.py",
+      "extension": ".py",
+      "size": 9814,
+      "lines": 290,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "31 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "learn_knowledge_from_web.py",
+      "extension": ".py",
+      "size": 34346,
+      "lines": 769,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 769 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "88 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "main.py",
+      "extension": ".py",
+      "size": 142279,
+      "lines": 3198,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 3198 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "20 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "238 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "merge_sentiment_data.py",
+      "extension": ".py",
+      "size": 772,
+      "lines": 24,
+      "issues": []
+    },
+    {
+      "path": "network_demo.py",
+      "extension": ".py",
+      "size": 5607,
+      "lines": 146,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "raw_html_sample.py",
+      "extension": ".py",
+      "size": 1345,
+      "lines": 42,
+      "issues": []
+    },
+    {
+      "path": "research_monitor_demo.py",
+      "extension": ".py",
+      "size": 6076,
+      "lines": 156,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "research_monitor_demo_all.py",
+      "extension": ".py",
+      "size": 3457,
+      "lines": 99,
+      "issues": []
+    },
+    {
+      "path": "retrain.py",
+      "extension": ".py",
+      "size": 16875,
+      "lines": 412,
+      "issues": []
+    },
+    {
+      "path": "rpg_generator.py",
+      "extension": ".py",
+      "size": 2211,
+      "lines": 68,
+      "issues": []
+    },
+    {
+      "path": "run.py",
+      "extension": ".py",
+      "size": 125,
+      "lines": 5,
+      "issues": []
+    },
+    {
+      "path": "show_model_info.py",
+      "extension": ".py",
+      "size": 4075,
+      "lines": 105,
+      "issues": []
+    },
+    {
+      "path": "tokenizer.py",
+      "extension": ".py",
+      "size": 3549,
+      "lines": 93,
+      "issues": []
+    },
+    {
+      "path": "train.py",
+      "extension": ".py",
+      "size": 20438,
+      "lines": 452,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "14 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "train_logic.py",
+      "extension": ".py",
+      "size": 25566,
+      "lines": 573,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 573 строк"
+        }
+      ]
+    },
+    {
+      "path": "train_narrative.py",
+      "extension": ".py",
+      "size": 1659,
+      "lines": 43,
+      "issues": []
+    },
+    {
+      "path": "update_gigachat_token.py",
+      "extension": ".py",
+      "size": 3753,
+      "lines": 119,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "12 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "update_knowledge.py",
+      "extension": ".py",
+      "size": 2622,
+      "lines": 71,
+      "issues": []
+    },
+    {
+      "path": "utils.py",
+      "extension": ".py",
+      "size": 3892,
+      "lines": 97,
+      "issues": []
+    },
+    {
+      "path": "web_researcher.py",
+      "extension": ".py",
+      "size": 12852,
+      "lines": 297,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "9 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "47 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "web_researcher_demo.py",
+      "extension": ".py",
+      "size": 3063,
+      "lines": 93,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "yu_demo.py",
+      "extension": ".py",
+      "size": 3035,
+      "lines": 94,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "akva\\__init__.py",
+      "extension": ".py",
+      "size": 780,
+      "lines": 15,
+      "issues": []
+    },
+    {
+      "path": "akva\\engine\\akva_core.py",
+      "extension": ".py",
+      "size": 22553,
+      "lines": 493,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "70 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "akva\\engine\\config.py",
+      "extension": ".py",
+      "size": 5990,
+      "lines": 133,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "18 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "akva\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 200,
+      "lines": 8,
+      "issues": []
+    },
+    {
+      "path": "celesta\\celesta_core.py",
+      "extension": ".py",
+      "size": 24642,
+      "lines": 530,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 530 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "73 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "celesta\\intimacy_learning.py",
+      "extension": ".py",
+      "size": 20079,
+      "lines": 447,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "9 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "69 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "celesta\\intimacy_modules.py",
+      "extension": ".py",
+      "size": 17236,
+      "lines": 373,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "17 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "celesta\\__init__.py",
+      "extension": ".py",
+      "size": 844,
+      "lines": 30,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\config.py",
+      "extension": ".py",
+      "size": 4445,
+      "lines": 90,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\futaba_core.py",
+      "extension": ".py",
+      "size": 29796,
+      "lines": 638,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 638 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "116 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\legal_studies.py",
+      "extension": ".py",
+      "size": 83427,
+      "lines": 1633,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 1633 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "90 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\models.py",
+      "extension": ".py",
+      "size": 12370,
+      "lines": 289,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\run.py",
+      "extension": ".py",
+      "size": 6098,
+      "lines": 174,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\trial_grounds.py",
+      "extension": ".py",
+      "size": 22850,
+      "lines": 538,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 538 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "83 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 24243,
+      "lines": 601,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 601 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "61 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\world_state_modeler.py",
+      "extension": ".py",
+      "size": 39061,
+      "lines": 862,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 862 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "89 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "futaba\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 751,
+      "lines": 15,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\engine\\calculator.py",
+      "extension": ".py",
+      "size": 7297,
+      "lines": 182,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "25 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\config.py",
+      "extension": ".py",
+      "size": 3285,
+      "lines": 92,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\fuyuki_core.py",
+      "extension": ".py",
+      "size": 12904,
+      "lines": 297,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "50 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\models.py",
+      "extension": ".py",
+      "size": 8382,
+      "lines": 236,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\engine\\run.py",
+      "extension": ".py",
+      "size": 6632,
+      "lines": 193,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\theorist.py",
+      "extension": ".py",
+      "size": 5882,
+      "lines": 125,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "12 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 4782,
+      "lines": 122,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "fuyuki\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 558,
+      "lines": 21,
+      "issues": []
+    },
+    {
+      "path": "hanako\\engine\\calculator.py",
+      "extension": ".py",
+      "size": 7609,
+      "lines": 191,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\config.py",
+      "extension": ".py",
+      "size": 3242,
+      "lines": 92,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\hanako_core.py",
+      "extension": ".py",
+      "size": 15274,
+      "lines": 352,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\models.py",
+      "extension": ".py",
+      "size": 8097,
+      "lines": 239,
+      "issues": []
+    },
+    {
+      "path": "hanako\\engine\\run.py",
+      "extension": ".py",
+      "size": 6644,
+      "lines": 195,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\theorist.py",
+      "extension": ".py",
+      "size": 5719,
+      "lines": 130,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 5723,
+      "lines": 149,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "13 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "hanako\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 491,
+      "lines": 21,
+      "issues": []
+    },
+    {
+      "path": "latislane\\body_factory.py",
+      "extension": ".py",
+      "size": 11324,
+      "lines": 284,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "35 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\body_modules.py",
+      "extension": ".py",
+      "size": 17788,
+      "lines": 346,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "14 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "39 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\evolution_manager.py",
+      "extension": ".py",
+      "size": 16520,
+      "lines": 371,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "44 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\internet_learning.py",
+      "extension": ".py",
+      "size": 25283,
+      "lines": 547,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 547 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "12 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "91 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\latislane_core.py",
+      "extension": ".py",
+      "size": 23115,
+      "lines": 505,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 505 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "91 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "latislane\\__init__.py",
+      "extension": ".py",
+      "size": 1067,
+      "lines": 26,
+      "issues": []
+    },
+    {
+      "path": "lucy\\engine\\calculator.py",
+      "extension": ".py",
+      "size": 6313,
+      "lines": 181,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "15 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\config.py",
+      "extension": ".py",
+      "size": 3437,
+      "lines": 98,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "14 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\designer.py",
+      "extension": ".py",
+      "size": 10969,
+      "lines": 214,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "17 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\lucy_core.py",
+      "extension": ".py",
+      "size": 19722,
+      "lines": 442,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "73 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\models.py",
+      "extension": ".py",
+      "size": 7506,
+      "lines": 217,
+      "issues": []
+    },
+    {
+      "path": "lucy\\engine\\run.py",
+      "extension": ".py",
+      "size": 7579,
+      "lines": 217,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "24 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 4700,
+      "lines": 122,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "lucy\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 455,
+      "lines": 21,
+      "issues": []
+    },
+    {
+      "path": "naoto\\__init__.py",
+      "extension": ".py",
+      "size": 55,
+      "lines": 1,
+      "issues": []
+    },
+    {
+      "path": "naoto\\engine\\communication.py",
+      "extension": ".py",
+      "size": 17538,
+      "lines": 426,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\config.py",
+      "extension": ".py",
+      "size": 3078,
+      "lines": 93,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "11 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\models.py",
+      "extension": ".py",
+      "size": 3009,
+      "lines": 86,
+      "issues": []
+    },
+    {
+      "path": "naoto\\engine\\monitoring.py",
+      "extension": ".py",
+      "size": 14288,
+      "lines": 348,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "32 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\naoto_core.py",
+      "extension": ".py",
+      "size": 23379,
+      "lines": 567,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 567 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "67 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\run.py",
+      "extension": ".py",
+      "size": 11975,
+      "lines": 282,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "33 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\self_learning.py",
+      "extension": ".py",
+      "size": 13885,
+      "lines": 343,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "34 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 12167,
+      "lines": 302,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "30 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "naoto\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 17073,
+      "lines": 426,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "68 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "nobuka\\engine\\code_analyzer.py",
+      "extension": ".py",
+      "size": 7629,
+      "lines": 214,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\config.py",
+      "extension": ".py",
+      "size": 6176,
+      "lines": 134,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\models.py",
+      "extension": ".py",
+      "size": 16179,
+      "lines": 428,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\nobuka_core.py",
+      "extension": ".py",
+      "size": 36575,
+      "lines": 798,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 798 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "28 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "nobuka\\engine\\run.py",
+      "extension": ".py",
+      "size": 7779,
+      "lines": 222,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\test_runner.py",
+      "extension": ".py",
+      "size": 9890,
+      "lines": 288,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\universal_analyzer.py",
+      "extension": ".py",
+      "size": 22907,
+      "lines": 608,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 608 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "54 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "nobuka\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 29819,
+      "lines": 714,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 714 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "75 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "nobuka\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 429,
+      "lines": 12,
+      "issues": []
+    },
+    {
+      "path": "Pantikur\\scripts\\create_data_debug.py",
+      "extension": ".py",
+      "size": 0,
+      "lines": 0,
+      "issues": []
+    },
+    {
+      "path": "Pantikur\\scripts\\debug_env.py",
+      "extension": ".py",
+      "size": 0,
+      "lines": 0,
+      "issues": []
+    },
+    {
+      "path": "Pantikur\\Wuglarst\\__init__.py",
+      "extension": ".py",
+      "size": 0,
+      "lines": 0,
+      "issues": []
+    },
+    {
+      "path": "scientists_network\\network.py",
+      "extension": ".py",
+      "size": 30251,
+      "lines": 650,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 650 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "82 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "scientists_network\\research_monitor.py",
+      "extension": ".py",
+      "size": 34558,
+      "lines": 794,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 794 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "115 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "scientists_network\\__init__.py",
+      "extension": ".py",
+      "size": 291,
+      "lines": 17,
+      "issues": []
+    },
+    {
+      "path": "scripts\\create_data_debug.py",
+      "extension": ".py",
+      "size": 4016,
+      "lines": 116,
+      "issues": []
+    },
+    {
+      "path": "scripts\\create_data_fixed.py",
+      "extension": ".py",
+      "size": 3598,
+      "lines": 105,
+      "issues": []
+    },
+    {
+      "path": "scripts\\debug_env.py",
+      "extension": ".py",
+      "size": 1022,
+      "lines": 23,
+      "issues": []
+    },
+    {
+      "path": "scripts\\final_debug.py",
+      "extension": ".py",
+      "size": 1197,
+      "lines": 35,
+      "issues": []
+    },
+    {
+      "path": "scripts\\inspect_data.py",
+      "extension": ".py",
+      "size": 316,
+      "lines": 9,
+      "issues": []
+    },
+    {
+      "path": "scripts\\run_create_data.py",
+      "extension": ".py",
+      "size": 353,
+      "lines": 11,
+      "issues": []
+    },
+    {
+      "path": "scripts\\train.py",
+      "extension": ".py",
+      "size": 1254,
+      "lines": 40,
+      "issues": []
+    },
+    {
+      "path": "scripts\\__init__.py",
+      "extension": ".py",
+      "size": 0,
+      "lines": 0,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\config.py",
+      "extension": ".py",
+      "size": 5431,
+      "lines": 103,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "15 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\models.py",
+      "extension": ".py",
+      "size": 10772,
+      "lines": 304,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\patch_manager.py",
+      "extension": ".py",
+      "size": 8139,
+      "lines": 227,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "40 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\run.py",
+      "extension": ".py",
+      "size": 7114,
+      "lines": 198,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "19 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\shiori_core.py",
+      "extension": ".py",
+      "size": 24161,
+      "lines": 538,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 538 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "98 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\threat_hunter.py",
+      "extension": ".py",
+      "size": 10777,
+      "lines": 276,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "40 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\web_access.py",
+      "extension": ".py",
+      "size": 21973,
+      "lines": 531,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 531 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "shiori\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 878,
+      "lines": 17,
+      "issues": []
+    },
+    {
+      "path": "utils\\author_today_parser.py",
+      "extension": ".py",
+      "size": 16797,
+      "lines": 353,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "57 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\auto_book_learning.py",
+      "extension": ".py",
+      "size": 16845,
+      "lines": 386,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "40 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\auto_web_search.py",
+      "extension": ".py",
+      "size": 18939,
+      "lines": 440,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "74 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\book_learner.py",
+      "extension": ".py",
+      "size": 43449,
+      "lines": 997,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 997 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "144 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\character.py",
+      "extension": ".py",
+      "size": 17665,
+      "lines": 389,
+      "issues": []
+    },
+    {
+      "path": "utils\\generate_params_training_data.py",
+      "extension": ".py",
+      "size": 22557,
+      "lines": 490,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "45 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\human_params.py",
+      "extension": ".py",
+      "size": 62702,
+      "lines": 1195,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 1195 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "12 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "160 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\kotlin_assistant.py",
+      "extension": ".py",
+      "size": 81140,
+      "lines": 2395,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 2395 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "210 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\kotlin_assistant_v2.py",
+      "extension": ".py",
+      "size": 31600,
+      "lines": 900,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 900 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "90 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\litnet_parser.py",
+      "extension": ".py",
+      "size": 13728,
+      "lines": 361,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "72 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\races.py",
+      "extension": ".py",
+      "size": 55189,
+      "lines": 1017,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 1017 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "60 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\ruslit_parser.py",
+      "extension": ".py",
+      "size": 23671,
+      "lines": 582,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 582 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "117 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\russian_books_parser.py",
+      "extension": ".py",
+      "size": 27520,
+      "lines": 655,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 655 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "127 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\selenium_parser.py",
+      "extension": ".py",
+      "size": 23914,
+      "lines": 629,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 629 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "135 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\world_people_generator.py",
+      "extension": ".py",
+      "size": 40441,
+      "lines": 854,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 854 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "10 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "118 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "utils\\__init__.py",
+      "extension": ".py",
+      "size": 257,
+      "lines": 11,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\__init__.py",
+      "extension": ".py",
+      "size": 0,
+      "lines": 0,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\chatbot.py",
+      "extension": ".py",
+      "size": 137132,
+      "lines": 2136,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 2136 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "61 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "44 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\chat_model.py",
+      "extension": ".py",
+      "size": 16322,
+      "lines": 444,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "24 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\cognitive_abilities.py",
+      "extension": ".py",
+      "size": 28862,
+      "lines": 543,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 543 строк"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\context_analyzer.py",
+      "extension": ".py",
+      "size": 16432,
+      "lines": 334,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "56 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\cultural_references.py",
+      "extension": ".py",
+      "size": 71600,
+      "lines": 775,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 775 строк"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\dialect_phrases.py",
+      "extension": ".py",
+      "size": 4530,
+      "lines": 77,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\imaginative_abilities.py",
+      "extension": ".py",
+      "size": 32298,
+      "lines": 570,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 570 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "13 строк длиннее 120 символов"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\intuition.py",
+      "extension": ".py",
+      "size": 14431,
+      "lines": 254,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\manipulation.py",
+      "extension": ".py",
+      "size": 57197,
+      "lines": 947,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 947 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "95 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\physiological_abilities.py",
+      "extension": ".py",
+      "size": 7079,
+      "lines": 148,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\preprocess.py",
+      "extension": ".py",
+      "size": 2983,
+      "lines": 92,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "20 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\professions.py",
+      "extension": ".py",
+      "size": 4813,
+      "lines": 110,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\social_abilities.py",
+      "extension": ".py",
+      "size": 25227,
+      "lines": 457,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\social_emotional.py",
+      "extension": ".py",
+      "size": 22440,
+      "lines": 449,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\special_cognitive_abilities.py",
+      "extension": ".py",
+      "size": 12351,
+      "lines": 197,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\test_selenium.py",
+      "extension": ".py",
+      "size": 386,
+      "lines": 12,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\test_websearch.py",
+      "extension": ".py",
+      "size": 2864,
+      "lines": 72,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\web_search.py",
+      "extension": ".py",
+      "size": 46098,
+      "lines": 946,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 946 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "28 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_engine.py",
+      "extension": ".py",
+      "size": 190498,
+      "lines": 2954,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 2954 строк"
+        },
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "93 строк длиннее 120 символов"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "27 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_gen_knowledge.py",
+      "extension": ".py",
+      "size": 18684,
+      "lines": 407,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "39 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_gen_templates.py",
+      "extension": ".py",
+      "size": 26577,
+      "lines": 121,
+      "issues": [
+        {
+          "type": "long_lines",
+          "severity": "info",
+          "message": "73 строк длиннее 120 символов"
+        }
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\__init__.py",
+      "extension": ".py",
+      "size": 26,
+      "lines": 1,
+      "issues": []
+    },
+    {
+      "path": "yu\\__init__.py",
+      "extension": ".py",
+      "size": 620,
+      "lines": 16,
+      "issues": []
+    },
+    {
+      "path": "yu\\engine\\config.py",
+      "extension": ".py",
+      "size": 6071,
+      "lines": 126,
+      "issues": [
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "17 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "yu\\engine\\yu_core.py",
+      "extension": ".py",
+      "size": 23508,
+      "lines": 544,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Файл слишком большой: 544 строк"
+        },
+        {
+          "type": "trailing_whitespace",
+          "severity": "info",
+          "message": "79 строк с пробелами в конце"
+        }
+      ]
+    },
+    {
+      "path": "yu\\engine\\__init__.py",
+      "extension": ".py",
+      "size": 202,
+      "lines": 8,
+      "issues": []
+    }
+  ],
+  "json_files": [
+    {
+      "path": "generated_worlds.json",
+      "extension": ".json",
+      "size": 85639,
+      "lines": 202,
+      "issues": []
+    },
+    {
+      "path": "pyrightconfig.json",
+      "extension": ".json",
+      "size": 859,
+      "lines": 34,
+      "issues": []
+    },
+    {
+      "path": "test_request.json",
+      "extension": ".json",
+      "size": 126,
+      "lines": 9,
+      "issues": []
+    },
+    {
+      "path": "training_data.json",
+      "extension": ".json",
+      "size": 2084,
+      "lines": 26,
+      "issues": []
+    },
+    {
+      "path": ".vscode\\settings.json",
+      "extension": ".json",
+      "size": 135,
+      "lines": 6,
+      "issues": []
+    },
+    {
+      "path": "data\\conversations.json",
+      "extension": ".json",
+      "size": 149103,
+      "lines": 1762,
+      "issues": []
+    },
+    {
+      "path": "data\\conversations.old.json",
+      "extension": ".json",
+      "size": 190340,
+      "lines": 3510,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge_cache.json",
+      "extension": ".json",
+      "size": 2,
+      "lines": 1,
+      "issues": []
+    },
+    {
+      "path": "data\\professions_human_arts.json",
+      "extension": ".json",
+      "size": 1305,
+      "lines": 36,
+      "issues": []
+    },
+    {
+      "path": "data\\professions_human_human.json",
+      "extension": ".json",
+      "size": 1798,
+      "lines": 54,
+      "issues": []
+    },
+    {
+      "path": "data\\professions_human_nature.json",
+      "extension": ".json",
+      "size": 1141,
+      "lines": 36,
+      "issues": []
+    },
+    {
+      "path": "data\\professions_human_signs.json",
+      "extension": ".json",
+      "size": 1456,
+      "lines": 44,
+      "issues": []
+    },
+    {
+      "path": "data\\professions_human_technics.json",
+      "extension": ".json",
+      "size": 1653,
+      "lines": 46,
+      "issues": []
+    },
+    {
+      "path": "data\\professions_mixed.json",
+      "extension": ".json",
+      "size": 3496,
+      "lines": 72,
+      "issues": []
+    },
+    {
+      "path": "data\\speech_styles.json",
+      "extension": ".json",
+      "size": 2624,
+      "lines": 52,
+      "issues": []
+    },
+    {
+      "path": "data\\tokenizer.json",
+      "extension": ".json",
+      "size": 351727,
+      "lines": 11472,
+      "issues": []
+    },
+    {
+      "path": "data\\books\\auto_learning_state.json",
+      "extension": ".json",
+      "size": 176,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "data\\books\\books_metadata.json",
+      "extension": ".json",
+      "size": 93653,
+      "lines": 2881,
+      "issues": []
+    },
+    {
+      "path": "data\\celesta\\system_state.json",
+      "extension": ".json",
+      "size": 2200,
+      "lines": 79,
+      "issues": []
+    },
+    {
+      "path": "data\\celesta\\learning\\learning_state.json",
+      "extension": ".json",
+      "size": 12069,
+      "lines": 381,
+      "issues": []
+    },
+    {
+      "path": "data\\data\\knowledge\\knowledge_stats.json",
+      "extension": ".json",
+      "size": 5453,
+      "lines": 200,
+      "issues": []
+    },
+    {
+      "path": "data\\generated_worlds\\world_population_20260706_222742.json",
+      "extension": ".json",
+      "size": 24883,
+      "lines": 613,
+      "issues": []
+    },
+    {
+      "path": "data\\generated_worlds\\world_population_20260706_222836.json",
+      "extension": ".json",
+      "size": 12185,
+      "lines": 389,
+      "issues": []
+    },
+    {
+      "path": "data\\generated_worlds\\world_population_20260706_231350.json",
+      "extension": ".json",
+      "size": 25451,
+      "lines": 798,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\knowledge_stats.json",
+      "extension": ".json",
+      "size": 259,
+      "lines": 12,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\knowledge_stats_dev.json",
+      "extension": ".json",
+      "size": 2109,
+      "lines": 74,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\learned_words.json",
+      "extension": ".json",
+      "size": 297662,
+      "lines": 7162,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\learning_status.json",
+      "extension": ".json",
+      "size": 143,
+      "lines": 8,
+      "issues": []
+    },
+    {
+      "path": "data\\latislane\\system_state.json",
+      "extension": ".json",
+      "size": 2232,
+      "lines": 81,
+      "issues": []
+    },
+    {
+      "path": "data\\latislane\\bodies\\design_templates.json",
+      "extension": ".json",
+      "size": 2557,
+      "lines": 97,
+      "issues": []
+    },
+    {
+      "path": "data\\latislane\\evolution\\evolution_state.json",
+      "extension": ".json",
+      "size": 470,
+      "lines": 20,
+      "issues": []
+    },
+    {
+      "path": "data\\latislane\\learning\\learning_state.json",
+      "extension": ".json",
+      "size": 11954,
+      "lines": 379,
+      "issues": []
+    },
+    {
+      "path": "data\\narrative_examples\\examples.json",
+      "extension": ".json",
+      "size": 27598,
+      "lines": 435,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\index.json",
+      "extension": ".json",
+      "size": 7155,
+      "lines": 235,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Вечный Волка.json",
+      "extension": ".json",
+      "size": 20272,
+      "lines": 603,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Вечный Заката.json",
+      "extension": ".json",
+      "size": 19058,
+      "lines": 598,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Вечный Кристалла.json",
+      "extension": ".json",
+      "size": 18381,
+      "lines": 572,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Вечный Теней.json",
+      "extension": ".json",
+      "size": 19383,
+      "lines": 463,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Забытый Пустоты.json",
+      "extension": ".json",
+      "size": 18451,
+      "lines": 487,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Звёздный Волка.json",
+      "extension": ".json",
+      "size": 14248,
+      "lines": 401,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Звёздный Хаоса.json",
+      "extension": ".json",
+      "size": 18439,
+      "lines": 419,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Звёздный Хранитель.json",
+      "extension": ".json",
+      "size": 18930,
+      "lines": 560,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Космический Заката.json",
+      "extension": ".json",
+      "size": 21205,
+      "lines": 590,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Кристальный Бездны.json",
+      "extension": ".json",
+      "size": 19931,
+      "lines": 570,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Кристальный Мечты.json",
+      "extension": ".json",
+      "size": 21919,
+      "lines": 583,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Кристальный Хранитель.json",
+      "extension": ".json",
+      "size": 18630,
+      "lines": 578,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Орбитальный Вечности.json",
+      "extension": ".json",
+      "size": 23023,
+      "lines": 636,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Орбитальный Мечты.json",
+      "extension": ".json",
+      "size": 23004,
+      "lines": 646,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Падший Звёзд.json",
+      "extension": ".json",
+      "size": 15980,
+      "lines": 471,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Сияющий Бездны.json",
+      "extension": ".json",
+      "size": 18983,
+      "lines": 555,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Сияющий Волка.json",
+      "extension": ".json",
+      "size": 19948,
+      "lines": 590,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Сияющий Дракона.json",
+      "extension": ".json",
+      "size": 18513,
+      "lines": 547,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Сияющий Кристалла.json",
+      "extension": ".json",
+      "size": 19977,
+      "lines": 621,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Тёмный Вечности.json",
+      "extension": ".json",
+      "size": 20363,
+      "lines": 632,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Тёмный Заката.json",
+      "extension": ".json",
+      "size": 17769,
+      "lines": 527,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Тёмный Искры.json",
+      "extension": ".json",
+      "size": 20658,
+      "lines": 521,
+      "issues": []
+    },
+    {
+      "path": "data\\worlds\\Тёмный Мечты.json",
+      "extension": ".json",
+      "size": 17950,
+      "lines": 536,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_10_Сердце_Вечности.json",
+      "extension": ".json",
+      "size": 2712,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_11_Досье_Теней.json",
+      "extension": ".json",
+      "size": 2463,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_12_Книга_Жизни.json",
+      "extension": ".json",
+      "size": 2596,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_13_Рунный_Чип.json",
+      "extension": ".json",
+      "size": 2570,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_14_Загадка_Вселенной.json",
+      "extension": ".json",
+      "size": 2439,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_15_Квест_Гильдии.json",
+      "extension": ".json",
+      "size": 2485,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_16_Чужак_Дома.json",
+      "extension": ".json",
+      "size": 2485,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_17_Кофе_и_Диван.json",
+      "extension": ".json",
+      "size": 2198,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_18_Лес_Вечности.json",
+      "extension": ".json",
+      "size": 2277,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_1_Нейро-Крона.json",
+      "extension": ".json",
+      "size": 3662,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_1_Орбитальный_Хор.json",
+      "extension": ".json",
+      "size": 3016,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_2_Подземка_Теней.json",
+      "extension": ".json",
+      "size": 3000,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_2_Эфирный_Архипелаг.json",
+      "extension": ".json",
+      "size": 3507,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_3_Кровавый_Культ.json",
+      "extension": ".json",
+      "size": 3233,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_3_Пепельный_Штат.json",
+      "extension": ".json",
+      "size": 3603,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_4_Заря_Света.json",
+      "extension": ".json",
+      "size": 3064,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_4_Золотой_Парус.json",
+      "extension": ".json",
+      "size": 3640,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_5_Красная_Гильдия.json",
+      "extension": ".json",
+      "size": 3305,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_5_Чёрное_Топливо.json",
+      "extension": ".json",
+      "size": 2996,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_6_Стальной_Страж.json",
+      "extension": ".json",
+      "size": 2630,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_7_Разорванная_Нить.json",
+      "extension": ".json",
+      "size": 2840,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_8_Смехотворный_Край.json",
+      "extension": ".json",
+      "size": 2578,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "data\\world_examples\\world_9_Тень_Забытых.json",
+      "extension": ".json",
+      "size": 2516,
+      "lines": 25,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\futaba_state.json",
+      "extension": ".json",
+      "size": 13493,
+      "lines": 471,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\ideal_state_structure.json",
+      "extension": ".json",
+      "size": 26232,
+      "lines": 692,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\learned_laws.json",
+      "extension": ".json",
+      "size": 12206,
+      "lines": 287,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\legal_cache.json",
+      "extension": ".json",
+      "size": 18502,
+      "lines": 12,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\trials.json",
+      "extension": ".json",
+      "size": 11616,
+      "lines": 366,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\trials_report.json",
+      "extension": ".json",
+      "size": 18406,
+      "lines": 585,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\web_cache.json",
+      "extension": ".json",
+      "size": 772,
+      "lines": 6,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\world_simulation_cache.json",
+      "extension": ".json",
+      "size": 10575,
+      "lines": 8,
+      "issues": []
+    },
+    {
+      "path": "futaba\\engine\\state\\world_simulation_results.json",
+      "extension": ".json",
+      "size": 389483,
+      "lines": 12584,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\engine\\state\\calculations.json",
+      "extension": ".json",
+      "size": 19241,
+      "lines": 629,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\engine\\state\\theories.json",
+      "extension": ".json",
+      "size": 32018,
+      "lines": 984,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\engine\\state\\web_cache.json",
+      "extension": ".json",
+      "size": 3348,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "hanako\\engine\\state\\calculations.json",
+      "extension": ".json",
+      "size": 21523,
+      "lines": 691,
+      "issues": []
+    },
+    {
+      "path": "hanako\\engine\\state\\theories.json",
+      "extension": ".json",
+      "size": 30946,
+      "lines": 919,
+      "issues": []
+    },
+    {
+      "path": "hanako\\engine\\state\\web_cache.json",
+      "extension": ".json",
+      "size": 3332,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "lucy\\engine\\state\\calculations.json",
+      "extension": ".json",
+      "size": 17148,
+      "lines": 589,
+      "issues": []
+    },
+    {
+      "path": "lucy\\engine\\state\\designs.json",
+      "extension": ".json",
+      "size": 42153,
+      "lines": 1105,
+      "issues": []
+    },
+    {
+      "path": "lucy\\engine\\state\\web_cache.json",
+      "extension": ".json",
+      "size": 3248,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "naoto\\engine\\logs\\action_log.json",
+      "extension": ".json",
+      "size": 64301,
+      "lines": 1925,
+      "issues": []
+    },
+    {
+      "path": "naoto\\engine\\state\\interaction_log.json",
+      "extension": ".json",
+      "size": 22739,
+      "lines": 719,
+      "issues": []
+    },
+    {
+      "path": "naoto\\engine\\state\\state.json",
+      "extension": ".json",
+      "size": 151,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "naoto\\engine\\state\\trends.json",
+      "extension": ".json",
+      "size": 127626,
+      "lines": 3147,
+      "issues": []
+    },
+    {
+      "path": "naoto\\engine\\state\\web_cache.json",
+      "extension": ".json",
+      "size": 3812,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "naoto\\knowledge\\knowledge_base.json",
+      "extension": ".json",
+      "size": 19763,
+      "lines": 494,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\state\\analysis_report.json",
+      "extension": ".json",
+      "size": 30114,
+      "lines": 1060,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\state\\nobuka_state.json",
+      "extension": ".json",
+      "size": 513,
+      "lines": 21,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\state\\universal_analysis_report.json",
+      "extension": ".json",
+      "size": 145891,
+      "lines": 5832,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\engine\\state\\web_cache.json",
+      "extension": ".json",
+      "size": 1570,
+      "lines": 9,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\incidents.json",
+      "extension": ".json",
+      "size": 7437,
+      "lines": 225,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\shiori_state.json",
+      "extension": ".json",
+      "size": 13262,
+      "lines": 418,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\threats.json",
+      "extension": ".json",
+      "size": 5259,
+      "lines": 173,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\web_cache.json",
+      "extension": ".json",
+      "size": 773,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\backups\\backup_PATCH-20260709224840-5156.json",
+      "extension": ".json",
+      "size": 192,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\backups\\backup_PATCH-20260711221504-2306.json",
+      "extension": ".json",
+      "size": 192,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\backups\\backup_PATCH-20260711221509-2838.json",
+      "extension": ".json",
+      "size": 192,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "shiori\\engine\\state\\backups\\backup_PATCH-20260711221511-1102.json",
+      "extension": ".json",
+      "size": 192,
+      "lines": 7,
+      "issues": []
+    },
+    {
+      "path": "yu\\engine\\state\\yu_state.json",
+      "extension": ".json",
+      "size": 4058,
+      "lines": 117,
+      "issues": []
+    }
+  ],
+  "markdown_files": [
+    {
+      "path": "DEPLOY.md",
+      "extension": ".md",
+      "size": 5659,
+      "lines": 149,
+      "issues": []
+    },
+    {
+      "path": "DEPLOYMENT.md",
+      "extension": ".md",
+      "size": 7320,
+      "lines": 190,
+      "issues": []
+    },
+    {
+      "path": "DEPLOY_TIMWEB.md",
+      "extension": ".md",
+      "size": 1581,
+      "lines": 49,
+      "issues": []
+    },
+    {
+      "path": "GIRL_SCIENTISTS.md",
+      "extension": ".md",
+      "size": 15105,
+      "lines": 376,
+      "issues": []
+    },
+    {
+      "path": "INTEGRATION_GUIDE.md",
+      "extension": ".md",
+      "size": 7802,
+      "lines": 265,
+      "issues": []
+    },
+    {
+      "path": "INTERNET_ACCESS_COMPLETE.md",
+      "extension": ".md",
+      "size": 14823,
+      "lines": 370,
+      "issues": []
+    },
+    {
+      "path": "knowledge_system_README.md",
+      "extension": ".md",
+      "size": 6702,
+      "lines": 155,
+      "issues": []
+    },
+    {
+      "path": "KOTLIN_ANDROID_INTEGRATION.md",
+      "extension": ".md",
+      "size": 18987,
+      "lines": 632,
+      "issues": []
+    },
+    {
+      "path": "KOTLIN_QUICKSTART.md",
+      "extension": ".md",
+      "size": 8092,
+      "lines": 286,
+      "issues": []
+    },
+    {
+      "path": "KOTLIN_V2_IMPROVEMENTS.md",
+      "extension": ".md",
+      "size": 6140,
+      "lines": 189,
+      "issues": []
+    },
+    {
+      "path": "LEGAL_MODULE_ALL_BRANCHES.md",
+      "extension": ".md",
+      "size": 18720,
+      "lines": 389,
+      "issues": []
+    },
+    {
+      "path": "LEGAL_MODULE_COMPLETE.md",
+      "extension": ".md",
+      "size": 12863,
+      "lines": 399,
+      "issues": []
+    },
+    {
+      "path": "README.md",
+      "extension": ".md",
+      "size": 9631,
+      "lines": 208,
+      "issues": []
+    },
+    {
+      "path": "SCIENTISTS_NETWORK.md",
+      "extension": ".md",
+      "size": 6246,
+      "lines": 151,
+      "issues": []
+    },
+    {
+      "path": "SECURITY.md",
+      "extension": ".md",
+      "size": 4393,
+      "lines": 138,
+      "issues": []
+    },
+    {
+      "path": "WEB_ACCESS_README.md",
+      "extension": ".md",
+      "size": 5862,
+      "lines": 137,
+      "issues": []
+    },
+    {
+      "path": "web_researcher_README.md",
+      "extension": ".md",
+      "size": 2963,
+      "lines": 116,
+      "issues": []
+    },
+    {
+      "path": "WORLD_STATE_MODELER.md",
+      "extension": ".md",
+      "size": 13822,
+      "lines": 416,
+      "issues": []
+    },
+    {
+      "path": "akva\\constitution.md",
+      "extension": ".md",
+      "size": 1967,
+      "lines": 37,
+      "issues": []
+    },
+    {
+      "path": "akva\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 1278,
+      "lines": 35,
+      "issues": []
+    },
+    {
+      "path": "akva\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 2141,
+      "lines": 40,
+      "issues": []
+    },
+    {
+      "path": "celesta\\README.md",
+      "extension": ".md",
+      "size": 6538,
+      "lines": 184,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_24_years.md",
+      "extension": ".md",
+      "size": 329688,
+      "lines": 2396,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_adolescence.md",
+      "extension": ".md",
+      "size": 550041,
+      "lines": 7642,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_daily_life.md",
+      "extension": ".md",
+      "size": 27028,
+      "lines": 212,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_daily_routine.md",
+      "extension": ".md",
+      "size": 159285,
+      "lines": 1480,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_early_development.md",
+      "extension": ".md",
+      "size": 540461,
+      "lines": 9128,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_emerging_adulthood.md",
+      "extension": ".md",
+      "size": 335197,
+      "lines": 4427,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_late_adolescence.md",
+      "extension": ".md",
+      "size": 422623,
+      "lines": 5802,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\human_middle_childhood.md",
+      "extension": ".md",
+      "size": 457753,
+      "lines": 6512,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\japanese_names_complete.md",
+      "extension": ".md",
+      "size": 132870,
+      "lines": 3271,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\japanese_names_full.md",
+      "extension": ".md",
+      "size": 535,
+      "lines": 11,
+      "issues": []
+    },
+    {
+      "path": "data\\knowledge\\japanese_names_futaba_shiori.md",
+      "extension": ".md",
+      "size": 7533,
+      "lines": 171,
+      "issues": []
+    },
+    {
+      "path": "docs\\FINAL_SUMMARY.md",
+      "extension": ".md",
+      "size": 6196,
+      "lines": 205,
+      "issues": []
+    },
+    {
+      "path": "docs\\japanese_names_usage.md",
+      "extension": ".md",
+      "size": 7010,
+      "lines": 191,
+      "issues": []
+    },
+    {
+      "path": "docs\\RUSSIAN_BOOKS_SOURCES.md",
+      "extension": ".md",
+      "size": 6120,
+      "lines": 202,
+      "issues": []
+    },
+    {
+      "path": "docs\\SELENIUM_SETUP.md",
+      "extension": ".md",
+      "size": 3541,
+      "lines": 147,
+      "issues": []
+    },
+    {
+      "path": "futaba\\constitution.md",
+      "extension": ".md",
+      "size": 5190,
+      "lines": 108,
+      "issues": []
+    },
+    {
+      "path": "futaba\\README.md",
+      "extension": ".md",
+      "size": 23318,
+      "lines": 528,
+      "issues": []
+    },
+    {
+      "path": "futaba\\system-init.md",
+      "extension": ".md",
+      "size": 8224,
+      "lines": 159,
+      "issues": []
+    },
+    {
+      "path": "futaba\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 9158,
+      "lines": 186,
+      "issues": []
+    },
+    {
+      "path": "futaba\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 6065,
+      "lines": 121,
+      "issues": []
+    },
+    {
+      "path": "futaba\\modes\\game-mode.md",
+      "extension": ".md",
+      "size": 18010,
+      "lines": 480,
+      "issues": []
+    },
+    {
+      "path": "futaba\\protocols\\01-response-protocol.md",
+      "extension": ".md",
+      "size": 9493,
+      "lines": 221,
+      "issues": []
+    },
+    {
+      "path": "futaba\\protocols\\02-self-development-protocol.md",
+      "extension": ".md",
+      "size": 20123,
+      "lines": 394,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\constitution.md",
+      "extension": ".md",
+      "size": 5002,
+      "lines": 110,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\README.md",
+      "extension": ".md",
+      "size": 4605,
+      "lines": 113,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 2708,
+      "lines": 77,
+      "issues": []
+    },
+    {
+      "path": "fuyuki\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 5834,
+      "lines": 147,
+      "issues": []
+    },
+    {
+      "path": "hanako\\constitution.md",
+      "extension": ".md",
+      "size": 4768,
+      "lines": 110,
+      "issues": []
+    },
+    {
+      "path": "hanako\\README.md",
+      "extension": ".md",
+      "size": 4361,
+      "lines": 113,
+      "issues": []
+    },
+    {
+      "path": "hanako\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 2648,
+      "lines": 77,
+      "issues": []
+    },
+    {
+      "path": "hanako\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 5730,
+      "lines": 147,
+      "issues": []
+    },
+    {
+      "path": "latislane\\README.md",
+      "extension": ".md",
+      "size": 10452,
+      "lines": 272,
+      "issues": []
+    },
+    {
+      "path": "lucy\\constitution.md",
+      "extension": ".md",
+      "size": 5272,
+      "lines": 115,
+      "issues": []
+    },
+    {
+      "path": "lucy\\README.md",
+      "extension": ".md",
+      "size": 5658,
+      "lines": 133,
+      "issues": []
+    },
+    {
+      "path": "lucy\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 2718,
+      "lines": 77,
+      "issues": []
+    },
+    {
+      "path": "lucy\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 5643,
+      "lines": 148,
+      "issues": []
+    },
+    {
+      "path": "naoto\\constitution.md",
+      "extension": ".md",
+      "size": 7063,
+      "lines": 127,
+      "issues": []
+    },
+    {
+      "path": "naoto\\README.md",
+      "extension": ".md",
+      "size": 10692,
+      "lines": 251,
+      "issues": []
+    },
+    {
+      "path": "naoto\\system-init.md",
+      "extension": ".md",
+      "size": 17810,
+      "lines": 323,
+      "issues": []
+    },
+    {
+      "path": "naoto\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 4487,
+      "lines": 95,
+      "issues": []
+    },
+    {
+      "path": "naoto\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 13097,
+      "lines": 222,
+      "issues": []
+    },
+    {
+      "path": "naoto\\protocols\\01-visual-protocols.md",
+      "extension": ".md",
+      "size": 12558,
+      "lines": 349,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\constitution.md",
+      "extension": ".md",
+      "size": 6543,
+      "lines": 137,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\README.md",
+      "extension": ".md",
+      "size": 13951,
+      "lines": 310,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\system-init.md",
+      "extension": ".md",
+      "size": 10930,
+      "lines": 241,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 6440,
+      "lines": 153,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 2880,
+      "lines": 62,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\protocols\\01-code-improvement-protocol.md",
+      "extension": ".md",
+      "size": 7513,
+      "lines": 188,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\protocols\\02-testing-protocol.md",
+      "extension": ".md",
+      "size": 7015,
+      "lines": 197,
+      "issues": []
+    },
+    {
+      "path": "nobuka\\protocols\\03-self-modernization-protocol.md",
+      "extension": ".md",
+      "size": 12604,
+      "lines": 267,
+      "issues": []
+    },
+    {
+      "path": "scientists_network\\README.md",
+      "extension": ".md",
+      "size": 10771,
+      "lines": 239,
+      "issues": []
+    },
+    {
+      "path": "scientists_network\\RESEARCH_MONITOR_API.md",
+      "extension": ".md",
+      "size": 20630,
+      "lines": 578,
+      "issues": []
+    },
+    {
+      "path": "shiori\\constitution.md",
+      "extension": ".md",
+      "size": 5203,
+      "lines": 110,
+      "issues": []
+    },
+    {
+      "path": "shiori\\README.md",
+      "extension": ".md",
+      "size": 10470,
+      "lines": 245,
+      "issues": []
+    },
+    {
+      "path": "shiori\\system-init.md",
+      "extension": ".md",
+      "size": 9098,
+      "lines": 180,
+      "issues": []
+    },
+    {
+      "path": "shiori\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 8838,
+      "lines": 174,
+      "issues": []
+    },
+    {
+      "path": "shiori\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 5323,
+      "lines": 120,
+      "issues": []
+    },
+    {
+      "path": "shiori\\protocols\\01-security-protocols.md",
+      "extension": ".md",
+      "size": 8279,
+      "lines": 235,
+      "issues": []
+    },
+    {
+      "path": "utils\\PEOPLE_GENERATOR_README.md",
+      "extension": ".md",
+      "size": 12418,
+      "lines": 364,
+      "issues": []
+    },
+    {
+      "path": "utils\\README_AUTO_LEARNING.md",
+      "extension": ".md",
+      "size": 9359,
+      "lines": 308,
+      "issues": []
+    },
+    {
+      "path": "utils\\README_BOOK_LEARNER.md",
+      "extension": ".md",
+      "size": 5210,
+      "lines": 164,
+      "issues": []
+    },
+    {
+      "path": "utils\\README_PARAMS_TRAINING.md",
+      "extension": ".md",
+      "size": 7075,
+      "lines": 155,
+      "issues": []
+    },
+    {
+      "path": "yu\\constitution.md",
+      "extension": ".md",
+      "size": 2030,
+      "lines": 38,
+      "issues": []
+    },
+    {
+      "path": "yu\\codes\\01-ethics-code.md",
+      "extension": ".md",
+      "size": 1423,
+      "lines": 33,
+      "issues": []
+    },
+    {
+      "path": "yu\\laws\\01-core-laws.md",
+      "extension": ".md",
+      "size": 1633,
+      "lines": 33,
+      "issues": []
+    }
+  ],
+  "config_files": [
+    {
+      "path": "docker-compose.yml",
+      "extension": ".yml",
+      "size": 1570,
+      "lines": 47,
+      "issues": []
+    },
+    {
+      "path": "render.yaml",
+      "extension": ".yaml",
+      "size": 345,
+      "lines": 13,
+      "issues": []
+    },
+    {
+      "path": "configs\\dev.yaml",
+      "extension": ".yaml",
+      "size": 2779,
+      "lines": 52,
+      "issues": []
+    },
+    {
+      "path": "configs\\generation.yaml",
+      "extension": ".yaml",
+      "size": 1988,
+      "lines": 51,
+      "issues": []
+    },
+    {
+      "path": "configs\\prod.yaml",
+      "extension": ".yaml",
+      "size": 4326,
+      "lines": 84,
+      "issues": []
+    },
+    {
+      "path": "data\\config.yaml",
+      "extension": ".yaml",
+      "size": 5243,
+      "lines": 103,
+      "issues": []
+    }
+  ],
+  "duplicate_files": [
+    {
+      "files": [
+        "data\\conversations_temp.jsonl",
+        "data\\conversations_with_races.jsonl"
+      ],
+      "hash": "a7f3511b18a5c672cabd91c264e1e846",
+      "size": 299811
+    },
+    {
+      "files": [
+        "data\\tokenizer.json",
+        "data\\tokenizer.json.backup"
+      ],
+      "hash": "401441d54065aba2840958f8c2da12fd",
+      "size": 351727
+    },
+    {
+      "files": [
+        "data\\books_training_pairs.jsonl",
+        "data\\training_pairs.jsonl"
+      ],
+      "hash": "1786868587f15c27cceca994d4aafcc6",
+      "size": 1158103
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260630_200809.jsonl",
+        "data\\books\\books_cycle_20260630_201942.jsonl"
+      ],
+      "hash": "be7485390a06b58a3963a121b05d75ac",
+      "size": 57791
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260630_200809.jsonl",
+        "data\\books\\books_cycle_20260630_203036.jsonl"
+      ],
+      "hash": "be7485390a06b58a3963a121b05d75ac",
+      "size": 57791
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260630_200809.jsonl",
+        "data\\books\\books_cycle_20260630_210304.jsonl"
+      ],
+      "hash": "be7485390a06b58a3963a121b05d75ac",
+      "size": 57791
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260630_200809.jsonl",
+        "data\\books\\books_cycle_20260630_212453.jsonl"
+      ],
+      "hash": "be7485390a06b58a3963a121b05d75ac",
+      "size": 57791
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260630_200809.jsonl",
+        "data\\books\\books_cycle_20260630_214707.jsonl"
+      ],
+      "hash": "be7485390a06b58a3963a121b05d75ac",
+      "size": 57791
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260630_215801.jsonl",
+        "data\\books\\books_cycle_20260630_220856.jsonl"
+      ],
+      "hash": "4c2fe4472dbf53fda826dd181a9b9f71",
+      "size": 57791
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_173748.jsonl",
+        "data\\books\\books_cycle_20260701_174829.jsonl"
+      ],
+      "hash": "6bbf3bacf5ba2b056d4c701d06b308ff",
+      "size": 17775
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_173748.jsonl",
+        "data\\books\\books_cycle_20260701_180956.jsonl"
+      ],
+      "hash": "6bbf3bacf5ba2b056d4c701d06b308ff",
+      "size": 18601
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_170515.jsonl",
+        "data\\books\\books_cycle_20260701_185253.jsonl"
+      ],
+      "hash": "f284706da1a80d81f4616ac472427a77",
+      "size": 17450
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_171602.jsonl",
+        "data\\books\\books_cycle_20260701_190337.jsonl"
+      ],
+      "hash": "d559456f42208ddfe32e004d792b9fe3",
+      "size": 18243
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_173748.jsonl",
+        "data\\books\\books_cycle_20260701_192526.jsonl"
+      ],
+      "hash": "6bbf3bacf5ba2b056d4c701d06b308ff",
+      "size": 21723
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_184207.jsonl",
+        "data\\books\\books_cycle_20260701_193608.jsonl"
+      ],
+      "hash": "631e578ef86e52e164ff243aa6ef4e9e",
+      "size": 18253
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_165427.jsonl",
+        "data\\books\\books_cycle_20260701_194647.jsonl"
+      ],
+      "hash": "6f2a59fa598e4a67ed1ff5db1ea0df43",
+      "size": 18447
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260630_205215.jsonl",
+        "data\\books\\books_cycle_20260701_201849.jsonl"
+      ],
+      "hash": "8488a8631b30eda8893494b512928218",
+      "size": 63015
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_195726.jsonl",
+        "data\\books\\books_cycle_20260701_202931.jsonl"
+      ],
+      "hash": "d6bc0fbdd981f6d59cd423e799d29989",
+      "size": 18115
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_173748.jsonl",
+        "data\\books\\books_cycle_20260701_203345.jsonl"
+      ],
+      "hash": "6bbf3bacf5ba2b056d4c701d06b308ff",
+      "size": 18115
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_172706.jsonl",
+        "data\\books\\books_cycle_20260701_203512.jsonl"
+      ],
+      "hash": "4eacdd0e28aa568dfd0449b5ae0445ff",
+      "size": 17815
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_204232.jsonl",
+        "data\\books\\books_cycle_20260701_204351.jsonl"
+      ],
+      "hash": "cfac56391cc606f6e70c676164680b06",
+      "size": 15131
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_204232.jsonl",
+        "data\\books\\books_cycle_20260701_204523.jsonl"
+      ],
+      "hash": "cfac56391cc606f6e70c676164680b06",
+      "size": 15131
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_204232.jsonl",
+        "data\\books\\books_cycle_20260701_204646.jsonl"
+      ],
+      "hash": "cfac56391cc606f6e70c676164680b06",
+      "size": 15131
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_165427.jsonl",
+        "data\\books\\books_cycle_20260701_211328.jsonl"
+      ],
+      "hash": "6f2a59fa598e4a67ed1ff5db1ea0df43",
+      "size": 59593
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_184207.jsonl",
+        "data\\books\\books_cycle_20260701_213458.jsonl"
+      ],
+      "hash": "631e578ef86e52e164ff243aa6ef4e9e",
+      "size": 62857
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_215652.jsonl",
+        "data\\books\\books_cycle_20260701_220737.jsonl"
+      ],
+      "hash": "06e62c2789f931fd7153d5c36f7b6957",
+      "size": 59261
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_221435.jsonl",
+        "data\\books\\books_cycle_20260701_221612.jsonl"
+      ],
+      "hash": "831e50fa82bc1a34b301019ad1b04efc",
+      "size": 59261
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_200808.jsonl",
+        "data\\books\\books_cycle_20260701_221951.jsonl"
+      ],
+      "hash": "bdbddc91710caf9257b39c6d9ae4e45a",
+      "size": 58147
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_221435.jsonl",
+        "data\\books\\books_cycle_20260701_222309.jsonl"
+      ],
+      "hash": "831e50fa82bc1a34b301019ad1b04efc",
+      "size": 59261
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_215652.jsonl",
+        "data\\books\\books_cycle_20260701_223508.jsonl"
+      ],
+      "hash": "06e62c2789f931fd7153d5c36f7b6957",
+      "size": 59747
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_215652.jsonl",
+        "data\\books\\books_cycle_20260701_225656.jsonl"
+      ],
+      "hash": "06e62c2789f931fd7153d5c36f7b6957",
+      "size": 59747
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_215652.jsonl",
+        "data\\books\\books_cycle_20260701_230745.jsonl"
+      ],
+      "hash": "06e62c2789f931fd7153d5c36f7b6957",
+      "size": 59747
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_215652.jsonl",
+        "data\\books\\books_cycle_20260701_231834.jsonl"
+      ],
+      "hash": "06e62c2789f931fd7153d5c36f7b6957",
+      "size": 59194
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_205202.jsonl",
+        "data\\books\\books_cycle_20260702_001501.jsonl"
+      ],
+      "hash": "8b14646b7d45844c7276c05f8da50bd2",
+      "size": 58633
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_210247.jsonl",
+        "data\\books\\books_cycle_20260702_002548.jsonl"
+      ],
+      "hash": "686064ca9dc9460c628baac75d6eb4f9",
+      "size": 59388
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_215652.jsonl",
+        "data\\books\\books_cycle_20260702_003631.jsonl"
+      ],
+      "hash": "06e62c2789f931fd7153d5c36f7b6957",
+      "size": 59261
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_232922.jsonl",
+        "data\\books\\books_cycle_20260702_005757.jsonl"
+      ],
+      "hash": "34f99ac02180b4c983f56f3a82366008",
+      "size": 14374
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260701_215652.jsonl",
+        "data\\books\\books_cycle_20260702_011950.jsonl"
+      ],
+      "hash": "06e62c2789f931fd7153d5c36f7b6957",
+      "size": 59194
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_051148.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 15122
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_051841.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 15122
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_052136.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 15787
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_052828.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 15787
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_054950.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 16108
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_050127.jsonl",
+        "data\\books\\books_cycle_20260702_060055.jsonl"
+      ],
+      "hash": "304a3560f07634957647714b97fd52c0",
+      "size": 60808
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_061137.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 15443
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_062217.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 19384
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_063258.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 22862
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_045814.jsonl",
+        "data\\books\\books_cycle_20260702_064339.jsonl"
+      ],
+      "hash": "14810433692f891e228c31082b92c3a4",
+      "size": 19395
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_071538.jsonl",
+        "data\\books\\books_cycle_20260702_073701.jsonl"
+      ],
+      "hash": "fb6bd378dd2017934c319c44b518febd",
+      "size": 16025
+    },
+    {
+      "files": [
+        "data\\books\\books_cycle_20260702_071538.jsonl",
+        "data\\books\\books_cycle_20260702_075844.jsonl"
+      ],
+      "hash": "fb6bd378dd2017934c319c44b518febd",
+      "size": 14889
+    }
+  ],
+  "large_files": [
+    {
+      "path": "data\\books_training_pairs.jsonl",
+      "name": "books_training_pairs.jsonl",
+      "extension": ".jsonl",
+      "size": 5712851,
+      "modified": 1783692165.5673778
+    },
+    {
+      "path": "data\\training_pairs.jsonl",
+      "name": "training_pairs.jsonl",
+      "extension": ".jsonl",
+      "size": 1158103,
+      "modified": 1782631992.4629982
+    },
+    {
+      "path": "data\\user_conversations.jsonl",
+      "name": "user_conversations.jsonl",
+      "extension": ".jsonl",
+      "size": 21302045,
+      "modified": 1783520874.751362
+    },
+    {
+      "path": "data\\knowledge\\training_pairs.jsonl",
+      "name": "training_pairs.jsonl",
+      "extension": ".jsonl",
+      "size": 5453932,
+      "modified": 1782631992.4242055
+    },
+    {
+      "path": "models\\chat_model.pth.backup",
+      "name": "chat_model.pth.backup",
+      "extension": ".backup",
+      "size": 29324789,
+      "modified": 1782278451.2109973
+    },
+    {
+      "path": "models\\chat_model.pth.best",
+      "name": "chat_model.pth.best",
+      "extension": ".best",
+      "size": 54546909,
+      "modified": 1782807377.801462
+    }
+  ],
+  "empty_files": [
+    {
+      "path": "fuyuki\\engine\\logs\\fuyuki_20260711.log",
+      "name": "fuyuki_20260711.log",
+      "extension": ".log",
+      "size": 0,
+      "modified": 1783771478.405473
+    },
+    {
+      "path": "lucy\\engine\\logs\\lucy_20260711.log",
+      "name": "lucy_20260711.log",
+      "extension": ".log",
+      "size": 0,
+      "modified": 1783771479.4109843
+    },
+    {
+      "path": "Pantikur\\{main.py,train.py,train_narrative.py,retrain.py,create_data.py,inspect_data.py,",
+      "name": "{main.py,train.py,train_narrative.py,retrain.py,create_data.py,inspect_data.py,",
+      "extension": ".py,",
+      "size": 0,
+      "modified": 1780834370.0159423
+    },
+    {
+      "path": "Pantikur\\data\\{conversations.jsonl,training_pairs.jsonl,user_conversations.jsonl,",
+      "name": "{conversations.jsonl,training_pairs.jsonl,user_conversations.jsonl,",
+      "extension": ".jsonl,",
+      "size": 0,
+      "modified": 1780834370.8130488
+    },
+    {
+      "path": "Pantikur\\scripts\\create_data_debug.py",
+      "name": "create_data_debug.py",
+      "extension": ".py",
+      "size": 0,
+      "modified": 1781673104.8002284
+    },
+    {
+      "path": "Pantikur\\scripts\\debug_env.py",
+      "name": "debug_env.py",
+      "extension": ".py",
+      "size": 0,
+      "modified": 1781673104.8002284
+    },
+    {
+      "path": "Pantikur\\Wuglarst\\__init__.py",
+      "name": "__init__.py",
+      "extension": ".py",
+      "size": 0,
+      "modified": 1781673104.8002284
+    },
+    {
+      "path": "Pantikur\\Wuglarst\\src\\{chatbot.py,chat_model.py,preprocess.py,",
+      "name": "{chatbot.py,chat_model.py,preprocess.py,",
+      "extension": ".py,",
+      "size": 0,
+      "modified": 1780834370.5328743
+    },
+    {
+      "path": "scripts\\__init__.py",
+      "name": "__init__.py",
+      "extension": ".py",
+      "size": 0,
+      "modified": 1781673104.8022223
+    },
+    {
+      "path": "Wuglarst\\__init__.py",
+      "name": "__init__.py",
+      "extension": ".py",
+      "size": 0,
+      "modified": 1781673104.8022223
+    }
+  ],
+  "old_files": [
+    {
+      "path": "data\\tokenizer.json.backup",
+      "name": "tokenizer.json.backup",
+      "extension": ".backup",
+      "size": 351727,
+      "modified": 1782278451.1959825
+    },
+    {
+      "path": "models\\chat_model.pth.backup",
+      "name": "chat_model.pth.backup",
+      "extension": ".backup",
+      "size": 29324789,
+      "modified": 1782278451.2109973
+    },
+    {
+      "path": "Wuglarst\\src\\web_search.py.bak",
+      "name": "web_search.py.bak",
+      "extension": ".bak",
+      "size": 5242,
+      "modified": 1778380138.8741214
+    }
+  ]
+}

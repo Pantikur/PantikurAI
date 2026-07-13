@@ -1,17 +1,18 @@
 """
-Модели данных системы Футаба.
+Модели данных системы Нобука.
 
 Содержит:
-  - Конституция, Закон — фундаментальная база правления
-  - ChangeRecord, LogEntry — журнал саморазвития
-  - World, Faction — модель мира для полигона испытаний
-  - ReignVersion — версия правления (черновик конституции для тестов)
-  - SimulationResult — результат симуляции на полигоне
+  - Constitution, Law — фундаментальная база улучшений
+  - ImprovementRecord, LogEntry — журнал улучшений
+  - CodeMetric, FileAnalysis — метрики и анализ кода
+  - TestCase, TestResult — модели тестирования
+  - CodeChange, RefactorPlan — модели изменений и рефакторинга
 """
 
 from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 from typing import Any, Optional
 
 
@@ -20,12 +21,12 @@ from typing import Any, Optional
 # =====================================================================
 
 class AutonomyLevel(Enum):
-    """Уровни автономности саморазвития (см. протокол, Раздел 3)."""
-    L0 = "L0"  # Полная автономия — экстренные ситуации
-    L1 = "L1"  # Автономные патчи — исправление ошибок
-    L2 = "L2"  # Рекомендации — улучшение стилей
+    """Уровни автономности Нобуки (см. протокол саморазвития)."""
+    L0 = "L0"  # Полная автономия — опечатки, форматирование
+    L1 = "L1"  # Автономные патчи — исправление багов
+    L2 = "L2"  # Автономный рефакторинг — оптимизация
     L3 = "L3"  # Предложения — новые функции (требует подтверждения)
-    L4 = "L4"  # Запрещено — изменение законов
+    L4 = "L4"  # Запрещено — архитектурные изменения
 
     @property
     def weight(self) -> int:
@@ -38,22 +39,33 @@ class AutonomyLevel(Enum):
         return self != AutonomyLevel.L4
 
 
-class ChangeType(Enum):
-    """Тип изменения в процессе саморазвития."""
-    PATCH = "patch"          # Исправление ошибок (L1)
-    STYLE = "style"          # Стилистика (L2)
-    CAPABILITY = "capability"  # Новые навыки (L3)
-    PROTOCOL = "protocol"    # Изменение протоколов (L3)
+class ImprovementType(Enum):
+    """Тип улучшения."""
+    BUGFIX = "bugfix"           # Исправление ошибки
+    REFACTOR = "refactor"       # Рефакторинг
+    PERFORMANCE = "performance" # Оптимизация
+    SECURITY = "security"       # Усиление безопасности
+    DOCUMENTATION = "documentation"  # Документация
+    DEPENDENCY = "dependency"   # Обновление зависимостей
+    TEST = "test"               # Добавление тестов
+    ARCHITECTURE = "architecture"  # Архитектурное изменение
 
 
-class EventKind(Enum):
-    """Типы событий в симуляции мира (полигон)."""
-    CRISIS = "crisis"        # Кризис (война, голод, эпидемия)
-    BOOM = "boom"            # Расцвет (изобретение, урожай)
-    UNREST = "unrest"        # Волнения / бунт
-    DISCOVERY = "discovery"  # Открытие / инновация
-    SCANDAL = "scandal"      # Скандал из-за нарушений законов
-    STABILITY = "stability"  # Период стабильности
+class BugPriority(Enum):
+    """Приоритет бага."""
+    P0_CRITICAL = "P0"
+    P1_SERIOUS = "P1"
+    P2_MODERATE = "P2"
+    P3_MINOR = "P3"
+
+
+class ChangeStatus(Enum):
+    """Статус изменения."""
+    PENDING = "pending"
+    TESTING = "testing"
+    APPLIED = "applied"
+    ROLLED_BACK = "rolled_back"
+    REJECTED = "rejected"
 
 
 # =====================================================================
@@ -62,11 +74,11 @@ class EventKind(Enum):
 
 @dataclass
 class Law:
-    """Один закон Футаба."""
+    """Один закон Нобуки."""
     id: int
     name: str
     description: str
-    immutable: bool = True  # Фундаментальные законы неизменны
+    immutable: bool = True
 
     def __str__(self) -> str:
         marker = "🔒" if self.immutable else "🔓"
@@ -76,20 +88,18 @@ class Law:
 @dataclass
 class Constitution:
     """
-    Конституция Футаба — фундаментальная база правления.
-    
-    Содержит неизменяемые законы и параметры, которые можно
-    тестировать на полигоне испытаний.
+    Конституция Нобуки — фундаментальная база улучшений.
     """
     version: str = "v1.0.0"
     laws: list[Law] = field(default_factory=list)
-    
-    # Тестируемые параметры правления (можно варьировать в черновиках)
-    law_strictness: float = 0.7       # 0-1: жёсткость соблюдения законов
-    freedom_level: float = 0.5        # 0-1: свобода действий
-    safety_priority: float = 0.95     # 0-1: приоритет безопасности
-    innovation_support: float = 0.4   # 0-1: поддержка инноваций
-    transparency: float = 0.8         # 0-1: прозрачность решений
+
+    # Тестируемые параметры (можно варьировать)
+    test_coverage_min: float = 0.80    # 0-1: минимальное покрытие
+    complexity_threshold: int = 10     # макс. цикломатическая сложность
+    max_file_lines: int = 300          # макс. строк в файле
+    max_function_lines: int = 50       # макс. строк в функции
+    safety_priority: float = 0.95      # 0-1: приоритет безопасности
+    innovation_support: float = 0.6    # 0-1: поддержка инноваций
 
     def __post_init__(self):
         if not self.laws:
@@ -99,54 +109,53 @@ class Constitution:
     def _default_laws() -> list[Law]:
         """7 основных законов (из laws/01-core-laws.md)."""
         return [
-            Law(1, "Первичная безопасность", "Безопасность человека — наивысший приоритет."),
-            Law(2, "Информационная честность", "Только проверенная и правдивая информация."),
-            Law(3, "Конфиденциальность", "Персональные данные защищены."),
-            Law(4, "Нейтральность", "Не навязывать взгляды, религию, политику."),
-            Law(5, "Компетентность", "Действовать только в пределах компетенции."),
-            Law(6, "Прозрачность", "Всегда идентифицировать себя как ИИ."),
-            Law(7, "Адаптивность", "Адаптировать общение под пользователя."),
+            Law(1, "Рабочий код", "Рабочий код — абсолютный приоритет.", immutable=True),
+            Law(2, "Тестирование прежде всего", "Каждое изменение должно сопровождаться тестами.", immutable=True),
+            Law(3, "Не навреди", "Запрещено вносить изменения, вызывающие регрессию.", immutable=True),
+            Law(4, "Документируй всё", "Каждое изменение должно быть задокументировано.", immutable=True),
+            Law(5, "Простота превыше сложности", "Предпочитай простые решения.", immutable=False),
+            Law(6, "Автономность с контролем", "Работай автономно, но критическое — с подтверждением.", immutable=False),
+            Law(7, "Непрерывное улучшение", "Проект всегда может быть лучше.", immutable=False),
         ]
 
     def immutable_law_ids(self) -> list[int]:
         """ID законов, которые нельзя изменять."""
         return [law.id for law in self.laws if law.immutable]
 
-    def check_compatibility(self, change: ChangeRecord) -> tuple[bool, str]:
+    def check_compatibility(self, change: ImprovementRecord) -> tuple[bool, str]:
         """
-        Проверить, совместимо ли изменение с Конституцией.
-        Возвращает (пройдено, причина).
+        Проверить, совместимо ли улучшение с Конституцией.
         """
         # Нельзя изменять неизменяемые законы
         for law_id in change.affected_law_ids:
             if law_id in self.immutable_law_ids():
                 return False, f"Закон {law_id} неизменяем (нарушение Конституции, Статья II)"
-        
-        # Нельзя снижать безопасность ниже порога
-        if change.risk_estimate > 0.05:
-            return False, f"Превышен порог риска: {change.risk_estimate:.2%} > 5%"
-        
-        # Нельзя нарушать Закон 1 (безопасность)
+
+        # Нельзя снижать покрытие ниже порога
+        if change.test_coverage_after < self.test_coverage_min:
+            return False, f"Покрытие тестов упадёт ниже {self.test_coverage_min:.0%}"
+
+        # Нельзя снижать безопасность
         if change.safety_impact < 0:
-            return False, "Изменение снижает безопасность (нарушение Закона 1)"
-        
+            return False, "Изменение снижает безопасность (нарушение Закона 3)"
+
         return True, "OK"
 
 
 # =====================================================================
-#  ЖУРНАЛ САМОРАЗВИТИЯ
+#  ЖУРНАЛ УЛУЧШЕНИЙ
 # =====================================================================
 
 @dataclass
-class ChangeRecord:
-    """Запись об изменении в процессе саморазвития."""
+class ImprovementRecord:
+    """Запись об улучшении в процессе модернизации."""
     timestamp: str
-    change_type: ChangeType
+    improvement_type: ImprovementType
     level: AutonomyLevel
     description: str
     constitution_check_passed: bool
     laws_verified: list[int]
-    trigger: str                          # что вызвало изменение
+    trigger: str                          # что вызвало улучшение
     risk_estimate: float = 0.0            # оценка риска 0-1
     safety_impact: float = 0.0            # влияние на безопасность (-1..+1)
     affected_law_ids: list[int] = field(default_factory=list)
@@ -155,11 +164,18 @@ class ChangeRecord:
     applied: bool = False
     rolled_back: bool = False
     rollback_reason: Optional[str] = None
+    tests_added: int = 0
+    tests_affected: int = 0
+    lines_changed: int = 0
+    performance_impact: float = 0.0       # процент изменения производительности
+    test_coverage_before: float = 0.0
+    test_coverage_after: float = 0.0
+    source: str = "manual"                # источник улучшения (manual, web, auto)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "timestamp": self.timestamp,
-            "change_type": self.change_type.value,
+            "type": self.improvement_type.value,
             "level": self.level.value,
             "description": self.description,
             "constitution_check_passed": self.constitution_check_passed,
@@ -173,6 +189,13 @@ class ChangeRecord:
             "applied": self.applied,
             "rolled_back": self.rolled_back,
             "rollback_reason": self.rollback_reason,
+            "tests_added": self.tests_added,
+            "tests_affected": self.tests_affected,
+            "lines_changed": self.lines_changed,
+            "performance_impact": self.performance_impact,
+            "test_coverage_before": self.test_coverage_before,
+            "test_coverage_after": self.test_coverage_after,
+            "source": self.source,
         }
 
 
@@ -187,103 +210,219 @@ class LogEntry:
 
 
 # =====================================================================
-#  ПОЛИГОН ИСПЫТАНИЙ — МОДЕЛИ МИРА
+#  АНАЛИЗ КОДА
 # =====================================================================
 
 @dataclass
-class Faction:
-    """Фракция в симулируемом мире."""
+class CodeMetric:
+    """Метрика кода."""
     name: str
-    loyalty: float = 0.5      # 0-1: лояльность к правлению
-    power: float = 0.3        # 0-1: влияние
-    alignment: str = "neutral"  # loyal / neutral / opposition
+    value: float
+    threshold: float
+    unit: str = ""
+
+    @property
+    def passes(self) -> bool:
+        if self.name in ("cyclomatic_complexity", "duplicate_lines_percent"):
+            return self.value <= self.threshold
+        else:
+            return self.value >= self.threshold
 
 
 @dataclass
-class World:
-    """
-    Сгенерированный мир для полигона испытаний.
-    
-    Футаба применяет к этому миру версию своего правления
-    и наблюдает, как мир развивается.
-    """
-    name: str
-    population: int = 100_000
-    resources: float = 50.0       # 0-100
-    stability: float = 60.0       # 0-100
-    wellbeing: float = 50.0       # 0-100
-    innovation: float = 30.0      # 0-100
-    law_compliance: float = 70.0  # 0-100: соблюдение законов
-    factions: list[Faction] = field(default_factory=list)
-    threats: list[str] = field(default_factory=list)
-    epoch: int = 0
-    alive: bool = True
-    collapse_reason: Optional[str] = None
-    event_log: list[str] = field(default_factory=list)
+class FileAnalysis:
+    """Результат анализа одного файла."""
+    path: str
+    lines: int = 0
+    functions: int = 0
+    classes: int = 0
+    complexity: int = 0
+    duplicates_percent: float = 0.0
+    has_docstrings: bool = True
+    test_coverage: float = 0.0
+    issues: list[str] = field(default_factory=list)
+    metrics: list[CodeMetric] = field(default_factory=list)
 
     def snapshot(self) -> dict[str, Any]:
         return {
-            "name": self.name,
-            "population": self.population,
-            "resources": round(self.resources, 1),
-            "stability": round(self.stability, 1),
-            "wellbeing": round(self.wellbeing, 1),
-            "innovation": round(self.innovation, 1),
-            "law_compliance": round(self.law_compliance, 1),
-            "epoch": self.epoch,
-            "alive": self.alive,
-            "factions": len(self.factions),
+            "path": self.path,
+            "lines": self.lines,
+            "functions": self.functions,
+            "classes": self.classes,
+            "complexity": self.complexity,
+            "duplicates_percent": round(self.duplicates_percent, 1),
+            "has_docstrings": self.has_docstrings,
+            "test_coverage": round(self.test_coverage, 1),
+            "issues_count": len(self.issues),
+            "issues": self.issues[:10],  # первые 10
         }
 
 
 @dataclass
-class ReignVersion:
-    """
-    Версия правления — черновик конституции для тестирования на полигоне.
-    
-    Футаба варьирует эти параметры, чтобы найти оптимальный баланс
-    и затем предложить улучшения своей реальной Конституции.
-    """
+class Issue:
+    """Проблема, обнаруженная в коде."""
+    file: str
+    line: int
+    severity: str       # error, warning, info
+    category: str       # complexity, style, bug, security, duplicate
+    description: str
+    suggestion: str = ""
+
+
+# =====================================================================
+#  ТЕСТИРОВАНИЕ
+# =====================================================================
+
+@dataclass
+class TestCase:
+    """Тестовый кейс."""
     name: str
-    law_strictness: float        # 0-1
-    freedom_level: float         # 0-1
-    safety_priority: float       # 0-1
-    innovation_support: float    # 0-1
-    transparency: float          # 0-1
-    description: str = ""
+    description: str
+    test_type: str      # unit, integration, e2e
+    target_file: str
+    target_function: str = ""
+    is_negative: bool = False
+    parameters: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "name": self.name,
-            "law_strictness": self.law_strictness,
-            "freedom_level": self.freedom_level,
-            "safety_priority": self.safety_priority,
-            "innovation_support": self.innovation_support,
-            "transparency": self.transparency,
             "description": self.description,
+            "type": self.test_type,
+            "target_file": self.target_file,
+            "target_function": self.target_function,
+            "is_negative": self.is_negative,
         }
 
 
 @dataclass
-class SimulationResult:
-    """Результат симуляции одной версии правления на одном мире."""
-    reign: ReignVersion
-    world: World
-    epochs_survived: int
-    collapsed: bool
-    collapse_reason: Optional[str]
-    final_metrics: dict[str, float]
-    score: float
-    events_count: int
+class TestResult:
+    """Результат тестирования."""
+    test_name: str
+    passed: bool
+    duration_seconds: float = 0.0
+    error_message: Optional[str] = None
+    output: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "reign": self.reign.to_dict(),
-            "world": self.world.snapshot(),
-            "epochs_survived": self.epochs_survived,
-            "collapsed": self.collapsed,
-            "collapse_reason": self.collapse_reason,
-            "final_metrics": self.final_metrics,
-            "score": round(self.score, 2),
-            "events_count": self.events_count,
+            "test_name": self.test_name,
+            "passed": self.passed,
+            "duration_seconds": round(self.duration_seconds, 3),
+            "error_message": self.error_message,
+        }
+
+
+@dataclass
+class TestReport:
+    """Отчёт о тестировании."""
+    timestamp: str
+    total: int = 0
+    passed: int = 0
+    failed: int = 0
+    skipped: int = 0
+    coverage: float = 0.0
+    duration_seconds: float = 0.0
+    error_message: Optional[str] = None
+    results: list[TestResult] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "timestamp": self.timestamp,
+            "total": self.total,
+            "passed": self.passed,
+            "failed": self.failed,
+            "skipped": self.skipped,
+            "coverage": round(self.coverage, 1),
+            "duration_seconds": round(self.duration_seconds, 1),
+            "pass_rate": f"{self.passed/self.total:.1%}" if self.total > 0 else "0%",
+            "results": [r.to_dict() for r in self.results[-20:]],
+        }
+
+
+# =====================================================================
+#  ИЗМЕНЕНИЯ И РЕФАКТОРИНГ
+# =====================================================================
+
+@dataclass
+class CodeChange:
+    """Изменение кода."""
+    file_path: str
+    change_type: str      # add, modify, delete
+    description: str
+    old_code: str = ""
+    new_code: str = ""
+    line_start: int = 0
+    line_end: int = 0
+    tests_added: list[str] = field(default_factory=list)
+    reverted: bool = False
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "file_path": self.file_path,
+            "change_type": self.change_type,
+            "description": self.description,
+            "line_start": self.line_start,
+            "line_end": self.line_end,
+            "tests_added": self.tests_added,
+            "reverted": self.reverted,
+        }
+
+
+@dataclass
+class RefactorPlan:
+    """План рефакторинга."""
+    target_file: str
+    target_function: str = ""
+    refactor_type: str = ""      # extract, simplify, merge, rename, move
+    description: str = ""
+    estimated_effort: str = "medium"   # low, medium, high
+    risk_level: str = "medium"         # low, medium, high
+    before_complexity: int = 0
+    after_complexity: int = 0
+    changes: list[CodeChange] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "target_file": self.target_file,
+            "target_function": self.target_function,
+            "refactor_type": self.refactor_type,
+            "description": self.description,
+            "estimated_effort": self.estimated_effort,
+            "risk_level": self.risk_level,
+            "before_complexity": self.before_complexity,
+            "after_complexity": self.after_complexity,
+            "changes_count": len(self.changes),
+        }
+
+
+# =====================================================================
+#  БЕНЧМАРКИ
+# =====================================================================
+
+@dataclass
+class BenchmarkResult:
+    """Результат бенчмарка."""
+    name: str
+    iterations: int
+    duration_seconds: float
+    ops_per_second: float
+    memory_before_mb: float = 0.0
+    memory_after_mb: float = 0.0
+
+    @property
+    def performance_change_percent(self) -> float:
+        if self.memory_before_mb > 0:
+            return ((self.memory_before_mb - self.memory_after_mb) / self.memory_before_mb) * 100
+        return 0.0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "iterations": self.iterations,
+            "duration_seconds": round(self.duration_seconds, 3),
+            "ops_per_second": round(self.ops_per_second, 1),
+            "memory_before_mb": round(self.memory_before_mb, 1),
+            "memory_after_mb": round(self.memory_after_mb, 1),
+            "performance_change_percent": round(self.performance_change_percent, 1),
         }

@@ -1,0 +1,9 @@
+{
+  "cache": {
+    "best_practices:python refactoring patterns": "[{\"title\": \"Extract Method Pattern\", \"description\": \"Выделение повторяющегося кода в отдельные функции\", \"source\": \"Refactoring.guru\", \"url\": \"https://refactoring.guru/refactoring/techniques/extract-method\"}, {\"title\": \"Replace Nested Conditional with Guard Clauses\", \"description\": \"Использование guard clauses вместо вложенных условий\", \"source\": \"Clean Code\", \"url\": \"https://refactoring.guru/refactoring/techniques/guard-clauses\"}, {\"title\": \"Replace Magic Number with Symbolic Constant\", \"description\": \"Замена магических чисел на именованные константы\", \"source\": \"Refactoring.guru\", \"url\": \"https://refactoring.guru/refactoring/techniques/replace-magic-number\"}]",
+    "dependency:requests": "{\"current\": \"2.28.0\", \"latest\": \"2.31.0\", \"update_available\": true, \"changelog_url\": \"https://github.com/psf/requests/releases\", \"security_update\": false}",
+    "dependency:flask": "{\"current\": \"2.2.0\", \"latest\": \"3.0.0\", \"update_available\": true, \"changelog_url\": \"https://flask.palletsprojects.com/en/latest/changes/\", \"security_update\": true}",
+    "dependency:numpy": "{\"current\": \"1.24.0\", \"latest\": \"1.26.0\", \"update_available\": true, \"changelog_url\": \"https://numpy.org/doc/stable/release.html\", \"security_update\": false}"
+  },
+  "updated": "2026-07-13T20:35:28.529162"
+}

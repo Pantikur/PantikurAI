@@ -1,282 +1,260 @@
 """
-Точка входа для Наото — Визуального Архитектора.
+Точка входа для запуска автономного ядра Нобука.
+
+Использование:
+    python -m nobuka.engine.run              # постоянная работа
+    python -m nobuka.engine.run --demo       # демо-режим (5 циклов)
+    python -m nobuka.engine.run --analyze    # только анализ проекта
+    python -m nobuka.engine.run --tests      # только тестирование
+    python -m nobuka.engine.run --status     # показать состояние
 """
 
 from __future__ import annotations
-
-import io
-import logging
+import argparse
+import json
 import sys
 from pathlib import Path
 
-# Fix for Windows console encoding
-if sys.stdout.encoding != "utf-8":
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
-if sys.stderr.encoding != "utf-8":
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8")
+# Добавляем текущую директорию и папку engine в path
+_script_dir = Path(__file__).parent.resolve()
+if str(_script_dir) not in sys.path:
+    sys.path.insert(0, str(_script_dir))
 
-# Добавляем корень проекта Pantikur в путь
-project_root = Path(__file__).parent.parent.parent
-if str(project_root) not in sys.path:
-    sys.path.insert(0, str(project_root))
+# Принудительный UTF-8 для вывода (Windows-консоль использует cp1251)
+for _stream in (sys.stdout, sys.stderr):
+    _reconfigure = getattr(_stream, "reconfigure", None)
+    if _reconfigure is not None:
+        _reconfigure(encoding="utf-8")
 
-from naoto.engine import Naoto
-from naoto.engine.config import NaotoConfig
-
-
-def setup_logging(level: str = "INFO") -> None:
-    """Настраивает логирование."""
-    logging.basicConfig(
-        level=getattr(logging, level.upper(), logging.INFO),
-        format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
-        handlers=[
-            logging.StreamHandler(sys.stdout),
-            logging.FileHandler("naoto/engine/logs/naoto.log", encoding="utf-8")
-        ]
-    )
+from config import NobukaConfig
+from nobuka_core import NobukaCore
+from code_analyzer import CodeAnalyzer
+from test_runner import TestRunner
+from universal_analyzer import UniversalAnalyzer
+from ml_optimizer import MLOptimizer
 
 
-def demo() -> None:
-    """Демонстрация возможностей Наото."""
-    setup_logging("INFO")
-    
+def cmd_run(config: NobukaConfig):
+    """Запустить постоянную работу Нобука."""
+    core = NobukaCore(config)
+    core.run()
+
+
+def cmd_analyze(config: NobukaConfig):
+    """Запустить только анализ проекта (Python)."""
+    print("=" * 60)
+    print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
+    print("=" * 60)
+
+    analyzer = CodeAnalyzer(config)
+    all_analyses = []
+    total_issues = 0
+
+    for dir_name in config.scan_directories:
+        dir_path = Path(dir_name)
+        if not dir_path.exists():
+            continue
+
+        files = analyzer._scan_files(dir_path)
+        print(f"\n📁 {dir_name}: {len(files)} файлов")
+
+        for file_path in files[:20]:  # Лимит для демо
+            analysis = analyzer.analyze_file(file_path)
+            all_analyses.append(analysis)
+            total_issues += len(analysis.issues)
+
+            if analysis.issues:
+                print(f"  ⚠️  {file_path.name}: {len(analysis.issues)} проблем")
+                for issue in analysis.issues[:3]:
+                    print(f"     - {issue}")
+
+    print(f"\n📊 ИТОГО: {len(all_analyses)} файлов, {total_issues} проблем")
+
+    # Показать лучших и худших
+    if all_analyses:
+        sorted_by_complexity = sorted(all_analyses, key=lambda a: a.complexity, reverse=True)
+        sorted_by_lines = sorted(all_analyses, key=lambda a: a.lines, reverse=True)
+
+        print(f"\n🔝 Самая сложная: {sorted_by_complexity[0].path} (C={sorted_by_complexity[0].complexity})")
+        print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
+
+
+def cmd_universal_analyze(config: NobukaConfig):
+    """Запустить универсальный анализ всех файлов проекта."""
+    print("=" * 80)
+    print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
+    print("=" * 80)
+
+    analyzer = UniversalAnalyzer(config)
+    report = analyzer.analyze_all_files()
+
+    # Вывести отчёт
+    human_report = analyzer.generate_project_report(report)
+    print(human_report)
+
+    # Сохранить отчёты
+    report_path = config.state_dir / "universal_analysis_report.json"
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
+
+    txt_path = config.state_dir / "project_report.txt"
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write(human_report)
+    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
+
+
+def cmd_ml_optimize(config: NobukaConfig):
+    """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
+    print("=" * 80)
+    print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
+    print("=" * 80)
+
+    optimizer = MLOptimizer(config)
+    report = optimizer.analyze_and_optimize()
+
+    # Вывести отчёт
+    human_report = optimizer.generate_optimization_report(report)
+    print(human_report)
+
+    # Сохранить отчёты
+    report_path = config.state_dir / "ml_optimization_report.json"
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
+
+    txt_path = config.state_dir / "ml_optimization_report.txt"
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write(human_report)
+    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
+
+
+def cmd_tests(config: NobukaConfig):
+    """Запустить только тестирование."""
+    print("=" * 60)
+    print("🧪 ТЕСТИРОВАНИЕ НОБУКИ")
+    print("=" * 60)
+
+    runner = TestRunner(config)
+    report = runner.run_pytest()
+
+    print(f"\n📊 Результат:")
+    print(f"  Всего тестов: {report.total}")
+    print(f"  Пройдено: {report.passed}")
+    print(f"  Провалено: {report.failed}")
+    print(f"  Покрытие: {report.coverage:.1f}%")
+    print(f"  Время: {report.duration_seconds:.1f}с")
+
+
+def cmd_status(config: NobukaConfig):
+    """Показать текущее состояние Нобука."""
+    state_path = config.state_path
+
+    if not state_path.exists():
+        print("Нобука ещё не запускалась. Состояние отсутствует.")
+        return
+
+    with open(state_path, "r", encoding="utf-8") as f:
+        state = json.load(f)
+
+    print("=" * 60)
+    print("📊 СОСТОЯНИЕ НОБУКИ")
+    print("=" * 60)
+    print(f"Версия: {state.get('version', '?')}")
+    print(f"Циклов выполнено: {state.get('cycle_count', 0)}")
+    print(f"Последнее обновление: {state.get('timestamp', '?')}")
     print()
-    print("╔═══════════════════════════════════════════════════════════╗")
-    print("║                                                           ║")
-    print("║    ██████╗  ██████╗ ██╗  ██╗███████╗ █████╗ ███╗   ██║   ║")
-    print("║   ██╔════╝ ██╔═══██╗██║ ██╔╝██╔════╝██╔══██╗████╗  ██║   ║")
-    print("║   ██║  ███╗██║   ██║█████╔╝ █████╗  ███████║██╔██╗ ██║   ║")
-    print("║   ██║   ██║██║   ██║██╔═██╗ ██╔══╝  ██╔══██║██║╚██╗██║   ║")
-    print("║   ╚██████╔╝╚██████╔╝██║  ██╗███████╗██║  ██║██║ ╚████║   ║")
-    print("║    ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ║")
-    print("║                                                           ║")
-    print("║        ВИЗУАЛЬНЫЙ АРХИТЕКТОР НЕЙРОСЕТИ                    ║")
-    print("║              Демонстрация возможностей                    ║")
-    print("║                                                           ║")
-    print("╚═══════════════════════════════════════════════════════════╝")
+    print("Метрики:")
+    for key, value in state.get("metrics", {}).items():
+        print(f"  {key}: {value}")
     print()
-    
-    # Создание экземпляра Наото
-    config = NaotoConfig()
-    naoto = Naoto(config)
-    
-    # Запуск
-    naoto.start()
-    
-    print()
-    print("=" * 60)
-    print("1. СОЗДАНИЕ НАБРОСКА")
-    print("=" * 60)
-    
-    sketch = naoto.create_sketch(
-        "old clockwork robot in a workshop",
-        style="concept"
+
+    improvements = state.get("improvements_history", [])
+    if improvements:
+        print(f"Последние улучшения ({len(improvements)}):")
+        for imp in improvements[-5:]:
+            status = "✅" if imp.get("applied") else "⏸️"
+            print(f"  {status} {imp.get('version_after', '?')}: "
+                  f"{imp.get('description', '?')}")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Нобука — автономная система улучшений и модернизации",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__
     )
-    if sketch:
-        print(f"   ID: {sketch.result_id}")
-        print(f"   Стиль: {sketch.sketch_style}")
-        print(f"   Качество: {sketch.quality_score:.2f}")
-        print(f"   Техники: {', '.join(sketch.techniques_applied[:3])}")
-        print()
-    
-    print("=" * 60)
-    print("2. СОЗДАНИЕ ЧЕРТЁЖА")
-    print("=" * 60)
-    
-    drawing = naoto.create_drawing(
-        "precision gear mechanism",
-        standards="iso"
+
+    parser.add_argument(
+        "--demo",
+        action="store_true",
+        help="Демо-режим: 5 циклов с короткими интервалами"
     )
-    if drawing:
-        print(f"   ID: {drawing.result_id}")
-        print(f"   Стандарт: {drawing.drawing_standards}")
-        print(f"   Точность: {drawing.accuracy:.2f}")
-        print(f"   Проекций: {', '.join(drawing.projections[:3])}")
-        print()
-    
-    print("=" * 60)
-    print("3. СОЗДАНИЕ 3D-МОДЕЛИ")
-    print("=" * 60)
-    
-    model = naoto.create_3d_model(
-        "fantasy castle with towers and walls",
-        detail_level="mid"
+    parser.add_argument(
+        "--analyze",
+        action="store_true",
+        help="Запустить только анализ проекта"
     )
-    if model:
-        print(f"   ID: {model.result_id}")
-        print(f"   Полигонов: {model.polygon_count:,}")
-        print(f"   Текстур: {model.texture_resolution}")
-        print(f"   Материалов: {len(model.materials)}")
-        print(f"   Качество: {model.quality_score:.2f}")
-        print()
-    
-    print("=" * 60)
-    print("4. АВТОНОМНАЯ ЗАДАЧА")
-    print("=" * 60)
-    
-    autonomous = naoto.autonomous_task(
-        "create a detailed sketch of a steampunk airship",
-        autonomy_level="full"
+    parser.add_argument(
+        "--tests",
+        action="store_true",
+        help="Запустить только тестирование"
     )
-    if autonomous:
-        print(f"   Тип задачи: {autonomous['task_type']}")
-        print(f"   Найдено референсов: {autonomous['references_found']}")
-        print(f"   Уровень автономности: {autonomous['autonomy_level']}")
-        print()
-    
-    print("=" * 60)
-    print("5. МОНИТОРИНГ ТРЕНДОВ")
-    print("=" * 60)
-    
-    trends = naoto.run_monitoring_cycle()
-    print(f"   Найдено трендов: {len(trends)}")
-    for trend in trends[:3]:
-        print(f"   - {trend.get('name', 'N/A')} ({trend.get('relevance', 'N/A')})")
-    print()
-    
-    print("=" * 60)
-    print("6. КОММУНИКАЦИЯ")
-    print("=" * 60)
-    
-    # Отправка запроса Фуюки
-    req = naoto.communication.send_request(
-        to_sister="Фуюки",
-        task_type="drawing",
-        description="Визуализация электрической схемы для проекта",
-        priority="high"
+    parser.add_argument(
+        "--universal",
+        action="store_true",
+        help="Универсальный анализ всех файлов проекта"
     )
-    print(f"   Запрос Фуюки (электрика): {req.get('status', 'N/A')}")
-    
-    # Запрос для Люси
-    req_lucy = naoto.communication.send_request(
-        to_sister="Люси",
-        task_type="3d",
-        description="3D-модель механизма двигателя",
-        priority="high"
+    parser.add_argument(
+        "--ml",
+        action="store_true",
+        help="ML-оптимизатор: улучшение процесса обучения модели"
     )
-    print(f"   Запрос Люси (инженерия): {req_lucy.get('status', 'N/A')}")
-    
-    # Запрос для Ханако
-    req_hanako = naoto.communication.send_request(
-        to_sister="Ханако",
-        task_type="sketch",
-        description="Эскиз гравитационного поля",
-        priority="medium"
+    parser.add_argument(
+        "--status",
+        action="store_true",
+        help="Показать текущее состояние"
     )
-    print(f"   Запрос Ханако (гравитация): {req_hanako.get('status', 'N/A')}")
-    
-    # Запрос для Аква
-    req_akva = naoto.communication.send_request(
-        to_sister="Аква",
-        task_type="drawing",
-        description="Чертёж аэродинамической трубы",
-        priority="medium"
+    parser.add_argument(
+        "--interval",
+        type=float,
+        default=None,
+        help="Интервал между циклами в секундах"
     )
-    print(f"   Запрос Аква (физика): {req_akva.get('status', 'N/A')}")
-    
-    # Запрос для Селесты
-    req_celesta = naoto.communication.send_request(
-        to_sister="Селеста",
-        task_type="sketch",
-        description="Анатомический набросок мышечной системы",
-        priority="low"
+    parser.add_argument(
+        "--max-cycles",
+        type=int,
+        default=None,
+        help="Максимальное количество циклов"
     )
-    print(f"   Запрос Селеста (биология): {req_celesta.get('status', 'N/A')}")
-    
-    # Запрос для Latislane
-    req_latislane = naoto.communication.send_request(
-        to_sister="Latislane",
-        task_type="3d",
-        description="3D-модель бионического скелета",
-        priority="medium"
-    )
-    print(f"   Запрос Latislane (тела): {req_latislane.get('status', 'N/A')}")
-    
-    # Запрос для Юи
-    req_yui = naoto.communication.send_request(
-        to_sister="Юи",
-        task_type="3d",
-        description="Визуализация модели сознания и переноса разума",
-        priority="high"
-    )
-    print(f"   Запрос Юи (сознание): {req_yui.get('status', 'N/A')}")
-    print()
-    
-    # Получение запроса от Люси
-    lucy_request = {
-        "request_id": "REQ-20260712-001",
-        "from": "Люси",
-        "task_type": "drawing",
-        "description": "Технический чертёж механизма двигателя",
-        "priority": "high",
-        "context": {"project": "engine_v2"}
-    }
-    received = naoto.communication.receive_request(lucy_request)
-    print(f"   Запрос получен от Люси: {received.get('status', 'N/A')}")
-    
-    # Обработка запроса
-    response = naoto.handle_request(lucy_request)
-    print(f"   Ответ Люси: статус = {response.get('status', 'N/A')}")
-    
-    # Запрос визуальной работы от Аква
-    akva_visual = naoto.communication.request_visual_work(
-        from_sister="Аква",
-        task_type="drawing",
-        description="Чертёж формулы сопротивления материалов",
-        priority="high"
-    )
-    print(f"   Запрос от Аква: {akva_visual.get('status', 'N/A')}")
-    print()
-    
-    print("=" * 60)
-    print("7. БАЗА ЗНАНИЙ")
-    print("=" * 60)
-    
-    print(f"   Записей в базе: {naoto.core.knowledge_count()}")
-    print(f"   Действий в журнале: {naoto.core.actions_count()}")
-    print(f"   Взаимодействий: {naoto.communication.count()}")
-    print()
-    
-    # Мониторинг всех сестёр
-    print("=" * 60)
-    print("9. МОНИТОРИНГ ВСЕХ СЁСТЕР")
-    print("=" * 60)
-    
-    monitoring_report = naoto.communication.monitor_all_sisters()
-    print(f"   Всего сестёр: {monitoring_report['total_sisters']}")
-    print(f"   Активных: {monitoring_report['active_sisters']}")
-    print(f"   Неактивных: {monitoring_report['inactive_sisters']}")
-    print()
-    
-    for sister_name, sister_data in monitoring_report['sisters'].items():
-        status_icon = "🟢" if sister_data['status'] == 'online' else "⚪"
-        print(f"   {status_icon} {sister_name:12s} | {sister_data['specialization']}")
-        print(f"       Последний контакт: {sister_data['last_contact'] or 'Никогда'}")
-    print()
-    
-    # Статусы сестёр
-    print("=" * 60)
-    print("10. ДЕТальные СТАТУСЫ СЁСТЕР")
-    print("=" * 60)
-    
-    for sister, status in naoto.communication.get_all_sister_status().items():
-        print(f"   {sister}: {status.get('status', 'N/A')} | "
-              f"Запросов: {status.get('requests_sent', 0)} → {status.get('requests_received', 0)} ←")
-    print()
-    
-    # Остановка
-    naoto.stop()
-    
-    print()
-    print("╔═══════════════════════════════════════════════════════════╗")
-    print("║                                                           ║")
-    print("║   ✅ НААТО — ДЕМО ЗАВЕРШЕНО                               ║")
-    print("║                                                           ║")
-    print("║   «Каждый пиксель — это слово. Каждый рисунок — история.» ║")
-    print("║                                                           ║")
-    print("╚═══════════════════════════════════════════════════════════╝")
-    print()
+
+    args = parser.parse_args()
+
+    # Конфигурация
+    if args.demo:
+        config = NobukaConfig.demo()
+    else:
+        config = NobukaConfig.default()
+
+    if args.interval is not None:
+        config.cycle_interval = args.interval
+    if args.max_cycles is not None:
+        config.max_cycles = args.max_cycles
+
+    # Команды
+    if args.ml:
+        cmd_ml_optimize(config)
+    elif args.universal:
+        cmd_universal_analyze(config)
+    elif args.status:
+        cmd_status(config)
+    elif args.analyze:
+        cmd_analyze(config)
+    elif args.tests:
+        cmd_tests(config)
+    else:
+        cmd_run(config)
 
 
 if __name__ == "__main__":
-    demo()
+    main()

@@ -15,18 +15,23 @@ import json
 import sys
 from pathlib import Path
 
+# Добавляем текущую директорию и папку engine в path
+_script_dir = Path(__file__).parent.resolve()
+if str(_script_dir) not in sys.path:
+    sys.path.insert(0, str(_script_dir))
+
 # Принудительный UTF-8 для вывода (Windows-консоль использует cp1251)
 for _stream in (sys.stdout, sys.stderr):
     _reconfigure = getattr(_stream, "reconfigure", None)
     if _reconfigure is not None:
         _reconfigure(encoding="utf-8")
 
-from nobuka.engine.config import NobukaConfig
-from nobuka.engine.nobuka_core import NobukaCore
-from nobuka.engine.code_analyzer import CodeAnalyzer
-from nobuka.engine.test_runner import TestRunner
-from nobuka.engine.universal_analyzer import UniversalAnalyzer
-from nobuka.engine.ml_optimizer import MLOptimizer
+from config import NobukaConfig
+from nobuka_core import NobukaCore
+from code_analyzer import CodeAnalyzer
+from test_runner import TestRunner
+from universal_analyzer import UniversalAnalyzer
+from ml_optimizer import MLOptimizer
 
 
 def cmd_run(config: NobukaConfig):

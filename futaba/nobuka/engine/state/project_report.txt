@@ -1,0 +1,40 @@
+================================================================================
+📊 ОТЧЁТ АНАЛИЗА ПРОЕКТА
+================================================================================
+
+Всего файлов: 46
+Текстовых файлов: 46
+
+--- По расширениям (ТОП-10) ---
+  .py                 15
+  .json               14
+  .md                 12
+  .log                 3
+  .txt                 2
+
+--- По размеру ---
+  1-10KB              16
+  10-100KB            25
+  < 1KB                3
+  100KB-1MB            2
+
+--- Проблемы (ТОП-20) ---
+  [info] forge_character.py: 6 строк длиннее 120 символов
+  [info] forge_character.py: 25 строк с пробелами в конце
+  [warning] engine\futaba_core.py: Файл слишком большой: 638 строк
+  [info] engine\futaba_core.py: 116 строк с пробелами в конце
+  [warning] engine\legal_studies.py: Файл слишком большой: 1633 строк
+  [info] engine\legal_studies.py: 90 строк с пробелами в конце
+  [info] engine\ml_optimizer.py: 58 строк с пробелами в конце
+  [warning] engine\nobuka_core.py: Файл слишком большой: 830 строк
+  [info] engine\nobuka_core.py: 33 строк с пробелами в конце
+  [warning] engine\trial_grounds.py: Файл слишком большой: 538 строк
+  [info] engine\trial_grounds.py: 83 строк с пробелами в конце
+  [warning] engine\universal_analyzer.py: Файл слишком большой: 608 строк
+  [info] engine\universal_analyzer.py: 54 строк с пробелами в конце
+  [warning] engine\web_access.py: Файл слишком большой: 714 строк
+  [info] engine\web_access.py: 75 строк с пробелами в конце
+  [warning] engine\world_state_modeler.py: Файл слишком большой: 862 строк
+  [info] engine\world_state_modeler.py: 89 строк с пробелами в конце
+
+================================================================================

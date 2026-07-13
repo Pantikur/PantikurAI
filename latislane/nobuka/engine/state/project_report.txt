@@ -1,0 +1,41 @@
+================================================================================
+📊 ОТЧЁТ АНАЛИЗА ПРОЕКТА
+================================================================================
+
+Всего файлов: 36
+Текстовых файлов: 36
+
+--- По расширениям (ТОП-10) ---
+  .py                 17
+  .md                  9
+  .json                6
+  .txt                 2
+  .log                 2
+
+--- По размеру ---
+  10-100KB            16
+  1-10KB              16
+  < 1KB                3
+  100KB-1MB            1
+
+--- Проблемы (ТОП-20) ---
+  [info] body_factory.py: 35 строк с пробелами в конце
+  [info] body_modules.py: 14 строк длиннее 120 символов
+  [info] body_modules.py: 39 строк с пробелами в конце
+  [info] evolution_manager.py: 44 строк с пробелами в конце
+  [info] forge_character.py: 6 строк длиннее 120 символов
+  [info] forge_character.py: 25 строк с пробелами в конце
+  [warning] internet_learning.py: Файл слишком большой: 547 строк
+  [info] internet_learning.py: 12 строк длиннее 120 символов
+  [info] internet_learning.py: 91 строк с пробелами в конце
+  [warning] latislane_core.py: Файл слишком большой: 505 строк
+  [info] latislane_core.py: 91 строк с пробелами в конце
+  [info] engine\ml_optimizer.py: 58 строк с пробелами в конце
+  [warning] engine\nobuka_core.py: Файл слишком большой: 830 строк
+  [info] engine\nobuka_core.py: 33 строк с пробелами в конце
+  [warning] engine\universal_analyzer.py: Файл слишком большой: 608 строк
+  [info] engine\universal_analyzer.py: 54 строк с пробелами в конце
+  [warning] engine\web_access.py: Файл слишком большой: 714 строк
+  [info] engine\web_access.py: 75 строк с пробелами в конце
+
+================================================================================

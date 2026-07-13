@@ -1,21 +1,8 @@
 """
-Люси — инженер двигателей.
+Nobuka — система улучшений, тестирования и модернизации проекта.
 """
 
-from lucy.engine.config import LucyConfig
-from lucy.engine.lucy_core import LucyCore
-from lucy.engine.models import (
-    EngineDesign, Calculation, ResearchPaper, EngineType,
-    PropulsionPrinciple, EngineConstants
-)
+from __future__ import annotations
 
-__all__ = [
-    "LucyConfig",
-    "LucyCore",
-    "EngineDesign",
-    "Calculation",
-    "ResearchPaper",
-    "EngineType",
-    "PropulsionPrinciple",
-    "EngineConstants",
-]
+# Модули импортируются напрямую из run.py
+# Чтобы избежать circular import

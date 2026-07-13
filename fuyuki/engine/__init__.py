@@ -1,21 +1,8 @@
 """
-Фуюки — исследователь атмосферного электричества.
+Nobuka — система улучшений, тестирования и модернизации проекта.
 """
 
-from fuyuki.engine.config import FuyukiConfig
-from fuyuki.engine.fuyuki_core import FuyukiCore
-from fuyuki.engine.models import (
-    ElectricityTheory, Calculation, ResearchPaper, ElectricityTheoryCategory,
-    CalculationType, ElectricityConstants
-)
+from __future__ import annotations
 
-__all__ = [
-    "FuyukiConfig",
-    "FuyukiCore",
-    "ElectricityTheory",
-    "Calculation",
-    "ResearchPaper",
-    "ElectricityTheoryCategory",
-    "CalculationType",
-    "ElectricityConstants",
-]
+# Модули импортируются напрямую из run.py
+# Чтобы избежать circular import

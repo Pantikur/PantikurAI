@@ -1,0 +1,1060 @@
+{
+  "timestamp": "2026-07-11T22:15:08.801939",
+  "cycle": 4,
+  "files_count": 73,
+  "total_issues": 128,
+  "files": [
+    {
+      "path": "add_anatomy_knowledge.py",
+      "lines": 848,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 4,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Слишком много строк: 848 > 300",
+        "Длинная функция 'add_anatomy_knowledge': 71 > 50 строк"
+      ]
+    },
+    {
+      "path": "add_negative_emotional_phrases.py",
+      "lines": 73,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 12,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 12 > 10"
+      ]
+    },
+    {
+      "path": "add_races_knowledge.py",
+      "lines": 290,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 4,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "add_races_to_conversations.py",
+      "lines": 315,
+      "functions": 3,
+      "classes": 0,
+      "complexity": 16,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 3,
+      "issues": [
+        "Слишком много строк: 315 > 300",
+        "Высокая сложность: 16 > 10",
+        "Длинная функция 'main': 53 > 50 строк"
+      ]
+    },
+    {
+      "path": "analyze_at.py",
+      "lines": 63,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 7,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "analyze_html.py",
+      "lines": 60,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 9,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Длинная функция 'analyze': 51 > 50 строк"
+      ]
+    },
+    {
+      "path": "auto_gigachat_learning.py",
+      "lines": 547,
+      "functions": 20,
+      "classes": 1,
+      "complexity": 79,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 4,
+      "issues": [
+        "Слишком много строк: 547 > 300",
+        "Высокая сложность: 79 > 10",
+        "Длинная функция '_collect_examples': 60 > 50 строк",
+        "Длинная функция 'run_learning_cycle': 57 > 50 строк"
+      ]
+    },
+    {
+      "path": "auto_learn_cycle.py",
+      "lines": 208,
+      "functions": 6,
+      "classes": 0,
+      "complexity": 21,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 21 > 10",
+        "Длинная функция 'main': 73 > 50 строк"
+      ]
+    },
+    {
+      "path": "auto_retrain.py",
+      "lines": 61,
+      "functions": 2,
+      "classes": 1,
+      "complexity": 8,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "auto_train.py",
+      "lines": 66,
+      "functions": 4,
+      "classes": 0,
+      "complexity": 10,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "bot_learns_from_gigachat.py",
+      "lines": 145,
+      "functions": 4,
+      "classes": 0,
+      "complexity": 17,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 17 > 10",
+        "Длинная функция 'generate_self_teaching_dialogs': 97 > 50 строк"
+      ]
+    },
+    {
+      "path": "celesta_demo.py",
+      "lines": 132,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 8,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Длинная функция 'demo_basic': 105 > 50 строк"
+      ]
+    },
+    {
+      "path": "check_split.py",
+      "lines": 32,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 3,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "clean_pride_phrases.py",
+      "lines": 43,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 9,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "create_data.py",
+      "lines": 39,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 1,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "create_theme.py",
+      "lines": 57,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 7,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "dataset.py",
+      "lines": 46,
+      "functions": 4,
+      "classes": 1,
+      "complexity": 5,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "debug_at.py",
+      "lines": 57,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 7,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "debug_at_book.py",
+      "lines": 111,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 15,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 15 > 10"
+      ]
+    },
+    {
+      "path": "debug_at_chapter.py",
+      "lines": 65,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 8,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "debug_litnet.py",
+      "lines": 129,
+      "functions": 3,
+      "classes": 0,
+      "complexity": 16,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 16 > 10",
+        "Длинная функция 'test_litnet_connection': 70 > 50 строк"
+      ]
+    },
+    {
+      "path": "edit_chatbot.py",
+      "lines": 39,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 5,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "fine_tune_rugpt.py",
+      "lines": 78,
+      "functions": 4,
+      "classes": 1,
+      "complexity": 4,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "fix_and_merge.py",
+      "lines": 63,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 20,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 20 > 10",
+        "Длинная функция 'fix_and_merge': 54 > 50 строк"
+      ]
+    },
+    {
+      "path": "fix_chatbot.py",
+      "lines": 12,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 3,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "fix_chatbot2.py",
+      "lines": 19,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 3,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "generate_training_data.py",
+      "lines": 289,
+      "functions": 12,
+      "classes": 0,
+      "complexity": 33,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 33 > 10",
+        "Длинная функция 'main': 95 > 50 строк"
+      ]
+    },
+    {
+      "path": "generate_worlds.py",
+      "lines": 71,
+      "functions": 2,
+      "classes": 0,
+      "complexity": 5,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "get_gigachat_token.py",
+      "lines": 75,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 16,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 16 > 10"
+      ]
+    },
+    {
+      "path": "inference.py",
+      "lines": 304,
+      "functions": 6,
+      "classes": 1,
+      "complexity": 34,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 4,
+      "issues": [
+        "Слишком много строк: 304 > 300",
+        "Высокая сложность: 34 > 10",
+        "Длинная функция 'decode_output': 89 > 50 строк",
+        "Длинная функция 'classify_topic': 97 > 50 строк"
+      ]
+    },
+    {
+      "path": "init_knowledge_system.py",
+      "lines": 168,
+      "functions": 4,
+      "classes": 0,
+      "complexity": 20,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 20 > 10",
+        "Длинная функция 'main': 102 > 50 строк"
+      ]
+    },
+    {
+      "path": "inspect_data.py",
+      "lines": 17,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 5,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "knowledge_manager.py",
+      "lines": 306,
+      "functions": 9,
+      "classes": 1,
+      "complexity": 48,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 3,
+      "issues": [
+        "Слишком много строк: 306 > 300",
+        "Высокая сложность: 48 > 10",
+        "Длинная функция 'generate_training_pairs': 88 > 50 строк"
+      ]
+    },
+    {
+      "path": "latislane_demo.py",
+      "lines": 220,
+      "functions": 3,
+      "classes": 0,
+      "complexity": 12,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 12 > 10",
+        "Длинная функция 'demo_basic': 95 > 50 строк"
+      ]
+    },
+    {
+      "path": "learn_from_web.py",
+      "lines": 290,
+      "functions": 9,
+      "classes": 0,
+      "complexity": 45,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 45 > 10",
+        "Длинная функция 'main': 145 > 50 строк"
+      ]
+    },
+    {
+      "path": "learn_knowledge_from_web.py",
+      "lines": 769,
+      "functions": 9,
+      "classes": 0,
+      "complexity": 119,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 5,
+      "issues": [
+        "Слишком много строк: 769 > 300",
+        "Высокая сложность: 119 > 10",
+        "Длинная функция 'generate_training_pairs_from_words': 186 > 50 строк",
+        "Длинная функция 'print_report': 73 > 50 строк",
+        "Длинная функция 'main': 260 > 50 строк"
+      ]
+    },
+    {
+      "path": "main.py",
+      "lines": 3052,
+      "functions": 104,
+      "classes": 9,
+      "complexity": 386,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 7,
+      "issues": [
+        "Слишком много строк: 3052 > 300",
+        "Высокая сложность: 386 > 10",
+        "Длинная функция 'lifespan': 183 > 50 строк",
+        "Длинная функция 'home': 123 > 50 строк",
+        "Длинная функция 'predict': 305 > 50 строк",
+        "Длинная функция 'research_live': 64 > 50 строк",
+        "Длинная функция 'load_chatbot_background': 100 > 50 строк"
+      ]
+    },
+    {
+      "path": "merge_sentiment_data.py",
+      "lines": 24,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 5,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "raw_html_sample.py",
+      "lines": 42,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 4,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "research_monitor_demo.py",
+      "lines": 156,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 20,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 20 > 10",
+        "Длинная функция 'demo': 125 > 50 строк"
+      ]
+    },
+    {
+      "path": "research_monitor_demo_all.py",
+      "lines": 149,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 21,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 21 > 10",
+        "Длинная функция 'demo': 115 > 50 строк"
+      ]
+    },
+    {
+      "path": "retrain.py",
+      "lines": 412,
+      "functions": 14,
+      "classes": 0,
+      "complexity": 71,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 3,
+      "issues": [
+        "Слишком много строк: 412 > 300",
+        "Высокая сложность: 71 > 10",
+        "Длинная функция 'main': 95 > 50 строк"
+      ]
+    },
+    {
+      "path": "rpg_generator.py",
+      "lines": 68,
+      "functions": 3,
+      "classes": 0,
+      "complexity": 16,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 16 > 10"
+      ]
+    },
+    {
+      "path": "run.py",
+      "lines": 5,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 2,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "show_model_info.py",
+      "lines": 105,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 22,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 22 > 10"
+      ]
+    },
+    {
+      "path": "tokenizer.py",
+      "lines": 93,
+      "functions": 6,
+      "classes": 1,
+      "complexity": 15,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 15 > 10"
+      ]
+    },
+    {
+      "path": "train.py",
+      "lines": 452,
+      "functions": 14,
+      "classes": 1,
+      "complexity": 68,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 6,
+      "issues": [
+        "Слишком много строк: 452 > 300",
+        "Высокая сложность: 68 > 10",
+        "Длинная функция 'clean_text': 54 > 50 строк",
+        "Длинная функция 'collect_training_samples': 106 > 50 строк",
+        "Длинная функция 'train_model': 64 > 50 строк",
+        "Длинная функция 'main': 58 > 50 строк"
+      ]
+    },
+    {
+      "path": "train_logic.py",
+      "lines": 573,
+      "functions": 13,
+      "classes": 1,
+      "complexity": 85,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 5,
+      "issues": [
+        "Слишком много строк: 573 > 300",
+        "Высокая сложность: 85 > 10",
+        "Длинная функция 'collect_training_samples': 138 > 50 строк",
+        "Длинная функция 'train_model': 63 > 50 строк",
+        "Длинная функция 'run_training': 139 > 50 строк"
+      ]
+    },
+    {
+      "path": "train_narrative.py",
+      "lines": 43,
+      "functions": 2,
+      "classes": 0,
+      "complexity": 4,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "update_gigachat_token.py",
+      "lines": 119,
+      "functions": 4,
+      "classes": 0,
+      "complexity": 15,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 15 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\__init__.py",
+      "lines": 0,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 1,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\chatbot.py",
+      "lines": 2136,
+      "functions": 32,
+      "classes": 2,
+      "complexity": 503,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 7,
+      "issues": [
+        "Слишком много строк: 2136 > 300",
+        "Высокая сложность: 503 > 10",
+        "Длинная функция '__init__': 178 > 50 строк",
+        "Длинная функция '_get_gender_prompts': 106 > 50 строк",
+        "Длинная функция '_generate_world_from_templates': 85 > 50 строк",
+        "Длинная функция '_generate_response_with_sampling': 97 > 50 строк",
+        "Длинная функция 'generate_response': 1160 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\chat_model.py",
+      "lines": 444,
+      "functions": 16,
+      "classes": 5,
+      "complexity": 26,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 3,
+      "issues": [
+        "Слишком много строк: 444 > 300",
+        "Высокая сложность: 26 > 10",
+        "Длинная функция 'apply_rope': 59 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\cognitive_abilities.py",
+      "lines": 543,
+      "functions": 21,
+      "classes": 2,
+      "complexity": 52,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Слишком много строк: 543 > 300",
+        "Высокая сложность: 52 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\context_analyzer.py",
+      "lines": 334,
+      "functions": 10,
+      "classes": 1,
+      "complexity": 52,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Слишком много строк: 334 > 300",
+        "Высокая сложность: 52 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\cultural_references.py",
+      "lines": 775,
+      "functions": 2,
+      "classes": 0,
+      "complexity": 8,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Слишком много строк: 775 > 300"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\dialect_phrases.py",
+      "lines": 77,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 1,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\imaginative_abilities.py",
+      "lines": 570,
+      "functions": 24,
+      "classes": 2,
+      "complexity": 56,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 3,
+      "issues": [
+        "Слишком много строк: 570 > 300",
+        "Высокая сложность: 56 > 10",
+        "Длинная функция 'analyze': 69 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\intuition.py",
+      "lines": 254,
+      "functions": 7,
+      "classes": 2,
+      "complexity": 18,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 18 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\manipulation.py",
+      "lines": 947,
+      "functions": 21,
+      "classes": 2,
+      "complexity": 97,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 5,
+      "issues": [
+        "Слишком много строк: 947 > 300",
+        "Высокая сложность: 97 > 10",
+        "Длинная функция 'analyze': 58 > 50 строк",
+        "Длинная функция '_select_technique': 58 > 50 строк",
+        "Длинная функция '_select_domination': 66 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\physiological_abilities.py",
+      "lines": 148,
+      "functions": 8,
+      "classes": 2,
+      "complexity": 14,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 14 > 10",
+        "Длинная функция 'analyze': 55 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\preprocess.py",
+      "lines": 92,
+      "functions": 4,
+      "classes": 0,
+      "complexity": 11,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 11 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\professions.py",
+      "lines": 110,
+      "functions": 5,
+      "classes": 2,
+      "complexity": 15,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 15 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\social_abilities.py",
+      "lines": 457,
+      "functions": 12,
+      "classes": 2,
+      "complexity": 44,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Слишком много строк: 457 > 300",
+        "Высокая сложность: 44 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\social_emotional.py",
+      "lines": 449,
+      "functions": 19,
+      "classes": 2,
+      "complexity": 52,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Слишком много строк: 449 > 300",
+        "Высокая сложность: 52 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\special_cognitive_abilities.py",
+      "lines": 197,
+      "functions": 12,
+      "classes": 2,
+      "complexity": 15,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Высокая сложность: 15 > 10"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\test_selenium.py",
+      "lines": 12,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 2,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\test_websearch.py",
+      "lines": 72,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 18,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 2,
+      "issues": [
+        "Высокая сложность: 18 > 10",
+        "Длинная функция 'main': 58 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\web_search.py",
+      "lines": 946,
+      "functions": 24,
+      "classes": 3,
+      "complexity": 155,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 10,
+      "issues": [
+        "Слишком много строк: 946 > 300",
+        "Высокая сложность: 155 > 10",
+        "Длинная функция 'search_word_meaning': 156 > 50 строк",
+        "Длинная функция '_calculate_weights': 54 > 50 строк",
+        "Длинная функция '_explain_weights': 65 > 50 строк",
+        "Длинная функция 'run_test': 93 > 50 строк",
+        "Длинная функция '_categorize_snippet': 60 > 50 строк",
+        "Длинная функция '_build_comprehensive_answer': 58 > 50 строк",
+        "Длинная функция '_calculate_relevance': 54 > 50 строк",
+        "Длинная функция 'lookup': 118 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_engine.py",
+      "lines": 2954,
+      "functions": 79,
+      "classes": 13,
+      "complexity": 263,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 7,
+      "issues": [
+        "Слишком много строк: 2954 > 300",
+        "Высокая сложность: 263 > 10",
+        "Длинная функция '_extract_knowledge_from_books': 225 > 50 строк",
+        "Длинная функция 'create_world': 53 > 50 строк",
+        "Длинная функция '_extract_facts': 54 > 50 строк",
+        "Длинная функция 'generate_event': 53 > 50 строк",
+        "Длинная функция 'check_consistency': 55 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_gen_knowledge.py",
+      "lines": 407,
+      "functions": 15,
+      "classes": 1,
+      "complexity": 92,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 4,
+      "issues": [
+        "Слишком много строк: 407 > 300",
+        "Высокая сложность: 92 > 10",
+        "Длинная функция 'collect_all_knowledge': 53 > 50 строк",
+        "Длинная функция 'build_world_gen_prompt': 66 > 50 строк"
+      ]
+    },
+    {
+      "path": "Wuglarst\\src\\world_gen_templates.py",
+      "lines": 121,
+      "functions": 1,
+      "classes": 0,
+      "complexity": 2,
+      "duplicates_percent": 0.0,
+      "has_docstrings": false,
+      "test_coverage": 0.0,
+      "issues_count": 0,
+      "issues": []
+    },
+    {
+      "path": "Wuglarst\\src\\__init__.py",
+      "lines": 1,
+      "functions": 0,
+      "classes": 0,
+      "complexity": 0,
+      "duplicates_percent": 0.0,
+      "has_docstrings": true,
+      "test_coverage": 0.0,
+      "issues_count": 1,
+      "issues": [
+        "Ошибка синтаксиса: invalid non-printable character U+FEFF (<unknown>, line 1)"
+      ]
+    }
+  ]
+}

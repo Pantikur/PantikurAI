@@ -1,7 +1,9 @@
 {
   "cache": {
-    "vuln:numpy": "[{\"cve_id\": \"CVE-2024-94329\", \"severity\": \"critical\", \"description\": \"Обнаружена уязвимость в numpy\", \"cvss_score\": 6.907953694706323, \"affected_versions\": \"<2.7.9\", \"fixed_version\": \"3.2.4\", \"exploit_available\": false, \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2024-43509\"}]",
-    "vuln:requests": "[{\"cve_id\": \"CVE-2024-52593\", \"severity\": \"critical\", \"description\": \"Обнаружена уязвимость в requests\", \"cvss_score\": 6.4792647096060465, \"affected_versions\": \"<2.3.2\", \"fixed_version\": \"2.4.5\", \"exploit_available\": false, \"url\": \"https://nvd.nist.gov/vuln/detail/CVE-2024-79943\"}]"
+    "best_practices:python refactoring patterns": "[{\"title\": \"Extract Method Pattern\", \"description\": \"Выделение повторяющегося кода в отдельные функции\", \"source\": \"Refactoring.guru\", \"url\": \"https://refactoring.guru/refactoring/techniques/extract-method\"}, {\"title\": \"Replace Nested Conditional with Guard Clauses\", \"description\": \"Использование guard clauses вместо вложенных условий\", \"source\": \"Clean Code\", \"url\": \"https://refactoring.guru/refactoring/techniques/guard-clauses\"}, {\"title\": \"Replace Magic Number with Symbolic Constant\", \"description\": \"Замена магических чисел на именованные константы\", \"source\": \"Refactoring.guru\", \"url\": \"https://refactoring.guru/refactoring/techniques/replace-magic-number\"}]",
+    "dependency:requests": "{\"current\": \"2.28.0\", \"latest\": \"2.31.0\", \"update_available\": true, \"changelog_url\": \"https://github.com/psf/requests/releases\", \"security_update\": false}",
+    "dependency:flask": "{\"current\": \"2.2.0\", \"latest\": \"3.0.0\", \"update_available\": true, \"changelog_url\": \"https://flask.palletsprojects.com/en/latest/changes/\", \"security_update\": true}",
+    "dependency:numpy": "{\"current\": \"1.24.0\", \"latest\": \"1.26.0\", \"update_available\": true, \"changelog_url\": \"https://numpy.org/doc/stable/release.html\", \"security_update\": false}"
   },
-  "updated": "2026-07-11T22:15:10.026085"
+  "updated": "2026-07-10T13:50:28.287639"
 }

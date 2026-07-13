@@ -1,21 +1,8 @@
 """
-Ханако — исследователь гравитации.
+Nobuka — система улучшений, тестирования и модернизации проекта.
 """
 
-from hanako.engine.config import HanakoConfig
-from hanako.engine.hanako_core import HanakoCore
-from hanako.engine.models import (
-    GravityTheory, Calculation, ResearchPaper, TheoryCategory,
-    CalculationType, GravityConstants
-)
+from __future__ import annotations
 
-__all__ = [
-    "HanakoConfig",
-    "HanakoCore",
-    "GravityTheory",
-    "Calculation",
-    "ResearchPaper",
-    "TheoryCategory",
-    "CalculationType",
-    "GravityConstants",
-]
+# Модули импортируются напрямую из run.py
+# Чтобы избежать circular import

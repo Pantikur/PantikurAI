@@ -1,8 +1,8 @@
 """
-Движок Юи — ядро изучения цифрового переноса сознания.
+Nobuka — система улучшений, тестирования и модернизации проекта.
 """
 
-from .config import YuConfig
-from .yu_core import YuCore
+from __future__ import annotations
 
-__all__ = ["YuConfig", "YuCore"]
+# Модули импортируются напрямую из run.py
+# Чтобы избежать circular import

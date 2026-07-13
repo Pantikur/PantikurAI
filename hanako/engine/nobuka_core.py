@@ -30,16 +30,16 @@ if str(_script_dir) not in sys.path:
     sys.path.insert(0, str(_script_dir))
 
 from config import NobukaConfig
-from models import (
+from models import (  # type: ignore[reportAttributeAccessIssue]
     AutonomyLevel, ChangeStatus, Constitution,
     FileAnalysis, ImprovementRecord, ImprovementType, LogEntry, Law,
     TestReport,
 )
-from code_analyzer import CodeAnalyzer
-from test_runner import TestRunner
-from web_access import NobukaWebAccess
-from universal_analyzer import UniversalAnalyzer
-from ml_optimizer import MLOptimizer
+from code_analyzer import CodeAnalyzer  # type: ignore[reportAttributeAccessIssue]
+from test_runner import TestRunner  # type: ignore[reportAttributeAccessIssue]
+from web_access import NobukaWebAccess  # type: ignore[reportAttributeAccessIssue]
+from universal_analyzer import UniversalAnalyzer  # type: ignore[reportAttributeAccessIssue]
+from ml_optimizer import MLOptimizer  # type: ignore[reportAttributeAccessIssue]
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
