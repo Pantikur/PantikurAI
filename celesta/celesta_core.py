@@ -234,6 +234,8 @@ class CelestaCore:
                     level = 0
                 
                 old_level = self.knowledge_levels.get(name, 0)
+                if isinstance(old_level, str):
+                    old_level = int(old_level)
                 self.knowledge_levels[name] = max(old_level, level)
                 
                 if level > old_level:

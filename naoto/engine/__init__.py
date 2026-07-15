@@ -1,8 +1,12 @@
 """
-Nobuka — система улучшений, тестирования и модернизации проекта.
+Naoto — визуальный архитектор: UI/UX, графика, 3D-моделирование.
 """
 
 from __future__ import annotations
 
-# Модули импортируются напрямую из run.py
-# Чтобы избежать circular import
+from naoto.engine.naoto_core import NaotoCore
+
+# Алиасы для совместимости с ResearchMonitor
+Naoto = NaotoCore
+
+__all__ = ["NaotoCore", "Naoto"]
