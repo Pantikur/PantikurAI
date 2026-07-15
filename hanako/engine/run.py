@@ -1,259 +1,178 @@
 """
-Точка входа для запуска автономного ядра Нобука.
-
-Использование:
-    python -m nobuka.engine.run              # постоянная работа
-    python -m nobuka.engine.run --demo       # демо-режим (5 циклов)
-    python -m nobuka.engine.run --analyze    # только анализ проекта
-    python -m nobuka.engine.run --tests      # только тестирование
-    python -m nobuka.engine.run --status     # показать состояние
+Точка входа Ханако — исследователь гравитации.
 """
 
 from __future__ import annotations
+
 import argparse
-import json
+import logging
 import sys
+import json
 from pathlib import Path
+from datetime import datetime
 
-# Добавляем текущую директорию и папку engine в path
-_script_dir = Path(__file__).parent.resolve()
-if str(_script_dir) not in sys.path:
-    sys.path.insert(0, str(_script_dir))
+# UTF-8 кодировка для консоли
+sys.stdout.reconfigure(encoding='utf-8')
 
-# Принудительный UTF-8 для вывода (Windows-консоль использует cp1251)
-for _stream in (sys.stdout, sys.stderr):
-    _reconfigure = getattr(_stream, "reconfigure", None)
-    if _reconfigure is not None:
-        _reconfigure(encoding="utf-8")
-
-from config import NobukaConfig
-from nobuka_core import NobukaCore
-from code_analyzer import CodeAnalyzer
-from test_runner import TestRunner
-from universal_analyzer import UniversalAnalyzer
-from ml_optimizer import MLOptimizer
+from hanako.engine.config import HanakoConfig, AutonomyMode, WebSearchMode
+from hanako.engine.hanako_core import HanakoCore
 
 
-def cmd_run(config: NobukaConfig):
-    """Запустить постоянную работу Нобука."""
-    core = NobukaCore(config)
-    core.run()
+def setup_logging(log_dir: Path, verbose: bool = False):
+    """Настройка логирования."""
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_file = log_dir / f"hanako_{datetime.now().strftime('%Y%m%d')}.log"
 
+    level = logging.DEBUG if verbose else logging.INFO
+    handlers = [
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler(log_file, encoding='utf-8', mode='a'),
+    ]
 
-def cmd_analyze(config: NobukaConfig):
-    """Запустить только анализ проекта (Python)."""
-    print("=" * 60)
-    print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
-    print("=" * 60)
-
-    analyzer = CodeAnalyzer(config)
-    all_analyses = []
-    total_issues = 0
-
-    for dir_name in config.scan_directories:
-        dir_path = Path(dir_name)
-        if not dir_path.exists():
-            continue
-
-        files = analyzer._scan_files(dir_path)
-        print(f"\n📁 {dir_name}: {len(files)} файлов")
-
-        for file_path in files[:20]:  # Лимит для демо
-            analysis = analyzer.analyze_file(file_path)
-            all_analyses.append(analysis)
-            total_issues += len(analysis.issues)
-
-            if analysis.issues:
-                print(f"  ⚠️  {file_path.name}: {len(analysis.issues)} проблем")
-                for issue in analysis.issues[:3]:
-                    print(f"     - {issue}")
-
-    print(f"\n📊 ИТОГО: {len(all_analyses)} файлов, {total_issues} проблем")
-
-    # Показать лучших и худших
-    if all_analyses:
-        sorted_by_complexity = sorted(all_analyses, key=lambda a: a.complexity, reverse=True)
-        sorted_by_lines = sorted(all_analyses, key=lambda a: a.lines, reverse=True)
-
-        print(f"\n🔝 Самая сложная: {sorted_by_complexity[0].path} (C={sorted_by_complexity[0].complexity})")
-        print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
-
-
-def cmd_universal_analyze(config: NobukaConfig):
-    """Запустить универсальный анализ всех файлов проекта."""
-    print("=" * 80)
-    print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
-    print("=" * 80)
-
-    analyzer = UniversalAnalyzer(config)
-    report = analyzer.analyze_all_files()
-
-    # Вывести отчёт
-    human_report = analyzer.generate_project_report(report)
-    print(human_report)
-
-    # Сохранить отчёты
-    report_path = config.state_dir / "universal_analysis_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
-
-    txt_path = config.state_dir / "project_report.txt"
-    with open(txt_path, "w", encoding="utf-8") as f:
-        f.write(human_report)
-    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
-
-
-def cmd_ml_optimize(config: NobukaConfig):
-    """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
-    print("=" * 80)
-    print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
-    print("=" * 80)
-
-    optimizer = MLOptimizer(config)
-    report = optimizer.analyze_and_optimize()
-
-    # Вывести отчёт
-    human_report = optimizer.generate_optimization_report(report)
-    print(human_report)
-
-    # Сохранить отчёты
-    report_path = config.state_dir / "ml_optimization_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
-
-    txt_path = config.state_dir / "ml_optimization_report.txt"
-    with open(txt_path, "w", encoding="utf-8") as f:
-        f.write(human_report)
-    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
-
-
-def cmd_tests(config: NobukaConfig):
-    """Запустить только тестирование."""
-    print("=" * 60)
-    print("🧪 ТЕСТИРОВАНИЕ НОБУКИ")
-    print("=" * 60)
-
-    runner = TestRunner(config)
-    report = runner.run_pytest()
-
-    print(f"\n📊 Результат:")
-    print(f"  Всего тестов: {report.total}")
-    print(f"  Пройдено: {report.passed}")
-    print(f"  Провалено: {report.failed}")
-    print(f"  Покрытие: {report.coverage:.1f}%")
-    print(f"  Время: {report.duration_seconds:.1f}с")
-
-
-def cmd_status(config: NobukaConfig):
-    """Показать текущее состояние Нобука."""
-    state_path = config.state_path
-
-    if not state_path.exists():
-        print("Нобука ещё не запускалась. Состояние отсутствует.")
-        return
-
-    with open(state_path, "r", encoding="utf-8") as f:
-        state = json.load(f)
-
-    print("=" * 60)
-    print("📊 СОСТОЯНИЕ НОБУКИ")
-    print("=" * 60)
-    print(f"Версия: {state.get('version', '?')}")
-    print(f"Циклов выполнено: {state.get('cycle_count', 0)}")
-    print(f"Последнее обновление: {state.get('timestamp', '?')}")
-    print()
-    print("Метрики:")
-    for key, value in state.get("metrics", {}).items():
-        print(f"  {key}: {value}")
-    print()
-
-    improvements = state.get("improvements_history", [])
-    if improvements:
-        print(f"Последние улучшения ({len(improvements)}):")
-        for imp in improvements[-5:]:
-            status = "✅" if imp.get("applied") else "⏸️"
-            print(f"  {status} {imp.get('version_after', '?')}: "
-                  f"{imp.get('description', '?')}")
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=handlers,
+    )
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Нобука — автономная система улучшений и модернизации",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=__doc__
-    )
-
-    parser.add_argument(
-        "--demo",
-        action="store_true",
-        help="Демо-режим: 5 циклов с короткими интервалами"
-    )
-    parser.add_argument(
-        "--analyze",
-        action="store_true",
-        help="Запустить только анализ проекта"
-    )
-    parser.add_argument(
-        "--tests",
-        action="store_true",
-        help="Запустить только тестирование"
-    )
-    parser.add_argument(
-        "--universal",
-        action="store_true",
-        help="Универсальный анализ всех файлов проекта"
-    )
-    parser.add_argument(
-        "--ml",
-        action="store_true",
-        help="ML-оптимизатор: улучшение процесса обучения модели"
-    )
-    parser.add_argument(
-        "--status",
-        action="store_true",
-        help="Показать текущее состояние"
-    )
-    parser.add_argument(
-        "--interval",
-        type=float,
-        default=None,
-        help="Интервал между циклами в секундах"
-    )
-    parser.add_argument(
-        "--max-cycles",
-        type=int,
-        default=None,
-        help="Максимальное количество циклов"
-    )
+    """Главная функция."""
+    parser = argparse.ArgumentParser(description="Ханако — Исследователь гравитации")
+    parser.add_argument("--config", type=str, default="default",
+                        help="Режим конфигурации: default, demo, offline, godmode")
+    parser.add_argument("--cycles", type=int, default=0,
+                        help="Максимум циклов (0 = бесконечно)")
+    parser.add_argument("--verbose", "-v", action="store_true",
+                        help="Подробный режим")
+    parser.add_argument("--status", action="store_true",
+                        help="Показать статус")
+    parser.add_argument("--report", action="store_true",
+                        help="Сгенерировать отчёт")
+    parser.add_argument("--character", action="store_true",
+                        help="Создать/показать характер")
+    parser.add_argument("--demo", action="store_true",
+                        help="Демо-режим (быстрый запуск)")
+    parser.add_argument("--research", action="store_true",
+                        help="Только исследование")
+    parser.add_argument("--theories", action="store_true",
+                        help="Показать теории")
+    parser.add_argument("--calc", action="store_true",
+                        help="Вычислить гравитационные параметры")
+    parser.add_argument("--communication", action="store_true",
+                        help="Показать статистику общения")
+    parser.add_argument("--level", action="store_true",
+                        help="Показать уровень")
+    parser.add_argument("--auto", action="store_true",
+                        help="Включить автозапуск")
+    parser.add_argument("--log-dir", type=str, default="hanako/engine/logs",
+                        help="Директория логов")
 
     args = parser.parse_args()
 
-    # Конфигурация
-    if args.demo:
-        config = NobukaConfig.demo()
-    else:
-        config = NobukaConfig.default()
+    # Настройка логирования
+    log_dir = Path(args.log_dir)
+    setup_logging(log_dir, args.verbose)
+    logger = logging.getLogger("HanakoMain")
 
-    if args.interval is not None:
-        config.cycle_interval = args.interval
-    if args.max_cycles is not None:
-        config.max_cycles = args.max_cycles
+    # Загрузка конфигурации
+    config = _load_config(args.config, args.demo)
 
-    # Команды
-    if args.ml:
-        cmd_ml_optimize(config)
-    elif args.universal:
-        cmd_universal_analyze(config)
-    elif args.status:
-        cmd_status(config)
-    elif args.analyze:
-        cmd_analyze(config)
-    elif args.tests:
-        cmd_tests(config)
+    # Создание ядра
+    core = HanakoCore(config)
+
+    # Обработка команд
+    if args.status:
+        print(core.get_summary())
+        return
+
+    if args.theories:
+        theories = core.theorist.load_theories()
+        print(f"Теорий: {len(theories)}")
+        for t in theories:
+            print(f"  • {t.title} ({t.category.value}) — уверенность: {t.confidence:.1%}")
+        return
+
+    if args.calc:
+        calc = core.calculator
+        print("=== Гравитационные вычисления ===")
+        print(f"  Радиус Шварцшильда (Солнце): {calc.schwarzschild_radius(1.989e30):.2f} м = {calc.schwarzschild_radius(1.989e30)/1000:.1f} км")
+        print(f"  Температура Хокинга (Солнце): {calc.hawking_temperature(1.989e30):.2e} K")
+        print(f"  Планковская длина: {calc.planck_length():.2e} м")
+        print(f"  Планковская масса: {calc.planck_mass():.2e} кг")
+        print(f"  Планковское время: {calc.planck_time():.2e} с")
+        return
+
+    if args.character:
+        traits = core.character.get_traits()
+        print(core.character.get_character_summary())
+        return
+
+    if args.communication:
+        stats = core.communication.get_communication_stats()
+        print(f"Статистика общения:")
+        print(f"  Всего сообщений: {stats['total_messages']}")
+        print(f"  По типам: {stats['by_type']}")
+        print(f"  По отправителям: {stats['by_sender']}")
+        return
+
+    if args.auto:
+        core.auto_start.enable_auto_start()
+        print("✅ Автозапуск включён")
+        return
+
+    if args.report:
+        report = core.reports.generate_daily_report(core)
+        if report:
+            print(report.content)
+        return
+
+    if args.level:
+        level = core.level
+        print(f"Уровень: {level.overall_level} ({level.get_level_name()})")
+        print(f"  Опыт: {level.overall_xp:.0f}/{level.xp_to_next:.0f}")
+        print(f"  Гравитация: {level.gravity_theory_level}")
+        print(f"  Интернет: {level.web_research_level}")
+        print(f"  Саморазвитие: {level.self_development_level}")
+        print(f"  Общение: {level.communication_level}")
+        print(f"  Вычисления: {level.calculation_level}")
+        print(f"  Характер: {level.character_growth_level}")
+        return
+
+    # Основной режим — запуск цикла
+    logger.info(f"Запуск Ханако: config={args.config}, demo={args.demo}, cycles={args.cycles}")
+
+    if args.research:
+        # Только исследование
+        core.start()
+        cycle = 0
+        try:
+            while cycle < args.cycles or args.cycles == 0:
+                core._do_research(datetime.now())
+                cycle += 1
+                logger.info(f"Исследование #{cycle}")
+                if args.cycles > 0 and cycle >= args.cycles:
+                    break
+        except KeyboardInterrupt:
+            pass
+        finally:
+            core.stop()
     else:
-        cmd_run(config)
+        # Полный цикл
+        core.run_loop(max_cycles=args.cycles)
+
+
+def _load_config(config_name: str, demo: bool) -> HanakoConfig:
+    """Загрузка конфигурации."""
+    if demo or config_name == "demo":
+        return HanakoConfig.demo()
+    elif config_name == "offline":
+        return HanakoConfig.offline()
+    elif config_name == "godmode":
+        return HanakoConfig.godmode()
+    else:
+        return HanakoConfig.default()
 
 
 if __name__ == "__main__":

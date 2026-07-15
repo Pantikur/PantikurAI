@@ -1,26 +1,21 @@
 """
 Scientists Network — Сеть учёных.
 
-Система коммуникации между всеми ядрами учёных:
-- Ханако (гравитация)
-- Фуюки (электричество)
-- Люси (двигатели)
-- Футаба (саморазвитие)
-- Шиори (безопасность)
-- Нобука (улучшения)
-- Латислейн (тело)
-- Селеста (интимная жизнь)
-- Аква (математика, физика)
-- Юи (сознание, перенос разума)
-- Наото (визуальный архитектор)
-- Айко (чтение книг, обучение модели)
+Система коммуникации между ВСЕМИ 12 девочками-учёными:
+  1. Ханако   — гравитация
+  2. Фуюки    — электричество
+  3. Люси     — двигатели
+  4. Футаба   — саморазвитие
+  5. Шиори    — безопасность
+  6. Нобука   — улучшения
+  7. Латислейн — тело
+  8. Селеста   — свет
+  9. Аква     — наука (математика, физика)
+  10. Юи      — связь
+  11. Айико   — творчество
+  12. Наото   — время
 
-Поддерживает:
-- Прямые сообщения (peer-to-peer)
-- Групповые сообщения
-- Объявления (broadcast)
-- Запросы данных
-- Автоматическую координацию и болтовню
+Каждая девочка общается со всеми 11 остальними.
 """
 
 import json
@@ -164,15 +159,44 @@ class Message:
 
 class ScientistsNetwork:
     """
-    Сеть учёных — система коммуникации между всеми ядрами.
+    Сеть учёных — система коммуникации между ВСЕМИ 12 девочками.
     
-    Функции:
-    1. Прямые сообщения между учёными
-    2. Групповые обсуждения
-    3. Передача данных (теории, вычисления, проекты)
-    4. Координация совместной работы
-    5. Автоматическая болтовня когда "скучно"
+    Каждая девочка общается со всеми 11 остальними:
+      1. Ханако  — гравитация
+      2. Фуюки   — электричество
+      3. Люси    — двигатели
+      4. Футаба  — саморазвитие
+      5. Шиори   — безопасность
+      6. Нобука  — улучшения
+      7. Латислейн — тело
+      8. Селеста  — свет
+      9. Аква    — наука
+      10. Юи     — связь
+      11. Айико  — творчество
+      12. Наото  — время
     """
+    
+    # Все 12 девочек-учёных
+    ALL_GIRLS = [
+        "hanako", "fuyuki", "lucy", "futaba", "shiori", "nobuka",
+        "latislane", "celest", "akva", "yu", "ayiko", "naoto",
+    ]
+    
+    # Специализации для генерации контента
+    SPECIALTIES = {
+        "hanako": {"name": "Ханако", "topic": "гравитация", "emoji": "🌸"},
+        "fuyuki": {"name": "Фуюки", "topic": "электричество", "emoji": "⚡"},
+        "lucy": {"name": "Люси", "topic": "двигатели", "emoji": "🚀"},
+        "futaba": {"name": "Футаба", "topic": "саморазвитие", "emoji": "🌈"},
+        "shiori": {"name": "Шиори", "topic": "безопасность", "emoji": "🛡️"},
+        "nobuka": {"name": "Нобука", "topic": "улучшения", "emoji": "🔧"},
+        "latislane": {"name": "Латислейн", "topic": "тело", "emoji": "🧬"},
+        "celest": {"name": "Селеста", "topic": "свет", "emoji": "✨"},
+        "akva": {"name": "Аква", "topic": "наука", "emoji": "💧"},
+        "yu": {"name": "Юи", "topic": "связь", "emoji": "🔗"},
+        "ayiko": {"name": "Айко", "topic": "творчество", "emoji": "🎨"},
+        "naoto": {"name": "Наото", "topic": "время", "emoji": "⏳"},
+    }
     
     def __init__(self, base_dir: str = "."):
         self.base_dir = Path(base_dir)
@@ -208,11 +232,17 @@ class ScientistsNetwork:
         # Логирование
         self._setup_logging()
         
-        logger.info("🌐 Scientists Network инициализирована")
+        # АВТОМАТИЧЕСКИ регистрируем всех 12 девочек
+        for girl in self.ALL_GIRLS:
+            self.register_scientist(girl, None)
+        
+        logger.info("🌐 Scientists Network инициализирована (все 12 девочек)")
         logger.info("   Подключены: " + ", ".join([
             "Ханако", "Фуюки", "Люси", "Футаба",
-            "Шиори", "Нобука", "Латислейн", "Селеста", "Аква", "Юи"
+            "Шиори", "Нобука", "Латислейн", "Селеста", "Аква", "Юи",
+            "Айко", "Наото"
         ]))
+        logger.info("   Каждая девочка общается со всеми 11 остальними")
     
     def _setup_logging(self):
         """Настроить логирование."""
@@ -247,6 +277,18 @@ class ScientistsNetwork:
     def get_all_scientists(self) -> List[str]:
         """Получить список всех зарегистрированных учёных."""
         return list(self._scientists.keys())
+    
+    def get_all_girls(self) -> List[str]:
+        """Получить список ВСЕХ 12 девочек-учёных."""
+        return list(self.ALL_GIRLS)
+    
+    def get_other_girls(self, girl_name: str) -> List[str]:
+        """Получить список всех девочек, кроме указанной (11 штук)."""
+        return [g for g in self.ALL_GIRLS if g != girl_name]
+    
+    def get_girl_specialty(self, girl_name: str) -> Dict[str, str]:
+        """Получить специализацию девочки."""
+        return self.SPECIALTIES.get(girl_name, {"name": girl_name, "topic": "наука", "emoji": "📚"})
     
     def send_message(self, message: Message) -> bool:
         """
@@ -465,28 +507,25 @@ class ScientistsNetwork:
         """
         Автоматический цикл общения.
         
-        Случайным образом выбирает учёного и отправляет сообщение другим.
-        Можно вызывать из основного цикла каждого учёного.
+        Случайным образом выбирает девочку и отправляет сообщение другим 11.
         """
         with self._lock:
             scientists = list(self._scientists.keys())
         
         if len(scientists) < 2:
-            return  # Нужно минимум 2 учёных для общения
+            return
         
-        # Случайный отправитель
         sender = random.choice(scientists)
+        sender_info = self.get_girl_specialty(sender)
         
-        # Случайный тип сообщения
         chat_templates = [
-            (MessageType.GREETING, f"👋 {sender}: Всем привет! Как дела?"),
-            (MessageType.MESSAGE, f"💬 {sender}: Знаете что? Я тут подумала о новых исследованиях..."),
-            (MessageType.MESSAGE, f"🤔 {sender}: А кто-нибудь уже посмотрел последние результаты?"),
-            (MessageType.QUESTION, f"❓ {sender}: Вопрос к коллегам: кто работал с {random.choice(['гравитацией', 'электричеством', 'аэродинамикой', 'математикой', 'безопасностью', 'улучшениями'])}?"),
-            (MessageType.BOREDOM, f"😴 {sender}: Мне немного скучно... Может поболтаем?"),
-            (MessageType.MESSAGE, f"📚 {sender}: Я тут нашла интересную статью..."),
-            (MessageType.COORDINATION, f"🤝 {sender}: Предлагаю collaboration между нами!"),
-            (MessageType.THOUGHT, f"💡 {sender}: А вы знали, что {random.choice(['гравитация отклоняет свет', 'молнии могут достигать 30 000°C', 'сопротивление материалов зависит от структуры', 'аэродинамика работает на основе уравнений Навье-Стокса'])}?"),
+            (MessageType.GREETING, f"{sender_info['emoji']} {sender_info['name']}: Всем привет! Как дела в мире наук?"),
+            (MessageType.MESSAGE, f"{sender_info['emoji']} {sender_info['name']}: Я тут думала о {sender_info['topic']}..."),
+            (MessageType.MESSAGE, f"{sender_info['emoji']} {sender_info['name']}: Кто-нибудь хочет обсудить {sender_info['topic']}?"),
+            (MessageType.QUESTION, f"{sender_info['emoji']} {sender_info['name']}: Вопрос: как {sender_info['topic']} связана с другими науками?"),
+            (MessageType.BOREDOM, f"{sender_info['emoji']} {sender_info['name']}: Мне немного скучно... Может поболтаем?"),
+            (MessageType.COORDINATION, f"{sender_info['emoji']} {sender_info['name']}: Предлагаю collaboration! {sender_info['topic']} + ?"),
+            (MessageType.THOUGHT, f"{sender_info['emoji']} {sender_info['name']}: Знаете что? {sender_info['topic']} — это fascinating!"),
         ]
         
         msg_type, content = random.choice(chat_templates)

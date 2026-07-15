@@ -1,10 +1,17 @@
 """
-Latislane — Движок автономного обучения из интернета.
+Латислейн — Движок автономного обучения из интернета и проекта.
+
+Изучает АБСОЛЮТНО ВСЁ, связанное с:
+- Физическим строением тела (физика, механика, биомеханика)
+- Химическим строением тела (биохимия, молекулы, реакции)
+- Биологическим строением тела (анатомия, физиология, генетика)
+- Проектными знаниями (код Pantikur, архитектура, модули)
 
 Использует реальные источники:
 - Wikipedia API
 - PubMed API (медицина)
 - arXiv API (наука)
+- GitHub (код проекта)
 - Web scraping
 """
 
@@ -82,9 +89,81 @@ class InternetLearningEngine:
     5. Оценка прогресса
     """
     
-    # Темы для изучения тела человека
+    # === АБСОЛЮТНО ВСЁ О ТЕЛЕ ЧЕЛОВЕКА ===
+    # Физика тела
+    PHYSICS_TOPICS = [
+        "biomechanics human movement physics",
+        "human body thermodynamics heat transfer",
+        "human body fluid dynamics blood flow",
+        "human body acoustics hearing physics",
+        "human body optics vision physics",
+        "human body electromagnetic fields bioelectricity",
+        "human body radiation exposure",
+        "human body pressure physics diving deep sea",
+        "human body acceleration g-force physics",
+        "human body leverage joints physics",
+        "human body energy consumption calories physics",
+        "human body momentum collision impact",
+        "human body wave propagation nerve signals",
+        "human body quantum biology effects",
+        "human body friction skin grip",
+    ]
+    
+    # Химия тела
+    CHEMISTRY_TOPICS = [
+        "human body biochemistry proteins structure",
+        "human body DNA RNA molecular biology",
+        "human body carbohydrates energy metabolism",
+        "human body lipids cell membranes",
+        "human body vitamins minerals nutrition",
+        "human body enzymes catalysis reactions",
+        "human body pH balance acid base",
+        "human body hormones chemical signaling",
+        "human body neurotransmitters chemistry",
+        "human body amino acids protein synthesis",
+        "human body ATP energy molecule",
+        "human body oxidative stress free radicals",
+        "human body detoxification liver chemistry",
+        "human body electrolytes ion balance",
+        "human body collagen elastin structural proteins",
+        "human body hemoglobin oxygen transport chemistry",
+        "human body melanin pigment chemistry",
+        "human body keratin structure chemistry",
+        "human body immune system antibodies chemistry",
+        "human body gut microbiome biochemistry",
+    ]
+    
+    # Биология тела
+    BIOLOGY_TOPICS = [
+        "human cell biology organelles",
+        "human stem cells differentiation",
+        "human tissue types histology",
+        "human organ development embryology",
+        "human genome genetics chromosome",
+        "human gene expression regulation",
+        "human epigenetics inheritance",
+        "human DNA repair mechanisms",
+        "human cell division mitosis meiosis",
+        "human apoptosis programmed cell death",
+        "human immune system lymphocytes",
+        "human nervous system neurons synapses",
+        "human brain neuroplasticity",
+        "human endocrine system glands",
+        "human cardiovascular system heart blood",
+        "human respiratory system lungs",
+        "human digestive system organs",
+        "human muscular system fibers",
+        "human skeletal system bones joints",
+        "human integumentary system skin",
+        "human sensory system organs",
+        "human reproductive system biology",
+        "human circadian rhythm biology",
+        "human aging cellular mechanisms",
+        "human regeneration healing",
+    ]
+    
+    # Анатомия и физиология
     ANATOMY_TOPICS = [
-        # Анатомия
         "human skeletal system anatomy",
         "human muscular system anatomy",
         "human nervous system neuroanatomy",
@@ -97,49 +176,52 @@ class InternetLearningEngine:
         "human reproductive system female",
         "human sensory system",
         "human integumentary system skin",
-        
-        # Клеточная биология
-        "cell biology human cells",
-        "human cell types classification",
-        "stem cells human",
-        "human tissue types",
-        
-        # Генетика
-        "human genome genetics",
-        "human DNA structure",
-        "gene expression regulation",
-        "epigenetics human",
-        
-        # Физиология
-        "human physiology homeostasis",
-        "human metabolism biochemistry",
-        "human neurophysiology",
-        "human immunology",
-        
-        # Бионика и протезирование
+        "human lymphatic system",
+        "human urinary system",
+        "human anatomy developmental",
+    ]
+    
+    # Бионика и робототехника
+    BIONICS_ROBOTICS_TOPICS = [
         "biomechanics human movement",
         "prosthetics design principles",
         "bionic limb technology",
         "neural prosthetics brain computer interface",
         "robotic exoskeleton human",
-        
-        # Биоинженерия
-        "tissue engineering human organs",
+        "electroactive polymers artificial muscle",
+        "titanium alloy biomedical implants",
+        "bioartificial organs tissue engineering",
         "3d bioprinting organs",
-        "organoid human development",
         "gene editing CRISPR human",
         "synthetic biology human cells",
-        
-        # Нейронаука
-        "human brain neuroplasticity",
-        "synaptic transmission neuroscience",
-        "cognitive neuroscience human",
-        "neural circuits learning memory",
-        
-        # Эволюция
-        "human evolution anatomy changes",
-        "comparative anatomy primates",
+        "human-machine integration",
+        "biohybrid systems",
+        "organoid human development",
     ]
+    
+    # Знания проекта
+    PROJECT_KNOWLEDGE_TOPICS = [
+        "pantikur project architecture",
+        "pantikur girls system design",
+        "pantikur integration patterns",
+        "pantikur API design",
+        "pantikur database schema",
+        "pantikur AI agent patterns",
+        "pantikur communication protocols",
+        "pantikur evolution system",
+        "pantikur body design system",
+        "pantikur research framework",
+    ]
+    
+    # Полный список тем для изучения
+    ALL_TOPICS = (
+        PHYSICS_TOPICS +
+        CHEMISTRY_TOPICS +
+        BIOLOGY_TOPICS +
+        ANATOMY_TOPICS +
+        BIONICS_ROBOTICS_TOPICS +
+        PROJECT_KNOWLEDGE_TOPICS
+    )
     
     def __init__(self, data_dir: str = "data/latislane"):
         self.data_dir = Path(data_dir)

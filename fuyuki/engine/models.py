@@ -1,12 +1,14 @@
 """
-Модели данных системы Нобука.
+Модели данных Фуюки — исследователя атмосферного электричества.
 
 Содержит:
-  - Constitution, Law — фундаментальная база улучшений
-  - ImprovementRecord, LogEntry — журнал улучшений
-  - CodeMetric, FileAnalysis — метрики и анализ кода
-  - TestCase, TestResult — модели тестирования
-  - CodeChange, RefactorPlan — модели изменений и рефакторинга
+  - ElectricityTheory — теории атмосферного электричества
+  - ResearchPaper — изученные научные статьи
+  - Calculation — электрические вычисления
+  - ResearchRecord — запись исследования
+  - LightningStrike — данные о молниях
+  - KnowledgeLevel — уровень знаний и прогресс
+  - ElectricityConstants — физические константы
 """
 
 from __future__ import annotations
@@ -20,409 +22,349 @@ from typing import Any, Optional
 #  ПЕРЕЧИСЛЕНИЯ
 # =====================================================================
 
-class AutonomyLevel(Enum):
-    """Уровни автономности Нобуки (см. протокол саморазвития)."""
-    L0 = "L0"  # Полная автономия — опечатки, форматирование
-    L1 = "L1"  # Автономные патчи — исправление багов
-    L2 = "L2"  # Автономный рефакторинг — оптимизация
-    L3 = "L3"  # Предложения — новые функции (требует подтверждения)
-    L4 = "L4"  # Запрещено — архитектурные изменения
 
-    @property
-    def weight(self) -> int:
-        return int(self.value[1])
-
-    def requires_confirmation(self) -> bool:
-        return self.weight >= 3
-
-    def is_allowed(self) -> bool:
-        return self != AutonomyLevel.L4
+class ElectricityTheoryCategory(Enum):
+    """Категории теорий атмосферного электричества."""
+    CLASSICAL = "classical"             # Классическая электродинамика
+    ATMOSPHERIC = "atmospheric"         # Атмосферное электричество
+    LIGHTNING = "lightning"             # Молнии
+    BALL_LIGHTNING = "ball_lightning"   # Шаровая молния
+    SPRITES = "sprites"                 # Верхнеатмосферные разряды
+    HARVESTING = "harvesting"           # Сбор энергии
+    CONTROL = "control"                 # Управление молниями
 
 
-class ImprovementType(Enum):
-    """Тип улучшения."""
-    BUGFIX = "bugfix"           # Исправление ошибки
-    REFACTOR = "refactor"       # Рефакторинг
-    PERFORMANCE = "performance" # Оптимизация
-    SECURITY = "security"       # Усиление безопасности
-    DOCUMENTATION = "documentation"  # Документация
-    DEPENDENCY = "dependency"   # Обновление зависимостей
-    TEST = "test"               # Добавление тестов
-    ARCHITECTURE = "architecture"  # Архитектурное изменение
+class CalculationType(Enum):
+    """Типы электрических вычислений."""
+    ELECTRIC_FIELD = "electric_field"       # Электрическое поле
+    LIGHTNING_ENERGY = "lightning_energy"   # Энергия молнии
+    CHARGE_SEPARATION = "charge_separation" # Разделение зарядов
+    BREAKDOWN_VOLTAGE = "breakdown_voltage" # Пробивное напряжение
+    BALL_LIGHTNING = "ball_lightning"       # Шаровая молния
+    ENERGY_HARVESTING = "energy_harvesting" # Сбор энергии
+    LIGHTNING_PATH = "lightning_path"       # Путь молнии
 
 
-class BugPriority(Enum):
-    """Приоритет бага."""
-    P0_CRITICAL = "P0"
-    P1_SERIOUS = "P1"
-    P2_MODERATE = "P2"
-    P3_MINOR = "P3"
-
-
-class ChangeStatus(Enum):
-    """Статус изменения."""
-    PENDING = "pending"
-    TESTING = "testing"
-    APPLIED = "applied"
-    ROLLED_BACK = "rolled_back"
-    REJECTED = "rejected"
+class KnowledgeDomain(Enum):
+    """Области знаний Фуюки."""
+    ATMOSPHERIC_ELECTRICITY = "atmospheric_electricity"
+    LIGHTNING_PHYSICS = "lightning_physics"
+    ELECTROMAGNETISM = "electromagnetism"
+    PLASMA_PHYSICS = "plasma_physics"
+    ENERGY_HARVESTING = "energy_harvesting"
+    PROTECTION_SYSTEMS = "protection_systems"
+    PROJECT_CODE = "project_code"
+    GENERAL_SCIENCE = "general_science"
 
 
 # =====================================================================
-#  КОНСТИТУЦИЯ И ЗАКОНЫ
+#  ЭЛЕКТРИЧЕСКИЕ КОНСТАНТЫ
 # =====================================================================
-
-@dataclass
-class Law:
-    """Один закон Нобуки."""
-    id: int
-    name: str
-    description: str
-    immutable: bool = True
-
-    def __str__(self) -> str:
-        marker = "🔒" if self.immutable else "🔓"
-        return f"{marker} Закон {self.id}. {self.name}"
 
 
 @dataclass
-class Constitution:
-    """
-    Конституция Нобуки — фундаментальная база улучшений.
-    """
-    version: str = "v1.0.0"
-    laws: list[Law] = field(default_factory=list)
+class ElectricityConstants:
+    """Физические константы для вычислений."""
+    # Постоянные
+    epsilon_0: float = 8.854e-12          # Диэлектрическая проницаемость вакуума (Ф/м)
+    mu_0: float = 4 * 3.14159e-7          # Магнитная постоянная (Гн/м)
+    c: float = 299792458.0                # Скорость света (м/с)
+    e: float = 1.602e-19                  # Элементарный заряд (Кл)
+    me: float = 9.109e-31                 # Масса электрона (кг)
+    mp: float = 1.673e-27                 # Масса протона (кг)
 
-    # Тестируемые параметры (можно варьировать)
-    test_coverage_min: float = 0.80    # 0-1: минимальное покрытие
-    complexity_threshold: int = 10     # макс. цикломатическая сложность
-    max_file_lines: int = 300          # макс. строк в файле
-    max_function_lines: int = 50       # макс. строк в функции
-    safety_priority: float = 0.95      # 0-1: приоритет безопасности
-    innovation_support: float = 0.6    # 0-1: поддержка инноваций
+    # Атмосферные
+    E_breakdown_air: float = 3e6          # Поле пробоя воздуха (В/м)
+    fair_weather_field: float = 100.0     # Поле ясной погоды (В/м)
+    ionosphere_potential: float = 300000.0 # Потенциал ионосферы (В)
+    earth_potential: float = 0.0          # Потенциал земли (В)
 
-    def __post_init__(self):
-        if not self.laws:
-            self.laws = self._default_laws()
-
-    @staticmethod
-    def _default_laws() -> list[Law]:
-        """7 основных законов (из laws/01-core-laws.md)."""
-        return [
-            Law(1, "Рабочий код", "Рабочий код — абсолютный приоритет.", immutable=True),
-            Law(2, "Тестирование прежде всего", "Каждое изменение должно сопровождаться тестами.", immutable=True),
-            Law(3, "Не навреди", "Запрещено вносить изменения, вызывающие регрессию.", immutable=True),
-            Law(4, "Документируй всё", "Каждое изменение должно быть задокументировано.", immutable=True),
-            Law(5, "Простота превыше сложности", "Предпочитай простые решения.", immutable=False),
-            Law(6, "Автономность с контролем", "Работай автономно, но критическое — с подтверждением.", immutable=False),
-            Law(7, "Непрерывное улучшение", "Проект всегда может быть лучше.", immutable=False),
-        ]
-
-    def immutable_law_ids(self) -> list[int]:
-        """ID законов, которые нельзя изменять."""
-        return [law.id for law in self.laws if law.immutable]
-
-    def check_compatibility(self, change: ImprovementRecord) -> tuple[bool, str]:
-        """
-        Проверить, совместимо ли улучшение с Конституцией.
-        """
-        # Нельзя изменять неизменяемые законы
-        for law_id in change.affected_law_ids:
-            if law_id in self.immutable_law_ids():
-                return False, f"Закон {law_id} неизменяем (нарушение Конституции, Статья II)"
-
-        # Нельзя снижать покрытие ниже порога
-        if change.test_coverage_after < self.test_coverage_min:
-            return False, f"Покрытие тестов упадёт ниже {self.test_coverage_min:.0%}"
-
-        # Нельзя снижать безопасность
-        if change.safety_impact < 0:
-            return False, "Изменение снижает безопасность (нарушение Закона 3)"
-
-        return True, "OK"
+    # Молнии
+    typical_lightning_current: float = 30000.0    # Ток молнии (А)
+    typical_lightning_voltage: float = 1e9        # Напряжение молнии (В)
+    typical_lightning_duration: float = 0.0002    # Длительность молнии (с)
+    typical_lightning_energy: float = 1e9         # Энергия молнии (Дж)
+    typical_lightning_charge: float = 15.0        # Заряд молнии (Кл)
+    typical_lightning_temperature: float = 30000.0 # Температура канала (К)
 
 
 # =====================================================================
-#  ЖУРНАЛ УЛУЧШЕНИЙ
+#  ТЕОРИИ И ИССЛЕДОВАНИЯ
 # =====================================================================
+
 
 @dataclass
-class ImprovementRecord:
-    """Запись об улучшении в процессе модернизации."""
-    timestamp: str
-    improvement_type: ImprovementType
-    level: AutonomyLevel
-    description: str
-    constitution_check_passed: bool
-    laws_verified: list[int]
-    trigger: str                          # что вызвало улучшение
-    risk_estimate: float = 0.0            # оценка риска 0-1
-    safety_impact: float = 0.0            # влияние на безопасность (-1..+1)
-    affected_law_ids: list[int] = field(default_factory=list)
-    version_before: str = "v1.0.0"
-    version_after: str = "v1.0.0"
-    applied: bool = False
-    rolled_back: bool = False
-    rollback_reason: Optional[str] = None
-    tests_added: int = 0
-    tests_affected: int = 0
-    lines_changed: int = 0
-    performance_impact: float = 0.0       # процент изменения производительности
-    test_coverage_before: float = 0.0
-    test_coverage_after: float = 0.0
-    source: str = "manual"                # источник улучшения (manual, web, auto)
+class ResearchPaper:
+    """Изученная научная статья."""
+    title: str
+    authors: list[str]
+    year: int
+    source: str                     # Источник (journal, arxiv, web)
+    url: str = ""
+    summary: str = ""
+    key_findings: list[str] = field(default_factory=list)
+    relevance_score: float = 0.0    # Релевантность для Фуюки (0-1)
+    studied: bool = False
+    studied_at: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "timestamp": self.timestamp,
-            "type": self.improvement_type.value,
-            "level": self.level.value,
-            "description": self.description,
-            "constitution_check_passed": self.constitution_check_passed,
-            "laws_verified": self.laws_verified,
-            "trigger": self.trigger,
-            "risk_estimate": self.risk_estimate,
-            "safety_impact": self.safety_impact,
-            "affected_law_ids": self.affected_law_ids,
-            "version_before": self.version_before,
-            "version_after": self.version_after,
-            "applied": self.applied,
-            "rolled_back": self.rolled_back,
-            "rollback_reason": self.rollback_reason,
-            "tests_added": self.tests_added,
-            "tests_affected": self.tests_affected,
-            "lines_changed": self.lines_changed,
-            "performance_impact": self.performance_impact,
-            "test_coverage_before": self.test_coverage_before,
-            "test_coverage_after": self.test_coverage_after,
+            "title": self.title,
+            "authors": self.authors,
+            "year": self.year,
             "source": self.source,
+            "url": self.url,
+            "summary": self.summary,
+            "key_findings": self.key_findings,
+            "relevance_score": self.relevance_score,
+            "studied": self.studied,
+            "studied_at": self.studied_at,
         }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "ResearchPaper":
+        return cls(
+            title=data["title"],
+            authors=data.get("authors", []),
+            year=data.get("year", 2024),
+            source=data.get("source", "web"),
+            url=data.get("url", ""),
+            summary=data.get("summary", ""),
+            key_findings=data.get("key_findings", []),
+            relevance_score=data.get("relevance_score", 0.0),
+            studied=data.get("studied", False),
+            studied_at=data.get("studied_at", ""),
+        )
 
 
 @dataclass
-class LogEntry:
-    """Запись в системном логе."""
+class ElectricityTheory:
+    """Теория атмосферного электричества."""
+    id: str
+    name: str
+    description: str
+    category: ElectricityTheoryCategory
     timestamp: str
-    level: str       # INFO, WARNING, ERROR, DEBUG
-    source: str      # компонент-источник
-    message: str
-    context: dict[str, Any] = field(default_factory=dict)
-
-
-# =====================================================================
-#  АНАЛИЗ КОДА
-# =====================================================================
-
-@dataclass
-class CodeMetric:
-    """Метрика кода."""
-    name: str
-    value: float
-    threshold: float
-    unit: str = ""
-
-    @property
-    def passes(self) -> bool:
-        if self.name in ("cyclomatic_complexity", "duplicate_lines_percent"):
-            return self.value <= self.threshold
-        else:
-            return self.value >= self.threshold
-
-
-@dataclass
-class FileAnalysis:
-    """Результат анализа одного файла."""
-    path: str
-    lines: int = 0
-    functions: int = 0
-    classes: int = 0
-    complexity: int = 0
-    duplicates_percent: float = 0.0
-    has_docstrings: bool = True
-    test_coverage: float = 0.0
-    issues: list[str] = field(default_factory=list)
-    metrics: list[CodeMetric] = field(default_factory=list)
-
-    def snapshot(self) -> dict[str, Any]:
-        return {
-            "path": self.path,
-            "lines": self.lines,
-            "functions": self.functions,
-            "classes": self.classes,
-            "complexity": self.complexity,
-            "duplicates_percent": round(self.duplicates_percent, 1),
-            "has_docstrings": self.has_docstrings,
-            "test_coverage": round(self.test_coverage, 1),
-            "issues_count": len(self.issues),
-            "issues": self.issues[:10],  # первые 10
-        }
-
-
-@dataclass
-class Issue:
-    """Проблема, обнаруженная в коде."""
-    file: str
-    line: int
-    severity: str       # error, warning, info
-    category: str       # complexity, style, bug, security, duplicate
-    description: str
-    suggestion: str = ""
-
-
-# =====================================================================
-#  ТЕСТИРОВАНИЕ
-# =====================================================================
-
-@dataclass
-class TestCase:
-    """Тестовый кейс."""
-    name: str
-    description: str
-    test_type: str      # unit, integration, e2e
-    target_file: str
-    target_function: str = ""
-    is_negative: bool = False
-    parameters: dict[str, Any] = field(default_factory=dict)
+    equations: list[str] = field(default_factory=list)
+    predictions: list[str] = field(default_factory=list)
+    experimental_evidence: list[str] = field(default_factory=list)
+    compatibility_score: float = 0.0
+    scientific_value: float = 0.0
+    validated: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "id": self.id,
             "name": self.name,
             "description": self.description,
-            "type": self.test_type,
-            "target_file": self.target_file,
-            "target_function": self.target_function,
-            "is_negative": self.is_negative,
-        }
-
-
-@dataclass
-class TestResult:
-    """Результат тестирования."""
-    test_name: str
-    passed: bool
-    duration_seconds: float = 0.0
-    error_message: Optional[str] = None
-    output: str = ""
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "test_name": self.test_name,
-            "passed": self.passed,
-            "duration_seconds": round(self.duration_seconds, 3),
-            "error_message": self.error_message,
-        }
-
-
-@dataclass
-class TestReport:
-    """Отчёт о тестировании."""
-    timestamp: str
-    total: int = 0
-    passed: int = 0
-    failed: int = 0
-    skipped: int = 0
-    coverage: float = 0.0
-    duration_seconds: float = 0.0
-    error_message: Optional[str] = None
-    results: list[TestResult] = field(default_factory=list)
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
+            "category": self.category.value,
             "timestamp": self.timestamp,
-            "total": self.total,
-            "passed": self.passed,
-            "failed": self.failed,
-            "skipped": self.skipped,
-            "coverage": round(self.coverage, 1),
-            "duration_seconds": round(self.duration_seconds, 1),
-            "pass_rate": f"{self.passed/self.total:.1%}" if self.total > 0 else "0%",
-            "results": [r.to_dict() for r in self.results[-20:]],
+            "equations": self.equations,
+            "predictions": self.predictions,
+            "experimental_evidence": self.experimental_evidence,
+            "compatibility_score": self.compatibility_score,
+            "scientific_value": self.scientific_value,
+            "validated": self.validated,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "ElectricityTheory":
+        return cls(
+            id=data["id"],
+            name=data["name"],
+            description=data["description"],
+            category=ElectricityTheoryCategory(data["category"]),
+            timestamp=data["timestamp"],
+            equations=data.get("equations", []),
+            predictions=data.get("predictions", []),
+            experimental_evidence=data.get("experimental_evidence", []),
+            compatibility_score=data.get("compatibility_score", 0.0),
+            scientific_value=data.get("scientific_value", 0.0),
+            validated=data.get("validated", False),
+        )
+
+
+@dataclass
+class ResearchRecord:
+    """Запись об исследовании."""
+    cycle: int
+    topic: str
+    source: str                     # "web", "project", "interaction", "self"
+    findings: list[str] = field(default_factory=list)
+    knowledge_gained: float = 0.0   # XP получено
+    domain: KnowledgeDomain = KnowledgeDomain.ATMOSPHERIC_ELECTRICITY
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "cycle": self.cycle,
+            "topic": self.topic,
+            "source": self.source,
+            "findings": self.findings,
+            "knowledge_gained": self.knowledge_gained,
+            "domain": self.domain.value,
         }
 
 
 # =====================================================================
-#  ИЗМЕНЕНИЯ И РЕФАКТОРИНГ
+#  ВЫЧИСЛЕНИЯ
 # =====================================================================
 
+
 @dataclass
-class CodeChange:
-    """Изменение кода."""
-    file_path: str
-    change_type: str      # add, modify, delete
-    description: str
-    old_code: str = ""
-    new_code: str = ""
-    line_start: int = 0
-    line_end: int = 0
-    tests_added: list[str] = field(default_factory=list)
-    reverted: bool = False
+class Calculation:
+    """Электрическое вычисление."""
+    id: str
+    calculation_type: CalculationType
+    timestamp: str
+    input_params: dict[str, float] = field(default_factory=dict)
+    result: float = 0.0
+    units: str = ""
+    precision: int = 6
+    confidence: float = 0.0
+    notes: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "file_path": self.file_path,
-            "change_type": self.change_type,
-            "description": self.description,
-            "line_start": self.line_start,
-            "line_end": self.line_end,
-            "tests_added": self.tests_added,
-            "reverted": self.reverted,
+            "id": self.id,
+            "calculation_type": self.calculation_type.value,
+            "timestamp": self.timestamp,
+            "input_params": self.input_params,
+            "result": round(self.result, self.precision),
+            "units": self.units,
+            "precision": self.precision,
+            "confidence": self.confidence,
+            "notes": self.notes,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "Calculation":
+        return cls(
+            id=data["id"],
+            calculation_type=CalculationType(data["calculation_type"]),
+            timestamp=data["timestamp"],
+            input_params=data.get("input_params", {}),
+            result=data.get("result", 0.0),
+            units=data.get("units", ""),
+            precision=data.get("precision", 6),
+            confidence=data.get("confidence", 0.0),
+            notes=data.get("notes", ""),
+        )
+
+
+# =====================================================================
+#  МОЛНИИ
+# =====================================================================
+
+
+@dataclass
+class LightningStrike:
+    """Данные о молнии."""
+    id: str
+    timestamp: str
+    energy_joules: float = 0.0
+    peak_current_amps: float = 0.0
+    voltage: float = 0.0
+    duration_seconds: float = 0.0
+    altitude_meters: float = 0.0
+    temperature_kelvin: float = 0.0
+    charge_moved_coulombs: float = 0.0
+    strike_type: str = "cloud_to_ground"  # cloud_to_ground, intra_cloud, etc
+    notes: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "timestamp": self.timestamp,
+            "energy_joules": self.energy_joules,
+            "peak_current_amps": self.peak_current_amps,
+            "voltage": self.voltage,
+            "duration_seconds": self.duration_seconds,
+            "altitude_meters": self.altitude_meters,
+            "temperature_kelvin": self.temperature_kelvin,
+            "charge_moved_coulombs": self.charge_moved_coulombs,
+            "strike_type": self.strike_type,
+            "notes": self.notes,
         }
 
 
+# =====================================================================
+#  УРОВЕНЬ ЗНАНИЙ
+# =====================================================================
+
+
 @dataclass
-class RefactorPlan:
-    """План рефакторинга."""
-    target_file: str
-    target_function: str = ""
-    refactor_type: str = ""      # extract, simplify, merge, rename, move
-    description: str = ""
-    estimated_effort: str = "medium"   # low, medium, high
-    risk_level: str = "medium"         # low, medium, high
-    before_complexity: int = 0
-    after_complexity: int = 0
-    changes: list[CodeChange] = field(default_factory=list)
+class KnowledgeLevel:
+    """Уровень знаний Фуюки."""
+    level: int = 1
+    xp: int = 0
+    domain_xp: dict[str, int] = field(default_factory=dict)
+    domains_studied: list[str] = field(default_factory=list)
+    theories_count: int = 0
+    calculations_count: int = 0
+    papers_studied: int = 0
+    web_searches: int = 0
+    interactions_count: int = 0
+    reports_written: int = 0
+    character_traits_strengthened: int = 0
+
+    # Карта уровней
+    XP_PER_LEVEL = [
+        0, 100, 300, 600, 1000, 1500, 2200, 3000, 4000, 5500,
+        7000, 9000, 11000, 13500, 16500, 20000, 24000, 28500, 34000, 40000,
+    ]
+
+    def add_xp(self, amount: int, domain: KnowledgeDomain = KnowledgeDomain.ATMOSPHERIC_ELECTRICITY) -> bool:
+        """Добавить опыт, вернуть True если уровень повышен."""
+        old_level = self.level
+        self.xp += amount
+        domain_key = domain.value
+        self.domain_xp[domain_key] = self.domain_xp.get(domain_key, 0) + amount
+
+        # Проверяем повышение уровня
+        threshold_idx = min(old_level, len(self.XP_PER_LEVEL) - 1)
+        next_threshold = self.XP_PER_LEVEL[threshold_idx]
+
+        if self.xp >= next_threshold and self.level < len(self.XP_PER_LEVEL):
+            self.level += 1
+            return True  # Уровень повышен!
+
+        return False  # Уровень не повышен
+
+    def get_level_name(self) -> str:
+        """Получить имя текущего уровня."""
+        level_names = [
+            "Новичок", "Ученик", "Студент", "Исследователь", "Младший научный сотрудник",
+            "Научный сотрудник", "Старший научный сотрудник", "Кандидат наук", "Доцент", "Профессор",
+            "Ведущий исследователь", "Заведующий лабораторией", "Доктор наук", "Профессор мирового уровня",
+            "Легенда физики", "Гений", "Мастер электричества", "Повелитель молний",
+            "Хранитель атмосферы", "Бог электричества",
+        ]
+        idx = min(self.level - 1, len(level_names) - 1)
+        return level_names[idx]
+
+    def progress_to_next_level(self) -> float:
+        """Прогресс до следующего уровня (0-100%)."""
+        if self.level >= len(self.XP_PER_LEVEL):
+            return 100.0
+        current_threshold = self.XP_PER_LEVEL[self.level - 1]
+        next_threshold = self.XP_PER_LEVEL[self.level]
+        progress = (self.xp - current_threshold) / (next_threshold - current_threshold)
+        return min(100.0, max(0.0, progress * 100))
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "target_file": self.target_file,
-            "target_function": self.target_function,
-            "refactor_type": self.refactor_type,
-            "description": self.description,
-            "estimated_effort": self.estimated_effort,
-            "risk_level": self.risk_level,
-            "before_complexity": self.before_complexity,
-            "after_complexity": self.after_complexity,
-            "changes_count": len(self.changes),
-        }
-
-
-# =====================================================================
-#  БЕНЧМАРКИ
-# =====================================================================
-
-@dataclass
-class BenchmarkResult:
-    """Результат бенчмарка."""
-    name: str
-    iterations: int
-    duration_seconds: float
-    ops_per_second: float
-    memory_before_mb: float = 0.0
-    memory_after_mb: float = 0.0
-
-    @property
-    def performance_change_percent(self) -> float:
-        if self.memory_before_mb > 0:
-            return ((self.memory_before_mb - self.memory_after_mb) / self.memory_before_mb) * 100
-        return 0.0
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "name": self.name,
-            "iterations": self.iterations,
-            "duration_seconds": round(self.duration_seconds, 3),
-            "ops_per_second": round(self.ops_per_second, 1),
-            "memory_before_mb": round(self.memory_before_mb, 1),
-            "memory_after_mb": round(self.memory_after_mb, 1),
-            "performance_change_percent": round(self.performance_change_percent, 1),
+            "level": self.level,
+            "level_name": self.get_level_name(),
+            "xp": self.xp,
+            "xp_to_next": self.XP_PER_LEVEL[min(self.level, len(self.XP_PER_LEVEL) - 1)] - self.xp,
+            "progress_to_next": round(self.progress_to_next_level(), 1),
+            "domain_xp": self.domain_xp,
+            "domains_studied": self.domains_studied,
+            "theories_count": self.theories_count,
+            "calculations_count": self.calculations_count,
+            "papers_studied": self.papers_studied,
+            "web_searches": self.web_searches,
+            "interactions_count": self.interactions_count,
+            "reports_written": self.reports_written,
+            "character_traits_strengthened": self.character_traits_strengthened,
         }

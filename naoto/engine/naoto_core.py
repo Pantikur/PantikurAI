@@ -2,6 +2,7 @@
 Ядро Наото — управление визуальными задачами и знаниями.
 """
 
+from scientists_network.character_system import CharacterSystem
 from __future__ import annotations
 
 import json

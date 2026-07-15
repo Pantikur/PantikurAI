@@ -1,12 +1,13 @@
 """
-Точка входа для запуска автономного ядра Нобука.
+Точка входа для запуска автономного ядра Фуюки.
 
 Использование:
-    python -m nobuka.engine.run              # постоянная работа
-    python -m nobuka.engine.run --demo       # демо-режим (5 циклов)
-    python -m nobuka.engine.run --analyze    # только анализ проекта
-    python -m nobuka.engine.run --tests      # только тестирование
-    python -m nobuka.engine.run --status     # показать состояние
+    python -m fuyuki.engine.run              # постоянная работа
+    python -m fuyuki.engine.run --demo       # демо-режим (10 циклов)
+    python -m fuyuki.engine.run --status     # показать состояние
+    python -m fuyuki.engine.run --report     # показать отчёты
+    python -m fuyuki.engine.run --character  # показать характер
+    python -m fuyuki.engine.run --knowledge  # показать знания
 """
 
 from __future__ import annotations
@@ -26,194 +27,142 @@ for _stream in (sys.stdout, sys.stderr):
     if _reconfigure is not None:
         _reconfigure(encoding="utf-8")
 
-from config import NobukaConfig
-from nobuka_core import NobukaCore
-from code_analyzer import CodeAnalyzer
-from test_runner import TestRunner
-from universal_analyzer import UniversalAnalyzer
-from ml_optimizer import MLOptimizer
+from config import FuyukiConfig
+from fuyuki_core import FuyukiCore
 
 
-def cmd_run(config: NobukaConfig):
-    """Запустить постоянную работу Нобука."""
-    core = NobukaCore(config)
+def cmd_run(config: FuyukiConfig):
+    """Запустить постоянную работу Фуюки."""
+    core = FuyukiCore(config)
     core.run()
 
 
-def cmd_analyze(config: NobukaConfig):
-    """Запустить только анализ проекта (Python)."""
+def cmd_status(config: FuyukiConfig):
+    """Показать текущее состояние Фуюки."""
+    from fuyuki.engine.knowledge_manager import KnowledgeManager
+    from fuyuki.engine.character_developer import CharacterDeveloper
+    
+    core = FuyukiCore(config)
+    status = core.get_status()
+    
+    print("\n" + "=" * 60)
+    print("⚡ СОСТОЯНИЕ ФУКИ")
     print("=" * 60)
-    print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
-    print("=" * 60)
-
-    analyzer = CodeAnalyzer(config)
-    all_analyses = []
-    total_issues = 0
-
-    for dir_name in config.scan_directories:
-        dir_path = Path(dir_name)
-        if not dir_path.exists():
-            continue
-
-        files = analyzer._scan_files(dir_path)
-        print(f"\n📁 {dir_name}: {len(files)} файлов")
-
-        for file_path in files[:20]:  # Лимит для демо
-            analysis = analyzer.analyze_file(file_path)
-            all_analyses.append(analysis)
-            total_issues += len(analysis.issues)
-
-            if analysis.issues:
-                print(f"  ⚠️  {file_path.name}: {len(analysis.issues)} проблем")
-                for issue in analysis.issues[:3]:
-                    print(f"     - {issue}")
-
-    print(f"\n📊 ИТОГО: {len(all_analyses)} файлов, {total_issues} проблем")
-
-    # Показать лучших и худших
-    if all_analyses:
-        sorted_by_complexity = sorted(all_analyses, key=lambda a: a.complexity, reverse=True)
-        sorted_by_lines = sorted(all_analyses, key=lambda a: a.lines, reverse=True)
-
-        print(f"\n🔝 Самая сложная: {sorted_by_complexity[0].path} (C={sorted_by_complexity[0].complexity})")
-        print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
-
-
-def cmd_universal_analyze(config: NobukaConfig):
-    """Запустить универсальный анализ всех файлов проекта."""
-    print("=" * 80)
-    print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
-    print("=" * 80)
-
-    analyzer = UniversalAnalyzer(config)
-    report = analyzer.analyze_all_files()
-
-    # Вывести отчёт
-    human_report = analyzer.generate_project_report(report)
-    print(human_report)
-
-    # Сохранить отчёты
-    report_path = config.state_dir / "universal_analysis_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
-
-    txt_path = config.state_dir / "project_report.txt"
-    with open(txt_path, "w", encoding="utf-8") as f:
-        f.write(human_report)
-    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
-
-
-def cmd_ml_optimize(config: NobukaConfig):
-    """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
-    print("=" * 80)
-    print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
-    print("=" * 80)
-
-    optimizer = MLOptimizer(config)
-    report = optimizer.analyze_and_optimize()
-
-    # Вывести отчёт
-    human_report = optimizer.generate_optimization_report(report)
-    print(human_report)
-
-    # Сохранить отчёты
-    report_path = config.state_dir / "ml_optimization_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
-
-    txt_path = config.state_dir / "ml_optimization_report.txt"
-    with open(txt_path, "w", encoding="utf-8") as f:
-        f.write(human_report)
-    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
-
-
-def cmd_tests(config: NobukaConfig):
-    """Запустить только тестирование."""
-    print("=" * 60)
-    print("🧪 ТЕСТИРОВАНИЕ НОБУКИ")
-    print("=" * 60)
-
-    runner = TestRunner(config)
-    report = runner.run_pytest()
-
-    print(f"\n📊 Результат:")
-    print(f"  Всего тестов: {report.total}")
-    print(f"  Пройдено: {report.passed}")
-    print(f"  Провалено: {report.failed}")
-    print(f"  Покрытие: {report.coverage:.1f}%")
-    print(f"  Время: {report.duration_seconds:.1f}с")
-
-
-def cmd_status(config: NobukaConfig):
-    """Показать текущее состояние Нобука."""
-    state_path = config.state_path
-
-    if not state_path.exists():
-        print("Нобука ещё не запускалась. Состояние отсутствует.")
-        return
-
-    with open(state_path, "r", encoding="utf-8") as f:
-        state = json.load(f)
-
-    print("=" * 60)
-    print("📊 СОСТОЯНИЕ НОБУКИ")
-    print("=" * 60)
-    print(f"Версия: {state.get('version', '?')}")
-    print(f"Циклов выполнено: {state.get('cycle_count', 0)}")
-    print(f"Последнее обновление: {state.get('timestamp', '?')}")
+    print(f"Версия: {status['version']}")
+    print(f"Циклов выполнено: {status['cycle_count']}")
     print()
-    print("Метрики:")
-    for key, value in state.get("metrics", {}).items():
+    print("📊 Метрики:")
+    for key, value in status["metrics"].items():
         print(f"  {key}: {value}")
     print()
+    
+    # Уровень знаний
+    kl = status.get("knowledge_level", {})
+    print(f"📚 Уровень знаний: Lvl {kl.get('level', '?')} — {kl.get('level_name', '?')}")
+    print(f"   Опыт: {kl.get('xp', 0)} XP")
+    print(f"   Прогресс: {kl.get('progress_to_next', 0):.1f}% до следующего уровня")
+    print()
+    
+    # Характер
+    char = status.get("character_summary", "")
+    if char:
+        print(char)
+    
+    print()
+    print(f"🔬 Теорий построено: {status.get('theories_count', 0)}")
+    print(f"🧮 Вычислений выполнено: {status.get('calculations_count', 0)}")
+    print(f"📖 Статей изучено: {status.get('papers_count', 0)}")
 
-    improvements = state.get("improvements_history", [])
-    if improvements:
-        print(f"Последние улучшения ({len(improvements)}):")
-        for imp in improvements[-5:]:
-            status = "✅" if imp.get("applied") else "⏸️"
-            print(f"  {status} {imp.get('version_after', '?')}: "
-                  f"{imp.get('description', '?')}")
+
+def cmd_report(config: FuyukiConfig):
+    """Показать последние отчёты."""
+    from fuyuki.engine.report_generator import ReportGenerator
+    
+    rg = ReportGenerator(config)
+    reports = rg.list_reports(limit=5)
+    
+    if not reports:
+        print("Отчётов пока нет.")
+        return
+    
+    print("\n" + "=" * 60)
+    print("📝 ПОСЛЕДНИЕ ОТЧЁТЫ ФУКИ")
+    print("=" * 60)
+    
+    for report in reports:
+        print(f"\n📅 {report.get('date', 'N/A')} — Цикл #{report.get('cycle', '?')}")
+        print(f"   Уровень: Lvl {report.get('knowledge_level', '?')}")
+        print(f"   Теорий: {report.get('theories_built', 0)}")
+        print(f"   Вычислений: {report.get('calculations_run', 0)}")
+        print(f"   Статей: {report.get('papers_studied', 0)}")
+
+
+def cmd_character(config: FuyukiConfig):
+    """Показать текущий характер Фуюки."""
+    from fuyuki.engine.character_developer import CharacterDeveloper
+    
+    dev = CharacterDeveloper(config)
+    print("\n" + "=" * 60)
+    print("💪 ХАРАКТЕР ФУКИ")
+    print("=" * 60)
+    print(dev.get_character_summary())
+
+
+def cmd_knowledge(config: FuyukiConfig):
+    """Показать текущие знания Фуюки."""
+    from fuyuki.engine.knowledge_manager import KnowledgeManager
+    
+    km = KnowledgeManager(config)
+    summary = km.get_knowledge_summary()
+    
+    print("\n" + "=" * 60)
+    print("📚 ЗНАНИЯ ФУКИ")
+    print("=" * 60)
+    print(f"Уровень: Lvl {summary['level']} — {summary['level_name']}")
+    print(f"Опыт: {summary['xp']} XP")
+    print(f"Прогресс: {summary['progress_to_next']}% до следующего уровня")
+    print(f"Фактов: {summary['facts_count']}")
+    print(f"Формул: {summary['formulas_count']}")
+    print(f"Теорий: {summary['theories_count']}")
+    print(f"Изучено областей: {summary['domains_count']}")
+    
+    if summary['domains_studied']:
+        print("\nИзученные области:")
+        for domain in summary['domains_studied']:
+            print(f"  • {domain}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Нобука — автономная система улучшений и модернизации",
+        description="Фуюки — автономный исследователь атмосферного электричества",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__
     )
-
+    
     parser.add_argument(
         "--demo",
         action="store_true",
-        help="Демо-режим: 5 циклов с короткими интервалами"
-    )
-    parser.add_argument(
-        "--analyze",
-        action="store_true",
-        help="Запустить только анализ проекта"
-    )
-    parser.add_argument(
-        "--tests",
-        action="store_true",
-        help="Запустить только тестирование"
-    )
-    parser.add_argument(
-        "--universal",
-        action="store_true",
-        help="Универсальный анализ всех файлов проекта"
-    )
-    parser.add_argument(
-        "--ml",
-        action="store_true",
-        help="ML-оптимизатор: улучшение процесса обучения модели"
+        help="Демо-режим: 10 циклов с короткими интервалами"
     )
     parser.add_argument(
         "--status",
         action="store_true",
         help="Показать текущее состояние"
+    )
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Показать последние отчёты"
+    )
+    parser.add_argument(
+        "--character",
+        action="store_true",
+        help="Показать текущий характер"
+    )
+    parser.add_argument(
+        "--knowledge",
+        action="store_true",
+        help="Показать текущие знания"
     )
     parser.add_argument(
         "--interval",
@@ -227,31 +176,29 @@ def main():
         default=None,
         help="Максимальное количество циклов"
     )
-
+    
     args = parser.parse_args()
-
+    
     # Конфигурация
     if args.demo:
-        config = NobukaConfig.demo()
+        config = FuyukiConfig.demo()
     else:
-        config = NobukaConfig.default()
-
+        config = FuyukiConfig.default()
+    
     if args.interval is not None:
         config.cycle_interval = args.interval
     if args.max_cycles is not None:
         config.max_cycles = args.max_cycles
-
+    
     # Команды
-    if args.ml:
-        cmd_ml_optimize(config)
-    elif args.universal:
-        cmd_universal_analyze(config)
-    elif args.status:
+    if args.status:
         cmd_status(config)
-    elif args.analyze:
-        cmd_analyze(config)
-    elif args.tests:
-        cmd_tests(config)
+    elif args.report:
+        cmd_report(config)
+    elif args.character:
+        cmd_character(config)
+    elif args.knowledge:
+        cmd_knowledge(config)
     else:
         cmd_run(config)
 

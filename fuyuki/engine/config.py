@@ -1,5 +1,5 @@
 """
-Конфигурация системы Нобука.
+Конфигурация Фуюки — исследователя атмосферного электричества.
 """
 
 from __future__ import annotations
@@ -9,126 +9,137 @@ from typing import Optional
 
 
 @dataclass
-class NobukaConfig:
+class FuyukiConfig:
     """
-    Конфигурация системы улучшений Нобука.
+    Конфигурация Фуюки — автономного исследователя атмосферного электричества.
     """
 
     # === Идентификация ===
-    name: str = "Нобука"
-    version: str = "v1.0.0"
+    name: str = "Фуюки"
+    version: str = "v2.0.0"
+    specialty: str = "атмосферное электричество"
+    emoji: str = "⚡"
+
+    # === Пути ===
+    base_path: Path = field(default_factory=lambda: Path("fuyuki"))
+    constitution_path: Path = field(default_factory=lambda: Path("fuyuki/constitution.md"))
+    laws_path: Path = field(default_factory=lambda: Path("fuyuki/laws/01-core-laws.md"))
+    codes_path: Path = field(default_factory=lambda: Path("fuyuki/codes/01-ethics-code.md"))
+    state_dir: Path = field(default_factory=lambda: Path("fuyuki/engine/state"))
+    log_dir: Path = field(default_factory=lambda: Path("fuyuki/engine/logs"))
+    reports_dir: Path = field(default_factory=lambda: Path("fuyuki/engine/reports"))
+    knowledge_dir: Path = field(default_factory=lambda: Path("fuyuki/engine/knowledge"))
 
     # === Пути к документам ===
-    base_path: Path = Path("nobuka")
-    constitution_path: Path = field(default_factory=lambda: Path("nobuka/constitution.md"))
-    laws_path: Path = field(default_factory=lambda: Path("nobuka/laws/01-core-laws.md"))
-    ethics_path: Path = field(default_factory=lambda: Path("nobuka/codes/01-ethics-code.md"))
+    character_forge_path: Path = field(default_factory=lambda: Path("fuyuki/character-forging.md"))
+    system_init_path: Path = field(default_factory=lambda: Path("fuyuki/system-init.md"))
+    my_character_path: Path = field(default_factory=lambda: Path("fuyuki/my_character.json"))
 
-    # === Состояние и логи ===
-    state_dir: Path = field(default_factory=lambda: Path("nobuka/engine/state"))
-    log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka.log"))
-    state_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka_state.json"))
-    improvements_log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/improvements.json"))
-    test_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/test_report.json"))
-    analysis_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/analysis_report.json"))
-
-    # === Циклы работы ===
-    cycle_interval: float = 10.0          # секунды между циклами улучшений
-    analysis_interval: int = 5            # каждые N циклов запускать анализ проекта
-    max_cycles: Optional[int] = None      # None = бесконечно, int = демо-режим
-
-    # === Автономность ===
-    max_autonomy_level: str = "L3"        # L0-L4 (см. протокол саморазвития)
-    require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
+    # === Автономная работа ===
+    auto_start: bool = True                 # Автозапуск при старте проекта
+    auto_start_delay: float = 5.0           # Задержка перед автозапуском (сек)
+    cycle_interval: float = 30.0            # Интервал между циклами (сек)
+    max_cycles: Optional[int] = None        # None = бесконечно
+    web_search_interval: int = 3            # Каждые N циклов — поиск в интернете
+    report_interval: int = 10               # Каждые N циклов — отчёт
+    character_develop_interval: int = 5     # Каждые N циклов — развитие характера
+    knowledge_gain_interval: int = 2        # Каждые N циклов — получение знаний
 
     # === Интернет ===
-    web_search_enabled: bool = True       # доступ к интернету
-    web_search_interval: int = 5          # каждые N циклов веб-поиск
-    max_search_results: int = 10          # максимум результатов поиска
-    research_databases: list[str] = field(default_factory=lambda: [
-        "code_quality",       # Качество кода
-        "best_practices",     # Лучшие практики
-        "refactoring",        # Рефакторинг
-        "testing_strategies", # Стратегии тестирования
+    web_access_enabled: bool = True         # Доступ в интернет
+    search_engines: list[str] = field(default_factory=lambda: [
+        "google", "wikipedia", "arxiv", "researchgate",
+    ])
+    research_topics: list[str] = field(default_factory=lambda: [
+        "atmospheric electricity",
+        "lightning physics",
+        "ball lightning",
+        "sprites and elves",
+        "global electric circuit",
+        "ionosphere potential",
+        "thunderstorm electrification",
+        "lightning discharge mechanisms",
+        "atmospheric electric field",
+        "charge separation in clouds",
+        "fair weather electric field",
+        "electromagnetic pulses from lightning",
+        "lightning energy harvesting",
+        "lightning protection systems",
+        "electrostatic precipitation",
+        "corona discharge",
+        "streamer propagation",
+        "leader development",
+        "return stroke physics",
+        "lightning routing and control",
     ])
 
-    # === Анализ кода ===
-    project_root: Path = field(default_factory=lambda: Path("."))
+    # === Изучение проекта ===
+    study_project: bool = True              # Изучать код проекта
     scan_directories: list[str] = field(default_factory=lambda: [
-        ".",           # корневая папка (все .py файлы)
-        "hanako",      # Ханако — гравитация
-        "fuyuki",      # Фуюки — электричество
-        "lucy",        # Люси — двигатели
-        "futaba",      # Футаба — управление
-        "shiori",      # Шиори — защита
-        "nobuka",      # Нобука — улучшения
-        "akva",        # Аква — математика, физика
-        "latislane",   # Latislane — проектирование тел
-        "celesta",     # Селеста — интимная жизнь
-        "naoto",       # Наото — визуальный архитектор
-        "yu",          # Юи — сознание, перенос
-        "scientists_network",  # Scientists Network
+        ".", "hanako", "fuyuki", "lucy", "futaba",
+        "shiori", "nobuka", "akva", "latislane",
+        "celesta", "naoto", "yu", "scientists_network",
+        "Pantikur", "Wuglarst",
     ])
-    exclude_patterns: list[str] = field(default_factory=lambda: [
-        "__pycache__", "*.pyc", ".git", "node_modules", "venv",
-        "*.egg-info", "build", "dist", "*.egg",
-        "android-studio-plugin",  # Android-проект, не Python
+    study_file_types: list[str] = field(default_factory=lambda: [
+        ".py", ".md", ".json", ".yaml", ".yml",
+        ".txt", ".csv", ".html", ".js", ".ts",
     ])
-    max_file_lines: int = 300
-    max_function_lines: int = 50
-    max_complexity: int = 10
-    min_test_coverage: float = 0.80
 
-    # === Тестирование ===
-    test_coverage_target: float = 0.90
-    max_test_duration_seconds: float = 120.0
-    generate_tests_for_new_code: bool = True
-    run_regression_on_change: bool = True
+    # === Уровень знаний ===
+    knowledge_level: int = 1                # Начальный уровень (1-100)
+    knowledge_xp: int = 0                   # Опыт знаний
+    xp_per_research: int = 50               # XP за исследование
+    xp_per_web_search: int = 30             # XP за поиск в интернете
+    xp_per_theory: int = 100                # XP за теорию
+    xp_per_calculation: int = 40            # XP за вычисление
+    xp_per_report: int = 25                 # XP за отчёт
+    xp_per_interaction: int = 15            # XP за общение с сёстрами
+    xp_per_character_develop: int = 20      # XP за развитие характера
+    xp_thresholds: list[int] = field(default_factory=lambda: [
+        0, 100, 300, 600, 1000, 1500, 2200, 3000, 4000, 5500,
+        7000, 9000, 11000, 13500, 16500, 20000, 24000, 28500, 34000, 40000,
+    ])
 
-    # === Бенчмарки ===
-    benchmark_iterations: int = 100
-    benchmark_min_rounds: int = 3
-    performance_regression_threshold: float = 5.0  # %
+    # === Вычисления ===
+    calculation_precision: int = 6          # Точность вычислений
 
     # === Логирование ===
-    log_level: str = "INFO"               # DEBUG, INFO, WARNING, ERROR
+    log_level: str = "INFO"
     log_format: str = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-    save_state_every_n_cycles: int = 5    # сохранять состояние каждые N циклов
-
-    # === Симуляция ===
-    random_seed: Optional[int] = None     # None = случайный, int = для воспроизводимости
-    enable_deterministic_mode: bool = False
-
-    # === Безопасность ===
-    hard_stop_on_constitution_violation: bool = True
-    max_change_risk_threshold: float = 0.05
-    auto_rollback_on_failure: bool = True
 
     # === Взаимодействие с сёстрами ===
-    notify_futaba_on_logic_change: bool = True
-    notify_shiori_on_security_change: bool = True
-    scan_with_shiori_before_apply: bool = True
+    interact_with_sisters: bool = True      # Общаться с 11 другими девочками
+    interact_interval: int = 8              # Каждые N циклов — общение
+    send_reports_to_sisters: bool = True    # Отправлять отчёты сёстрам
+
+    # === Характер ===
+    character_development_enabled: bool = True  # Развитие характера
+    character_file: Path = field(default_factory=lambda: Path("fuyuki/my_character.json"))
+    character_traits_strengthened: int = 0  # Счётчик укрепленных черт
 
     def __post_init__(self):
         """Создать директории после инициализации."""
         self.state_dir.mkdir(parents=True, exist_ok=True)
+        self.log_dir.mkdir(parents=True, exist_ok=True)
+        self.reports_dir.mkdir(parents=True, exist_ok=True)
+        self.knowledge_dir.mkdir(parents=True, exist_ok=True)
 
     @classmethod
-    def default(cls) -> NobukaConfig:
+    def default(cls) -> "FuyukiConfig":
         """Конфигурация по умолчанию."""
         return cls()
 
     @classmethod
-    def demo(cls) -> NobukaConfig:
+    def demo(cls) -> "FuyukiConfig":
         """Демо-конфигурация для тестирования."""
         return cls(
-            max_cycles=5,
+            max_cycles=10,
             cycle_interval=2.0,
-            analysis_interval=2,
+            web_search_interval=2,
+            interact_interval=2,
+            report_interval=3,
+            character_develop_interval=2,
+            knowledge_gain_interval=1,
             log_level="DEBUG",
-            scan_directories=[
-                ".", "hanako", "fuyuki", "lucy", "futaba",
-                "shiori", "nobuka", "akva", "latislane",
-                "celesta", "naoto", "yu", "scientists_network",
-            ],
         )

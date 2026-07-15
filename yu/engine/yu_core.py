@@ -10,6 +10,7 @@ Yu — Ядро изучения цифрового переноса созна�
   6. Логирование результатов
 """
 
+from scientists_network.character_system import CharacterSystem
 import json
 import logging
 import random
@@ -485,6 +486,19 @@ class YuCore:
         # Сохранение состояния
         if self.cycle_count % self.config.save_state_every_n_cycles == 0:
             self._save_state()
+        # Укрепление характера (периодически)
+        if self.total_cycles % 5 == 0:
+            strengthened = self.character.strengthen_strengths()
+            if strengthened > 0:
+                self.logger.info(f"Character strengthened: {strengthened} traits")
+
+        # Эволюция характера (периодически)
+        if self.total_cycles % 10 == 0:
+            evolved = self.character.evolve_traits()
+            if evolved:
+                self.logger.info("Character evolved")
+
+        self._save_state()
         
         self.logger.info(f"✅ Цикл {self.cycle_count} завершён")
     

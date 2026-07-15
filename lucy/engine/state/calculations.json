@@ -1,589 +1,105 @@
 {
   "calculations": [
     {
-      "id": "a4059815",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-10T15:32:31.564691",
+      "calc_type": "specific_impulse",
       "input_params": {
-        "thrust": 728.5709177755236,
-        "power": 450223872.77975386,
-        "isp": 4874.776715756376
+        "random": 1.0
       },
-      "result": 0.038680200818684084,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.8749298752003638,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+      "result": 4283.7019,
+      "units": "с",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:29.502990"
     },
     {
-      "id": "dd195e56",
-      "calculation_type": "power",
-      "timestamp": "2026-07-10T15:32:33.568321",
+      "calc_type": "efficiency",
       "input_params": {
-        "thrust": 7716.706640366805,
-        "isp": 1025.571219071288
+        "random": 1.0
       },
-      "result": 38805072.115430735,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.9065738593956654,
-      "notes": "P = F * g_0 * I_sp / 2"
+      "result": 31.0853,
+      "units": "%",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:32.061066"
     },
     {
-      "id": "cd33711d",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-10T15:32:35.575227",
+      "calc_type": "gravitational_field",
       "input_params": {
-        "exhaust_velocity": 66213.07336373342
+        "random": 1.0
       },
-      "result": 6751.854442009598,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9812614954947579,
-      "notes": "I_sp = v_e / g_0"
+      "result": 7.0314,
+      "units": "м/с²",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:34.069649"
     },
     {
-      "id": "e47d8c44",
-      "calculation_type": "power",
-      "timestamp": "2026-07-10T15:32:37.579452",
+      "calc_type": "hybrid_system",
       "input_params": {
-        "thrust": 9743.60215265036,
-        "isp": 4299.859870655526
+        "random": 1.0
       },
-      "result": 205430311.68182924,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.913040482199704,
-      "notes": "P = F * g_0 * I_sp / 2"
+      "result": 1.0682,
+      "units": "коэфф.",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:36.649611"
     },
     {
-      "id": "b7f11247",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-10T15:32:39.582776",
+      "calc_type": "efficiency",
       "input_params": {
-        "thrust": 2814.207593018437,
-        "power": 602078534.9731485,
-        "isp": 1379.4510945128816
+        "random": 1.0
       },
-      "result": 0.03161549415408095,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.8629592488252551,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+      "result": 61.8618,
+      "units": "%",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:38.653988"
     },
     {
-      "id": "e0d8eef1",
-      "calculation_type": "power",
-      "timestamp": "2026-07-10T15:48:52.179013",
+      "calc_type": "hybrid_system",
       "input_params": {
-        "thrust": 4321.127124338948,
-        "isp": 3475.971500576976
+        "random": 1.0
       },
-      "result": 73648504.08089684,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.9492633677232021,
-      "notes": "P = F * g_0 * I_sp / 2"
+      "result": 0.7085,
+      "units": "коэфф.",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:41.196587"
     },
     {
-      "id": "bf6e3519",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-10T15:48:54.182361",
+      "calc_type": "hybrid_system",
       "input_params": {
-        "thrust": 3261.6311353128135,
-        "power": 720628484.4787536,
-        "isp": 1027.7687018401384
+        "random": 1.0
       },
-      "result": 0.022809170295549595,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.8742254110143877,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+      "result": 1.0481,
+      "units": "коэфф.",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:43.203364"
     },
     {
-      "id": "4201ddf5",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-10T15:48:56.184777",
+      "calc_type": "specific_impulse",
       "input_params": {
-        "mass_flow": 42.273838040459786,
-        "exhaust_velocity": 13256.452406026558
+        "random": 1.0
       },
-      "result": 560401.1220034302,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9768019231244571,
-      "notes": "F = ṁ * v_e"
+      "result": 1395.6552,
+      "units": "с",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:45.744541"
     },
     {
-      "id": "b0aa89ff",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-10T15:48:58.195617",
+      "calc_type": "efficiency",
       "input_params": {
-        "thrust": 758.552215836363,
-        "power": 779793848.6583302,
-        "isp": 4987.569220025396
+        "random": 1.0
       },
-      "result": 0.023789498800040575,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.9268074760296168,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
+      "result": 83.1473,
+      "units": "%",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:47.751208"
     },
     {
-      "id": "673579cd",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-10T15:49:00.203142",
+      "calc_type": "hybrid_system",
       "input_params": {
-        "mass_flow": 77.61829590919554,
-        "exhaust_velocity": 43395.409517853186
+        "random": 1.0
       },
-      "result": 3368277.7370574493,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.960692625895381,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "91d12ea6",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:04:39.433989",
-      "input_params": {
-        "mass_flow": 7.263368780904608,
-        "exhaust_velocity": 19195.269489193124
-      },
-      "result": 139422.32114885608,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9513855618586223,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "22df6eb6",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-11T22:04:57.442190",
-      "input_params": {
-        "thrust": 6294.901438223457,
-        "power": 288660381.20457697,
-        "isp": 2439.3622681964316
-      },
-      "result": 0.2608367231420596,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.9016491084985988,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
-    },
-    {
-      "id": "c8155e70",
-      "calculation_type": "power",
-      "timestamp": "2026-07-11T22:04:59.445546",
-      "input_params": {
-        "thrust": 2051.0000710976924,
-        "isp": 4339.185713436458
-      },
-      "result": 43637975.4165824,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.934104388747978,
-      "notes": "P = F * g_0 * I_sp / 2"
-    },
-    {
-      "id": "1061f3ed",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:05:01.449663",
-      "input_params": {
-        "mass_flow": 88.57790461529049,
-        "exhaust_velocity": 30499.470903566154
-      },
-      "result": 2701579.2245129105,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9640689280341836,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "43dcdda4",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:05:03.454103",
-      "input_params": {
-        "exhaust_velocity": 83974.0690742377
-      },
-      "result": 8562.971970472863,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9524929813521257,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "51bd9c06",
-      "calculation_type": "power",
-      "timestamp": "2026-07-11T22:05:05.474639",
-      "input_params": {
-        "thrust": 8251.40359546216,
-        "isp": 4795.80303193823
-      },
-      "result": 194034898.5199472,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.9301009152618342,
-      "notes": "P = F * g_0 * I_sp / 2"
-    },
-    {
-      "id": "e332ace5",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:05:07.479094",
-      "input_params": {
-        "exhaust_velocity": 52716.46679064754
-      },
-      "result": 5375.583587733583,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9884866363679621,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "3c0119c2",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:05:29.644026",
-      "input_params": {
-        "mass_flow": 17.287595305123975,
-        "exhaust_velocity": 5730.562997980547
-      },
-      "result": 99067.65397960567,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9892819254771406,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "602f03f4",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:05:31.649620",
-      "input_params": {
-        "exhaust_velocity": 33176.26286758951
-      },
-      "result": 3383.037313209864,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9700446305873935,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "14b996b1",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:05:33.653091",
-      "input_params": {
-        "exhaust_velocity": 90834.03057836727
-      },
-      "result": 9262.4933670894,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9539498851302585,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "d27ee799",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-11T22:05:35.657992",
-      "input_params": {
-        "thrust": 5223.343261332685,
-        "power": 641686776.4429386,
-        "isp": 1321.86902699232
-      },
-      "result": 0.05275997536814046,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.9074632199422624,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
-    },
-    {
-      "id": "76fe6b5e",
-      "calculation_type": "power",
-      "timestamp": "2026-07-11T22:05:37.675592",
-      "input_params": {
-        "thrust": 8494.381340798298,
-        "isp": 4415.438780903872
-      },
-      "result": 183906170.72967365,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.9415283257158913,
-      "notes": "P = F * g_0 * I_sp / 2"
-    },
-    {
-      "id": "e0ad3b2d",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:05:39.680632",
-      "input_params": {
-        "mass_flow": 0.12473876799184072,
-        "exhaust_velocity": 39834.667100222585
-      },
-      "result": 4968.927297446876,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9693185148566341,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "f637e22b",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:05:57.150592",
-      "input_params": {
-        "exhaust_velocity": 63283.14059686303
-      },
-      "result": 6453.084447478296,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9523327333293652,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "3da46cb6",
-      "calculation_type": "power",
-      "timestamp": "2026-07-11T22:05:59.156010",
-      "input_params": {
-        "thrust": 8692.899023934542,
-        "isp": 2996.1809051204064
-      },
-      "result": 127709541.80276549,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.940391291808679,
-      "notes": "P = F * g_0 * I_sp / 2"
-    },
-    {
-      "id": "46e66e1d",
-      "calculation_type": "power",
-      "timestamp": "2026-07-11T22:06:01.160232",
-      "input_params": {
-        "thrust": 6990.657202473036,
-        "isp": 4688.6254811467115
-      },
-      "result": 160714192.20528913,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.935503326060476,
-      "notes": "P = F * g_0 * I_sp / 2"
-    },
-    {
-      "id": "612326be",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:06:03.165068",
-      "input_params": {
-        "exhaust_velocity": 92658.60459861443
-      },
-      "result": 9448.548138111835,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9778292054949101,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "508102e4",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-11T22:06:05.183912",
-      "input_params": {
-        "thrust": 6173.9130153772885,
-        "power": 640842645.044183,
-        "isp": 3967.463404491447
-      },
-      "result": 0.18741860956384745,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.9067362580264087,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
-    },
-    {
-      "id": "31ea74b5",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:06:07.189343",
-      "input_params": {
-        "mass_flow": 83.87993361765263,
-        "exhaust_velocity": 1368.1045825765123
-      },
-      "result": 114756.5215685242,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9606883869241886,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "59ab64c8",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:06:30.315409",
-      "input_params": {
-        "exhaust_velocity": 61811.29254336515
-      },
-      "result": 6302.9977151591165,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9528231485400149,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "14813645",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:06:32.320060",
-      "input_params": {
-        "mass_flow": 49.10414290293174,
-        "exhaust_velocity": 29175.55889938344
-      },
-      "result": 1432640.8134682262,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9774438450096707,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "74ff5fd0",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:06:34.325072",
-      "input_params": {
-        "exhaust_velocity": 26879.462815952607
-      },
-      "result": 2740.9424029564234,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9885282537840978,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "dd0d3727",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:06:36.335254",
-      "input_params": {
-        "mass_flow": 12.052350937332417,
-        "exhaust_velocity": 27083.796856614
-      },
-      "result": 326423.4244313325,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9682927985642628,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "79f85b52",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:06:38.355724",
-      "input_params": {
-        "mass_flow": 70.56986655143453,
-        "exhaust_velocity": 37307.075519931896
-      },
-      "result": 2632755.340865884,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9863279792025412,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "fc217ce6",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:06:40.361511",
-      "input_params": {
-        "exhaust_velocity": 24197.129309230593
-      },
-      "result": 2467.4205064145854,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9837237479506432,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "6e4f4d60",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:06:42.369001",
-      "input_params": {
-        "exhaust_velocity": 71295.99377327146
-      },
-      "result": 7270.168077097833,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9649314495708777,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "d2310665",
-      "calculation_type": "thrust",
-      "timestamp": "2026-07-11T22:14:15.284082",
-      "input_params": {
-        "mass_flow": 24.922446500868357,
-        "exhaust_velocity": 38427.63992493948
-      },
-      "result": 957710.8001839372,
-      "units": "N",
-      "precision": 10,
-      "confidence": 0.9823240003749616,
-      "notes": "F = ṁ * v_e"
-    },
-    {
-      "id": "4a787488",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-11T22:15:02.003339",
-      "input_params": {
-        "thrust": 1668.4109462190386,
-        "power": 426562520.4940344,
-        "isp": 2171.6427306485066
-      },
-      "result": 0.041648502919672224,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.9399560740800883,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
-    },
-    {
-      "id": "9ab0cf7d",
-      "calculation_type": "efficiency",
-      "timestamp": "2026-07-11T22:15:04.011107",
-      "input_params": {
-        "thrust": 2074.9537280456016,
-        "power": 920394637.6719191,
-        "isp": 2932.540679156291
-      },
-      "result": 0.032416719392184545,
-      "units": "dimensionless",
-      "precision": 10,
-      "confidence": 0.9092316881013918,
-      "notes": "η = (F * g_0 * I_sp) / (2 * P)"
-    },
-    {
-      "id": "8f1090a8",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:15:06.015750",
-      "input_params": {
-        "exhaust_velocity": 24451.617572439376
-      },
-      "result": 2493.3710872152446,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9666518031393454,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "27119f24",
-      "calculation_type": "specific_impulse",
-      "timestamp": "2026-07-11T22:15:08.020463",
-      "input_params": {
-        "exhaust_velocity": 26229.82387758329
-      },
-      "result": 2674.6976671527273,
-      "units": "s",
-      "precision": 10,
-      "confidence": 0.9595899952158564,
-      "notes": "I_sp = v_e / g_0"
-    },
-    {
-      "id": "63a590de",
-      "calculation_type": "power",
-      "timestamp": "2026-07-11T22:15:10.039600",
-      "input_params": {
-        "thrust": 4148.111438455598,
-        "isp": 2043.303516187382
-      },
-      "result": 41559850.57343048,
-      "units": "W",
-      "precision": 10,
-      "confidence": 0.9293954270295884,
-      "notes": "P = F * g_0 * I_sp / 2"
+      "result": 1.1333,
+      "units": "коэфф.",
+      "description": "",
+      "timestamp": "2026-07-14T20:24:50.291463"
     }
   ],
-  "updated": "2026-07-11T22:15:10.042605"
+  "updated": "2026-07-14T20:24:52.298639"
 }

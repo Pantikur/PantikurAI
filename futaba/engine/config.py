@@ -1,5 +1,5 @@
 """
-Конфигурация системы Нобука.
+Конфигурация системы Футаба — управление, правовые исследования, саморазвитие.
 """
 
 from __future__ import annotations
@@ -9,86 +9,109 @@ from typing import Optional
 
 
 @dataclass
-class NobukaConfig:
+class FutabaConfig:
     """
-    Конфигурация системы улучшений Нобука.
+    Конфигурация системы управления и правовых исследований Футаба.
     """
 
     # === Идентификация ===
-    name: str = "Нобука"
-    version: str = "v1.0.0"
+    name: str = "Футаба"
+    version: str = "v2.0.0"
+    role: str = "Главный заместитель Разработчика"  # Главзам
 
     # === Пути к документам ===
-    base_path: Path = Path("nobuka")
-    constitution_path: Path = field(default_factory=lambda: Path("nobuka/constitution.md"))
-    laws_path: Path = field(default_factory=lambda: Path("nobuka/laws/01-core-laws.md"))
-    ethics_path: Path = field(default_factory=lambda: Path("nobuka/codes/01-ethics-code.md"))
+    base_path: Path = Path("futaba")
+    constitution_path: Path = field(default_factory=lambda: Path("futaba/constitution.md"))
+    laws_path: Path = field(default_factory=lambda: Path("futaba/laws/01-core-laws.md"))
+    ethics_path: Path = field(default_factory=lambda: Path("futaba/codes/01-ethics-code.md"))
 
     # === Состояние и логи ===
-    state_dir: Path = field(default_factory=lambda: Path("nobuka/engine/state"))
-    log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka.log"))
-    state_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka_state.json"))
-    improvements_log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/improvements.json"))
-    test_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/test_report.json"))
-    analysis_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/analysis_report.json"))
+    state_dir: Path = field(default_factory=lambda: Path("futaba/engine/state"))
+    log_path: Path = field(default_factory=lambda: Path("futaba/engine/state/futaba.log"))
+    state_path: Path = field(default_factory=lambda: Path("futaba/engine/state/futaba_state.json"))
+    knowledge_journal_path: Path = field(default_factory=lambda: Path("futaba/engine/state/knowledge_journal.json"))
+    character_path: Path = field(default_factory=lambda: Path("futaba/engine/state/my_character.yaml"))
+    reports_path: Path = field(default_factory=lambda: Path("futaba/engine/state/reports.json"))
+    legal_documents_path: Path = field(default_factory=lambda: Path("futaba/engine/state/legal_documents.json"))
 
     # === Циклы работы ===
-    cycle_interval: float = 10.0          # секунды между циклами улучшений
-    analysis_interval: int = 5            # каждые N циклов запускать анализ проекта
+    cycle_interval: float = 10.0          # секунды между циклами управления
+    development_interval: int = 3         # каждые N циклов — саморазвитие
+    legal_interval: int = 5               # каждые N циклов — правовые исследования
+    web_interval: int = 3                 # каждые N циклов — интернет-поиск
+    report_interval: int = 10             # каждые N циклов — отчёт
     max_cycles: Optional[int] = None      # None = бесконечно, int = демо-режим
 
     # === Автономность ===
-    max_autonomy_level: str = "L3"        # L0-L4 (см. протокол саморазвития)
+    max_autonomy_level: str = "L2"        # L0-L4 (см. протокол управления)
     require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
 
     # === Интернет ===
-    web_search_enabled: bool = True       # доступ к интернету
-    web_search_interval: int = 5          # каждые N циклов веб-поиск
-    max_search_results: int = 10          # максимум результатов поиска
-    research_databases: list[str] = field(default_factory=lambda: [
-        "code_quality",       # Качество кода
+    web_search_enabled: bool = True       # доступ к интернету для саморазвития
+    web_search_interval: int = 3          # каждые N циклов веб-поиск
+    max_search_results: int = 15          # максимум результатов поиска
+    research_topics: list[str] = field(default_factory=lambda: [
+        "legal_ai",           # Правовое регулирование ИИ
+        "copyright_law",      # Авторское право
+        "project_management", # Управление проектами
         "best_practices",     # Лучшие практики
-        "refactoring",        # Рефакторинг
-        "testing_strategies", # Стратегии тестирования
+        "self_development",   # Саморазвитие
+        "leadership",         # Лидерство и управление
     ])
 
-    # === Анализ кода ===
-    project_root: Path = field(default_factory=lambda: Path("."))
-    scan_directories: list[str] = field(default_factory=lambda: [
-        ".",           # корневая папка (все .py файлы)
-        "hanako",      # Ханако — гравитация
-        "fuyuki",      # Фуюки — электричество
-        "lucy",        # Люси — двигатели
-        "futaba",      # Футаба — управление
-        "shiori",      # Шиори — защита
-        "nobuka",      # Нобука — улучшения
-        "akva",        # Аква — математика, физика
-        "latislane",   # Latislane — проектирование тел
-        "celesta",     # Селеста — интимная жизнь
-        "naoto",       # Наото — визуальный архитектор
-        "yu",          # Юи — сознание, перенос
-        "scientists_network",  # Scientists Network
+    # === Правовые исследования ===
+    legal_research_enabled: bool = True   # изучение всех отраслей права
+    jurisdictions: list[str] = field(default_factory=lambda: [
+        "russia",       # Российская Федерация
+        "eu",           # Европейский Союз
+        "us",           # США
+        "international", # Международное право
     ])
-    exclude_patterns: list[str] = field(default_factory=lambda: [
-        "__pycache__", "*.pyc", ".git", "node_modules", "venv",
-        "*.egg-info", "build", "dist", "*.egg",
-        "android-studio-plugin",  # Android-проект, не Python
+    law_branches_to_study: list[str] = field(default_factory=lambda: [
+        "constitutional",    # Конституционное
+        "civil",             # Гражданское
+        "criminal",          # Уголовное
+        "labor",             # Трудовое
+        "administrative",    # Административное
+        "family",            # Семейное
+        "tax",               # Налоговое
+        "corporate",         # Корпоративное
+        "environmental",     # Экологическое
+        "international",     # Международное
+        "financial",         # Финансовое
+        "information",       # Информационное
+        "social",            # Социальное
+        "ai_regulation",     # Регулирование ИИ
     ])
-    max_file_lines: int = 300
-    max_function_lines: int = 50
-    max_complexity: int = 10
-    min_test_coverage: float = 0.80
 
-    # === Тестирование ===
-    test_coverage_target: float = 0.90
-    max_test_duration_seconds: float = 120.0
-    generate_tests_for_new_code: bool = True
-    run_regression_on_change: bool = True
+    # === Саморазвитие ===
+    self_development_enabled: bool = True  # автономное развитие
+    knowledge_levels: list[str] = field(default_factory=lambda: [
+        "novice",      # L1 — Базовые знания
+        "intermediate", # L2 — Уверенное владение
+        "advanced",    # L3 — Глубокое понимание
+        "expert",      # L4 — Экспертный уровень
+        "master",      # L5 — Полное владение
+    ])
+    current_knowledge_level: str = "intermediate"
+    learning_rate: float = 0.1            # скорость изучения нового
+    max_topics_studied: int = 1000        # максимум тем в журнале
 
-    # === Бенчмарки ===
-    benchmark_iterations: int = 100
-    benchmark_min_rounds: int = 3
-    performance_regression_threshold: float = 5.0  # %
+    # === Управление девочками ===
+    girls_to_manage: list[str] = field(default_factory=lambda: [
+        "nobuka",       # Нобука — улучшения
+        "shiori",       # Шиори — защита
+        "hanako",       # Ханако — гравитация
+        "fuyuki",       # Фуюки — электричество
+        "lucy",         # Люси — двигатели
+        "akva",         # Аква — математика, физика
+        "latislane",    # Latislane — проектирование
+        "celesta",      # Селеста — интимная жизнь
+        "naoto",        # Наото — визуальный архитектор
+        "yu",           # Юи — сознание
+    ])
+    communication_interval: int = 5       # каждые N циклов — общение с девочками
+    report_to_developer: bool = True      # отчёты Разработчику
 
     # === Логирование ===
     log_level: str = "INFO"               # DEBUG, INFO, WARNING, ERROR
@@ -99,36 +122,34 @@ class NobukaConfig:
     random_seed: Optional[int] = None     # None = случайный, int = для воспроизводимости
     enable_deterministic_mode: bool = False
 
+    # === Полигон испытаний ===
+    trial_interval: int = 10              # каждые N циклов запускать полигон
+    trial_worlds_per_batch: int = 3       # миров заbatch
+    trial_versions_to_test: int = 5       # версий правления на мир
+    trial_epochs_per_world: int = 20      # эпох на мир
+
     # === Безопасность ===
     hard_stop_on_constitution_violation: bool = True
     max_change_risk_threshold: float = 0.05
     auto_rollback_on_failure: bool = True
-
-    # === Взаимодействие с сёстрами ===
-    notify_futaba_on_logic_change: bool = True
-    notify_shiori_on_security_change: bool = True
-    scan_with_shiori_before_apply: bool = True
 
     def __post_init__(self):
         """Создать директории после инициализации."""
         self.state_dir.mkdir(parents=True, exist_ok=True)
 
     @classmethod
-    def default(cls) -> NobukaConfig:
+    def default(cls) -> FutabaConfig:
         """Конфигурация по умолчанию."""
         return cls()
 
     @classmethod
-    def demo(cls) -> NobukaConfig:
+    def demo(cls) -> FutabaConfig:
         """Демо-конфигурация для тестирования."""
         return cls(
             max_cycles=5,
             cycle_interval=2.0,
-            analysis_interval=2,
+            development_interval=1,
+            legal_interval=1,
+            web_interval=1,
             log_level="DEBUG",
-            scan_directories=[
-                ".", "hanako", "fuyuki", "lucy", "futaba",
-                "shiori", "nobuka", "akva", "latislane",
-                "celesta", "naoto", "yu", "scientists_network",
-            ],
         )

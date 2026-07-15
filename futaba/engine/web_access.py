@@ -1,12 +1,12 @@
 """
-Веб-доступ Нобуки — поиск информации для саморазвития.
+Веб-доступ Футабы — поиск информации для саморазвития и правовых исследований.
 
 Реализует:
-  - Поиск лучших практик программирования
-  - Анализ обновлений зависимостей
-  - Поиск паттернов улучшений
-  - Мониторинг безопасности (CVE)
-  - Автоматическое обучение на открытых источниках
+  - Поиск правовой информации в интернете
+  - Мониторинг изменений в законодательстве
+  - Изучение лучших практик управления
+  - Поиск обучающих материалов
+  - Исследование новых технологий ИИ
 """
 
 from __future__ import annotations
@@ -24,24 +24,24 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class NobukaWebAccess:
+class FutabaWebAccess:
     """
-    Веб-доступ для Нобуки — поиск информации для улучшений.
+    Веб-доступ для Футабы — поиск информации для саморазвития и правовых исследований.
     """
 
     def __init__(self, config: Any):
         self.config = config
-        self.logger = logging.getLogger("NobukaWebAccess")
+        self.logger = logging.getLogger("FutabaWebAccess")
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         })
-        
+
         # Кэш найденной информации
         self.web_cache: Dict[str, str] = {}
-        self.cache_file = Path("nobuka/engine/state/web_cache.json")
-        
+        self.cache_file = Path("futaba/engine/state/web_cache.json")
+
         # Загружаем кэш
         self._load_cache()
 
@@ -63,591 +63,411 @@ class NobukaWebAccess:
             self.cache_file.parent.mkdir(parents=True, exist_ok=True)
             with open(self.cache_file, "w", encoding="utf-8") as f:
                 json.dump({"cache": self.web_cache, "updated": datetime.now().isoformat()},
-                         f, ensure_ascii=False, indent=2)
+                          f, ensure_ascii=False, indent=2)
             self.logger.debug("💾 Веб-кэш сохранён")
         except Exception as e:
             self.logger.error(f"❌ Ошибка сохранения кэша: {e}")
 
     # ================================================================
-    #  ПОИСК ЛУЧШИХ ПРАКТИК
+    #  ПОИСК ПРАВОВОЙ ИНФОРМАЦИИ
     # ================================================================
 
-    def search_best_practices(self, topic: str, max_results: int = 5) -> List[Dict[str, str]]:
+    def search_legal_info(self, topic: str, jurisdiction: str = "russia",
+                          max_results: int = 5) -> List[Dict[str, str]]:
         """
-        Ищет лучшие практики по теме программирования.
-        
+        Ищет правовую информацию по теме.
+
         Args:
-            topic: Тема поиска (например, "python refactoring patterns")
+            topic: Тема поиска (например, "AI regulation", "copyright")
+            jurisdiction: Юрисдикция (russia, eu, us, international)
             max_results: Максимум результатов
-            
+
         Returns:
-            Список найденных практик с описанием и источником
+            Список найденной правовой информации
         """
         results = []
-        
+
         # Проверяем кэш
-        cache_key = f"best_practices:{topic}"
+        cache_key = f"legal:{topic}:{jurisdiction}"
         if cache_key in self.web_cache:
             try:
                 return json.loads(self.web_cache[cache_key])
             except:
                 pass
-        
-        # Симуляция поиска (в реальной системе — API)
-        self.logger.info(f"🔍 Поиск лучших практик: {topic}")
-        
-        practices = self._simulate_best_practices_search(topic)
-        
-        # Сохраняем в кэш
-        self.web_cache[cache_key] = json.dumps(practices[:max_results], ensure_ascii=False)
-        self._save_cache()
-        
-        return practices[:max_results]
 
-    def _simulate_best_practices_search(self, topic: str) -> List[Dict[str, str]]:
-        """Симулирует поиск лучших практик (в реальной системе — реальный поиск)."""
-        patterns = {
-            "refactoring": [
-                {
-                    "title": "Extract Method Pattern",
-                    "description": "Выделение повторяющегося кода в отдельные функции",
-                    "source": "Refactoring.guru",
-                    "url": "https://refactoring.guru/refactoring/techniques/extract-method"
-                },
-                {
-                    "title": "Replace Nested Conditional with Guard Clauses",
-                    "description": "Использование guard clauses вместо вложенных условий",
-                    "source": "Clean Code",
-                    "url": "https://refactoring.guru/refactoring/techniques/guard-clauses"
-                },
-                {
-                    "title": "Replace Magic Number with Symbolic Constant",
-                    "description": "Замена магических чисел на именованные константы",
-                    "source": "Refactoring.guru",
-                    "url": "https://refactoring.guru/refactoring/techniques/replace-magic-number"
-                }
-            ],
-            "performance": [
-                {
-                    "title": "Memoization for Expensive Functions",
-                    "description": "Кэширование результатов дорогих вычислений",
-                    "source": "Python Docs",
-                    "url": "https://docs.python.org/3/library/functools.html#functools.lru_cache"
-                },
-                {
-                    "title": "Use Generators for Large Datasets",
-                    "description": "Генераторы вместо списков для экономии памяти",
-                    "source": "Real Python",
-                    "url": "https://realpython.com/intro-to-python-generators/"
-                }
-            ],
-            "testing": [
-                {
-                    "title": "Arrange-Act-Assert Pattern",
-                    "description": "Структура тестов: подготовка, действие, проверка",
-                    "source": "Test-Driven Development",
-                    "url": "https://martinfowler.com/articles/practicalTDD.html"
-                },
-                {
-                    "title": "Property-Based Testing",
-                    "description": "Тестирование на основе свойств вместо конкретных примеров",
-                    "source": "Hypothesis Docs",
-                    "url": "https://hypothesis.readthedocs.io/"
-                }
-            ]
+        self.logger.info(f"⚖️ Поиск правовой информации: {topic} ({jurisdiction})")
+
+        results = self._simulate_legal_search(topic, jurisdiction)
+
+        # Сохраняем в кэш
+        self.web_cache[cache_key] = json.dumps(results[:max_results], ensure_ascii=False)
+        self._save_cache()
+
+        return results[:max_results]
+
+    def _simulate_legal_search(self, topic: str, jurisdiction: str) -> List[Dict[str, str]]:
+        """Симулирует поиск правовой информации (в реальной системе — реальный поиск)."""
+
+        legal_results = {
+            "ai_regulation": {
+                "russia": [
+                    {
+                        "title": "Федеральный закон №264-ФЗ «Об ИИ»",
+                        "description": "Регулирование искусственного интеллекта в Российской Федерации",
+                        "source": "consultant.ru",
+                        "url": "https://www.consultant.ru/document/ai_law_rf",
+                        "date": "2025-01-01",
+                        "importance": "critical"
+                    },
+                    {
+                        "title": "Национальная стратегия развития ИИ",
+                        "description": "Стратегия развития ИИ в РФ до 2030 года",
+                        "source": "government.ru",
+                        "url": "https://government.ru/docs/ai_strategy",
+                        "date": "2024-09-01",
+                        "importance": "high"
+                    }
+                ],
+                "eu": [
+                    {
+                        "title": "EU AI Act",
+                        "description": "Комплексное регулирование ИИ в Европейском Союзе",
+                        "source": "commission.europa.eu",
+                        "url": "https://commission.europa.eu/law/ai-act",
+                        "date": "2024-03-13",
+                        "importance": "critical"
+                    },
+                    {
+                        "title": "GDPR и ИИ",
+                        "description": "Взаимодействие GDPR и систем ИИ",
+                        "source": "eur-lex.europa.eu",
+                        "url": "https://eur-lex.europa.eu/gdpr-ai",
+                        "date": "2024-05-25",
+                        "importance": "high"
+                    }
+                ],
+                "us": [
+                    {
+                        "title": "Executive Order on AI (2023)",
+                        "description": "Исполнительный приказ о безопасном развитии ИИ",
+                        "source": "whitehouse.gov",
+                        "url": "https://whitehouse.gov/ai-order",
+                        "date": "2023-10-30",
+                        "importance": "high"
+                    }
+                ]
+            },
+            "copyright": {
+                "russia": [
+                    {
+                        "title": "Гражданский кодекс РФ, часть 4",
+                        "description": "Авторское право и смежные права в России",
+                        "source": "consultant.ru",
+                        "url": "https://www.consultant.ru/document/gk_part4",
+                        "date": "2024-01-01",
+                        "importance": "critical"
+                    }
+                ],
+                "eu": [
+                    {
+                        "title": "Copyright Directive 2019/790",
+                        "description": "Директива об авторском праве на едином цифровом рынке",
+                        "source": "eur-lex.europa.eu",
+                        "url": "https://eur-lex.europa.eu/copyright-directive",
+                        "date": "2019-04-17",
+                        "importance": "high"
+                    }
+                ]
+            }
         }
-        
-        # Выбираем паттерны в зависимости от темы
+
         topic_lower = topic.lower()
         results = []
-        for key, practices in patterns.items():
-            if key in topic_lower:
-                results.extend(practices)
-        
+
+        for key, jurisdictions_data in legal_results.items():
+            if key in topic_lower and jurisdiction in jurisdictions_data:
+                results.extend(jurisdictions_data[jurisdiction])
+
         if not results:
-            # Общий набор практик
-            results = random.sample(
-                [p for practices in patterns.values() for p in practices],
-                min(3, len(patterns))
-            )
-        
+            results = [
+                {
+                    "title": f"Информация по теме: {topic}",
+                    "description": f"Правовая информация по теме {topic} в юрисдикции {jurisdiction}",
+                    "source": "general_legal_database",
+                    "url": f"https://legal.example.com/{topic}",
+                    "date": datetime.now().strftime("%Y-%m-%d"),
+                    "importance": "medium"
+                }
+            ]
+
         return results
 
     # ================================================================
-    #  АНАЛИЗ ЗАВИСИМОСТЕЙ
+    #  МОНИТОРИНГ ИЗМЕНЕНИЙ В ЗАКОНОДАТЕЛЬСТВЕ
     # ================================================================
 
-    def check_dependency_updates(self, package: str) -> Optional[Dict[str, Any]]:
+    def monitor_legislation_changes(self, jurisdictions: Optional[List[str]] = None) -> List[Dict[str, Any]]:
         """
-        Проверяет обновления для пакета.
-        
+        Мониторит изменения в законодательстве.
+
         Args:
-            package: Имя пакета (например, "requests")
-            
+            jurisdictions: Список юрисдикций для мониторинга
+
         Returns:
-            Информация о доступных обновлениях
+            Список последних изменений
         """
-        cache_key = f"dependency:{package}"
+        if jurisdictions is None:
+            jurisdictions = self.config.jurisdictions
+
+        self.logger.info(f"📰 Мониторинг изменений в законодательстве: {jurisdictions}")
+
+        changes = self._fetch_legislation_changes(jurisdictions)
+        return changes
+
+    def _fetch_legislation_changes(self, jurisdictions: List[str]) -> List[Dict[str, Any]]:
+        """Получает последние изменения в законодательстве."""
+        changes = []
+
+        for jur in jurisdictions:
+            changes.append({
+                "id": f"CHANGE-{datetime.now().strftime('%Y%m%d')}-{jur}-001",
+                "type": "new_law",
+                "title": f"Новые требования к ИИ в {jur}",
+                "date": datetime.now().isoformat(),
+                "jurisdiction": jur,
+                "description": f"Обновление требований к ИИ в юрисдикции {jur}",
+                "impact": "high",
+                "compliance_deadline": "2025-12-31",
+                "source": f"{jur}.gov"
+            })
+
+        return changes
+
+    # ================================================================
+    #  ЛУЧШИЕ ПРАКТИКИ УПРАВЛЕНИЯ
+    # ================================================================
+
+    def search_management_best_practices(self, topic: str, max_results: int = 5) -> List[Dict[str, str]]:
+        """
+        Ищет лучшие практики управления.
+
+        Args:
+            topic: Тема поиска
+            max_results: Максимум результатов
+
+        Returns:
+            Список лучших практик
+        """
+        cache_key = f"management:{topic}"
         if cache_key in self.web_cache:
             try:
                 return json.loads(self.web_cache[cache_key])
             except:
                 pass
-        
-        self.logger.info(f"📦 Проверка обновлений: {package}")
-        
-        # Симуляция проверки PyPI
-        update_info = self._simulate_pypi_check(package)
-        
-        if update_info:
-            self.web_cache[cache_key] = json.dumps(update_info, ensure_ascii=False)
-            self._save_cache()
-        
-        return update_info
 
-    def _simulate_pypi_check(self, package: str) -> Optional[Dict[str, Any]]:
-        """Симулирует проверку PyPI."""
-        # В реальной системе — запрос к https://pypi.org/pypi/{package}/json
-        
-        packages_info = {
-            "requests": {
-                "current": "2.28.0",
-                "latest": "2.31.0",
-                "update_available": True,
-                "changelog_url": "https://github.com/psf/requests/releases",
-                "security_update": False
+        self.logger.info(f"📊 Поиск лучших практик управления: {topic}")
+
+        practices = self._simulate_management_search(topic)
+
+        self.web_cache[cache_key] = json.dumps(practices[:max_results], ensure_ascii=False)
+        self._save_cache()
+
+        return practices[:max_results]
+
+    def _simulate_management_search(self, topic: str) -> List[Dict[str, str]]:
+        """Симулирует поиск лучших практик управления."""
+
+        practices = [
+            {
+                "title": "Agile Project Management",
+                "description": "Гибкие методы управления проектами",
+                "source": "agilemanifesto.org",
+                "url": "https://agilemanifesto.org",
+                "category": "agile"
             },
-            "flask": {
-                "current": "2.2.0",
-                "latest": "3.0.0",
-                "update_available": True,
-                "changelog_url": "https://flask.palletsprojects.com/en/latest/changes/",
-                "security_update": True
+            {
+                "title": "Scrum Framework",
+                "description": "Фреймворк Scrum для управления продуктами",
+                "source": "scrum.org",
+                "url": "https://scrum.org",
+                "category": "scrum"
             },
-            "numpy": {
-                "current": "1.24.0",
-                "latest": "1.26.0",
-                "update_available": True,
-                "changelog_url": "https://numpy.org/doc/stable/release.html",
-                "security_update": False
+            {
+                "title": "OKR Goal Setting",
+                "description": "Цели и ключевые результаты (OKR)",
+                "source": "forbes.com",
+                "url": "https://forbes.com/okr-guide",
+                "category": "goals"
+            },
+            {
+                "title": "Team Communication Best Practices",
+                "description": "Лучшие практики коммуникации в командах",
+                "source": "harvard.edu",
+                "url": "https://harvard.edu/team-communication",
+                "category": "communication"
             }
-        }
-        
-        if package.lower() in packages_info:
-            return packages_info[package.lower()]
-        
-        # Случайная информация для неизвестных пакетов
-        if random.random() < 0.3:
-            return {
-                "current": "1.0.0",
-                "latest": f"1.{random.randint(1, 5)}.{random.randint(0, 9)}",
-                "update_available": True,
-                "changelog_url": f"https://pypi.org/project/{package}/",
-                "security_update": random.random() < 0.1
-            }
-        
-        return None
+        ]
+
+        return practices
 
     # ================================================================
-    #  МОНИТОРИНГ БЕЗОПАСНОСТИ
+    #  ОБУЧЕНИЕ И САМОРАЗВИТИЕ
     # ================================================================
 
-    def check_security_vulnerabilities(self, package: str) -> List[Dict[str, Any]]:
+    def find_learning_materials(self, topic: str, max_pages: int = 5) -> List[Dict[str, str]]:
         """
-        Проверяет уязвимости в пакете.
-        
-        Args:
-            package: Имя пакета
-            
-        Returns:
-            Список найденных уязвимостей
-        """
-        self.logger.info(f"🔒 Проверка уязвимостей: {package}")
-        
-        # В реальной системе — запрос к https://osv.dev/API или https://snyk.io/
-        
-        vulnerabilities = []
-        
-        # Симуляция проверки CVE
-        if random.random() < 0.2:
-            vulnerabilities.append({
-                "cve_id": f"CVE-2024-{random.randint(10000, 99999)}",
-                "severity": random.choice(["high", "medium", "low"]),
-                "description": "Обнаружена потенциальная уязвимость в пакете",
-                "fixed_in": f"{random.randint(1, 3)}.{random.randint(0, 9)}.{random.randint(0, 9)}",
-                "url": f"https://nvd.nist.gov/vuln/detail/CVE-2024-{random.randint(10000, 99999)}"
-            })
-        
-        return vulnerabilities
+        Находит обучающие материалы.
 
-    # ================================================================
-    #  ОБУЧЕНИЕ НА ОТКРЫТЫХ ИСТОЧНИКАХ
-    # ================================================================
-
-    def learn_from_tutorials(self, topic: str, max_pages: int = 3) -> List[Dict[str, str]]:
-        """
-        Извлекает знания из обучающих материалов.
-        
         Args:
             topic: Тема для изучения
-            max_pages: Максимум страниц для анализа
-            
+            max_pages: Максимум страниц
+
         Returns:
-            Список извлечённых знаний
+            Список обучающих материалов
         """
-        self.logger.info(f"📚 Обучение по теме: {topic}")
-        
-        knowledge = []
-        
-        # Симуляция анализа обучающих материалов
+        self.logger.info(f"📚 Поиск обучающих материалов: {topic}")
+
+        materials = []
+
         for i in range(max_pages):
-            knowledge.append({
+            materials.append({
                 "topic": topic,
                 "page": i + 1,
-                "key_points": self._extract_key_points(topic, i),
-                "code_examples": self._generate_code_example(topic, i),
-                "source": f"https://example.com/tutorial-{topic}-{i+1}"
+                "title": f"Материал по {topic} — часть {i+1}",
+                "key_points": [
+                    f"Ключевой пункт {j+1} по теме {topic}"
+                    for j in range(3)
+                ],
+                "source": f"https://learn.example.com/{topic}-{i+1}",
+                "difficulty": random.choice(["beginner", "intermediate", "advanced"])
             })
-        
-        return knowledge
 
-    def _extract_key_points(self, topic: str, page_num: int) -> List[str]:
-        """Извлекает ключевые пункты из материала."""
-        key_points_map = {
-            "refactoring": [
-                "Выделяйте повторяющийся код в функции",
-                "Используйте guard clauses вместо вложенных условий",
-                "Переименовывайте переменные для ясности",
-                "Уменьшайте цикломатическую сложность",
-                "Применяйте паттерны проектирования"
-            ],
-            "testing": [
-                "Пишите тесты до или вместе с кодом",
-                "Используйте Arrange-Act-Assert",
-                "Тестируйте граничные случаи",
-                "Мокайте внешние зависимости",
-                "Поддерживайте высокое покрытие"
-            ],
-            "performance": [
-                "Измеряйте перед оптимизацией",
-                "Используйте кэширование для дорогих вычислений",
-                "Применяйте генераторы для больших данных",
-                "Оптимизируйте алгоритмы (O-нотация)",
-                "Профилируйте для поиска узких мест"
-            ]
-        }
-        
-        points = key_points_map.get(topic.lower(), [
-            "Изучите документацию",
-            "Следуйте best practices",
-            "Тестируйте изменения",
-            "Документируйте код",
-            "Рефакторите регулярно"
-        ])
-        
-        return points[(page_num * 2) % len(points):(page_num * 2 + 2) % len(points)]
-
-    def _generate_code_example(self, topic: str, example_num: int) -> str:
-        """Генерирует пример кода."""
-        examples = {
-            "refactoring": '''
-# До: сложная функция
-def process_data(data):
-    result = []
-    for item in data:
-        if item.get("active"):
-            if item.get("value") > 0:
-                result.append(item["value"] * 2)
-    return result
-
-# После: рефакторинг
-def filter_active(data):
-    return [item for item in data if item.get("active")]
-
-def double_values(data):
-    return [item["value"] * 2 for item in data if item.get("value", 0) > 0]
-
-def process_data(data):
-    return double_values(filter_active(data))
-''',
-            "testing": '''
-def test_process_data():
-    """Тест функции обработки данных."""
-    # Arrange
-    test_data = [
-        {"active": True, "value": 5},
-        {"active": False, "value": 10},
-        {"active": True, "value": -3},
-    ]
-    
-    # Act
-    result = process_data(test_data)
-    
-    # Assert
-    assert result == [10], f"Ожидалось [10], получено {result}"
-    assert len(result) == 1, "Должна быть только одна запись"
-
-def test_process_data_empty():
-    """Тест с пустым входом."""
-    assert process_data([]) == []
-''',
-            "performance": '''
-from functools import lru_cache
-
-# До: медленное вычисление
-def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
-
-# После: с кэшированием
-@lru_cache(maxsize=None)
-def fibonacci_fast(n):
-    if n <= 1:
-        return n
-    return fibonacci_fast(n-1) + fibonacci_fast(n-2)
-
-# Использование генератора для экономии памяти
-def large_sequence(n):
-    for i in range(n):
-        yield i ** 2
-'''
-        }
-        
-        return examples.get(topic.lower(), "# Пример кода для темы")
+        return materials
 
     # ================================================================
-    #  ПОИСК АНТИПАТТЕРНОВ
+    #  ИССЛЕДОВАНИЕ ТЕХНОЛОГИЙ ИИ
     # ================================================================
 
-    def find_antipatterns_in_code(self, code: str) -> List[Dict[str, str]]:
+    def research_ai_technologies(self, topic: str) -> List[Dict[str, Any]]:
         """
-        Ищет антипаттерны в коде.
-        
+        Исследует новые технологии ИИ.
+
         Args:
-            code: Исходный код для анализа
-            
+            topic: Тема исследования
+
         Returns:
-            Список найденных антипаттернов
+            Список исследований
         """
-        self.logger.info("🔍 Поиск антипаттернов в коде")
-        
-        antipatterns = []
-        
-        # Проверка на магические числа
-        if re.search(r'\b\d{2,}\b', code):
-            antipatterns.append({
-                "type": "magic_number",
-                "description": "Обнаружены магические числа. Используйте константы.",
-                "severity": "low",
-                "fix": "Замените числа на именованные константы"
-            })
-        
-        # Проверка на длинные функции
-        if re.search(r'def\s+\w+.*:\n(?:    .*\n){50,}', code):
-            antipatterns.append({
-                "type": "long_function",
-                "description": "Функция слишком длинная (>50 строк)",
-                "severity": "medium",
-                "fix": "Разбейте функцию на меньшие"
-            })
-        
-        # Проверка на глубокие вложенности
-        if re.search(r'(?:    ){5,}', code):
-            antipatterns.append({
-                "type": "deep_nesting",
-                "description": "Слишком глубокая вложенность (>4 уровня)",
-                "severity": "medium",
-                "fix": "Используйте guard clauses или извлечение функций"
-            })
-        
-        # Проверка на глобальные переменные
-        if re.search(r'^\s*global\s+', code, re.MULTILINE):
-            antipatterns.append({
-                "type": "global_state",
-                "description": "Использование глобальных переменных",
-                "severity": "high",
-                "fix": "Используйте передачу параметров или классы"
-            })
-        
-        # Проверка на except Exception
-        if re.search(r'except\s+Exception\s*:', code):
-            antipatterns.append({
-                "type": "broad_except",
-                "description": "Перехват всех исключений",
-                "severity": "medium",
-                "fix": "Перехватывайте конкретные типы исключений"
-            })
-        
-        return antipatterns
+        self.logger.info(f"🤖 Исследование технологий ИИ: {topic}")
+
+        research = []
+
+        research.append({
+            "topic": topic,
+            "date": datetime.now().isoformat(),
+            "findings": [
+                f"Новые разработки в области {topic}",
+                f"Применение {topic} в правовых исследованиях",
+                f"Влияние {topic} на управление проектами"
+            ],
+            "sources": [
+                "arxiv.org",
+                "aclanthology.org",
+                "paperswithcode.com"
+            ],
+            "relevance": random.uniform(0.5, 1.0)
+        })
+
+        return research
 
     # ================================================================
-    #  АНАЛИЗ ПРОЕКТА
-    # ================================================================
-
-    def analyze_project_trends(self) -> Dict[str, Any]:
-        """
-        Анализирует тренды в проекте на основе открытых источников.
-        
-        Returns:
-            Сводка трендов и рекомендаций
-        """
-        self.logger.info("📊 Анализ трендов проекта")
-        
-        trends = {
-            "python_tips": self._get_python_tips(),
-            "security_updates": self._get_security_updates(),
-            "performance_tips": self._get_performance_tips(),
-            "architecture_patterns": self._get_architecture_patterns()
-        }
-        
-        return trends
-
-    def _get_python_tips(self) -> List[str]:
-        """Получает советы по Python."""
-        return [
-            "Используйте type hints для лучшей читаемости",
-            "Применяйте context managers для работы с ресурсами",
-            "Используйте f-strings вместо format()",
-            "Применяйте list comprehensions вместо map/filter",
-            "Используйте dataclasses для простых классов данных"
-        ]
-
-    def _get_security_updates(self) -> List[Dict[str, str]]:
-        """Получает обновления безопасности."""
-        return [
-            {
-                "title": "Проверяйте зависимости на уязвимости",
-                "action": "Используйте pip-audit или safety",
-                "priority": "high"
-            },
-            {
-                "title": "Обновляйте зависимости регулярно",
-                "action": "Используйте dependabot или renovate",
-                "priority": "medium"
-            }
-        ]
-
-    def _get_performance_tips(self) -> List[str]:
-        """Получает советы по производительности."""
-        return [
-            "Профилируйте код перед оптимизацией",
-            "Используйте кэширование (@lru_cache)",
-            "Применяйте генераторы для больших данных",
-            "Используйте векторизованные операции (numpy)",
-            "Рассмотрите async для I/O-операций"
-        ]
-
-    def _get_architecture_patterns(self) -> List[str]:
-        """Получает архитектурные паттерны."""
-        return [
-            "Dependency Injection для тестируемости",
-            "Repository Pattern для работы с данными",
-            "Observer Pattern для событий",
-            "Strategy Pattern для заменяемых алгоритмов",
-            "Factory Pattern для создания объектов"
-        ]
-
-    # ================================================================
-    #  АВТОМАТИЧЕСКОЕ УЛУЧШЕНИЕ
+    #  ПРЕДЛОЖЕНИЯ ПО УЛУЧШЕНИЮ
     # ================================================================
 
     def propose_improvements_from_web(self) -> List[Dict[str, Any]]:
         """
         Предлагает улучшения на основе веб-поиска.
-        
+
         Returns:
             Список предложений по улучшению
         """
         self.logger.info("🌐 Генерация предложений из веб-поиска")
-        
+
         improvements = []
-        
-        # 1. Поиск лучших практик
-        best_practices = self.search_best_practices("python refactoring patterns")
-        for practice in best_practices:
+
+        # 1. Правовые улучшения
+        legal_info = self.search_legal_info("ai regulation", "russia")
+        for info in legal_info:
             improvements.append({
-                "type": "best_practice",
+                "type": "legal_update",
+                "title": info["title"],
+                "description": info["description"],
+                "source": info["source"],
+                "url": info.get("url", ""),
+                "confidence": random.uniform(0.7, 0.95)
+            })
+
+        # 2. Управленческие улучшения
+        practices = self.search_management_best_practices("project management")
+        for practice in practices:
+            improvements.append({
+                "type": "management_practice",
                 "title": practice["title"],
                 "description": practice["description"],
                 "source": practice["source"],
                 "url": practice.get("url", ""),
-                "confidence": random.uniform(0.7, 0.95)
+                "confidence": random.uniform(0.6, 0.9)
             })
-        
-        # 2. Проверка зависимостей
-        for package in ["requests", "flask", "numpy"]:
-            update = self.check_dependency_updates(package)
-            if update and update.get("update_available"):
-                improvements.append({
-                    "type": "dependency_update",
-                    "package": package,
-                    "current": update["current"],
-                    "latest": update["latest"],
-                    "security_update": update.get("security_update", False),
-                    "confidence": 0.9
-                })
-            
-            # 3. Проверка уязвимостей
-            vulns = self.check_security_vulnerabilities(package)
-            for vuln in vulns:
-                improvements.append({
-                    "type": "security_fix",
-                    "cve": vuln["cve_id"],
-                    "severity": vuln["severity"],
-                    "description": vuln["description"],
-                    "fixed_in": vuln["fixed_in"],
-                    "confidence": 0.95
-                })
-        
-        # 4. Тренды
-        trends = self.analyze_project_trends()
-        for tip in trends["python_tips"]:
+
+        # 3. Технические улучшения
+        ai_research = self.research_ai_technologies("large language models")
+        for finding in ai_research:
             improvements.append({
-                "type": "code_improvement",
-                "description": tip,
-                "category": "python",
-                "confidence": 0.8
+                "type": "ai_technology",
+                "title": f"ИИ технология: {finding['topic']}",
+                "description": "; ".join(finding["findings"]),
+                "source": ", ".join(finding["sources"]),
+                "confidence": finding["relevance"]
             })
-        
+
         # Сортируем по уверенности
         improvements.sort(key=lambda x: x.get("confidence", 0), reverse=True)
-        
+
         return improvements
 
     # ================================================================
-    #  СБОР И АНАЛИЗ
+    #  ЗАГРУЗКА КОНТЕНТА
     # ================================================================
 
     def fetch_web_content(self, url: str) -> Optional[str]:
         """
         Загружает контент с веб-страницы.
-        
+
         Args:
             url: URL для загрузки
-            
+
         Returns:
             Текст страницы или None
         """
         try:
             response = self.session.get(url, timeout=10)
             response.raise_for_status()
-            
+
             soup = BeautifulSoup(response.text, "html.parser")
-            
+
             # Убираем скрипты и стили
             for script in soup(["script", "style"]):
                 script.decompose()
-            
+
             # Получаем текст
             text = soup.get_text(separator="\n")
-            
+
             # Убираем пустые строки
             lines = [line.strip() for line in text.splitlines() if line.strip()]
             text = "\n".join(lines)
-            
+
             return text[:5000]  # Ограничиваем длину
-            
+
         except Exception as e:
             self.logger.error(f"❌ Ошибка загрузки {url}: {e}")
             return None
@@ -655,60 +475,49 @@ def large_sequence(n):
     def analyze_found_improvements(self, improvements: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
         Анализирует найденные улучшения и фильтрует нерелевантные.
-        
+
         Args:
             improvements: Список найденных улучшений
-            
+
         Returns:
             Отфильтрованный список с оценками приоритета
         """
         analyzed = []
-        
+
         for improvement in improvements:
-            # Оценка приоритета
             priority = "low"
             if improvement.get("confidence", 0) > 0.9:
                 priority = "high"
             elif improvement.get("confidence", 0) > 0.7:
                 priority = "medium"
-            
-            # Оценка сложности
-            complexity = "low"
-            if improvement["type"] in ("dependency_update", "security_fix"):
-                complexity = "medium"
-            elif improvement["type"] == "best_practice":
-                complexity = "low"
-            
+
             analyzed.append({
                 **improvement,
                 "priority": priority,
-                "complexity": complexity,
                 "estimated_effort": self._estimate_effort(improvement),
                 "impact_score": self._calculate_impact(improvement)
             })
-        
-        # Сортируем по impact score
+
         analyzed.sort(key=lambda x: x.get("impact_score", 0), reverse=True)
-        
+
         return analyzed
 
     def _estimate_effort(self, improvement: Dict[str, Any]) -> str:
         """Оценивает усилия на реализацию."""
         effort_map = {
-            "best_practice": "low",
-            "code_improvement": "low",
-            "dependency_update": "medium",
-            "security_fix": "medium"
+            "legal_update": "medium",
+            "management_practice": "low",
+            "ai_technology": "high",
         }
         return effort_map.get(improvement["type"], "medium")
 
     def _calculate_impact(self, improvement: Dict[str, Any]) -> float:
         """Рассчитывает балл влияния."""
         base_score = improvement.get("confidence", 0.5) * 10
-        
-        if improvement["type"] == "security_fix":
-            base_score *= 1.5
-        elif improvement["type"] == "dependency_update":
+
+        if improvement["type"] == "legal_update":
+            base_score *= 1.3
+        elif improvement["type"] == "ai_technology":
             base_score *= 1.2
-        
+
         return round(base_score, 2)

@@ -1,30 +1,36 @@
 """
-Celesta — Система изучения интимной жизни и физиологии.
+Celesta — Система изучения интимной жизни.
 
 Изучает:
-- Прикосновения и их виды
-- Физиологию интимной жизни
-- Последствия избыточного интима
-- Последствия прерванного процесса
-- Все этапы развития
-- Различия по расам и типам существ
+- Solo: мастурбация, фетиши, игрушки, сены
+- Duo: все позы, оральные, анальные, мануальные
+- Trio: 2F1M, 2M1F, 3F, 3M
+- Quad: 2F2M, 3F1M, 3M1F
+- Group: оргии, групповая динамика
+- Same-Sex: M|M, F|F
+- Consent: FRIES, YESC, VERBAL
+- Coercion: для защиты и предупреждения
+- Физиология: гормоны, нервная система
+- Психология: привязанность, фант
+
+Знаю ВСЁ — от взгляда до оргии.
 """
 
 from .intimacy_modules import (
     IntimacyModule,
-    IntimacyStage,
     IntimacyCategory,
+    IntimacyLevel,
     create_default_modules
 )
 from .celesta_core import CelestaCore
 from .intimacy_learning import IntimacyLearningEngine
 
-__version__ = "0.1.0"
+__version__ = "2.0.0"
 __all__ = [
     "CelestaCore",
     "IntimacyModule",
-    "IntimacyStage",
     "IntimacyCategory",
+    "IntimacyLevel",
     "IntimacyLearningEngine",
     "create_default_modules",
 ]

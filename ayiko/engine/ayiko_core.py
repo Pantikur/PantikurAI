@@ -1,27 +1,32 @@
 """
-Ядро постоянной работы Айко — автономный цикл чтения книг и обучения модели.
+Ядро Айки — автономный творческий цикл обучения и создания.
 
 Реализует:
-  - Бесконечный цикл чтения книг из интернета и локальных файлов
-  - Извлечение знаний (факты, концепции, сюжеты)
-  - Создание обучающих пар (вопрос-ответ)
-  - Анализ стиля повествования
-  - Разбор лора (персонажи, мир, хронология)
-  - Извлечение сути и мысли книги
-  - Дообучение модели на новых данных
-  - Интернет-доступ для поиска книг
-  - Автономность — работа 24/7
-  - Самообучение — анализ качества и улучшение
-  - Наполнение контентом — постоянный приток знаний
+  - 🎨 Изучение пиксель-арта от 16x16 до 32K
+  - 📐 Освоение технической графики от наброска до сборного чертежа
+  - 🧊 Развитие 3D-моделирования от детали до механизма
+  - 📝 Написание пояснительных записок
+  - 🌐 Выход в интернет за учебными материалами
+  - 🔄 Автономная работа 24/7
+  - 📈 Повышение уровня знаний (1-10)
+  - 🤝 Взаимодействие с сёстрами
+  - 📊 Написание отчётов
+  - 🔮 Формирование и укрепление характера
 
 Взаимодействие с сёстрами:
-  - Нобука — улучшение кода обучения
-  - Наото — визуализация лора и персонажей
-  - Юи — знания для переноса сознания
-  - Селеста — биологические знания
-  - Аква — математические концепции
+  - Футаба — управление и планирование
+  - Нобука — улучшения и оптимизация
+  - Аква — математика и расчёты
+  - Селеста — биология и анатомия
+  - Ханако — творчество и вдохновение
+  - Люси — обучение и педагогика
+  - Фуюки — исследования
+  - Латислейн — логика
+  - Наото — внимание к деталям
+  - Шиори — защита и безопасность
 """
 
+from scientists_network.character_system import CharacterSystem
 from __future__ import annotations
 import json
 import logging
@@ -32,44 +37,45 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, Dict, List
 
 from ayiko.engine.config import AyikoConfig
 from ayiko.engine.models import (
     AyikoState,
-    BookMetadata,
-    BookSummary,
-    BookThought,
+    PixelArtProject,
+    TechnicalDrawingProject,
+    Model3DProject,
+    Report,
     KnowledgeCategory,
     KnowledgeEntry,
-    LoreEntry,
-    StyleEntry,
-    TrainingPair,
+    LevelProgress,
 )
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
     _HAS_NETWORK = True
 except Exception:
-    get_network = None  # type: ignore
-    RequestType = None  # type: ignore
-    RequestPriority = None  # type: ignore
+    get_network = None
+    RequestType = None
+    RequestPriority = None
     _HAS_NETWORK = False
 
 
 class AyikoCore:
     """
-    Автономное ядро Айко — чтение книг и обучение модели.
+    Автономное ядро Айки — творческий цикл обучения и создания.
 
     Работает в бесконечном цикле:
-      1. 📖 Поиск и чтение книг (интернет + локальные файлы)
-      2. 💾 Извлечение обучающих пар (вопрос-ответ)
-      3. ✍️ Анализ стиля повествования (авторский почерк)
-      4. 🌍 Разбор лора (мир, персонажи, события)
-      5. 📚 Извлечение сути и мысли книги
-      6. 🚀 Дообучение модели на новых данных
-      7. 📈 Самообучение — анализ качества и улучшение
-      8. 💾 Сохранение состояния
+      1. 📊 Анализ текущего уровня и прогресса
+      2. 🎨 Пиксель-арт (от 16x16 до 32K)
+      3. 📐 Техническая графика (от наброска до чертежа)
+      4. 🧊 3D-моделирование (от детали до механизма)
+      5. 📝 Написание пояснительных записок
+      6. 🌐 Поиск материалов в интернете
+      7. 🤝 Взаимодействие с сёстрами
+      8. 📊 Написание отчётов
+      9. 📈 Повышение уровня
+     10. 💾 Сохранение состояния
     """
 
     def __init__(self, config: Optional[AyikoConfig] = None):
@@ -80,26 +86,35 @@ class AyikoCore:
         self.state = AyikoState.load_from_file(self.config.state_path)
         self.cycle_count = self.state.cycle_count
 
-        # Базы данных
+        # База знаний
         self.knowledge_base: list[KnowledgeEntry] = []
-        self.training_pairs: list[TrainingPair] = []
-        self.lore_db: list[LoreEntry] = []
-        self.style_db: list[StyleEntry] = []
-        self.books_metadata: dict[str, BookMetadata] = {}
-        self.books_summaries: dict[str, BookSummary] = {}
-        self.books_thoughts: list[BookThought] = []
+        self.projects_pixel_art: list[PixelArtProject] = []
+        self.projects_graphic: list[TechnicalDrawingProject] = []
+        self.projects_3d: list[Model3DProject] = []
+        self.reports: list[Report] = []
+        self.references: list[KnowledgeEntry] = []
+
+        # Прогресс по направлениям
+        self.progress = {
+            "pixel_art": LevelProgress.current_level(1),
+            "technical_graphic": LevelProgress.current_level(1),
+            "3d_modeling": LevelProgress.current_level(1),
+            "general": LevelProgress.current_level(1),
+        }
+
+        # Характер
+        self.character = self._load_character()
 
         # Метрики
         self.metrics = {
             "cycles_completed": 0,
-            "books_read": 0,
-            "chapters_processed": 0,
-            "training_pairs_generated": 0,
-            "knowledge_entries_saved": 0,
-            "lore_entries_saved": 0,
-            "style_entries_saved": 0,
-            "model_training_sessions": 0,
+            "pixel_art_projects": 0,
+            "graphic_projects": 0,
+            "3d_projects": 0,
+            "reports_written": 0,
             "internet_downloads": 0,
+            "sister_interactions": 0,
+            "knowledge_entries": 0,
             "self_improvements": 0,
         }
 
@@ -112,7 +127,7 @@ class AyikoCore:
         if _HAS_NETWORK and get_network is not None:
             try:
                 self.network = get_network()
-                self.logger.info("🔗 Подключена к Scientists Network — готова делиться знаниями")
+                self.logger.info("🔗 Подключена к Scientists Network")
             except Exception as e:
                 self.logger.warning(f"Не удалось подключиться к Scientists Network: {e}")
 
@@ -121,14 +136,12 @@ class AyikoCore:
         self._setup_signals()
 
         self.logger.info(f"Айко {self.current_version} инициализирована")
-        self.logger.info("📚 Расширенные возможности активированы:")
-        self.logger.info("   - Чтение книг из интернета и локальных источников")
-        self.logger.info("   - Сохранение обучающих пар")
-        self.logger.info("   - Анализ стиля повествования")
-        self.logger.info("   - Разбор лора")
-        self.logger.info("   - Извлечение сути и мысли книги")
-        self.logger.info("   - Дообучение модели")
-        self.logger.info("   - Автономность 24/7")
+        self.logger.info("🎨 Творческое ядро активировано:")
+        self.logger.info("   - Пиксель-арт от 16x16 до 32K")
+        self.logger.info("   - Техническая графика от наброска до чертежа")
+        self.logger.info("   - 3D-моделирование от детали до механизма")
+        self.logger.info("   - Автономная работа 24/7")
+        self.logger.info("   - Взаимодействие с сёстрами")
 
     # ================================================================
     #  ИНИЦИАЛИЗАЦИЯ
@@ -153,7 +166,6 @@ class AyikoCore:
             signal.signal(signal.SIGINT, self._signal_handler)
             signal.signal(signal.SIGTERM, self._signal_handler)
         except (ValueError, OSError):
-            # Не поддерживается на Windows
             pass
 
     def _signal_handler(self, signum, frame):
@@ -161,14 +173,28 @@ class AyikoCore:
         self.logger.info("🛑 Получен сигнал остановки")
         self._shutdown_requested = True
 
+    def _load_character(self) -> Dict:
+        """Загрузить характер из файла."""
+        char_path = Path(__file__).parent.parent / "my_character.yaml"
+        if char_path.exists():
+            try:
+                import yaml
+                with open(char_path, "r", encoding="utf-8") as f:
+                    data = yaml.safe_load(f)
+                    self.logger.info(f"🔮 Характер загружен: {data.get('my_character', {}).get('name', 'неизвестен')}")
+                    return data.get("my_character", {})
+            except Exception as e:
+                self.logger.warning(f"Не удалось загрузить характер: {e}")
+        return {}
+
     # ================================================================
     #  ОСНОВНОЙ ЦИКЛ
     # ================================================================
 
     def run(self):
-        """Запустить основной цикл работы Айко."""
+        """Запустить основной цикл работы Айки."""
         self.logger.info("=" * 60)
-        self.logger.info("📚 ЗАПУСК АВТОНОМНОГО ЯДРА АЙКО")
+        self.logger.info("🎨 ЗАПУСК ТВОРЧЕСКОГО ЯДРА АЙКО")
         self.logger.info("=" * 60)
 
         try:
@@ -177,7 +203,20 @@ class AyikoCore:
 
                 # Сохранение состояния периодически
                 if self.cycle_count % self.config.save_state_every_n_cycles == 0:
-                    self._save_state()
+                    
+        # Укрепление характера (периодически)
+        if self.total_cycles % 5 == 0:
+            strengthened = self.character.strengthen_strengths()
+            if strengthened > 0:
+                self.logger.info(f"Character strengthened: {strengthened} traits")
+
+        # Эволюция характера (периодически)
+        if self.total_cycles % 10 == 0:
+            evolved = self.character.evolve_traits()
+            if evolved:
+                self.logger.info("Character evolved")
+
+        self._save_state()
 
                 # Пауза между циклами
                 time.sleep(self.config.cycle_interval)
@@ -186,22 +225,46 @@ class AyikoCore:
 
         except Exception as e:
             self.logger.exception(f"Критическая ошибка в цикле: {e}")
-            self._save_state()
+            
+        # Укрепление характера (периодически)
+        if self.total_cycles % 5 == 0:
+            strengthened = self.character.strengthen_strengths()
+            if strengthened > 0:
+                self.logger.info(f"Character strengthened: {strengthened} traits")
+
+        # Эволюция характера (периодически)
+        if self.total_cycles % 10 == 0:
+            evolved = self.character.evolve_traits()
+            if evolved:
+                self.logger.info("Character evolved")
+
+        self._save_state()
             raise
 
         finally:
             self._final_report()
-            self._save_state()
+            
+        # Укрепление характера (периодически)
+        if self.total_cycles % 5 == 0:
+            strengthened = self.character.strengthen_strengths()
+            if strengthened > 0:
+                self.logger.info(f"Character strengthened: {strengthened} traits")
+
+        # Эволюция характера (периодически)
+        if self.total_cycles % 10 == 0:
+            evolved = self.character.evolve_traits()
+            if evolved:
+                self.logger.info("Character evolved")
+
+        self._save_state()
 
     def _should_stop(self) -> bool:
         """Проверить условия остановки."""
         if self._shutdown_requested:
             return True
-
         if self.config.max_cycles and self.cycle_count >= self.config.max_cycles:
             self.logger.info(f"Достигнут лимит циклов: {self.config.max_cycles}")
             return True
-
         return False
 
     def _cycle(self):
@@ -210,390 +273,281 @@ class AyikoCore:
         self.metrics["cycles_completed"] += 1
         self.logger.debug(f"=== ЦИКЛ {self.cycle_count} ===")
 
-        # 1. Чтение книг (локальные + интернет)
-        self._read_books()
+        # 1. Анализ текущего уровня
+        self._analyze_current_level()
 
-        # 2. Анализ стиля (периодически)
-        if self.cycle_count % 3 == 0 and self.config.enable_style_learning:
-            self._analyze_styles_batch()
+        # 2. Пиксель-арт (каждый цикл)
+        self._pixel_art_practice()
 
-        # 3. Разбор лора (периодически)
-        if self.cycle_count % 5 == 0 and self.config.enable_lore_extraction:
-            self._analyze_lore_batch()
+        # 3. Техническая графика (каждый 3-й цикл)
+        if self.cycle_count % 3 == 0:
+            self._technical_graphic_practice()
 
-        # 4. Извлечение сути и мысли (периодически)
-        if self.cycle_count % 7 == 0:
-            self._extract_summaries_and_thoughts()
+        # 4. 3D-моделирование (каждый 5-й цикл)
+        if self.cycle_count % 5 == 0:
+            self._3d_modeling_practice()
 
-        # 5. Обучение модели (периодически)
+        # 5. Написание пояснительных записок (каждый 2-й цикл)
+        if self.cycle_count % 2 == 0:
+            self._write_reports()
+
+        # 6. Интернет-поиск (каждый 7-й цикл)
+        if self.cycle_count % 7 == 0 and self.config.web_search_enabled:
+            self._search_internet()
+
+        # 7. Взаимодействие с сёстрами (каждый 10-й цикл)
         if self.cycle_count % 10 == 0:
-            self._train_model()
+            self._interact_with_sisters()
 
-        # 6. Самообучение и улучшение (периодически)
+        # 8. Самообучение и улучшение (каждый 20-й цикл)
         if self.cycle_count % 20 == 0:
             self._self_improve()
-
-        # 7. Обработка запросов от учёных
-        if self.cycle_count % 5 == 0:
-            self._handle_scientist_requests()
 
         self.logger.info(f"✅ Цикл {self.cycle_count} завершён")
 
     # ================================================================
-    #  ЧТЕНИЕ КНИГ
+    #  АНАЛИЗ УРОВНЯ
     # ================================================================
 
-    def _read_books(self):
-        """Прочитать книги из директории и интернета."""
-        # 1. Чтение локальных книг
-        books_dir = self.config.books_directory
-        if books_dir.exists():
-            local_books = self._find_local_books(books_dir)
-            for book_path in local_books[:5]:  # Лимит для демо
-                try:
-                    result = self._process_book(book_path)
-                    if result["status"] == "success":
-                        self.metrics["books_read"] += 1
-                        self.logger.info(
-                            f"✅ Книга обработана: {book_path.name} "
-                            f"(знаний: {result['knowledge_extracted']}, "
-                            f"пар: {result['pairs_generated']})"
-                        )
-                except Exception as e:
-                    self.logger.error(f"❌ Ошибка обработки книги {book_path}: {e}")
+    def _analyze_current_level(self):
+        """Анализ текущего уровня и прогресса."""
+        self.logger.info("📊 Анализ текущего уровня...")
 
-        # 2. Поиск книг в интернете (периодически)
-        if self.config.web_search_enabled and self.cycle_count % self.config.web_search_interval == 0:
-            self._search_and_download_books()
+        # Проверка прогресса по каждому направлению
+        for direction, prog in self.progress.items():
+            if prog.should_promote():
+                old_level = prog.current_level
+                prog.current_level += 1
+                self.logger.info(f"🎉 Повышение уровня {direction}: {old_level} → {prog.current_level}")
 
-    def _find_local_books(self, books_dir: Path) -> list[Path]:
-        """Найти локальные книги."""
-        books = []
-        for fmt in self.config.supported_formats:
-            books.extend(books_dir.rglob(f"*{fmt}"))
-        return books
+    # ================================================================
+    #  ПИКСЕЛЬ-АРТ
+    # ================================================================
 
-    def _process_book(self, book_path: Path) -> dict:
-        """Обработать одну книгу."""
-        self.logger.info(f"📖 Обработка книги: {book_path.name}")
+    def _pixel_art_practice(self):
+        """Практика пиксель-арта."""
+        self.logger.info("🎨 Практика пиксель-арта...")
 
-        # Загрузка текста
-        text = self._load_book_text(book_path)
-
-        if not text:
-            return {"status": "error", "message": "Не удалось прочитать книгу"}
-
-        # Извлечение знаний
-        knowledge = self._extract_knowledge(text, str(book_path))
-
-        # Создание обучающих пар
-        pairs = self._generate_training_pairs(knowledge)
-
-        # Анализ стиля
-        styles = []
-        if self.config.enable_style_learning:
-            styles = self._analyze_style(text)
-
-        # Разбор лора
-        lore = []
-        if self.config.enable_lore_extraction:
-            lore = self._extract_lore(text, str(book_path))
-
-        # Сохранение
-        self.knowledge_base.extend(knowledge)
-        self.training_pairs.extend(pairs)
-        self.style_db.extend(styles)
-        self.lore_db.extend(lore)
-
-        # Обновление метаданных
-        book_title = book_path.stem
-        if book_title not in self.books_metadata:
-            self.books_metadata[book_title] = BookMetadata(
-                title=book_title,
-                author="Unknown",
-                book_type="fiction",
-            )
-
-        metadata = self.books_metadata[book_title]
-        metadata.chapters_processed += 1
-        metadata.training_pairs_generated += len(pairs)
-        metadata.knowledge_entries += len(knowledge)
-        metadata.processing_status = "completed"
-
-        return {
-            "status": "success",
-            "book_path": str(book_path),
-            "knowledge_extracted": len(knowledge),
-            "pairs_generated": len(pairs),
-            "styles_analyzed": len(styles),
-            "lore_entries": len(lore),
+        level = self.progress["pixel_art"].current_level
+        size_map = {
+            1: "16x16",
+            2: "32x32",
+            3: "128x128",
+            4: "256x256",
+            5: "512x512",
+            6: "1024x1024",
+            7: "2048x2048",
+            8: "4096x4096",
+            9: "8192x8192",
+            10: "32768x32768",
         }
 
-    def _load_book_text(self, book_path: Path) -> str:
-        """Загрузить текст книги."""
-        suffix = book_path.suffix.lower()
+        size = size_map.get(level, "32x32")
+        self.logger.info(f"   Уровень: {level}, Размер: {size}")
 
-        if suffix in [".txt", ".md"]:
-            return book_path.read_text(encoding="utf-8", errors="ignore")
-        elif suffix == ".json":
-            data = json.loads(book_path.read_text(encoding="utf-8"))
-            return data.get("text", "")
-        else:
-            self.logger.warning(f"Формат {suffix} пока не поддерживается")
-            return ""
+        # Создание проекта пиксель-арта
+        project = PixelArtProject(
+            title=f"Пиксель-арт проект #{self.metrics['pixel_art_projects'] + 1}",
+            size=size,
+            level=level,
+            palette_size=random.randint(8, 64),
+            status="completed",
+        )
+        self.projects_pixel_art.append(project)
+        self.metrics["pixel_art_projects"] += 1
 
-    def _search_and_download_books(self):
-        """Поиск и скачивание книг из интернета."""
-        self.logger.info("🌐 Поиск книг в интернете...")
+        # Добавление в базу знаний
+        entry = KnowledgeEntry(
+            content=f"Пиксель-арт проект {size}: {project.title}",
+            category=KnowledgeCategory.ART.value,
+            source="ayiko_practice",
+            tags=["pixel_art", f"level_{level}"],
+            confidence=0.9,
+        )
+        self.knowledge_base.append(entry)
+        self.metrics["knowledge_entries"] += 1
 
-        # TODO: Интеграция с авто_book_learning.py
-        # from utils.auto_book_learning import AutoBookLearning
-        # controller = AutoBookLearning()
-        # controller.run_learning_cycle()
+    # ================================================================
+    #  ТЕХНИЧЕСКАЯ ГРАФИКА
+    # ================================================================
+
+    def _technical_graphic_practice(self):
+        """Практика технической графики."""
+        self.logger.info("📐 Практика технической графики...")
+
+        level = self.progress["technical_graphic"].current_level
+        type_map = {
+            1: "набросок",
+            2: "концепт-арт",
+            3: "чертёж (виды)",
+            4: "чертёж (разрезы)",
+            5: "сборный чертёж",
+            6: "сборный чертёж (сложный)",
+            7: "ГОСТ мастерство",
+            8: "инновационный чертёж",
+            9: "мастер чертежей",
+            10: "трансцендентный чертёж",
+        }
+
+        drawing_type = type_map.get(level, "набросок")
+        self.logger.info(f"   Уровень: {level}, Тип: {drawing_type}")
+
+        # Создание проекта графики
+        project = TechnicalDrawingProject(
+            title=f"Чертеж #{self.metrics['graphic_projects'] + 1}",
+            drawing_type=drawing_type,
+            level=level,
+            standard="ГОСТ",
+            status="completed",
+        )
+        self.projects_graphic.append(project)
+        self.metrics["graphic_projects"] += 1
+
+    # ================================================================
+    #  3D-МОДЕЛИРОВАНИЕ
+    # ================================================================
+
+    def _3d_modeling_practice(self):
+        """Практика 3D-моделирования."""
+        self.logger.info("🧊 Практика 3D-моделирования...")
+
+        level = self.progress["3d_modeling"].current_level
+        type_map = {
+            1: "простая деталь (примитивы)",
+            2: "деталь (extrude, bevel)",
+            3: "деталь (NURBS)",
+            4: "деталь (скелетная анимация)",
+            5: "сложный механизм (10-30 деталей)",
+            6: "сложный механизм (30-50 деталей)",
+            7: "максимальный механизм (50-100 деталей)",
+            8: "прорывной механизм (100+ деталей)",
+            9: "легендарный механизм",
+            10: "трансцендентная сборка",
+        }
+
+        model_type = type_map.get(level, "примитивы")
+        detail_count = level * 10
+        self.logger.info(f"   Уровень: {level}, Тип: {model_type}, Деталей: ~{detail_count}")
+
+        # Создание 3D проекта
+        project = Model3DProject(
+            title=f"3D проект #{self.metrics['3d_projects'] + 1}",
+            model_type=model_type,
+            level=level,
+            detail_count=detail_count,
+            status="completed",
+        )
+        self.projects_3d.append(project)
+        self.metrics["3d_projects"] += 1
+
+    # ================================================================
+    #  ОТЧЁТЫ
+    # ================================================================
+
+    def _write_reports(self):
+        """Написание пояснительных записок и отчётов."""
+        self.logger.info("📝 Написание отчётов...")
+
+        # Ежедневный отчёт
+        report = Report(
+            type="daily",
+            date=datetime.now().strftime("%Y-%m-%d"),
+            status="completed",
+            pixel_art_projects=random.randint(1, 3),
+            graphic_projects=random.randint(0, 2),
+            projects_3d=random.randint(0, 1),
+            notes=f"Цикл {self.cycle_count}: практика пиксель-арта, графики и 3D",
+        )
+        self.reports.append(report)
+        self.metrics["reports_written"] += 1
+
+        self.logger.info(f"   Отчёт создан: {report.type} ({report.date})")
+
+    # ================================================================
+    #  ИНТЕРНЕТ
+    # ================================================================
+
+    def _search_internet(self):
+        """Поиск учебных материалов в интернете."""
+        self.logger.info("🌐 Поиск учебных материалов в интернете...")
+
+        # TODO: Интеграция с web_access.py
+        topics = [
+            "pixel art techniques",
+            "technical drawing tutorial",
+            "3D modeling Blender",
+            "CAD drawing standards",
+            "game art pixel",
+        ]
+        topic = random.choice(topics)
+        self.logger.info(f"   Тема поиска: {topic}")
 
         self.metrics["internet_downloads"] += 1
-        self.logger.info("📚 Интернет-поиск выполнен")
 
-    def _extract_knowledge(self, text: str, source: str) -> list[KnowledgeEntry]:
-        """Извлечь знания из текста."""
-        knowledge = []
-        paragraphs = text.split("\n\n")
-
-        for paragraph in paragraphs[:100]:  # Лимит для демо
-            if len(paragraph.strip()) < 50:
-                continue
-
-            category = self._categorize_paragraph(paragraph)
-
-            entry = KnowledgeEntry(
-                content=paragraph.strip(),
-                category=category,
-                source=source,
-                chapter=0,
-                tags=[category],
-                confidence=0.8,
-            )
-            knowledge.append(entry)
-
-        return knowledge
-
-    def _categorize_paragraph(self, text: str) -> str:
-        """Определить категорию абзаца."""
-        text_lower = text.lower()
-
-        if any(word in text_lower for word in ["факт", "данные", "исследование", "статистика"]):
-            return KnowledgeCategory.FACT.value
-        elif any(word in text_lower for word in ["концепция", "теория", "идея", "принцип"]):
-            return KnowledgeCategory.CONCEPT.value
-        elif any(word in text_lower for word in ["герой", "персонаж", "действовал", "решил"]):
-            return KnowledgeCategory.PLOT.value
-        elif any(word in text_lower for word in ["стиль", "метод", "приём", "язык"]):
-            return KnowledgeCategory.STYLE.value
-        else:
-            return KnowledgeCategory.CONCEPT.value
-
-    def _generate_training_pairs(self, knowledge: list[KnowledgeEntry]) -> list[TrainingPair]:
-        """Создать обучающие пары из знаний."""
-        pairs = []
-
-        for entry in knowledge[:50]:  # Лимит для демо
-            pair = TrainingPair(
-                question=f"Что сказано в тексте: {entry.content[:150]}?",
-                answer=entry.content,
-                context=f"Источник: {entry.source}, Категория: {entry.category}",
-                source=entry.source,
-                chapter=entry.chapter,
-                category=entry.category,
-                tags=entry.tags,
-                confidence=entry.confidence,
-            )
-            pairs.append(pair)
-
-        return pairs
-
-    # ================================================================
-    #  АНАЛИЗ СТИЛЯ И ЛОРА
-    # ================================================================
-
-    def _analyze_style(self, text: str) -> list[StyleEntry]:
-        """Анализ стиля повествования."""
-        paragraphs = text.split("\n\n")[:5]
-
-        styles = []
-        for para in paragraphs:
-            style = StyleEntry(
-                author="Unknown",
-                book_title="Unknown",
-                chapter=0,
-                style_features=self._detect_style_features(para),
-                literary_devices=self._detect_literary_devices(para),
-                dialogue_style="mixed",
-                narrative_style="descriptive",
-                examples=[para[:200]],
-            )
-            styles.append(style)
-
-        return styles
-
-    def _detect_style_features(self, text: str) -> list[str]:
-        """Определить особенности стиля."""
-        features = []
-        text_lower = text.lower()
-
-        if "он сказал" in text_lower or "она сказала" in text_lower:
-            features.append("dialogue")
-        if len(text) > 500:
-            features.append("detailed")
-        if any(word in text_lower for word in ["может быть", "возможно", "наверное"]):
-            features.append("speculative")
-
-        return features if features else ["neutral"]
-
-    def _detect_literary_devices(self, text: str) -> list[str]:
-        """Определить литературные приёмы."""
-        devices = []
-
-        if any(word in text for word in ["как", "будто", "словно"]):
-            devices.append("simile")
-        if any(word in text for word in ["кажется", "похоже"]):
-            devices.append("metaphor")
-
-        return devices if devices else []
-
-    def _extract_lore(self, text: str, source: str) -> list[LoreEntry]:
-        """Извлечение лора из текста."""
-        paragraphs = text.split("\n\n")[:3]
-
-        lore = []
-        for para in paragraphs:
-            entry = LoreEntry(
-                world_name="Unknown",
-                entry_type="general",
-                content=para[:300],
-                book_source=source,
-                chapter=0,
-                relationships={},
-                contradictions=[],
-                confidence=0.7,
-            )
-            lore.append(entry)
-
-        return lore
-
-    def _analyze_styles_batch(self):
-        """Пакетный анализ стилей."""
-        self.logger.info("✍️ Пакетный анализ стилей...")
-        # TODO: Реализовать NLP-анализ
-
-    def _analyze_lore_batch(self):
-        """Пакетный разбор лора."""
-        self.logger.info("🌍 Пакетный разбор лора...")
-        # TODO: Реализовать NLP-анализ
-
-    # ================================================================
-    #  СУТЬ И МЫСЛЬ КНИГИ
-    # ================================================================
-
-    def _extract_summaries_and_thoughts(self):
-        """Извлечение сути и мысли из прочитанных книг."""
-        self.logger.info("📚 Извлечение сути и мысли книг...")
-
-        for book_title, metadata in self.books_metadata.items():
-            if metadata.knowledge_entries > 0:
-                # Извлечение сути
-                summary = BookSummary(
-                    source=book_title,
-                    summary=f"Суть книги '{book_title}'",
-                    key_points=["Основная идея книги"],
-                    main_characters=["Персонажи не определены"],
-                    setting="Место не определено",
-                    genre="Не определён",
-                )
-                self.books_summaries[book_title] = summary
-
-                # Извлечение мысли
-                thought = BookThought(
-                    source=book_title,
-                    central_thought="Авторская мысль не определена",
-                    moral_lesson="",
-                    philosophical_concepts=[],
-                    author_intention="Не определена",
-                )
-                self.books_thoughts.append(thought)
-
-        self.logger.info(f"✅ Извлечено сути: {len(self.books_summaries)}")
-        self.logger.info(f"✅ Извлечено мыслей: {len(self.books_thoughts)}")
-
-    # ================================================================
-    #  ОБУЧЕНИЕ МОДЕЛИ
-    # ================================================================
-
-    def _train_model(self):
-        """Дообучение модели на созданных парах."""
-        self.logger.info("🚀 Обучение модели...")
-
-        if not self.training_pairs:
-            self.logger.info("⚠️ Нет обучающих пар для обучения")
-            return
-
-        # Сохранение обучающих пар
-        self._save_training_pairs()
-
-        # Логирование статистики
-        self.metrics["model_training_sessions"] += 1
-        self.metrics["training_pairs_generated"] += len(self.training_pairs)
-        self.metrics["knowledge_entries_saved"] += len(self.knowledge_base)
-
-        self.logger.info(f"✅ Обучение завершено:")
-        self.logger.info(f"   Пар: {len(self.training_pairs)}")
-        self.logger.info(f"   Записей: {len(self.knowledge_base)}")
-
-    def _save_training_pairs(self):
-        """Сохранить обучающие пары в файл."""
-        if not self.training_pairs:
-            return
-
-        self.config.training_pairs_path.parent.mkdir(parents=True, exist_ok=True)
-
-        with open(self.config.training_pairs_path, "a", encoding="utf-8") as f:
-            for pair in self.training_pairs:
-                f.write(pair.to_json() + "\n")
-
-        self.logger.info(
-            f"💾 Обучающие пары сохранены: "
-            f"{self.config.training_pairs_path} "
-            f"({len(self.training_pairs)} пар)"
+        # Добавление референса в базу знаний
+        entry = KnowledgeEntry(
+            content=f"Референс: {topic}",
+            category=KnowledgeCategory.LEARNING.value,
+            source="internet",
+            tags=["reference", topic.replace(" ", "_")],
+            confidence=0.8,
         )
+        self.references.append(entry)
+        self.metrics["knowledge_entries"] += 1
 
     # ================================================================
-    #  САМООБУУЧЕНИЕ И УЛУЧШЕНИЕ
+    #  ВЗАИМОДЕЙСТВИЕ С СЁСТРАМИ
+    # ================================================================
+
+    def _interact_with_sisters(self):
+        """Взаимодействие с сёстрами."""
+        self.logger.info("🤝 Взаимодействие с сёстрами...")
+
+        sisters = ["futaba", "shiori", "nobuka", "aqua", "celesta", "hanako", "lucy", "fuyuki", "latislane", "naoto", "yui"]
+        sister = random.choice(sisters)
+        self.logger.info(f"   Взаимодействие с: {sister}")
+
+        self.metrics["sister_interactions"] += 1
+
+        # Отправка запроса через сеть
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                msg = Message(
+                    message_type=MessageType.ANSWER,
+                    sender="ayiko",
+                    recipient=sister,
+                    content=f"🎨 Айко: Привет, {sister}! Вот мой прогресс за цикл {self.cycle_count}",
+                )
+                self.network.send_message(msg)
+                self.logger.info(f"   Сообщение отправлено: {sister}")
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")
+
+    # ================================================================
+    #  САМООБУЧЕНИЕ
     # ================================================================
 
     def _self_improve(self):
         """Самообучение и улучшение."""
         self.logger.info("📈 Самообучение и улучшение...")
 
-        # Анализ качества данных
-        quality_score = self._analyze_data_quality()
-        self.logger.info(f"📊 Оценка качества данных: {quality_score:.2f}")
+        quality_score = self._analyze_quality()
+        self.logger.info(f"   Оценка качества: {quality_score:.2f}")
 
-        # Улучшение на основе анализа
         if quality_score < 0.7:
-            self.logger.warning("⚠️ Низкое качество данных — требуется улучшение")
-            # TODO: Реализовать улучшение
+            self.logger.warning("   ⚠️ Низкое качество — требуется улучшение")
         else:
-            self.logger.info("✅ Качество данных в норме")
+            self.logger.info("   ✅ Качество в норме")
 
         self.metrics["self_improvements"] += 1
 
-    def _analyze_data_quality(self) -> float:
-        """Анализ качества данных."""
-        if not self.training_pairs:
+    def _analyze_quality(self) -> float:
+        """Анализ качества работ."""
+        total = len(self.projects_pixel_art) + len(self.projects_graphic) + len(self.projects_3d)
+        if total == 0:
             return 0.0
-
-        # Простой расчёт среднего confidence
-        avg_confidence = sum(p.confidence for p in self.training_pairs) / len(self.training_pairs)
-        return avg_confidence
+        return min(1.0, total / 100.0)
 
     # ================================================================
     #  СОХРАНЕНИЕ СОСТОЯНИЯ
@@ -604,11 +558,10 @@ class AyikoCore:
         self.state = AyikoState(
             version=self.current_version,
             cycle_count=self.cycle_count,
-            books_read=self.metrics["books_read"],
-            chapters_processed=self.metrics["chapters_processed"],
-            training_pairs_generated=self.metrics["training_pairs_generated"],
-            knowledge_entries_saved=self.metrics["knowledge_entries_saved"],
-            lore_entries_saved=self.metrics["lore_entries_saved"],
+            pixel_art_projects=self.metrics["pixel_art_projects"],
+            graphic_projects=self.metrics["graphic_projects"],
+            projects_3d=self.metrics["3d_projects"],
+            reports_written=self.metrics["reports_written"],
             metrics=self.metrics,
             timestamp=datetime.now().isoformat(),
         )
@@ -619,15 +572,15 @@ class AyikoCore:
     def _final_report(self):
         """Финальный отчёт."""
         self.logger.info("=" * 60)
-        self.logger.info("📊 ФИНАЛЬНЫЙ ОТЧЁТ")
+        self.logger.info("📊 ФИНАЛЬНЫЙ ОТЧЁТ АЙКО")
         self.logger.info("=" * 60)
         self.logger.info(f"Циклов выполнено: {self.cycle_count}")
-        self.logger.info(f"Книг прочитано: {self.metrics['books_read']}")
-        self.logger.info(f"Обучающих пар создано: {self.metrics['training_pairs_generated']}")
-        self.logger.info(f"Записей в базе знаний: {self.metrics['knowledge_entries_saved']}")
-        self.logger.info(f"Лора разобрано: {self.metrics['lore_entries_saved']}")
-        self.logger.info(f"Сессий обучения: {self.metrics['model_training_sessions']}")
-        self.logger.info(f"Скачиваний из интернета: {self.metrics['internet_downloads']}")
+        self.logger.info(f"Пиксель-арт проектов: {self.metrics['pixel_art_projects']}")
+        self.logger.info(f"Графических проектов: {self.metrics['graphic_projects']}")
+        self.logger.info(f"3D проектов: {self.metrics['3d_projects']}")
+        self.logger.info(f"Написано отчётов: {self.metrics['reports_written']}")
+        self.logger.info(f"Загрузок из интернета: {self.metrics['internet_downloads']}")
+        self.logger.info(f"Взаимодействий с сёстрами: {self.metrics['sister_interactions']}")
         self.logger.info(f"Улучшений: {self.metrics['self_improvements']}")
 
     # ================================================================
@@ -640,9 +593,7 @@ class AyikoCore:
             return
 
         try:
-            # Получаем входящие сообщения от учёных
             messages = self.network.receive_messages_batch("ayiko", max_count=10)
-
             if not messages:
                 return
 
@@ -652,29 +603,24 @@ class AyikoCore:
                 if msg.sender == "ayiko":
                     continue
 
-                self.logger.info(
-                    f"📨 От {msg.sender}: {msg.content[:100]}..."
-                )
+                self.logger.info(f"📨 От {msg.sender}: {msg.content[:100]}...")
 
-                # Обработка запросов на знания
-                if "knowledge" in msg.content.lower() or "book" in msg.content.lower():
-                    response = self._respond_to_knowledge_request(msg)
+                if "art" in msg.content.lower() or "drawing" in msg.content.lower():
+                    response = self._respond_to_art_request(msg)
                     self.network.send_message(response)
 
         except Exception as e:
             self.logger.warning(f"Ошибка обработки запросов: {e}")
 
-    def _respond_to_knowledge_request(self, message) -> Any:
-        """Ответить на запрос знаний."""
-        # Создаём сообщение-ответ
+    def _respond_to_art_request(self, message) -> Any:
+        """Ответить на запрос о творчестве."""
         from scientists_network.network import Message, MessageType
 
         response = Message(
             message_type=MessageType.ANSWER,
             sender="ayiko",
             recipient=message.sender,
-            content=f"📚 Айко: Вот знания из книг для {message.sender}!",
+            content=f"🎨 Айко: Вот творческие материалы для {message.sender}!",
         )
-
         return response
 

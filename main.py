@@ -2583,6 +2583,165 @@ async def latislane_self_improve():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# === Эндпоинт: /latislane/character — характер ===
+@app.get("/latislane/character")
+async def latislane_character():
+    """Получить информацию о характере Латислейн."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        report = local_latislane.character.generate_character_report()
+        return {"status": "ok", "character": report}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/character/reinforce — укрепить черту ===
+@app.post("/latislane/character/reinforce")
+async def latislane_character_reinforce(request: Request):
+    """Укрепить черту характера."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json()
+        trait_id = body.get("trait_id", "")
+        amount = body.get("amount", 0.1)
+        context = body.get("context", "")
+        
+        local_latislane.character.reinforce_trait(trait_id, amount, context)
+        return {"status": "ok", "message": f"Черта '{trait_id}' укреплена"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/social — социальные взаимодействия ===
+@app.get("/latislane/social")
+async def latislane_social():
+    """Получить информацию о социальных взаимодействиях."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        report = local_latislane.social.get_social_report()
+        return {"status": "ok", "social": report}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/social/interact — взаимодействие с сёстрой ===
+@app.post("/latislane/social/interact")
+async def latislane_social_interact(request: Request):
+    """Взаимодействовать с сёстрой."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        body = await request.json()
+        sister = body.get("sister", "")
+        interaction_type = body.get("type", "обучение")
+        quality = body.get("quality", 0.7)
+        context = body.get("context", "")
+        
+        result = local_latislane.social.interact_with_sister(sister, interaction_type, quality, context)
+        return {"status": "ok", "result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/reports — отчёты ===
+@app.get("/latislane/reports")
+async def latislane_reports():
+    """Получить отчёты и уровни знаний."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        level_overview = local_latislane.reports.get_level_overview()
+        recent = local_latislane.reports.get_recent_reports(10)
+        return {"status": "ok", "levels": level_overview, "recent": recent}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/reports/daily — ежедневный отчёт ===
+@app.post("/latislane/reports/daily")
+async def latislane_reports_daily():
+    """Создать ежедневный отчёт."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        report = local_latislane.reports.create_daily_report()
+        if report:
+            return {"status": "ok", "message": f"Отчёт создан: {report.title}"}
+        else:
+            return {"status": "ok", "message": "Отчёт уже написан сегодня"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/full-report — полный отчёт ===
+@app.get("/latislane/full-report")
+async def latislane_full_report():
+    """Сгенерировать полный отчёт."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        report_text = local_latislane.reports.generate_full_report()
+        return {"status": "ok", "report": report_text}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Эндпоинт: /latislane/autonomous/stop — остановить автономную работу ===
+@app.post("/latislane/autonomous/stop")
+async def latislane_autonomous_stop():
+    """Остановить автономное обучение."""
+    local_latislane = None
+    with LATISLANE_LOCK:
+        local_latislane = latislane_core
+    
+    if local_latislane is None:
+        raise HTTPException(status_code=503, detail="Latislane не загружен")
+    
+    try:
+        local_latislane.stop_autonomous_learning()
+        return {"status": "ok", "message": "Автономное обучение остановлено"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ========================
 # Celesta Endpoints (Система изучения интимной жизни)
 # ========================

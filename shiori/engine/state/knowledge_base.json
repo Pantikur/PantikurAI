@@ -1,0 +1,82 @@
+{
+  "entries": [
+    {
+      "cve_id": "CVE-2026-48548",
+      "severity": "medium",
+      "description": "Уязвимость позволяет несанкционированный доступ к файловой системе",
+      "affected_systems": [
+        "Python packages",
+        "Web frameworks",
+        "API handlers"
+      ],
+      "exploit_available": false,
+      "patch_available": true,
+      "cvss_score": 7.8,
+      "learned_at": "2026-07-14T15:53:52.724922"
+    },
+    {
+      "cve_id": "CVE-2026-74662",
+      "severity": "low",
+      "description": "Возможность обхода аутентификации через заголовок запроса",
+      "affected_systems": [
+        "API endpoints",
+        "Authentication modules"
+      ],
+      "exploit_available": false,
+      "patch_available": true,
+      "cvss_score": 5.8,
+      "learned_at": "2026-07-14T15:53:52.725919"
+    },
+    {
+      "cve_id": "CVE-2026-35924",
+      "severity": "critical",
+      "description": "Удалённое выполнение кода через обработку входных данных",
+      "affected_systems": [
+        "Core modules",
+        "Input handlers",
+        "Model processing"
+      ],
+      "exploit_available": true,
+      "patch_available": false,
+      "cvss_score": 10.0,
+      "learned_at": "2026-07-14T15:53:52.726938"
+    },
+    {
+      "type": "apt",
+      "name": "Долгосрочная инфильтрация через поставщиков",
+      "description": "Целенаправленная атака через компрометацию цепочки поставок ПО",
+      "severity": "critical",
+      "mitigation": "Проверка целостности зависимостей + аудит поставщиков",
+      "source": "APT Group Analysis",
+      "learned_at": "2026-07-14T15:53:52.727917"
+    },
+    {
+      "type": "apt",
+      "name": "Zero-day через уязвимость в библиотеке",
+      "description": "Использование неизвестной уязвимости в популярной библиотеке",
+      "severity": "critical",
+      "mitigation": "SBOM (Software Bill of Materials) + мониторинг зависимостей",
+      "source": "CVE Database Analysis",
+      "learned_at": "2026-07-14T15:53:52.728916"
+    },
+    {
+      "type": "apt",
+      "name": "Долгосрочная инфильтрация через поставщиков",
+      "description": "Целенаправленная атака через компрометацию цепочки поставок ПО",
+      "severity": "critical",
+      "mitigation": "Проверка целостности зависимостей + аудит поставщиков",
+      "source": "APT Group Analysis",
+      "learned_at": "2026-07-14T15:56:34.069348"
+    },
+    {
+      "type": "apt",
+      "name": "Zero-day через уязвимость в библиотеке",
+      "description": "Использование неизвестной уязвимости в популярной библиотеке",
+      "severity": "critical",
+      "mitigation": "SBOM (Software Bill of Materials) + мониторинг зависимостей",
+      "source": "CVE Database Analysis",
+      "learned_at": "2026-07-14T15:56:34.071343"
+    }
+  ],
+  "last_updated": "2026-07-14T15:56:34.071343"
+}

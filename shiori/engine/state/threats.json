@@ -1,173 +1,67 @@
 {
-  "timestamp": "2026-07-11T22:15:11.031415",
+  "timestamp": "2026-07-14T15:56:40.086290",
   "threats": [
     {
-      "id": "THR-20260711221502-9341",
-      "category": "social_engineering",
-      "level": "L3",
-      "source": "192.168.7.9",
-      "description": "Обнаружена угроза: social_engineering",
-      "timestamp": "2026-07-11T22:15:02.011336",
-      "confidence": 0.739104202783726,
+      "id": "THR-20260714155630-9131",
+      "category": "internal_anomaly",
+      "level": "L1",
+      "source": "192.168.221.23",
+      "description": "Обнаружена угроза: internal_anomaly",
+      "timestamp": "2026-07-14T15:56:30.064622",
+      "confidence": 0.6828041817074496,
       "affected_components": [
         "core",
+        "database",
+        "api"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via unauthorized_access"
+    },
+    {
+      "id": "THR-20260714155636-7943",
+      "category": "apt",
+      "level": "L1",
+      "source": "192.168.83.182",
+      "description": "Обнаружена угроза: apt",
+      "timestamp": "2026-07-14T15:56:36.075065",
+      "confidence": 0.8408387903293136,
+      "affected_components": [
+        "network",
+        "network",
+        "database"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via unauthorized_access"
+    },
+    {
+      "id": "THR-20260714155636-1629",
+      "category": "malware",
+      "level": "L1",
+      "source": "192.168.190.230",
+      "description": "Обнаружена угроза: malware",
+      "timestamp": "2026-07-14T15:56:36.075065",
+      "confidence": 0.8540491747812633,
+      "affected_components": [
+        "network",
+        "database",
         "core"
       ],
       "mitigated": true,
-      "mitigation_action": "Responded via I001"
+      "mitigation_action": "Responded via unauthorized_access"
     },
     {
-      "id": "THR-20260711221505-6713",
-      "category": "social_engineering",
-      "level": "L2",
-      "source": "192.168.156.253",
-      "description": "Обнаружена угроза: social_engineering",
-      "timestamp": "2026-07-11T22:15:05.018998",
-      "confidence": 0.6117393589602372,
-      "affected_components": [
-        "core",
-        "api",
-        "network"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I001"
-    },
-    {
-      "id": "THR-20260711221507-1595",
+      "id": "THR-20260714155636-1768",
       "category": "api_abuse",
       "level": "L1",
-      "source": "192.168.246.63",
+      "source": "192.168.240.145",
       "description": "Обнаружена угроза: api_abuse",
-      "timestamp": "2026-07-11T22:15:07.021311",
-      "confidence": 0.6249294425596955,
+      "timestamp": "2026-07-14T15:56:36.075065",
+      "confidence": 0.7235275026101515,
       "affected_components": [
-        "database"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I001"
-    },
-    {
-      "id": "THR-20260711221507-5278",
-      "category": "internal_anomaly",
-      "level": "L2",
-      "source": "192.168.12.200",
-      "description": "Обнаружена угроза: internal_anomaly",
-      "timestamp": "2026-07-11T22:15:07.021311",
-      "confidence": 0.9164301604270781,
-      "affected_components": [
-        "api",
-        "api",
-        "database"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I001"
-    },
-    {
-      "id": "THR-20260711221507-3050",
-      "category": "code_tampering",
-      "level": "L2",
-      "source": "192.168.55.2",
-      "description": "Обнаружена угроза: code_tampering",
-      "timestamp": "2026-07-11T22:15:07.021311",
-      "confidence": 0.8475174895436588,
-      "affected_components": [
-        "api",
-        "api",
-        "network"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I003"
-    },
-    {
-      "id": "THR-20260711221510-6832",
-      "category": "data_exfiltration",
-      "level": "L2",
-      "source": "192.168.61.13",
-      "description": "Обнаружена угроза: data_exfiltration",
-      "timestamp": "2026-07-11T22:15:10.026085",
-      "confidence": 0.6451419690572584,
-      "affected_components": [
-        "database",
-        "database"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I001"
-    },
-    {
-      "id": "THR-20260711221510-6546",
-      "category": "code_tampering",
-      "level": "L2",
-      "source": "192.168.136.77",
-      "description": "Обнаружена угроза: code_tampering",
-      "timestamp": "2026-07-11T22:15:10.026085",
-      "confidence": 0.6663778256586363,
-      "affected_components": [
-        "api",
-        "database"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I003"
-    },
-    {
-      "id": "THR-20260711221510-3227",
-      "category": "unauthorized_access",
-      "level": "L2",
-      "source": "192.168.80.235",
-      "description": "Обнаружена угроза: unauthorized_access",
-      "timestamp": "2026-07-11T22:15:10.026085",
-      "confidence": 0.9460805390114033,
-      "affected_components": [
-        "core",
-        "network"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I001"
-    },
-    {
-      "id": "THR-20260711221511-2656",
-      "category": "code_tampering",
-      "level": "L2",
-      "source": "192.168.142.229",
-      "description": "Обнаружена угроза: code_tampering",
-      "timestamp": "2026-07-11T22:15:11.028404",
-      "confidence": 0.7851440436869841,
-      "affected_components": [
-        "core",
-        "api",
-        "network"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I003"
-    },
-    {
-      "id": "THR-20260711221511-6460",
-      "category": "ddos",
-      "level": "L2",
-      "source": "192.168.193.75",
-      "description": "Обнаружена угроза: ddos",
-      "timestamp": "2026-07-11T22:15:11.028404",
-      "confidence": 0.7325233503757513,
-      "affected_components": [
-        "database"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via I001"
-    },
-    {
-      "id": "THR-20260711221511-9443",
-      "category": "malware",
-      "level": "L2",
-      "source": "192.168.46.255",
-      "description": "Обнаружена угроза: malware",
-      "timestamp": "2026-07-11T22:15:11.028404",
-      "confidence": 0.9793780587003037,
-      "affected_components": [
-        "database",
-        "network",
         "core"
       ],
       "mitigated": true,
-      "mitigation_action": "Responded via I001"
+      "mitigation_action": "Responded via unauthorized_access"
     }
   ]
 }

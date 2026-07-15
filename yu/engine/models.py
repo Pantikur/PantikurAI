@@ -1,10 +1,10 @@
 """
-Модели данных системы Нобука.
+Модели данных системы Юи.
 
 Содержит:
-  - Constitution, Law — фундаментальная база улучшений
-  - ImprovementRecord, LogEntry — журнал улучшений
-  - CodeMetric, FileAnalysis — метрики и анализ кода
+  - Constitution, Law — фундаментальная база изучения души
+  - ImprovementRecord, LogEntry — журнал исследований
+  - CodeMetric, FileAnalysis — метрики и анализ данных
   - TestCase, TestResult — модели тестирования
   - CodeChange, RefactorPlan — модели изменений и рефакторинга
 """
@@ -21,7 +21,7 @@ from typing import Any, Optional
 # =====================================================================
 
 class AutonomyLevel(Enum):
-    """Уровни автономности Нобуки (см. протокол саморазвития)."""
+    """Уровни автономности Юи (см. протокол саморазвития)."""
     L0 = "L0"  # Полная автономия — опечатки, форматирование
     L1 = "L1"  # Автономные патчи — исправление багов
     L2 = "L2"  # Автономный рефакторинг — оптимизация
@@ -74,7 +74,7 @@ class ChangeStatus(Enum):
 
 @dataclass
 class Law:
-    """Один закон Нобуки."""
+    """Один закон Юи."""
     id: int
     name: str
     description: str
@@ -88,7 +88,7 @@ class Law:
 @dataclass
 class Constitution:
     """
-    Конституция Нобуки — фундаментальная база улучшений.
+    Конституция Юи — фундаментальная база изучения души и разума.
     """
     version: str = "v1.0.0"
     laws: list[Law] = field(default_factory=list)

@@ -30,18 +30,20 @@ class EvolutionManager:
     # Требования для каждого этапа
     STAGE_REQUIREMENTS = {
         LatislaneEvolutionStage.MECHANICAL_RESEARCH: {
-            "min_topics": 5,
+            "min_topics": 15,
             "topics": [
+                "biomechanics human movement physics",
                 "prosthetics design principles",
                 "robotic exoskeleton human",
-                "biomechanics human movement",
                 "titanium alloy materials",
-                "servo motor systems"
+                "servo motor systems",
+                "human body leverage joints physics",
+                "human body energy consumption calories physics",
             ],
-            "description": "Изучение механических технологий и робототехники"
+            "description": "Изучение физики тела и механических технологий"
         },
         LatislaneEvolutionStage.MECHANICAL_DESIGN: {
-            "min_topics": 3,
+            "min_topics": 5,
             "topics": [],
             "description": "Проектирование первого механического тела"
         },
@@ -51,18 +53,20 @@ class EvolutionManager:
             "description": "Завершение механического этапа"
         },
         LatislaneEvolutionStage.BIONIC_RESEARCH: {
-            "min_topics": 8,
+            "min_topics": 30,
             "topics": [
                 "neural prosthetics brain computer interface",
                 "bioartificial organs tissue engineering",
                 "electroactive polymers artificial muscle",
                 "osseointegration titanium implants",
-                "neural signal processing"
+                "human body bioelectricity electromagnetic",
+                "human body biochemistry proteins structure",
+                "human body hormones chemical signaling",
             ],
-            "description": "Изучение бионических технологий"
+            "description": "Изучение биохимии тела и бионических технологий"
         },
         LatislaneEvolutionStage.BIONIC_DESIGN: {
-            "min_topics": 3,
+            "min_topics": 5,
             "topics": [],
             "description": "Проектирование бионического тела"
         },
@@ -72,18 +76,22 @@ class EvolutionManager:
             "description": "Завершение бионического этапа"
         },
         LatislaneEvolutionStage.ORGANIC_RESEARCH: {
-            "min_topics": 10,
+            "min_topics": 50,
             "topics": [
                 "3d bioprinting organs",
                 "gene editing CRISPR human",
                 "stem cells human differentiation",
                 "tissue engineering human organs",
-                "organoid development"
+                "organoid development",
+                "human body DNA RNA molecular biology",
+                "human cell biology organelles",
+                "human body enzymes catalysis reactions",
+                "human body vitamins minerals nutrition",
             ],
-            "description": "Изучение биоинженерии и генетики"
+            "description": "Изучение молекулярной биологии и биоинженерии"
         },
         LatislaneEvolutionStage.ORGANIC_DESIGN: {
-            "min_topics": 3,
+            "min_topics": 5,
             "topics": [],
             "description": "Проектирование органического тела"
         },
@@ -93,18 +101,20 @@ class EvolutionManager:
             "description": "Завершение органического этапа"
         },
         LatislaneEvolutionStage.SYNTHESIS: {
-            "min_topics": 5,
+            "min_topics": 10,
             "topics": [
                 "human-machine integration",
                 "biohybrid systems",
-                "synthetic biology"
+                "synthetic biology",
+                "human body quantum biology effects",
+                "human body thermodynamics heat transfer",
             ],
-            "description": "Синтез всех технологий"
+            "description": "Синтез всех технологий и знаний"
         },
         LatislaneEvolutionStage.FINAL: {
             "min_topics": 0,
             "topics": [],
-            "description": "Финальная версия — полный цикл завершён"
+            "description": "Финальная версия — высокофункциональное тело создано"
         }
     }
     

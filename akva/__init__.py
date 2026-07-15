@@ -1,15 +1,6 @@
+﻿"""
+Akva - Scientific module of Pantikur.
+Mathematics, Physics, Aerodynamics, Strength of Materials.
+Self-development, Internet, Autonomous work, Communication, Reports, Personality.
 """
-Akva — Ядро изучения математики, физики, аэродинамики и сопротивления материалов.
-
-Изучает:
-- Математика (дифференциальные уравнения, теория чисел, линейная алгебра)
-- Физика (механика, термодинамика, квантовая физика)
-- Аэродинамика (обтекание, подъёмная сила, сопротивление)
-- Сопротивление материалов (прочность, жёсткость, устойчивость)
-- Самообучение и автономное развитие
-"""
-
-from .engine.akva_core import AkvaCore
-
-__version__ = "v1.0.0"
-__all__ = ["AkvaCore"]
+from __future__ import annotations

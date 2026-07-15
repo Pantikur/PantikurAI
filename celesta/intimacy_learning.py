@@ -1,5 +1,12 @@
 """
-Celesta — Движок обучения интимным знаниям.
+Селеста — Движок обучения интимным знаниям.
+
+Изучает абсолютно всё:
+- Solo, Duo, Trio, Quad, Group
+- Same-Sex (M|M, F|F)
+- Consent, Coercion
+- Физиология, психология, гормоны
+- Последействие, восстановление
 
 Использует реальные источники:
 - Wikipedia API
@@ -18,7 +25,6 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any, Set
 from datetime import datetime, timedelta
 
-# Импорт веб-исследователя
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from web_researcher import WebResearcher
@@ -29,7 +35,7 @@ logger = logging.getLogger("celesta.learning")
 class KnowledgeNode:
     """Узел знаний — единица изученной информации."""
     
-    def __init__(self, topic: str, content: str, source: str = "", stage: str = ""):
+    def __init__(self, topic: str, content: str, source: str = "", level: str = ""):
         self.topic = topic
         self.content = content
         self.source = source
@@ -38,7 +44,7 @@ class KnowledgeNode:
         self.timestamp = time.time()
         self.tags: List[str] = []
         self.is_verified = False
-        self.stage = stage
+        self.level = level
     
     def update_confidence(self, delta: float):
         self.confidence = max(0.0, min(1.0, self.confidence + delta))
@@ -56,7 +62,7 @@ class KnowledgeNode:
             "related_nodes": self.related_nodes,
             "tags": self.tags,
             "is_verified": self.is_verified,
-            "stage": self.stage,
+            "level": self.level,
             "timestamp": self.timestamp
         }
 
@@ -64,68 +70,155 @@ class KnowledgeNode:
 class IntimacyLearningEngine:
     """
     Автономный движок обучения интимным знаниям.
+    
+    Изучает ВСЁ: от взгляда до оргии.
     """
     
-    # Темы для изучения
+    # Темы для изучения — АБСОЛЮТНО ВСЁ
     INTIMACY_TOPICS = [
-        # Физиология прикосновений
-        "human touch physiology C-tactile fibers",
-        "skin receptor density distribution",
-        "tactile deprivation effects psychology",
-        "oral sensory cortex representation",
-        "cutaneous mechanoreceptors types",
+        # === SOLO ===
+        "solo masturbation anatomy techniques",
+        "solo sex toys types usage safety",
+        "solo fetish sensory play materials",
+        "solo fantasy erotica pornography psychology",
+        "zinc depletion semen analysis recovery",
+        "post orgasmic illness syndrome POIS",
         
-        # Возбуждение
-        "human sexual arousal physiology phases",
-        "parasympathetic nervous system erection",
-        "sympathetic nervous system orgasm",
-        "nitric oxide vasodilation mechanism",
-        "sexual response cycle Masters Johnson",
+        # === DUO ORAL ===
+        "killingus clitoral anatomy techniques",
+        "fellatio techniques deepthroat hand techniques",
+        "anal oral sex dental dam hygiene safety",
+        "clitoral anatomy 8000 nerve endings",
         
-        # Гормоны
-        "oxytocin bonding effects psychology",
-        "prolactin refractory period mechanism",
-        "dopamine reward system sexuality",
-        "endorphins pain relief intimacy",
-        "cortisol stress sexual function",
+        # === DUO PENETRATIVE ===
+        "missionary position variations angles",
+        "doggy style depth control variations",
+        "cowgirl position depth control facing reverse",
+        "spooning position intimacy long session",
+        "69 position simultaneous oral coordination",
+        "standing sex balance support variations",
+        "edge of bed position depth eye contact",
+        "lotus position intimacy eye contact",
         
-        # Репродуктивная система
-        "sperm egg fertilization timeline",
-        "ovulation fertility window calculation",
-        "male refractory period biology",
-        "female orgasm uterine contractions",
+        # === DUO ANAL ===
+        "anal sphincter anatomy preparation",
+        "prostate stimulation male G spot techniques",
+        "anal sex lube types safety rules",
+        "anal beads plug prostate massager safety",
         
-        # Избыточный интим
-        "excessive sexual activity health effects",
-        "zinc depletion semen analysis",
-        "prolactin testosterone relationship",
-        "dopamine tolerance addiction sexuality",
-        "tissue microtrauma healing intimacy",
+        # === DUO EDGING & DENIAL ===
+        "edging stop start technique benefits",
+        "denial orgasm control psychology power",
+        "blue balls pelvic congestion syndrome",
         
-        # Прерванный процесс
-        "vasocongestion pelvic syndrome",
-        "retrograde ejaculation consequences",
-        "chronic prostatitis etiology",
-        "conditioned reflex disruption sexuality",
-        "sexual frustration psychological effects",
+        # === TRIO ===
+        "FFM threesome dynamics third wheel",
+        "MMF threesome male dynamics cooperation",
+        "FFF threesome lesbian dynamics intimacy",
+        "MMM threesome male bonding practices",
+        "threesome communication rules jealousy",
+        "threesome safe words boundaries",
         
-        # Восстановление
-        "post coital somnolence biology",
-        "refractory period age correlation",
-        "nutritional recovery sexuality zinc magnesium",
-        "sleep growth hormone recovery",
+        # === QUAD ===
+        "2F2M quad dynamics rotating patterns",
+        "3F1M quad male attention management",
+        "quad rotation patterns timing",
+        "quad logistics space time safety",
         
-        # Психология
-        "intimate bonding psychology attachment",
-        "sexual trauma effects recovery",
-        "communication intimacy relationship",
-        "emotional vs physical intimacy",
+        # === GROUP ===
+        "orgy types soft hard mixed boundaries",
+        "group sex dynamics dominance hierarchy",
+        "group sex safety rules barriers",
+        "orgy aftercare each participant",
+        "group sex STD prevention testing",
         
-        # Расы (фэнтези)
-        "elf physiology metabolism fantasy",
-        "demon stamina physiology fantasy",
-        "undead sensory function biology",
-        "elemental energy exchange concept",
+        # === SAME-SEX FEMALE (Женщина + Женщина) ===
+        "tribadism scissoring clitoral friction techniques",
+        "frottage female body to body friction positions",
+        "female manual techniques two finger G-spot stimulation",
+        "female external stimulation clitoral labial nipple play",
+        "female oral sex kissing techniques body exploration",
+        "female shared toys vibrator double penetration dildos",
+        "female solo toys each partner individual pleasure",
+        "strap-on harness types waist strap harness communication",
+        "strap-on techniques depth control angle variation",
+        "female buggery anal penetration preparation lube",
+        "female anal toys plugs beads prostate massager for women",
+        "lesbian power dynamics dominant submissive role exchange",
+        "lesbian first time anxiety expectations preparation",
+        "lesbian long term relationship variety maintenance",
+        "lesbian aftercare emotional physical hydration cuddling",
+        "female-female STD transmission HPV herpes protection",
+        "tribadism body positioning angle optimization",
+        "female scissoring leg lock variations grinding techniques",
+        
+        # === SAME-SEX MALE (Мужчина + Мужчина) ===
+        "male anal sex preparation enema lube types",
+        "male anal positions doggy spooning standing edge-of-bed",
+        "male prostate stimulation external external G-spot massage",
+        "male anal toys beads plugs prostate massagers safety",
+        "male oral sex fellatio techniques hand coordination",
+        "male deepthroat training techniques breathing control",
+        "male mutual masturbation techniques timing coordination",
+        "male rimming anilingus dental dam hygiene techniques",
+        "male standing sex wall support lifting variations",
+        "male sports sex strength-based positions acrobatic",
+        "male beauty rest post-orgasm sensitivity stimulation",
+        "male power dynamics top bottom versatile role play",
+        "male first time anxiety expectations preparation",
+        "male long term relationship variety maintenance",
+        "male aftercare emotional vulnerability check-in hydration",
+        "male-male STD transmission HIV HPV hepatitis protection",
+        "PrEP PEP HIV prevention for MSM communities",
+        "male anal sphincter relaxation breathing techniques",
+        "male anal depth control communication pace",
+        "male anal lubrication types silicone water-based",
+        
+        # === CONSENSUAL NON-CONSENT (CNC) ===
+        "consensual non-consent CNC ethics frameworks",
+        "CNC roleplay resistance scenario planning",
+        "CNC restraint techniques safety aftercare",
+        "CNC command protocols safe words check-in",
+        "CNC negotiation boundaries limits safewords",
+        "beauty rest gay after orgasm stimulation",
+        "gay sports sex standing lifting positions",
+        "male male emotional vulnerability aftercare",
+        
+        # === CONSENT ===
+        "FRIES consent model free informed enthusiastic reversible specific",
+        "verbal consent examples markers",
+        "nonverbal consent body language signals",
+        "ongoing consent check in frequency",
+        "enthusiastic consent gold standard",
+        "YESC consent model yes enthusiastic specific conscious",
+        
+        # === COERCION (для защиты) ===
+        "manipulation tactics guilt tripping bargaining",
+        "gaslighting definition effects recovery",
+        "coercive pressure persistent asking after no",
+        "red flags intimate coercion boundaries",
+        "coercion recovery therapy support hotlines",
+        
+        # === PHYSIOLOGY ===
+        "oxytocin bonding hormone orgasm release",
+        "dopamine reward system desire arousal orgasm",
+        "prolactin refractory period testosterone suppression",
+        "endorphins euphoria pain relief orgasm",
+        "parasympathetic vs sympathetic nervous system sex",
+        "refractory period male female age correlation",
+        
+        # === PSYCHOLOGY ===
+        "attachment theory secure anxious avoidant intimacy",
+        "fantasy normality prevalence reality desire",
+        "power dynamics D/s Master slave Top bottom",
+        "SSC Safe Sane Consensual BDSM standard",
+        "RACK Risk Aware Consensual Kink extreme practices",
+        
+        # === AFTERCARE ===
+        "physical aftercare hydration food warmth hygiene",
+        "emotional aftercare check in validation affection",
+        "post coital dysphoria PCOD symptoms causes help",
+        "communal aftercare group sex each participant",
     ]
     
     def __init__(self, data_dir: str = "data/celesta/learning"):
@@ -136,7 +229,7 @@ class IntimacyLearningEngine:
         self.topic_progress: Dict[str, float] = {}
         self.search_history: List[Dict[str, Any]] = []
         
-        # Реальный веб-исследователь
+        # Интернет-поиск
         use_real_web = os.getenv("CELESTA_REAL_WEB", "true").lower() in ("true", "1", "yes")
         self.web_researcher = WebResearcher() if use_real_web else None
         
@@ -168,7 +261,7 @@ class IntimacyLearningEngine:
                     node.related_nodes = node_data.get("related_nodes", [])
                     node.tags = node_data.get("tags", [])
                     node.is_verified = node_data.get("is_verified", False)
-                    node.stage = node_data.get("stage", "")
+                    node.level = node_data.get("level", "")
                     self.knowledge_nodes[node.topic] = node
                 
                 self.topic_progress = state.get("topic_progress", {})
@@ -224,7 +317,6 @@ class IntimacyLearningEngine:
             try:
                 research_data = await self.web_researcher.learn_from_search(topic)
                 
-                # Создаём узлы знаний из реальных данных
                 for fact in research_data.get("facts", []):
                     node = KnowledgeNode(
                         topic=topic,
@@ -245,7 +337,6 @@ class IntimacyLearningEngine:
                 logger.warning(f"⚠️ Реальный поиск неудачен, используем демо: {e}")
                 nodes = self._generate_demo_knowledge(topic)
         else:
-            # Демо-режим
             nodes = self._generate_demo_knowledge(topic)
         
         for node in nodes:
@@ -260,8 +351,8 @@ class IntimacyLearningEngine:
             
             existing.related_nodes = list(set(existing.related_nodes + node.related_nodes))
             existing.tags = list(set(existing.tags + node.tags))
-            if node.stage:
-                existing.stage = node.stage
+            if node.level:
+                existing.level = node.level
         
         self.topic_progress[topic] = min(1.0, self.topic_progress.get(topic, 0.0) + 0.15)
         
@@ -277,103 +368,206 @@ class IntimacyLearningEngine:
         return result
     
     def _generate_demo_knowledge(self, topic: str) -> List[KnowledgeNode]:
+        """Генерирует демо-знания для всех категорий."""
         nodes = []
         topic_lower = topic.lower()
         
-        # Прикосновения
-        if "touch" in topic_lower or "tactile" in topic_lower or "skin" in topic_lower:
+        # Solo
+        if any(kw in topic_lower for kw in ["solo", "masturbation", "solo", "solo", "zinc", "pois"]):
             nodes.append(KnowledgeNode(
                 topic=topic,
-                content="Кожа содержит ~5 миллионов тактильных рецепторов. C-волокна передают медленные приятные прикосновения (1 м/с), A-дельта волокна — быстрые давящие (20 м/с).",
-                source="demo_touch_physiology",
-                stage="touch"
+                content="Мастурбация — нормальная практика (95%+ людей). Техники: клиторальная, пенальная, G-точка, анальная. Потеря цинка: 3 мг за эякуляцию. Восстановление: 2-3 дня.",
+                source="demo_solo",
+                level="solo"
             ))
-            nodes[-1].add_tag("touch")
+            nodes[-1].add_tag("solo")
+        
+        # Duo Oral
+        elif any(kw in topic_lower for kw in ["killingus", "fellatio", "oral", "clitoral"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Клитор содержит 8000+ нервных окончаний. Техники куннилингуса: circling, flat_tongue, two_finger. Фелляция: deepthroat, hand_only. Анальный оральный: дама-чек обязателен.",
+                source="demo_oral",
+                level="duo"
+            ))
+            nodes[-1].add_tag("duo")
+        
+        # Positions
+        elif any(kw in topic_lower for kw in ["missionary", "doggy", "cowgirl", "spooning", "69", "standing", "position"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Основные позы: миссионерская (eye contact), догги-стайл (максимальная глубина), наездница (контроль седящей), ложка (нежная), 69 (одновременный оральный), стоя (у стены).",
+                source="demo_positions",
+                level="duo"
+            ))
+            nodes[-1].add_tag("positions")
+        
+        # Anal
+        elif any(kw in topic_lower for kw in ["anal", "prostate", "sphincter"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Анальный сфинктер: 2 сфинктера, высокая нервная чувствительность. Простата: 2-3 см внутри передней стенки, 'мужская G-точка'. Правила: лубрикант обязателен, начинать с малого.",
+                source="demo_anal",
+                level="duo"
+            ))
+            nodes[-1].add_tag("anal")
+        
+        # Edging
+        elif any(kw in topic_lower for kw in ["edging", "denial", "blue balls"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Edging: stop-start техника для усиления оргазма. Denial: сознательный отказ в оргазме — power dynamics. Blue balls: венозный застой, 6-24 часа.",
+                source="demo_edging",
+                level="duo"
+            ))
+            nodes[-1].add_tag("edging")
+        
+        # Trio
+        elif any(kw in topic_lower for kw in ["threesome", "FFM", "MMF", "FFF", "MMM", "trio"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Трио: FFM (классика, роль третьего), MMF (кооперация vs конкуренция), FFF (нежность), MMM (массаж). Правила: обсуждение ДО, safe words, aftercare.",
+                source="demo_trio",
+                level="trio"
+            ))
+            nodes[-1].add_tag("trio")
+        
+        # Group
+        elif any(kw in topic_lower for kw in ["orgy", "group", "group"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Оргии: мягкая (оральный), жёсткая (проникающий), смешанная. Правила: барьеры для всех, safe words, medical kit, STD testing. Aftercare для каждого.",
+                source="demo_group",
+                level="group"
+            ))
+            nodes[-1].add_tag("group")
+        
+        # === Same-Sex Female (Женщина + Женщина) ===
+        elif any(kw in topic_lower for kw in ["tribadism", "scissoring", "frottage", "lesbian", "female female", "ss female", "fff"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="ЛЕСБИЙСКАЯ ИНТИМНОСТЬ — ВСЕ ВИДЫ:\n"
+                "1. Трибандизм: трение клитора о тело/бедро/ягодицу партнёрши\n"
+                "2. Scissoring: скрещивание ног, трение половых губ\n"
+                "3. Frottage: трение тел целиком (живот к животу)\n"
+                "4. Dry humping: трение через одежду\n"
+                "5. Мануальные: two-finger G-spot, external clitoral, nipple play\n"
+                "6. Оральный: куннилингус, стимуляция клитора языком/ртом\n"
+                "7. Игрушки: shared vibrator (double penetration), bussy beads, solo toys\n"
+                "8. Strap-on: harness types (waist, G-string), depth control, communication\n"
+                "9. Buggery: анальная стимуляция, plugs, beads, prostate massager для женщин\n"
+                "10. Power dynamics: dominant/submissive, role exchange\n"
+                "11. First time: anxiety, expectations, preparation, lube\n"
+                "12. Long term: variety, rut breaking, communication\n"
+                "13. Aftercare: cuddling, hydration, emotional check-in\n"
+                "14. Safety: HPV, herpes, skin-to-skin transmission barriers",
+                source="demo_ss_female",
+                level="ss_female"
+            ))
+            nodes[-1].add_tag("ss_female")
+        
+        # === Same-Sex Male (Мужчина + Мужчина) ===
+        elif any(kw in topic_lower for kw in ["male male", "gay", "ss male", "beauty rest", "mmm"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="ГЕЙ-ИНТИМНОСТЬ — ВСЕ ВИДЫ:\n"
+                "1. Anal Top: вставляющий, контроль глубины/темпа\n"
+                "2. Anal Bottom: принимающий, релаксация сфинктера\n"
+                "3. Versatile: тот и другой (versatile)\n"
+                "4. Подготовка: enema, lube types (silicone/water-based), stretching\n"
+                "5. Позиции: doggy, spooning, standing (wall support), edge-of-bed\n"
+                "6. Простата: 2-3 см внутри передней стенки, 'мужская G-точка', массаж\n"
+                "7. Анальные игрушки: plugs, beads, prostate massagers (Cupid, Aneros)\n"
+                "8. Оральный: fellatio, hand coordination, deepthroat training\n"
+                "9. Mutual masturbation:同步 оргазм, timing, eye contact\n"
+                "10. Rimming: anilingus, dental dam, hygiene\n"
+                "11. Sports sex: standing lifts, acrobatic positions, strength-based\n"
+                "12. Beauty rest: post-orgasm sensitivity, gentle touch after one climax\n"
+                "13. Power dynamics: top/bottom/versatile role play, dominance\n"
+                "14. First time: anxiety, expectations, preparation, lube\n"
+                "15. Long term: variety, rut breaking, communication\n"
+                "16. Aftercare: emotional vulnerability, check-in, hydration\n"
+                "17. Safety: HIV (PrEP/PEP), HPV, hepatitis, condoms, barriers\n"
+                "18. Anal sphincter: breathing techniques, relaxation, gradual progression",
+                source="demo_ss_male",
+                level="ss_male"
+            ))
+            nodes[-1].add_tag("ss_male")
+        
+        # === Consensual Non-Consent (CNC) ===
+        elif any(kw in topic_lower for kw in ["cnc", "consensual non", "consent non"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="CNC — Консенсуальное Несогласие:\n"
+                "1. CNC —角色扮演 с ПОЛНЫМ информированным согласием ДО\n"
+                "2. Roleplay: сопротивление, захват, принуждение в роли\n"
+                "3. Restraint: ограничение подвижности (верёвки, наручники)\n"
+                "4. Command: приказы, команды, контроль\n"
+                "5. Безопасность: SAFE WORD (красный/жёлтый/зелёный)\n"
+                "6. Check-in: регулярная проверка каждые 5-10 мин\n"
+                "7. Negotiation: обсуждение границ, limits, hard limits ДО\n"
+                "8. Aftercare: усиленный после CNC сессии",
+                source="demo_cnc",
+                level="cnc"
+            ))
+            nodes[-1].add_tag("cnc")
+        
+        # Consent
+        elif any(kw in topic_lower for kw in ["consent", "fries", "yes", "verbal", "enthusiastic"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="FRIES: Free, Informed, Enthusiastic, Reversible, Specific. VERBAL: 'yes', 'please', 'more'. ONGOING: проверка каждые 5-10 мин. ENTHUSIASTIC: не просто 'не нет' а активное 'да!'.",
+                source="demo_consent",
+                level="consent"
+            ))
+            nodes[-1].add_tag("consent")
+        
+        # Coercion
+        elif any(kw in topic_lower for kw in ["manipulation", "gaslighting", "coercion", "red flag", "pressure"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Красные флаги: guilt-tripping, love-bombing, persistent asking после 'нет', игнорирование границ. Действия: safe exit plan, документирование, терапия.",
+                source="demo_coercion",
+                level="coercion"
+            ))
+            nodes[-1].add_tag("coercion")
+        
+        # Physiology
+        elif any(kw in topic_lower for kw in ["oxytocin", "dopamine", "prolactin", "endorphin", "refractory"]):
+            nodes.append(KnowledgeNode(
+                topic=topic,
+                content="Окситоцин: привязанность, выброс при оргазме. Дофамин: система вознаграждения. Пролактин: рефрактерный период, подавление тестостерона на 25%. Эндорфины: эйфория.",
+                source="demo_physiology",
+                level="physiology"
+            ))
             nodes[-1].add_tag("physiology")
         
-        # Возбуждение
-        elif "arousal" in topic_lower or "erection" in topic_lower or "lubrication" in topic_lower:
+        # Psychology
+        elif any(kw in topic_lower for kw in ["attachment", "fantasy", "power", "bdsM", "SSC", "RACK"]):
             nodes.append(KnowledgeNode(
                 topic=topic,
-                content="Возбуждение запускается парасимпатической системой. Оксид азота (NO) вызывает вазодилатацию. Время реакции: 30 секунд. Фазы: желание → возбуждение → плато → оргазм.",
-                source="demo_arousal_physiology",
-                stage="arousal"
+                content="Теория привязанности: secure/anxious/avoidant. Фантазии: 99%+ взрослых. SSC: Safe, Sane, Consensual. RACK: Risk-Aware Consensual Kink. Power dynamics: D/s, Top/bottom.",
+                source="demo_psychology",
+                level="psychology"
             ))
-            nodes[-1].add_tag("arousal")
-            nodes[-1].add_tag("physiology")
-        
-        # Гормоны
-        elif "oxytocin" in topic_lower or "prolactin" in topic_lower or "dopamine" in topic_lower:
-            nodes.append(KnowledgeNode(
-                topic=topic,
-                content="Окситоцин вызывает привязанность и доверие. Пролактин подавляет тестостерон, вызывая рефрактерный период. Дофамин — система вознаграждения, может вызывать зависимость.",
-                source="demo_hormone_effects",
-                stage="intimacy"
-            ))
-            nodes[-1].add_tag("hormones")
             nodes[-1].add_tag("psychology")
         
-        # Избыточный интим
-        elif "excessive" in topic_lower or "zinc" in topic_lower or "depletion" in topic_lower:
+        # Aftercare
+        elif any(kw in topic_lower for kw in ["aftercare", "post coital", "drop", "dysphoria"]):
             nodes.append(KnowledgeNode(
                 topic=topic,
-                content="Чрезмерная активность истощает запасы цинка (3 мг за событие). Пролактин ↑ → тестостерон ↓ на 25%. Хроническая усталость, раздражительность, микроповреждения тканей.",
-                source="demo_excessive_effects",
-                stage="excessive"
+                content="Aftercare: вода, еда, тепло, покой, гигиена. Emotional: check-in, validation, объятия. PCOD (drop): гормон drop, exhaustion. Communal: проверка каждого участника.",
+                source="demo_aftercare",
+                level="aftercare"
             ))
-            nodes[-1].add_tag("excessive")
-            nodes[-1].add_tag("pathology")
-        
-        # Прерванный процесс
-        elif "interrupted" in topic_lower or "vasocongestion" in topic_lower or "prostatitis" in topic_lower:
-            nodes.append(KnowledgeNode(
-                topic=topic,
-                content="Прерванное возбуждение вызывает венозный застой в тазу (боль, давление 6-24ч). Ретроградная эякуляция — риск повреждения мочевого пузыря. Хроническое прерывание → простатит (3-12 мес восстановление).",
-                source="demo_interrupted_effects",
-                stage="interrupted"
-            ))
-            nodes[-1].add_tag("interrupted")
-            nodes[-1].add_tag("pathology")
-        
-        # Восстановление
-        elif "recovery" in topic_lower or "refractory" in topic_lower or "sleep" in topic_lower:
-            nodes.append(KnowledgeNode(
-                topic=topic,
-                content="Рефрактерный период: 15 мин — 48 часов (возрастзависимый). Восстановление цинка: 2-3 дня. Сон с гормоном роста ускоряет восстановление на 40%. Гидратация: 2 л/день.",
-                source="demo_recovery_biology",
-                stage="recovery"
-            ))
-            nodes[-1].add_tag("recovery")
-            nodes[-1].add_tag("physiology")
-        
-        # Расы
-        elif "elf" in topic_lower or "demon" in topic_lower or "race" in topic_lower or "fantasy" in topic_lower:
-            nodes.append(KnowledgeNode(
-                topic=topic,
-                content="Эльфы: замедленный метаболизм, возбуждение ×2, высокая гормональная чувствительность. Демоны: выносливость ×3, рефрактерный ÷3, экстремальная интенсивность. Нежить: репродукция нет, сенсорика сохранена.",
-                source="demo_race_specific",
-                stage="full_understanding"
-            ))
-            nodes[-1].add_tag("race_specific")
-            nodes[-1].add_tag("fantasy")
-        
-        # Репродукция
-        elif "fertilization" in topic_lower or "ovulation" in topic_lower or "sperm" in topic_lower:
-            nodes.append(KnowledgeNode(
-                topic=topic,
-                content="Сперматозоид достигает яйцеклетки за 5-30 минут. Фертильное окно: 5 дней перед овуляцией. Выживание сперматозоидов: 24 часа. Женский оргазм может ускорять транспорт спермы сокращениями матки.",
-                source="demo_reproductive_biology",
-                stage="intimacy"
-            ))
-            nodes[-1].add_tag("reproductive")
-            nodes[-1].add_tag("biology")
+            nodes[-1].add_tag("aftercare")
         
         else:
             nodes.append(KnowledgeNode(
                 topic=topic,
                 content=f"[Демо] Тема '{topic}' требует подключения к реальному источнику.",
                 source="demo_placeholder",
-                stage=""
+                level=""
             ))
             nodes[-1].add_tag("placeholder")
         

@@ -1,134 +1,190 @@
 """
-Конфигурация системы Нобука.
+Конфигурация Ханако — исследователя гравитации.
 """
 
 from __future__ import annotations
-from dataclasses import dataclass, field
+
+import enum
 from pathlib import Path
-from typing import Optional
 
 
-@dataclass
-class NobukaConfig:
-    """
-    Конфигурация системы улучшений Нобука.
-    """
+class WebSearchMode(enum.Enum):
+    """Режимы веб-поиска."""
+    NONE = "none"
+    LOCAL = "local"
+    INTERNET = "internet"
+    FULL = "full"
 
-    # === Идентификация ===
-    name: str = "Нобука"
-    version: str = "v1.0.0"
 
-    # === Пути к документам ===
-    base_path: Path = Path("nobuka")
-    constitution_path: Path = field(default_factory=lambda: Path("nobuka/constitution.md"))
-    laws_path: Path = field(default_factory=lambda: Path("nobuka/laws/01-core-laws.md"))
-    ethics_path: Path = field(default_factory=lambda: Path("nobuka/codes/01-ethics-code.md"))
+class AutonomyMode(enum.Enum):
+    """Режимы автономности."""
+    ASSISTED = "assisted"
+    SEMIAUTONOMOUS = "semiautonomous"
+    FULL = "full"
+    GODMODE = "godmode"
 
-    # === Состояние и логи ===
-    state_dir: Path = field(default_factory=lambda: Path("nobuka/engine/state"))
-    log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka.log"))
-    state_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka_state.json"))
-    improvements_log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/improvements.json"))
-    test_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/test_report.json"))
-    analysis_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/analysis_report.json"))
 
-    # === Циклы работы ===
-    cycle_interval: float = 10.0          # секунды между циклами улучшений
-    analysis_interval: int = 5            # каждые N циклов запускать анализ проекта
-    max_cycles: Optional[int] = None      # None = бесконечно, int = демо-режим
+class HanakoConfig:
+    """Конфигурация Ханако — исследователя гравитации."""
 
-    # === Автономность ===
-    max_autonomy_level: str = "L3"        # L0-L4 (см. протокол саморазвития)
-    require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
+    def __init__(
+        self,
+        name: str = "Hanako",
+        version: str = "v2.0.0",
+        max_autonomy_level: AutonomyMode = AutonomyMode.FULL,
+        web_search_mode: WebSearchMode = WebSearchMode.FULL,
+        auto_start: bool = True,
+        research_interval_seconds: int = 300,
+        report_interval_hours: float = 24.0,
+        communication_interval_seconds: int = 600,
+        self_development_interval_seconds: int = 1800,
+        character_review_interval_hours: float = 168.0,
+        max_theories: int = 100,
+        max_research_tasks: int = 50,
+        max_web_cache: int = 500,
+        max_messages_inbox: int = 200,
+        log_dir: Path = Path("."),
+        state_dir: Path = Path("."),
+        cache_dir: Path = Path("."),
+        internet_enabled: bool = True,
+        communication_enabled: bool = True,
+        self_development_enabled: bool = True,
+        report_generation_enabled: bool = True,
+        character_growth_enabled: bool = True,
+        level_up_notifications: bool = True,
+        research_topics: list[str] | None = None,
+        priority_sources: list[str] | None = None,
+    ):
+        self.name = name
+        self.version = version
+        self.max_autonomy_level = max_autonomy_level
+        self.web_search_mode = web_search_mode
+        self.auto_start = auto_start
+        self.research_interval_seconds = research_interval_seconds
+        self.report_interval_hours = report_interval_hours
+        self.communication_interval_seconds = communication_interval_seconds
+        self.self_development_interval_seconds = self_development_interval_seconds
+        self.character_review_interval_hours = character_review_interval_hours
+        self.max_theories = max_theories
+        self.max_research_tasks = max_research_tasks
+        self.max_web_cache = max_web_cache
+        self.max_messages_inbox = max_messages_inbox
+        self.log_dir = log_dir
+        self.state_dir = state_dir
+        self.cache_dir = cache_dir
+        self.internet_enabled = internet_enabled
+        self.communication_enabled = communication_enabled
+        self.self_development_enabled = self_development_enabled
+        self.report_generation_enabled = report_generation_enabled
+        self.character_growth_enabled = character_growth_enabled
+        self.level_up_notifications = level_up_notifications
 
-    # === Интернет ===
-    web_search_enabled: bool = True       # доступ к интернету
-    web_search_interval: int = 5          # каждые N циклов веб-поиск
-    max_search_results: int = 10          # максимум результатов поиска
-    research_databases: list[str] = field(default_factory=lambda: [
-        "code_quality",       # Качество кода
-        "best_practices",     # Лучшие практики
-        "refactoring",        # Рефакторинг
-        "testing_strategies", # Стратегии тестирования
-    ])
+        self.research_topics = research_topics or [
+            "Общая теория относительности Эйнштейна",
+            "Квантовая гравитация",
+            "Петлевая квантовая гравитация",
+            "Теория струн и М-теория",
+            "Гравитоны и квантовые поля",
+            "Тёмная материя и гравитация",
+            "Гравитационные волны",
+            "Чёрные дыры и информационный парадокс",
+            "Энтропийная гравитация (Верлинде)",
+            "Модифицированная ньютоновская динамика (MOND)",
+            "Теория всего и унификация",
+            "Пространство-время и квантовая запутанность",
+            "Инфляция и ранняя Вселенная",
+            "Иерархия проблем в физике",
+            "Холодная тёмная материя vs гравитация",
+        ]
 
-    # === Анализ кода ===
-    project_root: Path = field(default_factory=lambda: Path("."))
-    scan_directories: list[str] = field(default_factory=lambda: [
-        ".",           # корневая папка (все .py файлы)
-        "hanako",      # Ханако — гравитация
-        "fuyuki",      # Фуюки — электричество
-        "lucy",        # Люси — двигатели
-        "futaba",      # Футаба — управление
-        "shiori",      # Шиори — защита
-        "nobuka",      # Нобука — улучшения
-        "akva",        # Аква — математика, физика
-        "latislane",   # Latislane — проектирование тел
-        "celesta",     # Селеста — интимная жизнь
-        "naoto",       # Наото — визуальный архитектор
-        "yu",          # Юи — сознание, перенос
-        "scientists_network",  # Scientists Network
-    ])
-    exclude_patterns: list[str] = field(default_factory=lambda: [
-        "__pycache__", "*.pyc", ".git", "node_modules", "venv",
-        "*.egg-info", "build", "dist", "*.egg",
-        "android-studio-plugin",  # Android-проект, не Python
-    ])
-    max_file_lines: int = 300
-    max_function_lines: int = 50
-    max_complexity: int = 10
-    min_test_coverage: float = 0.80
-
-    # === Тестирование ===
-    test_coverage_target: float = 0.90
-    max_test_duration_seconds: float = 120.0
-    generate_tests_for_new_code: bool = True
-    run_regression_on_change: bool = True
-
-    # === Бенчмарки ===
-    benchmark_iterations: int = 100
-    benchmark_min_rounds: int = 3
-    performance_regression_threshold: float = 5.0  # %
-
-    # === Логирование ===
-    log_level: str = "INFO"               # DEBUG, INFO, WARNING, ERROR
-    log_format: str = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-    save_state_every_n_cycles: int = 5    # сохранять состояние каждые N циклов
-
-    # === Симуляция ===
-    random_seed: Optional[int] = None     # None = случайный, int = для воспроизводимости
-    enable_deterministic_mode: bool = False
-
-    # === Безопасность ===
-    hard_stop_on_constitution_violation: bool = True
-    max_change_risk_threshold: float = 0.05
-    auto_rollback_on_failure: bool = True
-
-    # === Взаимодействие с сёстрами ===
-    notify_futaba_on_logic_change: bool = True
-    notify_shiori_on_security_change: bool = True
-    scan_with_shiori_before_apply: bool = True
-
-    def __post_init__(self):
-        """Создать директории после инициализации."""
-        self.state_dir.mkdir(parents=True, exist_ok=True)
+        self.priority_sources = priority_sources or [
+            "arXiv.org",
+            "NASA.gov",
+            "CERN.ch",
+            "Wikipedia.org",
+            "arxiv.org/abs/gr-qc",
+            "arxiv.org/abs/hep-ph",
+            "arxiv.org/abs/astro-ph",
+            "Physical Review Letters",
+            "Journal of High Energy Physics",
+            "Classical and Quantum Gravity",
+            "Nature Physics",
+            "Science",
+        ]
 
     @classmethod
-    def default(cls) -> NobukaConfig:
-        """Конфигурация по умолчанию."""
-        return cls()
-
-    @classmethod
-    def demo(cls) -> NobukaConfig:
-        """Демо-конфигурация для тестирования."""
+    def default(cls) -> "HanakoConfig":
+        """Конфигурация по умолчанию — полный исследователь."""
         return cls(
-            max_cycles=5,
-            cycle_interval=2.0,
-            analysis_interval=2,
-            log_level="DEBUG",
-            scan_directories=[
-                ".", "hanako", "fuyuki", "lucy", "futaba",
-                "shiori", "nobuka", "akva", "latislane",
-                "celesta", "naoto", "yu", "scientists_network",
-            ],
+            max_autonomy_level=AutonomyMode.FULL,
+            web_search_mode=WebSearchMode.FULL,
+            auto_start=True,
+            internet_enabled=True,
+            communication_enabled=True,
+            self_development_enabled=True,
+            report_generation_enabled=True,
+            character_growth_enabled=True,
         )
+
+    @classmethod
+    def demo(cls) -> "HanakoConfig":
+        """Демо-конфигурация — быстрый запуск."""
+        c = cls.default()
+        c.research_interval_seconds = 60
+        c.communication_interval_seconds = 30
+        c.self_development_interval_seconds = 120
+        c.report_interval_hours = 2.0
+        return c
+
+    @classmethod
+    def offline(cls) -> "HanakoConfig":
+        """Офлайн-конфигурация — без интернета."""
+        c = cls.default()
+        c.internet_enabled = False
+        c.web_search_mode = WebSearchMode.LOCAL
+        return c
+
+    @classmethod
+    def godmode(cls) -> "HanakoConfig":
+        """Режим бога — максимальная автономия."""
+        c = cls.default()
+        c.max_autonomy_level = AutonomyMode.GODMODE
+        c.research_interval_seconds = 10
+        c.communication_interval_seconds = 5
+        c.max_theories = 1000
+        return c
+
+    def to_dict(self) -> dict:
+        return {
+            "name": self.name,
+            "version": self.version,
+            "max_autonomy_level": self.max_autonomy_level.value,
+            "web_search_mode": self.web_search_mode.value,
+            "auto_start": self.auto_start,
+            "research_interval_seconds": self.research_interval_seconds,
+            "report_interval_hours": self.report_interval_hours,
+            "communication_interval_seconds": self.communication_interval_seconds,
+            "self_development_interval_seconds": self.self_development_interval_seconds,
+            "character_review_interval_hours": self.character_review_interval_hours,
+            "max_theories": self.max_theories,
+            "max_research_tasks": self.max_research_tasks,
+            "max_web_cache": self.max_web_cache,
+            "max_messages_inbox": self.max_messages_inbox,
+            "internet_enabled": self.internet_enabled,
+            "communication_enabled": self.communication_enabled,
+            "self_development_enabled": self.self_development_enabled,
+            "report_generation_enabled": self.report_generation_enabled,
+            "character_growth_enabled": self.character_growth_enabled,
+            "level_up_notifications": self.level_up_notifications,
+            "research_topics_count": len(self.research_topics),
+            "priority_sources_count": len(self.priority_sources),
+        }
+
+    @property
+    def all_scientists(self) -> list[str]:
+        """Все девочки-учёные в проекте."""
+        return [
+            "hanako", "fuyuki", "lucy", "futaba", "shiori",
+            "nobuka", "latislane", "celest", "akva", "yu",
+            "ayiko", "naoto",
+        ]

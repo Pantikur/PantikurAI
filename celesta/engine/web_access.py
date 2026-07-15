@@ -1,11 +1,11 @@
 """
-Веб-доступ Нобуки — поиск информации для саморазвития.
+Веб-доступ Селесты — поиск информации для изучения интимной жизни.
 
 Реализует:
-  - Поиск лучших практик программирования
-  - Анализ обновлений зависимостей
-  - Поиск паттернов улучшений
-  - Мониторинг безопасности (CVE)
+  - Поиск научных статей по интимной жизни
+  - Анализ медицинских руководств
+  - Исследование образовательных ресурсов
+  - Мониторинг исследований (PubMed, arXiv)
   - Автоматическое обучение на открытых источниках
 """
 
@@ -24,14 +24,14 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class NobukaWebAccess:
+class CelestWebAccess:
     """
-    Веб-доступ для Нобуки — поиск информации для улучшений.
+    Веб-доступ для Селесты — поиск информации для изучения интимной жизни.
     """
 
     def __init__(self, config: Any):
         self.config = config
-        self.logger = logging.getLogger("NobukaWebAccess")
+        self.logger = logging.getLogger("CelestWebAccess")
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -40,7 +40,7 @@ class NobukaWebAccess:
         
         # Кэш найденной информации
         self.web_cache: Dict[str, str] = {}
-        self.cache_file = Path("nobuka/engine/state/web_cache.json")
+        self.cache_file = Path("celesta/engine/state/web_cache.json")
         
         # Загружаем кэш
         self._load_cache()

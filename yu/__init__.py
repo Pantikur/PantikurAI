@@ -1,16 +1,34 @@
 """
-Yu — Ядро изучения цифрового переноса сознания и души.
+Юи — Система изучения сознания, души и разума.
 
 Изучает:
-- Подключение человека к компьютеру (brain-computer interface)
-- Перенос разума в цифровой мир (mind uploading)
-- Перенос души в цифровой мир (soul digitization)
-- Обратный перенос (digital to physical)
-- Автономность и самообучение
-- Интернет-доступ для исследований
+- Сознание: что это, как работает, как оцифровать
+- Душа: нематериальная сущность, возможность переноса
+- Разум: мышление, память, эмоции, самосознание
+- Оцифровка души: перенос в цифровую среду
+- Переселение души: в новое физическое тело без последствий
+- Нейробиологию, квантовое сознание, философию разума
+- Интерфейсы мозг-компьютер, цифровое воплощение
+
+Знаю ВСЁ: от нейрона до квантовой души.
+Переселю душу. Без последствий. Без потерь.
 """
 
 from .engine.yu_core import YuCore
+from .soul_consciousness_modules import (
+    ConsciousnessModule,
+    ConsciousnessCategory,
+    create_default_modules,
+    CONSCIOUSNESS_MODULES
+)
+from .soul_learning import SoulLearningEngine
 
-__version__ = "v1.0.0"
-__all__ = ["YuCore"]
+__version__ = "1.0.0"
+__all__ = [
+    "YuCore",
+    "ConsciousnessModule",
+    "ConsciousnessCategory",
+    "create_default_modules",
+    "CONSCIOUSNESS_MODULES",
+    "SoulLearningEngine",
+]

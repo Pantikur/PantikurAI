@@ -1,12 +1,12 @@
 """
-Веб-доступ Нобуки — поиск информации для саморазвития.
+Веб-доступ Фуюки — поиск информации об атмосферном электричестве.
 
 Реализует:
-  - Поиск лучших практик программирования
-  - Анализ обновлений зависимостей
-  - Поиск паттернов улучшений
-  - Мониторинг безопасности (CVE)
-  - Автоматическое обучение на открытых источниках
+  - Поиск исследований атмосферного электричества в интернете
+  - Изучение научных статей и теорий
+  - Анализ кода проекта на предмет связанного с электричеством
+  - Сбор данных из открытых источников
+  - Извлечение знаний из веб-страниц
 """
 
 from __future__ import annotations
@@ -18,20 +18,19 @@ import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
-from urllib.parse import quote
 
 import requests
 from bs4 import BeautifulSoup
 
 
-class NobukaWebAccess:
+class FuyukiWebAccess:
     """
-    Веб-доступ для Нобуки — поиск информации для улучшений.
+    Веб-доступ для Фуюки — поиск информации об атмосферном электричестве.
     """
 
     def __init__(self, config: Any):
         self.config = config
-        self.logger = logging.getLogger("NobukaWebAccess")
+        self.logger = logging.getLogger("FuyukiWebAccess")
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -40,7 +39,7 @@ class NobukaWebAccess:
         
         # Кэш найденной информации
         self.web_cache: Dict[str, str] = {}
-        self.cache_file = Path("nobuka/engine/state/web_cache.json")
+        self.cache_file = config.state_dir / "web_cache.json"
         
         # Загружаем кэш
         self._load_cache()
@@ -69,565 +68,309 @@ class NobukaWebAccess:
             self.logger.error(f"❌ Ошибка сохранения кэша: {e}")
 
     # ================================================================
-    #  ПОИСК ЛУЧШИХ ПРАКТИК
+    #  ПОИСК ИССЛЕДОВАНИЙ
     # ================================================================
 
-    def search_best_practices(self, topic: str, max_results: int = 5) -> List[Dict[str, str]]:
+    def search_electricity_papers(self, topic: Optional[str] = None) -> List[Dict[str, Any]]:
         """
-        Ищет лучшие практики по теме программирования.
+        Ищет исследования атмосферного электричества.
         
         Args:
-            topic: Тема поиска (например, "python refactoring patterns")
-            max_results: Максимум результатов
+            topic: Конкретная тема поиска (если None — случайная из research_topics)
             
         Returns:
-            Список найденных практик с описанием и источником
+            Список найденных статей
         """
-        results = []
+        if topic is None:
+            topic = random.choice(self.config.research_topics)
         
-        # Проверяем кэш
-        cache_key = f"best_practices:{topic}"
+        cache_key = f"search:{topic}"
         if cache_key in self.web_cache:
             try:
                 return json.loads(self.web_cache[cache_key])
-            except:
+            except Exception:
                 pass
         
-        # Симуляция поиска (в реальной системе — API)
-        self.logger.info(f"🔍 Поиск лучших практик: {topic}")
-        
-        practices = self._simulate_best_practices_search(topic)
+        self.logger.info(f"🌐 Поиск исследований: {topic}")
+        papers = self._search_topic(topic)
         
         # Сохраняем в кэш
-        self.web_cache[cache_key] = json.dumps(practices[:max_results], ensure_ascii=False)
+        self.web_cache[cache_key] = json.dumps(papers, ensure_ascii=False)
         self._save_cache()
         
-        return practices[:max_results]
+        return papers
 
-    def _simulate_best_practices_search(self, topic: str) -> List[Dict[str, str]]:
-        """Симулирует поиск лучших практик (в реальной системе — реальный поиск)."""
-        patterns = {
-            "refactoring": [
+    def _search_topic(self, topic: str) -> List[Dict[str, Any]]:
+        """Симулирует поиск по теме (в реальной системе — реальный поиск)."""
+        # База знаний об атмосферном электричестве
+        electricity_knowledge = {
+            "atmospheric electricity": [
                 {
-                    "title": "Extract Method Pattern",
-                    "description": "Выделение повторяющегося кода в отдельные функции",
-                    "source": "Refactoring.guru",
-                    "url": "https://refactoring.guru/refactoring/techniques/extract-method"
+                    "title": "Глобальная электрическая цепь атмосферы",
+                    "authors": ["Willett", "Smart"],
+                    "year": 2023,
+                    "source": "arxiv",
+                    "summary": "Обзор глобальной электрической цепи, связывающей грозы с ионосферой",
+                    "key_findings": [
+                        "Ток глобальной цепи ~1000-2000 А",
+                        "Ионосферный потенциал ~250 кВ",
+                        "Сопротивление атмосферы ~200 Ом·м²"
+                    ],
+                    "relevance": 0.95
                 },
                 {
-                    "title": "Replace Nested Conditional with Guard Clauses",
-                    "description": "Использование guard clauses вместо вложенных условий",
-                    "source": "Clean Code",
-                    "url": "https://refactoring.guru/refactoring/techniques/guard-clauses"
+                    "title": "Механизмы разделения зарядов в грозовых облаках",
+                    "authors": ["Marshall", "Rakov"],
+                    "year": 2024,
+                    "source": "researchgate",
+                    "summary": "Анализ механизмов разделения зарядов при столкновении града и льда",
+                    "key_findings": [
+                        "Инверсия полярности заряда в верхней части облака",
+                        "Роль температуры -10°C в процессе зарядки",
+                        "Влияние градиента температуры на разделение зарядов"
+                    ],
+                    "relevance": 0.92
                 },
-                {
-                    "title": "Replace Magic Number with Symbolic Constant",
-                    "description": "Замена магических чисел на именованные константы",
-                    "source": "Refactoring.guru",
-                    "url": "https://refactoring.guru/refactoring/techniques/replace-magic-number"
-                }
             ],
-            "performance": [
+            "lightning physics": [
                 {
-                    "title": "Memoization for Expensive Functions",
-                    "description": "Кэширование результатов дорогих вычислений",
-                    "source": "Python Docs",
-                    "url": "https://docs.python.org/3/library/functools.html#functools.lru_cache"
+                    "title": "Физика молнии: от лидера до обратного разряда",
+                    "authors": ["Rakov", "Uman"],
+                    "year": 2023,
+                    "source": "arxiv",
+                    "summary": "Полный обзор физики молний, от формирования лидера до возвращающего разряда",
+                    "key_findings": [
+                        "Скорость лидера ~10⁵-10⁶ м/с",
+                        "Ток обратного разряда до 200 кА",
+                        "Температура канала до 30000 К"
+                    ],
+                    "relevance": 0.98
                 },
                 {
-                    "title": "Use Generators for Large Datasets",
-                    "description": "Генераторы вместо списков для экономии памяти",
-                    "source": "Real Python",
-                    "url": "https://realpython.com/intro-to-python-generators/"
-                }
+                    "title": "Электромагнитные импульсы от молний",
+                    "authors": ["Wait"],
+                    "year": 2022,
+                    "source": "researchgate",
+                    "summary": "Спектральный анализ электромагнитных импульсов от молний",
+                    "key_findings": [
+                        "Основной спектр до 100 кГц",
+                        "Пики на частотах LF и VHF",
+                        "Влияние на радиосвязь и навигацию"
+                    ],
+                    "relevance": 0.88
+                },
             ],
-            "testing": [
+            "ball lightning": [
                 {
-                    "title": "Arrange-Act-Assert Pattern",
-                    "description": "Структура тестов: подготовка, действие, проверка",
-                    "source": "Test-Driven Development",
-                    "url": "https://martinfowler.com/articles/practicalTDD.html"
+                    "title": "Шаровая молния: гипотезы и доказательства",
+                    "authors": ["Steinmetz", "Katz"],
+                    "year": 2024,
+                    "source": "arxiv",
+                    "summary": "Обзор современных гипотез о природе шаровой молнии",
+                    "key_findings": [
+                        "Гипотеза микроволнового резонанса",
+                        "Гипотеза испарения кремния",
+                        "Плазменная модель с магнитным удержанием"
+                    ],
+                    "relevance": 0.85
                 },
+            ],
+            "sprites and elves": [
                 {
-                    "title": "Property-Based Testing",
-                    "description": "Тестирование на основе свойств вместо конкретных примеров",
-                    "source": "Hypothesis Docs",
-                    "url": "https://hypothesis.readthedocs.io/"
-                }
-            ]
+                    "title": "Верхнеатмосферные разряды: спрайты и джеты",
+                    "authors": ["Pasko", "Inan"],
+                    "year": 2023,
+                    "source": "arxiv",
+                    "summary": "Исследование transient luminous events в мезосфере",
+                    "key_findings": [
+                        "Спрайты возникают на высоте 70-90 км",
+                        "Связаны с положительно заряженными грозовыми разрядами",
+                        "Энергия спрайта ~1-10 кДж"
+                    ],
+                    "relevance": 0.80
+                },
+            ],
+            "lightning energy harvesting": [
+                {
+                    "title": "Сбор энергии молний: технические возможности",
+                    "authors": ["Chergui", "Bellaredj"],
+                    "year": 2024,
+                    "source": "researchgate",
+                    "summary": "Анализ технических ограничений и возможностей сбора энергии молний",
+                    "key_findings": [
+                        "Энергия одной молнии ~1-10 ГДж",
+                        "КПД сбора не превышает 10-20%",
+                        "Проблемы накопления и стабилизации"
+                    ],
+                    "relevance": 0.75
+                },
+            ],
         }
         
-        # Выбираем паттерны в зависимости от темы
-        topic_lower = topic.lower()
+        # Ищем совпадения в базе знаний
         results = []
-        for key, practices in patterns.items():
-            if key in topic_lower:
-                results.extend(practices)
+        topic_lower = topic.lower()
+        
+        for key, papers in electricity_knowledge.items():
+            if key in topic_lower or topic_lower in key:
+                results.extend(papers)
         
         if not results:
-            # Общий набор практик
-            results = random.sample(
-                [p for practices in patterns.values() for p in practices],
-                min(3, len(patterns))
-            )
+            # Генерируем случайные статьи на основе темы
+            results = self._generate_random_papers(topic)
         
-        return results
+        return results[:5]  # Максимум 5 статей
 
-    # ================================================================
-    #  АНАЛИЗ ЗАВИСИМОСТЕЙ
-    # ================================================================
-
-    def check_dependency_updates(self, package: str) -> Optional[Dict[str, Any]]:
-        """
-        Проверяет обновления для пакета.
-        
-        Args:
-            package: Имя пакета (например, "requests")
-            
-        Returns:
-            Информация о доступных обновлениях
-        """
-        cache_key = f"dependency:{package}"
-        if cache_key in self.web_cache:
-            try:
-                return json.loads(self.web_cache[cache_key])
-            except:
-                pass
-        
-        self.logger.info(f"📦 Проверка обновлений: {package}")
-        
-        # Симуляция проверки PyPI
-        update_info = self._simulate_pypi_check(package)
-        
-        if update_info:
-            self.web_cache[cache_key] = json.dumps(update_info, ensure_ascii=False)
-            self._save_cache()
-        
-        return update_info
-
-    def _simulate_pypi_check(self, package: str) -> Optional[Dict[str, Any]]:
-        """Симулирует проверку PyPI."""
-        # В реальной системе — запрос к https://pypi.org/pypi/{package}/json
-        
-        packages_info = {
-            "requests": {
-                "current": "2.28.0",
-                "latest": "2.31.0",
-                "update_available": True,
-                "changelog_url": "https://github.com/psf/requests/releases",
-                "security_update": False
-            },
-            "flask": {
-                "current": "2.2.0",
-                "latest": "3.0.0",
-                "update_available": True,
-                "changelog_url": "https://flask.palletsprojects.com/en/latest/changes/",
-                "security_update": True
-            },
-            "numpy": {
-                "current": "1.24.0",
-                "latest": "1.26.0",
-                "update_available": True,
-                "changelog_url": "https://numpy.org/doc/stable/release.html",
-                "security_update": False
-            }
-        }
-        
-        if package.lower() in packages_info:
-            return packages_info[package.lower()]
-        
-        # Случайная информация для неизвестных пакетов
-        if random.random() < 0.3:
-            return {
-                "current": "1.0.0",
-                "latest": f"1.{random.randint(1, 5)}.{random.randint(0, 9)}",
-                "update_available": True,
-                "changelog_url": f"https://pypi.org/project/{package}/",
-                "security_update": random.random() < 0.1
-            }
-        
-        return None
-
-    # ================================================================
-    #  МОНИТОРИНГ БЕЗОПАСНОСТИ
-    # ================================================================
-
-    def check_security_vulnerabilities(self, package: str) -> List[Dict[str, Any]]:
-        """
-        Проверяет уязвимости в пакете.
-        
-        Args:
-            package: Имя пакета
-            
-        Returns:
-            Список найденных уязвимостей
-        """
-        self.logger.info(f"🔒 Проверка уязвимостей: {package}")
-        
-        # В реальной системе — запрос к https://osv.dev/API или https://snyk.io/
-        
-        vulnerabilities = []
-        
-        # Симуляция проверки CVE
-        if random.random() < 0.2:
-            vulnerabilities.append({
-                "cve_id": f"CVE-2024-{random.randint(10000, 99999)}",
-                "severity": random.choice(["high", "medium", "low"]),
-                "description": "Обнаружена потенциальная уязвимость в пакете",
-                "fixed_in": f"{random.randint(1, 3)}.{random.randint(0, 9)}.{random.randint(0, 9)}",
-                "url": f"https://nvd.nist.gov/vuln/detail/CVE-2024-{random.randint(10000, 99999)}"
-            })
-        
-        return vulnerabilities
-
-    # ================================================================
-    #  ОБУЧЕНИЕ НА ОТКРЫТЫХ ИСТОЧНИКАХ
-    # ================================================================
-
-    def learn_from_tutorials(self, topic: str, max_pages: int = 3) -> List[Dict[str, str]]:
-        """
-        Извлекает знания из обучающих материалов.
-        
-        Args:
-            topic: Тема для изучения
-            max_pages: Максимум страниц для анализа
-            
-        Returns:
-            Список извлечённых знаний
-        """
-        self.logger.info(f"📚 Обучение по теме: {topic}")
-        
-        knowledge = []
-        
-        # Симуляция анализа обучающих материалов
-        for i in range(max_pages):
-            knowledge.append({
-                "topic": topic,
-                "page": i + 1,
-                "key_points": self._extract_key_points(topic, i),
-                "code_examples": self._generate_code_example(topic, i),
-                "source": f"https://example.com/tutorial-{topic}-{i+1}"
-            })
-        
-        return knowledge
-
-    def _extract_key_points(self, topic: str, page_num: int) -> List[str]:
-        """Извлекает ключевые пункты из материала."""
-        key_points_map = {
-            "refactoring": [
-                "Выделяйте повторяющийся код в функции",
-                "Используйте guard clauses вместо вложенных условий",
-                "Переименовывайте переменные для ясности",
-                "Уменьшайте цикломатическую сложность",
-                "Применяйте паттерны проектирования"
-            ],
-            "testing": [
-                "Пишите тесты до или вместе с кодом",
-                "Используйте Arrange-Act-Assert",
-                "Тестируйте граничные случаи",
-                "Мокайте внешние зависимости",
-                "Поддерживайте высокое покрытие"
-            ],
-            "performance": [
-                "Измеряйте перед оптимизацией",
-                "Используйте кэширование для дорогих вычислений",
-                "Применяйте генераторы для больших данных",
-                "Оптимизируйте алгоритмы (O-нотация)",
-                "Профилируйте для поиска узких мест"
-            ]
-        }
-        
-        points = key_points_map.get(topic.lower(), [
-            "Изучите документацию",
-            "Следуйте best practices",
-            "Тестируйте изменения",
-            "Документируйте код",
-            "Рефакторите регулярно"
-        ])
-        
-        return points[(page_num * 2) % len(points):(page_num * 2 + 2) % len(points)]
-
-    def _generate_code_example(self, topic: str, example_num: int) -> str:
-        """Генерирует пример кода."""
-        examples = {
-            "refactoring": '''
-# До: сложная функция
-def process_data(data):
-    result = []
-    for item in data:
-        if item.get("active"):
-            if item.get("value") > 0:
-                result.append(item["value"] * 2)
-    return result
-
-# После: рефакторинг
-def filter_active(data):
-    return [item for item in data if item.get("active")]
-
-def double_values(data):
-    return [item["value"] * 2 for item in data if item.get("value", 0) > 0]
-
-def process_data(data):
-    return double_values(filter_active(data))
-''',
-            "testing": '''
-def test_process_data():
-    """Тест функции обработки данных."""
-    # Arrange
-    test_data = [
-        {"active": True, "value": 5},
-        {"active": False, "value": 10},
-        {"active": True, "value": -3},
-    ]
-    
-    # Act
-    result = process_data(test_data)
-    
-    # Assert
-    assert result == [10], f"Ожидалось [10], получено {result}"
-    assert len(result) == 1, "Должна быть только одна запись"
-
-def test_process_data_empty():
-    """Тест с пустым входом."""
-    assert process_data([]) == []
-''',
-            "performance": '''
-from functools import lru_cache
-
-# До: медленное вычисление
-def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
-
-# После: с кэшированием
-@lru_cache(maxsize=None)
-def fibonacci_fast(n):
-    if n <= 1:
-        return n
-    return fibonacci_fast(n-1) + fibonacci_fast(n-2)
-
-# Использование генератора для экономии памяти
-def large_sequence(n):
-    for i in range(n):
-        yield i ** 2
-'''
-        }
-        
-        return examples.get(topic.lower(), "# Пример кода для темы")
-
-    # ================================================================
-    #  ПОИСК АНТИПАТТЕРНОВ
-    # ================================================================
-
-    def find_antipatterns_in_code(self, code: str) -> List[Dict[str, str]]:
-        """
-        Ищет антипаттерны в коде.
-        
-        Args:
-            code: Исходный код для анализа
-            
-        Returns:
-            Список найденных антипаттернов
-        """
-        self.logger.info("🔍 Поиск антипаттернов в коде")
-        
-        antipatterns = []
-        
-        # Проверка на магические числа
-        if re.search(r'\b\d{2,}\b', code):
-            antipatterns.append({
-                "type": "magic_number",
-                "description": "Обнаружены магические числа. Используйте константы.",
-                "severity": "low",
-                "fix": "Замените числа на именованные константы"
-            })
-        
-        # Проверка на длинные функции
-        if re.search(r'def\s+\w+.*:\n(?:    .*\n){50,}', code):
-            antipatterns.append({
-                "type": "long_function",
-                "description": "Функция слишком длинная (>50 строк)",
-                "severity": "medium",
-                "fix": "Разбейте функцию на меньшие"
-            })
-        
-        # Проверка на глубокие вложенности
-        if re.search(r'(?:    ){5,}', code):
-            antipatterns.append({
-                "type": "deep_nesting",
-                "description": "Слишком глубокая вложенность (>4 уровня)",
-                "severity": "medium",
-                "fix": "Используйте guard clauses или извлечение функций"
-            })
-        
-        # Проверка на глобальные переменные
-        if re.search(r'^\s*global\s+', code, re.MULTILINE):
-            antipatterns.append({
-                "type": "global_state",
-                "description": "Использование глобальных переменных",
-                "severity": "high",
-                "fix": "Используйте передачу параметров или классы"
-            })
-        
-        # Проверка на except Exception
-        if re.search(r'except\s+Exception\s*:', code):
-            antipatterns.append({
-                "type": "broad_except",
-                "description": "Перехват всех исключений",
-                "severity": "medium",
-                "fix": "Перехватывайте конкретные типы исключений"
-            })
-        
-        return antipatterns
-
-    # ================================================================
-    #  АНАЛИЗ ПРОЕКТА
-    # ================================================================
-
-    def analyze_project_trends(self) -> Dict[str, Any]:
-        """
-        Анализирует тренды в проекте на основе открытых источников.
-        
-        Returns:
-            Сводка трендов и рекомендаций
-        """
-        self.logger.info("📊 Анализ трендов проекта")
-        
-        trends = {
-            "python_tips": self._get_python_tips(),
-            "security_updates": self._get_security_updates(),
-            "performance_tips": self._get_performance_tips(),
-            "architecture_patterns": self._get_architecture_patterns()
-        }
-        
-        return trends
-
-    def _get_python_tips(self) -> List[str]:
-        """Получает советы по Python."""
-        return [
-            "Используйте type hints для лучшей читаемости",
-            "Применяйте context managers для работы с ресурсами",
-            "Используйте f-strings вместо format()",
-            "Применяйте list comprehensions вместо map/filter",
-            "Используйте dataclasses для простых классов данных"
-        ]
-
-    def _get_security_updates(self) -> List[Dict[str, str]]:
-        """Получает обновления безопасности."""
-        return [
+    def _generate_random_papers(self, topic: str) -> List[Dict[str, Any]]:
+        """Генерирует случайные статьи для неизвестной темы."""
+        templates = [
             {
-                "title": "Проверяйте зависимости на уязвимости",
-                "action": "Используйте pip-audit или safety",
-                "priority": "high"
+                "title": f"Исследование: {topic}",
+                "authors": ["Unknown", "Researcher"],
+                "year": random.randint(2020, 2024),
+                "source": "web",
+                "summary": f"Обзор современных исследований по теме {topic}",
+                "key_findings": [
+                    f"Ключевой фактор: интенсивность {topic}",
+                    f"Влияние на атмосферные процессы",
+                    f"Перспективы практического применения"
+                ],
+                "relevance": random.uniform(0.5, 0.9)
             },
             {
-                "title": "Обновляйте зависимости регулярно",
-                "action": "Используйте dependabot или renovate",
-                "priority": "medium"
-            }
+                "title": f"Моделирование {topic}",
+                "authors": ["Simulator", "Analyst"],
+                "year": random.randint(2021, 2024),
+                "source": "arxiv",
+                "summary": f"Численное моделирование явлений, связанных с {topic}",
+                "key_findings": [
+                    f"Оптимальные параметры для {topic}",
+                    f"Связь с другими атмосферными явлениями"
+                ],
+                "relevance": random.uniform(0.4, 0.85)
+            },
         ]
-
-    def _get_performance_tips(self) -> List[str]:
-        """Получает советы по производительности."""
-        return [
-            "Профилируйте код перед оптимизацией",
-            "Используйте кэширование (@lru_cache)",
-            "Применяйте генераторы для больших данных",
-            "Используйте векторизованные операции (numpy)",
-            "Рассмотрите async для I/O-операций"
-        ]
-
-    def _get_architecture_patterns(self) -> List[str]:
-        """Получает архитектурные паттерны."""
-        return [
-            "Dependency Injection для тестируемости",
-            "Repository Pattern для работы с данными",
-            "Observer Pattern для событий",
-            "Strategy Pattern для заменяемых алгоритмов",
-            "Factory Pattern для создания объектов"
-        ]
+        return templates
 
     # ================================================================
-    #  АВТОМАТИЧЕСКОЕ УЛУЧШЕНИЕ
+    #  ИЗУЧЕНИЕ КОДА ПРОЕКТА
     # ================================================================
 
-    def propose_improvements_from_web(self) -> List[Dict[str, Any]]:
+    def study_project_code(self) -> List[Dict[str, Any]]:
         """
-        Предлагает улучшения на основе веб-поиска.
+        Изучает код проекта на предмет связанного с электричеством.
         
         Returns:
-            Список предложений по улучшению
+            Список найденных релевантных файлов
         """
-        self.logger.info("🌐 Генерация предложений из веб-поиска")
+        self.logger.info("📁 Изучение кода проекта...")
+        found_files = []
         
-        improvements = []
-        
-        # 1. Поиск лучших практик
-        best_practices = self.search_best_practices("python refactoring patterns")
-        for practice in best_practices:
-            improvements.append({
-                "type": "best_practice",
-                "title": practice["title"],
-                "description": practice["description"],
-                "source": practice["source"],
-                "url": practice.get("url", ""),
-                "confidence": random.uniform(0.7, 0.95)
-            })
-        
-        # 2. Проверка зависимостей
-        for package in ["requests", "flask", "numpy"]:
-            update = self.check_dependency_updates(package)
-            if update and update.get("update_available"):
-                improvements.append({
-                    "type": "dependency_update",
-                    "package": package,
-                    "current": update["current"],
-                    "latest": update["latest"],
-                    "security_update": update.get("security_update", False),
-                    "confidence": 0.9
-                })
+        for scan_dir in self.config.scan_directories:
+            dir_path = Path(scan_dir)
+            if not dir_path.exists():
+                continue
             
-            # 3. Проверка уязвимостей
-            vulns = self.check_security_vulnerabilities(package)
-            for vuln in vulns:
-                improvements.append({
-                    "type": "security_fix",
-                    "cve": vuln["cve_id"],
-                    "severity": vuln["severity"],
-                    "description": vuln["description"],
-                    "fixed_in": vuln["fixed_in"],
-                    "confidence": 0.95
-                })
+            for file_type in self.config.study_file_types:
+                for file_path in dir_path.rglob(f"*{file_type}"):
+                    if self._is_electricity_related(file_path):
+                        found_files.append({
+                            "path": str(file_path),
+                            "size": file_path.stat().st_size,
+                            "electricity_relevance": self._calculate_relevance(file_path),
+                        })
         
-        # 4. Тренды
-        trends = self.analyze_project_trends()
-        for tip in trends["python_tips"]:
-            improvements.append({
-                "type": "code_improvement",
-                "description": tip,
-                "category": "python",
-                "confidence": 0.8
-            })
+        self.logger.info(f"Найдено {len(found_files)} файлов, связанных с электричеством")
+        return found_files
+
+    def _is_electricity_related(self, file_path: Path) -> bool:
+        """Проверяет, связан ли файл с электричеством."""
+        electricity_keywords = [
+            "electric", "voltage", "current", "charge", "field", "magnetic",
+            "lightning", "thunder", "storm", "plasma", "ion", "conductor",
+            "resistor", "capacitor", "inductor", "circuit", "power",
+            "energy", "electromagnetic", "wave", "frequency", "signal",
+            "потенциал", "напряжение", "ток", "заряд", "поле", "молния",
+            "гроза", "плазма", "проводник", "энергия", "электрич",
+        ]
         
-        # Сортируем по уверенности
-        improvements.sort(key=lambda x: x.get("confidence", 0), reverse=True)
+        try:
+            content = file_path.read_text(encoding="utf-8", errors="ignore")
+            content_lower = content.lower()
+            
+            for keyword in electricity_keywords:
+                if keyword.lower() in content_lower:
+                    return True
+        except Exception:
+            pass
         
-        return improvements
+        return False
+
+    def _calculate_relevance(self, file_path: Path) -> float:
+        """Рассчитывает релевантность файла для Фуюки."""
+        electricity_keywords = [
+            "electric", "voltage", "current", "charge", "field",
+            "lightning", "thunder", "storm", "plasma", "ion",
+            "потенциал", "напряжение", "ток", "заряд", "поле",
+            "молния", "гроза", "плазма", "проводник",
+        ]
+        
+        try:
+            content = file_path.read_text(encoding="utf-8", errors="ignore")
+            content_lower = content.lower()
+            
+            score = 0
+            for keyword in electricity_keywords:
+                count = content_lower.count(keyword.lower())
+                score += count
+            
+            return min(1.0, score / 10)  # Нормализация до 0-1
+        except Exception:
+            return 0.0
 
     # ================================================================
-    #  СБОР И АНАЛИЗ
+    #  ПОЛУЧЕНИЕ ДЕТАЛЕЙ ФАЙЛА
     # ================================================================
 
-    def fetch_web_content(self, url: str) -> Optional[str]:
+    def get_file_content(self, file_path: Path, max_lines: int = 200) -> Optional[str]:
+        """Получает содержимое файла для изучения."""
+        try:
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                lines = f.readlines()
+            
+            # Извлекаем ключевые части
+            key_lines = []
+            for i, line in enumerate(lines[:max_lines]):
+                # Берём комментарии, docstrings, ключевые строки
+                if any(kw in line.lower() for kw in [
+                    "electric", "voltage", "current", "charge", "field",
+                    "def ", "class ", "import ", "from ", "#", "\"\"\"",
+                    "потенциал", "напряжение", "ток", "заряд", "поле",
+                ]):
+                    key_lines.append(line.strip())
+            
+            if not key_lines and lines:
+                # Если ничего не нашли, берём первые строки
+                key_lines = [line.strip() for line in lines[:20]]
+            
+            return "\n".join(key_lines)
+        except Exception as e:
+            self.logger.error(f"Ошибка чтения файла {file_path}: {e}")
+            return None
+
+    # ================================================================
+    #  ИЗУЧЕНИЕ НАУЧНОЙ СТАТЬИ
+    # ================================================================
+
+    def study_web_article(self, url: str) -> Optional[Dict[str, Any]]:
         """
-        Загружает контент с веб-страницы.
+        Загружает и изучает научную статью с веб-страницы.
         
         Args:
-            url: URL для загрузки
+            url: URL статьи
             
         Returns:
-            Текст страницы или None
+            Извлечённые данные или None
         """
         try:
             response = self.session.get(url, timeout=10)
@@ -641,74 +384,142 @@ def large_sequence(n):
             
             # Получаем текст
             text = soup.get_text(separator="\n")
-            
-            # Убираем пустые строки
             lines = [line.strip() for line in text.splitlines() if line.strip()]
-            text = "\n".join(lines)
+            text = "\n".join(lines[:2000])  # Ограничиваем длину
             
-            return text[:5000]  # Ограничиваем длину
+            # Извлекаем ключевые моменты
+            key_points = self._extract_key_points(text)
+            
+            return {
+                "url": url,
+                "title": soup.title.string if soup.title else url,
+                "text": text[:3000],
+                "key_points": key_points,
+                "studied_at": datetime.now().isoformat(),
+            }
             
         except Exception as e:
-            self.logger.error(f"❌ Ошибка загрузки {url}: {e}")
+            self.logger.error(f"Ошибка загрузки {url}: {e}")
             return None
 
-    def analyze_found_improvements(self, improvements: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """
-        Анализирует найденные улучшения и фильтрует нерелевантные.
+    def _extract_key_points(self, text: str) -> List[str]:
+        """Извлекает ключевые пункты из текста."""
+        points = []
+        sentences = re.split(r'[.!?]+', text)
         
-        Args:
-            improvements: Список найденных улучшений
-            
+        for sentence in sentences[:10]:
+            sentence = sentence.strip()
+            if len(sentence) > 50 and any(kw in sentence.lower() for kw in [
+                "electric", "voltage", "current", "charge", "field",
+                "lightning", "thunder", "storm", "energy", "power",
+                "потенциал", "напряжение", "ток", "заряд", "поле",
+                "молния", "гроза", "энергия", "мощность",
+            ]):
+                points.append(sentence[:200])
+        
+        return points[:5]
+
+    # ================================================================
+    #  ИЗУЧЕНИЕ ВСЕГО О ЭЛЕКТРИЧЕСТВЕ
+    # ================================================================
+
+    def learn_everything_about_electricity(self) -> Dict[str, Any]:
+        """
+        Изучает абсолютно всё, что связано с атмосферным электричеством.
+        
         Returns:
-            Отфильтрованный список с оценками приоритета
+            Сводка изученного
         """
-        analyzed = []
+        self.logger.info("⚡ Фуюки изучает всё об атмосферном электричестве!")
         
-        for improvement in improvements:
-            # Оценка приоритета
-            priority = "low"
-            if improvement.get("confidence", 0) > 0.9:
-                priority = "high"
-            elif improvement.get("confidence", 0) > 0.7:
-                priority = "medium"
-            
-            # Оценка сложности
-            complexity = "low"
-            if improvement["type"] in ("dependency_update", "security_fix"):
-                complexity = "medium"
-            elif improvement["type"] == "best_practice":
-                complexity = "low"
-            
-            analyzed.append({
-                **improvement,
-                "priority": priority,
-                "complexity": complexity,
-                "estimated_effort": self._estimate_effort(improvement),
-                "impact_score": self._calculate_impact(improvement)
-            })
-        
-        # Сортируем по impact score
-        analyzed.sort(key=lambda x: x.get("impact_score", 0), reverse=True)
-        
-        return analyzed
-
-    def _estimate_effort(self, improvement: Dict[str, Any]) -> str:
-        """Оценивает усилия на реализацию."""
-        effort_map = {
-            "best_practice": "low",
-            "code_improvement": "low",
-            "dependency_update": "medium",
-            "security_fix": "medium"
+        summary = {
+            "web_papers": [],
+            "project_files": [],
+            "knowledge_gained": 0,
+            "topics_covered": [],
         }
-        return effort_map.get(improvement["type"], "medium")
+        
+        # 1. Поиск в интернете
+        if self.config.web_access_enabled:
+            for topic in random.sample(self.config.research_topics, min(5, len(self.config.research_topics))):
+                papers = self.search_electricity_papers(topic)
+                summary["web_papers"].extend(papers)
+                summary["topics_covered"].append(topic)
+                summary["knowledge_gained"] += len(papers) * self.config.xp_per_web_search
+        
+        # 2. Изучение кода проекта
+        if self.config.study_project:
+            files = self.study_project_code()
+            summary["project_files"] = files[:10]  # Топ-10 релевантных файлов
+            summary["knowledge_gained"] += len(files) * 5
+        
+        # 3. Изучение существующих знаний
+        knowledge_file = self.config.knowledge_dir / "knowledge_base.json"
+        if knowledge_file.exists():
+            try:
+                with open(knowledge_file, "r", encoding="utf-8") as f:
+                    existing = json.load(f)
+                    summary["existing_knowledge"] = existing
+            except Exception:
+                pass
+        
+        self.logger.info(f"Изучено: {len(summary['web_papers'])} статей, {len(summary['project_files'])} файлов")
+        self.logger.info(f"Получено знаний: {summary['knowledge_gained']} XP")
+        
+        return summary
 
-    def _calculate_impact(self, improvement: Dict[str, Any]) -> float:
-        """Рассчитывает балл влияния."""
-        base_score = improvement.get("confidence", 0.5) * 10
+    # ================================================================
+    #  ПОИСК СПЕЦИАЛИЗИРОВАННОЙ ИНФОРМАЦИИ
+    # ================================================================
+
+    def search_lightning_control_methods(self) -> List[Dict[str, Any]]:
+        """Ищет способы управления молниями."""
+        self.logger.info("⚡ Поиск способов управления молниями...")
         
-        if improvement["type"] == "security_fix":
-            base_score *= 1.5
-        elif improvement["type"] == "dependency_update":
-            base_score *= 1.2
+        methods = [
+            {
+                "name": "Лазерная ионизация",
+                "description": "Направленный лазер создаёт проводящий канал для молнии",
+                "source": "arxiv",
+                "relevance": 0.9,
+                "feasibility": "средняя",
+            },
+            {
+                "name": "Земляные шары (ground balls)",
+                "description": "Пассивное устройство для направления молнии",
+                "source": "web",
+                "relevance": 0.7,
+                "feasibility": "низкая",
+            },
+            {
+                "name": "Электрические проводники",
+                "description": "Высокие мачты и провода для перехвата разрядов",
+                "source": "researchgate",
+                "relevance": 0.95,
+                "feasibility": "высокая",
+            },
+            {
+                "name": "Зарядка облаков",
+                "description": "Активное изменение заряда облака для предотвращения молний",
+                "source": "arxiv",
+                "relevance": 0.6,
+                "feasibility": "низкая",
+            },
+        ]
         
-        return round(base_score, 2)
+        return methods
+
+    def get_electricity_facts(self) -> List[str]:
+        """Получает интересные факты об атмосферном электричестве."""
+        return [
+            "Молния в 5 раз горячее поверхности Солнца (до 30 000 К)",
+            "Каждая молния переносит около 15 кулонов заряда",
+            "В мире происходит около 1,4 миллиона гроз в год",
+            "Глобальная электрическая цепь поддерживает разность потенциалов ~250 кВ между ионосферой и землёй",
+            "Шаровая молния до сих пор не имеет единого научного объяснения",
+            "Спрайты — самые большие разряды в атмосфере, достигают 90 км высоты",
+            "Энергия одной молнии достаточно велика для работы лампочки ~3 месяца",
+            "Молнии могут содержать до 200 кА тока",
+            "Скорость лидера молнии — около 200 000 км/ч",
+            "Молнии обнаружены на Юпитере, Сатурне и Венере",
+        ]

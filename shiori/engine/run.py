@@ -1,12 +1,13 @@
 """
-Точка входа для запуска автономного ядра Нобука.
+Точка входа для запуска автономного ядра Шиори.
 
 Использование:
-    python -m nobuka.engine.run              # постоянная работа
-    python -m nobuka.engine.run --demo       # демо-режим (5 циклов)
-    python -m nobuka.engine.run --analyze    # только анализ проекта
-    python -m nobuka.engine.run --tests      # только тестирование
-    python -m nobuka.engine.run --status     # показать состояние
+    python -m shiori.engine.run              # постоянная работа
+    python -m shiori.engine.run --demo       # демо-режим (5 циклов)
+    python -m shiori.engine.run --scan       # только сканирование уязвимостей
+    python -m shiori.engine.run --threats    # только обнаружение угроз
+    python -m shiori.engine.run --web        # только анализ угроз из интернета
+    python -m shiori.engine.run --status     # показать состояние защиты
 """
 
 from __future__ import annotations
@@ -26,161 +27,51 @@ for _stream in (sys.stdout, sys.stderr):
     if _reconfigure is not None:
         _reconfigure(encoding="utf-8")
 
-from config import NobukaConfig
-from nobuka_core import NobukaCore
-from code_analyzer import CodeAnalyzer
-from test_runner import TestRunner
-from universal_analyzer import UniversalAnalyzer
-from ml_optimizer import MLOptimizer
+from config import ShioriConfig
+from shiori_core import ShioriCore
 
 
-def cmd_run(config: NobukaConfig):
-    """Запустить постоянную работу Нобука."""
-    core = NobukaCore(config)
+def cmd_run(config: ShioriConfig):
+    """Запустить постоянную работу Шиори."""
+    core = ShioriCore(config)
     core.run()
 
 
-def cmd_analyze(config: NobukaConfig):
-    """Запустить только анализ проекта (Python)."""
-    print("=" * 60)
-    print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
-    print("=" * 60)
-
-    analyzer = CodeAnalyzer(config)
-    all_analyses = []
-    total_issues = 0
-
-    for dir_name in config.scan_directories:
-        dir_path = Path(dir_name)
-        if not dir_path.exists():
-            continue
-
-        files = analyzer._scan_files(dir_path)
-        print(f"\n📁 {dir_name}: {len(files)} файлов")
-
-        for file_path in files[:20]:  # Лимит для демо
-            analysis = analyzer.analyze_file(file_path)
-            all_analyses.append(analysis)
-            total_issues += len(analysis.issues)
-
-            if analysis.issues:
-                print(f"  ⚠️  {file_path.name}: {len(analysis.issues)} проблем")
-                for issue in analysis.issues[:3]:
-                    print(f"     - {issue}")
-
-    print(f"\n📊 ИТОГО: {len(all_analyses)} файлов, {total_issues} проблем")
-
-    # Показать лучших и худших
-    if all_analyses:
-        sorted_by_complexity = sorted(all_analyses, key=lambda a: a.complexity, reverse=True)
-        sorted_by_lines = sorted(all_analyses, key=lambda a: a.lines, reverse=True)
-
-        print(f"\n🔝 Самая сложная: {sorted_by_complexity[0].path} (C={sorted_by_complexity[0].complexity})")
-        print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
-
-
-def cmd_universal_analyze(config: NobukaConfig):
-    """Запустить универсальный анализ всех файлов проекта."""
-    print("=" * 80)
-    print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
-    print("=" * 80)
-
-    analyzer = UniversalAnalyzer(config)
-    report = analyzer.analyze_all_files()
-
-    # Вывести отчёт
-    human_report = analyzer.generate_project_report(report)
-    print(human_report)
-
-    # Сохранить отчёты
-    report_path = config.state_dir / "universal_analysis_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
-
-    txt_path = config.state_dir / "project_report.txt"
-    with open(txt_path, "w", encoding="utf-8") as f:
-        f.write(human_report)
-    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
-
-
-def cmd_ml_optimize(config: NobukaConfig):
-    """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
-    print("=" * 80)
-    print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
-    print("=" * 80)
-
-    optimizer = MLOptimizer(config)
-    report = optimizer.analyze_and_optimize()
-
-    # Вывести отчёт
-    human_report = optimizer.generate_optimization_report(report)
-    print(human_report)
-
-    # Сохранить отчёты
-    report_path = config.state_dir / "ml_optimization_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"\n💾 JSON-отчёт сохранён: {report_path}")
-
-    txt_path = config.state_dir / "ml_optimization_report.txt"
-    with open(txt_path, "w", encoding="utf-8") as f:
-        f.write(human_report)
-    print(f"📄 Текстовый отчёт сохранён: {txt_path}")
-
-
-def cmd_tests(config: NobukaConfig):
-    """Запустить только тестирование."""
-    print("=" * 60)
-    print("🧪 ТЕСТИРОВАНИЕ НОБУКИ")
-    print("=" * 60)
-
-    runner = TestRunner(config)
-    report = runner.run_pytest()
-
-    print(f"\n📊 Результат:")
-    print(f"  Всего тестов: {report.total}")
-    print(f"  Пройдено: {report.passed}")
-    print(f"  Провалено: {report.failed}")
-    print(f"  Покрытие: {report.coverage:.1f}%")
-    print(f"  Время: {report.duration_seconds:.1f}с")
-
-
-def cmd_status(config: NobukaConfig):
-    """Показать текущее состояние Нобука."""
+def cmd_status(config: ShioriConfig):
+    """Показать текущее состояние защиты."""
     state_path = config.state_path
 
     if not state_path.exists():
-        print("Нобука ещё не запускалась. Состояние отсутствует.")
+        print("Шиори ещё не запускалась. Состояние отсутствует.")
         return
 
     with open(state_path, "r", encoding="utf-8") as f:
         state = json.load(f)
 
     print("=" * 60)
-    print("📊 СОСТОЯНИЕ НОБУКИ")
+    print("🛡️ СОСТОЯНИЕ ЗАЩИТЫ ШИОРИ")
     print("=" * 60)
     print(f"Версия: {state.get('version', '?')}")
     print(f"Циклов выполнено: {state.get('cycle_count', 0)}")
     print(f"Последнее обновление: {state.get('timestamp', '?')}")
     print()
-    print("Метрики:")
+    print("Метрики защиты:")
     for key, value in state.get("metrics", {}).items():
         print(f"  {key}: {value}")
     print()
 
-    improvements = state.get("improvements_history", [])
-    if improvements:
-        print(f"Последние улучшения ({len(improvements)}):")
-        for imp in improvements[-5:]:
-            status = "✅" if imp.get("applied") else "⏸️"
-            print(f"  {status} {imp.get('version_after', '?')}: "
-                  f"{imp.get('description', '?')}")
+    security = state.get("security_state", {})
+    if security:
+        print("Состояние безопасности:")
+        print(f"  Целостность системы: {security.get('system_integrity', 0):.1%}")
+        print(f"  Статус сети: {security.get('network_status', '?')}")
+        print(f"  Активных угроз: {security.get('active_threats', 0)}")
+        print(f"  Заблокировано: {security.get('resolved_threats', 0)}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Нобука — автономная система улучшений и модернизации",
+        description="Шиори — автономная иммунная система абсолютной защиты",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__
     )
@@ -191,29 +82,24 @@ def main():
         help="Демо-режим: 5 циклов с короткими интервалами"
     )
     parser.add_argument(
-        "--analyze",
+        "--scan",
         action="store_true",
-        help="Запустить только анализ проекта"
+        help="Запустить только сканирование уязвимостей"
     )
     parser.add_argument(
-        "--tests",
+        "--threats",
         action="store_true",
-        help="Запустить только тестирование"
+        help="Запустить только обнаружение угроз"
     )
     parser.add_argument(
-        "--universal",
+        "--web",
         action="store_true",
-        help="Универсальный анализ всех файлов проекта"
-    )
-    parser.add_argument(
-        "--ml",
-        action="store_true",
-        help="ML-оптимизатор: улучшение процесса обучения модели"
+        help="Только анализ угроз из интернета"
     )
     parser.add_argument(
         "--status",
         action="store_true",
-        help="Показать текущее состояние"
+        help="Показать текущее состояние защиты"
     )
     parser.add_argument(
         "--interval",
@@ -232,9 +118,9 @@ def main():
 
     # Конфигурация
     if args.demo:
-        config = NobukaConfig.demo()
+        config = ShioriConfig.demo()
     else:
-        config = NobukaConfig.default()
+        config = ShioriConfig.default()
 
     if args.interval is not None:
         config.cycle_interval = args.interval
@@ -242,16 +128,8 @@ def main():
         config.max_cycles = args.max_cycles
 
     # Команды
-    if args.ml:
-        cmd_ml_optimize(config)
-    elif args.universal:
-        cmd_universal_analyze(config)
-    elif args.status:
+    if args.status:
         cmd_status(config)
-    elif args.analyze:
-        cmd_analyze(config)
-    elif args.tests:
-        cmd_tests(config)
     else:
         cmd_run(config)
 
