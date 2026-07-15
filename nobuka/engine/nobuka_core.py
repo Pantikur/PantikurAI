@@ -12,8 +12,9 @@
   - Взаимодействие с Футабой и Шиорией
 """
 
-from scientists_network.character_system import CharacterSystem
 from __future__ import annotations
+
+from scientists_network.character_system import CharacterSystem
 import json
 import logging
 import os
@@ -30,7 +31,7 @@ _script_dir = Path(__file__).parent.resolve()
 if str(_script_dir) not in sys.path:
     sys.path.insert(0, str(_script_dir))
 
-from config import NobukaConfig
+from nobuka.engine.config import NobukaConfig
 from models import (
     AutonomyLevel, ChangeStatus, Constitution,
     FileAnalysis, ImprovementRecord, ImprovementType, LogEntry, Law,
@@ -171,20 +172,21 @@ class NobukaCore:
 
                 # Сохранение состояния периодически
                 if self.cycle_count % self.config.save_state_every_n_cycles == 0:
-                    
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
+                    self._save_state()
 
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
+                # Укрепление характера (периодически)
+                if self.total_cycles % 5 == 0:
+                    strengthened = self.character.strengthen_strengths()
+                    if strengthened > 0:
+                        self.logger.info(f"Character strengthened: {strengthened} traits")
 
-        self._save_state()
+                # Эволюция характера (периодически)
+                if self.total_cycles % 10 == 0:
+                    evolved = self.character.evolve_traits()
+                    if evolved:
+                        self.logger.info("Character evolved")
+
+                self._save_state()
 
                 # Пауза между циклами
                 time.sleep(self.config.cycle_interval)
@@ -193,20 +195,6 @@ class NobukaCore:
 
         except Exception as e:
             self.logger.exception(f"Критическая ошибка в цикле: {e}")
-            
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
-
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
-
-        self._save_state()
             raise
 
         finally:

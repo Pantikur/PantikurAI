@@ -1,5 +1,5 @@
 """
-Конфигурация системы Нобука.
+Конфигурация системы Наото.
 """
 
 from __future__ import annotations
@@ -9,13 +9,13 @@ from typing import Optional
 
 
 @dataclass
-class NobukaConfig:
+class NaotoConfig:
     """
-    Конфигурация системы улучшений Нобука.
+    Конфигурация системы визуального архитектора Наото.
     """
 
     # === Идентификация ===
-    name: str = "Нобука"
+    name: str = "Наото"
     version: str = "v1.0.0"
 
     # === Пути к документам ===
@@ -114,12 +114,12 @@ class NobukaConfig:
         self.state_dir.mkdir(parents=True, exist_ok=True)
 
     @classmethod
-    def default(cls) -> NobukaConfig:
+    def default(cls) -> NaotoConfig:
         """Конфигурация по умолчанию."""
         return cls()
 
     @classmethod
-    def demo(cls) -> NobukaConfig:
+    def demo(cls) -> NaotoConfig:
         """Демо-конфигурация для тестирования."""
         return cls(
             max_cycles=5,

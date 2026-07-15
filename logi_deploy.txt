@@ -1,0 +1,1624 @@
+14:10:05 | DEBUG | Cloning into '/workspace'...
+14:10:15 | DEBUG | changes and commit them, and you can discard any commits you make in this
+14:10:15 | DEBUG | 
+14:10:15 | DEBUG | 
+14:10:15 | DEBUG | do so (now or later) by using -c with the switch command. Example:
+14:10:15 | DEBUG | state without impacting any branches by switching back to a branch.
+14:10:15 | DEBUG | HEAD is now at 768162b 🌸 Масштабное обновление всех 12 девочек-учёных
+14:10:15 | DEBUG | 
+14:10:15 | DEBUG |   git switch -
+14:10:15 | DEBUG | Note: switching to '768162b048dabd6b4cebf00a24883737518478cf'.
+14:10:15 | DEBUG |   git switch -c <new-branch-name>
+14:10:15 | DEBUG | Turn off this advice by setting config variable advice.detachedHead to false
+14:10:15 | DEBUG | Or undo this operation with:
+14:10:15 | DEBUG | 
+14:10:15 | DEBUG | You are in 'detached HEAD' state. You can look around, make experimental
+14:10:15 | DEBUG | 
+14:10:15 | DEBUG | 
+14:10:15 | DEBUG | If you want to create a new branch to retain commits you create, you may
+14:10:15 | DEBUG | 
+14:10:20 | DEBUG | 
+14:10:20 | DEBUG | #3 sha256:1328b32c40fca9bcf9d70d8eccb72eb873d1124d72dadce04db8badbe7b08546 9.94MB / 9.94MB 0.4s done
+14:10:20 | DEBUG | #2 DONE 1.6s
+14:10:20 | DEBUG | #3 sha256:1328b32c40fca9bcf9d70d8eccb72eb873d1124d72dadce04db8badbe7b08546 0B / 9.94MB 0.2s
+14:10:20 | DEBUG | #4 DONE 0.0s
+14:10:20 | DEBUG | Build context directory: /workspace/.
+14:10:20 | DEBUG | 
+14:10:20 | DEBUG | #3 docker-image://docker.io/docker/dockerfile:1.4@sha256:9ba7531bd80fb0a858632727cf7a112fbfd19b17e94c4e84ced81e24ef1a0dbc
+14:10:20 | INFO | Build started
+14:10:20 | DEBUG | #3 sha256:1328b32c40fca9bcf9d70d8eccb72eb873d1124d72dadce04db8badbe7b08546 9.59MB / 9.94MB 0.3s
+14:10:20 | DEBUG | Dockerfile directory: /workspace/.
+14:10:20 | DEBUG | #3 DONE 0.6s
+14:10:20 | DEBUG | #3 extracting sha256:1328b32c40fca9bcf9d70d8eccb72eb873d1124d72dadce04db8badbe7b08546 0.1s done
+14:10:20 | DEBUG | #5 [internal] load metadata for docker.io/library/python:3.11-slim
+14:10:20 | DEBUG | #4 [internal] load .dockerignore
+14:10:20 | DEBUG | #4 transferring context:
+14:10:20 | DEBUG | #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.4
+14:10:20 | DEBUG | #1 [internal] load build definition from Dockerfile
+14:10:20 | DEBUG | #3 resolve docker.io/docker/dockerfile:1.4@sha256:9ba7531bd80fb0a858632727cf7a112fbfd19b17e94c4e84ced81e24ef1a0dbc 0.0s done
+14:10:20 | DEBUG | 
+14:10:20 | DEBUG | #4 transferring context: 340B done
+14:10:20 | DEBUG | 
+14:10:20 | DEBUG | #1 transferring dockerfile: 3.46kB done
+14:10:20 | DEBUG | #1 DONE 0.0s
+14:10:20 | DEBUG | Found Dockerfile in /workspace root
+14:10:20 | DEBUG | #5 DONE 0.9s
+14:10:21 | DEBUG | #6 resolve docker.io/library/python:3.11-slim@sha256:baf89808ec37adeaab83cec287adb4a2afa4a11c1d51e961c7ec737877e61af6 0.0s done
+14:10:21 | DEBUG | 
+14:10:21 | DEBUG | 
+14:10:21 | DEBUG | #6 DONE 0.1s
+14:10:21 | DEBUG | #6 [stage-0  1/28] FROM docker.io/library/python:3.11-slim@sha256:baf89808ec37adeaab83cec287adb4a2afa4a11c1d51e961c7ec737877e61af6
+14:10:21 | DEBUG | #7 [internal] load build context
+14:10:21 | DEBUG | #6 extracting sha256:6b265b8eae4a26a263eb55546aa430c1eef37032a7cd86393d98c6b779f28319
+14:10:21 | DEBUG | #6 sha256:6b265b8eae4a26a263eb55546aa430c1eef37032a7cd86393d98c6b779f28319 14.42MB / 14.42MB 0.4s done
+14:10:21 | DEBUG | #7 DONE 0.9s
+14:10:21 | DEBUG | #6 sha256:c89b9f64c028c19ba92e195d7589d914b9cd1fc69f3c3dfeb931e93876ac2064 0B / 248B 0.8s
+14:10:21 | DEBUG | 
+14:10:21 | DEBUG | #7 transferring context: 62.84MB 0.9s done
+14:10:21 | DEBUG | #6 sha256:9775d166087aba0afe5ba9a88859c04c08090e82ae218742d09fec9119e0335d 1.29MB / 1.29MB 0.4s done
+14:10:21 | DEBUG | #6 [stage-0  1/28] FROM docker.io/library/python:3.11-slim@sha256:baf89808ec37adeaab83cec287adb4a2afa4a11c1d51e961c7ec737877e61af6
+14:10:21 | DEBUG | #6 extracting sha256:9775d166087aba0afe5ba9a88859c04c08090e82ae218742d09fec9119e0335d 0.1s done
+14:10:22 | DEBUG | #6 sha256:c89b9f64c028c19ba92e195d7589d914b9cd1fc69f3c3dfeb931e93876ac2064 248B / 248B 1.0s done
+14:10:22 | DEBUG | #6 DONE 1.5s
+14:10:22 | DEBUG | #6 extracting sha256:6b265b8eae4a26a263eb55546aa430c1eef37032a7cd86393d98c6b779f28319 0.6s done
+14:10:22 | DEBUG | #6 extracting sha256:c89b9f64c028c19ba92e195d7589d914b9cd1fc69f3c3dfeb931e93876ac2064 done
+14:10:22 | DEBUG | #8 [stage-0  2/28] RUN --mount=type=cache,target=/var/cache/apt,sharing=locked     --mount=type=cache,target=/var/lib/apt,sharing=locked     apt-get update &&     apt-get install -y --no-install-recommends         curl         ca-certificates         gnupg         wget         fonts-liberation         libasound2         libatk-bridge2.0-0         libatk1.0-0         libcairo2         libcups2         libdbus-1-3         libexpat1         libfontconfig1         libgbm1         libglib2.0-0         libgtk-3-0         libnspr4         libnss3         libpango-1.0-0         libx11-6         libx11-xcb1         libxcb1         libxcomposite1         libxcursor1         libxdamage1         libxext6         libxfixes3         libxi6         libxrandr2         libxrender1         libxss1         libxtst6         xdg-utils &&     rm -rf /var/lib/apt/lists/*
+14:10:22 | DEBUG | 
+14:10:22 | DEBUG | #6 [stage-0  1/28] FROM docker.io/library/python:3.11-slim@sha256:baf89808ec37adeaab83cec287adb4a2afa4a11c1d51e961c7ec737877e61af6
+14:10:22 | DEBUG | 
+14:10:22 | DEBUG | #6 DONE 1.5s
+14:10:22 | DEBUG | #8 0.177 Get:1 http://deb.debian.org/debian trixie InRelease [140 kB]
+14:10:22 | DEBUG | #8 0.278 Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+14:10:23 | DEBUG | #8 0.351 Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9673 kB]
+14:10:23 | DEBUG | #8 0.315 Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+14:10:23 | DEBUG | #8 0.571 Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [660 B]
+14:10:23 | DEBUG | #8 0.604 Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [225 kB]
+14:10:23 | DEBUG | #8 1.490 Fetched 10.1 MB in 1s (7284 kB/s)
+14:10:24 | DEBUG | #8 1.490 Reading package lists...
+14:10:25 | DEBUG | #8 2.293 Reading package lists...
+14:10:25 | DEBUG | #8 2.961 Building dependency tree...
+14:10:25 | DEBUG | #8 3.451   adwaita-icon-theme at-spi2-common dbus dbus-bin dbus-daemon
+14:10:25 | DEBUG | #8 3.451 The following additional packages will be installed:
+14:10:25 | DEBUG | #8 3.451   dbus-session-bus-common dbus-system-bus-common dbus-user-session
+14:10:25 | DEBUG | #8 3.451 ca-certificates is already the newest version (20250419).
+14:10:26 | DEBUG | #8 3.455 Recommended packages:
+14:10:26 | DEBUG | #8 3.455 Suggested packages:
+14:10:26 | DEBUG | #8 3.452   libgcrypt20 libgdk-pixbuf-2.0-0 libgdk-pixbuf2.0-common libgnutls30t64
+14:10:26 | DEBUG | #8 3.452   libidn2-0 libjbig0 libjpeg62-turbo libk5crypto3 libkeyutils1 libkrb5-3
+14:10:26 | DEBUG | #8 3.452   libgpg-error0 libgraphite2-3 libgssapi-krb5-2 libgtk-3-common libharfbuzz0b
+14:10:26 | DEBUG | #8 3.455   librsvg2-common bash-completion fonts-liberation-sans-narrow gnupg-utils
+14:10:26 | DEBUG | #8 3.455   adwaita-icon-theme-legacy pinentry-gnome3 tor gpg-wks-server parcimonie
+14:10:26 | DEBUG | #8 3.452   libkrb5support0 libksba8 liblcms2-2 libldap2 liblerc4 libllvm19
+14:10:26 | DEBUG | #8 3.453   libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxdmcp6 libxinerama1 libxkbcommon0
+14:10:26 | DEBUG | #8 3.455   libx11-protocol-perl x11-utils x11-xserver-utils
+14:10:26 | DEBUG | #8 3.451   dconf-gsettings-backend dconf-service dirmngr fontconfig fontconfig-config
+14:10:26 | DEBUG | #8 3.452   libpng16-16t64 libproc2-0 libpsl5t64 librtmp1 libsasl2-2 libsasl2-modules-db
+14:10:26 | DEBUG | #8 3.455   libarchive13t64 libbpf1 libdw1t64 libfido2-1 libip4tc2 libpwquality1
+14:10:26 | DEBUG | #8 3.455   libgdk-pixbuf2.0-bin libglib2.0-data xdg-user-dirs libgpg-error-l10n
+14:10:26 | DEBUG | #8 3.452   libnghttp2-14 libnghttp3-9 libnpth0t64 libp11-kit0 libpam-systemd
+14:10:26 | DEBUG | #8 3.455   libgtk-3-bin krb5-locales libldap-common publicsuffix libsasl2-modules
+14:10:26 | DEBUG | #8 3.453   libxau6 libxcb-dri3-0 libxcb-present0 libxcb-randr0 libxcb-render0
+14:10:26 | DEBUG | #8 3.455   xloadimage scdaemon tpm2daemon alsa-utils libasound2-plugins colord
+14:10:26 | DEBUG | #8 3.452   libatspi2.0-0t64 libavahi-client3 libavahi-common-data libavahi-common3
+14:10:26 | DEBUG | #8 3.455   liblcms2-utils libcryptsetup12 libtss2-rc0t64 pciutils lm-sensors
+14:10:26 | DEBUG | #8 3.452   libpangocairo-1.0-0 libpangoft2-1.0-0 libpciaccess0 libpixman-1-0
+14:10:26 | DEBUG | #8 3.455   cups-common rng-tools low-memory-monitor gnutls-bin krb5-doc krb5-user gvfs
+14:10:26 | DEBUG | #8 3.452   libdrm-intel1 libdrm2 libedit2 libelf1t64 libepoxy0 libfreetype6 libfribidi0
+14:10:26 | DEBUG | #8 3.452   hicolor-icon-theme libapparmor1 libasound2-data libassuan9 libatomic1
+14:10:26 | DEBUG | #8 3.455   systemd-boot systemd-resolved systemd-repart libtss2-tcti-device0 polkitd
+14:10:26 | DEBUG | #8 3.453   libtasn1-6 libthai-data libthai0 libtiff6 libunistring5 libwayland-client0
+14:10:26 | DEBUG | #8 3.453   shared-mime-info systemd systemd-sysv x11-common xkb-data
+14:10:26 | DEBUG | #8 3.455   gpg-wks-client gpgv alsa-ucm-conf alsa-topology-conf at-spi2-core
+14:10:26 | DEBUG | #8 3.452   libcurl4t64 libdatrie1 libdconf1 libdeflate0 libdrm-amdgpu1 libdrm-common
+14:10:26 | DEBUG | #8 3.453   libsensors-config libsensors5 libsharpyuv0 libssh2-1t64 libsystemd-shared
+14:10:26 | DEBUG | #8 3.455   systemd-cryptsetup libnss-systemd libfile-mimeinfo-perl libnet-dbus-perl
+14:10:26 | DEBUG | #8 3.453   libwayland-cursor0 libwayland-egl1 libwayland-server0 libwebp7 libx11-data
+14:10:26 | DEBUG | #8 3.452   libbrotli1 libcairo-gobject2 libcloudproviders0 libcolord2 libcom-err2
+14:10:26 | DEBUG | #8 3.453   libxml2 libxshmfence1 libz3-4 mesa-libgallium pinentry-curses procps
+14:10:26 | DEBUG | #8 3.451   gnupg-l10n gpg gpg-agent gpgconf gpgsm gtk-update-icon-cache
+14:10:26 | DEBUG | #8 3.455   libkmod2 psmisc linux-sysctl-defaults systemd-timesyncd | time-daemon
+14:10:26 | DEBUG | #8 3.455   libqrencode4 pinentry-doc systemd-container systemd-homed systemd-userdbd
+14:10:26 | DEBUG | #8 4.126   dconf-gsettings-backend dconf-service dirmngr fontconfig fontconfig-config
+14:10:26 | DEBUG | #8 4.126   adwaita-icon-theme at-spi2-common curl dbus dbus-bin dbus-daemon
+14:10:26 | DEBUG | #8 4.126   fonts-liberation gnupg gnupg-l10n gpg gpg-agent gpgconf gpgsm
+14:10:26 | DEBUG | #8 4.126   dbus-session-bus-common dbus-system-bus-common dbus-user-session
+14:10:26 | DEBUG | #8 4.126 The following NEW packages will be installed:
+14:10:26 | DEBUG | #8 4.126   libatspi2.0-0t64 libavahi-client3 libavahi-common-data libavahi-common3
+14:10:26 | DEBUG | #8 4.126   libglib2.0-0t64 libgnutls30t64 libgpg-error0 libgraphite2-3 libgssapi-krb5-2
+14:10:26 | DEBUG | #8 4.127   libxcb-render0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxcb1
+14:10:26 | DEBUG | #8 4.234 Need to get 87.8 MB of archives.
+14:10:26 | DEBUG | #8 4.234 0 upgraded, 152 newly installed, 0 to remove and 0 not upgraded.
+14:10:26 | DEBUG | #8 4.126   gtk-update-icon-cache hicolor-icon-theme libapparmor1 libasound2-data
+14:10:26 | DEBUG | #8 4.126   libpangocairo-1.0-0 libpangoft2-1.0-0 libpciaccess0 libpixman-1-0
+14:10:26 | DEBUG | #8 4.126   libnpth0t64 libnspr4 libnss3 libp11-kit0 libpam-systemd libpango-1.0-0
+14:10:26 | DEBUG | #8 4.126   libasound2t64 libassuan9 libatk-bridge2.0-0t64 libatk1.0-0t64 libatomic1
+14:10:26 | DEBUG | #8 4.127   libxinerama1 libxkbcommon0 libxml2 libxrandr2 libxrender1 libxshmfence1
+14:10:26 | DEBUG | #8 4.128   shared-mime-info systemd systemd-sysv wget x11-common xdg-utils xkb-data
+14:10:26 | DEBUG | #8 4.126   libbrotli1 libcairo-gobject2 libcairo2 libcloudproviders0 libcolord2
+14:10:26 | DEBUG | #8 4.127   libxcomposite1 libxcursor1 libxdamage1 libxdmcp6 libxext6 libxfixes3 libxi6
+14:10:26 | DEBUG | #8 4.126   liblcms2-2 libldap2 liblerc4 libllvm19 libnghttp2-14 libnghttp3-9
+14:10:26 | DEBUG | #8 4.126   libdeflate0 libdrm-amdgpu1 libdrm-common libdrm-intel1 libdrm2 libedit2
+14:10:26 | DEBUG | #8 4.127   libsensors-config libsensors5 libsharpyuv0 libssh2-1t64 libsystemd-shared
+14:10:26 | DEBUG | #8 4.234 After this operation, 372 MB of additional disk space will be used.
+14:10:26 | DEBUG | #8 4.234 Get:1 http://deb.debian.org/debian trixie/main amd64 libsystemd-shared amd64 257.13-1~deb13u1 [2155 kB]
+14:10:26 | DEBUG | #8 4.126   libelf1t64 libepoxy0 libexpat1 libfontconfig1 libfreetype6 libfribidi0
+14:10:26 | DEBUG | #8 4.127   libpng16-16t64 libproc2-0 libpsl5t64 librtmp1 libsasl2-2 libsasl2-modules-db
+14:10:26 | DEBUG | #8 4.126   libcom-err2 libcups2t64 libcurl4t64 libdatrie1 libdbus-1-3 libdconf1
+14:10:26 | DEBUG | #8 4.127   libwayland-cursor0 libwayland-egl1 libwayland-server0 libwebp7 libx11-6
+14:10:26 | DEBUG | #8 4.126   libgbm1 libgcrypt20 libgdk-pixbuf-2.0-0 libgdk-pixbuf2.0-common
+14:10:26 | DEBUG | #8 4.127   libtasn1-6 libthai-data libthai0 libtiff6 libunistring5 libwayland-client0
+14:10:26 | DEBUG | #8 4.126   libjpeg62-turbo libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libksba8
+14:10:26 | DEBUG | #8 4.126   libgtk-3-0t64 libgtk-3-common libharfbuzz0b libidn2-0 libjbig0
+14:10:26 | DEBUG | #8 4.127   libx11-data libx11-xcb1 libxau6 libxcb-dri3-0 libxcb-present0 libxcb-randr0
+14:10:26 | DEBUG | #8 4.128   libxss1 libxtst6 libz3-4 mesa-libgallium pinentry-curses procps
+14:10:26 | DEBUG | #8 4.445 Get:2 http://deb.debian.org/debian trixie/main amd64 libapparmor1 amd64 4.1.0-1 [43.7 kB]
+14:10:27 | DEBUG | #8 4.502 Get:9 http://deb.debian.org/debian trixie/main amd64 dbus-daemon amd64 1.16.2-2 [159 kB]
+14:10:27 | DEBUG | #8 4.499 Get:8 http://deb.debian.org/debian trixie/main amd64 libexpat1 amd64 2.7.1-2 [108 kB]
+14:10:27 | DEBUG | #8 4.498 Get:6 http://deb.debian.org/debian trixie/main amd64 dbus-bin amd64 1.16.2-2 [80.0 kB]
+14:10:27 | DEBUG | #8 4.503 Get:11 http://deb.debian.org/debian trixie/main amd64 dbus amd64 1.16.2-2 [71.6 kB]
+14:10:27 | DEBUG | #8 4.548 Get:14 http://deb.debian.org/debian trixie/main amd64 libpam-systemd amd64 257.13-1~deb13u1 [297 kB]
+14:10:27 | DEBUG | #8 4.499 Get:7 http://deb.debian.org/debian trixie/main amd64 dbus-session-bus-common all 1.16.2-2 [52.3 kB]
+14:10:27 | DEBUG | #8 4.497 Get:5 http://deb.debian.org/debian trixie/main amd64 libdbus-1-3 amd64 1.16.2-2 [178 kB]
+14:10:27 | DEBUG | #8 4.503 Get:10 http://deb.debian.org/debian trixie/main amd64 dbus-system-bus-common all 1.16.2-2 [53.5 kB]
+14:10:27 | DEBUG | #8 4.485 Get:4 http://deb.debian.org/debian trixie/main amd64 systemd-sysv amd64 257.13-1~deb13u1 [64.9 kB]
+14:10:27 | DEBUG | #8 4.540 Get:13 http://deb.debian.org/debian trixie/main amd64 procps amd64 2:4.0.4-9 [882 kB]
+14:10:27 | DEBUG | #8 4.445 Get:3 http://deb.debian.org/debian trixie/main amd64 systemd amd64 257.13-1~deb13u1 [3094 kB]
+14:10:27 | DEBUG | #8 4.508 Get:12 http://deb.debian.org/debian trixie/main amd64 libproc2-0 amd64 2:4.0.4-9 [65.6 kB]
+14:10:27 | DEBUG | #8 4.554 Get:16 http://deb.debian.org/debian trixie/main amd64 libidn2-0 amd64 2.3.8-2 [109 kB]
+14:10:27 | DEBUG | #8 4.578 Get:21 http://deb.debian.org/debian trixie/main amd64 wget amd64 1.25.0-2 [984 kB]
+14:10:27 | DEBUG | #8 4.619 Get:22 http://deb.debian.org/debian trixie/main amd64 libgdk-pixbuf2.0-common all 2.42.12+dfsg-4+deb13u1 [312 kB]
+14:10:27 | DEBUG | #8 4.559 Get:19 http://deb.debian.org/debian trixie/main amd64 libgnutls30t64 amd64 3.8.9-3+deb13u4 [1469 kB]
+14:10:27 | DEBUG | #8 4.622 Get:23 http://deb.debian.org/debian trixie/main amd64 libatomic1 amd64 14.2.0-19 [9308 B]
+14:10:27 | DEBUG | #8 4.672 Get:26 http://deb.debian.org/debian trixie/main amd64 shared-mime-info amd64 2.4-5+b2 [760 kB]
+14:10:27 | DEBUG | #8 4.623 Get:24 http://deb.debian.org/debian trixie/main amd64 libglib2.0-0t64 amd64 2.84.4-3~deb13u3 [1519 kB]
+14:10:27 | DEBUG | #8 4.635 Get:25 http://deb.debian.org/debian trixie/main amd64 libxml2 amd64 2.12.7+dfsg+really2.9.14-2.1+deb13u3 [700 kB]
+14:10:27 | DEBUG | #8 4.577 Get:20 http://deb.debian.org/debian trixie/main amd64 libpsl5t64 amd64 0.21.2-1.1+b1 [57.2 kB]
+14:10:27 | DEBUG | #8 4.559 Get:18 http://deb.debian.org/debian trixie/main amd64 libtasn1-6 amd64 4.20.0-2+deb13u1 [50.1 kB]
+14:10:27 | DEBUG | #8 4.555 Get:17 http://deb.debian.org/debian trixie/main amd64 libp11-kit0 amd64 0.25.5-3 [425 kB]
+14:10:27 | DEBUG | #8 4.550 Get:15 http://deb.debian.org/debian trixie/main amd64 libunistring5 amd64 1.3-2 [477 kB]
+14:10:27 | DEBUG | #8 4.693 Get:27 http://deb.debian.org/debian trixie/main amd64 libjpeg62-turbo amd64 1:2.1.5-4 [168 kB]
+14:10:27 | DEBUG | #8 4.696 Get:29 http://deb.debian.org/debian trixie/main amd64 libdeflate0 amd64 1.23-2 [47.3 kB]
+14:10:27 | DEBUG | #8 4.694 Get:28 http://deb.debian.org/debian trixie/main amd64 libpng16-16t64 amd64 1.6.48-1+deb13u5 [283 kB]
+14:10:27 | DEBUG | #8 4.706 Get:35 http://deb.debian.org/debian trixie/main amd64 libgdk-pixbuf-2.0-0 amd64 2.42.12+dfsg-4+deb13u1 [141 kB]
+14:10:27 | DEBUG | #8 4.699 Get:32 http://deb.debian.org/debian trixie/main amd64 libsharpyuv0 amd64 1.5.0-0.1 [116 kB]
+14:10:27 | DEBUG | #8 4.776 Get:39 http://deb.debian.org/debian trixie/main amd64 at-spi2-common all 2.56.2-1+deb13u1 [171 kB]
+14:10:27 | DEBUG | #8 4.697 Get:30 http://deb.debian.org/debian trixie/main amd64 libjbig0 amd64 2.1-6.1+b2 [32.1 kB]
+14:10:27 | DEBUG | #8 4.697 Get:31 http://deb.debian.org/debian trixie/main amd64 liblerc4 amd64 4.0.0+ds-5 [183 kB]
+14:10:27 | DEBUG | #8 4.700 Get:33 http://deb.debian.org/debian trixie/main amd64 libwebp7 amd64 1.5.0-0.1 [318 kB]
+14:10:27 | DEBUG | #8 4.702 Get:34 http://deb.debian.org/debian trixie/main amd64 libtiff6 amd64 4.7.0-3+deb13u2 [345 kB]
+14:10:27 | DEBUG | #8 4.739 Get:38 http://deb.debian.org/debian trixie/main amd64 adwaita-icon-theme all 48.1-1 [504 kB]
+14:10:27 | DEBUG | #8 4.738 Get:36 http://deb.debian.org/debian trixie/main amd64 gtk-update-icon-cache amd64 4.18.6+ds-2 [52.7 kB]
+14:10:27 | DEBUG | #8 4.739 Get:37 http://deb.debian.org/debian trixie/main amd64 hicolor-icon-theme all 0.18-2 [11.8 kB]
+14:10:27 | DEBUG | #8 4.840 Get:54 http://deb.debian.org/debian trixie/main amd64 libcurl4t64 amd64 8.14.1-2+deb13u4 [392 kB]
+14:10:27 | DEBUG | #8 4.838 Get:53 http://deb.debian.org/debian trixie/main amd64 libssh2-1t64 amd64 1.11.1-1+deb13u1 [245 kB]
+14:10:27 | DEBUG | #8 4.867 Get:57 http://deb.debian.org/debian trixie/main amd64 libdconf1 amd64 0.40.0-5 [41.8 kB]
+14:10:27 | DEBUG | #8 4.843 Get:55 http://deb.debian.org/debian trixie/main amd64 curl amd64 8.14.1-2+deb13u4 [270 kB]
+14:10:27 | DEBUG | #8 4.777 Get:40 http://deb.debian.org/debian trixie/main amd64 libbrotli1 amd64 1.1.0-2+b7 [307 kB]
+14:10:27 | DEBUG | #8 4.837 Get:52 http://deb.debian.org/debian trixie/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b5 [58.8 kB]
+14:10:27 | DEBUG | #8 4.802 Get:46 http://deb.debian.org/debian trixie/main amd64 libgssapi-krb5-2 amd64 1.21.3-5+deb13u1 [138 kB]
+14:10:27 | DEBUG | #8 4.866 Get:56 http://deb.debian.org/debian trixie/main amd64 dbus-user-session amd64 1.16.2-2 [52.1 kB]
+14:10:27 | DEBUG | #8 4.789 Get:42 http://deb.debian.org/debian trixie/main amd64 libcom-err2 amd64 1.47.2-3+b11 [25.0 kB]
+14:10:27 | DEBUG | #8 4.837 Get:51 http://deb.debian.org/debian trixie/main amd64 libnghttp3-9 amd64 1.8.0-1 [67.7 kB]
+14:10:27 | DEBUG | #8 4.836 Get:50 http://deb.debian.org/debian trixie/main amd64 libnghttp2-14 amd64 1.64.0-1.1+deb13u1 [76.2 kB]
+14:10:27 | DEBUG | #8 4.804 Get:48 http://deb.debian.org/debian trixie/main amd64 libsasl2-2 amd64 2.1.28+dfsg1-9 [57.5 kB]
+14:10:27 | DEBUG | #8 4.867 Get:58 http://deb.debian.org/debian trixie/main amd64 dconf-service amd64 0.40.0-5 [32.4 kB]
+14:10:27 | DEBUG | #8 4.803 Get:47 http://deb.debian.org/debian trixie/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg1-9 [19.8 kB]
+14:10:27 | DEBUG | #8 4.789 Get:44 http://deb.debian.org/debian trixie/main amd64 libkeyutils1 amd64 1.6.3-6 [9456 B]
+14:10:27 | DEBUG | #8 4.789 Get:45 http://deb.debian.org/debian trixie/main amd64 libkrb5-3 amd64 1.21.3-5+deb13u1 [326 kB]
+14:10:27 | DEBUG | #8 4.898 Get:59 http://deb.debian.org/debian trixie/main amd64 dconf-gsettings-backend amd64 0.40.0-5 [28.6 kB]
+14:10:27 | DEBUG | #8 4.834 Get:49 http://deb.debian.org/debian trixie/main amd64 libldap2 amd64 2.6.10+dfsg-1 [194 kB]
+14:10:27 | DEBUG | #8 4.789 Get:41 http://deb.debian.org/debian trixie/main amd64 libkrb5support0 amd64 1.21.3-5+deb13u1 [33.1 kB]
+14:10:27 | DEBUG | #8 4.789 Get:43 http://deb.debian.org/debian trixie/main amd64 libk5crypto3 amd64 1.21.3-5+deb13u1 [81.2 kB]
+14:10:27 | DEBUG | #8 4.939 Get:63 http://deb.debian.org/debian trixie/main amd64 gpgconf amd64 2.4.7-21+deb13u1+b4 [129 kB]
+14:10:27 | DEBUG | #8 4.898 Get:60 http://deb.debian.org/debian trixie/main amd64 libgpg-error0 amd64 1.51-4 [82.1 kB]
+14:10:27 | DEBUG | #8 5.013 Get:68 http://deb.debian.org/debian trixie/main amd64 fonts-liberation all 1:2.1.5-3 [1475 kB]
+14:10:27 | DEBUG | #8 4.940 Get:64 http://deb.debian.org/debian trixie/main amd64 libksba8 amd64 1.6.7-2+b1 [136 kB]
+14:10:27 | DEBUG | #8 4.974 Get:66 http://deb.debian.org/debian trixie/main amd64 dirmngr amd64 2.4.7-21+deb13u1+b4 [384 kB]
+14:10:27 | DEBUG | #8 4.977 Get:67 http://deb.debian.org/debian trixie/main amd64 libfreetype6 amd64 2.13.3+dfsg-1+deb13u1 [452 kB]
+14:10:27 | DEBUG | #8 4.899 Get:61 http://deb.debian.org/debian trixie/main amd64 libassuan9 amd64 3.0.2-2 [61.5 kB]
+14:10:27 | DEBUG | #8 4.900 Get:62 http://deb.debian.org/debian trixie/main amd64 libgcrypt20 amd64 1.11.0-7+deb13u1 [843 kB]
+14:10:27 | DEBUG | #8 4.941 Get:65 http://deb.debian.org/debian trixie/main amd64 libnpth0t64 amd64 1.8-3 [23.2 kB]
+14:10:27 | DEBUG | #8 5.123 Get:72 http://deb.debian.org/debian trixie/main amd64 gnupg-l10n all 2.4.7-21+deb13u1 [749 kB]
+14:10:27 | DEBUG | #8 5.065 Get:71 http://deb.debian.org/debian trixie/main amd64 fontconfig amd64 2.15.0-2.3 [463 kB]
+14:10:27 | DEBUG | #8 5.057 Get:69 http://deb.debian.org/debian trixie/main amd64 fontconfig-config amd64 2.15.0-2.3 [318 kB]
+14:10:27 | DEBUG | #8 5.061 Get:70 http://deb.debian.org/debian trixie/main amd64 libfontconfig1 amd64 2.15.0-2.3 [392 kB]
+14:10:27 | DEBUG | #8 5.215 Get:82 http://deb.debian.org/debian trixie/main amd64 libxdmcp6 amd64 1:1.1.5-1 [27.8 kB]
+14:10:27 | DEBUG | #8 5.217 Get:83 http://deb.debian.org/debian trixie/main amd64 libxcb1 amd64 1.17.0-2+b1 [144 kB]
+14:10:27 | DEBUG | #8 5.222 Get:84 http://deb.debian.org/debian trixie/main amd64 libx11-data all 2:1.8.12-1 [343 kB]
+14:10:27 | DEBUG | #8 5.201 Get:78 http://deb.debian.org/debian trixie/main amd64 libasound2-data all 1.2.14-1 [21.1 kB]
+14:10:27 | DEBUG | #8 5.231 Get:85 http://deb.debian.org/debian trixie/main amd64 libx11-6 amd64 2:1.8.12-1 [815 kB]
+14:10:27 | DEBUG | #8 5.188 Get:77 http://deb.debian.org/debian trixie/main amd64 gnupg all 2.4.7-21+deb13u1 [417 kB]
+14:10:27 | DEBUG | #8 5.214 Get:81 http://deb.debian.org/debian trixie/main amd64 libxau6 amd64 1:1.0.11-1 [20.4 kB]
+14:10:27 | DEBUG | #8 5.179 Get:76 http://deb.debian.org/debian trixie/main amd64 gpgsm amd64 2.4.7-21+deb13u1+b4 [276 kB]
+14:10:27 | DEBUG | #8 5.167 Get:74 http://deb.debian.org/debian trixie/main amd64 pinentry-curses amd64 1.3.1-2 [86.4 kB]
+14:10:27 | DEBUG | #8 5.201 Get:79 http://deb.debian.org/debian trixie/main amd64 libasound2t64 amd64 1.2.14-1 [381 kB]
+14:10:27 | DEBUG | #8 5.213 Get:80 http://deb.debian.org/debian trixie/main amd64 libatk1.0-0t64 amd64 2.56.2-1+deb13u1 [52.0 kB]
+14:10:27 | DEBUG | #8 5.129 Get:73 http://deb.debian.org/debian trixie/main amd64 gpg amd64 2.4.7-21+deb13u1+b4 [634 kB]
+14:10:27 | DEBUG | #8 5.170 Get:75 http://deb.debian.org/debian trixie/main amd64 gpg-agent amd64 2.4.7-21+deb13u1+b4 [271 kB]
+14:10:27 | DEBUG | #8 5.287 Get:94 http://deb.debian.org/debian trixie/main amd64 libxcb-render0 amd64 1.17.0-2+b1 [115 kB]
+14:10:27 | DEBUG | #8 5.266 Get:91 http://deb.debian.org/debian trixie/main amd64 libavahi-common3 amd64 0.8-16 [44.2 kB]
+14:10:27 | DEBUG | #8 5.281 Get:92 http://deb.debian.org/debian trixie/main amd64 libavahi-client3 amd64 0.8-16 [48.4 kB]
+14:10:27 | DEBUG | #8 5.320 Get:96 http://deb.debian.org/debian trixie/main amd64 libxrender1 amd64 1:0.9.12-1 [27.9 kB]
+14:10:27 | DEBUG | #8 5.263 Get:90 http://deb.debian.org/debian trixie/main amd64 libavahi-common-data amd64 0.8-16 [112 kB]
+14:10:27 | DEBUG | #8 5.321 Get:97 http://deb.debian.org/debian trixie/main amd64 libcairo2 amd64 1.18.4-1+b1 [538 kB]
+14:10:27 | DEBUG | #8 5.262 Get:89 http://deb.debian.org/debian trixie/main amd64 libatk-bridge2.0-0t64 amd64 2.56.2-1+deb13u1 [68.4 kB]
+14:10:27 | DEBUG | #8 5.282 Get:93 http://deb.debian.org/debian trixie/main amd64 libpixman-1-0 amd64 0.44.0-3 [248 kB]
+14:10:27 | DEBUG | #8 5.258 Get:88 http://deb.debian.org/debian trixie/main amd64 libatspi2.0-0t64 amd64 2.56.2-1+deb13u1 [80.7 kB]
+14:10:27 | DEBUG | #8 5.320 Get:95 http://deb.debian.org/debian trixie/main amd64 libxcb-shm0 amd64 1.17.0-2+b1 [105 kB]
+14:10:27 | DEBUG | #8 5.255 Get:86 http://deb.debian.org/debian trixie/main amd64 libxext6 amd64 2:1.3.4-1+b3 [50.4 kB]
+14:10:27 | DEBUG | #8 5.256 Get:87 http://deb.debian.org/debian trixie/main amd64 libxi6 amd64 2:1.8.2-1 [78.9 kB]
+14:10:27 | DEBUG | #8 5.370 Get:98 http://deb.debian.org/debian trixie/main amd64 libcairo-gobject2 amd64 1.18.4-1+b1 [130 kB]
+14:10:28 | DEBUG | #8 5.416 Get:109 http://deb.debian.org/debian trixie/main amd64 libedit2 amd64 3.1-20250104-1 [93.8 kB]
+14:10:28 | DEBUG | #8 5.409 Get:105 http://deb.debian.org/debian trixie/main amd64 libdrm2 amd64 2.4.124-2 [39.0 kB]
+14:10:28 | DEBUG | #8 5.372 Get:99 http://deb.debian.org/debian trixie/main amd64 libcloudproviders0 amd64 0.3.6-2 [29.2 kB]
+14:10:28 | DEBUG | #8 5.418 Get:111 http://deb.debian.org/debian trixie/main amd64 libepoxy0 amd64 1.5.10-2 [193 kB]
+14:10:28 | DEBUG | #8 5.409 Get:106 http://deb.debian.org/debian trixie/main amd64 libdrm-amdgpu1 amd64 2.4.124-2 [22.6 kB]
+14:10:28 | DEBUG | #8 5.416 Get:110 http://deb.debian.org/debian trixie/main amd64 libelf1t64 amd64 0.192-4 [189 kB]
+14:10:28 | DEBUG | #8 5.415 Get:108 http://deb.debian.org/debian trixie/main amd64 libdrm-intel1 amd64 2.4.124-2 [64.1 kB]
+14:10:28 | DEBUG | #8 5.372 Get:100 http://deb.debian.org/debian trixie/main amd64 liblcms2-2 amd64 2.16-2+deb13u2 [160 kB]
+14:10:28 | DEBUG | #8 5.409 Get:107 http://deb.debian.org/debian trixie/main amd64 libpciaccess0 amd64 0.17-3+b3 [51.9 kB]
+14:10:28 | DEBUG | #8 5.447 Get:113 http://deb.debian.org/debian trixie/main amd64 libwayland-server0 amd64 1.23.1-3 [34.4 kB]
+14:10:28 | DEBUG | #8 5.447 Get:112 http://deb.debian.org/debian trixie/main amd64 libfribidi0 amd64 1.0.16-1 [26.5 kB]
+14:10:28 | DEBUG | #8 5.373 Get:101 http://deb.debian.org/debian trixie/main amd64 libcolord2 amd64 1.4.7-3 [139 kB]
+14:10:28 | DEBUG | #8 5.448 Get:114 http://deb.debian.org/debian trixie/main amd64 libz3-4 amd64 4.13.3-1 [8560 kB]
+14:10:28 | DEBUG | #8 5.406 Get:102 http://deb.debian.org/debian trixie/main amd64 libcups2t64 amd64 2.4.10-3+deb13u2 [252 kB]
+14:10:28 | DEBUG | #8 5.408 Get:103 http://deb.debian.org/debian trixie/main amd64 libdatrie1 amd64 0.2.13-3+b1 [38.1 kB]
+14:10:28 | DEBUG | #8 5.408 Get:104 http://deb.debian.org/debian trixie/main amd64 libdrm-common all 2.4.124-2 [8288 B]
+14:10:28 | DEBUG | #8 5.683 Get:115 http://deb.debian.org/debian trixie/main amd64 libllvm19 amd64 1:19.1.7-3+b1 [26.0 MB]
+14:10:28 | DEBUG | #8 6.078 Get:116 http://deb.debian.org/debian trixie/main amd64 libsensors-config all 1:3.6.2-2 [16.2 kB]
+14:10:28 | DEBUG | #8 6.112 Get:125 http://deb.debian.org/debian trixie/main amd64 mesa-libgallium amd64 25.0.7-2+deb13u1 [9630 kB]
+14:10:28 | DEBUG | #8 6.079 Get:117 http://deb.debian.org/debian trixie/main amd64 libsensors5 amd64 1:3.6.2-2 [37.5 kB]
+14:10:28 | DEBUG | #8 6.083 Get:122 http://deb.debian.org/debian trixie/main amd64 libxcb-sync1 amd64 1.17.0-2+b1 [109 kB]
+14:10:28 | DEBUG | #8 6.081 Get:120 http://deb.debian.org/debian trixie/main amd64 libxcb-present0 amd64 1.17.0-2+b1 [106 kB]
+14:10:28 | DEBUG | #8 6.085 Get:124 http://deb.debian.org/debian trixie/main amd64 libxshmfence1 amd64 1.3.3-1 [10.9 kB]
+14:10:28 | DEBUG | #8 6.215 Get:126 http://deb.debian.org/debian trixie/main amd64 libgbm1 amd64 25.0.7-2+deb13u1 [44.6 kB]
+14:10:28 | DEBUG | #8 6.079 Get:118 http://deb.debian.org/debian trixie/main amd64 libx11-xcb1 amd64 2:1.8.12-1 [247 kB]
+14:10:28 | DEBUG | #8 6.081 Get:119 http://deb.debian.org/debian trixie/main amd64 libxcb-dri3-0 amd64 1.17.0-2+b1 [107 kB]
+14:10:28 | DEBUG | #8 6.082 Get:121 http://deb.debian.org/debian trixie/main amd64 libxcb-randr0 amd64 1.17.0-2+b1 [117 kB]
+14:10:28 | DEBUG | #8 6.084 Get:123 http://deb.debian.org/debian trixie/main amd64 libxcb-xfixes0 amd64 1.17.0-2+b1 [109 kB]
+14:10:28 | DEBUG | #8 6.283 Get:142 http://deb.debian.org/debian trixie/main amd64 xkb-data all 2.42-1 [790 kB]
+14:10:28 | DEBUG | #8 6.282 Get:139 http://deb.debian.org/debian trixie/main amd64 libxcursor1 amd64 1:1.2.3-1 [39.7 kB]
+14:10:28 | DEBUG | #8 6.289 Get:143 http://deb.debian.org/debian trixie/main amd64 libxkbcommon0 amd64 1.7.0-2 [113 kB]
+14:10:28 | DEBUG | #8 6.216 Get:128 http://deb.debian.org/debian trixie/main amd64 libharfbuzz0b amd64 10.2.0-1+deb13u1 [479 kB]
+14:10:28 | DEBUG | #8 6.216 Get:127 http://deb.debian.org/debian trixie/main amd64 libgraphite2-3 amd64 1.3.14-2+deb13u1 [75.2 kB]
+14:10:28 | DEBUG | #8 6.225 Get:134 http://deb.debian.org/debian trixie/main amd64 libwayland-client0 amd64 1.23.1-3 [26.8 kB]
+14:10:28 | DEBUG | #8 6.290 Get:144 http://deb.debian.org/debian trixie/main amd64 libxrandr2 amd64 2:1.5.4-1+b3 [36.3 kB]
+14:10:28 | DEBUG | #8 6.222 Get:131 http://deb.debian.org/debian trixie/main amd64 libpango-1.0-0 amd64 1.56.3-1 [226 kB]
+14:10:28 | DEBUG | #8 6.222 Get:130 http://deb.debian.org/debian trixie/main amd64 libthai0 amd64 0.1.29-2+b1 [49.4 kB]
+14:10:28 | DEBUG | #8 6.281 Get:137 http://deb.debian.org/debian trixie/main amd64 libxcomposite1 amd64 1:0.4.6-1 [16.3 kB]
+14:10:28 | DEBUG | #8 6.225 Get:133 http://deb.debian.org/debian trixie/main amd64 libpangocairo-1.0-0 amd64 1.56.3-1 [35.7 kB]
+14:10:28 | DEBUG | #8 6.221 Get:129 http://deb.debian.org/debian trixie/main amd64 libthai-data all 0.1.29-2 [168 kB]
+14:10:28 | DEBUG | #8 6.360 Get:146 http://deb.debian.org/debian trixie/main amd64 libgtk-3-0t64 amd64 3.24.49-3 [2769 kB]
+14:10:28 | DEBUG | #8 6.224 Get:132 http://deb.debian.org/debian trixie/main amd64 libpangoft2-1.0-0 amd64 1.56.3-1 [55.6 kB]
+14:10:28 | DEBUG | #8 6.282 Get:140 http://deb.debian.org/debian trixie/main amd64 libxdamage1 amd64 1:1.1.6-1+b2 [15.5 kB]
+14:10:28 | DEBUG | #8 6.312 Get:145 http://deb.debian.org/debian trixie/main amd64 libgtk-3-common all 3.24.49-3 [4908 kB]
+14:10:28 | DEBUG | #8 6.281 Get:136 http://deb.debian.org/debian trixie/main amd64 libwayland-egl1 amd64 1.23.1-3 [5860 B]
+14:10:28 | DEBUG | #8 6.281 Get:138 http://deb.debian.org/debian trixie/main amd64 libxfixes3 amd64 1:6.0.0-2+b4 [20.2 kB]
+14:10:28 | DEBUG | #8 6.283 Get:141 http://deb.debian.org/debian trixie/main amd64 libxinerama1 amd64 2:1.1.4-3+b4 [16.0 kB]
+14:10:28 | DEBUG | #8 6.249 Get:135 http://deb.debian.org/debian trixie/main amd64 libwayland-cursor0 amd64 1.23.1-3 [11.9 kB]
+14:10:29 | DEBUG | #8 6.390 Get:148 http://deb.debian.org/debian trixie/main amd64 libnss3 amd64 2:3.110-1+deb13u3 [1395 kB]
+14:10:29 | DEBUG | #8 6.409 Get:150 http://deb.debian.org/debian trixie/main amd64 libxss1 amd64 1:1.2.3-1+b3 [17.0 kB]
+14:10:29 | DEBUG | #8 6.409 Get:152 http://deb.debian.org/debian trixie/main amd64 xdg-utils all 1.2.1-2 [75.8 kB]
+14:10:29 | DEBUG | #8 6.403 Get:149 http://deb.debian.org/debian trixie/main amd64 x11-common all 1:7.7+24+deb13u1 [217 kB]
+14:10:29 | DEBUG | #8 6.409 Get:151 http://deb.debian.org/debian trixie/main amd64 libxtst6 amd64 2:1.2.5-1 [25.8 kB]
+14:10:29 | DEBUG | #8 6.389 Get:147 http://deb.debian.org/debian trixie/main amd64 libnspr4 amd64 2:4.36-1 [110 kB]
+14:10:29 | DEBUG | #8 6.571 debconf: unable to initialize frontend: Dialog
+14:10:29 | DEBUG | #8 6.571 debconf: (TERM is not set, so the dialog frontend is not usable.)
+14:10:29 | DEBUG | #8 6.571 debconf: falling back to frontend: Readline
+14:10:29 | DEBUG | #8 6.571 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8, <STDIN> line 152.)
+14:10:29 | DEBUG | #8 6.576 debconf: falling back to frontend: Noninteractive
+14:10:29 | DEBUG | #8 6.576 debconf: unable to initialize frontend: Teletype
+14:10:29 | DEBUG | #8 6.576 debconf: (This frontend requires a controlling tty.)
+14:10:29 | DEBUG | #8 6.571 debconf: falling back to frontend: Teletype
+14:10:29 | DEBUG | #8 6.571 debconf: unable to initialize frontend: Readline
+14:10:33 | DEBUG | #8 10.59 Preconfiguring packages ...
+14:10:33 | DEBUG | #8 10.66 Fetched 87.8 MB in 2s (38.9 MB/s)
+14:10:33 | DEBUG | #8 10.68 Selecting previously unselected package libsystemd-shared:amd64.
+14:10:33 | DEBUG | #8 10.68 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 5645 files and directories currently installed.)
+14:10:33 | DEBUG | #8 10.69 Unpacking libsystemd-shared:amd64 (257.13-1~deb13u1) ...
+14:10:33 | DEBUG | #8 10.69 Preparing to unpack .../libsystemd-shared_257.13-1~deb13u1_amd64.deb ...
+14:10:33 | DEBUG | #8 10.82 Selecting previously unselected package libapparmor1:amd64.
+14:10:33 | DEBUG | #8 10.92 Selecting previously unselected package systemd.
+14:10:33 | DEBUG | #8 10.92 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 5658 files and directories currently installed.)
+14:10:33 | DEBUG | #8 10.93 Unpacking systemd (257.13-1~deb13u1) ...
+14:10:33 | DEBUG | #8 10.82 Preparing to unpack .../libapparmor1_4.1.0-1_amd64.deb ...
+14:10:33 | DEBUG | #8 10.88 Setting up libsystemd-shared:amd64 (257.13-1~deb13u1) ...
+14:10:33 | DEBUG | #8 10.92 Preparing to unpack .../systemd_257.13-1~deb13u1_amd64.deb ...
+14:10:33 | DEBUG | #8 10.85 Unpacking libapparmor1:amd64 (4.1.0-1) ...
+14:10:33 | DEBUG | #8 11.10 Setting up libapparmor1:amd64 (4.1.0-1) ...
+14:10:33 | DEBUG | #8 11.17 Creating group 'systemd-journal' with GID 999.
+14:10:33 | DEBUG | #8 11.13 Created symlink '/etc/systemd/system/getty.target.wants/getty@tty1.service' → '/usr/lib/systemd/system/getty@.service'.
+14:10:33 | DEBUG | #8 11.15 Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pstore.service' → '/usr/lib/systemd/system/systemd-pstore.service'.
+14:10:33 | DEBUG | #8 11.15 Initializing machine ID from random generator.
+14:10:33 | DEBUG | #8 11.19 /usr/lib/tmpfiles.d/legacy.conf:14: Duplicate line for path "/run/lock", ignoring.
+14:10:33 | DEBUG | #8 11.23 Selecting previously unselected package systemd-sysv.
+14:10:33 | DEBUG | #8 11.10 Setting up systemd (257.13-1~deb13u1) ...
+14:10:33 | DEBUG | #8 11.17 Creating user 'systemd-network' (systemd Network Management) with UID 998 and GID 998.
+14:10:33 | DEBUG | #8 11.17 Creating group 'systemd-network' with GID 998.
+14:10:33 | DEBUG | #8 11.14 Created symlink '/etc/systemd/system/multi-user.target.wants/remote-fs.target' → '/usr/lib/systemd/system/remote-fs.target'.
+14:10:33 | DEBUG | #8 11.24 Unpacking systemd-sysv (257.13-1~deb13u1) ...
+14:10:33 | DEBUG | #8 11.30 Unpacking dbus-bin (1.16.2-2) ...
+14:10:33 | DEBUG | #8 11.26 Unpacking libdbus-1-3:amd64 (1.16.2-2) ...
+14:10:33 | DEBUG | #8 11.32 Selecting previously unselected package dbus-session-bus-common.
+14:10:33 | DEBUG | #8 11.29 Selecting previously unselected package dbus-bin.
+14:10:33 | DEBUG | #8 11.32 Unpacking dbus-session-bus-common (1.16.2-2) ...
+14:10:33 | DEBUG | #8 11.32 Preparing to unpack .../003-dbus-session-bus-common_1.16.2-2_all.deb ...
+14:10:33 | DEBUG | #8 11.26 Selecting previously unselected package libdbus-1-3:amd64.
+14:10:33 | DEBUG | #8 11.26 Preparing to unpack .../001-libdbus-1-3_1.16.2-2_amd64.deb ...
+14:10:33 | DEBUG | #8 11.23 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 6595 files and directories currently installed.)
+14:10:33 | DEBUG | #8 11.35 Selecting previously unselected package libexpat1:amd64.
+14:10:33 | DEBUG | #8 11.29 Preparing to unpack .../002-dbus-bin_1.16.2-2_amd64.deb ...
+14:10:33 | DEBUG | #8 11.24 Preparing to unpack .../000-systemd-sysv_257.13-1~deb13u1_amd64.deb ...
+14:10:33 | DEBUG | #8 11.35 Unpacking libexpat1:amd64 (2.7.1-2) ...
+14:10:33 | DEBUG | #8 11.45 Selecting previously unselected package dbus-system-bus-common.
+14:10:33 | DEBUG | #8 11.38 Selecting previously unselected package dbus-daemon.
+14:10:33 | DEBUG | #8 11.38 Unpacking dbus-daemon (1.16.2-2) ...
+14:10:33 | DEBUG | #8 11.35 Preparing to unpack .../004-libexpat1_2.7.1-2_amd64.deb ...
+14:10:33 | DEBUG | #8 11.38 Preparing to unpack .../005-dbus-daemon_1.16.2-2_amd64.deb ...
+14:10:34 | DEBUG | #8 11.50 Unpacking dbus (1.16.2-2) ...
+14:10:34 | DEBUG | #8 11.45 Preparing to unpack .../006-dbus-system-bus-common_1.16.2-2_all.deb ...
+14:10:34 | DEBUG | #8 11.46 Unpacking dbus-system-bus-common (1.16.2-2) ...
+14:10:34 | DEBUG | #8 11.54 Selecting previously unselected package libproc2-0:amd64.
+14:10:34 | DEBUG | #8 11.54 Preparing to unpack .../008-libproc2-0_2%3a4.0.4-9_amd64.deb ...
+14:10:34 | DEBUG | #8 11.58 Selecting previously unselected package procps.
+14:10:34 | DEBUG | #8 11.55 Unpacking libproc2-0:amd64 (2:4.0.4-9) ...
+14:10:34 | DEBUG | #8 11.49 Selecting previously unselected package dbus.
+14:10:34 | DEBUG | #8 11.49 Preparing to unpack .../007-dbus_1.16.2-2_amd64.deb ...
+14:10:34 | DEBUG | #8 11.66 Preparing to unpack .../010-libpam-systemd_257.13-1~deb13u1_amd64.deb ...
+14:10:34 | DEBUG | #8 11.71 Selecting previously unselected package libunistring5:amd64.
+14:10:34 | DEBUG | #8 11.67 Unpacking libpam-systemd:amd64 (257.13-1~deb13u1) ...
+14:10:34 | DEBUG | #8 11.66 Selecting previously unselected package libpam-systemd:amd64.
+14:10:34 | DEBUG | #8 11.58 Preparing to unpack .../009-procps_2%3a4.0.4-9_amd64.deb ...
+14:10:34 | DEBUG | #8 11.59 Unpacking procps (2:4.0.4-9) ...
+14:10:34 | DEBUG | #8 11.81 Selecting previously unselected package libp11-kit0:amd64.
+14:10:34 | DEBUG | #8 11.77 Preparing to unpack .../012-libidn2-0_2.3.8-2_amd64.deb ...
+14:10:34 | DEBUG | #8 11.71 Unpacking libunistring5:amd64 (1.3-2) ...
+14:10:34 | DEBUG | #8 11.81 Preparing to unpack .../013-libp11-kit0_0.25.5-3_amd64.deb ...
+14:10:34 | DEBUG | #8 11.77 Unpacking libidn2-0:amd64 (2.3.8-2) ...
+14:10:34 | DEBUG | #8 11.71 Preparing to unpack .../011-libunistring5_1.3-2_amd64.deb ...
+14:10:34 | DEBUG | #8 11.77 Selecting previously unselected package libidn2-0:amd64.
+14:10:34 | DEBUG | #8 11.81 Unpacking libp11-kit0:amd64 (0.25.5-3) ...
+14:10:34 | DEBUG | #8 11.90 Preparing to unpack .../015-libgnutls30t64_3.8.9-3+deb13u4_amd64.deb ...
+14:10:34 | DEBUG | #8 11.91 Unpacking libgnutls30t64:amd64 (3.8.9-3+deb13u4) ...
+14:10:34 | DEBUG | #8 11.87 Unpacking libtasn1-6:amd64 (4.20.0-2+deb13u1) ...
+14:10:34 | DEBUG | #8 11.86 Preparing to unpack .../014-libtasn1-6_4.20.0-2+deb13u1_amd64.deb ...
+14:10:34 | DEBUG | #8 11.98 Selecting previously unselected package libpsl5t64:amd64.
+14:10:34 | DEBUG | #8 11.86 Selecting previously unselected package libtasn1-6:amd64.
+14:10:34 | DEBUG | #8 11.90 Selecting previously unselected package libgnutls30t64:amd64.
+14:10:34 | DEBUG | #8 11.98 Preparing to unpack .../016-libpsl5t64_0.21.2-1.1+b1_amd64.deb ...
+14:10:34 | DEBUG | #8 12.07 Preparing to unpack .../018-libgdk-pixbuf2.0-common_2.42.12+dfsg-4+deb13u1_all.deb ...
+14:10:34 | DEBUG | #8 12.14 Selecting previously unselected package libatomic1:amd64.
+14:10:34 | DEBUG | #8 12.07 Unpacking libgdk-pixbuf2.0-common (2.42.12+dfsg-4+deb13u1) ...
+14:10:34 | DEBUG | #8 11.98 Unpacking libpsl5t64:amd64 (0.21.2-1.1+b1) ...
+14:10:34 | DEBUG | #8 12.07 Selecting previously unselected package libgdk-pixbuf2.0-common.
+14:10:34 | DEBUG | #8 12.01 Unpacking wget (1.25.0-2) ...
+14:10:34 | DEBUG | #8 12.01 Preparing to unpack .../017-wget_1.25.0-2_amd64.deb ...
+14:10:34 | DEBUG | #8 12.01 Selecting previously unselected package wget.
+14:10:34 | DEBUG | #8 12.17 Selecting previously unselected package libglib2.0-0t64:amd64.
+14:10:34 | DEBUG | #8 12.28 Selecting previously unselected package libxml2:amd64.
+14:10:34 | DEBUG | #8 12.18 Unpacking libglib2.0-0t64:amd64 (2.84.4-3~deb13u3) ...
+14:10:34 | DEBUG | #8 12.14 Preparing to unpack .../019-libatomic1_14.2.0-19_amd64.deb ...
+14:10:34 | DEBUG | #8 12.17 Preparing to unpack .../020-libglib2.0-0t64_2.84.4-3~deb13u3_amd64.deb ...
+14:10:34 | DEBUG | #8 12.14 Unpacking libatomic1:amd64 (14.2.0-19) ...
+14:10:34 | DEBUG | #8 12.29 Unpacking libxml2:amd64 (2.12.7+dfsg+really2.9.14-2.1+deb13u3) ...
+14:10:34 | DEBUG | #8 12.43 Selecting previously unselected package libjpeg62-turbo:amd64.
+14:10:34 | DEBUG | #8 12.36 Selecting previously unselected package shared-mime-info.
+14:10:34 | DEBUG | #8 12.36 Unpacking shared-mime-info (2.4-5+b2) ...
+14:10:34 | DEBUG | #8 12.36 Preparing to unpack .../022-shared-mime-info_2.4-5+b2_amd64.deb ...
+14:10:34 | DEBUG | #8 12.29 Preparing to unpack .../021-libxml2_2.12.7+dfsg+really2.9.14-2.1+deb13u3_amd64.deb ...
+14:10:35 | DEBUG | #8 12.47 Preparing to unpack .../024-libpng16-16t64_1.6.48-1+deb13u5_amd64.deb ...
+14:10:35 | DEBUG | #8 12.43 Preparing to unpack .../023-libjpeg62-turbo_1%3a2.1.5-4_amd64.deb ...
+14:10:35 | DEBUG | #8 12.56 Selecting previously unselected package libjbig0:amd64.
+14:10:35 | DEBUG | #8 12.52 Unpacking libdeflate0:amd64 (1.23-2) ...
+14:10:35 | DEBUG | #8 12.48 Unpacking libpng16-16t64:amd64 (1.6.48-1+deb13u5) ...
+14:10:35 | DEBUG | #8 12.43 Unpacking libjpeg62-turbo:amd64 (1:2.1.5-4) ...
+14:10:35 | DEBUG | #8 12.51 Preparing to unpack .../025-libdeflate0_1.23-2_amd64.deb ...
+14:10:35 | DEBUG | #8 12.51 Selecting previously unselected package libdeflate0:amd64.
+14:10:35 | DEBUG | #8 12.47 Selecting previously unselected package libpng16-16t64:amd64.
+14:10:35 | DEBUG | #8 12.59 Selecting previously unselected package liblerc4:amd64.
+14:10:35 | DEBUG | #8 12.63 Preparing to unpack .../028-libsharpyuv0_1.5.0-0.1_amd64.deb ...
+14:10:35 | DEBUG | #8 12.60 Unpacking liblerc4:amd64 (4.0.0+ds-5) ...
+14:10:35 | DEBUG | #8 12.59 Preparing to unpack .../027-liblerc4_4.0.0+ds-5_amd64.deb ...
+14:10:35 | DEBUG | #8 12.63 Selecting previously unselected package libsharpyuv0:amd64.
+14:10:35 | DEBUG | #8 12.67 Selecting previously unselected package libwebp7:amd64.
+14:10:35 | DEBUG | #8 12.56 Preparing to unpack .../026-libjbig0_2.1-6.1+b2_amd64.deb ...
+14:10:35 | DEBUG | #8 12.57 Unpacking libjbig0:amd64 (2.1-6.1+b2) ...
+14:10:35 | DEBUG | #8 12.64 Unpacking libsharpyuv0:amd64 (1.5.0-0.1) ...
+14:10:35 | DEBUG | #8 12.68 Unpacking libwebp7:amd64 (1.5.0-0.1) ...
+14:10:35 | DEBUG | #8 12.67 Preparing to unpack .../029-libwebp7_1.5.0-0.1_amd64.deb ...
+14:10:35 | DEBUG | #8 12.74 Preparing to unpack .../030-libtiff6_4.7.0-3+deb13u2_amd64.deb ...
+14:10:35 | DEBUG | #8 12.74 Unpacking libtiff6:amd64 (4.7.0-3+deb13u2) ...
+14:10:35 | DEBUG | #8 12.78 Selecting previously unselected package libgdk-pixbuf-2.0-0:amd64.
+14:10:35 | DEBUG | #8 12.74 Selecting previously unselected package libtiff6:amd64.
+14:10:35 | DEBUG | #8 12.82 Preparing to unpack .../032-gtk-update-icon-cache_4.18.6+ds-2_amd64.deb ...
+14:10:35 | DEBUG | #8 12.84 Unpacking gtk-update-icon-cache (4.18.6+ds-2) ...
+14:10:35 | DEBUG | #8 12.82 Selecting previously unselected package gtk-update-icon-cache.
+14:10:35 | DEBUG | #8 12.84 No diversion 'diversion of /usr/share/man/man8/update-icon-caches.8.gz to /usr/share/man/man8/update-icon-caches.gtk2.8.gz by libgtk-3-bin', none removed.
+14:10:35 | DEBUG | #8 12.78 Unpacking libgdk-pixbuf-2.0-0:amd64 (2.42.12+dfsg-4+deb13u1) ...
+14:10:35 | DEBUG | #8 12.78 Preparing to unpack .../031-libgdk-pixbuf-2.0-0_2.42.12+dfsg-4+deb13u1_amd64.deb ...
+14:10:35 | DEBUG | #8 12.83 No diversion 'diversion of /usr/sbin/update-icon-caches to /usr/sbin/update-icon-caches.gtk2 by libgtk-3-bin', none removed.
+14:10:35 | DEBUG | #8 12.87 Preparing to unpack .../033-hicolor-icon-theme_0.18-2_all.deb ...
+14:10:35 | DEBUG | #8 12.87 Unpacking hicolor-icon-theme (0.18-2) ...
+14:10:35 | DEBUG | #8 12.98 Selecting previously unselected package adwaita-icon-theme.
+14:10:35 | DEBUG | #8 12.87 Selecting previously unselected package hicolor-icon-theme.
+14:10:35 | DEBUG | #8 13.11 Selecting previously unselected package at-spi2-common.
+14:10:35 | DEBUG | #8 12.98 Preparing to unpack .../034-adwaita-icon-theme_48.1-1_all.deb ...
+14:10:35 | DEBUG | #8 12.99 Unpacking adwaita-icon-theme (48.1-1) ...
+14:10:35 | DEBUG | #8 13.16 Preparing to unpack .../036-libbrotli1_1.1.0-2+b7_amd64.deb ...
+14:10:35 | DEBUG | #8 13.20 Preparing to unpack .../037-libkrb5support0_1.21.3-5+deb13u1_amd64.deb ...
+14:10:35 | DEBUG | #8 13.12 Unpacking at-spi2-common (2.56.2-1+deb13u1) ...
+14:10:35 | DEBUG | #8 13.23 Selecting previously unselected package libcom-err2:amd64.
+14:10:35 | DEBUG | #8 13.16 Selecting previously unselected package libbrotli1:amd64.
+14:10:35 | DEBUG | #8 13.20 Selecting previously unselected package libkrb5support0:amd64.
+14:10:35 | DEBUG | #8 13.12 Preparing to unpack .../035-at-spi2-common_2.56.2-1+deb13u1_all.deb ...
+14:10:35 | DEBUG | #8 13.21 Unpacking libkrb5support0:amd64 (1.21.3-5+deb13u1) ...
+14:10:35 | DEBUG | #8 13.16 Unpacking libbrotli1:amd64 (1.1.0-2+b7) ...
+14:10:35 | DEBUG | #8 13.30 Preparing to unpack .../040-libkeyutils1_1.6.3-6_amd64.deb ...
+14:10:35 | DEBUG | #8 13.27 Unpacking libk5crypto3:amd64 (1.21.3-5+deb13u1) ...
+14:10:35 | DEBUG | #8 13.30 Unpacking libkeyutils1:amd64 (1.6.3-6) ...
+14:10:35 | DEBUG | #8 13.30 Selecting previously unselected package libkeyutils1:amd64.
+14:10:35 | DEBUG | #8 13.26 Selecting previously unselected package libk5crypto3:amd64.
+14:10:35 | DEBUG | #8 13.24 Preparing to unpack .../038-libcom-err2_1.47.2-3+b11_amd64.deb ...
+14:10:35 | DEBUG | #8 13.33 Selecting previously unselected package libkrb5-3:amd64.
+14:10:35 | DEBUG | #8 13.27 Preparing to unpack .../039-libk5crypto3_1.21.3-5+deb13u1_amd64.deb ...
+14:10:35 | DEBUG | #8 13.24 Unpacking libcom-err2:amd64 (1.47.2-3+b11) ...
+14:10:35 | DEBUG | #8 13.34 Preparing to unpack .../041-libkrb5-3_1.21.3-5+deb13u1_amd64.deb ...
+14:10:35 | DEBUG | #8 13.39 Unpacking libgssapi-krb5-2:amd64 (1.21.3-5+deb13u1) ...
+14:10:35 | DEBUG | #8 13.42 Selecting previously unselected package libsasl2-modules-db:amd64.
+14:10:35 | DEBUG | #8 13.42 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg1-9) ...
+14:10:35 | DEBUG | #8 13.45 Selecting previously unselected package libsasl2-2:amd64.
+14:10:35 | DEBUG | #8 13.39 Preparing to unpack .../042-libgssapi-krb5-2_1.21.3-5+deb13u1_amd64.deb ...
+14:10:35 | DEBUG | #8 13.42 Preparing to unpack .../043-libsasl2-modules-db_2.1.28+dfsg1-9_amd64.deb ...
+14:10:35 | DEBUG | #8 13.34 Unpacking libkrb5-3:amd64 (1.21.3-5+deb13u1) ...
+14:10:35 | DEBUG | #8 13.38 Selecting previously unselected package libgssapi-krb5-2:amd64.
+14:10:36 | DEBUG | #8 13.45 Preparing to unpack .../044-libsasl2-2_2.1.28+dfsg1-9_amd64.deb ...
+14:10:36 | DEBUG | #8 13.48 Selecting previously unselected package libldap2:amd64.
+14:10:36 | DEBUG | #8 13.52 Selecting previously unselected package libnghttp2-14:amd64.
+14:10:36 | DEBUG | #8 13.48 Preparing to unpack .../045-libldap2_2.6.10+dfsg-1_amd64.deb ...
+14:10:36 | DEBUG | #8 13.45 Unpacking libsasl2-2:amd64 (2.1.28+dfsg1-9) ...
+14:10:36 | DEBUG | #8 13.48 Unpacking libldap2:amd64 (2.6.10+dfsg-1) ...
+14:10:36 | DEBUG | #8 13.52 Preparing to unpack .../046-libnghttp2-14_1.64.0-1.1+deb13u1_amd64.deb ...
+14:10:36 | DEBUG | #8 13.56 Selecting previously unselected package libnghttp3-9:amd64.
+14:10:36 | DEBUG | #8 13.53 Unpacking libnghttp2-14:amd64 (1.64.0-1.1+deb13u1) ...
+14:10:36 | DEBUG | #8 13.62 Preparing to unpack .../049-libssh2-1t64_1.11.1-1+deb13u1_amd64.deb ...
+14:10:36 | DEBUG | #8 13.62 Selecting previously unselected package libssh2-1t64:amd64.
+14:10:36 | DEBUG | #8 13.63 Unpacking libssh2-1t64:amd64 (1.11.1-1+deb13u1) ...
+14:10:36 | DEBUG | #8 13.59 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b5) ...
+14:10:36 | DEBUG | #8 13.56 Unpacking libnghttp3-9:amd64 (1.8.0-1) ...
+14:10:36 | DEBUG | #8 13.59 Preparing to unpack .../048-librtmp1_2.4+20151223.gitfa8646d.1-2+b5_amd64.deb ...
+14:10:36 | DEBUG | #8 13.59 Selecting previously unselected package librtmp1:amd64.
+14:10:36 | DEBUG | #8 13.56 Preparing to unpack .../047-libnghttp3-9_1.8.0-1_amd64.deb ...
+14:10:36 | DEBUG | #8 13.67 Selecting previously unselected package libcurl4t64:amd64.
+14:10:36 | DEBUG | #8 13.68 Unpacking libcurl4t64:amd64 (8.14.1-2+deb13u4) ...
+14:10:36 | DEBUG | #8 13.67 Preparing to unpack .../050-libcurl4t64_8.14.1-2+deb13u4_amd64.deb ...
+14:10:36 | DEBUG | #8 13.77 Selecting previously unselected package dbus-user-session.
+14:10:36 | DEBUG | #8 13.72 Preparing to unpack .../051-curl_8.14.1-2+deb13u4_amd64.deb ...
+14:10:36 | DEBUG | #8 13.72 Unpacking curl (8.14.1-2+deb13u4) ...
+14:10:36 | DEBUG | #8 13.79 Selecting previously unselected package libdconf1:amd64.
+14:10:36 | DEBUG | #8 13.72 Selecting previously unselected package curl.
+14:10:36 | DEBUG | #8 13.77 Preparing to unpack .../052-dbus-user-session_1.16.2-2_amd64.deb ...
+14:10:36 | DEBUG | #8 13.77 Unpacking dbus-user-session (1.16.2-2) ...
+14:10:36 | DEBUG | #8 13.85 Unpacking dconf-gsettings-backend:amd64 (0.40.0-5) ...
+14:10:36 | DEBUG | #8 13.82 Unpacking dconf-service (0.40.0-5) ...
+14:10:36 | DEBUG | #8 13.85 Preparing to unpack .../055-dconf-gsettings-backend_0.40.0-5_amd64.deb ...
+14:10:36 | DEBUG | #8 13.92 Selecting previously unselected package libassuan9:amd64.
+14:10:36 | DEBUG | #8 13.79 Preparing to unpack .../053-libdconf1_0.40.0-5_amd64.deb ...
+14:10:36 | DEBUG | #8 13.79 Unpacking libdconf1:amd64 (0.40.0-5) ...
+14:10:36 | DEBUG | #8 13.88 Selecting previously unselected package libgpg-error0:amd64.
+14:10:36 | DEBUG | #8 13.82 Selecting previously unselected package dconf-service.
+14:10:36 | DEBUG | #8 13.85 Selecting previously unselected package dconf-gsettings-backend:amd64.
+14:10:36 | DEBUG | #8 13.88 Preparing to unpack .../056-libgpg-error0_1.51-4_amd64.deb ...
+14:10:36 | DEBUG | #8 13.88 Unpacking libgpg-error0:amd64 (1.51-4) ...
+14:10:36 | DEBUG | #8 13.82 Preparing to unpack .../054-dconf-service_0.40.0-5_amd64.deb ...
+14:10:36 | DEBUG | #8 14.01 Selecting previously unselected package gpgconf.
+14:10:36 | DEBUG | #8 14.05 Selecting previously unselected package libksba8:amd64.
+14:10:36 | DEBUG | #8 14.01 Preparing to unpack .../059-gpgconf_2.4.7-21+deb13u1+b4_amd64.deb ...
+14:10:36 | DEBUG | #8 13.95 Unpacking libgcrypt20:amd64 (1.11.0-7+deb13u1) ...
+14:10:36 | DEBUG | #8 14.01 Unpacking gpgconf (2.4.7-21+deb13u1+b4) ...
+14:10:36 | DEBUG | #8 13.92 Unpacking libassuan9:amd64 (3.0.2-2) ...
+14:10:36 | DEBUG | #8 13.92 Preparing to unpack .../057-libassuan9_3.0.2-2_amd64.deb ...
+14:10:36 | DEBUG | #8 13.95 Selecting previously unselected package libgcrypt20:amd64.
+14:10:36 | DEBUG | #8 13.95 Preparing to unpack .../058-libgcrypt20_1.11.0-7+deb13u1_amd64.deb ...
+14:10:36 | DEBUG | #8 14.08 Preparing to unpack .../061-libnpth0t64_1.8-3_amd64.deb ...
+14:10:36 | DEBUG | #8 14.08 Selecting previously unselected package libnpth0t64:amd64.
+14:10:36 | DEBUG | #8 14.11 Selecting previously unselected package dirmngr.
+14:10:36 | DEBUG | #8 14.09 Unpacking libnpth0t64:amd64 (1.8-3) ...
+14:10:36 | DEBUG | #8 14.05 Preparing to unpack .../060-libksba8_1.6.7-2+b1_amd64.deb ...
+14:10:36 | DEBUG | #8 14.12 Preparing to unpack .../062-dirmngr_2.4.7-21+deb13u1+b4_amd64.deb ...
+14:10:36 | DEBUG | #8 14.05 Unpacking libksba8:amd64 (1.6.7-2+b1) ...
+14:10:36 | DEBUG | #8 14.13 Unpacking dirmngr (2.4.7-21+deb13u1+b4) ...
+14:10:36 | DEBUG | #8 14.18 Selecting previously unselected package libfreetype6:amd64.
+14:10:36 | DEBUG | #8 14.25 Preparing to unpack .../064-fonts-liberation_1%3a2.1.5-3_all.deb ...
+14:10:36 | DEBUG | #8 14.24 Selecting previously unselected package fonts-liberation.
+14:10:36 | DEBUG | #8 14.35 Selecting previously unselected package fontconfig-config.
+14:10:36 | DEBUG | #8 14.18 Preparing to unpack .../063-libfreetype6_2.13.3+dfsg-1+deb13u1_amd64.deb ...
+14:10:36 | DEBUG | #8 14.25 Unpacking fonts-liberation (1:2.1.5-3) ...
+14:10:36 | DEBUG | #8 14.18 Unpacking libfreetype6:amd64 (2.13.3+dfsg-1+deb13u1) ...
+14:10:36 | DEBUG | #8 14.45 Selecting previously unselected package fontconfig.
+14:10:36 | DEBUG | #8 14.40 Selecting previously unselected package libfontconfig1:amd64.
+14:10:36 | DEBUG | #8 14.40 Preparing to unpack .../066-libfontconfig1_2.15.0-2.3_amd64.deb ...
+14:10:36 | DEBUG | #8 14.35 Unpacking fontconfig-config (2.15.0-2.3) ...
+14:10:36 | DEBUG | #8 14.41 Unpacking libfontconfig1:amd64 (2.15.0-2.3) ...
+14:10:36 | DEBUG | #8 14.35 Preparing to unpack .../065-fontconfig-config_2.15.0-2.3_amd64.deb ...
+14:10:37 | DEBUG | #8 14.50 Unpacking gnupg-l10n (2.4.7-21+deb13u1) ...
+14:10:37 | DEBUG | #8 14.46 Preparing to unpack .../067-fontconfig_2.15.0-2.3_amd64.deb ...
+14:10:37 | DEBUG | #8 14.46 Unpacking fontconfig (2.15.0-2.3) ...
+14:10:37 | DEBUG | #8 14.50 Preparing to unpack .../068-gnupg-l10n_2.4.7-21+deb13u1_all.deb ...
+14:10:37 | DEBUG | #8 14.50 Selecting previously unselected package gnupg-l10n.
+14:10:37 | DEBUG | #8 14.57 Selecting previously unselected package gpg.
+14:10:37 | DEBUG | #8 14.66 Preparing to unpack .../071-gpg-agent_2.4.7-21+deb13u1+b4_amd64.deb ...
+14:10:37 | DEBUG | #8 14.63 Selecting previously unselected package pinentry-curses.
+14:10:37 | DEBUG | #8 14.63 Unpacking pinentry-curses (1.3.1-2) ...
+14:10:37 | DEBUG | #8 14.70 Selecting previously unselected package gpgsm.
+14:10:37 | DEBUG | #8 14.57 Preparing to unpack .../069-gpg_2.4.7-21+deb13u1+b4_amd64.deb ...
+14:10:37 | DEBUG | #8 14.57 Unpacking gpg (2.4.7-21+deb13u1+b4) ...
+14:10:37 | DEBUG | #8 14.63 Preparing to unpack .../070-pinentry-curses_1.3.1-2_amd64.deb ...
+14:10:37 | DEBUG | #8 14.66 Unpacking gpg-agent (2.4.7-21+deb13u1+b4) ...
+14:10:37 | DEBUG | #8 14.66 Selecting previously unselected package gpg-agent.
+14:10:37 | DEBUG | #8 14.74 Preparing to unpack .../073-gnupg_2.4.7-21+deb13u1_all.deb ...
+14:10:37 | DEBUG | #8 14.82 Selecting previously unselected package libasound2t64:amd64.
+14:10:37 | DEBUG | #8 14.74 Unpacking gnupg (2.4.7-21+deb13u1) ...
+14:10:37 | DEBUG | #8 14.78 Unpacking libasound2-data (1.2.14-1) ...
+14:10:37 | DEBUG | #8 14.74 Selecting previously unselected package gnupg.
+14:10:37 | DEBUG | #8 14.70 Unpacking gpgsm (2.4.7-21+deb13u1+b4) ...
+14:10:37 | DEBUG | #8 14.70 Preparing to unpack .../072-gpgsm_2.4.7-21+deb13u1+b4_amd64.deb ...
+14:10:37 | DEBUG | #8 14.78 Selecting previously unselected package libasound2-data.
+14:10:37 | DEBUG | #8 14.78 Preparing to unpack .../074-libasound2-data_1.2.14-1_all.deb ...
+14:10:37 | DEBUG | #8 14.87 Preparing to unpack .../076-libatk1.0-0t64_2.56.2-1+deb13u1_amd64.deb ...
+14:10:37 | DEBUG | #8 14.82 Unpacking libasound2t64:amd64 (1.2.14-1) ...
+14:10:37 | DEBUG | #8 14.82 Preparing to unpack .../075-libasound2t64_1.2.14-1_amd64.deb ...
+14:10:37 | DEBUG | #8 14.87 Selecting previously unselected package libatk1.0-0t64:amd64.
+14:10:37 | DEBUG | #8 14.87 Unpacking libatk1.0-0t64:amd64 (2.56.2-1+deb13u1) ...
+14:10:37 | DEBUG | #8 14.92 Selecting previously unselected package libxau6:amd64.
+14:10:37 | DEBUG | #8 14.93 Preparing to unpack .../077-libxau6_1%3a1.0.11-1_amd64.deb ...
+14:10:37 | DEBUG | #8 15.06 Selecting previously unselected package libx11-6:amd64.
+14:10:37 | DEBUG | #8 14.95 Selecting previously unselected package libxdmcp6:amd64.
+14:10:37 | DEBUG | #8 15.01 Selecting previously unselected package libx11-data.
+14:10:37 | DEBUG | #8 14.96 Unpacking libxdmcp6:amd64 (1:1.1.5-1) ...
+14:10:37 | DEBUG | #8 14.95 Preparing to unpack .../078-libxdmcp6_1%3a1.1.5-1_amd64.deb ...
+14:10:37 | DEBUG | #8 14.98 Unpacking libxcb1:amd64 (1.17.0-2+b1) ...
+14:10:37 | DEBUG | #8 14.98 Selecting previously unselected package libxcb1:amd64.
+14:10:37 | DEBUG | #8 15.01 Preparing to unpack .../080-libx11-data_2%3a1.8.12-1_all.deb ...
+14:10:37 | DEBUG | #8 14.98 Preparing to unpack .../079-libxcb1_1.17.0-2+b1_amd64.deb ...
+14:10:37 | DEBUG | #8 14.93 Unpacking libxau6:amd64 (1:1.0.11-1) ...
+14:10:37 | DEBUG | #8 15.01 Unpacking libx11-data (2:1.8.12-1) ...
+14:10:37 | DEBUG | #8 15.06 Preparing to unpack .../081-libx11-6_2%3a1.8.12-1_amd64.deb ...
+14:10:37 | DEBUG | #8 15.12 Preparing to unpack .../082-libxext6_2%3a1.3.4-1+b3_amd64.deb ...
+14:10:37 | DEBUG | #8 15.16 Preparing to unpack .../083-libxi6_2%3a1.8.2-1_amd64.deb ...
+14:10:37 | DEBUG | #8 15.06 Unpacking libx11-6:amd64 (2:1.8.12-1) ...
+14:10:37 | DEBUG | #8 15.12 Selecting previously unselected package libxext6:amd64.
+14:10:37 | DEBUG | #8 15.16 Unpacking libxi6:amd64 (2:1.8.2-1) ...
+14:10:37 | DEBUG | #8 15.16 Selecting previously unselected package libxi6:amd64.
+14:10:37 | DEBUG | #8 15.12 Unpacking libxext6:amd64 (2:1.3.4-1+b3) ...
+14:10:37 | DEBUG | #8 15.24 Preparing to unpack .../085-libatk-bridge2.0-0t64_2.56.2-1+deb13u1_amd64.deb ...
+14:10:37 | DEBUG | #8 15.25 Unpacking libatk-bridge2.0-0t64:amd64 (2.56.2-1+deb13u1) ...
+14:10:37 | DEBUG | #8 15.24 Selecting previously unselected package libatk-bridge2.0-0t64:amd64.
+14:10:37 | DEBUG | #8 15.21 Selecting previously unselected package libatspi2.0-0t64:amd64.
+14:10:37 | DEBUG | #8 15.21 Preparing to unpack .../084-libatspi2.0-0t64_2.56.2-1+deb13u1_amd64.deb ...
+14:10:37 | DEBUG | #8 15.21 Unpacking libatspi2.0-0t64:amd64 (2.56.2-1+deb13u1) ...
+14:10:37 | DEBUG | #8 15.28 Selecting previously unselected package libavahi-common-data:amd64.
+14:10:37 | DEBUG | #8 15.38 Selecting previously unselected package libpixman-1-0:amd64.
+14:10:37 | DEBUG | #8 15.35 Selecting previously unselected package libavahi-client3:amd64.
+14:10:37 | DEBUG | #8 15.32 Preparing to unpack .../087-libavahi-common3_0.8-16_amd64.deb ...
+14:10:37 | DEBUG | #8 15.35 Unpacking libavahi-client3:amd64 (0.8-16) ...
+14:10:37 | DEBUG | #8 15.28 Preparing to unpack .../086-libavahi-common-data_0.8-16_amd64.deb ...
+14:10:37 | DEBUG | #8 15.32 Unpacking libavahi-common3:amd64 (0.8-16) ...
+14:10:37 | DEBUG | #8 15.35 Preparing to unpack .../088-libavahi-client3_0.8-16_amd64.deb ...
+14:10:37 | DEBUG | #8 15.32 Selecting previously unselected package libavahi-common3:amd64.
+14:10:37 | DEBUG | #8 15.28 Unpacking libavahi-common-data:amd64 (0.8-16) ...
+14:10:37 | DEBUG | #8 15.42 Preparing to unpack .../090-libxcb-render0_1.17.0-2+b1_amd64.deb ...
+14:10:37 | DEBUG | #8 15.38 Preparing to unpack .../089-libpixman-1-0_0.44.0-3_amd64.deb ...
+14:10:37 | DEBUG | #8 15.42 Unpacking libxcb-render0:amd64 (1.17.0-2+b1) ...
+14:10:37 | DEBUG | #8 15.42 Selecting previously unselected package libxcb-render0:amd64.
+14:10:37 | DEBUG | #8 15.49 Selecting previously unselected package libxrender1:amd64.
+14:10:37 | DEBUG | #8 15.38 Unpacking libpixman-1-0:amd64 (0.44.0-3) ...
+14:10:37 | DEBUG | #8 15.45 Selecting previously unselected package libxcb-shm0:amd64.
+14:10:37 | DEBUG | #8 15.45 Preparing to unpack .../091-libxcb-shm0_1.17.0-2+b1_amd64.deb ...
+14:10:37 | DEBUG | #8 15.46 Unpacking libxcb-shm0:amd64 (1.17.0-2+b1) ...
+14:10:38 | DEBUG | #8 15.58 Selecting previously unselected package libcairo-gobject2:amd64.
+14:10:38 | DEBUG | #8 15.58 Preparing to unpack .../094-libcairo-gobject2_1.18.4-1+b1_amd64.deb ...
+14:10:38 | DEBUG | #8 15.52 Selecting previously unselected package libcairo2:amd64.
+14:10:38 | DEBUG | #8 15.58 Unpacking libcairo-gobject2:amd64 (1.18.4-1+b1) ...
+14:10:38 | DEBUG | #8 15.49 Preparing to unpack .../092-libxrender1_1%3a0.9.12-1_amd64.deb ...
+14:10:38 | DEBUG | #8 15.52 Preparing to unpack .../093-libcairo2_1.18.4-1+b1_amd64.deb ...
+14:10:38 | DEBUG | #8 15.53 Unpacking libcairo2:amd64 (1.18.4-1+b1) ...
+14:10:38 | DEBUG | #8 15.61 Selecting previously unselected package libcloudproviders0:amd64.
+14:10:38 | DEBUG | #8 15.49 Unpacking libxrender1:amd64 (1:0.9.12-1) ...
+14:10:38 | DEBUG | #8 15.62 Unpacking libcloudproviders0:amd64 (0.3.6-2) ...
+14:10:38 | DEBUG | #8 15.61 Preparing to unpack .../095-libcloudproviders0_0.3.6-2_amd64.deb ...
+14:10:38 | DEBUG | #8 15.74 Selecting previously unselected package libcups2t64:amd64.
+14:10:38 | DEBUG | #8 15.71 Selecting previously unselected package libcolord2:amd64.
+14:10:38 | DEBUG | #8 15.67 Preparing to unpack .../096-liblcms2-2_2.16-2+deb13u2_amd64.deb ...
+14:10:38 | DEBUG | #8 15.71 Unpacking libcolord2:amd64 (1.4.7-3) ...
+14:10:38 | DEBUG | #8 15.67 Unpacking liblcms2-2:amd64 (2.16-2+deb13u2) ...
+14:10:38 | DEBUG | #8 15.67 Selecting previously unselected package liblcms2-2:amd64.
+14:10:38 | DEBUG | #8 15.71 Preparing to unpack .../097-libcolord2_1.4.7-3_amd64.deb ...
+14:10:38 | DEBUG | #8 15.79 Unpacking libdatrie1:amd64 (0.2.13-3+b1) ...
+14:10:38 | DEBUG | #8 15.78 Selecting previously unselected package libdatrie1:amd64.
+14:10:38 | DEBUG | #8 15.81 Preparing to unpack .../100-libdrm-common_2.4.124-2_all.deb ...
+14:10:38 | DEBUG | #8 15.79 Preparing to unpack .../099-libdatrie1_0.2.13-3+b1_amd64.deb ...
+14:10:38 | DEBUG | #8 15.81 Selecting previously unselected package libdrm-common.
+14:10:38 | DEBUG | #8 15.82 Unpacking libdrm-common (2.4.124-2) ...
+14:10:38 | DEBUG | #8 15.84 Selecting previously unselected package libdrm2:amd64.
+14:10:38 | DEBUG | #8 15.74 Preparing to unpack .../098-libcups2t64_2.4.10-3+deb13u2_amd64.deb ...
+14:10:38 | DEBUG | #8 15.75 Unpacking libcups2t64:amd64 (2.4.10-3+deb13u2) ...
+14:10:38 | DEBUG | #8 15.97 Selecting previously unselected package libedit2:amd64.
+14:10:38 | DEBUG | #8 15.91 Unpacking libpciaccess0:amd64 (0.17-3+b3) ...
+14:10:38 | DEBUG | #8 15.90 Selecting previously unselected package libpciaccess0:amd64.
+14:10:38 | DEBUG | #8 15.84 Unpacking libdrm2:amd64 (2.4.124-2) ...
+14:10:38 | DEBUG | #8 15.84 Preparing to unpack .../101-libdrm2_2.4.124-2_amd64.deb ...
+14:10:38 | DEBUG | #8 15.87 Selecting previously unselected package libdrm-amdgpu1:amd64.
+14:10:38 | DEBUG | #8 15.88 Preparing to unpack .../102-libdrm-amdgpu1_2.4.124-2_amd64.deb ...
+14:10:38 | DEBUG | #8 15.91 Preparing to unpack .../103-libpciaccess0_0.17-3+b3_amd64.deb ...
+14:10:38 | DEBUG | #8 15.94 Selecting previously unselected package libdrm-intel1:amd64.
+14:10:38 | DEBUG | #8 15.88 Unpacking libdrm-amdgpu1:amd64 (2.4.124-2) ...
+14:10:38 | DEBUG | #8 15.94 Unpacking libdrm-intel1:amd64 (2.4.124-2) ...
+14:10:38 | DEBUG | #8 15.94 Preparing to unpack .../104-libdrm-intel1_2.4.124-2_amd64.deb ...
+14:10:38 | DEBUG | #8 15.97 Preparing to unpack .../105-libedit2_3.1-20250104-1_amd64.deb ...
+14:10:38 | DEBUG | #8 15.97 Unpacking libedit2:amd64 (3.1-20250104-1) ...
+14:10:38 | DEBUG | #8 16.00 Selecting previously unselected package libelf1t64:amd64.
+14:10:38 | DEBUG | #8 16.04 Preparing to unpack .../107-libepoxy0_1.5.10-2_amd64.deb ...
+14:10:38 | DEBUG | #8 16.00 Preparing to unpack .../106-libelf1t64_0.192-4_amd64.deb ...
+14:10:38 | DEBUG | #8 16.00 Unpacking libelf1t64:amd64 (0.192-4) ...
+14:10:38 | DEBUG | #8 16.04 Unpacking libepoxy0:amd64 (1.5.10-2) ...
+14:10:38 | DEBUG | #8 16.07 Selecting previously unselected package libfribidi0:amd64.
+14:10:38 | DEBUG | #8 16.03 Selecting previously unselected package libepoxy0:amd64.
+14:10:38 | DEBUG | #8 16.13 Selecting previously unselected package libz3-4:amd64.
+14:10:38 | DEBUG | #8 16.11 Unpacking libwayland-server0:amd64 (1.23.1-3) ...
+14:10:38 | DEBUG | #8 16.14 Preparing to unpack .../110-libz3-4_4.13.3-1_amd64.deb ...
+14:10:38 | DEBUG | #8 16.07 Preparing to unpack .../108-libfribidi0_1.0.16-1_amd64.deb ...
+14:10:38 | DEBUG | #8 16.10 Preparing to unpack .../109-libwayland-server0_1.23.1-3_amd64.deb ...
+14:10:38 | DEBUG | #8 16.10 Selecting previously unselected package libwayland-server0:amd64.
+14:10:38 | DEBUG | #8 16.14 Unpacking libz3-4:amd64 (4.13.3-1) ...
+14:10:38 | DEBUG | #8 16.08 Unpacking libfribidi0:amd64 (1.0.16-1) ...
+14:10:39 | DEBUG | #8 16.55 Selecting previously unselected package libllvm19:amd64.
+14:10:39 | DEBUG | #8 16.55 Preparing to unpack .../111-libllvm19_1%3a19.1.7-3+b1_amd64.deb ...
+14:10:39 | DEBUG | #8 16.55 Unpacking libllvm19:amd64 (1:19.1.7-3+b1) ...
+14:10:39 | DEBUG | #8 17.18 Selecting previously unselected package libsensors-config.
+14:10:39 | DEBUG | #8 17.19 Unpacking libsensors-config (1:3.6.2-2) ...
+14:10:39 | DEBUG | #8 17.27 Preparing to unpack .../114-libx11-xcb1_2%3a1.8.12-1_amd64.deb ...
+14:10:39 | DEBUG | #8 17.23 Selecting previously unselected package libsensors5:amd64.
+14:10:39 | DEBUG | #8 17.24 Unpacking libsensors5:amd64 (1:3.6.2-2) ...
+14:10:39 | DEBUG | #8 17.27 Unpacking libx11-xcb1:amd64 (2:1.8.12-1) ...
+14:10:39 | DEBUG | #8 17.30 Selecting previously unselected package libxcb-dri3-0:amd64.
+14:10:39 | DEBUG | #8 17.27 Selecting previously unselected package libx11-xcb1:amd64.
+14:10:39 | DEBUG | #8 17.18 Preparing to unpack .../112-libsensors-config_1%3a3.6.2-2_all.deb ...
+14:10:39 | DEBUG | #8 17.24 Preparing to unpack .../113-libsensors5_1%3a3.6.2-2_amd64.deb ...
+14:10:39 | DEBUG | #8 17.34 Unpacking libxcb-present0:amd64 (1.17.0-2+b1) ...
+14:10:39 | DEBUG | #8 17.38 Unpacking libxcb-randr0:amd64 (1.17.0-2+b1) ...
+14:10:39 | DEBUG | #8 17.37 Selecting previously unselected package libxcb-randr0:amd64.
+14:10:39 | DEBUG | #8 17.34 Selecting previously unselected package libxcb-present0:amd64.
+14:10:39 | DEBUG | #8 17.30 Preparing to unpack .../115-libxcb-dri3-0_1.17.0-2+b1_amd64.deb ...
+14:10:39 | DEBUG | #8 17.34 Preparing to unpack .../116-libxcb-present0_1.17.0-2+b1_amd64.deb ...
+14:10:39 | DEBUG | #8 17.37 Preparing to unpack .../117-libxcb-randr0_1.17.0-2+b1_amd64.deb ...
+14:10:39 | DEBUG | #8 17.31 Unpacking libxcb-dri3-0:amd64 (1.17.0-2+b1) ...
+14:10:39 | DEBUG | #8 17.41 Selecting previously unselected package libxcb-sync1:amd64.
+14:10:40 | DEBUG | #8 17.41 Preparing to unpack .../118-libxcb-sync1_1.17.0-2+b1_amd64.deb ...
+14:10:40 | DEBUG | #8 17.48 Preparing to unpack .../120-libxshmfence1_1.3.3-1_amd64.deb ...
+14:10:40 | DEBUG | #8 17.51 Selecting previously unselected package mesa-libgallium:amd64.
+14:10:40 | DEBUG | #8 17.44 Preparing to unpack .../119-libxcb-xfixes0_1.17.0-2+b1_amd64.deb ...
+14:10:40 | DEBUG | #8 17.41 Unpacking libxcb-sync1:amd64 (1.17.0-2+b1) ...
+14:10:40 | DEBUG | #8 17.44 Selecting previously unselected package libxcb-xfixes0:amd64.
+14:10:40 | DEBUG | #8 17.45 Unpacking libxcb-xfixes0:amd64 (1.17.0-2+b1) ...
+14:10:40 | DEBUG | #8 17.48 Unpacking libxshmfence1:amd64 (1.3.3-1) ...
+14:10:40 | DEBUG | #8 17.48 Selecting previously unselected package libxshmfence1:amd64.
+14:10:40 | DEBUG | #8 17.52 Unpacking mesa-libgallium:amd64 (25.0.7-2+deb13u1) ...
+14:10:40 | DEBUG | #8 17.51 Preparing to unpack .../121-mesa-libgallium_25.0.7-2+deb13u1_amd64.deb ...
+14:10:40 | DEBUG | #8 17.98 Selecting previously unselected package libgbm1:amd64.
+14:10:40 | DEBUG | #8 18.05 Selecting previously unselected package libharfbuzz0b:amd64.
+14:10:40 | DEBUG | #8 17.98 Preparing to unpack .../122-libgbm1_25.0.7-2+deb13u1_amd64.deb ...
+14:10:40 | DEBUG | #8 18.01 Selecting previously unselected package libgraphite2-3:amd64.
+14:10:40 | DEBUG | #8 18.05 Preparing to unpack .../124-libharfbuzz0b_10.2.0-1+deb13u1_amd64.deb ...
+14:10:40 | DEBUG | #8 17.98 Unpacking libgbm1:amd64 (25.0.7-2+deb13u1) ...
+14:10:40 | DEBUG | #8 18.10 Selecting previously unselected package libthai-data.
+14:10:40 | DEBUG | #8 18.01 Preparing to unpack .../123-libgraphite2-3_1.3.14-2+deb13u1_amd64.deb ...
+14:10:40 | DEBUG | #8 18.05 Unpacking libharfbuzz0b:amd64 (10.2.0-1+deb13u1) ...
+14:10:40 | DEBUG | #8 18.01 Unpacking libgraphite2-3:amd64 (1.3.14-2+deb13u1) ...
+14:10:40 | DEBUG | #8 18.13 Selecting previously unselected package libthai0:amd64.
+14:10:40 | DEBUG | #8 18.10 Preparing to unpack .../125-libthai-data_0.1.29-2_all.deb ...
+14:10:40 | DEBUG | #8 18.14 Preparing to unpack .../126-libthai0_0.1.29-2+b1_amd64.deb ...
+14:10:40 | DEBUG | #8 18.14 Unpacking libthai0:amd64 (0.1.29-2+b1) ...
+14:10:40 | DEBUG | #8 18.16 Selecting previously unselected package libpango-1.0-0:amd64.
+14:10:40 | DEBUG | #8 18.21 Selecting previously unselected package libpangoft2-1.0-0:amd64.
+14:10:40 | DEBUG | #8 18.10 Unpacking libthai-data (0.1.29-2) ...
+14:10:40 | DEBUG | #8 18.17 Unpacking libpango-1.0-0:amd64 (1.56.3-1) ...
+14:10:40 | DEBUG | #8 18.17 Preparing to unpack .../127-libpango-1.0-0_1.56.3-1_amd64.deb ...
+14:10:40 | DEBUG | #8 18.29 Unpacking libwayland-client0:amd64 (1.23.1-3) ...
+14:10:40 | DEBUG | #8 18.28 Selecting previously unselected package libwayland-client0:amd64.
+14:10:40 | DEBUG | #8 18.21 Preparing to unpack .../128-libpangoft2-1.0-0_1.56.3-1_amd64.deb ...
+14:10:40 | DEBUG | #8 18.25 Preparing to unpack .../129-libpangocairo-1.0-0_1.56.3-1_amd64.deb ...
+14:10:40 | DEBUG | #8 18.25 Unpacking libpangocairo-1.0-0:amd64 (1.56.3-1) ...
+14:10:40 | DEBUG | #8 18.21 Unpacking libpangoft2-1.0-0:amd64 (1.56.3-1) ...
+14:10:40 | DEBUG | #8 18.24 Selecting previously unselected package libpangocairo-1.0-0:amd64.
+14:10:40 | DEBUG | #8 18.28 Preparing to unpack .../130-libwayland-client0_1.23.1-3_amd64.deb ...
+14:10:40 | DEBUG | #8 18.31 Selecting previously unselected package libwayland-cursor0:amd64.
+14:10:40 | DEBUG | #8 18.41 Unpacking libxfixes3:amd64 (1:6.0.0-2+b4) ...
+14:10:40 | DEBUG | #8 18.35 Unpacking libwayland-egl1:amd64 (1.23.1-3) ...
+14:10:40 | DEBUG | #8 18.43 Selecting previously unselected package libxcursor1:amd64.
+14:10:40 | DEBUG | #8 18.34 Selecting previously unselected package libwayland-egl1:amd64.
+14:10:40 | DEBUG | #8 18.32 Preparing to unpack .../131-libwayland-cursor0_1.23.1-3_amd64.deb ...
+14:10:40 | DEBUG | #8 18.35 Preparing to unpack .../132-libwayland-egl1_1.23.1-3_amd64.deb ...
+14:10:40 | DEBUG | #8 18.38 Unpacking libxcomposite1:amd64 (1:0.4.6-1) ...
+14:10:40 | DEBUG | #8 18.32 Unpacking libwayland-cursor0:amd64 (1.23.1-3) ...
+14:10:40 | DEBUG | #8 18.40 Preparing to unpack .../134-libxfixes3_1%3a6.0.0-2+b4_amd64.deb ...
+14:10:40 | DEBUG | #8 18.37 Selecting previously unselected package libxcomposite1:amd64.
+14:10:40 | DEBUG | #8 18.40 Selecting previously unselected package libxfixes3:amd64.
+14:10:40 | DEBUG | #8 18.37 Preparing to unpack .../133-libxcomposite1_1%3a0.4.6-1_amd64.deb ...
+14:10:41 | DEBUG | #8 18.49 Unpacking libxdamage1:amd64 (1:1.1.6-1+b2) ...
+14:10:41 | DEBUG | #8 18.43 Unpacking libxcursor1:amd64 (1:1.2.3-1) ...
+14:10:41 | DEBUG | #8 18.54 Selecting previously unselected package xkb-data.
+14:10:41 | DEBUG | #8 18.52 Preparing to unpack .../137-libxinerama1_2%3a1.1.4-3+b4_amd64.deb ...
+14:10:41 | DEBUG | #8 18.52 Selecting previously unselected package libxinerama1:amd64.
+14:10:41 | DEBUG | #8 18.47 Selecting previously unselected package libxdamage1:amd64.
+14:10:41 | DEBUG | #8 18.52 Unpacking libxinerama1:amd64 (2:1.1.4-3+b4) ...
+14:10:41 | DEBUG | #8 18.47 Preparing to unpack .../136-libxdamage1_1%3a1.1.6-1+b2_amd64.deb ...
+14:10:41 | DEBUG | #8 18.43 Preparing to unpack .../135-libxcursor1_1%3a1.2.3-1_amd64.deb ...
+14:10:41 | DEBUG | #8 18.54 Preparing to unpack .../138-xkb-data_2.42-1_all.deb ...
+14:10:41 | DEBUG | #8 18.55 Unpacking xkb-data (2.42-1) ...
+14:10:41 | DEBUG | #8 18.66 Selecting previously unselected package libxrandr2:amd64.
+14:10:41 | DEBUG | #8 18.62 Preparing to unpack .../139-libxkbcommon0_1.7.0-2_amd64.deb ...
+14:10:41 | DEBUG | #8 18.63 Unpacking libxkbcommon0:amd64 (1.7.0-2) ...
+14:10:41 | DEBUG | #8 18.62 Selecting previously unselected package libxkbcommon0:amd64.
+14:10:41 | DEBUG | #8 18.66 Preparing to unpack .../140-libxrandr2_2%3a1.5.4-1+b3_amd64.deb ...
+14:10:41 | DEBUG | #8 18.68 Selecting previously unselected package libgtk-3-common.
+14:10:41 | DEBUG | #8 18.68 Unpacking libgtk-3-common (3.24.49-3) ...
+14:10:41 | DEBUG | #8 18.66 Unpacking libxrandr2:amd64 (2:1.5.4-1+b3) ...
+14:10:41 | DEBUG | #8 18.68 Preparing to unpack .../141-libgtk-3-common_3.24.49-3_all.deb ...
+14:10:41 | DEBUG | #8 19.01 Selecting previously unselected package libgtk-3-0t64:amd64.
+14:10:41 | DEBUG | #8 19.01 Preparing to unpack .../142-libgtk-3-0t64_3.24.49-3_amd64.deb ...
+14:10:41 | DEBUG | #8 19.02 Unpacking libgtk-3-0t64:amd64 (3.24.49-3) ...
+14:10:41 | DEBUG | #8 19.18 Selecting previously unselected package libnspr4:amd64.
+14:10:41 | DEBUG | #8 19.22 Unpacking libnss3:amd64 (2:3.110-1+deb13u3) ...
+14:10:41 | DEBUG | #8 19.31 Selecting previously unselected package x11-common.
+14:10:41 | DEBUG | #8 19.21 Preparing to unpack .../144-libnss3_2%3a3.110-1+deb13u3_amd64.deb ...
+14:10:41 | DEBUG | #8 19.18 Preparing to unpack .../143-libnspr4_2%3a4.36-1_amd64.deb ...
+14:10:41 | DEBUG | #8 19.18 Unpacking libnspr4:amd64 (2:4.36-1) ...
+14:10:41 | DEBUG | #8 19.21 Selecting previously unselected package libnss3:amd64.
+14:10:41 | DEBUG | #8 19.35 Preparing to unpack .../146-libxss1_1%3a1.2.3-1+b3_amd64.deb ...
+14:10:41 | DEBUG | #8 19.35 Unpacking libxss1:amd64 (1:1.2.3-1+b3) ...
+14:10:41 | DEBUG | #8 19.31 Preparing to unpack .../145-x11-common_1%3a7.7+24+deb13u1_all.deb ...
+14:10:41 | DEBUG | #8 19.35 Selecting previously unselected package libxss1:amd64.
+14:10:41 | DEBUG | #8 19.32 Unpacking x11-common (1:7.7+24+deb13u1) ...
+14:10:41 | DEBUG | #8 19.38 Preparing to unpack .../147-libxtst6_2%3a1.2.5-1_amd64.deb ...
+14:10:41 | DEBUG | #8 19.38 Selecting previously unselected package libxtst6:amd64.
+14:10:41 | DEBUG | #8 19.41 Selecting previously unselected package xdg-utils.
+14:10:41 | DEBUG | #8 19.39 Unpacking libxtst6:amd64 (2:1.2.5-1) ...
+14:10:42 | DEBUG | #8 19.46 Setting up libexpat1:amd64 (2.7.1-2) ...
+14:10:42 | DEBUG | #8 19.42 Unpacking xdg-utils (1.2.1-2) ...
+14:10:42 | DEBUG | #8 19.42 Preparing to unpack .../148-xdg-utils_1.2.1-2_all.deb ...
+14:10:42 | DEBUG | #8 19.47 Setting up libgraphite2-3:amd64 (1.3.14-2+deb13u1) ...
+14:10:42 | DEBUG | #8 19.48 Setting up libpixman-1-0:amd64 (0.44.0-3) ...
+14:10:42 | DEBUG | #8 19.48 Setting up liblcms2-2:amd64 (2.16-2+deb13u2) ...
+14:10:42 | DEBUG | #8 19.49 Setting up libsharpyuv0:amd64 (1.5.0-0.1) ...
+14:10:42 | DEBUG | #8 19.49 Setting up libwayland-server0:amd64 (1.23.1-3) ...
+14:10:42 | DEBUG | #8 19.53 Setting up libxau6:amd64 (1:1.0.11-1) ...
+14:10:42 | DEBUG | #8 19.51 Setting up systemd-sysv (257.13-1~deb13u1) ...
+14:10:42 | DEBUG | #8 19.50 Setting up libpciaccess0:amd64 (0.17-3+b3) ...
+14:10:42 | DEBUG | #8 19.57 Setting up liblerc4:amd64 (4.0.0+ds-5) ...
+14:10:42 | DEBUG | #8 19.60 Setting up libgpg-error0:amd64 (1.51-4) ...
+14:10:42 | DEBUG | #8 19.58 Setting up hicolor-icon-theme (0.18-2) ...
+14:10:42 | DEBUG | #8 19.56 Setting up libxcb-xfixes0:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 19.54 Setting up libxdmcp6:amd64 (1:1.1.5-1) ...
+14:10:42 | DEBUG | #8 19.60 Setting up libdatrie1:amd64 (0.2.13-3+b1) ...
+14:10:42 | DEBUG | #8 19.62 Setting up libbrotli1:amd64 (1.1.0-2+b7) ...
+14:10:42 | DEBUG | #8 19.56 Setting up libxcb1:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 19.61 Setting up libxcb-render0:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 19.54 Setting up libnpth0t64:amd64 (1.8-3) ...
+14:10:42 | DEBUG | #8 19.55 Setting up libkeyutils1:amd64 (1.6.3-6) ...
+14:10:42 | DEBUG | #8 19.64 Setting up libedit2:amd64 (3.1-20250104-1) ...
+14:10:42 | DEBUG | #8 19.76 debconf: falling back to frontend: Readline
+14:10:42 | DEBUG | #8 19.76 debconf: unable to initialize frontend: Dialog
+14:10:42 | DEBUG | #8 19.65 Setting up x11-common (1:7.7+24+deb13u1) ...
+14:10:42 | DEBUG | #8 19.76 debconf: (TERM is not set, so the dialog frontend is not usable.)
+14:10:42 | DEBUG | #8 19.65 Setting up libgdk-pixbuf2.0-common (2.42.12+dfsg-4+deb13u1) ...
+14:10:42 | DEBUG | #8 19.82 Setting up libdeflate0:amd64 (1.23-2) ...
+14:10:42 | DEBUG | #8 19.76 debconf: falling back to frontend: Noninteractive
+14:10:42 | DEBUG | #8 19.76 debconf: falling back to frontend: Teletype
+14:10:42 | DEBUG | #8 19.83 Setting up libgcrypt20:amd64 (1.11.0-7+deb13u1) ...
+14:10:42 | DEBUG | #8 19.79 invoke-rc.d: policy-rc.d denied execution of start.
+14:10:42 | DEBUG | #8 19.76 debconf: unable to initialize frontend: Readline
+14:10:42 | DEBUG | #8 19.84 Setting up xkb-data (2.42-1) ...
+14:10:42 | DEBUG | #8 19.86 Setting up libelf1t64:amd64 (0.192-4) ...
+14:10:42 | DEBUG | #8 19.76 debconf: unable to initialize frontend: Teletype
+14:10:42 | DEBUG | #8 19.81 Setting up libnghttp2-14:amd64 (1.64.0-1.1+deb13u1) ...
+14:10:42 | DEBUG | #8 19.85 Setting up libxcb-shm0:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 19.76 debconf: (This frontend requires a controlling tty.)
+14:10:42 | DEBUG | #8 19.76 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+14:10:42 | DEBUG | #8 19.80 Setting up libsensors-config (1:3.6.2-2) ...
+14:10:42 | DEBUG | #8 19.79 invoke-rc.d: could not determine current runlevel
+14:10:42 | DEBUG | #8 19.86 Setting up libjbig0:amd64 (2.1-6.1+b2) ...
+14:10:42 | DEBUG | #8 19.85 Setting up libcom-err2:amd64 (1.47.2-3+b11) ...
+14:10:42 | DEBUG | #8 19.90 Setting up libz3-4:amd64 (4.13.3-1) ...
+14:10:42 | DEBUG | #8 19.87 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg1-9) ...
+14:10:42 | DEBUG | #8 19.93 Setting up libnspr4:amd64 (2:4.36-1) ...
+14:10:42 | DEBUG | #8 19.94 Setting up libxcb-sync1:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 19.94 Setting up gnupg-l10n (2.4.7-21+deb13u1) ...
+14:10:42 | DEBUG | #8 19.92 Setting up libepoxy0:amd64 (1.5.10-2) ...
+14:10:42 | DEBUG | #8 19.88 Setting up libxcb-present0:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 19.95 Setting up libavahi-common-data:amd64 (0.8-16) ...
+14:10:42 | DEBUG | #8 19.89 Setting up libasound2-data (1.2.14-1) ...
+14:10:42 | DEBUG | #8 19.87 Setting up libkrb5support0:amd64 (1.21.3-5+deb13u1) ...
+14:10:42 | DEBUG | #8 19.92 Setting up libx11-data (2:1.8.12-1) ...
+14:10:42 | DEBUG | #8 19.99 Setting up libfribidi0:amd64 (1.0.16-1) ...
+14:10:42 | DEBUG | #8 19.90 Setting up libasound2t64:amd64 (1.2.14-1) ...
+14:10:42 | DEBUG | #8 19.91 Setting up libjpeg62-turbo:amd64 (1:2.1.5-4) ...
+14:10:42 | DEBUG | #8 19.96 Setting up libdbus-1-3:amd64 (1.16.2-2) ...
+14:10:42 | DEBUG | #8 20.08 Setting up libk5crypto3:amd64 (1.21.3-5+deb13u1) ...
+14:10:42 | DEBUG | #8 20.00 Setting up libp11-kit0:amd64 (0.25.5-3) ...
+14:10:42 | DEBUG | #8 20.01 Setting up libproc2-0:amd64 (2:4.0.4-9) ...
+14:10:42 | DEBUG | #8 20.06 Setting up libpng16-16t64:amd64 (1.6.48-1+deb13u5) ...
+14:10:42 | DEBUG | #8 20.07 Setting up libsensors5:amd64 (1:3.6.2-2) ...
+14:10:42 | DEBUG | #8 20.03 Setting up libunistring5:amd64 (1.3-2) ...
+14:10:42 | DEBUG | #8 20.09 Setting up libsasl2-2:amd64 (2.1.28+dfsg1-9) ...
+14:10:42 | DEBUG | #8 20.06 Setting up libatomic1:amd64 (14.2.0-19) ...
+14:10:42 | DEBUG | #8 20.19 Setting up gpgconf (2.4.7-21+deb13u1+b4) ...
+14:10:42 | DEBUG | #8 20.09 Setting up libnghttp3-9:amd64 (1.8.0-1) ...
+14:10:42 | DEBUG | #8 20.13 Setting up libxcb-randr0:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 20.12 Setting up libtiff6:amd64 (4.7.0-3+deb13u2) ...
+14:10:42 | DEBUG | #8 20.10 Setting up libwebp7:amd64 (1.5.0-0.1) ...
+14:10:42 | DEBUG | #8 20.19 Setting up fonts-liberation (1:2.1.5-3) ...
+14:10:42 | DEBUG | #8 20.14 Setting up dbus-session-bus-common (1.16.2-2) ...
+14:10:42 | DEBUG | #8 20.15 Setting up libassuan9:amd64 (3.0.2-2) ...
+14:10:42 | DEBUG | #8 20.11 Setting up libxshmfence1:amd64 (1.3.3-1) ...
+14:10:42 | DEBUG | #8 20.12 Setting up at-spi2-common (2.56.2-1+deb13u1) ...
+14:10:42 | DEBUG | #8 20.16 Setting up procps (2:4.0.4-9) ...
+14:10:42 | DEBUG | #8 20.25 Setting up dbus-system-bus-common (1.16.2-2) ...
+14:10:42 | DEBUG | #8 20.21 Setting up libx11-6:amd64 (2:1.8.12-1) ...
+14:10:42 | DEBUG | #8 20.31 Setting up libxml2:amd64 (2.12.7+dfsg+really2.9.14-2.1+deb13u3) ...
+14:10:42 | DEBUG | #8 20.29 Setting up libxcomposite1:amd64 (1:0.4.6-1) ...
+14:10:42 | DEBUG | #8 20.22 Setting up libthai-data (0.1.29-2) ...
+14:10:42 | DEBUG | #8 20.24 Setting up libssh2-1t64:amd64 (1.11.1-1+deb13u1) ...
+14:10:42 | DEBUG | #8 20.23 Setting up libkrb5-3:amd64 (1.21.3-5+deb13u1) ...
+14:10:42 | DEBUG | #8 20.29 Setting up libdrm-common (2.4.124-2) ...
+14:10:42 | DEBUG | #8 20.20 Setting up libtasn1-6:amd64 (4.20.0-2+deb13u1) ...
+14:10:42 | DEBUG | #8 20.26 Creating group 'messagebus' with GID 997.
+14:10:42 | DEBUG | #8 20.26 Creating user 'messagebus' (System Message Bus) with UID 997 and GID 997.
+14:10:42 | DEBUG | #8 20.23 Setting up libwayland-egl1:amd64 (1.23.1-3) ...
+14:10:42 | DEBUG | #8 20.32 Setting up xdg-utils (1.2.1-2) ...
+14:10:42 | DEBUG | #8 20.38 Setting up libwayland-client0:amd64 (1.23.1-3) ...
+14:10:42 | DEBUG | #8 20.33 update-alternatives: warning: skip creation of /usr/share/man/man1/open.1.gz because associated file /usr/share/man/man1/xdg-open.1.gz (of link group open) doesn't exist
+14:10:42 | DEBUG | #8 20.41 Setting up libllvm19:amd64 (1:19.1.7-3+b1) ...
+14:10:42 | DEBUG | #8 20.40 Setting up libxcb-dri3-0:amd64 (1.17.0-2+b1) ...
+14:10:42 | DEBUG | #8 20.38 Setting up libksba8:amd64 (1.6.7-2+b1) ...
+14:10:42 | DEBUG | #8 20.33 update-alternatives: using /usr/bin/xdg-open to provide /usr/bin/open (open) in auto mode
+14:10:42 | DEBUG | #8 20.41 Setting up libx11-xcb1:amd64 (2:1.8.12-1) ...
+14:10:42 | DEBUG | #8 20.36 Setting up dbus-bin (1.16.2-2) ...
+14:10:42 | DEBUG | #8 20.34 Setting up libldap2:amd64 (2.6.10+dfsg-1) ...
+14:10:42 | DEBUG | #8 20.39 Setting up pinentry-curses (1.3.1-2) ...
+14:10:42 | DEBUG | #8 20.37 Setting up libxkbcommon0:amd64 (1.7.0-2) ...
+14:10:43 | DEBUG | #8 20.43 Setting up gpg-agent (2.4.7-21+deb13u1+b4) ...
+14:10:43 | DEBUG | #8 20.42 Setting up libxdamage1:amd64 (1:1.1.6-1+b2) ...
+14:10:43 | DEBUG | #8 20.54 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent-browser.socket' → '/usr/lib/systemd/user/gpg-agent-browser.socket'.
+14:10:43 | DEBUG | #8 20.65 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent-extra.socket' → '/usr/lib/systemd/user/gpg-agent-extra.socket'.
+14:10:43 | DEBUG | #8 20.77 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent-ssh.socket' → '/usr/lib/systemd/user/gpg-agent-ssh.socket'.
+14:10:43 | DEBUG | #8 20.89 Created symlink '/etc/systemd/user/sockets.target.wants/gpg-agent.socket' → '/usr/lib/systemd/user/gpg-agent.socket'.
+14:10:43 | DEBUG | #8 20.98 debconf: (This frontend requires a controlling tty.)
+14:10:43 | DEBUG | #8 20.98 debconf: (TERM is not set, so the dialog frontend is not usable.)
+14:10:43 | DEBUG | #8 20.98 debconf: unable to initialize frontend: Teletype
+14:10:43 | DEBUG | #8 20.98 debconf: unable to initialize frontend: Dialog
+14:10:43 | DEBUG | #8 20.98 debconf: unable to initialize frontend: Readline
+14:10:43 | DEBUG | #8 20.90 Setting up fontconfig-config (2.15.0-2.3) ...
+14:10:43 | DEBUG | #8 20.98 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+14:10:43 | DEBUG | #8 20.98 debconf: falling back to frontend: Teletype
+14:10:43 | DEBUG | #8 20.98 debconf: falling back to frontend: Readline
+14:10:43 | DEBUG | #8 20.98 debconf: falling back to frontend: Noninteractive
+14:10:43 | DEBUG | #8 20.90 Setting up libxrender1:amd64 (1:0.9.12-1) ...
+14:10:43 | DEBUG | #8 21.03 Setting up gpgsm (2.4.7-21+deb13u1+b4) ...
+14:10:43 | DEBUG | #8 21.10 Setting up libxfixes3:amd64 (1:6.0.0-2+b4) ...
+14:10:43 | DEBUG | #8 21.05 Setting up libnss3:amd64 (2:3.110-1+deb13u3) ...
+14:10:43 | DEBUG | #8 21.08 Setting up libthai0:amd64 (0.1.29-2+b1) ...
+14:10:43 | DEBUG | #8 21.04 Setting up libxext6:amd64 (2:1.3.4-1+b3) ...
+14:10:43 | DEBUG | #8 21.03 Setting up libavahi-common3:amd64 (0.8-16) ...
+14:10:43 | DEBUG | #8 21.14 invoke-rc.d: could not determine current runlevel
+14:10:43 | DEBUG | #8 21.11 Setting up dbus (1.16.2-2) ...
+14:10:43 | DEBUG | #8 21.06 Setting up dbus-daemon (1.16.2-2) ...
+14:10:43 | DEBUG | #8 21.05 Setting up libidn2-0:amd64 (2.3.8-2) ...
+14:10:43 | DEBUG | #8 21.09 Setting up libfreetype6:amd64 (2.13.3+dfsg-1+deb13u1) ...
+14:10:43 | DEBUG | #8 21.08 Setting up libglib2.0-0t64:amd64 (2.84.4-3~deb13u3) ...
+14:10:43 | DEBUG | #8 21.14 invoke-rc.d: policy-rc.d denied execution of start.
+14:10:43 | DEBUG | #8 21.15 Setting up shared-mime-info (2.4-5+b2) ...
+14:10:45 | DEBUG | #8 22.70 Setting up libxinerama1:amd64 (2:1.1.4-3+b4) ...
+14:10:45 | DEBUG | #8 22.72 Setting up libdrm2:amd64 (2.4.124-2) ...
+14:10:45 | DEBUG | #8 22.70 Setting up libgssapi-krb5-2:amd64 (1.21.3-5+deb13u1) ...
+14:10:45 | DEBUG | #8 22.80 debconf: falling back to frontend: Readline
+14:10:45 | DEBUG | #8 22.80 debconf: unable to initialize frontend: Dialog
+14:10:45 | DEBUG | #8 22.73 Setting up libpam-systemd:amd64 (257.13-1~deb13u1) ...
+14:10:45 | DEBUG | #8 22.80 debconf: (TERM is not set, so the dialog frontend is not usable.)
+14:10:45 | DEBUG | #8 22.71 Setting up libxrandr2:amd64 (2:1.5.4-1+b3) ...
+14:10:45 | DEBUG | #8 22.72 Setting up libwayland-cursor0:amd64 (1.23.1-3) ...
+14:10:45 | DEBUG | #8 22.81 debconf: unable to initialize frontend: Teletype
+14:10:45 | DEBUG | #8 22.91 Setting up libxss1:amd64 (1:1.2.3-1+b3) ...
+14:10:45 | DEBUG | #8 22.81 debconf: (This frontend requires a controlling tty.)
+14:10:45 | DEBUG | #8 22.80 debconf: unable to initialize frontend: Readline
+14:10:45 | DEBUG | #8 22.89 Setting up libgdk-pixbuf-2.0-0:amd64 (2.42.12+dfsg-4+deb13u1) ...
+14:10:45 | DEBUG | #8 22.81 debconf: falling back to frontend: Noninteractive
+14:10:45 | DEBUG | #8 22.88 Setting up libharfbuzz0b:amd64 (10.2.0-1+deb13u1) ...
+14:10:45 | DEBUG | #8 22.80 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+14:10:45 | DEBUG | #8 22.80 debconf: falling back to frontend: Teletype
+14:10:45 | DEBUG | #8 23.05 Created symlink '/etc/systemd/user/sockets.target.wants/keyboxd.socket' → '/usr/lib/systemd/user/keyboxd.socket'.
+14:10:45 | DEBUG | #8 22.93 Setting up gpg (2.4.7-21+deb13u1+b4) ...
+14:10:45 | DEBUG | #8 22.91 Setting up libfontconfig1:amd64 (2.15.0-2.3) ...
+14:10:45 | DEBUG | #8 22.92 Setting up libavahi-client3:amd64 (0.8-16) ...
+14:10:45 | DEBUG | #8 23.06 Setting up libdrm-amdgpu1:amd64 (2.4.124-2) ...
+14:10:45 | DEBUG | #8 23.06 Setting up libgnutls30t64:amd64 (3.8.9-3+deb13u4) ...
+14:10:45 | DEBUG | #8 23.07 Setting up gtk-update-icon-cache (4.18.6+ds-2) ...
+14:10:45 | DEBUG | #8 23.08 Setting up fontconfig (2.15.0-2.3) ...
+14:10:47 | DEBUG | #8 23.08 Regenerating fonts cache... done.
+14:10:47 | DEBUG | #8 25.14 Setting up libxi6:amd64 (2:1.8.2-1) ...
+14:10:47 | DEBUG | #8 25.10 Setting up libatk1.0-0t64:amd64 (2.56.2-1+deb13u1) ...
+14:10:47 | DEBUG | #8 25.17 Setting up libdrm-intel1:amd64 (2.4.124-2) ...
+14:10:47 | DEBUG | #8 25.16 Setting up libpango-1.0-0:amd64 (1.56.3-1) ...
+14:10:47 | DEBUG | #8 25.17 Setting up libpsl5t64:amd64 (0.21.2-1.1+b1) ...
+14:10:47 | DEBUG | #8 25.15 Setting up libxcursor1:amd64 (1:1.2.3-1) ...
+14:10:47 | DEBUG | #8 25.18 Setting up libcloudproviders0:amd64 (0.3.6-2) ...
+14:10:47 | DEBUG | #8 25.19 Setting up libcairo2:amd64 (1.18.4-1+b1) ...
+14:10:47 | DEBUG | #8 25.20 Setting up libcolord2:amd64 (1.4.7-3) ...
+14:10:47 | DEBUG | #8 25.15 Setting up libxtst6:amd64 (2:1.2.5-1) ...
+14:10:47 | DEBUG | #8 25.33 Created symlink '/etc/systemd/user/sockets.target.wants/dirmngr.socket' → '/usr/lib/systemd/user/dirmngr.socket'.
+14:10:47 | DEBUG | #8 25.21 Setting up libdconf1:amd64 (0.40.0-5) ...
+14:10:47 | DEBUG | #8 25.21 Setting up dirmngr (2.4.7-21+deb13u1+b4) ...
+14:10:47 | DEBUG | #8 25.43 Setting up libpangocairo-1.0-0:amd64 (1.56.3-1) ...
+14:10:47 | DEBUG | #8 25.41 Setting up libpangoft2-1.0-0:amd64 (1.56.3-1) ...
+14:10:47 | DEBUG | #8 25.38 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b5) ...
+14:10:47 | DEBUG | #8 25.44 Setting up libatk-bridge2.0-0t64:amd64 (2.56.2-1+deb13u1) ...
+14:10:47 | DEBUG | #8 25.42 Setting up libcups2t64:amd64 (2.4.10-3+deb13u2) ...
+14:10:47 | DEBUG | #8 25.36 Setting up adwaita-icon-theme (48.1-1) ...
+14:10:47 | DEBUG | #8 25.39 Setting up libatspi2.0-0t64:amd64 (2.56.2-1+deb13u1) ...
+14:10:47 | DEBUG | #8 25.40 Setting up gnupg (2.4.7-21+deb13u1) ...
+14:10:47 | DEBUG | #8 25.41 Setting up libcairo-gobject2:amd64 (1.18.4-1+b1) ...
+14:10:47 | DEBUG | #8 25.35 Setting up dbus-user-session (1.16.2-2) ...
+14:10:47 | DEBUG | #8 25.38 update-alternatives: using /usr/share/icons/Adwaita/cursor.theme to provide /usr/share/icons/default/index.theme (x-cursor-theme) in auto mode
+14:10:48 | DEBUG | #8 25.47 Setting up dconf-service (0.40.0-5) ...
+14:10:48 | DEBUG | #8 25.49 Setting up dconf-gsettings-backend:amd64 (0.40.0-5) ...
+14:10:48 | DEBUG | #8 25.46 Setting up libgbm1:amd64 (25.0.7-2+deb13u1) ...
+14:10:48 | DEBUG | #8 25.48 Setting up curl (8.14.1-2+deb13u4) ...
+14:10:48 | DEBUG | #8 25.50 Setting up libgtk-3-common (3.24.49-3) ...
+14:10:48 | DEBUG | #8 25.54 Processing triggers for libc-bin (2.41-12+deb13u3) ...
+14:10:48 | DEBUG | #8 25.46 Setting up libcurl4t64:amd64 (8.14.1-2+deb13u4) ...
+14:10:48 | DEBUG | #8 25.52 Setting up libgtk-3-0t64:amd64 (3.24.49-3) ...
+14:10:48 | DEBUG | #8 25.44 Setting up mesa-libgallium:amd64 (25.0.7-2+deb13u1) ...
+14:10:48 | DEBUG | #8 25.45 Setting up wget (1.25.0-2) ...
+14:10:50 | DEBUG | #8 DONE 27.7s
+14:10:50 | DEBUG | 
+14:10:50 | DEBUG | #10 [stage-0  4/28] COPY requirements.txt .
+14:10:50 | DEBUG | #10 DONE 0.0s
+14:10:50 | DEBUG | #9 [stage-0  3/28] WORKDIR /app
+14:10:50 | DEBUG | #9 DONE 0.1s
+14:10:50 | DEBUG | 
+14:10:50 | DEBUG | 
+14:10:50 | DEBUG | #11 [stage-0  5/28] RUN --mount=type=cache,target=/root/.cache/pip     pip install --no-cache-dir         --default-timeout=300         --retries=10         --extra-index-url https://download.pytorch.org/whl/cpu         -r requirements.txt &&     pip install --no-cache-dir "uvicorn[standard]" &&     echo '✅ Зависимости установлены'
+14:10:52 | DEBUG | #11 1.854 Looking in indexes: https://pypi.org/simple, https://download.pytorch.org/whl/cpu
+14:10:53 | DEBUG | #11 2.703 Collecting aiohappyeyeballs==2.6.1 (from -r requirements.txt (line 1))
+14:10:53 | DEBUG | #11 2.895   Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl.metadata (5.9 kB)
+14:10:54 | DEBUG | #11 3.967 Collecting aiohttp==3.13.5 (from -r requirements.txt (line 2))
+14:10:54 | DEBUG | #11 4.001   Downloading aiohttp-3.13.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.1 kB)
+14:10:54 | DEBUG | #11 4.341 Collecting aiosignal==1.4.0 (from -r requirements.txt (line 3))
+14:10:54 | DEBUG | #11 4.375   Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+14:10:55 | DEBUG | #11 4.718 Collecting annotated-doc==0.0.4 (from -r requirements.txt (line 4))
+14:10:55 | DEBUG | #11 4.752   Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+14:10:55 | DEBUG | #11 4.923 Collecting annotated-types==0.7.0 (from -r requirements.txt (line 5))
+14:10:55 | DEBUG | #11 4.957   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+14:10:55 | DEBUG | #11 5.160 Collecting anyio==4.13.0 (from -r requirements.txt (line 6))
+14:10:55 | DEBUG | #11 5.195   Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+14:10:55 | DEBUG | #11 5.379 Collecting attrs==26.1.0 (from -r requirements.txt (line 7))
+14:10:55 | DEBUG | #11 5.414   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+14:10:56 | DEBUG | #11 5.788 Collecting beautifulsoup4==4.14.3 (from -r requirements.txt (line 8))
+14:10:56 | DEBUG | #11 5.822   Downloading beautifulsoup4-4.14.3-py3-none-any.whl.metadata (3.8 kB)
+14:10:56 | DEBUG | #11 5.912 Collecting certifi==2026.4.22 (from -r requirements.txt (line 9))
+14:10:56 | DEBUG | #11 5.947   Downloading certifi-2026.4.22-py3-none-any.whl.metadata (2.5 kB)
+14:10:56 | DEBUG | #11 6.282 Collecting cffi==2.0.0 (from -r requirements.txt (line 10))
+14:10:56 | DEBUG | #11 6.317   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+14:10:56 | DEBUG | #11 6.505 Collecting charset-normalizer==3.4.7 (from -r requirements.txt (line 11))
+14:10:57 | DEBUG | #11 6.572      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.9/40.9 kB 1.2 MB/s eta 0:00:00
+14:10:57 | DEBUG | #11 6.540   Downloading charset_normalizer-3.4.7-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+14:10:57 | DEBUG | #11 6.814 Collecting click==8.3.3 (from -r requirements.txt (line 12))
+14:10:57 | DEBUG | #11 6.849   Downloading click-8.3.3-py3-none-any.whl.metadata (2.6 kB)
+14:10:57 | DEBUG | #11 6.944 Collecting colorama==0.4.6 (from -r requirements.txt (line 13))
+14:10:57 | DEBUG | #11 6.982   Downloading https://download.pytorch.org/whl/colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+14:10:57 | DEBUG | #11 7.185 Collecting datasets==4.8.5 (from -r requirements.txt (line 14))
+14:10:57 | DEBUG | #11 7.219   Downloading datasets-4.8.5-py3-none-any.whl.metadata (19 kB)
+14:10:57 | DEBUG | #11 7.396 Collecting dill==0.4.1 (from -r requirements.txt (line 15))
+14:10:57 | DEBUG | #11 7.430   Downloading dill-0.4.1-py3-none-any.whl.metadata (10 kB)
+14:10:58 | DEBUG | #11 7.679 Collecting fastapi==0.136.1 (from -r requirements.txt (line 16))
+14:10:58 | DEBUG | #11 7.714   Downloading fastapi-0.136.1-py3-none-any.whl.metadata (28 kB)
+14:10:58 | DEBUG | #11 7.867 Collecting filelock==3.29.0 (from -r requirements.txt (line 17))
+14:10:58 | DEBUG | #11 7.902   Downloading filelock-3.29.0-py3-none-any.whl.metadata (2.0 kB)
+14:10:58 | DEBUG | #11 8.319 Collecting frozenlist==1.8.0 (from -r requirements.txt (line 18))
+14:10:58 | DEBUG | #11 8.495 Collecting fsspec==2026.2.0 (from -r requirements.txt (line 19))
+14:10:58 | DEBUG | #11 8.354   Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+14:10:59 | DEBUG | #11 8.529   Downloading fsspec-2026.2.0-py3-none-any.whl.metadata (10 kB)
+14:10:59 | DEBUG | #11 8.875 Collecting h11==0.16.0 (from -r requirements.txt (line 20))
+14:10:59 | DEBUG | #11 8.909   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+14:10:59 | DEBUG | #11 9.290 Collecting hf-xet==1.5.0 (from -r requirements.txt (line 21))
+14:10:59 | DEBUG | #11 9.325   Downloading hf_xet-1.5.0-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+14:10:59 | DEBUG | #11 9.506 Collecting httpcore==1.0.9 (from -r requirements.txt (line 22))
+14:11:00 | DEBUG | #11 9.540   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+14:11:00 | DEBUG | #11 9.888 Collecting httpx==0.28.1 (from -r requirements.txt (line 23))
+14:11:00 | DEBUG | #11 9.922   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+14:11:00 | DEBUG | #11 10.48 Collecting huggingface_hub==1.14.0 (from -r requirements.txt (line 24))
+14:11:00 | DEBUG | #11 10.61 Collecting idna==3.13 (from -r requirements.txt (line 25))
+14:11:00 | DEBUG | #11 10.51   Downloading huggingface_hub-1.14.0-py3-none-any.whl.metadata (14 kB)
+14:11:01 | DEBUG | #11 10.64   Downloading idna-3.13-py3-none-any.whl.metadata (8.0 kB)
+14:11:01 | DEBUG | #11 10.73 Collecting Jinja2==3.1.6 (from -r requirements.txt (line 26))
+14:11:01 | DEBUG | #11 10.77   Downloading https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+14:11:01 | DEBUG | #11 11.13 Collecting joblib==1.5.3 (from -r requirements.txt (line 27))
+14:11:01 | DEBUG | #11 11.16   Downloading joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+14:11:02 | DEBUG | #11 11.87 Collecting lxml==6.1.0 (from -r requirements.txt (line 28))
+14:11:02 | DEBUG | #11 11.93   Downloading lxml-6.1.0-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (4.0 kB)
+14:11:02 | DEBUG | #11 12.29 Collecting markdown-it-py==4.2.0 (from -r requirements.txt (line 29))
+14:11:02 | DEBUG | #11 12.33   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+14:11:02 | DEBUG | #11 12.50 Collecting MarkupSafe==3.0.3 (from -r requirements.txt (line 30))
+14:11:03 | DEBUG | #11 12.54   Downloading https://download.pytorch.org/whl/markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+14:11:03 | DEBUG | #11 12.88 Collecting mdurl==0.1.2 (from -r requirements.txt (line 31))
+14:11:03 | DEBUG | #11 13.02 Collecting mpmath==1.3.0 (from -r requirements.txt (line 32))
+14:11:03 | DEBUG | #11 12.92   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+14:11:03 | DEBUG | #11 13.05   Downloading mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+14:11:04 | DEBUG | #11 13.78 Collecting multidict==6.7.1 (from -r requirements.txt (line 33))
+14:11:04 | DEBUG | #11 13.82   Downloading multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.3 kB)
+14:11:04 | DEBUG | #11 14.17 Collecting multiprocess==0.70.19 (from -r requirements.txt (line 34))
+14:11:04 | DEBUG | #11 14.35 Collecting networkx==3.6.1 (from -r requirements.txt (line 35))
+14:11:04 | DEBUG | #11 14.20   Downloading multiprocess-0.70.19-py311-none-any.whl.metadata (7.5 kB)
+14:11:04 | DEBUG | #11 14.38   Downloading networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)
+14:11:05 | DEBUG | #11 15.20 Collecting numpy==2.4.4 (from -r requirements.txt (line 36))
+14:11:05 | DEBUG | #11 15.24   Downloading numpy-2.4.4-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+14:11:05 | DEBUG | #11 15.58 Collecting outcome==1.3.0.post0 (from -r requirements.txt (line 37))
+14:11:06 | DEBUG | #11 15.62   Downloading outcome-1.3.0.post0-py2.py3-none-any.whl.metadata (2.6 kB)
+14:11:06 | DEBUG | #11 15.62 Requirement already satisfied: packaging==26.2 in /usr/local/lib/python3.11/site-packages (from -r requirements.txt (line 38)) (26.2)
+14:11:06 | DEBUG | #11 15.93 Collecting pandas==3.0.2 (from -r requirements.txt (line 39))
+14:11:06 | DEBUG | #11 15.98      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 6.3 MB/s eta 0:00:00
+14:11:06 | DEBUG | #11 15.96   Downloading pandas-3.0.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+14:11:06 | DEBUG | #11 16.41 Collecting propcache==0.4.1 (from -r requirements.txt (line 40))
+14:11:06 | DEBUG | #11 16.44   Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (13 kB)
+14:11:07 | DEBUG | #11 16.89 Collecting pyarrow==24.0.0 (from -r requirements.txt (line 41))
+14:11:07 | DEBUG | #11 16.92   Downloading pyarrow-24.0.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+14:11:07 | DEBUG | #11 17.27 Collecting pycparser==3.0 (from -r requirements.txt (line 42))
+14:11:07 | DEBUG | #11 17.30   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+14:11:08 | DEBUG | #11 17.73 Collecting pydantic==2.13.4 (from -r requirements.txt (line 43))
+14:11:08 | DEBUG | #11 17.78      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.4/109.4 kB 12.2 MB/s eta 0:00:00
+14:11:08 | DEBUG | #11 17.77   Downloading pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)
+14:11:09 | DEBUG | #11 19.02 Collecting pydantic_core==2.46.4 (from -r requirements.txt (line 44))
+14:11:09 | DEBUG | #11 19.05   Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+14:11:09 | DEBUG | #11 19.42 Collecting Pygments==2.20.0 (from -r requirements.txt (line 45))
+14:11:09 | DEBUG | #11 19.46   Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+14:11:10 | DEBUG | #11 19.81 Collecting PySocks==1.7.1 (from -r requirements.txt (line 46))
+14:11:10 | DEBUG | #11 19.84   Downloading PySocks-1.7.1-py3-none-any.whl.metadata (13 kB)
+14:11:10 | DEBUG | #11 20.02 Collecting python-dateutil==2.9.0.post0 (from -r requirements.txt (line 47))
+14:11:10 | DEBUG | #11 20.06   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+14:11:10 | DEBUG | #11 20.43 Collecting python-dotenv==1.2.2 (from -r requirements.txt (line 48))
+14:11:10 | DEBUG | #11 20.46   Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+14:11:11 | DEBUG | #11 20.87 Collecting PyYAML==6.0.3 (from -r requirements.txt (line 49))
+14:11:11 | DEBUG | #11 20.90   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+14:11:11 | DEBUG | #11 21.61 Collecting regex==2026.4.4 (from -r requirements.txt (line 50))
+14:11:12 | DEBUG | #11 21.65      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.4/40.4 kB 43.3 MB/s eta 0:00:00
+14:11:12 | DEBUG | #11 21.76 Collecting requests==2.33.1 (from -r requirements.txt (line 51))
+14:11:12 | DEBUG | #11 21.65   Downloading regex-2026.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+14:11:12 | DEBUG | #11 21.79   Downloading requests-2.33.1-py3-none-any.whl.metadata (4.8 kB)
+14:11:12 | DEBUG | #11 22.19 Collecting rich==15.0.0 (from -r requirements.txt (line 52))
+14:11:12 | DEBUG | #11 22.23   Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+14:11:12 | DEBUG | #11 22.54 Collecting safetensors==0.7.0 (from -r requirements.txt (line 53))
+14:11:13 | DEBUG | #11 22.57   Downloading safetensors-0.7.0-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+14:11:13 | DEBUG | #11 23.14 Collecting selenium==4.44.0 (from -r requirements.txt (line 54))
+14:11:13 | DEBUG | #11 23.17   Downloading selenium-4.44.0-py3-none-any.whl.metadata (7.4 kB)
+14:11:13 | DEBUG | #11 23.52 Collecting shellingham==1.5.4 (from -r requirements.txt (line 55))
+14:11:14 | DEBUG | #11 23.57   Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+14:11:14 | DEBUG | #11 23.75 Collecting six==1.17.0 (from -r requirements.txt (line 56))
+14:11:14 | DEBUG | #11 23.79   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+14:11:14 | DEBUG | #11 24.16 Collecting sniffio==1.3.1 (from -r requirements.txt (line 57))
+14:11:14 | DEBUG | #11 24.20   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+14:11:14 | DEBUG | #11 24.55 Collecting sortedcontainers==2.4.0 (from -r requirements.txt (line 58))
+14:11:15 | DEBUG | #11 24.58   Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl.metadata (10 kB)
+14:11:15 | DEBUG | #11 24.95 Collecting soupsieve==2.8.3 (from -r requirements.txt (line 59))
+14:11:15 | DEBUG | #11 24.98   Downloading soupsieve-2.8.3-py3-none-any.whl.metadata (4.6 kB)
+14:11:15 | DEBUG | #11 25.37 Collecting starlette==1.0.0 (from -r requirements.txt (line 60))
+14:11:15 | DEBUG | #11 25.41   Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+14:11:15 | DEBUG | #11 25.51 Collecting sympy==1.14.0 (from -r requirements.txt (line 61))
+14:11:16 | DEBUG | #11 25.55   Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+14:11:16 | DEBUG | #11 26.05 Collecting tokenizers==0.22.2 (from -r requirements.txt (line 62))
+14:11:16 | DEBUG | #11 26.09   Downloading tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+14:11:16 | DEBUG | #11 26.33 Collecting torch==2.11.0 (from -r requirements.txt (line 63))
+14:11:16 | DEBUG | #11 26.64   Downloading https://download-r2.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (29 kB)
+14:11:17 | DEBUG | #11 26.78 Collecting tqdm==4.67.3 (from -r requirements.txt (line 64))
+14:11:17 | DEBUG | #11 26.81   Downloading tqdm-4.67.3-py3-none-any.whl.metadata (57 kB)
+14:11:17 | DEBUG | #11 26.82      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.7/57.7 kB 23.5 MB/s eta 0:00:00
+14:11:17 | DEBUG | #11 27.11 Collecting transformers==5.8.0 (from -r requirements.txt (line 65))
+14:11:17 | DEBUG | #11 27.14   Downloading transformers-5.8.0-py3-none-any.whl.metadata (33 kB)
+14:11:17 | DEBUG | #11 27.35 Collecting trio==0.33.0 (from -r requirements.txt (line 66))
+14:11:17 | DEBUG | #11 27.38   Downloading trio-0.33.0-py3-none-any.whl.metadata (8.5 kB)
+14:11:18 | DEBUG | #11 27.72 Collecting trio-websocket==0.12.2 (from -r requirements.txt (line 67))
+14:11:18 | DEBUG | #11 27.76   Downloading trio_websocket-0.12.2-py3-none-any.whl.metadata (5.1 kB)
+14:11:18 | DEBUG | #11 27.95 Collecting typer==0.25.1 (from -r requirements.txt (line 68))
+14:11:18 | DEBUG | #11 27.98   Downloading typer-0.25.1-py3-none-any.whl.metadata (15 kB)
+14:11:18 | DEBUG | #11 28.17 Collecting typing-inspection==0.4.2 (from -r requirements.txt (line 69))
+14:11:18 | DEBUG | #11 28.20   Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+14:11:18 | DEBUG | #11 28.41 Collecting typing_extensions==4.15.0 (from -r requirements.txt (line 70))
+14:11:18 | DEBUG | #11 28.44   Downloading https://download.pytorch.org/whl/typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+14:11:19 | DEBUG | #11 28.80 Collecting tzdata==2026.2 (from -r requirements.txt (line 71))
+14:11:19 | DEBUG | #11 28.83   Downloading tzdata-2026.2-py2.py3-none-any.whl.metadata (1.4 kB)
+14:11:19 | DEBUG | #11 29.21 Collecting undetected-chromedriver==3.5.5 (from -r requirements.txt (line 72))
+14:11:19 | INFO | #11 29.25   Preparing metadata (setup.py): started
+14:11:19 | DEBUG | #11 29.24   Downloading undetected-chromedriver-3.5.5.tar.gz (65 kB)
+14:11:19 | DEBUG | #11 29.25      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.4/65.4 kB 27.7 MB/s eta 0:00:00
+14:11:19 | DEBUG | #11 29.64   Preparing metadata (setup.py): finished with status 'done'
+14:11:20 | DEBUG | #11 29.77 Collecting urllib3==2.6.3 (from -r requirements.txt (line 73))
+14:11:20 | DEBUG | #11 29.80   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+14:11:20 | DEBUG | #11 30.18 Collecting uvicorn==0.46.0 (from -r requirements.txt (line 74))
+14:11:20 | DEBUG | #11 30.22   Downloading uvicorn-0.46.0-py3-none-any.whl.metadata (6.7 kB)
+14:11:20 | DEBUG | #11 30.63 Collecting watchdog==6.0.0 (from -r requirements.txt (line 75))
+14:11:21 | DEBUG | #11 30.67      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.3/44.3 kB 39.0 MB/s eta 0:00:00
+14:11:21 | DEBUG | #11 30.66   Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl.metadata (44 kB)
+14:11:21 | DEBUG | #11 31.06 Collecting webdriver-manager==4.1.2 (from -r requirements.txt (line 76))
+14:11:21 | DEBUG | #11 31.09   Downloading webdriver_manager-4.1.2-py3-none-any.whl.metadata (16 kB)
+14:11:21 | DEBUG | #11 31.45 Collecting websocket-client==1.9.0 (from -r requirements.txt (line 77))
+14:11:21 | DEBUG | #11 31.49   Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)
+14:11:22 | DEBUG | #11 31.92 Collecting websockets==16.0 (from -r requirements.txt (line 78))
+14:11:22 | DEBUG | #11 31.96   Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+14:11:22 | DEBUG | #11 32.30 Collecting wsproto==1.3.2 (from -r requirements.txt (line 79))
+14:11:22 | DEBUG | #11 32.33   Downloading wsproto-1.3.2-py3-none-any.whl.metadata (5.2 kB)
+14:11:23 | DEBUG | #11 32.84 Collecting xxhash==3.7.0 (from -r requirements.txt (line 80))
+14:11:23 | DEBUG | #11 32.88   Downloading xxhash-3.7.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (13 kB)
+14:11:24 | DEBUG | #11 33.73 Collecting yarl==1.23.0 (from -r requirements.txt (line 81))
+14:11:24 | DEBUG | #11 33.76   Downloading yarl-1.23.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+14:11:24 | DEBUG | #11 33.77      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.6/79.6 kB 22.3 MB/s eta 0:00:00
+14:11:25 | DEBUG | #11 34.80 Requirement already satisfied: setuptools<82 in /usr/local/lib/python3.11/site-packages (from torch==2.11.0->-r requirements.txt (line 63)) (79.0.1)
+14:11:25 | DEBUG | #11 35.47 Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+14:11:25 | DEBUG | #11 35.51 Downloading aiohttp-3.13.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.8 MB)
+14:11:26 | DEBUG | #11 35.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 17.7 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 35.71 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+14:11:26 | DEBUG | #11 35.68 Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+14:11:26 | DEBUG | #11 35.64 Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+14:11:26 | DEBUG | #11 35.75 Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+14:11:26 | DEBUG | #11 35.82 Downloading beautifulsoup4-4.14.3-py3-none-any.whl (107 kB)
+14:11:26 | DEBUG | #11 35.78 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+14:11:26 | DEBUG | #11 35.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 360.4 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 35.78    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 313.2 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 35.90 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+14:11:26 | DEBUG | #11 35.86    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.7/135.7 kB 186.1 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 35.82    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 107.7/107.7 kB 212.1 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 35.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 278.2 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 35.93 Downloading charset_normalizer-3.4.7-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (214 kB)
+14:11:26 | DEBUG | #11 35.86 Downloading certifi-2026.4.22-py3-none-any.whl (135 kB)
+14:11:26 | DEBUG | #11 35.97    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 110.5/110.5 kB 309.2 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.06 Downloading dill-0.4.1-py3-none-any.whl (120 kB)
+14:11:26 | DEBUG | #11 36.01 Downloading datasets-4.8.5-py3-none-any.whl (528 kB)
+14:11:26 | DEBUG | #11 35.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 214.1/214.1 kB 323.8 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 35.97 Downloading click-8.3.3-py3-none-any.whl (110 kB)
+14:11:26 | DEBUG | #11 36.03    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 529.0/529.0 kB 321.2 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.14 Downloading filelock-3.29.0-py3-none-any.whl (39 kB)
+14:11:26 | DEBUG | #11 36.10 Downloading fastapi-0.136.1-py3-none-any.whl (117 kB)
+14:11:26 | DEBUG | #11 36.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 120.0/120.0 kB 273.4 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 117.7/117.7 kB 266.4 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.17 Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+14:11:26 | DEBUG | #11 36.21    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 202.5/202.5 kB 400.7 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.25 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+14:11:26 | DEBUG | #11 36.21 Downloading fsspec-2026.2.0-py3-none-any.whl (202 kB)
+14:11:26 | DEBUG | #11 36.17    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.1/231.1 kB 343.7 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.28 Downloading hf_xet-1.5.0-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.5 MB)
+14:11:26 | DEBUG | #11 36.34    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 85.7 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.37    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 214.1 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.41 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+14:11:26 | DEBUG | #11 36.37 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+14:11:26 | DEBUG | #11 36.45 Downloading huggingface_hub-1.14.0-py3-none-any.whl (661 kB)
+14:11:26 | DEBUG | #11 36.41    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 223.5 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.49 Downloading idna-3.13-py3-none-any.whl (68 kB)
+14:11:26 | DEBUG | #11 36.45    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 661.5/661.5 kB 187.1 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.52 Downloading https://download.pytorch.org/whl/jinja2-3.1.6-py3-none-any.whl (134 kB)
+14:11:26 | DEBUG | #11 36.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 68.6/68.6 kB 283.4 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.60 Downloading lxml-6.1.0-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (5.2 MB)
+14:11:26 | DEBUG | #11 36.56 Downloading joblib-1.5.3-py3-none-any.whl (309 kB)
+14:11:26 | DEBUG | #11 36.56    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 309.1/309.1 kB 313.5 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.2/5.2 MB 107.2 MB/s eta 0:00:00
+14:11:26 | DEBUG | #11 36.53    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 325.6 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 36.69    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 kB 163.5 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 36.76 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+14:11:27 | DEBUG | #11 36.72 Downloading https://download.pytorch.org/whl/markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+14:11:27 | DEBUG | #11 36.68 Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+14:11:27 | DEBUG | #11 36.80    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 536.2/536.2 kB 221.6 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 36.87 Downloading multiprocess-0.70.19-py311-none-any.whl (144 kB)
+14:11:27 | DEBUG | #11 36.84    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 246.3/246.3 kB 243.0 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 36.83 Downloading multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (246 kB)
+14:11:27 | DEBUG | #11 36.79 Downloading mpmath-1.3.0-py3-none-any.whl (536 kB)
+14:11:27 | DEBUG | #11 36.87    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 144.5/144.5 kB 299.7 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 36.96 Downloading numpy-2.4.4-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+14:11:27 | DEBUG | #11 36.91 Downloading networkx-3.6.1-py3-none-any.whl (2.1 MB)
+14:11:27 | DEBUG | #11 36.93    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 149.7 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 37.14    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 97.9 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 37.17 Downloading outcome-1.3.0.post0-py2.py3-none-any.whl (10 kB)
+14:11:27 | DEBUG | #11 37.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 96.9 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 37.21 Downloading pandas-3.0.2-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (11.3 MB)
+14:11:27 | DEBUG | #11 37.36 Downloading propcache-0.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (210 kB)
+14:11:27 | DEBUG | #11 37.36    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 210.0/210.0 kB 372.9 MB/s eta 0:00:00
+14:11:27 | DEBUG | #11 37.39 Downloading pyarrow-24.0.0-cp311-cp311-manylinux_2_28_x86_64.whl (48.8 MB)
+14:11:28 | DEBUG | #11 37.91    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.8/48.8 MB 93.4 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 37.95    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 289.4 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.02 Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+14:11:28 | DEBUG | #11 37.98 Downloading pydantic-2.13.4-py3-none-any.whl (472 kB)
+14:11:28 | DEBUG | #11 37.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 472.3/472.3 kB 272.6 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 37.94 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+14:11:28 | DEBUG | #11 38.08    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 155.4 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.04    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 139.3 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.12 Downloading PySocks-1.7.1-py3-none-any.whl (16 kB)
+14:11:28 | DEBUG | #11 38.07 Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+14:11:28 | DEBUG | #11 38.15 Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+14:11:28 | DEBUG | #11 38.22 Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+14:11:28 | DEBUG | #11 38.19 Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+14:11:28 | DEBUG | #11 38.27 Downloading regex-2026.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (799 kB)
+14:11:28 | DEBUG | #11 38.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 339.6 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.23    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 164.1 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 799.8/799.8 kB 187.5 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.35 Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+14:11:28 | DEBUG | #11 38.38 Downloading safetensors-0.7.0-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (507 kB)
+14:11:28 | DEBUG | #11 38.31 Downloading requests-2.33.1-py3-none-any.whl (64 kB)
+14:11:28 | DEBUG | #11 38.35    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.7/310.7 kB 269.5 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.31    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.9/64.9 kB 281.2 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.42 Downloading selenium-4.44.0-py3-none-any.whl (9.7 MB)
+14:11:28 | DEBUG | #11 38.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 507.2/507.2 kB 232.5 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.52    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.7/9.7 MB 98.1 MB/s eta 0:00:00
+14:11:28 | DEBUG | #11 38.56 Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+14:11:28 | DEBUG | #11 38.59 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+14:11:28 | DEBUG | #11 38.63 Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+14:11:29 | DEBUG | #11 38.70 Downloading soupsieve-2.8.3-py3-none-any.whl (37 kB)
+14:11:29 | DEBUG | #11 38.73 Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+14:11:29 | DEBUG | #11 38.66 Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+14:11:29 | DEBUG | #11 38.74    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.7/72.7 kB 237.1 MB/s eta 0:00:00
+14:11:29 | DEBUG | #11 38.77 Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+14:11:29 | DEBUG | #11 38.84    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 99.1 MB/s eta 0:00:00
+14:11:29 | DEBUG | #11 38.91    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 99.9 MB/s eta 0:00:00
+14:11:29 | DEBUG | #11 38.87 Downloading tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.3 MB)
+14:11:29 | DEBUG | #11 39.06 Downloading https://download-r2.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl (190.2 MB)
+14:11:31 | DEBUG | #11 41.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 190.2/190.2 MB 90.9 MB/s eta 0:00:00
+14:11:31 | DEBUG | #11 41.48    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.4/78.4 kB 134.2 MB/s eta 0:00:00
+14:11:31 | DEBUG | #11 41.48 Downloading tqdm-4.67.3-py3-none-any.whl (78 kB)
+14:11:31 | DEBUG | #11 41.52 Downloading transformers-5.8.0-py3-none-any.whl (10.6 MB)
+14:11:32 | DEBUG | #11 41.67 Downloading trio-0.33.0-py3-none-any.whl (510 kB)
+14:11:32 | DEBUG | #11 41.63    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.6/10.6 MB 92.1 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.71 Downloading trio_websocket-0.12.2-py3-none-any.whl (21 kB)
+14:11:32 | DEBUG | #11 41.74 Downloading typer-0.25.1-py3-none-any.whl (58 kB)
+14:11:32 | DEBUG | #11 41.67    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 510.3/510.3 kB 185.7 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.82    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 170.5 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.82 Downloading https://download.pytorch.org/whl/typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+14:11:32 | DEBUG | #11 41.85 Downloading tzdata-2026.2-py2.py3-none-any.whl (349 kB)
+14:11:32 | DEBUG | #11 41.78 Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+14:11:32 | DEBUG | #11 41.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.4/58.4 kB 174.4 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.86    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 349.3/349.3 kB 344.9 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.97 Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl (79 kB)
+14:11:32 | DEBUG | #11 41.89    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.6/131.6 kB 270.6 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.93 Downloading uvicorn-0.46.0-py3-none-any.whl (70 kB)
+14:11:32 | DEBUG | #11 41.93    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 70.9/70.9 kB 331.7 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.89 Downloading urllib3-2.6.3-py3-none-any.whl (131 kB)
+14:11:32 | DEBUG | #11 42.04    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.6/82.6 kB 244.1 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 41.97    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.1/79.1 kB 213.0 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 42.04 Downloading websocket_client-1.9.0-py3-none-any.whl (82 kB)
+14:11:32 | DEBUG | #11 42.00 Downloading webdriver_manager-4.1.2-py3-none-any.whl (32 kB)
+14:11:32 | DEBUG | #11 42.08 Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+14:11:32 | DEBUG | #11 42.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 193.9/193.9 kB 343.2 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 42.08    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 184.6/184.6 kB 322.1 MB/s eta 0:00:00
+14:11:32 | DEBUG | #11 42.19 Downloading yarl-1.23.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (102 kB)
+14:11:32 | DEBUG | #11 42.11 Downloading wsproto-1.3.2-py3-none-any.whl (24 kB)
+14:11:32 | DEBUG | #11 42.15 Downloading xxhash-3.7.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (193 kB)
+14:11:32 | DEBUG | #11 42.19    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 102.7/102.7 kB 249.6 MB/s eta 0:00:00
+14:11:33 | DEBUG | #11 43.30 Building wheels for collected packages: undetected-chromedriver
+14:11:33 | INFO | #11 43.30   Building wheel for undetected-chromedriver (setup.py): started
+14:11:33 | DEBUG | #11 43.55   Building wheel for undetected-chromedriver (setup.py): finished with status 'done'
+14:11:34 | DEBUG | #11 43.56 Successfully built undetected-chromedriver
+14:11:34 | DEBUG | #11 43.55   Created wheel for undetected-chromedriver: filename=undetected_chromedriver-3.5.5-py3-none-any.whl size=47130 sha256=75b39eb06cfa585a6e136100d95fc6e0cc9c6d40b61fa6192c61958b49a573d0
+14:11:34 | DEBUG | #11 43.55   Stored in directory: /tmp/pip-ephem-wheel-cache-8_zfe21k/wheels/5c/b9/03/4b6e38f019d6170e8c25df2e1e362d7bdf9ff4012df2dc85c0
+14:11:34 | DEBUG | #11 44.33 Installing collected packages: sortedcontainers, mpmath, xxhash, websockets, websocket-client, watchdog, urllib3, tzdata, typing_extensions, tqdm, sympy, soupsieve, sniffio, six, shellingham, safetensors, regex, PyYAML, python-dotenv, PySocks, Pygments, pycparser, pyarrow, propcache, numpy, networkx, multidict, mdurl, MarkupSafe, lxml, joblib, idna, hf-xet, h11, fsspec, frozenlist, filelock, dill, colorama, click, charset-normalizer, certifi, attrs, annotated-types, annotated-doc, aiohappyeyeballs, yarl, wsproto, uvicorn, typing-inspection, requests, python-dateutil, pydantic_core, outcome, multiprocess, markdown-it-py, Jinja2, httpcore, cffi, beautifulsoup4, anyio, aiosignal, webdriver-manager, trio, torch, starlette, rich, pydantic, pandas, httpx, aiohttp, typer, trio-websocket, fastapi, selenium, huggingface_hub, undetected-chromedriver, tokenizers, datasets, transformers
+14:12:17 | DEBUG | #11 87.10 Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.3 PySocks-1.7.1 PyYAML-6.0.3 Pygments-2.20.0 aiohappyeyeballs-2.6.1 aiohttp-3.13.5 aiosignal-1.4.0 annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.13.0 attrs-26.1.0 beautifulsoup4-4.14.3 certifi-2026.4.22 cffi-2.0.0 charset-normalizer-3.4.7 click-8.3.3 colorama-0.4.6 datasets-4.8.5 dill-0.4.1 fastapi-0.136.1 filelock-3.29.0 frozenlist-1.8.0 fsspec-2026.2.0 h11-0.16.0 hf-xet-1.5.0 httpcore-1.0.9 httpx-0.28.1 huggingface_hub-1.14.0 idna-3.13 joblib-1.5.3 lxml-6.1.0 markdown-it-py-4.2.0 mdurl-0.1.2 mpmath-1.3.0 multidict-6.7.1 multiprocess-0.70.19 networkx-3.6.1 numpy-2.4.4 outcome-1.3.0.post0 pandas-3.0.2 propcache-0.4.1 pyarrow-24.0.0 pycparser-3.0 pydantic-2.13.4 pydantic_core-2.46.4 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 regex-2026.4.4 requests-2.33.1 rich-15.0.0 safetensors-0.7.0 selenium-4.44.0 shellingham-1.5.4 six-1.17.0 sniffio-1.3.1 sortedcontainers-2.4.0 soupsieve-2.8.3 starlette-1.0.0 sympy-1.14.0 tokenizers-0.22.2 torch-2.11.0+cpu tqdm-4.67.3 transformers-5.8.0 trio-0.33.0 trio-websocket-0.12.2 typer-0.25.1 typing-inspection-0.4.2 typing_extensions-4.15.0 tzdata-2026.2 undetected-chromedriver-3.5.5 urllib3-2.6.3 uvicorn-0.46.0 watchdog-6.0.0 webdriver-manager-4.1.2 websocket-client-1.9.0 websockets-16.0 wsproto-1.3.2 xxhash-3.7.0 yarl-1.23.0
+14:12:17 | DEBUG | #11 87.10 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+14:12:17 | DEBUG | #11 87.57 [notice] A new release of pip is available: 24.0 -> 26.1.2
+14:12:17 | DEBUG | #11 87.57 [notice] To update, run: pip install --upgrade pip
+14:12:17 | DEBUG | #11 87.57 
+14:12:20 | DEBUG | #11 89.86 Requirement already satisfied: uvicorn[standard] in /usr/local/lib/python3.11/site-packages (0.46.0)
+14:12:20 | DEBUG | #11 89.88 Requirement already satisfied: click>=7.0 in /usr/local/lib/python3.11/site-packages (from uvicorn[standard]) (8.3.3)
+14:12:20 | DEBUG | #11 89.88 Requirement already satisfied: h11>=0.8 in /usr/local/lib/python3.11/site-packages (from uvicorn[standard]) (0.16.0)
+14:12:20 | DEBUG | #11 90.08 Collecting httptools>=0.6.3 (from uvicorn[standard])
+14:12:20 | DEBUG | #11 90.26   Downloading httptools-0.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+14:12:20 | DEBUG | #11 90.35 Collecting uvloop>=0.15.1 (from uvicorn[standard])
+14:12:20 | DEBUG | #11 90.38   Downloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.9 kB)
+14:12:20 | DEBUG | #11 90.26 Requirement already satisfied: python-dotenv>=0.13 in /usr/local/lib/python3.11/site-packages (from uvicorn[standard]) (1.2.2)
+14:12:20 | DEBUG | #11 90.26 Requirement already satisfied: pyyaml>=5.1 in /usr/local/lib/python3.11/site-packages (from uvicorn[standard]) (6.0.3)
+14:12:20 | DEBUG | #11 90.54 Collecting watchfiles>=0.20 (from uvicorn[standard])
+14:12:20 | DEBUG | #11 90.61 Requirement already satisfied: typing_extensions>=4.5 in /usr/local/lib/python3.11/site-packages (from anyio>=3.0.0->watchfiles>=0.20->uvicorn[standard]) (4.15.0)
+14:12:20 | DEBUG | #11 90.60 Requirement already satisfied: idna>=2.8 in /usr/local/lib/python3.11/site-packages (from anyio>=3.0.0->watchfiles>=0.20->uvicorn[standard]) (3.13)
+14:12:20 | DEBUG | #11 90.59 Requirement already satisfied: anyio>=3.0.0 in /usr/local/lib/python3.11/site-packages (from watchfiles>=0.20->uvicorn[standard]) (4.13.0)
+14:12:20 | DEBUG | #11 90.57   Downloading watchfiles-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+14:12:20 | DEBUG | #11 90.58 Requirement already satisfied: websockets>=10.4 in /usr/local/lib/python3.11/site-packages (from uvicorn[standard]) (16.0)
+14:12:20 | DEBUG | #11 90.65 Downloading httptools-0.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (464 kB)
+14:12:21 | DEBUG | #11 90.79 Downloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.8 MB)
+14:12:21 | DEBUG | #11 90.76    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 464.7/464.7 kB 4.3 MB/s eta 0:00:00
+14:12:21 | DEBUG | #11 90.93    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.9/456.9 kB 242.1 MB/s eta 0:00:00
+14:12:21 | DEBUG | #11 90.89    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.8/3.8 MB 40.0 MB/s eta 0:00:00
+14:12:21 | DEBUG | #11 90.93 Downloading watchfiles-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+14:12:21 | DEBUG | #11 91.62 Installing collected packages: uvloop, httptools, watchfiles
+14:12:22 | DEBUG | #11 91.83 Successfully installed httptools-0.8.0 uvloop-0.22.1 watchfiles-1.2.0
+14:12:22 | DEBUG | #11 91.83 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+14:12:22 | DEBUG | #11 92.00 
+14:12:22 | DEBUG | #11 92.00 [notice] A new release of pip is available: 24.0 -> 26.1.2
+14:12:22 | DEBUG | #11 92.00 [notice] To update, run: pip install --upgrade pip
+14:12:22 | DEBUG | #11 92.19 ✅ Зависимости установлены
+14:12:28 | DEBUG | #11 DONE 98.3s
+14:12:28 | DEBUG | #12 [stage-0  6/28] COPY main.py ./
+14:12:28 | DEBUG | 
+14:12:28 | DEBUG | #12 DONE 0.3s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #13 [stage-0  7/28] COPY Wuglarst/ ./Wuglarst/
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #13 DONE 0.0s
+14:12:29 | DEBUG | #15 DONE 0.0s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #14 DONE 0.0s
+14:12:29 | DEBUG | #15 [stage-0  9/28] COPY data/ ./data/
+14:12:29 | DEBUG | #14 [stage-0  8/28] COPY utils/ ./utils/
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #16 [stage-0 10/28] COPY models/ ./models/
+14:12:29 | DEBUG | #16 DONE 0.3s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #17 DONE 0.0s
+14:12:29 | DEBUG | #17 [stage-0 11/28] COPY web_researcher.py ./
+14:12:29 | DEBUG | #20 [stage-0 14/28] COPY hanako/ ./hanako/
+14:12:29 | DEBUG | #18 [stage-0 12/28] COPY web_researcher_demo.py ./
+14:12:29 | DEBUG | #20 DONE 0.1s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #18 DONE 0.0s
+14:12:29 | DEBUG | #19 DONE 0.0s
+14:12:29 | DEBUG | #19 [stage-0 13/28] COPY web_researcher_README.md ./
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #22 [stage-0 16/28] COPY lucy/ ./lucy/
+14:12:29 | DEBUG | #21 [stage-0 15/28] COPY fuyuki/ ./fuyuki/
+14:12:29 | DEBUG | #23 DONE 0.0s
+14:12:29 | DEBUG | #21 DONE 0.0s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #23 [stage-0 17/28] COPY futaba/ ./futaba/
+14:12:29 | DEBUG | #22 DONE 0.0s
+14:12:29 | DEBUG | #26 DONE 0.0s
+14:12:29 | DEBUG | #25 DONE 0.1s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #24 DONE 0.0s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #26 [stage-0 20/28] COPY akva/ ./akva/
+14:12:29 | DEBUG | #24 [stage-0 18/28] COPY shiori/ ./shiori/
+14:12:29 | DEBUG | #25 [stage-0 19/28] COPY nobuka/ ./nobuka/
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #27 DONE 0.0s
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #27 [stage-0 21/28] COPY latislane/ ./latislane/
+14:12:29 | DEBUG | #28 [stage-0 22/28] COPY celesta/ ./celesta/
+14:12:29 | DEBUG | #29 DONE 0.0s
+14:12:29 | DEBUG | #29 [stage-0 23/28] COPY naoto/ ./naoto/
+14:12:29 | DEBUG | 
+14:12:29 | DEBUG | #28 DONE 0.0s
+14:12:29 | DEBUG | 
+14:12:30 | DEBUG | #31 DONE 0.0s
+14:12:30 | DEBUG | #30 DONE 0.0s
+14:12:30 | DEBUG | 
+14:12:30 | DEBUG | #30 [stage-0 24/28] COPY yu/ ./yu/
+14:12:30 | DEBUG | #31 [stage-0 25/28] COPY ayiko/ ./ayiko/
+14:12:30 | DEBUG | 
+14:12:30 | DEBUG | 
+14:12:30 | DEBUG | #33 0.063 -rw-r--r-- 1 root root 54546741 Jul 15 04:10 chat_model.pth
+14:12:30 | DEBUG | #33 [stage-0 27/28] RUN ls -la /app/models/ &&     if [ ! -f /app/models/chat_model.pth ]; then         echo "❌ Ошибка: файл chat_model.pth отсутствует!";         exit 1;     fi &&     echo "✅ Модель найдена: /app/models/chat_model.pth"
+14:12:30 | DEBUG | 
+14:12:30 | DEBUG | #33 0.063 total 53280
+14:12:30 | DEBUG | #32 [stage-0 26/28] COPY scientists_network/ ./scientists_network/
+14:12:30 | DEBUG | #32 DONE 0.0s
+14:12:30 | DEBUG | #33 0.063 drwxr-xr-x 2 root root     4096 Jul 15 04:10 .
+14:12:30 | DEBUG | #33 0.063 drwxr-xr-x 1 root root     4096 Jul 15 04:12 ..
+14:12:30 | DEBUG | #33 0.063 ✅ Модель найдена: /app/models/chat_model.pth
+14:12:30 | DEBUG | 
+14:12:30 | DEBUG | #33 DONE 0.1s
+14:12:30 | DEBUG | #34 [stage-0 28/28] RUN python -c "from main import app; print('✅ Приложение импортировано')" || (echo "❌ Ошибка импорта" && exit 1)
+14:12:30 | DEBUG | #34 0.400 2026-07-15 04:12:30,548 | INFO | main | ✅ Путь added: /app/Wuglarst (родитель для Wuglarst/src/)
+14:12:30 | DEBUG | #34 0.405 2026-07-15 04:12:30,553 | WARNING | main | ⚠️ GIGACHAT_TOKEN не задан — ретраин без данных от GigaChat
+14:12:30 | DEBUG | #34 0.405 2026-07-15 04:12:30,553 | INFO | main | ✅ Файл .env загружен
+14:12:30 | DEBUG | #34 0.446 2026-07-15 04:12:30,594 | WARNING | main | ⚠️ Переменная RETRAIN_TOKEN не задана в .env — /retrain будет отключён
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.learning | 🌐 Интернет-поиск: ВКЛЮЧЕН (реальный)
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,874 | INFO | web_researcher | 🌐 WebResearcher инициализирован
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.learning | ℹ️ Новое состояние создано
+14:12:30 | DEBUG | #34 0.743 2026-07-15 04:12:30,891 | INFO | celesta.learning | 🌐 Интернет-поиск: ВКЛЮЧЕН (реальный)
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.social | 👥 SocialSystem инициализирован
+14:12:30 | DEBUG | #34 0.743 2026-07-15 04:12:30,891 | INFO | celesta.learning | ℹ️ Новое состояние создано
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.reports |    Отчётов написано: 0
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.factory |    📦 Модулей: 10
+14:12:30 | DEBUG | #34 0.743 2026-07-15 04:12:30,891 | INFO | celesta.learning |    📊 Тем для изучения: 112
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🎯 Определено 15 тем для изучения
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🔍 Движок обучения активен: 99 тем
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core | [AUTOSTART] Автозапуск Латислейн завершён
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,876 | INFO | latislane.evolution |    Текущий этап: mechanical_research
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    📚 Модулей тела: 10
+14:12:30 | DEBUG | #34 0.757 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 lucy подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,876 | INFO | latislane.evolution | ℹ️ Новое состояние эволюции создано
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 shiori подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.757 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 futaba подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |       → fuyuki: обсуждение
+14:12:30 | DEBUG | #34 0.757 2026-07-15 04:12:30,905 | INFO | scientists_network | 👤 hanako подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🤖 Автономная работа: ВКЛ
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 celest подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.743 2026-07-15 04:12:30,891 | INFO | web_researcher | 🌐 WebResearcher инициализирован
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,876 | INFO | latislane.evolution | 🧬 EvolutionManager инициализирован
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    👥 План взаимодействий: 5 с сёстрами
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 yu подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.character |    Создано 30 черт характера
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 akva подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.character |    Черт характера: 30
+14:12:30 | DEBUG | #34 0.743 2026-07-15 04:12:30,891 | WARNING | main | ⚠️ Celesta не загружена: '>' not supported between instances of 'str' and 'int'
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.factory |    📋 Шаблонов: 3
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    ✅ Ежедневный отчёт создан: Ежедневный отчёт — 2026-07-15
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.reports | 📝 ReportSystem инициализирован
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.character | ℹ️ Новое состояние характера создано
+14:12:30 | DEBUG | #34 0.743 2026-07-15 04:12:30,891 | INFO | celesta.learning |    📚 Загружено узлов знаний: 0
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.learning | 🧠 InternetLearningEngine инициализирован: /app/data/latislane/learning
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.social | ℹ️ Новое состояние социальных взаимодействий создано
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 shiori подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🚀 Автозапуск: ВКЛ
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.reports |    Категорий знаний: 10
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    👥 Социальная система: 11 сёстр
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core | 🧬 LATISLANE CORE v2.0 ИНИЦИАЛИЗИРОВАН
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.learning |    📚 Загружено узлов знаний: 0
+14:12:30 | DEBUG | #34 0.743 2026-07-15 04:12:30,891 | INFO | celesta.learning | 🌹 IntimacyLearningEngine инициализирован: /app/data/celesta/learning
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🧬 Этап эволюции: mechanical_research (0 тем изучено)
+14:12:30 | DEBUG | #34 0.757 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 lucy подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 latislane подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    📝 Система отчётов: 1 отчётов
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.reports | ℹ️ Новое состояние создано
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |       → lucy: помощь
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 nobuka подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | main | 🧬 Latislane инициализирован (изучение тела + проектирование)
+14:12:30 | DEBUG | #34 0.757 2026-07-15 04:12:30,905 | INFO | scientists_network | 👤 hanako подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.core | 🚀 АВТОЗАПУСК Латислейн...
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🌐 Демо-режим: ВКЛ
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.social |    Создано 11 отношений
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.social |    Девочек: 11
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 akva подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 yu подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |       → hanako: обучение
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 latislane подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.reports | 📝 Ежедневный отчёт создан: Ежедневный отчёт — 2026-07-15
+14:12:30 | DEBUG | #34 0.757 2026-07-15 04:12:30,905 | INFO | scientists_network | 👤 fuyuki подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 celest подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 futaba подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.character | 🔮 CharacterSystem инициализирован
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.core | ℹ️ Новое состояние системы создано
+14:12:30 | DEBUG | #34 0.728 2026-07-15 04:12:30,876 | INFO | latislane.core |    📝 Создание ежедневного отчёта...
+14:12:30 | DEBUG | #34 0.757 2026-07-15 04:12:30,905 | INFO | scientists_network | 👤 fuyuki подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.learning |    📊 Тем для изучения: 15
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🔮 Система характера: 30 черт
+14:12:30 | DEBUG | #34 0.729 2026-07-15 04:12:30,877 | INFO | latislane.core |    🏭 Фабрика тел готова
+14:12:30 | DEBUG | #34 0.727 2026-07-15 04:12:30,875 | INFO | latislane.factory | 🏭 BodyFactory инициализирован
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 nobuka подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network |    Каждая девочка общается со всеми 11 остальними
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | ResearchMonitor | 🌐 Scientists Network подключена
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 ayiko подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 🌐 Scientists Network инициализирована (все 12 девочек)
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | ℹ️ Файл состояния не найден, создаём новый
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | ResearchMonitor | 🔬 ResearchMonitor инициализирован
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 naoto подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | ResearchMonitor | 🔬 Инициализация всех ядер...
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | ℹ️ Файл состояния не найден, создаём новый
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network |    Каждая девочка общается со всеми 11 остальними
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 🌐 Scientists Network инициализирована (все 12 девочек)
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network |    Подключены: Ханако, Фуюки, Люси, Футаба, Шиори, Нобука, Латислейн, Селеста, Аква, Юи, Айко, Наото
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 ayiko подключена к Scientists Network
+14:12:30 | DEBUG | #34 0.827 2026-07-15 04:12:30,975 | INFO | ResearchMonitor | ✅ Ядро Ханако (гравитация) готово
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network |    Подключены: Ханако, Фуюки, Люси, Футаба, Шиори, Нобука, Латислейн, Селеста, Аква, Юи, Айко, Наото
+14:12:30 | DEBUG | #34 0.758 2026-07-15 04:12:30,906 | INFO | scientists_network | 👤 naoto подключена к Scientists Network
+14:12:31 | DEBUG | #34 0.881 2026-07-15 04:12:31,029 | WARNING | ResearchMonitor | ⚠️ Ядро Футаба не загружено: expected an indented block after 'if' statement on line 140 (futaba_core.py, line 143)
+14:12:31 | DEBUG | #34 0.867 2026-07-15 04:12:31,015 | INFO | ResearchMonitor | ✅ Ядро Люси (двигатели) готово
+14:12:31 | DEBUG | #34 0.892 2026-07-15 04:12:31,040 | WARNING | ResearchMonitor | ⚠️ Ядро Нобука не загружено: expected an indented block after 'if' statement on line 173 (nobuka_core.py, line 176)
+14:12:31 | DEBUG | #34 0.892 2026-07-15 04:12:31,040 | INFO | ResearchMonitor | ✅ Ядро Латислейн (тело) готово
+14:12:31 | DEBUG | #34 0.851 2026-07-15 04:12:30,999 | INFO | ResearchMonitor | ✅ Ядро Фуюки (электричество) готово
+14:12:31 | DEBUG | #34 0.887 2026-07-15 04:12:31,035 | WARNING | ResearchMonitor | ⚠️ Ядро Шиори не загружено: expected an indented block after 'if' statement on line 138 (shiori_core.py, line 141)
+14:12:31 | DEBUG | #34 0.892 2026-07-15 04:12:31,040 | INFO | ResearchMonitor | ✅ Ядро Селеста (интимная жизнь) готово
+14:12:31 | DEBUG | #34 0.902 2026-07-15 04:12:31,050 | WARNING | ResearchMonitor | ⚠️ Ядро Аква не загружено: expected an indented block after 'if' statement on line 547 (akva_core.py, line 550)
+14:12:31 | DEBUG | #34 0.919 2026-07-15 04:12:31,067 | INFO | ResearchMonitor | 📊 Инициализировано ядер: 6
+14:12:31 | DEBUG | #34 0.934 ✅ Приложение импортировано
+14:12:31 | DEBUG | #34 0.919 2026-07-15 04:12:31,067 | INFO | main | 🔬 ResearchMonitor инициализирован (Ханако, Фуюки, Люси, Футаба, Шиори, Нобука, Латислейн, Селеста, Аква, Юи)
+14:12:31 | DEBUG | #34 0.914 2026-07-15 04:12:31,062 | INFO | ResearchMonitor | ✅ Ядро Юи (сознание, перенос) — с интернетом
+14:12:31 | DEBUG | #34 0.918 2026-07-15 04:12:31,066 | WARNING | ResearchMonitor | ⚠️ Ядро Наото не загружено: cannot import name 'NaotoConfig' from 'naoto.engine.config' (/app/naoto/engine/config.py)
+14:12:31 | DEBUG | #34 0.919 2026-07-15 04:12:31,067 | WARNING | ResearchMonitor | ⚠️ Ядро Айко не загружено: cannot import name 'Ayiko' from 'ayiko.engine' (/app/ayiko/engine/__init__.py)
+14:12:31 | DEBUG | #34 DONE 1.3s
+14:12:31 | DEBUG | 
+14:12:31 | DEBUG | #35 exporting layers
+14:12:31 | DEBUG | #35 exporting to image
+14:13:25 | DEBUG | #35 exporting layers 53.6s done
+14:13:25 | DEBUG | #36 DONE 0.0s
+14:13:25 | DEBUG | #35 pushing layers
+14:13:25 | DEBUG | #35 exporting manifest sha256:89a39be900555da983cf4db0cd7c0fe4ff439bba967caef22038b1538653a5d5 0.0s done
+14:13:25 | DEBUG | #35 exporting config sha256:1817eccc5fe87b785233b7b0dffe91ce7767e507a1c4b32c6ec308bb300bdaf4 done
+14:13:25 | DEBUG | #35 ...
+14:13:25 | DEBUG | 
+14:13:25 | DEBUG | 
+14:13:25 | DEBUG | #35 exporting to image
+14:13:25 | DEBUG | 
+14:13:25 | DEBUG | #35 ...
+14:13:26 | DEBUG | #35 exporting to image
+14:13:26 | DEBUG | #37 DONE 0.0s
+14:13:26 | DEBUG | 
+14:14:22 | DEBUG | #35 pushing layers 57.4s done
+14:14:22 | DEBUG | 
+14:14:22 | DEBUG | #38 DONE 0.0s
+14:14:22 | DEBUG | #35 ...
+14:14:22 | DEBUG | #35 exporting to image
+14:14:22 | DEBUG | 
+14:14:23 | DEBUG | #35 DONE 112.0s
+14:14:23 | INFO | Build succeeded
+14:14:28 | INFO | Pulling image from registry
+14:15:16 | INFO | Successfully pulled
+14:15:16 | INFO | Starting container
+14:15:17 | INFO | Scanning for exposed ports
+14:15:17 | INFO | Found 1 HTTP ports: ['8000/tcp']
+14:15:17 | INFO | Container started
+14:15:17 | INFO | Checking app's health
+14:15:17 | INFO | Waiting for container healthcheck to pass
+14:15:17 | INFO | Health status: starting
+14:15:42 | INFO | Health status: healthy
+14:15:42 | INFO | App is healthy
+14:15:42 | INFO | Configuring web server for deploy
+14:15:42 | INFO | Web server Configured
+14:15:42 | INFO | Deploy succeeded
+14:15:42 | INFO | Cleaning up old containers

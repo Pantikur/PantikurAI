@@ -69,6 +69,42 @@ class ChangeStatus(Enum):
 
 
 # =====================================================================
+#  МОДЕЛИ ИНТИМНОЙ ЖИЗНИ
+# =====================================================================
+
+class IntimacyLevel(Enum):
+    """Уровень интимности."""
+    BASIC = "basic"           # Базовые знания
+    INTERMEDIATE = "intermediate"
+    ADVANCED = "advanced"
+    EXPERT = "expert"
+    ABSOLUTE = "absolute"
+
+
+class SexualPosition(Enum):
+    """Положения."""
+    MISSIONARY = "missionary"
+    DOGGY_STYLE = "doggy_style"
+    WOMAN_ON_TOP = "woman_on_top"
+    SPOONING = "spooning"
+    LOTUS = "lotus"
+    STANDING = "standing"
+    LEGS_ON_SHOULDER = "legs_on_shoulder"
+    EDGE_OF_THE_bed = "edge_of_bed"
+    ANALE = "anale"
+    OTHER = "other"
+
+
+class ConsentType(Enum):
+    """Тип согласия."""
+    FRIES = "fries"           # Free, Reversible, Informed, Enthusiastic, Specific
+    YESC = "yesc"             # Yes means Yes
+    EXPLICIT = "explicit"
+    IMPLICIT = "implicit"
+    COERCION = "coercion"     # Для защиты и предупреждения
+
+
+# =====================================================================
 #  КОНСТИТУЦИЯ И ЗАКОНЫ
 # =====================================================================
 

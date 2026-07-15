@@ -426,3 +426,54 @@ class BenchmarkResult:
             "memory_after_mb": round(self.memory_after_mb, 1),
             "performance_change_percent": round(self.performance_change_percent, 1),
         }
+
+
+# =====================================================================
+#  МОДЕЛИ НААТО
+# =====================================================================
+
+class VisualCategory(Enum):
+    """Категория визуального контента."""
+    UI_UX = "ui_ux"
+    DATA_VISUALIZATION = "data_visualization"
+    ICON_DESIGN = "icon_design"
+    ILLUSTRATION = "illustration"
+    PHOTOGRAPHY = "photography"
+    MOTION_GRAPHICS = "motion_graphics"
+
+
+@dataclass
+class VisualResult:
+    """Результат визуальной работы."""
+    result_id: str = ""
+    task_type: str = ""
+    description: str = ""
+    category: VisualCategory = VisualCategory.ILLUSTRATION
+    title: str = ""
+    sketch_style: str = ""
+    composition: Any = None
+    elements: Any = None
+    drawing_standards: str = ""
+    projections: Any = None
+    dimensions: Any = None
+    tolerances: str = ""
+    polygon_count: int = 0
+    texture_resolution: str = ""
+    materials: Any = None
+    lighting: Any = None
+    render_settings: dict = field(default_factory=dict)
+    references_used: list = field(default_factory=list)
+    techniques_applied: list = field(default_factory=list)
+    notes: str = ""
+    quality_score: float = 0.0
+    completed: bool = False
+
+
+@dataclass
+class VisualProject:
+    """Визуальный проект."""
+    name: str
+    category: VisualCategory
+    status: str = "in_progress"  # in_progress, review, completed
+    elements: int = 0
+    complexity: str = "simple"   # simple, medium, complex

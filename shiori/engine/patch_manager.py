@@ -15,8 +15,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from config import ShioriConfig
-from models import Patch
+from shiori.engine.config import ShioriConfig
+from shiori.engine.models import Patch
 
 
 class PatchManager:

@@ -9,8 +9,9 @@
   - Полное логирование и отчётность
 """
 
-from scientists_network.character_system import CharacterSystem
 from __future__ import annotations
+
+from scientists_network.character_system import CharacterSystem
 import json
 import logging
 import random
@@ -21,13 +22,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from config import ShioriConfig
-from models import (
+from shiori.engine.config import ShioriConfig
+from shiori.engine.models import (
     AutonomyLevel, Constitution, Incident, IncidentType, Law, ScanResult, SecurityState, Threat, ThreatCategory, ThreatLevel
 )
-from threat_hunter import ThreatHunter
-from patch_manager import PatchManager
-from web_access import ShioriWebAccess
+from shiori.engine.threat_hunter import ThreatHunter
+from shiori.engine.patch_manager import PatchManager
+from shiori.engine.web_access import ShioriWebAccess
 
 
 class ShioriCore:
@@ -136,20 +137,21 @@ class ShioriCore:
                 
                 # Сохранение состояния периодически
                 if self.cycle_count % self.config.save_state_every_n_cycles == 0:
-                    
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
+                    self._save_state()
+                
+                # Укрепление характера (периодически)
+                if self.total_cycles % 5 == 0:
+                    strengthened = self.character.strengthen_strengths()
+                    if strengthened > 0:
+                        self.logger.info(f"Character strengthened: {strengthened} traits")
 
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
+                # Эволюция характера (периодически)
+                if self.total_cycles % 10 == 0:
+                    evolved = self.character.evolve_traits()
+                    if evolved:
+                        self.logger.info("Character evolved")
 
-        self._save_state()
+                self._save_state()
                 
                 # Пауза между циклами
                 time.sleep(self.config.cycle_interval)
@@ -158,20 +160,6 @@ class ShioriCore:
             
         except Exception as e:
             self.logger.exception(f"Критическая ошибка в цикле: {e}")
-            
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
-
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
-
-        self._save_state()
             raise
         
         finally:

@@ -19,17 +19,16 @@ _script_dir = Path(__file__).parent.resolve()
 if str(_script_dir) not in sys.path:
     sys.path.insert(0, str(_script_dir))
 
-from config import CelestaConfig
-from models import (
-    AutonomyLevel, ChangeStatus, Constitution,
-    FileAnalysis, ImprovementRecord, ImprovementType, LogEntry, Law,
-    TestReport,
+from celesta.engine.config import CelestaConfig
+from celesta.engine.models import (
+    AutonomyLevel, Constitution, Law, IntimacyLevel, SexualPosition, ConsentType,
+    ImprovementRecord, FileAnalysis, ImprovementType
 )
-from code_analyzer import CodeAnalyzer
-from test_runner import TestRunner
-from web_access import CelestWebAccess
-from universal_analyzer import UniversalAnalyzer
-from ml_optimizer import MLOptimizer
+from celesta.engine.code_analyzer import CodeAnalyzer
+from celesta.engine.test_runner import TestRunner
+from celesta.engine.web_access import CelestWebAccess
+from celesta.engine.universal_analyzer import UniversalAnalyzer
+from celesta.engine.ml_optimizer import MLOptimizer
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority

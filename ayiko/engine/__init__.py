@@ -1,8 +1,9 @@
 """
-Nobuka — система улучшений, тестирования и модернизации проекта.
+Ayiko — творческий ИИ: пиксель-арт, техническая графика, 3D-моделирование.
 """
 
 from __future__ import annotations
 
-# Модули импортируются напрямую из run.py
-# Чтобы избежать circular import
+from ayiko.engine.ayiko_core import AyikoCore
+
+__all__ = ["AyikoCore"]

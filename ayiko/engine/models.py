@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
+import json
 
 
 # =====================================================================
@@ -426,3 +427,146 @@ class BenchmarkResult:
             "memory_after_mb": round(self.memory_after_mb, 1),
             "performance_change_percent": round(self.performance_change_percent, 1),
         }
+
+
+# =====================================================================
+#  МОДЕЛИ АЙКО
+# =====================================================================
+
+class KnowledgeCategory(Enum):
+    """Категории знаний Айки."""
+    PIXEL_ART = "pixel_art"
+    TECHNICAL_DRAWING = "technical_drawing"
+    MODEL_3D = "model_3d"
+    DOCUMENTATION = "documentation"
+    GENERAL = "general"
+    ART = "art"
+    LEARNING = "learning"
+
+
+@dataclass
+class KnowledgeEntry:
+    """Запись знания."""
+    content: str = ""
+    category: str = ""
+    source: str = ""
+    tags: list[str] = field(default_factory=list)
+    confidence: float = 0.0
+    level: int = 1
+    topic: str = ""
+    notes: str = ""
+    verified: bool = False
+
+
+@dataclass
+class LevelProgress:
+    """Прогресс уровня."""
+    category: KnowledgeCategory
+    current_level: int = 1
+    target_level: int = 10
+    xp: float = 0.0
+    projects_completed: int = 0
+
+    @classmethod
+    def create(cls, category: KnowledgeCategory, level: int = 1) -> "LevelProgress":
+        """Создать новый прогресс для категории."""
+        return cls(
+            category=category,
+            current_level=level,
+            target_level=10,
+            xp=0.0,
+            projects_completed=0,
+        )
+
+
+@dataclass
+class PixelArtProject:
+    """Проект пиксель-арта."""
+    title: str = ""
+    size: tuple[int, int] = (16, 16)
+    level: int = 1
+    palette_size: int = 16
+    status: str = "in_progress"
+    completed: bool = False
+    skill_level: int = 1
+
+
+@dataclass
+class TechnicalDrawingProject:
+    """Проект технической графики."""
+    title: str = ""
+    drawing_type: str = "sketch"
+    level: int = 1
+    standard: str = ""
+    status: str = "in_progress"
+    complexity: str = "simple"
+    completed: bool = False
+
+
+@dataclass
+class Model3DProject:
+    """Проект 3D-моделирования."""
+    title: str = ""
+    model_type: str = "primitive"
+    level: int = 1
+    detail_count: int = 0
+    polygons: int = 0
+    status: str = "in_progress"
+    complexity: str = "simple"
+    completed: bool = False
+
+
+@dataclass
+class Report:
+    """Отчёт Айки."""
+    type: str = "daily"
+    date: str = ""
+    status: str = "completed"
+    pixel_art_projects: int = 0
+    graphic_projects: int = 0
+    projects_3d: int = 0
+    notes: str = ""
+    title: str = ""
+    content: str = ""
+    cycle: int = 0
+    timestamp: str = ""
+    knowledge_gained: list[str] = field(default_factory=list)
+
+
+@dataclass
+class AyikoState:
+    """Состояние Айки."""
+    version: str = "v1.0.0"
+    cycle_count: int = 0
+    total_cycles: int = 0
+    pixel_art_projects: int = 0
+    graphic_projects: int = 0
+    projects_3d: int = 0
+    reports_written: int = 0
+    metrics: dict = field(default_factory=dict)
+    knowledge: dict[str, KnowledgeEntry] = field(default_factory=dict)
+    progress: dict[str, LevelProgress] = field(default_factory=dict)
+    pixel_projects: list[PixelArtProject] = field(default_factory=list)
+    drawing_projects: list[TechnicalDrawingProject] = field(default_factory=list)
+    projects_3d_list: list[Model3DProject] = field(default_factory=list)
+    reports: list[Report] = field(default_factory=list)
+    character_strengths: dict[str, float] = field(default_factory=dict)
+    character_weaknesses: dict[str, float] = field(default_factory=dict)
+    timestamp: str = ""
+
+    def save_to_file(self, path: Path):
+        """Сохранить состояние в файл."""
+        path.parent.mkdir(parents=True, exist_ok=True)
+        data = {
+            "version": self.version,
+            "cycle_count": self.cycle_count,
+            "total_cycles": self.total_cycles,
+            "pixel_art_projects": self.pixel_art_projects,
+            "graphic_projects": self.graphic_projects,
+            "projects_3d": self.projects_3d,
+            "reports_written": self.reports_written,
+            "metrics": self.metrics,
+            "timestamp": self.timestamp,
+        }
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)

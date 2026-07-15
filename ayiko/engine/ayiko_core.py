@@ -26,8 +26,9 @@
   - Шиори — защита и безопасность
 """
 
-from scientists_network.character_system import CharacterSystem
 from __future__ import annotations
+
+from scientists_network.character_system import CharacterSystem
 import json
 import logging
 import os
@@ -96,10 +97,10 @@ class AyikoCore:
 
         # Прогресс по направлениям
         self.progress = {
-            "pixel_art": LevelProgress.current_level(1),
-            "technical_graphic": LevelProgress.current_level(1),
-            "3d_modeling": LevelProgress.current_level(1),
-            "general": LevelProgress.current_level(1),
+            "pixel_art": LevelProgress.create(KnowledgeCategory.PIXEL_ART, 1),
+            "technical_graphic": LevelProgress.create(KnowledgeCategory.TECHNICAL_DRAWING, 1),
+            "3d_modeling": LevelProgress.create(KnowledgeCategory.MODEL_3D, 1),
+            "general": LevelProgress.create(KnowledgeCategory.GENERAL, 1),
         }
 
         # Характер
@@ -203,20 +204,21 @@ class AyikoCore:
 
                 # Сохранение состояния периодически
                 if self.cycle_count % self.config.save_state_every_n_cycles == 0:
-                    
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
+                    self._save_state()
 
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
+                # Укрепление характера (периодически)
+                if self.total_cycles % 5 == 0:
+                    strengthened = self.character.strengthen_strengths()
+                    if strengthened > 0:
+                        self.logger.info(f"Character strengthened: {strengthened} traits")
 
-        self._save_state()
+                # Эволюция характера (периодически)
+                if self.total_cycles % 10 == 0:
+                    evolved = self.character.evolve_traits()
+                    if evolved:
+                        self.logger.info("Character evolved")
+
+                self._save_state()
 
                 # Пауза между циклами
                 time.sleep(self.config.cycle_interval)
@@ -225,33 +227,10 @@ class AyikoCore:
 
         except Exception as e:
             self.logger.exception(f"Критическая ошибка в цикле: {e}")
-            
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
-
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
-
-        self._save_state()
             raise
 
         finally:
             self._final_report()
-            
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
-
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
             evolved = self.character.evolve_traits()
             if evolved:
                 self.logger.info("Character evolved")

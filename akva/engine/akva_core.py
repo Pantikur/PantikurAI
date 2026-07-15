@@ -545,7 +545,8 @@ class AkvaCore:
         self.metrics["cycles_completed"] += 1
 
         if self.cycle_count % self.config.save_state_every_n_cycles == 0:
-            
+            self._save_state()
+
         # Укрепление характера (периодически)
         if self.total_cycles % 5 == 0:
             strengthened = self.character.strengthen_strengths()

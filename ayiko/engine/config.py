@@ -1,5 +1,5 @@
 """
-Конфигурация системы Нобука.
+Конфигурация системы Айки.
 """
 
 from __future__ import annotations
@@ -9,13 +9,13 @@ from typing import Optional
 
 
 @dataclass
-class NobukaConfig:
+class AyikoConfig:
     """
-    Конфигурация системы улучшений Нобука.
+    Конфигурация творческого ИИ Айки.
     """
 
     # === Идентификация ===
-    name: str = "Нобука"
+    name: str = "Айко"
     version: str = "v1.0.0"
 
     # === Пути к документам ===
@@ -114,12 +114,12 @@ class NobukaConfig:
         self.state_dir.mkdir(parents=True, exist_ok=True)
 
     @classmethod
-    def default(cls) -> NobukaConfig:
+    def default(cls) -> AyikoConfig:
         """Конфигурация по умолчанию."""
         return cls()
 
     @classmethod
-    def demo(cls) -> NobukaConfig:
+    def demo(cls) -> AyikoConfig:
         """Демо-конфигурация для тестирования."""
         return cls(
             max_cycles=5,

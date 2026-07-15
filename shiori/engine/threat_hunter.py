@@ -13,8 +13,8 @@ import random
 from datetime import datetime
 from typing import Any, Optional
 
-from config import ShioriConfig
-from models import (
+from shiori.engine.config import ShioriConfig
+from shiori.engine.models import (
     Incident, IncidentType, SecurityRule, Threat, ThreatCategory, ThreatLevel
 )
 
