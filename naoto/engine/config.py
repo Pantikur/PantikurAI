@@ -28,6 +28,7 @@ class NaotoConfig:
     state_dir: Path = field(default_factory=lambda: Path("naoto/engine/state"))
     log_path: Path = field(default_factory=lambda: Path("naoto/engine/state/naoto.log"))
     state_path: Path = field(default_factory=lambda: Path("naoto/engine/state/naoto_state.json"))
+    logs_dir: Path = field(default_factory=lambda: Path("naoto/engine/logs"))
     knowledge_dir: Path = field(default_factory=lambda: Path("naoto/engine/knowledge"))
     reports_dir: Path = field(default_factory=lambda: Path("naoto/engine/reports"))
 

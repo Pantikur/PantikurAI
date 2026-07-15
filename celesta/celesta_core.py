@@ -124,7 +124,11 @@ class CelestaCore:
                     state = json.load(f)
                 self.system_state.update(state.get("system_state", {}))
                 self.event_log = state.get("event_log", [])[-100:]
-                self.knowledge_levels = state.get("knowledge_levels", self.knowledge_levels)
+                loaded_levels = state.get("knowledge_levels", self.knowledge_levels)
+                # Convert all values to int (JSON serializes them as strings sometimes)
+                self.knowledge_levels = {
+                    k: int(v) for k, v in loaded_levels.items()
+                }
                 logger.info(f"✅ Состояние Селесты загружено")
             except Exception as e:
                 logger.warning(f"⚠️ Ошибка загрузки состояния: {e}")
