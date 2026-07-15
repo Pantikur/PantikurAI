@@ -570,3 +570,22 @@ class AyikoState:
         }
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
+
+    @classmethod
+    def load_from_file(cls, path: Path) -> "AyikoState":
+        """Загрузить состояние из файла."""
+        if not path.exists():
+            return cls()
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return cls(
+            version=data.get("version", "v1.0.0"),
+            cycle_count=data.get("cycle_count", 0),
+            total_cycles=data.get("total_cycles", 0),
+            pixel_art_projects=data.get("pixel_art_projects", 0),
+            graphic_projects=data.get("graphic_projects", 0),
+            projects_3d=data.get("projects_3d", 0),
+            reports_written=data.get("reports_written", 0),
+            metrics=data.get("metrics", {}),
+            timestamp=data.get("timestamp", ""),
+        )

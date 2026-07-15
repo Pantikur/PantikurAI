@@ -19,18 +19,17 @@ class NaotoConfig:
     version: str = "v1.0.0"
 
     # === Пути к документам ===
-    base_path: Path = Path("nobuka")
-    constitution_path: Path = field(default_factory=lambda: Path("nobuka/constitution.md"))
-    laws_path: Path = field(default_factory=lambda: Path("nobuka/laws/01-core-laws.md"))
-    ethics_path: Path = field(default_factory=lambda: Path("nobuka/codes/01-ethics-code.md"))
+    base_path: Path = Path("naoto")
+    constitution_path: Path = field(default_factory=lambda: Path("naoto/constitution.md"))
+    laws_path: Path = field(default_factory=lambda: Path("naoto/laws/01-core-laws.md"))
+    ethics_path: Path = field(default_factory=lambda: Path("naoto/codes/01-ethics-code.md"))
 
     # === Состояние и логи ===
-    state_dir: Path = field(default_factory=lambda: Path("nobuka/engine/state"))
-    log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka.log"))
-    state_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka_state.json"))
-    improvements_log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/improvements.json"))
-    test_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/test_report.json"))
-    analysis_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/analysis_report.json"))
+    state_dir: Path = field(default_factory=lambda: Path("naoto/engine/state"))
+    log_path: Path = field(default_factory=lambda: Path("naoto/engine/state/naoto.log"))
+    state_path: Path = field(default_factory=lambda: Path("naoto/engine/state/naoto_state.json"))
+    knowledge_dir: Path = field(default_factory=lambda: Path("naoto/engine/knowledge"))
+    reports_dir: Path = field(default_factory=lambda: Path("naoto/engine/reports"))
 
     # === Циклы работы ===
     cycle_interval: float = 10.0          # секунды между циклами улучшений
