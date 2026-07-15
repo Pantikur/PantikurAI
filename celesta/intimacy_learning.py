@@ -261,10 +261,15 @@ class IntimacyLearningEngine:
                     node.related_nodes = node_data.get("related_nodes", [])
                     node.tags = node_data.get("tags", [])
                     node.is_verified = node_data.get("is_verified", False)
-                    node.level = node_data.get("level", "")
+                    level_val = node_data.get("level", 0)
+                    node.level = int(level_val) if level_val else 0
                     self.knowledge_nodes[node.topic] = node
                 
                 self.topic_progress = state.get("topic_progress", {})
+                # Convert all values to float (JSON may serialize them as strings)
+                self.topic_progress = {
+                    k: float(v) for k, v in self.topic_progress.items()
+                }
                 logger.info(f"✅ Состояние загружено: {len(self.knowledge_nodes)} узлов")
             except Exception as e:
                 logger.warning(f"⚠️ Ошибка загрузки состояния: {e}")

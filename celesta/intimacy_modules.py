@@ -145,12 +145,12 @@ class IntimacyCategory(Enum):
 
 class IntimacyLevel(Enum):
     """Уровни знаний."""
-    LEVEL_0 = "level_0"   # Базовый — факты
-    LEVEL_1 = "level_1"   # Детальный — процессы
-    LEVEL_2 = "level_2"   # Глубокий — контекст
-    LEVEL_3 = "level_3"   # Мастерство — практика
-    LEVEL_4 = "level_4"   # Экспертиза — анализ
-    LEVEL_5 = "level_5"   # Абсолютный — всё
+    LEVEL_0 = 0    # Базовый — факты
+    LEVEL_1 = 1    # Детальный — процессы
+    LEVEL_2 = 2    # Глубокий — контекст
+    LEVEL_3 = 3    # Мастерство — практика
+    LEVEL_4 = 4    # Экспертиза — анализ
+    LEVEL_5 = 5    # Абсолютный — всё
 
 
 class IntimacyModule:
@@ -545,7 +545,7 @@ def create_default_modules() -> Dict[str, IntimacyModule]:
     
     ss_male = IntimacyModule(
         name="ss_male_intimacy",
-        category=IntimacyCategory.SS_MALE_ANAL,
+        category=IntimacyCategory.SS_MALE_MANUAL,
         description="Гей-интимность: анальный, оральный, мануальный, beauty rest"
     )
     ss_male.add_knowledge(
