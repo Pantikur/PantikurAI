@@ -958,6 +958,29 @@ class BookLearner:
             "last_updated": datetime.now().isoformat()
         }
 
+    def deep_extract_analysis(self, text: str, book_meta: Dict) -> Dict:
+        """
+        Имитирует глубокий анализ текста для Наото.
+        В реальности здесь были бы вызовы LLM, но сейчас мы генерируем структуру данных.
+        """
+        # 1. Извлечение персонажей (упрощенно по контексту)
+        # 2. Извлечение лора
+        # 3. Фантомное повествование (субтекст)
+        
+        return {
+            "book_id": book_meta.get("id", "unknown"),
+            "author_intent": "Анализ мысли автора...",
+            "plot_structure": "Экспозиция -> Завязка...",
+            "characters": [],
+            "lore": [],
+            "phantom": {
+                "subtext": "Анализ подтекста...",
+                "psychological_projection": "Состояние автора...",
+                "hidden_motive": "Скрытый мотив..."
+            },
+            "sentiment_score": 0.5
+        }
+
 
 def main():
     """Тестирование и запуск обучения."""

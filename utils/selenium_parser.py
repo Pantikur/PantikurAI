@@ -1,5 +1,8 @@
 # utils/selenium_parser.py — Парсеры с Selenium для JavaScript сайтов
 
+import os
+import shutil
+import subprocess
 import time
 import re
 import random
@@ -26,6 +29,39 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from utils.book_learner import safe_print, BookLearner
+
+
+def _ensure_chrome_installed() -> bool:
+    """
+    Проверяет наличие Chrome/Chromium и устанавливает его, если отсутствует.
+    Работает на Linux (apt).
+    """
+    # Проверяем, есть ли уже Chrome
+    chrome_paths = ['google-chrome', 'google-chrome-stable', 'chromium-browser', 'chromium']
+    for path in chrome_paths:
+        if shutil.which(path):
+            safe_print(f"✅ Chrome найден: {path}")
+            return True
+    
+    # Если нет — пытаемся установить (только если root)
+    if os.geteuid() == 0:
+        safe_print("[⚙️] Chrome не найден. Попытка установки...")
+        try:
+            subprocess.run(['apt-get', 'update'], check=True, capture_output=True)
+            subprocess.run(['apt-get', 'install', '-y', 'wget', 'gnupg'], check=True, capture_output=True)
+            subprocess.run(['wget', '-q', '-O', '-', 'https://dl.google.com/linux/linux_signing_key.pub'], 
+                          stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) | subprocess.run(['apt-key', 'add', '-'], input=subprocess.PIPE)
+            
+            # Альтернативный способ установки Chromium (более надёжный для контейнеров)
+            subprocess.run(['apt-get', 'install', '-y', 'chromium-browser'], check=True, capture_output=True)
+            safe_print("[✅] Chromium установлен успешно!")
+            return True
+        except Exception as e:
+            safe_print(f"[❌] Не удалось установить Chrome: {e}")
+            return False
+    else:
+        safe_print("[⚠️] Chrome не найден. Запуск от root для установки.")
+        return False
 
 
 class SeleniumBookParser:
@@ -57,6 +93,12 @@ class SeleniumBookParser:
         """Запускает Chrome WebDriver."""
         if self.driver:
             return True
+        
+        # === ПРОВЕРЯЕМ И УСТАНАВЛИВАЕМ CHROME ===
+        if not _ensure_chrome_installed():
+            safe_print("[❌] Chrome недоступен. Парсинг JavaScript-сайтов отключён.")
+            safe_print("[ℹ️] Автор.Today будет работать без проблем.")
+            return False
         
         try:
             options = Options()

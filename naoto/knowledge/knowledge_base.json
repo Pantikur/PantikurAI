@@ -1,494 +1,69 @@
 {
-  "techniques": [],
-  "lessons": [],
-  "references_analyzed": [
-    {
-      "entry_id": "CRE-20260712-9858",
-      "type": "sketch",
-      "result_id": "SK-20260712-8125",
-      "description": "old clockwork robot in a workshop",
-      "quality_score": 0.96,
-      "techniques": [
-        "quick_value",
-        "mass_building",
-        "atmospheric_perspective"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/old-clockwork-robot-in-a-workshop",
-        "https://www.behance.net/gallery/old-clockwork-robot-in-a-workshop",
-        "https://www.youtube.com/watch?v=old-clockwork-robot-in-a-workshop",
-        "https://www.deviantart.com/old-clockwork-robot-in-a-workshop",
-        "https://www.pinterest.com/pin/old-clockwork-robot-in-a-workshop"
-      ],
-      "timestamp": "2026-07-12T18:01:40.887675"
-    },
-    {
-      "entry_id": "CRE-20260712-7581",
-      "type": "3d",
-      "result_id": "3D-20260712-3640",
-      "description": "fantasy castle with towers and walls",
-      "quality_score": 0.99,
-      "techniques": [
-        "mid_poly",
-        "pbr_materials",
-        "three_point_lighting"
-      ],
-      "references": [
-        "https://sketchfab.com/3d-models/fantasy-castle-with-towers-and-walls",
-        "https://blenderartists.org/t/fantasy-castle-with-towers-and-walls",
-        "https://www.artstation.com/artwork/fantasy-castle-with-towers-and-walls",
-        "https://polyhaven.com/textures/fantasy-castle-with-towers-and-walls",
-        "https://www.polycount.com/threads/fantasy-castle-with-towers-and-walls"
-      ],
-      "timestamp": "2026-07-12T18:01:40.890672"
-    },
-    {
-      "entry_id": "CRE-20260712-8866",
-      "type": "sketch",
-      "result_id": "SK-20260712-8433",
-      "description": "create a detailed sketch of a steampunk airship",
-      "quality_score": 0.96,
-      "techniques": [
-        "contour_line",
-        "gesture",
-        "crosshatch_shading"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.behance.net/gallery/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.youtube.com/watch?v=create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.deviantart.com/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.pinterest.com/pin/create-a-detailed-sketch-of-a-steampunk-airship"
-      ],
-      "timestamp": "2026-07-12T18:01:40.891672"
-    },
-    {
-      "entry_id": "CRE-20260712-9174",
-      "type": "sketch",
-      "result_id": "SK-20260712-4851",
-      "description": "old clockwork robot in a workshop",
-      "quality_score": 0.96,
-      "techniques": [
-        "quick_value",
-        "mass_building",
-        "atmospheric_perspective"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/old-clockwork-robot-in-a-workshop",
-        "https://www.behance.net/gallery/old-clockwork-robot-in-a-workshop",
-        "https://www.youtube.com/watch?v=old-clockwork-robot-in-a-workshop",
-        "https://www.deviantart.com/old-clockwork-robot-in-a-workshop",
-        "https://www.pinterest.com/pin/old-clockwork-robot-in-a-workshop"
-      ],
-      "timestamp": "2026-07-12T18:02:05.881086"
-    },
-    {
-      "entry_id": "CRE-20260712-9375",
-      "type": "3d",
-      "result_id": "3D-20260712-9973",
-      "description": "fantasy castle with towers and walls",
-      "quality_score": 0.93,
-      "techniques": [
-        "mid_poly",
-        "pbr_materials",
-        "three_point_lighting"
-      ],
-      "references": [
-        "https://sketchfab.com/3d-models/fantasy-castle-with-towers-and-walls",
-        "https://blenderartists.org/t/fantasy-castle-with-towers-and-walls",
-        "https://www.artstation.com/artwork/fantasy-castle-with-towers-and-walls",
-        "https://polyhaven.com/textures/fantasy-castle-with-towers-and-walls",
-        "https://www.polycount.com/threads/fantasy-castle-with-towers-and-walls"
-      ],
-      "timestamp": "2026-07-12T18:02:05.882685"
-    },
-    {
-      "entry_id": "CRE-20260712-7760",
-      "type": "sketch",
-      "result_id": "SK-20260712-3828",
-      "description": "create a detailed sketch of a steampunk airship",
-      "quality_score": 0.96,
-      "techniques": [
-        "contour_line",
-        "gesture",
-        "crosshatch_shading"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.behance.net/gallery/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.youtube.com/watch?v=create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.deviantart.com/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.pinterest.com/pin/create-a-detailed-sketch-of-a-steampunk-airship"
-      ],
-      "timestamp": "2026-07-12T18:02:05.884686"
-    },
-    {
-      "entry_id": "CRE-20260712-7299",
-      "type": "sketch",
-      "result_id": "SK-20260712-7694",
-      "description": "old clockwork robot in a workshop",
-      "quality_score": 0.96,
-      "techniques": [
-        "quick_value",
-        "mass_building",
-        "atmospheric_perspective"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/old-clockwork-robot-in-a-workshop",
-        "https://www.behance.net/gallery/old-clockwork-robot-in-a-workshop",
-        "https://www.youtube.com/watch?v=old-clockwork-robot-in-a-workshop",
-        "https://www.deviantart.com/old-clockwork-robot-in-a-workshop",
-        "https://www.pinterest.com/pin/old-clockwork-robot-in-a-workshop"
-      ],
-      "timestamp": "2026-07-12T18:06:34.125250"
-    },
-    {
-      "entry_id": "CRE-20260712-8034",
-      "type": "3d",
-      "result_id": "3D-20260712-4739",
-      "description": "fantasy castle with towers and walls",
-      "quality_score": 0.93,
-      "techniques": [
-        "mid_poly",
-        "pbr_materials",
-        "three_point_lighting"
-      ],
-      "references": [
-        "https://sketchfab.com/3d-models/fantasy-castle-with-towers-and-walls",
-        "https://blenderartists.org/t/fantasy-castle-with-towers-and-walls",
-        "https://www.artstation.com/artwork/fantasy-castle-with-towers-and-walls",
-        "https://polyhaven.com/textures/fantasy-castle-with-towers-and-walls",
-        "https://www.polycount.com/threads/fantasy-castle-with-towers-and-walls"
-      ],
-      "timestamp": "2026-07-12T18:06:34.128250"
-    },
-    {
-      "entry_id": "CRE-20260712-7259",
-      "type": "sketch",
-      "result_id": "SK-20260712-1452",
-      "description": "create a detailed sketch of a steampunk airship",
-      "quality_score": 0.96,
-      "techniques": [
-        "contour_line",
-        "gesture",
-        "crosshatch_shading"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.behance.net/gallery/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.youtube.com/watch?v=create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.deviantart.com/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.pinterest.com/pin/create-a-detailed-sketch-of-a-steampunk-airship"
-      ],
-      "timestamp": "2026-07-12T18:06:34.130250"
-    },
-    {
-      "entry_id": "CRE-20260712-1107",
-      "type": "sketch",
-      "result_id": "SK-20260712-3236",
-      "description": "old clockwork robot in a workshop",
-      "quality_score": 0.96,
-      "techniques": [
-        "quick_value",
-        "mass_building",
-        "atmospheric_perspective"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/old-clockwork-robot-in-a-workshop",
-        "https://www.behance.net/gallery/old-clockwork-robot-in-a-workshop",
-        "https://www.youtube.com/watch?v=old-clockwork-robot-in-a-workshop",
-        "https://www.deviantart.com/old-clockwork-robot-in-a-workshop",
-        "https://www.pinterest.com/pin/old-clockwork-robot-in-a-workshop"
-      ],
-      "timestamp": "2026-07-12T18:12:37.740896"
-    },
-    {
-      "entry_id": "CRE-20260712-9488",
-      "type": "3d",
-      "result_id": "3D-20260712-6817",
-      "description": "fantasy castle with towers and walls",
-      "quality_score": 0.93,
-      "techniques": [
-        "mid_poly",
-        "pbr_materials",
-        "three_point_lighting"
-      ],
-      "references": [
-        "https://sketchfab.com/3d-models/fantasy-castle-with-towers-and-walls",
-        "https://blenderartists.org/t/fantasy-castle-with-towers-and-walls",
-        "https://www.artstation.com/artwork/fantasy-castle-with-towers-and-walls",
-        "https://polyhaven.com/textures/fantasy-castle-with-towers-and-walls",
-        "https://www.polycount.com/threads/fantasy-castle-with-towers-and-walls"
-      ],
-      "timestamp": "2026-07-12T18:12:37.744883"
-    },
-    {
-      "entry_id": "CRE-20260712-1211",
-      "type": "sketch",
-      "result_id": "SK-20260712-5828",
-      "description": "create a detailed sketch of a steampunk airship",
-      "quality_score": 0.96,
-      "techniques": [
-        "contour_line",
-        "gesture",
-        "crosshatch_shading"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.behance.net/gallery/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.youtube.com/watch?v=create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.deviantart.com/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.pinterest.com/pin/create-a-detailed-sketch-of-a-steampunk-airship"
-      ],
-      "timestamp": "2026-07-12T18:12:37.747902"
-    },
-    {
-      "entry_id": "CRE-20260712-3617",
-      "type": "sketch",
-      "result_id": "SK-20260712-9623",
-      "description": "old clockwork robot in a workshop",
-      "quality_score": 0.96,
-      "techniques": [
-        "quick_value",
-        "mass_building",
-        "atmospheric_perspective"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/old-clockwork-robot-in-a-workshop",
-        "https://www.behance.net/gallery/old-clockwork-robot-in-a-workshop",
-        "https://www.youtube.com/watch?v=old-clockwork-robot-in-a-workshop",
-        "https://www.deviantart.com/old-clockwork-robot-in-a-workshop",
-        "https://www.pinterest.com/pin/old-clockwork-robot-in-a-workshop"
-      ],
-      "timestamp": "2026-07-12T18:13:09.657749"
-    },
-    {
-      "entry_id": "CRE-20260712-9883",
-      "type": "3d",
-      "result_id": "3D-20260712-9252",
-      "description": "fantasy castle with towers and walls",
-      "quality_score": 0.96,
-      "techniques": [
-        "mid_poly",
-        "pbr_materials",
-        "three_point_lighting"
-      ],
-      "references": [
-        "https://sketchfab.com/3d-models/fantasy-castle-with-towers-and-walls",
-        "https://blenderartists.org/t/fantasy-castle-with-towers-and-walls",
-        "https://www.artstation.com/artwork/fantasy-castle-with-towers-and-walls",
-        "https://polyhaven.com/textures/fantasy-castle-with-towers-and-walls",
-        "https://www.polycount.com/threads/fantasy-castle-with-towers-and-walls"
-      ],
-      "timestamp": "2026-07-12T18:13:09.662759"
-    },
-    {
-      "entry_id": "CRE-20260712-9988",
-      "type": "sketch",
-      "result_id": "SK-20260712-3540",
-      "description": "create a detailed sketch of a steampunk airship",
-      "quality_score": 0.96,
-      "techniques": [
-        "contour_line",
-        "gesture",
-        "crosshatch_shading"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.behance.net/gallery/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.youtube.com/watch?v=create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.deviantart.com/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.pinterest.com/pin/create-a-detailed-sketch-of-a-steampunk-airship"
-      ],
-      "timestamp": "2026-07-12T18:13:09.664747"
-    },
-    {
-      "entry_id": "CRE-20260712-9303",
-      "type": "sketch",
-      "result_id": "SK-20260712-6075",
-      "description": "old clockwork robot in a workshop",
-      "quality_score": 0.96,
-      "techniques": [
-        "quick_value",
-        "mass_building",
-        "atmospheric_perspective"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/old-clockwork-robot-in-a-workshop",
-        "https://www.behance.net/gallery/old-clockwork-robot-in-a-workshop",
-        "https://www.youtube.com/watch?v=old-clockwork-robot-in-a-workshop",
-        "https://www.deviantart.com/old-clockwork-robot-in-a-workshop",
-        "https://www.pinterest.com/pin/old-clockwork-robot-in-a-workshop"
-      ],
-      "timestamp": "2026-07-12T18:14:54.429247"
-    },
-    {
-      "entry_id": "CRE-20260712-3456",
-      "type": "3d",
-      "result_id": "3D-20260712-6241",
-      "description": "fantasy castle with towers and walls",
-      "quality_score": 0.96,
-      "techniques": [
-        "mid_poly",
-        "pbr_materials",
-        "three_point_lighting"
-      ],
-      "references": [
-        "https://sketchfab.com/3d-models/fantasy-castle-with-towers-and-walls",
-        "https://blenderartists.org/t/fantasy-castle-with-towers-and-walls",
-        "https://www.artstation.com/artwork/fantasy-castle-with-towers-and-walls",
-        "https://polyhaven.com/textures/fantasy-castle-with-towers-and-walls",
-        "https://www.polycount.com/threads/fantasy-castle-with-towers-and-walls"
-      ],
-      "timestamp": "2026-07-12T18:14:54.434165"
-    },
-    {
-      "entry_id": "CRE-20260712-6512",
-      "type": "sketch",
-      "result_id": "SK-20260712-6819",
-      "description": "create a detailed sketch of a steampunk airship",
-      "quality_score": 0.96,
-      "techniques": [
-        "contour_line",
-        "gesture",
-        "crosshatch_shading"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.behance.net/gallery/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.youtube.com/watch?v=create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.deviantart.com/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.pinterest.com/pin/create-a-detailed-sketch-of-a-steampunk-airship"
-      ],
-      "timestamp": "2026-07-12T18:14:54.436210"
-    },
-    {
-      "entry_id": "CRE-20260712-2116",
-      "type": "sketch",
-      "result_id": "SK-20260712-8473",
-      "description": "old clockwork robot in a workshop",
-      "quality_score": 0.96,
-      "techniques": [
-        "quick_value",
-        "mass_building",
-        "atmospheric_perspective"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/old-clockwork-robot-in-a-workshop",
-        "https://www.behance.net/gallery/old-clockwork-robot-in-a-workshop",
-        "https://www.youtube.com/watch?v=old-clockwork-robot-in-a-workshop",
-        "https://www.deviantart.com/old-clockwork-robot-in-a-workshop",
-        "https://www.pinterest.com/pin/old-clockwork-robot-in-a-workshop"
-      ],
-      "timestamp": "2026-07-12T18:17:22.387939"
-    },
-    {
-      "entry_id": "CRE-20260712-8112",
-      "type": "3d",
-      "result_id": "3D-20260712-4613",
-      "description": "fantasy castle with towers and walls",
-      "quality_score": 0.96,
-      "techniques": [
-        "mid_poly",
-        "pbr_materials",
-        "three_point_lighting"
-      ],
-      "references": [
-        "https://sketchfab.com/3d-models/fantasy-castle-with-towers-and-walls",
-        "https://blenderartists.org/t/fantasy-castle-with-towers-and-walls",
-        "https://www.artstation.com/artwork/fantasy-castle-with-towers-and-walls",
-        "https://polyhaven.com/textures/fantasy-castle-with-towers-and-walls",
-        "https://www.polycount.com/threads/fantasy-castle-with-towers-and-walls"
-      ],
-      "timestamp": "2026-07-12T18:17:22.395937"
-    },
-    {
-      "entry_id": "CRE-20260712-1330",
-      "type": "sketch",
-      "result_id": "SK-20260712-1958",
-      "description": "create a detailed sketch of a steampunk airship",
-      "quality_score": 0.96,
-      "techniques": [
-        "contour_line",
-        "gesture",
-        "crosshatch_shading"
-      ],
-      "references": [
-        "https://www.artstation.com/artwork/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.behance.net/gallery/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.youtube.com/watch?v=create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.deviantart.com/create-a-detailed-sketch-of-a-steampunk-airship",
-        "https://www.pinterest.com/pin/create-a-detailed-sketch-of-a-steampunk-airship"
-      ],
-      "timestamp": "2026-07-12T18:17:22.399937"
-    }
+  "techniques": [
+    "author_intent_analysis",
+    "lore_extraction",
+    "character_behavior_tracking",
+    "plot_structure_analysis",
+    "phantom_narration_detection",
+    "sentiment_analysis",
+    "archetype_mapping",
+    "thematic_analysis"
   ],
+  "lessons": [
+    "Как выявлять скрытые мотивы авторов",
+    "Построение карт лора из неструктурированного текста",
+    "Отслеживание развития персонажей через действия",
+    "Распознавание фантомного повествования (подтекст)",
+    "Анализ эмоциональной дуги произведения"
+  ],
+  "references_analyzed": [],
   "trends_integrated": [
     {
-      "trend_id": "TRN-20260712-3456",
-      "name": "Neo-photorealism",
-      "category": "styles",
-      "description": "Новый фотореализм с элементами сюрреализма",
+      "trend_id": "TRN-20260716-0001",
+      "name": "Глубокий нарративный анализ",
+      "category": "methods",
+      "description": "Методология извлечения скрытых смыслов из текстов",
       "relevance": "high",
-      "timestamp": "2026-07-12T18:02:05.887689"
+      "timestamp": "2026-07-16T00:00:00"
     },
     {
-      "trend_id": "TRN-20260712-6765",
-      "name": "Procedural shading in Blender",
-      "category": "techniques",
-      "description": "Процедурное затенение в Blender",
+      "trend_id": "TRN-20260716-0002",
+      "name": "Автономное литературное исследование",
+      "category": "methods",
+      "description": "Самообучающаяся система анализа литературы",
       "relevance": "high",
-      "timestamp": "2026-07-12T18:06:34.134248"
+      "timestamp": "2026-07-16T00:00:00"
+    }
+  ],
+  "lore_database": [],
+  "character_archetypes": [
+    {
+      "archetype_id": "ARC-001",
+      "name": "Герой",
+      "description": "Протагонист, преодолевающий препятствия",
+      "traits": ["смелость", "упорство", "самопожертвование"]
     },
     {
-      "trend_id": "TRN-20260712-2683",
-      "name": "AI-assisted concept art",
-      "category": "techniques",
-      "description": "Использование AI для создания концепт-арта",
-      "relevance": "high",
-      "timestamp": "2026-07-12T18:06:34.135251"
+      "archetype_id": "ARC-002",
+      "name": "Тень",
+      "description": "Антагонист, отражающий тёмные стороны героя",
+      "traits": ["манипуляция", "жадность", "власть"]
     },
     {
-      "trend_id": "TRN-20260712-2393",
-      "name": "Digital watercolor blending",
-      "category": "techniques",
-      "description": "Цифровая техника смешивания акварели",
-      "relevance": "high",
-      "timestamp": "2026-07-12T18:12:37.751889"
-    },
-    {
-      "trend_id": "TRN-20260712-8562",
-      "name": "Procedural shading in Blender",
-      "category": "techniques",
-      "description": "Процедурное затенение в Blender",
-      "relevance": "high",
-      "timestamp": "2026-07-12T18:12:37.752883"
-    },
-    {
-      "trend_id": "TRN-20260712-1450",
-      "name": "AI-assisted concept art",
-      "category": "techniques",
-      "description": "Использование AI для создания концепт-арта",
-      "relevance": "high",
-      "timestamp": "2026-07-12T18:12:37.753899"
-    },
-    {
-      "trend_id": "TRN-20260712-5763",
-      "name": "AI-assisted concept art",
-      "category": "techniques",
-      "description": "Использование AI для создания концепт-арта",
-      "relevance": "high",
-      "timestamp": "2026-07-12T18:14:54.443169"
+      "archetype_id": "ARC-003",
+      "name": "Наставник",
+      "description": "Персонаж, дающий знания и инструменты",
+      "traits": ["мудрость", "терпение", "жертвенность"]
     }
   ],
   "skill_progress": {
-    "perspective": 0.5,
-    "lighting": 0.5,
-    "anatomy": 0.5,
-    "texture": 0.5,
-    "composition": 0.6400000000000001,
-    "color_theory": 0.5,
-    "3d_modeling": 0.5700000000000001,
-    "technical_drawing": 0.5
+    "author_intent_analysis": 0.5,
+    "lore_extraction": 0.5,
+    "character_behavior_tracking": 0.5,
+    "plot_structure_analysis": 0.5,
+    "phantom_narration_detection": 0.5,
+    "sentiment_analysis": 0.5,
+    "archetype_mapping": 0.5,
+    "thematic_analysis": 0.5
   }
 }

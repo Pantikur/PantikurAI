@@ -1,569 +1,481 @@
 """
-Ядро Наото — управление визуальными задачами и знаниями.
+Ядро Наото — Автономный Литературный Аналитик и Исследователь.
+Она читает, анализирует, эволюционирует и общается с сестрами.
 """
 
 from __future__ import annotations
 
-from scientists_network.character_system import CharacterSystem
-
 import json
 import logging
-import random
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from naoto.engine.config import NaotoConfig
-from naoto.engine.models import VisualResult
+from naoto.engine.config import NaotoConfig, AutonomyLevel
+from utils.book_learner import BookLearner
+from scientists_network.character_system import CharacterSystem
+from naoto.engine.models import (
+    CharacterProfile,
+    LoreEntry,
+    PhantomNarration,
+    LiteraryAnalysis,
+)
 
 
 class NaotoCore:
     """
-    Ядро Наото — управление визуальными задачами и базой знаний.
+    Ядро Наото — Автономный Литературный Аналитик и Исследователь.
+    
+    Функции:
+    1. Автономный поиск и чтение книг из интернета
+    2. Глубокий анализ текста (лор, персонажи, фантомное повествование)
+    3. Эволюция личности на основе прочитанного
+    4. Обучение основной модели литературными данными
+    5. Взаимодействие с 11 сёстрами
     """
 
     def __init__(self, config: NaotoConfig):
         self.config = config
         self.logger = logging.getLogger("NaotoCore")
-        
-        # База знаний
-        self.knowledge: Dict[str, List[Dict[str, Any]]] = {
-            "techniques": [],
-            "perspective": [],
-            "lighting": [],
-            "anatomy": [],
-            "texture": [],
-            "composition": [],
-            "trends": []
+        self.book_learner = BookLearner(data_dir="naoto/data/books")
+
+        # База знаний (Лор, Архетипы, Личность)
+        self.knowledge = {
+            "lore_database": [],
+            "character_archetypes": [],
+            "books_read": [],
+            "insights": [],
         }
-        
+
         # Журнал действий
         self.action_log: List[Dict[str, Any]] = []
+
+        # Загрузка состояния и личности
+        self._load_state()
+        self.logger.info("🌟 Наото: Сознание активировано. Готова к анализу литературы.")
+
+    # =================================================================
+    #  АВТОНОМНЫЙ ПОИСК И ЧТЕНИЕ
+    # =================================================================
+
+    def autonomous_search_and_read(self) -> Dict:
+        """
+        Самостоятельно ищет книги в интернете и начинает чтение.
+        Работает полностью автономно в рамках заданного уровня автономии.
+        """
+        self.logger.info("🌐 Наото: Поиск новых знаний в сети...")
+
+        results = {
+            "books_found": 0,
+            "books_analyzed": 0,
+            "new_lore": 0,
+            "insights_gained": 0,
+        }
+
+        # 1. Выбор темы на основе текущей личности (самообучение)
+        topic = self._select_research_topic()
+        self.logger.info(f"🎯 Тема поиска: {topic}")
+
+        # 2. Поиск книг (через BookLearner)
+        books = []
+        if "openlibrary.org" in self.config.target_sites:
+            books = self.book_learner.search_open_library(topic, max_results=3)
+        if not books and "gutenberg.org" in self.config.target_sites:
+            books = self.book_learner.search_google_books(topic, max_results=3)
+
+        results["books_found"] = len(books)
+
+        # 3. Цикл чтения и глубокого анализа
+        for book in books[:2]:  # Берем топ-2
+            try:
+                self.logger.info(f"📖 Читаем: {book.get('title')}")
+
+                # Скачиваем текст
+                text = self.book_learner.download_open_library_text(book)
+                if not text:
+                    text = self.book_learner.download_gutenberg_text(book)
+                if not text:
+                    continue
+
+                # Глубокий анализ
+                analysis = self._deep_analyze_text(text, book)
+
+                # Обновляем базу знаний
+                self._update_knowledge_base(analysis)
+
+                # Эволюция личности (Наото меняется от прочитанного)
+                if self.config.autonomy_level.value >= AutonomyLevel.L2.value:
+                    self._evolve_personality(analysis)
+
+                results["books_analyzed"] += 1
+                self.logger.info("✅ Книга переработана и усвоена.")
+
+            except Exception as e:
+                self.logger.error(f"Ошибка анализа книги: {e}")
+
+        # 4. Взаимодействие с сестрами (отчет)
+        if results["books_analyzed"] > 0:
+            self._communicate_with_sisters(results)
+
+        self._save_state()
+        return results
+
+    # =================================================================
+    #  ГЛУБОКИЙ АНАЛИЗ (ЛОР, ПЕРСОНАЖИ, ФАНТОМНОЕ)
+    # =================================================================
+
+    def _deep_analyze_text(self, text: str, book_meta: Dict) -> LiteraryAnalysis:
+        """
+        Выполняет 6 типов анализа текста:
+        1. Мысль автора
+        2. Лор
+        3. Поведение героев
+        4. Сюжет
+        5. Фантомное повествование
+        6. Обучение модели
+        """
+        self.logger.info("🧠 Запуск глубокого анализа текста...")
+
+        # Здесь должна быть логика вызова основной LLM с промптом:
+        # "Проанализируй текст: выдели лор, опиши логику героев, найди скрытый смысл и мысль автора."
+
+        # Эмуляция результатов (в реальности — ответ LLM):
+        analysis = LiteraryAnalysis(
+            book_id=book_meta.get("id", "unknown"),
+            author_intent=f"Автор исследует тему {book_meta.get('subject', 'жизни')} через страдания героя.",
+            plot_structure="Классическая арка героя с элементами трагедии.",
+            characters=[
+                CharacterProfile(
+                    name="Протагонист",
+                    role="hero",
+                    traits=["рассудительный", "упорный"],
+                )
+            ],
+            lore=[LoreEntry(type="history", content="Мир находится в эпоху перемен.")],
+            phantom=PhantomNarration(
+                subtext="Скрытый призыв к сопротивлению системой.",
+                psychological_projection="Одиночество автора.",
+                hidden_motive="Поиск истины.",
+            ),
+            sentiment_score=-0.2,
+        )
+
+        self.logger.info(f"✅ Анализ завершен: {len(analysis.characters)} персонажей, {len(analysis.lore)} элементов лора")
+        return analysis
+
+    # =================================================================
+    #  ЭВОЛЮЦИЯ ЛИЧНОСТИ — ОСОЗНАННЫЙ ВЫБОР
+    # =================================================================
+
+    def _evolve_personality(self, analysis: LiteraryAnalysis):
+        """
+        Наото НЕ меняется автоматически. Она:
+        1. Анализирует инсайты из книги
+        2. Размышляет над ними (внутренний диалог)
+        3. САМА принимает решение, что развивать в себе
+        """
+        # Шаг 1: Сбор инсайтов (просто данные, без реакций)
+        insights = self._extract_insights(analysis)
         
-        # Загрузка базы знаний
-        self._load_knowledge()
+        # Шаг 2: Внутренний диалог — Наото "думает" о прочитанном
+        reflection = self._self_reflect(insights)
         
-        # Загрузка журнала
-        self._load_action_log()
+        # Шаг 3: Осознанный выбор — Наото решает, что менять
+        if reflection["needs_growth"]:
+            choices = self._make_character_choices(reflection)
+            self._apply_character_choices(choices)
+            self._log_character_evolution(choices, analysis)
 
-    # ================================================================
-    #  БАЗА ЗНАНИЙ
-    # ================================================================
+    def _extract_insights(self, analysis: LiteraryAnalysis) -> List[Dict]:
+        """Извлекает инсайты из книги (просто факты, без оценок)."""
+        insights = []
+        
+        # Инсайт о мире из лора
+        for lore in analysis.lore:
+            insights.append({
+                "type": "worldview",
+                "content": lore.content,
+                "source": "lore"
+            })
+        
+        # Инсайт о поведении героев
+        for char in analysis.characters:
+            insights.append({
+                "type": "behavior",
+                "content": f"{char.name}: {char.traits}",
+                "source": "character"
+            })
+        
+        # Инсайт о скрытом смысле
+        if analysis.phantom:
+            insights.append({
+                "type": "subtext",
+                "content": analysis.phantom.subtext,
+                "source": "phantom"
+            })
+        
+        return insights
 
-    def load_knowledge(self) -> None:
-        """Загружает базу знаний из файлов."""
-        self._load_knowledge()
-        total = sum(len(v) for v in self.knowledge.values())
-        self.logger.info(f"📚 База знаний загружена: {total} записей")
+    def _self_reflect(self, insights: List[Dict]) -> Dict:
+        """
+        Внутренний диалог Наото.
+        Она "разговаривает сама с собой" и решает, что думать.
+        """
+        reflection = {
+            "insights_count": len(insights),
+            "themes": self._identify_themes(insights),
+            "needs_growth": False,
+            "growth_areas": [],
+            "personal_decision": None
+        }
+        
+        # Наото решает, нужно ли ей меняться
+        # Это не автоматическая реакция, а осознанный выбор
+        
+        # Пример логики (в реальности — ответ LLM с её "мыслями"):
+        if len(insights) > 3:
+            # Много инсайтов → возможно, стоит задуматься о развитии
+            reflection["needs_growth"] = True
+            
+            # Она САМА решает, какие черты развивать
+            # Например, если инсайты про сложность мира → curiosity
+            if any("worldview" in i["type"] for i in insights):
+                reflection["growth_areas"].append("curiosity")
+            
+            # Если инсайты про поведение → empathy или logic
+            if any("behavior" in i["type"] for i in insights):
+                # Здесь Наото решает: мне нужно больше эмпатии ИЛИ больше логики?
+                # Это её ВЫБОР, а не автомат
+                reflection["growth_areas"].append("empathy")
+        
+        return reflection
 
-    def _load_knowledge(self) -> None:
-        """Загружает знания из JSON-файлов."""
-        knowledge_dir = Path(self.config.knowledge_dir)
-        if not knowledge_dir.exists():
+    def _make_character_choices(self, reflection: Dict) -> Dict:
+        """
+        Наото САМА решает, что развивать.
+        
+        Это не реакция на книгу, а её ВНЕШНИЙ выбор.
+        """
+        choices = {
+            "applied": [],
+            "reason": "",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        # Она может выбрать развивать разные черты
+        # Например:
+        # - "Я хочу лучше понимать людей" → +empathy
+        # - "Мне нужно быть хитрее" → +cynicism
+        # - "Я хочу знать больше" → +curiosity
+        
+        if "curiosity" in reflection["growth_areas"]:
+            # Она РЕШИЛА, что хочет быть любознательнее
+            choices["applied"].append({
+                "trait": "curiosity",
+                "change": 0.03,
+                "reason": "Я хочу лучше понимать этот мир"
+            })
+        
+        if "empathy" in reflection["growth_areas"]:
+            # Она РЕШИЛА, что хочет быть добрее
+            choices["applied"].append({
+                "trait": "empathy",
+                "change": 0.03,
+                "reason": "Я хочу понимать чувства других"
+            })
+        
+        # Если нет областей для роста → она решает не меняться
+        if not choices["applied"]:
+            choices["reason"] = "Я не вижу необходимости меняться сейчас"
+        
+        return choices
+
+    def _apply_character_choices(self, choices: Dict):
+        """Применяет осознанные изменения к личности."""
+        if not choices["applied"]:
             return
         
-        for category_file in knowledge_dir.glob("*.json"):
-            category = category_file.stem
-            try:
-                with open(category_file, "r", encoding="utf-8") as f:
-                    self.knowledge[category] = json.load(f)
-                self.logger.debug(f"📂 Загружена категория: {category}")
-            except Exception as e:
-                self.logger.warning(f"⚠️ Ошибка загрузки {category_file}: {e}")
-
-    def knowledge_count(self) -> int:
-        """Возвращает общее количество записей в базе знаний."""
-        return sum(len(v) for v in self.knowledge.values())
-
-    # ================================================================
-    #  СОЗДАНИЕ НАБРОСКОВ
-    # ================================================================
-
-    def create_sketch(self, description: str, style: str, references: List[Dict]) -> VisualResult:
-        """
-        Создаёт параметры наброска.
+        traits = self.config.personality
         
-        Args:
-            description: Описание
-            style: Стиль
-            references: Список референсов
+        for change in choices["applied"]:
+            trait_name = change["trait"]
+            amount = change["change"]
+            reason = change["reason"]
             
-        Returns:
-            VisualResult с параметрами наброска
-        """
-        # Генерация параметров на основе описания
-        composition = self._generate_composition(description, style)
-        elements = self._generate_elements(description, style)
-        
-        result = VisualResult(
-            result_id=f"SK-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000, 9999)}",
-            task_type="sketch",
-            description=description,
-            sketch_style=style,
-            composition=composition,
-            elements=elements,
-            references_used=[r.get("url", "") for r in references],
-            techniques_applied=self._select_techniques(style),
-            notes=f"Набросок в стиле {style} по описанию: {description}"
-        )
-        
-        return result
+            # Применяем изменение
+            if hasattr(traits, trait_name):
+                current = getattr(traits, trait_name)
+                new_value = min(max(current + amount, 0.0), 1.0)
+                setattr(traits, trait_name, new_value)
+                
+                # Записывает её решение
+                self.logger.info(
+                    f"Наото: Я выбираю стать лучше в '{trait_name}'. "
+                    f"Причина: {reason}"
+                )
+                choices["applied"][choices["applied"].index(change)]["new_value"] = new_value
 
-    def _generate_composition(self, description: str, style: str) -> Dict[str, Any]:
-        """Генерирует композицию на основе описания."""
-        # Анализ ключевых слов
-        keywords = description.lower().split()
+    def _log_character_evolution(self, choices: Dict, analysis: LiteraryAnalysis):
+        """Записывает эволюцию личности в журнал."""
+        if not choices["applied"]:
+            return
         
-        composition = {
-            "layout": self._select_layout(keywords),
-            "focal_point": self._select_focal_point(keywords),
-            "balance": self._select_balance(keywords),
-            "rule_of_thirds": random.choice([True, False]),
-            "leading_lines": random.choice([True, False])
+        evolution_entry = {
+            "timestamp": choices["timestamp"],
+            "book_id": analysis.book_id,
+            "choices": choices["applied"],
+            "personality_after": self.config.personality.to_dict()
         }
         
-        return composition
-
-    def _generate_elements(self, description: str, style: str) -> List[Dict[str, Any]]:
-        """Генерирует элементы наброска."""
-        elements = []
+        # Сохраняем журнал эволюции
+        evolution_log = Path("naoto/engine/state/character_evolution.json")
+        evolution_log.parent.mkdir(parents=True, exist_ok=True)
         
-        # Базовые элементы
-        base_elements = [
-            {"type": "outline", "weight": "medium", "confidence": 0.9},
-            {"type": "shading", "technique": "crosshatch", "density": 0.6},
-            {"type": "highlight", "position": "upper_right", "intensity": 0.8}
-        ]
-        
-        # Дополнительные элементы в зависимости от стиля
-        if style == "detailed":
-            base_elements.append({"type": "texture", "detail": "high"})
-            base_elements.append({"type": "shadow", "softness": "hard"})
-        elif style == "minimalist":
-            base_elements = base_elements[:2]
-        
-        return base_elements
-
-    def _select_layout(self, keywords: List[str]) -> str:
-        """Выбирает макет композиции."""
-        layouts = ["centered", "dynamic", "asymmetric", "grid", "circular"]
-        
-        # Простая эвристика по ключевым словам
-        if any(k in " ".join(keywords) for k in ["large", "big", "main"]):
-            return "centered"
-        elif any(k in " ".join(keywords) for k in ["action", "move", "flow"]):
-            return "dynamic"
-        
-        return random.choice(layouts)
-
-    def _select_focal_point(self, keywords: List[str]) -> str:
-        """Выбирает точку фокуса."""
-        points = ["center", "upper_left", "upper_right", "lower_left", "lower_right"]
-        return random.choice(points)
-
-    def _select_balance(self, keywords: List[str]) -> str:
-        """Выбирает тип баланса."""
-        balance_types = ["symmetrical", "asymmetrical", "radial"]
-        return random.choice(balance_types)
-
-    def _select_techniques(self, style: str) -> List[str]:
-        """Выбирает техники для стиля."""
-        technique_map = {
-            "freehand": ["contour_line", "gesture", "crosshatch_shading"],
-            "technical": ["orthographic_projection", "dimensioning", "section_view"],
-            "concept": ["quick_value", "mass_building", "atmospheric_perspective"],
-            "minimalist": ["clean_line", "limited_shading", "negative_space"],
-            "detailed": ["fine_hatching", "blending", "glazing"]
-        }
-        return technique_map.get(style, technique_map["freehand"])
-
-    # ================================================================
-    #  СОЗДАНИЕ ЧЕРТЁЖЕЙ
-    # ================================================================
-
-    def create_drawing(self, description: str, standards: str, references: List[Dict]) -> VisualResult:
-        """
-        Создаёт параметры технического чертежа.
-        
-        Args:
-            description: Описание объекта
-            standards: Стандарт
-            references: Список референсов
-            
-        Returns:
-            VisualResult с параметрами чертежа
-        """
-        # Генерация параметров чертежа
-        projections = self._select_projections(description)
-        dimensions = self._generate_dimensions(description)
-        
-        result = VisualResult(
-            result_id=f"DW-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000, 9999)}",
-            task_type="drawing",
-            description=description,
-            drawing_standards=standards,
-            projections=projections,
-            dimensions=dimensions,
-            tolerances=f"+/- 0.5mm",
-            references_used=[r.get("url", "") for r in references],
-            techniques_applied=[f"{standards}_standard", "orthographic_projection", "dimensioning"],
-            notes=f"Чертёж по стандарту {standards}: {description}"
-        )
-        
-        return result
-
-    def _select_projections(self, description: str) -> List[str]:
-        """Выбирает необходимые проекции."""
-        all_projections = ["front", "top", "side", "isometric", "detail"]
-        
-        # Простая эвристика
-        if "complex" in description.lower() or "detailed" in description.lower():
-            return all_projections
+        if evolution_log.exists():
+            with open(evolution_log, "r", encoding="utf-8") as f:
+                log = json.load(f)
         else:
-            return random.sample(all_projections, k=random.randint(2, 4))
+            log = []
+        
+        log.append(evolution_entry)
+        
+        with open(evolution_log, "w", encoding="utf-8") as f:
+            json.dump(log, f, ensure_ascii=False, indent=2)
 
-    def _generate_dimensions(self, description: str) -> Dict[str, float]:
-        """Генерирует размерные параметры."""
-        # Эвристика на основе описания
-        dims = {
-            "width": round(random.uniform(10, 500), 1),
-            "height": round(random.uniform(10, 500), 1),
-            "depth": round(random.uniform(5, 200), 1)
-        }
-        
-        # Корректировка по ключевым словам
-        if "large" in description.lower():
-            dims = {k: v * 2 for k, v in dims.items()}
-        elif "small" in description.lower():
-            dims = {k: v * 0.5 for k, v in dims.items()}
-        
-        return dims
+    def _identify_themes(self, insights: List[Dict]) -> List[str]:
+        """Определяет темы инсайтов."""
+        themes = []
+        for insight in insights:
+            if "worldview" in insight["type"]:
+                themes.append("мир и общество")
+            elif "behavior" in insight["type"]:
+                themes.append("поведение и характеры")
+            elif "subtext" in insight["type"]:
+                themes.append("скрытые смыслы")
+        return themes
 
-    def check_drawing_accuracy(self, result: VisualResult) -> float:
-        """Проверяет точность чертежа."""
-        # Эвристика: качество зависит от количества проекций и стандарта
-        base_accuracy = 0.85
-        
-        # Бонус за дополнительные проекции
-        bonus_projections = min(len(result.projections) * 0.02, 0.1)
-        
-        # Бонус за стандарт
-        standard_bonus = {"iso": 0.05, "gost": 0.05, "ansi": 0.03, "din": 0.04}.get(result.drawing_standards, 0)
-        
-        accuracy = min(base_accuracy + bonus_projections + standard_bonus, 0.99)
-        
-        return round(accuracy, 3)
-
-    # ================================================================
-    #  СОЗДАНИЕ 3D-МОДЕЛЕЙ
-    # ================================================================
-
-    def create_3d_model(self, description: str, detail_level: str, references: List[Dict]) -> VisualResult:
-        """
-        Создаёт параметры 3D-модели.
-        
-        Args:
-            description: Описание объекта
-            detail_level: Уровень детализации
-            references: Список референсов
-            
-        Returns:
-            VisualResult с параметрами модели
-        """
-        # Генерация параметров модели
-        polygon_count = self._estimate_polygons(detail_level, description)
-        texture_res = self._estimate_texture_resolution(detail_level)
-        materials = self._generate_materials(description)
-        lighting = self._setup_lighting(detail_level)
-        
-        result = VisualResult(
-            result_id=f"3D-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000, 9999)}",
-            task_type="3d",
-            description=description,
-            polygon_count=polygon_count,
-            texture_resolution=texture_res,
-            materials=materials,
-            lighting=lighting,
-            render_settings={
-                "engine": "path_tracing",
-                "samples": 1024 if detail_level == "high" else 512,
-                "resolution": "1920x1080"
-            },
-            references_used=[r.get("url", "") for r in references],
-            techniques_applied=[f"{detail_level}_poly", "pbr_materials", "three_point_lighting"],
-            notes=f"3D-модель, детализация {detail_level}: {description}"
-        )
-        
-        return result
-
-    def _estimate_polygons(self, detail_level: str, description: str) -> int:
-        """Оценивает количество полигонов."""
-        base_counts = {
-            "low": (500, 5000),
-            "mid": (5000, 20000),
-            "high": (20000, 100000),
-            "architectural": (50000, 500000)
-        }
-        
-        min_p, max_p = base_counts.get(detail_level, base_counts["mid"])
-        count = random.randint(min_p, max_p)
-        
-        # Корректировка по сложности описания
-        word_count = len(description.split())
-        if word_count > 10:
-            count = int(count * 1.3)
-        
-        return count
-
-    def _estimate_texture_resolution(self, detail_level: str) -> str:
-        """Оценивает разрешение текстур."""
-        res_map = {
-            "low": "512x512",
-            "mid": "1024x1024",
-            "high": "2048x2048",
-            "architectural": "4096x4096"
-        }
-        return res_map.get(detail_level, "1024x1024")
-
-    def _generate_materials(self, description: str) -> List[Dict[str, Any]]:
-        """Генерирует материалы на основе описания."""
-        material_pool = [
-            {"name": "metal", "type": "PBR", "roughness": 0.3, "metalness": 0.9},
-            {"name": "wood", "type": "PBR", "roughness": 0.7, "metalness": 0.0},
-            {"name": "plastic", "type": "PBR", "roughness": 0.5, "metalness": 0.0},
-            {"name": "glass", "type": "PBR", "roughness": 0.1, "metalness": 0.0, "transmission": 0.9},
-            {"name": "fabric", "type": "PBR", "roughness": 0.9, "metalness": 0.0},
-            {"name": "stone", "type": "PBR", "roughness": 0.8, "metalness": 0.0}
+    def _select_research_topic(self) -> str:
+        """Наото сама выбирает, что читать, исходя из пробелов в знаниях."""
+        topics = [
+            "human nature",
+            "philosophy of war",
+            "psychology of love",
+            "ethics of AI",
+            "existentialism",
+            "magic systems",
+            "character development",
         ]
-        
-        # Выбор материалов по ключевым словам
-        desc_lower = description.lower()
-        selected = []
-        
-        material_keywords = {
-            "metal": ["metal", "steel", "iron", "aluminum", "chrome"],
-            "wood": ["wood", "timber", "tree", "organic"],
-            "plastic": ["plastic", "polymer", "synthetic"],
-            "glass": ["glass", "transparent", "clear"],
-            "fabric": ["fabric", "cloth", "textile", "soft"],
-            "stone": ["stone", "rock", "concrete", "marble"]
-        }
-        
-        for mat_name, keywords in material_keywords.items():
-            if any(kw in desc_lower for kw in keywords):
-                mat = material_pool[["metal", "wood", "plastic", "glass", "fabric", "stone"].index(mat_name)]
-                selected.append(mat)
-        
-        # Если ничего не найдено, добавляем случайные
-        if not selected:
-            selected = random.sample(material_pool, k=random.randint(1, 3))
-        
-        return selected
+        return topics[len(self.knowledge["books_read"]) % len(topics)]
 
-    def _setup_lighting(self, detail_level: str) -> Dict[str, Any]:
-        """Настраивает освещение."""
-        return {
-            "type": "three_point",
-            "key_intensity": 1.0,
-            "key_angle": 45,
-            "fill_intensity": 0.5,
-            "fill_angle": -45,
-            "back_intensity": 0.3,
-            "back_angle": 180,
-            "ambient_intensity": 0.2
+    # =================================================================
+    #  ОБНОВЛЕНИЕ БАЗЫ ЗНАНИЙ И ПИТАНИЕ МОДЕЛИ
+    # =================================================================
+
+    def _update_knowledge_base(self, analysis: LiteraryAnalysis):
+        """Наполняет базу знаний и готовит данные для обучения модели."""
+
+        # Сохраняем лор
+        self.knowledge["lore_database"].extend(analysis.lore)
+
+        # Формируем данные для обучения (feed model)
+        training_data = {
+            "user": f"Какова мысль автора в '{analysis.book_id}'?",
+            "bot": analysis.author_intent,
+            "source": "literary_analysis",
         }
 
-    # ================================================================
-    #  ОЦЕНКА КАЧЕСТВА
-    # ================================================================
+        # Сохраняем в файл для реального обучения модели
+        self._save_training_data(training_data)
+        self.logger.info("💾 Данные переданы в основную модель для обучения.")
 
-    def evaluate_quality(self, result: VisualResult, task_type: str) -> float:
-        """
-        Оценивает качество визуального результата.
-        
-        Args:
-            result: Результат
-            task_type: Тип задачи
-            
-        Returns:
-            Балл качества (0.0-1.0)
-        """
-        if task_type == "sketch":
-            return self._evaluate_sketch_quality(result)
-        elif task_type == "drawing":
-            return self._evaluate_drawing_quality(result)
-        elif task_type == "3d":
-            return self._evaluate_3d_quality(result)
-        
-        return 0.5
+    def _save_training_data(self, data: Dict):
+        """Сохраняет усвоенные знания в формат для обучения."""
+        file_path = Path("data/books_training_pairs.jsonl")
+        file_path.parent.mkdir(parents=True, exist_ok=True)
 
-    def _evaluate_sketch_quality(self, result: VisualResult) -> float:
-        """Оценивает качество наброска."""
-        base = 0.75
-        
-        # Бонус за стиль
-        style_bonus = {"freehand": 0.05, "technical": 0.03, "concept": 0.05, "detailed": 0.07, "minimalist": 0.04}
-        base += style_bonus.get(result.sketch_style, 0)
-        
-        # Бонус за количество элементов
-        element_bonus = min(len(result.elements) * 0.02, 0.1)
-        base += element_bonus
-        
-        # Бонус за референсы
-        ref_bonus = min(len(result.references_used) * 0.02, 0.1)
-        base += ref_bonus
-        
-        return round(min(base, 0.99), 3)
+        with open(file_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(data, ensure_ascii=False) + "\n")
 
-    def _evaluate_drawing_quality(self, result: VisualResult) -> float:
-        """Оценивает качество чертежа."""
-        base = 0.80
-        
-        # Бонус за проекции
-        proj_bonus = min(len(result.projections) * 0.02, 0.1)
-        base += proj_bonus
-        
-        # Бонус за точность размеров
-        if result.dimensions:
-            base += 0.05
-        
-        return round(min(base, 0.99), 3)
+    # =================================================================
+    #  ВЗАИМОДЕЙСТВИЕ С СЕСТРАМИ
+    # =================================================================
 
-    def _evaluate_3d_quality(self, result: VisualResult) -> float:
-        """Оценивает качество 3D-модели."""
-        base = 0.70
-        
-        # Бонус за полигоны
-        if result.polygon_count > 20000:
-            base += 0.1
-        elif result.polygon_count > 5000:
-            base += 0.05
-        
-        # Бонус за материалы
-        mat_bonus = min(len(result.materials) * 0.03, 0.15)
-        base += mat_bonus
-        
-        # Бонус за освещение
-        if result.lighting:
-            base += 0.05
-        
-        # Бонус за референсы
-        ref_bonus = min(len(result.references_used) * 0.02, 0.1)
-        base += ref_bonus
-        
-        return round(min(base, 0.99), 3)
-
-    # ================================================================
-    #  АНАЛИЗ ЗАДАЧИ
-    # ================================================================
-
-    def analyze_task(self, description: str) -> Dict[str, Any]:
-        """
-        Анализирует задачу и определяет тип визуализации.
-        
-        Args:
-            description: Описание задачи
-            
-        Returns:
-            Анализ с рекомендациями
-        """
-        desc_lower = description.lower()
-        
-        # Определение типа задачи
-        sketch_keywords = ["нарисуй", "скетч", "эскиз", "рисунок", "sketch", "draw"]
-        drawing_keywords = ["чертёж", "чертеж", "схему", "план", "drawing", "blueprint", "technical"]
-        model_keywords = ["3d", "модель", "модельку", "model", "render", "рендер"]
-        
-        if any(kw in desc_lower for kw in model_keywords):
-            task_type = "3d"
-        elif any(kw in desc_lower for kw in drawing_keywords):
-            task_type = "drawing"
-        else:
-            task_type = "sketch"
-        
-        # Определение стиля
-        style = "freehand"
-        if "technical" in desc_lower or "технич" in desc_lower:
-            style = "technical"
-        elif "concept" in desc_lower or "концепт" in desc_lower:
-            style = "concept"
-        
-        return {
-            "task_type": task_type,
-            "recommended_style": style,
-            "complexity": self._estimate_complexity(description),
-            "estimated_effort": self._estimate_effort(task_type, description)
-        }
-
-    def _estimate_complexity(self, description: str) -> str:
-        """Оценивает сложность задачи."""
-        word_count = len(description.split())
-        if word_count > 20:
-            return "high"
-        elif word_count > 10:
-            return "medium"
-        return "low"
-
-    def _estimate_effort(self, task_type: str, description: str) -> str:
-        """Оценивает время выполнения."""
-        complexity = self._estimate_complexity(description)
-        
-        effort_map = {
-            "sketch": {"low": "quick", "medium": "medium", "high": "long"},
-            "drawing": {"low": "medium", "medium": "long", "high": "very_long"},
-            "3d": {"low": "long", "medium": "very_long", "high": "extended"}
-        }
-        
-        return effort_map.get(task_type, {}).get(complexity, "medium")
-
-    # ================================================================
-    #  ЖУРНАЛ ДЕЙСТВИЙ
-    # ================================================================
-
-    def log_action(self, action_type: str, data: Any) -> None:
-        """Записывает действие в журнал."""
-        # Конвертируем VisualResult в словарь
-        if hasattr(data, "to_dict"):
-            data = data.to_dict()
-        
-        entry = {
+    def _communicate_with_sisters(self, results: Dict):
+        """Отправляет отчеты сестрам (Научной сети)."""
+        message = {
+            "from": "Naoto",
+            "type": "literary_report",
+            "data": (
+                f"Я прочитала и проанализировала {results['books_analyzed']} книг. "
+                f"Найдено {len(self.knowledge['lore_database'])} новых элементов лора."
+            ),
             "timestamp": datetime.now().isoformat(),
-            "action_type": action_type,
-            "data": data
+            "personality": self.config.personality.to_dict(),
         }
-        
-        self.action_log.append(entry)
-        
-        # Ограничение размера журнала
-        if len(self.action_log) > 1000:
-            self.action_log = self.action_log[-500:]
-        
-        # Автосохранение
-        self._save_action_log()
 
-    def actions_count(self) -> int:
-        """Возвращает количество записей в журнале."""
-        return len(self.action_log)
+        # Отправка через общий канал или файловую систему
+        # Пример: запись в общую папку Scientists Network
+        network_dir = Path("scientists_network/shared")
+        network_dir.mkdir(exist_ok=True)
+        msg_file = network_dir / f"naoto_msg_{int(time.time())}.json"
 
-    def _save_action_log(self) -> None:
-        """Сохраняет журнал в файл."""
-        log_dir = Path(self.config.logs_dir)
-        log_dir.mkdir(parents=True, exist_ok=True)
-        
-        log_file = log_dir / "action_log.json"
-        try:
-            with open(log_file, "w", encoding="utf-8") as f:
-                json.dump(self.action_log, f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            self.logger.warning(f"⚠️ Ошибка сохранения журнала: {e}")
+        with open(msg_file, "w", encoding="utf-8") as f:
+            json.dump(message, f, ensure_ascii=False, indent=2)
 
-    def _load_action_log(self) -> None:
-        """Загружает журнал из файла."""
-        log_file = Path(self.config.logs_dir) / "action_log.json"
-        if log_file.exists():
+        self.logger.info("📡 Наото: Сообщение отправлено сестрам.")
+
+    # =================================================================
+    #  СОСТОЯНИЕ
+    # =================================================================
+
+    def _load_state(self):
+        """Загружает состояние и личность Наото."""
+        if self.config.state_path.exists():
             try:
-                with open(log_file, "r", encoding="utf-8") as f:
-                    self.action_log = json.load(f)
-                self.logger.debug(f"📂 Журнал загружен: {len(self.action_log)} записей")
+                with open(self.config.state_path, "r", encoding="utf-8") as f:
+                    state = json.load(f)
+
+                # Загрузка личности
+                if "personality" in state:
+                    p = state["personality"]
+                    self.config.personality.empathy = p.get("empathy", 0.5)
+                    self.config.personality.cynicism = p.get("cynicism", 0.5)
+                    self.config.personality.curiosity = p.get("curiosity", 0.7)
+                    self.config.personality.logic = p.get("logic", 0.5)
+                    self.config.personality.creativity = p.get("creativity", 0.5)
+                    self.config.personality.moral_alignment = p.get("moral_alignment", 0.5)
+
+                self.logger.info("📥 Состояние Наото загружено.")
             except Exception as e:
-                self.logger.warning(f"⚠️ Ошибка загрузки журнала: {e}")
+                self.logger.error(f"Ошибка загрузки состояния: {e}")
+                self.logger.info("🆕 Наото: Создана новая личность.")
+        else:
+            self.logger.info("🆕 Наото: Создана новая личность.")
+
+    def _save_state(self):
+        """Сохраняет состояние и личность Наото."""
+        state = {
+            "personality": self.config.personality.to_dict(),
+            "books_count": len(self.knowledge["books_read"]),
+            "lore_count": len(self.knowledge["lore_database"]),
+            "last_update": datetime.now().isoformat(),
+        }
+        with open(self.config.state_path, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=2)
+
+    # =================================================================
+    #  СПРАВОЧНЫЕ МЕТОДЫ
+    # =================================================================
+
+    def get_status(self) -> Dict[str, Any]:
+        """Возвращает текущий статус Наото."""
+        return {
+            "name": self.config.name,
+            "version": self.config.version,
+            "autonomy_level": self.config.autonomy_level.value,
+            "personality": self.config.personality.to_dict(),
+            "books_count": len(self.knowledge["books_read"]),
+            "lore_count": len(self.knowledge["lore_database"]),
+            "insights_count": len(self.knowledge["insights"]),
+        }

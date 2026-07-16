@@ -477,3 +477,81 @@ class VisualProject:
     status: str = "in_progress"  # in_progress, review, completed
     elements: int = 0
     complexity: str = "simple"   # simple, medium, complex
+
+
+# =====================================================================
+#  МОДЕЛИ НААТО v2 — ЛИТЕРАТУРНЫЙ АНАЛИЗ
+# =====================================================================
+
+@dataclass
+class CharacterProfile:
+    """Профиль героя книги."""
+    name: str
+    role: str = "unknown"           # Протагонист, Антагонист и т.д.
+    traits: list[str] = field(default_factory=list)
+    behavior_log: list[dict] = field(default_factory=list)  # Логика действий
+    arc_progress: float = 0.0       # Прогресс развития
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "role": self.role,
+            "traits": self.traits,
+            "behavior_log": self.behavior_log,
+            "arc_progress": self.arc_progress,
+        }
+
+
+@dataclass
+class LoreEntry:
+    """Единица лора."""
+    type: str                       # магия, история, география
+    content: str
+    source_context: str = ""
+    confidence: float = 0.0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "type": self.type,
+            "content": self.content,
+            "source_context": self.source_context,
+            "confidence": self.confidence,
+        }
+
+
+@dataclass
+class PhantomNarration:
+    """Результат анализа скрытого (фантомного) повествования."""
+    subtext: str                    # Что автор хотел сказать, но не сказал
+    psychological_projection: str   # Проекция состояния автора
+    hidden_motive: str              # Скрытый мотив сцены
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "subtext": self.subtext,
+            "psychological_projection": self.psychological_projection,
+            "hidden_motive": self.hidden_motive,
+        }
+
+
+@dataclass
+class LiteraryAnalysis:
+    """Результат глубокого анализа книги."""
+    book_id: str
+    author_intent: str              # Мысль автора
+    plot_structure: str             # Структура сюжета
+    characters: list[CharacterProfile]
+    lore: list[LoreEntry]
+    phantom: PhantomNarration
+    sentiment_score: float          # Общее настроение (-1.0 to 1.0)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "book_id": self.book_id,
+            "author_intent": self.author_intent,
+            "plot_structure": self.plot_structure,
+            "characters": [c.to_dict() for c in self.characters],
+            "lore": [l.to_dict() for l in self.lore],
+            "phantom": self.phantom.to_dict(),
+            "sentiment_score": self.sentiment_score,
+        }

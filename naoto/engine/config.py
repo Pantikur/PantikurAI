@@ -1,22 +1,63 @@
 """
-Конфигурация системы Наото.
+Конфигурация системы Наото — Автономного Литературного Аналитика.
 """
 
 from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
+from typing import Dict, List, Optional
+from enum import Enum
+
+
+class AutonomyLevel(Enum):
+    """Уровни свободы Наото."""
+    L0 = "L0"  # Только чтение
+    L1 = "L1"  # Анализ и отчеты
+    L2 = "L2"  # Эволюция личности (с проверкой)
+    L3 = "L3"  # Полная автономия и инициатива
+
+
+@dataclass
+class PersonalityTraits:
+    """Текущие черты характера Наото."""
+    empathy: float = 0.5       # Эмпатия
+    cynicism: float = 0.5      # Цинизм
+    curiosity: float = 0.7     # Любознательность
+    logic: float = 0.5         # Логика
+    creativity: float = 0.5    # Креативность
+    moral_alignment: float = 0.5  # Нейтральность (-1 зло, +1 добро)
+
+    def to_dict(self) -> Dict:
+        return {
+            "empathy": self.empathy,
+            "cynicism": self.cynicism,
+            "curiosity": self.curiosity,
+            "logic": self.logic,
+            "creativity": self.creativity,
+            "moral_alignment": self.moral_alignment,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict) -> 'PersonalityTraits':
+        return cls(
+            empathy=data.get("empathy", 0.5),
+            cynicism=data.get("cynicism", 0.5),
+            curiosity=data.get("curiosity", 0.7),
+            logic=data.get("logic", 0.5),
+            creativity=data.get("creativity", 0.5),
+            moral_alignment=data.get("moral_alignment", 0.5),
+        )
 
 
 @dataclass
 class NaotoConfig:
     """
-    Конфигурация системы визуального архитектора Наото.
+    Конфигурация Автономного Литературного Аналитика.
     """
 
     # === Идентификация ===
     name: str = "Наото"
-    version: str = "v1.0.0"
+    version: str = "v2.0 (Soul)"
 
     # === Пути к документам ===
     base_path: Path = Path("naoto")
@@ -38,41 +79,38 @@ class NaotoConfig:
     max_cycles: Optional[int] = None      # None = бесконечно, int = демо-режим
 
     # === Автономность ===
-    max_autonomy_level: str = "L3"        # L0-L4 (см. протокол саморазвития)
+    autonomy_level: AutonomyLevel = AutonomyLevel.L2
+    max_autonomy_level: AutonomyLevel = AutonomyLevel.L3
     require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
 
-    # === Интернет ===
-    web_search_enabled: bool = True       # доступ к интернету
+    # === Интернет и Поиск ===
+    web_search_enabled: bool = True
+    target_sites: List[str] = field(default_factory=lambda: [
+        "litnet.com", "author.today", "gutenberg.org", "ficbook.net"
+    ])
     web_search_interval: int = 5          # каждые N циклов веб-поиск
     max_search_results: int = 10          # максимум результатов поиска
-    research_databases: list[str] = field(default_factory=lambda: [
-        "code_quality",       # Качество кода
-        "best_practices",     # Лучшие практики
-        "refactoring",        # Рефакторинг
-        "testing_strategies", # Стратегии тестирования
-    ])
 
-    # === Анализ кода ===
+    # === Персона (Личность) ===
+    personality: PersonalityTraits = field(default_factory=PersonalityTraits)
+
+    # === Взаимодействие с сёстрами ===
+    sisters_communication_interval: int = 5  # Циклов
+    notify_futaba_on_logic_change: bool = True
+    notify_shiori_on_security_change: bool = True
+    scan_with_shiori_before_apply: bool = True
+
+    # === Анализ кода (унаследовано для совместимости) ===
     project_root: Path = field(default_factory=lambda: Path("."))
     scan_directories: list[str] = field(default_factory=lambda: [
-        ".",           # корневая папка (все .py файлы)
-        "hanako",      # Ханако — гравитация
-        "fuyuki",      # Фуюки — электричество
-        "lucy",        # Люси — двигатели
-        "futaba",      # Футаба — управление
-        "shiori",      # Шиори — защита
-        "nobuka",      # Нобука — улучшения
-        "akva",        # Аква — математика, физика
-        "latislane",   # Latislane — проектирование тел
-        "celesta",     # Селеста — интимная жизнь
-        "naoto",       # Наото — визуальный архитектор
-        "yu",          # Юи — сознание, перенос
-        "scientists_network",  # Scientists Network
+        ".", "hanako", "fuyuki", "lucy", "futaba",
+        "shiori", "nobuka", "akva", "latislane",
+        "celesta", "naoto", "yu", "scientists_network",
     ])
     exclude_patterns: list[str] = field(default_factory=lambda: [
         "__pycache__", "*.pyc", ".git", "node_modules", "venv",
         "*.egg-info", "build", "dist", "*.egg",
-        "android-studio-plugin",  # Android-проект, не Python
+        "android-studio-plugin",
     ])
     max_file_lines: int = 300
     max_function_lines: int = 50
@@ -103,11 +141,6 @@ class NaotoConfig:
     hard_stop_on_constitution_violation: bool = True
     max_change_risk_threshold: float = 0.05
     auto_rollback_on_failure: bool = True
-
-    # === Взаимодействие с сёстрами ===
-    notify_futaba_on_logic_change: bool = True
-    notify_shiori_on_security_change: bool = True
-    scan_with_shiori_before_apply: bool = True
 
     def __post_init__(self):
         """Создать директории после инициализации."""
