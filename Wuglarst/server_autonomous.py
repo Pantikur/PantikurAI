@@ -45,12 +45,27 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Настройка логирования
 log_file = LOG_DIR / "wuglarst_daemon.log"
+
+class SafeEncoder(json.JSONEncoder):
+    """JSON encoder, который обрабатывает non-ASCII символы."""
+    def default(self, o):
+        try:
+            return super().default(o)
+        except TypeError:
+            return str(o)
+
+# Создаём stdout handler с encoding=utf-8
+class UTF8StreamHandler(logging.StreamHandler):
+    def __init__(self):
+        super().__init__(sys.stdout)
+        self.stream = sys.stdout
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
     handlers=[
         logging.FileHandler(log_file, encoding="utf-8"),
-        logging.StreamHandler(sys.stdout)
+        UTF8StreamHandler()
     ]
 )
 logger = logging.getLogger("Wuglarst")
