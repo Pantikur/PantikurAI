@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # === ОСНОВНОЙ CHATBOT API (порт 8000) ===
   chatbot-api:
     build:
       context: .
@@ -43,5 +44,31 @@ services:
       timeout: 10s
       start_period: 60s
       retries: 10
+    stdin_open: true
+    tty: true
+
+  # === WUGLARST AUTONOMOUS SERVER (порт 8001) ===
+  wuglarst:
+    build:
+      context: .
+      dockerfile: Dockerfile.wuglarst
+    image: pantikurai/wuglarst:latest
+    container_name: pantikur-wuglarst
+    ports:
+      - "8001:8001"
+    environment:
+      - WUGLARST_HOST=0.0.0.0
+      - WUGLARST_PORT=8001
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    volumes:
+      - ./data/wuglarst:/app/Wuglarst/data
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 5
     stdin_open: true
     tty: true
