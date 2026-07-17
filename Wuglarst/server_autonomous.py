@@ -243,8 +243,11 @@ class WuglarstSystem:
         return sum(1 for s in self.scientists.values() if s.status != "offline")
 
 
+from Wuglarst.self_growth import GrowthManager
+
 # Глобальная система
 system = WuglarstSystem()
+growth = GrowthManager()
 
 
 # =====================================================================
@@ -338,17 +341,47 @@ async def heartbeat_loop():
 
 
 async def daemon_cycle():
-    """Главный автономный цикл."""
+    """Главный автономный цикл — девочки живут сами."""
     logger.info("🔄 Автономный цикл запущен")
     
     while True:
-        await asyncio.sleep(10)
+        await asyncio.sleep(15)  # Каждые 15 секунд
         
-        # Проверяем количество девочек
+        # 1. Обновляем статус девочек
         online = system.get_online_count()
         total = len(system.scientists)
         
-        logger.info(f"📊 Статус: {online}/{total} девочек онлайн")
+        # 2. Автономный рост — девочки сами решают что делать
+        for name in list(system.scientists.keys()):
+            try:
+                sci = system.scientists.get(name)
+                if not sci:
+                    continue
+                
+                # Девочка "живёт" — делает что-то
+                if sci.status != "offline":
+                    # Авто-воспоминание: девочка что-то сделала
+                    growth.add_memory(
+                        name=name,
+                        mem_type="success",
+                        description=f"{name}: {sci.current_task or 'работает'}",
+                        impact=0.7,
+                        traits={"logic": 0.01, "creativity": 0.01},
+                    )
+                    
+                    # Девочка думает о себе — рефлексия!
+                    state = growth.states.get(name)
+                    if state and state.last_reflection:
+                        last = datetime.fromisoformat(state.last_reflection)
+                    else:
+                        last = None
+                    
+                    # Если девочка долго думала о чём-то — она решает поразмышлять
+                    if last is None or (datetime.now() - last).total_seconds() > 1800:
+                        reflection = growth.trigger_reflection(name)
+                        logger.info(f"💭 {name}: {reflection.mood} — {reflection.self_identity}")
+            except Exception as e:
+                logger.error(f"Ошибка роста {name}: {e}")
 
 
 # =====================================================================
@@ -397,14 +430,10 @@ async def startup_event():
         status="working",
         current_task="Инициализация игрового движка",
         personality={
-            "перфекционизм": 75,
-            "инновационность": 80,
-            "аналитичность": 85,
-            "коллаборативность": 90,
-            "смелость": 65,
-            "эмпатия": 70,
-            "дисциплинированность": 70,
-            "творчество": 75
+            "empathy": 0.65,
+            "cynicism": 0.25,
+            "logic": 0.92,
+            "creativity": 0.78,
         },
         x=500,
         y=400,
@@ -416,12 +445,13 @@ async def startup_event():
             "ai": 2,
             "network": 2,
             "scripting": 2,
-            "level_editor": 2
+            "level_editor": 2,
         },
         autonomy_level="L3",
-        engines_active=8
+        engines_active=8,
     )
     system.update_scientist("Сидни", sidney_state)
+    growth.init_scientist("Сидни", sidney_state.personality)
     
     logger.info("✅ Wuglarst Autonomous Server готов")
 
@@ -532,6 +562,9 @@ async def populate_demo_data():
             last_activity=datetime.now().isoformat(),
         )
         system.update_scientist(sci["name"], state)
+        
+        # Инициализируем рост
+        growth.init_scientist(sci["name"], sci["personality"])
     
     system.add_event("Сидни", "system_init", "🎮 Сидни: Инициализация 8 движков")
     system.add_event("Нобука", "task_update", "🔧 Нобука: Оптимизация системы")
@@ -542,6 +575,21 @@ async def populate_demo_data():
     })
     
     return {"status": "ok", "scientists": len(scientists_data)}
+
+
+@app.get("/api/growth/{name}")
+async def get_growth(name: str):
+    """Мониторинг роста (только чтение)."""
+    return JSONResponse(content=growth.get_growth_data(name))
+
+
+@app.get("/api/growth/all")
+async def get_all_growth():
+    """Мониторинг роста всех девочек."""
+    result = {}
+    for name in growth.states:
+        result[name] = growth.get_growth_data(name)
+    return JSONResponse(content=result)
 
 
 @app.websocket("/ws")
