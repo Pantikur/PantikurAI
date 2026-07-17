@@ -9,8 +9,8 @@ class WuglarstApp {
         this.selectedScientist = null;
         this.scientists = {};
         this.events = [];
-        // Используем относительный путь — работает и на /, и на /wuglarst
-        this.apiBase = '';
+        // Wuglarst смонтирован по /wuglarst, все пути абсолютные
+        this.apiBase = '/wuglarst';
         
         this.init();
     }
@@ -40,8 +40,8 @@ class WuglarstApp {
     }
 
     connectWebSocket() {
-        // Относительный путь — работает через прокси Timeweb
-        this.ws = new WebSocket(`/ws`);
+        // Wuglarst смонтирован по /wuglarst
+        this.ws = new WebSocket('/wuglarst/ws');
         
         this.ws.onopen = () => {
             console.log("✅ WebSocket подключен");
