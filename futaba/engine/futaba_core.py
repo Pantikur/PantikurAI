@@ -31,6 +31,7 @@ from futaba.engine.trial_grounds import TrialGrounds
 from futaba.engine.web_access import FutabaWebAccess
 from futaba.engine.legal_studies import FutabaLegalStudies
 from futaba.engine.world_state_modeler import FutabaWorldStateModeler
+from futaba.engine.legal_entities import LegalEntitiesManager, get_entities_manager, init_legal_entities, link_legal_entities_to_studies
 
 
 class FutabaCore:
@@ -87,6 +88,12 @@ class FutabaCore:
         # Инициализация random
         self._init_random()
         
+        # Инициализация менеджера субъектов права
+        self.legal_entities = init_legal_entities()
+        # Связываем с модулем юридических исследований
+        link_legal_entities_to_studies(self.legal_entities, self.legal_studies)
+        self.logger.info(f"⚖️ Модуль субъектов права инициализирован: {len(self.legal_entities.entities)} субъектов")
+        
         self.logger.info(f"Футаба {self.current_version} инициализирована")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
     
@@ -142,13 +149,13 @@ class FutabaCore:
                     self._save_state()
                 
                 # Укрепление характера (периодически)
-                if self.total_cycles % 5 == 0:
+                if self.cycle_count % 5 == 0:
                     strengthened = self.character.strengthen_strengths()
                     if strengthened > 0:
                         self.logger.info(f"Character strengthened: {strengthened} traits")
 
                 # Эволюция характера (периодически)
-                if self.total_cycles % 10 == 0:
+                if self.cycle_count % 10 == 0:
                     evolved = self.character.evolve_traits()
                     if evolved:
                         self.logger.info("Character evolved")
@@ -166,20 +173,6 @@ class FutabaCore:
         
         finally:
             self._final_report()
-            
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
-
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
-
-        self._save_state()
     
     def _should_stop(self) -> bool:
         """Проверить условия остановки."""
@@ -224,6 +217,10 @@ class FutabaCore:
         # 2.7. Моделирование мировых состояний (периодически)
         if self.cycle_count % 10 == 0:
             self._simulate_world_states()
+        
+        # 2.8. Изучение субъектов права (периодически)
+        if self.cycle_count % 5 == 0:
+            self._study_legal_entities()
         
         # 3. Формирование гипотезы (если есть сигналы)
         if signals:
@@ -449,6 +446,56 @@ class FutabaCore:
             
         except Exception as e:
             self.logger.error(f"❌ Ошибка изучения законодательства: {e}")
+    
+    def _study_legal_entities(self):
+        """Изучает все категории субъектов права и наполняет базу знаний."""
+        try:
+            self.logger.info("⚖️ Начало изучения субъектов права")
+            
+            # 1. Получаем все категории субъектов права
+            all_entities = self.legal_entities.get_all_standard_entities()
+            self.logger.info(f"📚 Получено {len(all_entities.get('groups', {}))} групп субъектов права")
+            
+            # 2. Получаем полную базу знаний по субъектам
+            knowledge_base = self.legal_studies.get_entity_knowledge_base()
+            self.logger.info(f"📖 База знаний по субъектам: {len(knowledge_base.get('knowledge_topics', []))} тем")
+            
+            # 3. Для каждой группы — анализ
+            for group_name, group_data in all_entities.get("groups", {}).items():
+                group = group_data
+                cats = group.get("categories", [])
+                self.logger.info(f"  📋 {group.get('name', group_name)}: {len(cats)} категорий")
+                
+                # 4. Генерируем чек-лист compliance для группы
+                if group_name in ("individual", "collective"):
+                    entity_type = "physical" if group_name == "individual" else "legal"
+                    checklist = self.legal_studies.generate_entity_compliance_checklist(entity_type)
+                    self.logger.info(f"    ✅ Чек-лист compliance сгенерирован для {entity_type}")
+            
+            # 5. Анализ контекста частного vs публичного права
+            context = all_entities.get("context_distinction", {})
+            private = context.get("private_law", {})
+            public = context.get("public_law", {})
+            self.logger.info(f"  🔍 Частное право: {len(private.get('main_subjects', []))} основных субъектов")
+            self.logger.info(f"  🔍 Публичное право: {len(public.get('main_subjects', []))} основных субъектов")
+            
+            # 6. Статистика субъектов
+            stats = self.legal_entities.get_statistics()
+            self.logger.info(f"📊 Статистика субъектов: всего {stats.get('total_entities', 0)}, знаний: {stats.get('knowledge_count', 0)}")
+            
+            # 7. Добавляем знания в базу
+            knowledge_topics = knowledge_base.get("knowledge_topics", [])
+            for topic in knowledge_topics:
+                self.legal_entities.add_knowledge(topic, {
+                    "category": "legal_entities",
+                    "source": "futaba_legal_studies",
+                    "importance": "high",
+                })
+            
+            self.logger.info(f"✅ Изучение субъектов права завершено. Добавлено {len(knowledge_topics)} тем знаний")
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка изучения субъектов права: {e}")
     
     def _simulate_world_states(self):
         """Моделирует мировые состояния с инверсией правил."""
