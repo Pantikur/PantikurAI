@@ -520,7 +520,7 @@ async def mark_offline(name: str):
 
 @app.post("/api/demo/populate")
 async def populate_demo_data():
-    """Заполнить демо-данными."""
+    """Пробуждение — создаёт девочек и запускает их жизнь."""
     scientists_data = [
         {"name": "Ханако", "avatar": "⚡", "x": 100, "y": 100, "status": "working", "task": "Контроль гравитации",
          "personality": {"empathy": 0.85, "cynicism": 0.10, "logic": 0.90, "creativity": 0.70}},

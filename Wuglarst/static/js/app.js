@@ -113,7 +113,7 @@ class WuglarstApp {
             console.log("✅ Демо-данные загружены:", data);
             
             // Показываем уведомление
-            this.showNotification("🎮 Демо-данные загружены!");
+            this.showNotification("🌱 Девочки проснулись! Они начнут жить сами через 15 секунд...");
         } catch (error) {
             console.error("Ошибка загрузки демо:", error);
         }
