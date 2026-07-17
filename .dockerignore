@@ -9,6 +9,9 @@ data/*
 models/*
 !models/*.pth
 
+# Wuglarst — ОСТАВЛЯЕМ ВСЁ для mount
+# Исключаем только документацию
+
 # Прочее
 __pycache__/
 *.pyc

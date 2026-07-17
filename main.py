@@ -140,6 +140,18 @@ else:
     logger.critical(f"❌ Не найдена директория: {WUGLARST_DIR}")
     raise RuntimeError(f"Не найдена директория: {WUGLARST_DIR}")
 
+# === Импорт Wuglarst App для mount по /wuglarst ===
+WUGLARST_APP = None
+try:
+    from Wuglarst.server_autonomous import app as wuglarst_app  # type: ignore
+    WUGLARST_APP = wuglarst_app
+    logger.info("✅ Wuglarst app импортирован — будет доступен по /wuglarst")
+except ImportError as e:
+    logger.warning(f"⚠️ Wuglarst app не импортирован: {e}")
+except Exception as e:
+    logger.warning(f"⚠️ Wuglarst app не импортирован: {e}")
+# === КОНЕЦ ИМПОРТА WUGLARST ===
+
 # === Загрузка .env (если есть) ===
 try:
     from dotenv import load_dotenv
@@ -487,6 +499,12 @@ app = FastAPI(
     version="1.5.0 🎂",
     lifespan=lifespan
 )
+
+# === МОНТИРОВАНИЕ WUGLARST ПО /wuglarst ===
+if WUGLARST_APP:
+    app.mount("/wuglarst", WUGLARST_APP)
+    logger.info("✅ Wuglarst смонтирован по пути /wuglarst")
+# === КОНЕЦ МОНТИРОВАНИЯ ===
 
 
 # === Middleware: Rate Limiting + Защита от сканирования ===

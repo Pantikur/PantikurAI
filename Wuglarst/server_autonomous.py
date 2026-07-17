@@ -695,7 +695,8 @@ def _get_main_html() -> str:
     </div>
     
     <script>
-        const API_URL = window.location.origin;
+        const API_BASE = window.location.pathname;
+        const API_URL = window.location.origin + API_BASE;
         let ws = null;
         
         async function fetchStatus() {
@@ -748,7 +749,8 @@ def _get_main_html() -> str:
         // WebSocket для реального времени
         function connectWS() {
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            ws = new WebSocket(`${protocol}//${window.location.host}/ws`);
+            const path = API_URL.replace(window.location.origin, '');
+            ws = new WebSocket(`${protocol}//${window.location.host}${path}/ws`);
             
             ws.onopen = () => console.log('WebSocket подключен');
             ws.onmessage = (event) => {
