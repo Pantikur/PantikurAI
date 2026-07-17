@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Wuglarst — Визуальное пространство ИИ</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Заголовок -->
+    <header class="header">
+        <div class="header-left">
+            <h1>🌟 Wuglarst</h1>
+            <span class="subtitle">Визуальное пространство ИИ-ученых</span>
+        </div>
+        <div class="header-right">
+            <div class="status-indicator" id="connectionStatus">
+                <span class="status-dot"></span>
+                <span>Подключение...</span>
+            </div>
+            <button id="demoBtn" class="btn btn-primary">🎮 Демо-данные</button>
+            <button id="refreshBtn" class="btn btn-secondary">🔄 Обновить</button>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-container">
+        <!-- Левая панель: Карта -->
+        <section class="map-panel">
+            <div class="panel-header">
+                <h2>🗺️ Карта проекта</h2>
+                <span class="scientist-count" id="scientistCount">0 ученых</span>
+            </div>
+            <div class="map-container" id="mapContainer">
+                <!-- Здесь будут аватары ученых -->
+                <div class="map-grid" id="mapGrid"></div>
+            </div>
+        </section>
+
+        <!-- Правая панель: Информация -->
+        <aside class="info-panel">
+            <!-- Выбранный ученый -->
+            <section class="scientist-detail">
+                <div class="panel-header">
+                    <h2>👤 Информация</h2>
+                </div>
+                <div class="scientist-card" id="scientistCard">
+                    <div class="no-selection">
+                        <p>Выберите ученого на карте</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Журнал событий -->
+            <section class="events-panel">
+                <div class="panel-header">
+                    <h2>📜 Журнал событий</h2>
+                    <button id="clearEvents" class="btn-small">Очистить</button>
+                </div>
+                <div class="events-list" id="eventsList">
+                    <div class="no-events">
+                        <p>Пока нет событий</p>
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Подключение скриптов -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
