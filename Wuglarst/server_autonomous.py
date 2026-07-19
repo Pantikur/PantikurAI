@@ -244,14 +244,14 @@ class WuglarstSystem:
 
 
 from Wuglarst.self_growth import GrowthManager
-from Wuglarst.nobuka_engine import NobukaEngine
+from Wuglarst.nobuka_ai import NobukaAI
 
 # Глобальная система
 system = WuglarstSystem()
 growth = GrowthManager()
 
-# Движок оптимизации Нобуки
-nobuka_engine: Optional[NobukaEngine] = None
+# Нобука AI (v3.0)
+nobuka_ai: Optional[NobukaAI] = None
 
 
 # =====================================================================
@@ -625,19 +625,17 @@ async def populate_demo_data():
     system.add_event("Сидни", "system_init", "🎮 Сидни: Инициализация 8 движков")
     system.add_event("Нобука", "engine_start", "🔧 Нобука: Автономный движок оптимизации запущен (L3)")
     
-    # Создаём и запускаем движок оптимизации Нобуки (если ещё не создан)
-    global nobuka_engine
-    if nobuka_engine is None:
-        nobuka_engine = NobukaEngine(
+    # Создаём и запускаем NobukaAI v3.0 (если ещё не создан)
+    global nobuka_ai
+    if nobuka_ai is None:
+        nobuka_ai = NobukaAI(
             project_root=PROJECT_ROOT,
             system=system,
             growth=growth,
             manager=manager,
-            scan_interval=30,
-            max_opportunities_per_scan=5,
         )
-        asyncio.create_task(nobuka_engine.start())
-        logger.info("🔧 Движок оптимизации Нобуки: запущен (L3, 3 модуля)")
+        asyncio.create_task(nobuka_ai.start())
+        logger.info("🚀 NobukaAI v3.0: Запущена (интернет, анализ, улучшение, тестирование)")
     
     await manager.broadcast({
         "type": "system_update",
@@ -662,37 +660,85 @@ async def get_all_growth():
     return JSONResponse(content=result)
 
 
-@app.get("/api/nobuka/engine")
-async def get_nobuka_engine_status():
-    """Статус автономного движка оптимизации Нобуки."""
-    if nobuka_engine is None:
-        return JSONResponse(content={"error": "Движок Нобуки не инициализирован"})
-    return JSONResponse(content=nobuka_engine.get_status())
+@app.get("/api/nobuka/status")
+async def get_nobuka_status():
+    """Статус NobukaAI v3.0."""
+    if nobuka_ai is None:
+        return JSONResponse(content={"error": "NobukaAI не инициализирована"})
+    return JSONResponse(content=nobuka_ai.get_status())
+
+
+@app.post("/api/nobuka/solve")
+async def solve_nobuka_task(request: Dict[str, str]):
+    """Решить задачу: POST {task: "описание задачи"}"""
+    if nobuka_ai is None:
+        return JSONResponse(content={"error": "NobukaAI не инициализирована"})
+    
+    task = request.get("task", "")
+    if not task:
+        return JSONResponse(content={"error": "Укажите задачу"}, status_code=400)
+    
+    result = await nobuka_ai.solve_task(task)
+    return JSONResponse(content=result)
+
+
+@app.post("/api/nobuka/analyze")
+async def analyze_project():
+    """Полный анализ проекта."""
+    if nobuka_ai is None:
+        return JSONResponse(content={"error": "NobukaAI не инициализирована"})
+    
+    analysis = await nobuka_ai.analyze_project()
+    return JSONResponse(content=analysis)
+
+
+@app.post("/api/noboka/change")
+async def apply_user_change(request: Dict[str, Any]):
+    """Применить изменение пользователя."""
+    if nobuka_ai is None:
+        return JSONResponse(content={"error": "NobukaAI не инициализирована"})
+    
+    from Wuglarst.nobuka_ai import UserChange
+    
+    change = UserChange(
+        files_changed=request.get("files_changed", []),
+        description=request.get("description", ""),
+        timestamp=datetime.now().isoformat(),
+        impact=request.get("impact", "minor"),
+    )
+    
+    new_improvements = await nobuka_ai.apply_user_change(change)
+    return JSONResponse(content={
+        "status": "ok",
+        "new_improvements": len(new_improvements),
+        "improvements": [
+            {"title": imp.title, "type": imp.type, "priority": imp.priority}
+            for imp in new_improvements
+        ],
+    })
 
 
 @app.post("/api/nobuka/engine/start")
 async def start_nobuka_engine():
-    """Запуск движка оптимизации Нобуки."""
-    global nobuka_engine
-    if nobuka_engine is None:
-        nobuka_engine = NobukaEngine(
+    """Запуск NobukaAI."""
+    global nobuka_ai
+    if nobuka_ai is None:
+        nobuka_ai = NobukaAI(
             project_root=PROJECT_ROOT,
             system=system,
             growth=growth,
             manager=manager,
-            scan_interval=30,
-            max_opportunities_per_scan=5,
         )
-    await nobuka_engine.start()
+    await nobuka_ai.start()
     return JSONResponse(content={"status": "started"})
 
 
 @app.post("/api/nobuka/engine/stop")
 async def stop_nobuka_engine():
-    """Остановка движка оптимизации Нобуки."""
-    global nobuka_engine
-    if nobuka_engine is not None:
-        await nobuka_engine.stop()
+    """Остановка NobukaAI."""
+    global nobuka_ai
+    if nobuka_ai is not None:
+        await nobuka_ai.stop()
         return JSONResponse(content={"status": "stopped"})
     return JSONResponse(content={"status": "not_running"})
 
