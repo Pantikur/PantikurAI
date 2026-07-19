@@ -481,20 +481,8 @@ async def startup_event():
     system.update_scientist("Нобука", nobuka_state)
     growth.init_scientist("Нобука", nobuka_state.personality)
     
-    # Создаём и запускаем движок оптимизации
-    global nobuka_engine
-    nobuka_engine = NobukaEngine(
-        project_root=PROJECT_ROOT,
-        system=system,
-        growth=growth,
-        manager=manager,
-        scan_interval=30,
-        max_opportunities_per_scan=5,
-    )
-    asyncio.create_task(nobuka_engine.start())
-    
     logger.info("✅ Wuglarst Autonomous Server готов")
-    logger.info("🔧 Движок оптимизации Нобуки: L3, 3 активных модуля")
+    logger.info("🔧 Движок оптимизации Нобуки: будет запущен при populate_demo")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -636,6 +624,20 @@ async def populate_demo_data():
     
     system.add_event("Сидни", "system_init", "🎮 Сидни: Инициализация 8 движков")
     system.add_event("Нобука", "engine_start", "🔧 Нобука: Автономный движок оптимизации запущен (L3)")
+    
+    # Создаём и запускаем движок оптимизации Нобуки (если ещё не создан)
+    global nobuka_engine
+    if nobuka_engine is None:
+        nobuka_engine = NobukaEngine(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+            scan_interval=30,
+            max_opportunities_per_scan=5,
+        )
+        asyncio.create_task(nobuka_engine.start())
+        logger.info("🔧 Движок оптимизации Нобуки: запущен (L3, 3 модуля)")
     
     await manager.broadcast({
         "type": "system_update",
