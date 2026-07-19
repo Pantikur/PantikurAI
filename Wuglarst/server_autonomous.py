@@ -624,8 +624,22 @@ async def populate_demo_data():
         last_activity=datetime.now().isoformat(),
     ))
     
+    # Футаба получает автономный движок управления
+    system.update_scientist("Футаба", ScientistState(
+        name="Футаба",
+        avatar="⚖️",
+        status="working",
+        current_task="Правовой анализ и управление",
+        personality={"empathy": 0.90, "cynicism": 0.05, "logic": 0.98, "creativity": 0.85},
+        x=400, y=100,
+        autonomy_level="L3",
+        engines_active=4,
+        last_activity=datetime.now().isoformat(),
+    ))
+    
     system.add_event("Сидни", "system_init", "🎮 Сидни: Инициализация 8 движков")
     system.add_event("Нобука", "engine_start", "🔧 Нобука: Автономный движок оптимизации запущен (L3)")
+    system.add_event("Футаба", "engine_start", "⚖️ Футаба: Автономный движок управления запущен (L3)")
     
     # Создаём и запускаем NobukaAI v3.0 (если ещё не создан)
     global nobuka_ai
