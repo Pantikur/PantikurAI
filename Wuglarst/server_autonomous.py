@@ -246,6 +246,7 @@ class WuglarstSystem:
 from Wuglarst.self_growth import GrowthManager
 from Wuglarst.nobuka_ai import NobukaAI
 from Wuglarst.futaba_ai import FutabaAI
+from Wuglarst.shiori_ai import ShioriAI
 
 # Глобальные движки
 system = WuglarstSystem()
@@ -253,6 +254,7 @@ growth = GrowthManager()
 
 nobuka_ai: Optional[NobukaAI] = None
 futaba_ai: Optional[FutabaAI] = None
+shiori_ai: Optional[ShioriAI] = None
 
 
 # =====================================================================
@@ -558,9 +560,12 @@ async def populate_demo_data():
          "personality": {"empathy": 0.60, "cynicism": 0.30, "logic": 0.95, "creativity": 0.50}},
         {"name": "Люси", "avatar": "🚀", "x": 300, "y": 100, "status": "thinking", "task": "Двигатели",
          "personality": {"empathy": 0.70, "cynicism": 0.20, "logic": 0.80, "creativity": 0.85}},
-        {"name": "Футаба", "avatar": "⚖️", "x": 400, "y": 100, "status": "working", "task": "Правовой анализ и управление",
-         "personality": {"empathy": 0.90, "cynicism": 0.05, "logic": 0.98, "creativity": 0.85},
-         "autonomy_level": "L3", "engines_active": 4},
+         {"name": "Футаба", "avatar": "⚖️", "x": 400, "y": 100, "status": "working", "task": "Правовой анализ и управление",
+          "personality": {"empathy": 0.90, "cynicism": 0.05, "logic": 0.98, "creativity": 0.85},
+          "autonomy_level": "L3", "engines_active": 4},
+         {"name": "Шиори", "avatar": "🛡️", "x": 100, "y": 200, "status": "working", "task": "Кибербезопасность и защита",
+          "personality": {"empathy": 0.60, "cynicism": 0.40, "logic": 0.99, "creativity": 0.70},
+          "autonomy_level": "L3", "engines_active": 5},
         {"name": "Шиори", "avatar": "🛡️", "x": 100, "y": 200, "status": "idle", "task": "Защита системы",
          "personality": {"empathy": 0.75, "cynicism": 0.40, "logic": 0.85, "creativity": 0.30}},
         {"name": "Нобука", "avatar": "🔧", "x": 200, "y": 200, "status": "working", "task": "Оптимизация кода",
@@ -637,9 +642,23 @@ async def populate_demo_data():
         last_activity=datetime.now().isoformat(),
     ))
     
+    # Шиори получает автономный движок защиты
+    system.update_scientist("Шиори", ScientistState(
+        name="Шиори",
+        avatar="🛡️",
+        status="working",
+        current_task="Кибербезопасность и защита",
+        personality={"empathy": 0.60, "cynicism": 0.40, "logic": 0.99, "creativity": 0.70},
+        x=100, y=200,
+        autonomy_level="L3",
+        engines_active=5,
+        last_activity=datetime.now().isoformat(),
+    ))
+    
     system.add_event("Сидни", "system_init", "🎮 Сидни: Инициализация 8 движков")
     system.add_event("Нобука", "engine_start", "🔧 Нобука: Автономный движок оптимизации запущен (L3)")
     system.add_event("Футаба", "engine_start", "⚖️ Футаба: Автономный движок управления запущен (L3)")
+    system.add_event("Шиори", "engine_start", "🛡️ Шиори: Автономный движок защиты запущен (L3)")
     
     # Создаём и запускаем NobukaAI v3.0 (если ещё не создан)
     global nobuka_ai
@@ -664,7 +683,18 @@ async def populate_demo_data():
         )
         asyncio.create_task(futaba_ai.start())
         logger.info("🏛️ FutabaAI v3.0: Запущена (право, политика, управление)")
-        system.add_event("Футаба", "engine_start", "⚖️ Футаба: Автономный движок управления запущен (L3)")
+    
+    # Создаём и запускаем ShioriAI v3.0 (если ещё не создана)
+    global shiori_ai
+    if shiori_ai is None:
+        shiori_ai = ShioriAI(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+        )
+        asyncio.create_task(shiori_ai.start())
+        logger.info("🛡️ ShioriAI v3.0: Запущена (кибербезопасность, защита, угрозы)")
     
     await manager.broadcast({
         "type": "system_update",
@@ -855,6 +885,116 @@ async def stop_futaba_engine():
     global futaba_ai
     if futaba_ai is not None:
         await futaba_ai.stop()
+        return JSONResponse(content={"status": "stopped"})
+    return JSONResponse(content={"status": "not_running"})
+
+
+# =====================================================================
+#  SHIORI API
+# =====================================================================
+
+@app.get("/api/shiori/status")
+async def get_shiori_status():
+    """Статус ShioriAI v3.0."""
+    if shiori_ai is None:
+        return JSONResponse(content={"error": "ShioriAI не инициализирована"})
+    return JSONResponse(content=shiori_ai.get_status())
+
+
+@app.post("/api/shiori/solve")
+async def solve_shiori_task(request: Dict[str, str]):
+    """Решить задачу безопасности: POST {task: "описание задачи"}"""
+    if shiori_ai is None:
+        return JSONResponse(content={"error": "ShioriAI не инициализирована"})
+    
+    task = request.get("task", "")
+    if not task:
+        return JSONResponse(content={"error": "Укажите задачу"}, status_code=400)
+    
+    result = await shiori_ai.solve_task(task)
+    return JSONResponse(content=result)
+
+
+@app.post("/api/shiori/scan")
+async def full_security_scan():
+    """Полное сканирование безопасности."""
+    if shiori_ai is None:
+        return JSONResponse(content={"error": "ShioriAI не инициализирована"})
+    
+    scan_result = await shiori_ai.full_security_scan()
+    return JSONResponse(content=scan_result)
+
+
+@app.post("/api/shiori/analyze-malware")
+async def analyze_malware(request: Dict[str, str]):
+    """Анализ файла на вредоносность: POST {file_path: "путь к файлу"}"""
+    if shiori_ai is None:
+        return JSONResponse(content={"error": "ShioriAI не инициализирована"})
+    
+    file_path = request.get("file_path", "")
+    if not file_path:
+        return JSONResponse(content={"error": "Укажите путь к файлу"}, status_code=400)
+    
+    analysis = await shiori_ai.analyze_malware(file_path)
+    return JSONResponse(content={
+        "file_hash": analysis.file_hash,
+        "file_name": analysis.file_name,
+        "is_malicious": analysis.is_malicious,
+        "malware_family": analysis.malware_family,
+        "behavior": analysis.behavior,
+        "confidence": analysis.confidence,
+        "recommendation": analysis.recommendation
+    })
+
+
+@app.post("/api/shiori/decision")
+async def apply_shiori_decision(request: Dict[str, Any]):
+    """Применить решение пользователя по безопасности."""
+    if shiori_ai is None:
+        return JSONResponse(content={"error": "ShioriAI не инициализирована"})
+    
+    from Wuglarst.shiori_ai import UserSecurityDecision
+    
+    decision = UserSecurityDecision(
+        decision_description=request.get("decision_description", ""),
+        context=request.get("context", ""),
+        threat_level=request.get("threat_level", "medium"),
+        outcome=request.get("outcome", ""),
+        timestamp=datetime.now().isoformat(),
+    )
+    
+    new_threats = await shiori_ai.apply_user_decision(decision)
+    return JSONResponse(content={
+        "status": "ok",
+        "new_threats": len(new_threats),
+        "threats": [
+            {"name": t.name, "severity": t.severity, "mitigation": t.mitigation}
+            for t in new_threats
+        ],
+    })
+
+
+@app.post("/api/shiori/engine/start")
+async def start_shiori_engine():
+    """Запуск ShioriAI."""
+    global shiori_ai
+    if shiori_ai is None:
+        shiori_ai = ShioriAI(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+        )
+    await shiori_ai.start()
+    return JSONResponse(content={"status": "started"})
+
+
+@app.post("/api/shiori/engine/stop")
+async def stop_shiori_engine():
+    """Остановка ShioriAI."""
+    global shiori_ai
+    if shiori_ai is not None:
+        await shiori_ai.stop()
         return JSONResponse(content={"status": "stopped"})
     return JSONResponse(content={"status": "not_running"})
 
