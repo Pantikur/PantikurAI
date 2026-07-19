@@ -247,6 +247,7 @@ from Wuglarst.self_growth import GrowthManager
 from Wuglarst.nobuka_ai import NobukaAI
 from Wuglarst.futaba_ai import FutabaAI
 from Wuglarst.shiori_ai import ShioriAI
+from Wuglarst.sidney_ai import SidneyAI
 
 # Глобальные движки
 system = WuglarstSystem()
@@ -255,6 +256,7 @@ growth = GrowthManager()
 nobuka_ai: Optional[NobukaAI] = None
 futaba_ai: Optional[FutabaAI] = None
 shiori_ai: Optional[ShioriAI] = None
+sidney_ai: Optional[SidneyAI] = None
 
 
 # =====================================================================
@@ -582,8 +584,9 @@ async def populate_demo_data():
          "personality": {"empathy": 0.70, "cynicism": 0.35, "logic": 0.88, "creativity": 0.82}},
         {"name": "Айико", "avatar": "🌸", "x": 400, "y": 300, "status": "idle", "task": "Генерация контента",
          "personality": {"empathy": 0.88, "cynicism": 0.10, "logic": 0.55, "creativity": 0.98}},
-        {"name": "Сидни", "avatar": "🎮", "x": 500, "y": 400, "status": "working", "task": "Игровой движок",
-         "personality": {"empathy": 0.65, "cynicism": 0.25, "logic": 0.92, "creativity": 0.78}},
+         {"name": "Сидни", "avatar": "🎮", "x": 500, "y": 400, "status": "working", "task": "Создание сверхдвижка",
+          "personality": {"empathy": 0.65, "cynicism": 0.25, "logic": 0.92, "creativity": 0.98},
+          "autonomy_level": "L3", "engines_active": 8},
     ]
     
     for sci in scientists_data:
@@ -655,10 +658,25 @@ async def populate_demo_data():
         last_activity=datetime.now().isoformat(),
     ))
     
+    # Сидни получает автономный движок создания игр
+    system.update_scientist("Сидни", ScientistState(
+        name="Сидни",
+        avatar="🎮",
+        status="working",
+        current_task="Создание сверхдвижка",
+        personality={"empathy": 0.65, "cynicism": 0.25, "logic": 0.92, "creativity": 0.98},
+        x=500, y=400,
+        knowledge_levels={"rendering": 3, "physics": 3, "audio": 3, "animation": 3, "ai": 3, "network": 3, "scripting": 3, "level_editor": 3},
+        autonomy_level="L3",
+        engines_active=8,
+        last_activity=datetime.now().isoformat(),
+    ))
+    
     system.add_event("Сидни", "system_init", "🎮 Сидни: Инициализация 8 движков")
     system.add_event("Нобука", "engine_start", "🔧 Нобука: Автономный движок оптимизации запущен (L3)")
     system.add_event("Футаба", "engine_start", "⚖️ Футаба: Автономный движок управления запущен (L3)")
     system.add_event("Шиори", "engine_start", "🛡️ Шиори: Автономный движок защиты запущен (L3)")
+    system.add_event("Сидни", "engine_start", "🎮 Сидни: Автономный движок создания игр запущен (L3)")
     
     # Создаём и запускаем NobukaAI v3.0 (если ещё не создан)
     global nobuka_ai
@@ -695,6 +713,18 @@ async def populate_demo_data():
         )
         asyncio.create_task(shiori_ai.start())
         logger.info("🛡️ ShioriAI v3.0: Запущена (кибербезопасность, защита, угрозы)")
+    
+    # Создаём и запускаем SidneyAI v3.0 (если ещё не создана)
+    global sidney_ai
+    if sidney_ai is None:
+        sidney_ai = SidneyAI(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+        )
+        asyncio.create_task(sidney_ai.start())
+        logger.info("🎮 SidneyAI v3.0: Запущена (создание игрового движка)")
     
     await manager.broadcast({
         "type": "system_update",
@@ -995,6 +1025,94 @@ async def stop_shiori_engine():
     global shiori_ai
     if shiori_ai is not None:
         await shiori_ai.stop()
+        return JSONResponse(content={"status": "stopped"})
+    return JSONResponse(content={"status": "not_running"})
+
+
+# =====================================================================
+#  SIDNEY API
+# =====================================================================
+
+@app.get("/api/sidney/status")
+async def get_sidney_status():
+    """Статус SidneyAI v3.0."""
+    if sidney_ai is None:
+        return JSONResponse(content={"error": "SidneyAI не инициализирована"})
+    return JSONResponse(content=sidney_ai.get_status())
+
+
+@app.post("/api/sidney/solve")
+async def solve_sidney_task(request: Dict[str, str]):
+    """Решить задачу: POST {task: "описание задачи"}"""
+    if sidney_ai is None:
+        return JSONResponse(content={"error": "SidneyAI не инициализирована"})
+    
+    task = request.get("task", "")
+    if not task:
+        return JSONResponse(content={"error": "Укажите задачу"}, status_code=400)
+    
+    result = await sidney_ai.solve_task(task)
+    return JSONResponse(content=result)
+
+
+@app.post("/api/sidney/analyze")
+async def analyze_engines():
+    """Анализ существующих игровых движков."""
+    if sidney_ai is None:
+        return JSONResponse(content={"error": "SidneyAI не инициализирована"})
+    
+    analysis = await sidney_ai.analyze_existing_engines()
+    return JSONResponse(content=analysis)
+
+
+@app.post("/api/sidney/design")
+async def apply_sidney_design(request: Dict[str, Any]):
+    """Применить дизайн игры пользователя."""
+    if sidney_ai is None:
+        return JSONResponse(content={"error": "SidneyAI не инициализирована"})
+    
+    from Wuglarst.sidney_ai import UserGameDesign
+    
+    design = UserGameDesign(
+        game_type=request.get("game_type", "RPG"),
+        target_platform=request.get("target_platform", "PC"),
+        performance_target=request.get("performance_target", "60fps 4K"),
+        description=request.get("description", ""),
+        timestamp=datetime.now().isoformat(),
+    )
+    
+    improvements = await sidney_ai.apply_user_design(design)
+    return JSONResponse(content={
+        "status": "ok",
+        "improvements": len(improvements),
+        "components": [
+            {"name": c.name, "type": c.type, "features": c.features}
+            for c in improvements
+        ],
+    })
+
+
+@app.post("/api/sidney/engine/start")
+async def start_sidney_engine():
+    """Запуск SidneyAI."""
+    global sidney_ai
+    if sidney_ai is None:
+        sidney_ai = SidneyAI(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+        )
+    await sidney_ai.start()
+    return JSONResponse(content={"status": "started"})
+
+
+@app.post("/api/sidney/engine/stop")
+async def stop_sidney_engine():
+    """Остановка SidneyAI."""
+    global sidney_ai
+    if sidney_ai is not None:
+        await sidney_ai.stop()
         return JSONResponse(content={"status": "stopped"})
     return JSONResponse(content={"status": "not_running"})
 
