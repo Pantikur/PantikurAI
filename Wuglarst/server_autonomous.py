@@ -245,13 +245,14 @@ class WuglarstSystem:
 
 from Wuglarst.self_growth import GrowthManager
 from Wuglarst.nobuka_ai import NobukaAI
+from Wuglarst.futaba_ai import FutabaAI
 
-# Глобальная система
+# Глобальные движки
 system = WuglarstSystem()
 growth = GrowthManager()
 
-# Нобука AI (v3.0)
 nobuka_ai: Optional[NobukaAI] = None
+futaba_ai: Optional[FutabaAI] = None
 
 
 # =====================================================================
@@ -557,8 +558,9 @@ async def populate_demo_data():
          "personality": {"empathy": 0.60, "cynicism": 0.30, "logic": 0.95, "creativity": 0.50}},
         {"name": "Люси", "avatar": "🚀", "x": 300, "y": 100, "status": "thinking", "task": "Двигатели",
          "personality": {"empathy": 0.70, "cynicism": 0.20, "logic": 0.80, "creativity": 0.85}},
-        {"name": "Футаба", "avatar": "🎮", "x": 400, "y": 100, "status": "working", "task": "Управление системой",
-         "personality": {"empathy": 0.90, "cynicism": 0.05, "logic": 0.75, "creativity": 0.80}},
+        {"name": "Футаба", "avatar": "⚖️", "x": 400, "y": 100, "status": "working", "task": "Правовой анализ и управление",
+         "personality": {"empathy": 0.90, "cynicism": 0.05, "logic": 0.98, "creativity": 0.85},
+         "autonomy_level": "L3", "engines_active": 4},
         {"name": "Шиори", "avatar": "🛡️", "x": 100, "y": 200, "status": "idle", "task": "Защита системы",
          "personality": {"empathy": 0.75, "cynicism": 0.40, "logic": 0.85, "creativity": 0.30}},
         {"name": "Нобука", "avatar": "🔧", "x": 200, "y": 200, "status": "working", "task": "Оптимизация кода",
@@ -636,6 +638,19 @@ async def populate_demo_data():
         )
         asyncio.create_task(nobuka_ai.start())
         logger.info("🚀 NobukaAI v3.0: Запущена (интернет, анализ, улучшение, тестирование)")
+    
+    # Создаём и запускаем FutabaAI v3.0 (если ещё не создана)
+    global futaba_ai
+    if futaba_ai is None:
+        futaba_ai = FutabaAI(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+        )
+        asyncio.create_task(futaba_ai.start())
+        logger.info("🏛️ FutabaAI v3.0: Запущена (право, политика, управление)")
+        system.add_event("Футаба", "engine_start", "⚖️ Футаба: Автономный движок управления запущен (L3)")
     
     await manager.broadcast({
         "type": "system_update",
@@ -739,6 +754,93 @@ async def stop_nobuka_engine():
     global nobuka_ai
     if nobuka_ai is not None:
         await nobuka_ai.stop()
+        return JSONResponse(content={"status": "stopped"})
+    return JSONResponse(content={"status": "not_running"})
+
+
+# =====================================================================
+#  FUTABA API
+# =====================================================================
+
+@app.get("/api/futaba/status")
+async def get_futaba_status():
+    """Статус FutabaAI v3.0."""
+    if futaba_ai is None:
+        return JSONResponse(content={"error": "FutabaAI не инициализирована"})
+    return JSONResponse(content=futaba_ai.get_status())
+
+
+@app.post("/api/futaba/solve")
+async def solve_futaba_task(request: Dict[str, str]):
+    """Решить задачу: POST {task: "описание задачи"}"""
+    if futaba_ai is None:
+        return JSONResponse(content={"error": "FutabaAI не инициализирована"})
+    
+    task = request.get("task", "")
+    if not task:
+        return JSONResponse(content={"error": "Укажите задачу"}, status_code=400)
+    
+    result = await futaba_ai.solve_task(task)
+    return JSONResponse(content=result)
+
+
+@app.post("/api/futaba/analyze")
+async def analyze_system():
+    """Полный анализ системы."""
+    if futaba_ai is None:
+        return JSONResponse(content={"error": "FutabaAI не инициализирована"})
+    
+    analysis = await futaba_ai.analyze_system()
+    return JSONResponse(content=analysis)
+
+
+@app.post("/api/futaba/decision")
+async def apply_futaba_decision(request: Dict[str, Any]):
+    """Применить решение пользователя."""
+    if futaba_ai is None:
+        return JSONResponse(content={"error": "FutabaAI не инициализирована"})
+    
+    from Wuglarst.futaba_ai import UserDecision
+    
+    decision = UserDecision(
+        decision_description=request.get("decision_description", ""),
+        context=request.get("context", ""),
+        outcome=request.get("outcome", ""),
+        timestamp=datetime.now().isoformat(),
+    )
+    
+    new_insights = await futaba_ai.apply_user_decision(decision)
+    return JSONResponse(content={
+        "status": "ok",
+        "new_insights": len(new_insights),
+        "insights": [
+            {"topic": ins.topic, "recommendation": ins.recommendation}
+            for ins in new_insights
+        ],
+    })
+
+
+@app.post("/api/futaba/engine/start")
+async def start_futaba_engine():
+    """Запуск FutabaAI."""
+    global futaba_ai
+    if futaba_ai is None:
+        futaba_ai = FutabaAI(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+        )
+    await futaba_ai.start()
+    return JSONResponse(content={"status": "started"})
+
+
+@app.post("/api/futaba/engine/stop")
+async def stop_futaba_engine():
+    """Остановка FutabaAI."""
+    global futaba_ai
+    if futaba_ai is not None:
+        await futaba_ai.stop()
         return JSONResponse(content={"status": "stopped"})
     return JSONResponse(content={"status": "not_running"})
 
