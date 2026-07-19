@@ -244,10 +244,14 @@ class WuglarstSystem:
 
 
 from Wuglarst.self_growth import GrowthManager
+from Wuglarst.nobuka_engine import NobukaEngine
 
 # Глобальная система
 system = WuglarstSystem()
 growth = GrowthManager()
+
+# Движок оптимизации Нобуки
+nobuka_engine: Optional[NobukaEngine] = None
 
 
 # =====================================================================
@@ -354,6 +358,10 @@ async def daemon_cycle():
         # 2. Автономный рост — девочки сами решают что делать
         for name in list(system.scientists.keys()):
             try:
+                # Нобука обрабатывается своим автономным движком — пропускаем
+                if name == "Нобука":
+                    continue
+                    
                 sci = system.scientists.get(name)
                 if not sci:
                     continue
@@ -453,7 +461,40 @@ async def startup_event():
     system.update_scientist("Сидни", sidney_state)
     growth.init_scientist("Сидни", sidney_state.personality)
     
+    # Добавляем Нобуку с автономным движком оптимизации
+    nobuka_state = ScientistState(
+        name="Нобука",
+        avatar="🔧",
+        status="working",
+        current_task="Автономная оптимизация кода",
+        personality={
+            "empathy": 0.50,
+            "cynicism": 0.60,
+            "logic": 0.95,
+            "creativity": 0.65,
+        },
+        x=200,
+        y=200,
+        autonomy_level="L3",
+        engines_active=3,
+    )
+    system.update_scientist("Нобука", nobuka_state)
+    growth.init_scientist("Нобука", nobuka_state.personality)
+    
+    # Создаём и запускаем движок оптимизации
+    global nobuka_engine
+    nobuka_engine = NobukaEngine(
+        project_root=PROJECT_ROOT,
+        system=system,
+        growth=growth,
+        manager=manager,
+        scan_interval=30,
+        max_opportunities_per_scan=5,
+    )
+    asyncio.create_task(nobuka_engine.start())
+    
     logger.info("✅ Wuglarst Autonomous Server готов")
+    logger.info("🔧 Движок оптимизации Нобуки: L3, 3 активных модуля")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -566,8 +607,35 @@ async def populate_demo_data():
         # Инициализируем рост
         growth.init_scientist(sci["name"], sci["personality"])
     
+    # Нобука получает автономный движок оптимизации
+    system.update_scientist("Нобука", ScientistState(
+        name="Нобука",
+        avatar="🔧",
+        status="working",
+        current_task="Автономная оптимизация кода",
+        personality={"empathy": 0.50, "cynicism": 0.60, "logic": 0.95, "creativity": 0.65},
+        x=200, y=200,
+        autonomy_level="L3",
+        engines_active=3,
+        last_activity=datetime.now().isoformat(),
+    ))
+    
+    # Сидни получает автономный движок
+    system.update_scientist("Сидни", ScientistState(
+        name="Сидни",
+        avatar="🎮",
+        status="working",
+        current_task="Инициализация игрового движка",
+        personality={"empathy": 0.65, "cynicism": 0.25, "logic": 0.92, "creativity": 0.78},
+        x=500, y=400,
+        knowledge_levels={"rendering": 2, "physics": 2, "audio": 2, "animation": 2, "ai": 2, "network": 2, "scripting": 2, "level_editor": 2},
+        autonomy_level="L3",
+        engines_active=8,
+        last_activity=datetime.now().isoformat(),
+    ))
+    
     system.add_event("Сидни", "system_init", "🎮 Сидни: Инициализация 8 движков")
-    system.add_event("Нобука", "task_update", "🔧 Нобука: Оптимизация системы")
+    system.add_event("Нобука", "engine_start", "🔧 Нобука: Автономный движок оптимизации запущен (L3)")
     
     await manager.broadcast({
         "type": "system_update",
@@ -590,6 +658,41 @@ async def get_all_growth():
     for name in growth.states:
         result[name] = growth.get_growth_data(name)
     return JSONResponse(content=result)
+
+
+@app.get("/api/nobuka/engine")
+async def get_nobuka_engine_status():
+    """Статус автономного движка оптимизации Нобуки."""
+    if nobuka_engine is None:
+        return JSONResponse(content={"error": "Движок Нобуки не инициализирован"})
+    return JSONResponse(content=nobuka_engine.get_status())
+
+
+@app.post("/api/nobuka/engine/start")
+async def start_nobuka_engine():
+    """Запуск движка оптимизации Нобуки."""
+    global nobuka_engine
+    if nobuka_engine is None:
+        nobuka_engine = NobukaEngine(
+            project_root=PROJECT_ROOT,
+            system=system,
+            growth=growth,
+            manager=manager,
+            scan_interval=30,
+            max_opportunities_per_scan=5,
+        )
+    await nobuka_engine.start()
+    return JSONResponse(content={"status": "started"})
+
+
+@app.post("/api/nobuka/engine/stop")
+async def stop_nobuka_engine():
+    """Остановка движка оптимизации Нобуки."""
+    global nobuka_engine
+    if nobuka_engine is not None:
+        await nobuka_engine.stop()
+        return JSONResponse(content={"status": "stopped"})
+    return JSONResponse(content={"status": "not_running"})
 
 
 @app.websocket("/ws")
