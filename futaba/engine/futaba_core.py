@@ -32,6 +32,7 @@ from futaba.engine.web_access import FutabaWebAccess
 from futaba.engine.legal_studies import FutabaLegalStudies
 from futaba.engine.world_state_modeler import FutabaWorldStateModeler
 from futaba.engine.legal_entities import LegalEntitiesManager, get_entities_manager, init_legal_entities, link_legal_entities_to_studies
+from futaba.engine.state_builder import VuglarstStateBuilder
 
 
 class FutabaCore:
@@ -80,6 +81,9 @@ class FutabaCore:
         self.web_access = FutabaWebAccess(self.config)
         self.legal_studies = FutabaLegalStudies(self.config)
         self.world_modeler = FutabaWorldStateModeler(self.config)
+        
+        # Строитель Государства Вугларст
+        self.state_builder = VuglarstStateBuilder(self.config)
         
         # Сигналы
         self._shutdown_requested = False
@@ -221,6 +225,9 @@ class FutabaCore:
         # 2.8. Изучение субъектов права (периодически)
         if self.cycle_count % 5 == 0:
             self._study_legal_entities()
+        
+        # 2.9. Строительство Государства Вугларст (каждый цикл — один документ)
+        self._build_vuglarst_state()
         
         # 3. Формирование гипотезы (если есть сигналы)
         if signals:
@@ -558,6 +565,45 @@ class FutabaCore:
         except Exception as e:
             self.logger.error(f"❌ Ошибка моделирования: {e}")
     
+    # ================================================================
+    #  СТРОИТЕЛЬСТВО ГОСУДАРСТВА ВУГЛАРСТ
+    # ================================================================
+    
+    def _build_vuglarst_state(self):
+        """
+        Футаба строит Государство Вугларст.
+        
+        Каждый цикл Футаба:
+          1. Идёт в интернет и ищет "как создать государство"
+          2. По пунктам создаёт документы государства
+          3. Сохраняет их в vuglarst_state/
+          4. Редактирует и дополняет существующие
+        """
+        try:
+            progress = self.state_builder.get_progress()
+            
+            # Если все документы созданы — переходим к редактированию
+            if progress["status"] == "completed" or not progress["pending_documents"]:
+                self.logger.debug("🏛️ Государство Вугларст уже построено — проверка документов...")
+                return
+            
+            self.logger.info("🏛️ Футаба продолжает строительство Государства Вугларст")
+            self.logger.info(f"   Прогресс: {len(progress['completed_documents'])}/{progress['total_steps']} документов")
+            
+            # Создаём следующий документ
+            result = self.state_builder.build_next()
+            
+            if result:
+                self.logger.info(f"   📝 Документ: {result['name']}")
+                self.logger.info(f"   {'✅ Создан' if result['success'] else '❌ Ошибка'}")
+                self.logger.info(f"   Осталось: {result['remaining']}")
+                
+                # Сохраняем состояние
+                self._save_state()
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка строительства государства: {e}")
+
     # ================================================================
     #  ФОРМИРОВАНИЕ ГИПОТЕЗ
     # ================================================================

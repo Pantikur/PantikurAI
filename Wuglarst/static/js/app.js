@@ -264,109 +264,81 @@ class WuglarstApp {
         modal.style.display = 'block';
         content.innerHTML = `
             <div class="state-progress">
-                <h3>🏛️ Создание Государства Вугларст</h3>
-                <p>Футаба создаёт полное государственное устройство с конституцией, кодексами и законами...</p>
+                <h3>🏛️ Футаба строит Государство Вугларст</h3>
+                <p>Футаба сама ищет в интернете "как создать государство" и по пунктам создаёт документы...</p>
                 <div class="progress-bar-container">
                     <div class="progress-bar-fill" id="progressBar" style="width: 0%;">0%</div>
                 </div>
+                <div id="buildStatus" style="margin-top: 1rem; color: var(--text-secondary);">
+                    📡 Футаба начинает исследование...
+                </div>
                 <div class="progress-steps" id="progressSteps">
-                    <div class="progress-step" id="step-1">
-                        <strong>📜 Шаг 1:</strong> Создание Конституции
-                        <div class="step-status">Ожидание...</div>
-                    </div>
-                    <div class="progress-step" id="step-2">
-                        <strong>⚖️ Шаг 2:</strong> Создание кодексов
-                        <div class="step-status">Ожидание...</div>
-                    </div>
-                    <div class="progress-step" id="step-3">
-                        <strong>📚 Шаг 3:</strong> Налоговые и трудовые кодексы
-                        <div class="step-status">Ожидание...</div>
-                    </div>
-                    <div class="progress-step" id="step-4">
-                        <strong>🌍 Шаг 4:</strong> Международное право
-                        <div class="step-status">Ожидание...</div>
-                    </div>
-                    <div class="progress-step" id="step-5">
-                        <strong>🎖️ Шаг 5:</strong> Государственные символы
-                        <div class="step-status">Ожидание...</div>
-                    </div>
+                    <div class="progress-step" id="step-1"><strong>📜 Конституция</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-2"><strong>📋 Декларация</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-3"><strong>⚖️ Гражданский кодекс</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-4"><strong>🔒 Уголовный кодекс</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-5"><strong>📝 Административный кодекс</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-6"><strong>💼 Трудовой кодекс</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-7"><strong>💰 Налоговый кодекс</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-8"><strong>🌍 Международное право</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-9"><strong>🎖️ Символы</strong><div class="step-status">Ожидание...</div></div>
+                    <div class="progress-step" id="step-10"><strong>🎵 Гимн</strong><div class="step-status">Ожидание...</div></div>
                 </div>
             </div>
         `;
         
+        const docNames = ['Конституция', 'Декларация', 'Гражданский кодекс', 'Уголовный кодекс',
+            'Административный кодекс', 'Трудовой кодекс', 'Налоговый кодекс',
+            'Международное право', 'Символы', 'Гимн'];
+        
         try {
-            const updateProgress = (step, message) => {
-                const stepEl = document.getElementById(`step-${step}`);
-                if (stepEl) {
-                    stepEl.classList.add('active');
-                    stepEl.querySelector('.step-status').textContent = message;
-                }
-                const bar = document.getElementById('progressBar');
-                if (bar) {
-                    const percent = (step / 5) * 100;
-                    bar.style.width = `${percent}%`;
-                    bar.textContent = `${Math.round(percent)}%`;
-                }
-            };
-            
-            const completeStep = (step) => {
-                const stepEl = document.getElementById(`step-${step}`);
-                if (stepEl) {
-                    stepEl.classList.remove('active');
-                    stepEl.classList.add('completed');
-                    stepEl.querySelector('.step-status').textContent = '✅ Выполнено';
-                }
-            };
-            
-            updateProgress(1, 'Изучение принципов создания государства...');
-            await new Promise(r => setTimeout(r, 500));
-            updateProgress(1, 'Создание Конституции...');
-            await new Promise(r => setTimeout(r, 800));
-            completeStep(1);
-            
-            updateProgress(2, 'Разработка гражданского кодекса...');
-            await new Promise(r => setTimeout(r, 600));
-            updateProgress(2, 'Разработка уголовного кодекса...');
-            await new Promise(r => setTimeout(r, 600));
-            updateProgress(2, 'Разработка административного кодекса...');
-            await new Promise(r => setTimeout(r, 600));
-            completeStep(2);
-            
-            updateProgress(3, 'Создание налогового кодекса...');
-            await new Promise(r => setTimeout(r, 500));
-            updateProgress(3, 'Создание трудового кодекса...');
-            await new Promise(r => setTimeout(r, 500));
-            completeStep(3);
-            
-            updateProgress(4, 'Изучение международного права...');
-            await new Promise(r => setTimeout(r, 600));
-            updateProgress(4, 'Создание международно-правового кодекса...');
-            await new Promise(r => setTimeout(r, 600));
-            completeStep(4);
-            
-            updateProgress(5, 'Создание государственных символов...');
-            await new Promise(r => setTimeout(r, 400));
-            updateProgress(5, 'Написание гимна...');
-            await new Promise(r => setTimeout(r, 400));
-            completeStep(5);
-            
-            updateProgress(5, 'Финализация...');
-            const response = await fetch(`${this.apiBase}/api/vuglarst/state/create`, {
+            // Запускаем строительство — Футаба создаёт все документы
+            const response = await fetch(`${this.apiBase}/api/vuglarst/build/start`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             });
             const data = await response.json();
             
             if (data.status === 'ok') {
+                // Анимация прогресса
+                for (let i = 1; i <= 10; i++) {
+                    const stepEl = document.getElementById(`step-${i}`);
+                    if (stepEl) {
+                        stepEl.classList.add('active');
+                        stepEl.querySelector('.step-status').textContent = '🌐 Футаба ищет информацию...';
+                        await new Promise(r => setTimeout(r, 300));
+                        stepEl.querySelector('.step-status').textContent = '📝 Создание документа...';
+                        await new Promise(r => setTimeout(r, 300));
+                        stepEl.classList.remove('active');
+                        stepEl.classList.add('completed');
+                        stepEl.querySelector('.step-status').textContent = '✅ Создан';
+                    }
+                    const bar = document.getElementById('progressBar');
+                    if (bar) {
+                        const percent = (i / 10) * 100;
+                        bar.style.width = `${percent}%`;
+                        bar.textContent = `${percent}%`;
+                    }
+                }
+                
+                const status = document.getElementById('buildStatus');
+                if (status) status.textContent = '✅ Футаба завершила строительство государства!';
+                
+                const results = data.results;
                 content.innerHTML = `
                     <div style="text-align: center; padding: 2rem;">
                         <div style="font-size: 4rem; margin-bottom: 1rem;">🏛️</div>
-                        <h3 style="color: var(--accent-green); margin-bottom: 1rem;">Государство Вугларст создано!</h3>
+                        <h3 style="color: var(--accent-green); margin-bottom: 1rem;">Государство Вугларст создано Футабой!</h3>
                         <p style="margin-bottom: 1rem;">${data.message}</p>
+                        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                            Футаба сама исследовала, создала и сохранила все документы государства.
+                        </p>
                         <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: left;">
                             <strong>Созданные документы:</strong>
                             <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                ${data.documents.map(d => `<li>${d}</li>`).join('')}
+                                ${results.documents.map(d => 
+                                    `<li style="color: ${d.status === 'created' ? 'var(--accent-green)' : 'red'};">${d.name} — ${d.status === 'created' ? '✅' : '❌'}</li>`
+                                ).join('')}
                             </ul>
                         </div>
                         <button class="btn btn-futaba" onclick="window.app.viewVuglarstDocuments()" style="padding: 1rem 2rem; font-size: 1.1rem;">
@@ -374,10 +346,12 @@ class WuglarstApp {
                         </button>
                     </div>
                 `;
+            } else {
+                content.innerHTML = '<div class="loading">❌ Ошибка: ' + (data.error || 'неизвестно') + '</div>';
             }
         } catch (error) {
-            console.error('Ошибка создания государства:', error);
-            content.innerHTML = '<div class="loading">❌ Ошибка при создании государства</div>';
+            console.error('Ошибка:', error);
+            content.innerHTML = '<div class="loading">❌ Ошибка подключения к серверу</div>';
         }
     }
 

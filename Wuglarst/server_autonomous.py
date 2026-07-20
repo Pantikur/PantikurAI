@@ -1932,9 +1932,134 @@ async def get_vuglarst_documents():
 
 
 # =====================================================================
-#  SHIORI API
+#  FUTABA STATE BUILDER API — Футаба строит государство
 # =====================================================================
 
+@app.get("/api/vuglarst/build/progress")
+async def get_build_progress():
+    """Прогресс строительства Государства Вугларст."""
+    from pathlib import Path
+    progress_file = Path("vuglarst_state") / "build_progress.json"
+    
+    if not progress_file.exists():
+        return JSONResponse(content={
+            "status": "not_started",
+            "message": "Футаба ещё не начала строительство",
+            "completed": 0,
+            "total": 10,
+            "pending": 10,
+        })
+    
+    try:
+        progress = json.loads(progress_file.read_text(encoding="utf-8"))
+        return JSONResponse(content={
+            "status": "ok",
+            "progress": progress,
+            "completed": len(progress.get("completed_documents", [])),
+            "total": progress.get("total_steps", 10),
+            "pending": len(progress.get("pending_documents", [])),
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.post("/api/vuglarst/build/start")
+async def start_build_state():
+    """Запустить строительство Государства Вугларст (Футаба создаёт все документы)."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from futaba.engine.state_builder import VuglarstStateBuilder
+        from futaba.engine.config import FutabaConfig
+        
+        builder = VuglarstStateBuilder(FutabaConfig.default())
+        results = builder.build_all()
+        
+        return JSONResponse(content={
+            "status": "ok",
+            "message": f"Футаба создала {results['created']}/{results['total']} документов",
+            "results": results,
+        })
+    except Exception as e:
+        logger.error(f"❌ Ошибка строительства: {e}")
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.post("/api/vuglarst/build/next")
+async def build_next_document():
+    """Футаба создаёт следующий документ государства."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from futaba.engine.state_builder import VuglarstStateBuilder
+        from futaba.engine.config import FutabaConfig
+        
+        builder = VuglarstStateBuilder(FutabaConfig.default())
+        result = builder.build_next()
+        
+        if result is None:
+            return JSONResponse(content={
+                "status": "completed",
+                "message": "Все документы государства уже созданы",
+            })
+        
+        return JSONResponse(content={
+            "status": "ok",
+            "result": result,
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.put("/api/vuglarst/documents/{filename}")
+async def edit_vuglarst_document(filename: str, content: Dict[str, str]):
+    """Футаба редактирует документ государства."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from futaba.engine.state_builder import VuglarstStateBuilder
+        from futaba.engine.config import FutabaConfig
+        
+        builder = VuglarstStateBuilder(FutabaConfig.default())
+        success = builder.edit_document(filename, content.get("content", ""))
+        
+        if success:
+            return JSONResponse(content={"status": "ok", "filename": filename})
+        else:
+            return JSONResponse(content={"error": "Документ не найден"}, status_code=404)
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.get("/api/vuglarst/documents/list")
+async def list_vuglarst_documents():
+    """Список всех документов государства с информацией."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from futaba.engine.state_builder import VuglarstStateBuilder
+        from futaba.engine.config import FutabaConfig
+        
+        builder = VuglarstStateBuilder(FutabaConfig.default())
+        documents = builder.list_documents()
+        progress = builder.get_progress()
+        
+        return JSONResponse(content={
+            "status": "ok",
+            "documents": documents,
+            "progress": progress,
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+# =====================================================================
+#  SHIORI API
+# =====================================================================
 @app.get("/api/shiori/status")
 async def get_shiori_status():
     """Статус ShioriAI v3.0."""
