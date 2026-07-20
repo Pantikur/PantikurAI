@@ -16,10 +16,11 @@ class WuglarstApp {
     }
 
     async init() {
-        console.log("🌟 Wuglarst инициализация...");
+        console.log("🌟 Wuglarst инициализация v2.0...");
         
         // Привязка событий
         this.bindEvents();
+        console.log("✅ Обработчики событий привязаны");
         
         // Подключение WebSocket
         this.connectWebSocket();
@@ -30,16 +31,43 @@ class WuglarstApp {
 
     bindEvents() {
         // Кнопка демо-данных
-        document.getElementById('demoBtn')?.addEventListener('click', () => this.loadDemo());
+        const demoBtn = document.getElementById('demoBtn');
+        if (demoBtn) {
+            demoBtn.addEventListener('click', () => this.loadDemo());
+            console.log('✅ Кнопка демо привязана');
+        } else {
+            console.warn('⚠️ Кнопка demoBtn не найдена');
+        }
         
         // Кнопка профиля Футабы
-        document.getElementById('futabaProfileBtn')?.addEventListener('click', () => this.openFutabaProfile());
+        const futabaBtn = document.getElementById('futabaProfileBtn');
+        if (futabaBtn) {
+            futabaBtn.addEventListener('click', (e) => {
+                console.log('🔥🔥🔥 КЛИК ПО КНОПКЕ ФУТАБЫ! 🔥🔥🔥');
+                console.log('🔥 Текущий URL:', window.location.href);
+                console.log('🔥 apiBase:', this.apiBase);
+                console.log('🔥 Модальное окно:', document.getElementById('futabaProfileModal'));
+                e.preventDefault();
+                e.stopPropagation();
+                this.openFutabaProfile();
+            });
+            console.log('✅ Кнопка профиля Футабы привязана успешно!');
+        } else {
+            console.error('❌❌❌ Кнопка futabaProfileBtn НЕ НАЙДЕНА! ❌❌❌');
+            console.error('❌ Доступные кнопки:', Array.from(document.querySelectorAll('button')).map(b => b.id).join(', '));
+        }
         
         // Кнопка обновления
-        document.getElementById('refreshBtn')?.addEventListener('click', () => this.loadStatus());
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => this.loadStatus());
+        }
         
         // Кнопка очистки событий
-        document.getElementById('clearEvents')?.addEventListener('click', () => this.clearEvents());
+        const clearEvents = document.getElementById('clearEvents');
+        if (clearEvents) {
+            clearEvents.addEventListener('click', () => this.clearEvents());
+        }
     }
 
     connectWebSocket() {

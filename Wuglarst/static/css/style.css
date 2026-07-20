@@ -425,18 +425,24 @@ body {
 
 /* === КНОПКА ПРОФИЛЯ ФУТАБЫ === */
 .btn-futaba {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-    color: white;
-    border: 2px solid #2ecc71;
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-    cursor: pointer;
-    transition: all 0.3s;
+    background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+    color: white !important;
+    border: 2px solid #2ecc71 !important;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3) !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    position: relative;
+    z-index: 101;
 }
 
 .btn-futaba:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5);
-    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5) !important;
+    background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+}
+
+.btn-futaba:active {
+    transform: translateY(0) !important;
 }
 
 /* === МОДАЛЬНОЕ ОКНО === */
