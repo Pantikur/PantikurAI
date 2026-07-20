@@ -20,6 +20,7 @@
             </div>
             <button id="demoBtn" class="btn btn-primary">🌱 Пробуждение</button>
             <button id="futabaProfileBtn" class="btn btn-futaba">⚖️ Профиль Футабы</button>
+            <button id="createStateBtn" class="btn btn-vuglarst">🏛️ Создать Государство</button>
             <button id="refreshBtn" class="btn btn-secondary">🔄 Обновить</button>
         </div>
     </header>
@@ -76,6 +77,19 @@
             </div>
             <div class="modal-body" id="futabaProfileContent">
                 <div class="loading">Загрузка профиля...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно создания государства -->
+    <div id="createStateModal" class="modal">
+        <div class="modal-content futaba-modal">
+            <div class="modal-header">
+                <h2>🏛️ Создание Государства Вугларст</h2>
+                <span class="close-btn" onclick="document.getElementById('createStateModal').style.display='none'">&times;</span>
+            </div>
+            <div class="modal-body" id="createStateContent">
+                <div class="loading">🏛️ Инициализация создания государства...</div>
             </div>
         </div>
     </div>

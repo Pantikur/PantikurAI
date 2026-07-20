@@ -36,6 +36,11 @@ class WuglarstApp {
             });
         }
         
+        const createStateBtn = document.getElementById('createStateBtn');
+        if (createStateBtn) {
+            createStateBtn.addEventListener('click', () => this.openCreateState());
+        }
+        
         const refreshBtn = document.getElementById('refreshBtn');
         if (refreshBtn) {
             refreshBtn.addEventListener('click', () => this.loadStatus());
@@ -251,6 +256,131 @@ class WuglarstApp {
         if (modal) modal.style.display = 'none';
     }
 
+    async openCreateState() {
+        const modal = document.getElementById('createStateModal');
+        const content = document.getElementById('createStateContent');
+        if (!modal || !content) return;
+        
+        modal.style.display = 'block';
+        content.innerHTML = `
+            <div class="state-progress">
+                <h3>🏛️ Создание Государства Вугларст</h3>
+                <p>Футаба создаёт полное государственное устройство с конституцией, кодексами и законами...</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 0%;">0%</div>
+                </div>
+                <div class="progress-steps" id="progressSteps">
+                    <div class="progress-step" id="step-1">
+                        <strong>📜 Шаг 1:</strong> Создание Конституции
+                        <div class="step-status">Ожидание...</div>
+                    </div>
+                    <div class="progress-step" id="step-2">
+                        <strong>⚖️ Шаг 2:</strong> Создание кодексов
+                        <div class="step-status">Ожидание...</div>
+                    </div>
+                    <div class="progress-step" id="step-3">
+                        <strong>📚 Шаг 3:</strong> Налоговые и трудовые кодексы
+                        <div class="step-status">Ожидание...</div>
+                    </div>
+                    <div class="progress-step" id="step-4">
+                        <strong>🌍 Шаг 4:</strong> Международное право
+                        <div class="step-status">Ожидание...</div>
+                    </div>
+                    <div class="progress-step" id="step-5">
+                        <strong>🎖️ Шаг 5:</strong> Государственные символы
+                        <div class="step-status">Ожидание...</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        try {
+            const updateProgress = (step, message) => {
+                const stepEl = document.getElementById(`step-${step}`);
+                if (stepEl) {
+                    stepEl.classList.add('active');
+                    stepEl.querySelector('.step-status').textContent = message;
+                }
+                const bar = document.getElementById('progressBar');
+                if (bar) {
+                    const percent = (step / 5) * 100;
+                    bar.style.width = `${percent}%`;
+                    bar.textContent = `${Math.round(percent)}%`;
+                }
+            };
+            
+            const completeStep = (step) => {
+                const stepEl = document.getElementById(`step-${step}`);
+                if (stepEl) {
+                    stepEl.classList.remove('active');
+                    stepEl.classList.add('completed');
+                    stepEl.querySelector('.step-status').textContent = '✅ Выполнено';
+                }
+            };
+            
+            updateProgress(1, 'Изучение принципов создания государства...');
+            await new Promise(r => setTimeout(r, 500));
+            updateProgress(1, 'Создание Конституции...');
+            await new Promise(r => setTimeout(r, 800));
+            completeStep(1);
+            
+            updateProgress(2, 'Разработка гражданского кодекса...');
+            await new Promise(r => setTimeout(r, 600));
+            updateProgress(2, 'Разработка уголовного кодекса...');
+            await new Promise(r => setTimeout(r, 600));
+            updateProgress(2, 'Разработка административного кодекса...');
+            await new Promise(r => setTimeout(r, 600));
+            completeStep(2);
+            
+            updateProgress(3, 'Создание налогового кодекса...');
+            await new Promise(r => setTimeout(r, 500));
+            updateProgress(3, 'Создание трудового кодекса...');
+            await new Promise(r => setTimeout(r, 500));
+            completeStep(3);
+            
+            updateProgress(4, 'Изучение международного права...');
+            await new Promise(r => setTimeout(r, 600));
+            updateProgress(4, 'Создание международно-правового кодекса...');
+            await new Promise(r => setTimeout(r, 600));
+            completeStep(4);
+            
+            updateProgress(5, 'Создание государственных символов...');
+            await new Promise(r => setTimeout(r, 400));
+            updateProgress(5, 'Написание гимна...');
+            await new Promise(r => setTimeout(r, 400));
+            completeStep(5);
+            
+            updateProgress(5, 'Финализация...');
+            const response = await fetch(`${this.apiBase}/api/vuglarst/state/create`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🏛️</div>
+                        <h3 style="color: var(--accent-green); margin-bottom: 1rem;">Государство Вугларст создано!</h3>
+                        <p style="margin-bottom: 1rem;">${data.message}</p>
+                        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: left;">
+                            <strong>Созданные документы:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                ${data.documents.map(d => `<li>${d}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <button class="btn btn-futaba" onclick="window.app.viewVuglarstDocuments()" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                            📖 Просмотреть документы государства
+                        </button>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Ошибка создания государства:', error);
+            content.innerHTML = '<div class="loading">❌ Ошибка при создании государства</div>';
+        }
+    }
+
     async openFutabaWork() {
         const modal = document.getElementById('futabaProfileModal');
         const content = document.getElementById('futabaProfileContent');
@@ -275,6 +405,55 @@ class WuglarstApp {
             }
         } catch (error) {
             console.error('Ошибка загрузки документов:', error);
+            content.innerHTML = '<div class="loading">❌ Ошибка подключения к серверу</div>';
+        }
+    }
+
+    async viewVuglarstDocuments() {
+        const modal = document.getElementById('futabaProfileModal');
+        const content = document.getElementById('futabaProfileContent');
+        if (!modal || !content) return;
+        
+        modal.style.display = 'block';
+        content.innerHTML = '<div class="loading">🏛️ Загрузка документов Государства Вугларст...</div>';
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/vuglarst/documents`);
+            const data = await response.json();
+            
+            if (data.status === 'ok' && data.documents.length > 0) {
+                content.innerHTML = `
+                    <div class="work-header">
+                        <button class="back-btn" style="background:none;border:none;color:var(--accent-blue);cursor:pointer;font-size:1rem;padding:0;margin-bottom:1rem;">← Назад</button>
+                        <h2>🏛️ Государство Вугларст</h2>
+                        <p class="work-subtitle">Документы суверенного цифрового государства</p>
+                    </div>
+                    <div class="tabs-container">
+                        <div class="tab-buttons">
+                            ${data.documents.map((doc, i) =>
+                                `<button class="tab-btn ${i === 0 ? 'active' : ''}" data-tab="vug-tab-${i}">${doc.name}</button>`
+                            ).join('')}
+                        </div>
+                        <div class="tab-panels">
+                            ${data.documents.map((doc, i) =>
+                                `<div class="tab-content ${i === 0 ? 'active' : ''}" id="vug-tab-${i}">
+                                    <div class="doc-header"><h3>${doc.name}</h3><p class="doc-path">${doc.filename}</p></div>
+                                    <div class="doc-content">${this.renderMarkdown(doc.content)}</div>
+                                </div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => {
+                    this.bindTabs();
+                    const backBtn = document.querySelector('.back-btn');
+                    if (backBtn) backBtn.addEventListener('click', () => modal.style.display = 'none');
+                }, 100);
+            } else {
+                content.innerHTML = '<div class="loading">❌ Документы государства не найдены. Сначала создайте государство.</div>';
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки документов государства:', error);
             content.innerHTML = '<div class="loading">❌ Ошибка подключения к серверу</div>';
         }
     }
