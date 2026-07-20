@@ -1,6 +1,75 @@
 {
-  "scientists": {},
-  "events": [],
+  "scientists": {
+    "Сидни": {
+      "name": "Сидни",
+      "avatar": "🎮",
+      "status": "offline",
+      "current_task": "Инициализация игрового движка",
+      "personality": {
+        "empathy": 0.65,
+        "cynicism": 0.25,
+        "logic": 0.92,
+        "creativity": 0.78
+      },
+      "last_activity": "2026-07-19T14:21:54.894862",
+      "x": 500,
+      "y": 400,
+      "knowledge_levels": {
+        "rendering": 2,
+        "physics": 2,
+        "audio": 2,
+        "animation": 2,
+        "ai": 2,
+        "network": 2,
+        "scripting": 2,
+        "level_editor": 2
+      },
+      "autonomy_level": "L3",
+      "engines_active": 8
+    },
+    "Нобука": {
+      "name": "Нобука",
+      "avatar": "🔧",
+      "status": "working",
+      "current_task": "Найдено 12864 оптимизаций: security(critical), security(critical), security(critical), security(critical), security(critical)",
+      "personality": {
+        "empathy": 0.5,
+        "cynicism": 0.6,
+        "logic": 0.95,
+        "creativity": 0.65
+      },
+      "last_activity": "2026-07-19T23:46:40.967560",
+      "x": 200,
+      "y": 200,
+      "knowledge_levels": {},
+      "autonomy_level": "L3",
+      "engines_active": 3
+    }
+  },
+  "events": [
+    {
+      "timestamp": "2026-07-19T14:26:54.967452",
+      "scientist": "Сидни",
+      "event": "⏰ Сидни неактивна >5 минут",
+      "type": "status_check"
+    },
+    {
+      "timestamp": "2026-07-19T14:21:54.896862",
+      "scientist": "Нобука",
+      "event": "🔧 Нобука: Автономная оптимизация кода",
+      "type": "task_update",
+      "old_status": "unknown",
+      "new_status": "working"
+    },
+    {
+      "timestamp": "2026-07-19T14:21:54.894862",
+      "scientist": "Сидни",
+      "event": "🎮 Сидни: Инициализация игрового движка",
+      "type": "task_update",
+      "old_status": "unknown",
+      "new_status": "working"
+    }
+  ],
   "start_time": "2026-07-17T12:22:51.748526",
-  "last_save": "2026-07-17T12:22:51.772215"
+  "last_save": "2026-07-19T23:46:58.453852"
 }

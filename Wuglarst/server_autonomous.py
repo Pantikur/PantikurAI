@@ -1158,6 +1158,57 @@ async def get_futaba_work_results():
 
 
 # =====================================================================
+#  FUTABA DOCUMENTS API
+# =====================================================================
+
+@app.get("/api/futaba/documents")
+async def get_futaba_documents():
+    """Загружает все документы Футабы: конституция, законы, кодексы, протоколы."""
+    import re
+    
+    docs = {
+        "status": "ok",
+        "documents": []
+    }
+    
+    # Читаем все файлы Футабы
+    files_to_read = [
+        ("Конституция", "futaba/constitution.md", "Конституция Футабы — фундаментальный закон"),
+        ("Основные законы", "futaba/laws/01-core-laws.md", "Основные законы управления и развития"),
+        ("Законы о субъектах права", "futaba/laws/02-legal-entities-laws.md", "Категории субъектов права"),
+        ("Кодекс этики", "futaba/codes/01-ethics-code.md", "Этические стандарты взаимодействия"),
+        ("Протокол ответов", "futaba/protocols/01-response-protocol.md", "Формат ответов на запросы"),
+        ("Протокол саморазвития", "futaba/protocols/02-self-development-protocol.md", "Циклы изучения и роста"),
+        ("Протокол правовых исследований", "futaba/protocols/03-legal-research-protocol.md", "Методология правовых исследований"),
+        ("Протокол субъектов права", "futaba/protocols/04-legal-entities-protocol.md", "Работа с категориями субъектов"),
+    ]
+    
+    for name, path, description in files_to_read:
+        file_path = PROJECT_ROOT / path
+        if file_path.exists():
+            try:
+                content = file_path.read_text(encoding="utf-8")
+                # Удаляем markdown-заголовки для чистого текста
+                # Но сохраняем структуру
+                docs["documents"].append({
+                    "name": name,
+                    "path": path,
+                    "description": description,
+                    "content": content
+                })
+            except Exception as e:
+                docs["documents"].append({
+                    "name": name,
+                    "path": path,
+                    "description": description,
+                    "content": f"Ошибка чтения: {e}",
+                    "error": True
+                })
+    
+    return JSONResponse(content=docs)
+
+
+# =====================================================================
 #  SHIORI API
 # =====================================================================
 
