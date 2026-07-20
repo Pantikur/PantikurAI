@@ -19,6 +19,7 @@
                 <span>Подключение...</span>
             </div>
             <button id="demoBtn" class="btn btn-primary">🌱 Пробуждение</button>
+            <button id="futabaProfileBtn" class="btn btn-futaba">⚖️ Профиль Футабы</button>
             <button id="refreshBtn" class="btn btn-secondary">🔄 Обновить</button>
         </div>
     </header>
@@ -65,6 +66,19 @@
             </section>
         </aside>
     </main>
+
+    <!-- Модальное окно профиля Футабы -->
+    <div id="futabaProfileModal" class="modal">
+        <div class="modal-content futaba-modal">
+            <div class="modal-header">
+                <h2>⚖️ Профиль Футабы</h2>
+                <span class="close-btn" onclick="closeFutabaProfile()">&times;</span>
+            </div>
+            <div class="modal-body" id="futabaProfileContent">
+                <div class="loading">Загрузка профиля...</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Подключение скриптов -->
     <script src="static/js/app.js"></script>

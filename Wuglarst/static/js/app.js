@@ -32,6 +32,9 @@ class WuglarstApp {
         // Кнопка демо-данных
         document.getElementById('demoBtn')?.addEventListener('click', () => this.loadDemo());
         
+        // Кнопка профиля Футабы
+        document.getElementById('futabaProfileBtn')?.addEventListener('click', () => this.openFutabaProfile());
+        
         // Кнопка обновления
         document.getElementById('refreshBtn')?.addEventListener('click', () => this.loadStatus());
         
@@ -311,4 +314,216 @@ class WuglarstApp {
 // Запуск приложения при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new WuglarstApp();
+});
+
+// =====================================================================
+//  ФУНКЦИИ ПРОФИЛЯ ФУТАБЫ
+// =====================================================================
+
+async function openFutabaProfile() {
+    const modal = document.getElementById('futabaProfileModal');
+    const content = document.getElementById('futabaProfileContent');
+    
+    if (!modal || !content) return;
+    
+    // Показываем модальное окно
+    modal.style.display = 'block';
+    content.innerHTML = '<div class="loading">⚖️ Загрузка профиля Футабы...</div>';
+    
+    try {
+        const response = await fetch(`${app.apiBase}/api/futaba/profile`);
+        const data = await response.json();
+        
+        if (data.status === 'ok' && data.profile) {
+            content.innerHTML = renderFutabaProfile(data.profile);
+        } else {
+            content.innerHTML = '<div class="loading">❌ Ошибка загрузки профиля</div>';
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки профиля Футабы:', error);
+        content.innerHTML = '<div class="loading">❌ Ошибка подключения к серверу</div>';
+    }
+}
+
+function closeFutabaProfile() {
+    const modal = document.getElementById('futabaProfileModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function renderFutabaProfile(profile) {
+    return `
+        <!-- Шапка профиля -->
+        <div class="profile-header">
+            <span class="profile-avatar-large">${profile.avatar}</span>
+            <div class="profile-name">${profile.name}</div>
+            <div class="profile-name-jp">${profile.name_jp} — ${profile.meaning}</div>
+            <div class="profile-badge">${profile.status}</div>
+        </div>
+        
+        <!-- Основные данные -->
+        <div class="profile-section">
+            <div class="profile-section-title">📊 Данные</div>
+            <div class="profile-section-content">
+                <div class="profile-grid">
+                    <div class="profile-card">
+                        <div class="profile-card-title">Роль</div>
+                        <div class="profile-card-value">${profile.data.hierarchy.position}</div>
+                    </div>
+                    <div class="profile-card">
+                        <div class="profile-card-title">Миссия</div>
+                        <div class="profile-card-value">${profile.data.mission}</div>
+                    </div>
+                    <div class="profile-card">
+                        <div class="profile-card-title">Версия системы</div>
+                        <div class="profile-card-value">${profile.version}</div>
+                    </div>
+                    <div class="profile-card">
+                        <div class="profile-card-title">Подчиняется</div>
+                        <div class="profile-card-value">${profile.data.hierarchy.reporting_to}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">👥 Подчинённые девочки-учёные</div>
+                    <ul class="profile-list">
+                        ${profile.data.hierarchy.subordinates.map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">🎯 Уровни полномочий</div>
+                    <ul class="profile-list">
+                        ${Object.entries(profile.data.authority_levels).map(([level, desc]) => 
+                            `<li><strong>${level}:</strong> ${desc}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">📚 Уровни знаний</div>
+                    <ul class="profile-list">
+                        ${Object.entries(profile.data.knowledge_levels).map(([level, desc]) => 
+                            `<li><strong>${level}:</strong> ${desc}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ядро системы -->
+        <div class="profile-section">
+            <div class="profile-section-title">⚙️ Ядро системы</div>
+            <div class="profile-section-content">
+                <p style="margin-bottom: 1rem; color: var(--text-secondary);">${profile.core.description}</p>
+                
+                <div class="profile-section-title" style="font-size: 1.1rem;">🔧 Модули ядра</div>
+                <ul class="profile-list">
+                    ${profile.core.modules.map(mod => 
+                        `<li><strong>${mod.name}</strong> — ${mod.function}<br><small style="color: var(--text-secondary);">📄 ${mod.file}</small></li>`
+                    ).join('')}
+                </ul>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">🔄 Автономный цикл работы</div>
+                    <ul class="profile-list">
+                        ${profile.core.autonomous_cycle.map(step => `<li>${step}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Правовая деятельность -->
+        <div class="profile-section">
+            <div class="profile-section-title">⚖️ Правовая деятельность</div>
+            <div class="profile-section-content">
+                <p style="margin-bottom: 1rem; color: var(--text-secondary);">${profile.legal_activity.description}</p>
+                
+                <div class="profile-section-title" style="font-size: 1.1rem;">📖 Изучаемые отрасли права</div>
+                <ul class="profile-list">
+                    ${profile.legal_activity.studied_areas.map(area => `<li>${area}</li>`).join('')}
+                </ul>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">📜 Создаваемые правовые документы</div>
+                    <ul class="profile-list">
+                        ${profile.legal_activity.legal_documents_created.map(doc => `<li>${doc}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">🏛️ Изучаемые субъекты права</div>
+                    <ul class="profile-list">
+                        ${profile.legal_activity.legal_entities_studies.map(entity => `<li>${entity}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">📋 Конституция (v2.0.0)</div>
+                    <div class="profile-grid">
+                        <div class="profile-card">
+                            <div class="profile-card-title">Статус</div>
+                            <div class="profile-card-value" style="color: var(--accent-green);">✅ ${profile.legal_activity.constitution.status}</div>
+                        </div>
+                        <div class="profile-card">
+                            <div class="profile-card-title">Статей</div>
+                            <div class="profile-card-value">${profile.legal_activity.constitution.articles}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <div class="profile-card-title">Фундаментальные принципы:</div>
+                        <ul class="profile-list">
+                            ${profile.legal_activity.constitution.key_principles.map(p => `<li>${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <div class="profile-card-title">Абсолютные запреты:</div>
+                        <ul class="profile-list">
+                            ${profile.legal_activity.constitution.fundamental_prohibitions.map(p => `<li>❌ ${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">📚 Правовые документы</div>
+                    <ul class="profile-list">
+                        <li>📜 Законы (основные): ${profile.legal_activity.laws.core_laws}</li>
+                        <li>⚖️ Законы (субъекты права): ${profile.legal_activity.laws.legal_entities_laws}</li>
+                        <li>📋 Кодекс этики: ${profile.legal_activity.ethics_code.file}</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <div class="profile-section-title" style="font-size: 1.1rem;">🔄 Протоколы</div>
+                    <ul class="profile-list">
+                        ${profile.legal_activity.protocols.map(p => `<li>${p}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Цитата -->
+        <div class="profile-quote">
+            "${profile.quote}"
+            <span class="profile-quote-author">— Футаба</span>
+        </div>
+    `;
+}
+
+// Закрытие модального окна при клике вне его
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('futabaProfileModal');
+    if (event.target === modal) {
+        closeFutabaProfile();
+    }
+});
+
+// Закрытие по Escape
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        closeFutabaProfile();
+    }
 });
