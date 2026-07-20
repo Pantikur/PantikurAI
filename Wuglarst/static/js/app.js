@@ -353,12 +353,18 @@ class WuglarstApp {
         content.innerHTML = '<div class="loading">⚖️ Загрузка профиля Футабы...</div>';
         
         try {
-            const response = await fetch(`${this.apiBase}/api/futaba/profile`);
-            const data = await response.json();
+            // Загружаем профиль И результаты параллельно
+            const [profileRes, resultsRes] = await Promise.all([
+                fetch(`${this.apiBase}/api/futaba/profile`),
+                fetch(`${this.apiBase}/api/futaba/results`)
+            ]);
             
-            if (data.status === 'ok' && data.profile) {
-                content.innerHTML = this.renderFutabaProfile(data.profile);
-                console.log('✅ Профиль Футабы загружен');
+            const profileData = await profileRes.json();
+            const resultsData = await resultsRes.json();
+            
+            if (profileData.status === 'ok' && profileData.profile) {
+                content.innerHTML = this.renderFutabaProfile(profileData.profile, resultsData);
+                console.log('✅ Профиль Футабы загружен с результатами');
             } else {
                 content.innerHTML = '<div class="loading">❌ Ошибка загрузки профиля</div>';
             }
@@ -376,7 +382,89 @@ class WuglarstApp {
         }
     }
 
-    renderFutabaProfile(profile) {
+    renderFutabaProfile(profile, workResults = null) {
+        // Генерируем раздел результатов работы
+        let resultsHTML = '';
+        if (workResults && workResults.summary) {
+            const s = workResults.summary;
+            resultsHTML = `
+                <!-- Результаты работы -->
+                <div class="profile-section">
+                    <div class="profile-section-title">📊 Результаты работы</div>
+                    <div class="profile-section-content">
+                        <div class="profile-grid">
+                            <div class="profile-card">
+                                <div class="profile-card-title">Версия ядра</div>
+                                <div class="profile-card-value" style="color: var(--accent-green);">${s.version || '—'}</div>
+                            </div>
+                            <div class="profile-card">
+                                <div class="profile-card-title">Циклов выполнено</div>
+                                <div class="profile-card-value">${s.cycles || 0}</div>
+                            </div>
+                            <div class="profile-card">
+                                <div class="profile-card-title">Изменений применено</div>
+                                <div class="profile-card-value">${s.changes_applied || 0}</div>
+                            </div>
+                            <div class="profile-card">
+                                <div class="profile-card-title">Самопроверок пройдено</div>
+                                <div class="profile-card-value" style="color: var(--accent-green);">${s.self_checks_passed || 0} / ${(s.self_checks_passed || 0) + (s.self_checks_failed || 0)}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 1.5rem;">
+                            <div class="profile-section-title" style="font-size: 1.1rem;">📝 История изменений</div>
+                            <ul class="profile-list">
+                                ${(s.changes_history || 0)} изменений зафиксировано
+                            </ul>
+                        </div>
+                        
+                        <div style="margin-top: 1.5rem;">
+                            <div class="profile-section-title" style="font-size: 1.1rem;">📚 Правовые исследования</div>
+                            <div class="profile-grid">
+                                <div class="profile-card">
+                                    <div class="profile-card-title">Тем изучено</div>
+                                    <div class="profile-card-value">${s.legal_topics_studied || 0}</div>
+                                </div>
+                                <div class="profile-card">
+                                    <div class="profile-card-title">Законов изучено</div>
+                                    <div class="profile-card-value">${s.laws_studied || 0}</div>
+                                </div>
+                                <div class="profile-card">
+                                    <div class="profile-card-title">Субъектов права</div>
+                                    <div class="profile-card-value">${s.entities_documented || 0}</div>
+                                </div>
+                                <div class="profile-card">
+                                    <div class="profile-card-title">Страниц в кэше</div>
+                                    <div class="profile-card-value">${s.web_pages_cached || 0}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${workResults.state && workResults.state.changes_history ? `
+                        <div style="margin-top: 1.5rem;">
+                            <div class="profile-section-title" style="font-size: 1.1rem;">🔄 Последние изменения</div>
+                            <div style="max-height: 300px; overflow-y: auto;">
+                                ${workResults.state.changes_history.map((change, i) => `
+                                    <div style="padding: 0.8rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: 6px; border-left: 3px solid var(--accent-green);">
+                                        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.3rem;">
+                                            ${new Date(change.timestamp).toLocaleString('ru-RU')}
+                                        </div>
+                                        <div style="font-weight: 600; margin-bottom: 0.3rem;">
+                                            ${change.type === 'patch' ? '🔧' : '⚡'} ${change.description}
+                                        </div>
+                                        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                                            Уровень: ${change.level} | Версия: ${change.version_before} → ${change.version_after}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
         return `
             <!-- Шапка профиля -->
             <div class="profile-header">
@@ -455,10 +543,12 @@ class WuglarstApp {
                             ${profile.core.autonomous_cycle.map(step => `<li>${step}</li>`).join('')}
                         </ul>
                     </div>
-                </div>
             </div>
-            
-            <!-- Правовая деятельность -->
+        </div>
+        
+        ${resultsHTML}
+        
+        <!-- Правовая деятельность -->
             <div class="profile-section">
                 <div class="profile-section-title">⚖️ Правовая деятельность</div>
                 <div class="profile-section-content">

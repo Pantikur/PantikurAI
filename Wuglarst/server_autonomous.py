@@ -1075,6 +1075,89 @@ async def get_futaba_profile():
 
 
 # =====================================================================
+#  FUTABA WORK RESULTS API
+# =====================================================================
+
+@app.get("/api/futaba/results")
+async def get_futaba_work_results():
+    """Загружает реальные результаты работы Футабы из её state файлов."""
+    import json as json_module
+    from pathlib import Path
+    
+    results = {
+        "status": "ok",
+        "state": None,
+        "legal_cache": None,
+        "learned_laws": None,
+        "entity_compliance": None,
+        "legal_entities": None,
+        "web_cache": None,
+        "summary": {}
+    }
+    
+    state_dir = PROJECT_ROOT / "futaba" / "engine" / "state"
+    
+    # Загружаем main state
+    state_file = state_dir / "futaba_state.json"
+    if state_file.exists():
+        try:
+            results["state"] = json_module.loads(state_file.read_text(encoding="utf-8"))
+            results["summary"]["version"] = results["state"].get("version", "unknown")
+            results["summary"]["cycles"] = results["state"].get("cycle_count", 0)
+            results["summary"]["changes_applied"] = results["state"].get("metrics", {}).get("changes_applied", 0)
+            results["summary"]["self_checks_passed"] = results["state"].get("metrics", {}).get("self_checks_passed", 0)
+            results["summary"]["changes_history"] = len(results["state"].get("changes_history", []))
+        except Exception as e:
+            results["summary"]["state_error"] = str(e)
+    
+    # Загружаем legal_cache
+    legal_cache_file = state_dir / "legal_cache.json"
+    if legal_cache_file.exists():
+        try:
+            results["legal_cache"] = json_module.loads(legal_cache_file.read_text(encoding="utf-8"))
+            results["summary"]["legal_topics_studied"] = len(results["legal_cache"]) if isinstance(results["legal_cache"], dict) else 0
+        except Exception as e:
+            pass
+    
+    # Загружаем learned_laws
+    learned_laws_file = state_dir / "learned_laws.json"
+    if learned_laws_file.exists():
+        try:
+            results["learned_laws"] = json_module.loads(learned_laws_file.read_text(encoding="utf-8"))
+            results["summary"]["laws_studied"] = len(results["learned_laws"]) if isinstance(results["learned_laws"], list) else 0
+        except Exception as e:
+            pass
+    
+    # Загружаем entity_compliance
+    compliance_file = state_dir / "entity_compliance.json"
+    if compliance_file.exists():
+        try:
+            results["entity_compliance"] = json_module.loads(compliance_file.read_text(encoding="utf-8"))
+        except Exception as e:
+            pass
+    
+    # Загружаем legal_entities
+    entities_file = state_dir / "legal_entities.json"
+    if entities_file.exists():
+        try:
+            results["legal_entities"] = json_module.loads(entities_file.read_text(encoding="utf-8"))
+            results["summary"]["entities_documented"] = len(results["legal_entities"]) if isinstance(results["legal_entities"], list) else 0
+        except Exception as e:
+            pass
+    
+    # Загружаем web_cache
+    web_cache_file = state_dir / "web_cache.json"
+    if web_cache_file.exists():
+        try:
+            results["web_cache"] = json_module.loads(web_cache_file.read_text(encoding="utf-8"))
+            results["summary"]["web_pages_cached"] = len(results["web_cache"]) if isinstance(results["web_cache"], list) else 0
+        except Exception as e:
+            pass
+    
+    return JSONResponse(content=results)
+
+
+# =====================================================================
 #  SHIORI API
 # =====================================================================
 
