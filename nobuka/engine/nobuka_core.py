@@ -42,6 +42,7 @@ from test_runner import TestRunner
 from web_access import NobukaWebAccess
 from universal_analyzer import UniversalAnalyzer
 from ml_optimizer import MLOptimizer
+from document_editor import DocumentEditor
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
@@ -91,6 +92,8 @@ class NobukaCore:
             "performance_improvements": 0,
             "security_fixes": 0,
             "best_test_coverage": 0.0,
+            "documents_improved": 0,
+            "documents_rolled_back": 0,
         }
 
         # Логирование
@@ -103,6 +106,10 @@ class NobukaCore:
         self.ml_optimizer = MLOptimizer(self.config)
         self.test_runner = TestRunner(self.config)
         self.web_access = NobukaWebAccess(self.config)
+
+        # Редактор документов — Нобука редактирует вкладки и документы по всему проекту
+        self.document_editor = DocumentEditor(self.config)
+        self.logger.info(f"📝 Редактор документов инициализирован: {len(self.document_editor.SCAN_DIRS)} директорий для сканирования")
 
         # Сеть учёных
         self.network = None
@@ -292,6 +299,10 @@ class NobukaCore:
         # 9. ML-оптимизация (каждые 10 циклов)
         if self.cycle_count % 10 == 0:
             self._optimize_ml_pipeline()
+        
+        # 10. АвтоУлучшение документов (каждые 7 циклов)
+        if self.cycle_count % 7 == 0:
+            self._auto_improve_documents()
 
         self.logger.info(f"Цикл {self.cycle_count} завершён")
 
@@ -818,6 +829,46 @@ class NobukaCore:
             ImprovementType.SECURITY, ImprovementType.BUGFIX
         ):
             self.logger.info(f"🛡️ Уведомление Шиори об изменении: {improvement.description}")
+
+    # ================================================================
+    #  РЕДАКТИРОВАНИЕ ДОКУМЕНТОВ
+    # ================================================================
+
+    def _auto_improve_documents(self):
+        """
+        Нобука автономно улучшает документы по всему проекту.
+        
+        Для каждого документа:
+          1. Анализирует контент
+          2. Предлагает улучшения (форматирование, структура)
+          3. Тестирует изменения (проверка в эксплуатации)
+          4. Применяет с резервной копией
+          5. Откатывает при проблемах
+        
+        Работает по всему проекту: Футаба, Вугларст, документация, фронтенд.
+        """
+        try:
+            self.logger.info("📝 Нобука проверяет документы проекта...")
+            
+            results = self.document_editor.auto_improve_documents()
+            
+            if results:
+                applied = sum(1 for r in results if r["success"])
+                rolled_back = sum(1 for r in results if r["rolled_back"])
+                
+                self.logger.info(f"📝 Документы обработаны: {len(results)}")
+                self.logger.info(f"   ✅ Применено: {applied}")
+                self.logger.info(f"   ↩️ Отклонено: {rolled_back}")
+                
+                # Обновляем метрики
+                editor_metrics = self.document_editor.get_metrics()
+                self.metrics["documents_improved"] = editor_metrics["edits_applied"]
+                self.metrics["documents_rolled_back"] = editor_metrics["edits_rolled_back"]
+            else:
+                self.logger.debug("📝 Все документы в порядке — улучшений не требуется")
+                
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка автоУлучшения документов: {e}")
 
     # ================================================================
     #  СОСТОЯНИЕ И ОТЧЁТЫ

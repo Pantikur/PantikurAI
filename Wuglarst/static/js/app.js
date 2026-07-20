@@ -41,6 +41,11 @@ class WuglarstApp {
             createStateBtn.addEventListener('click', () => this.openCreateState());
         }
         
+        const nobukaBtn = document.getElementById('nobukaEditorBtn');
+        if (nobukaBtn) {
+            nobukaBtn.addEventListener('click', () => this.openNobukaEditor());
+        }
+        
         const refreshBtn = document.getElementById('refreshBtn');
         if (refreshBtn) {
             refreshBtn.addEventListener('click', () => this.loadStatus());
@@ -383,8 +388,321 @@ class WuglarstApp {
         }
     }
 
-    async viewVuglarstDocuments() {
-        const modal = document.getElementById('futabaProfileModal');
+    // ================================================================
+    //  РЕДАКТОР ДОКУМЕНТОВ НОБУКИ
+    // ================================================================
+
+    async openNobukaEditor() {
+        const modal = document.getElementById('nobukaEditorModal');
+        const content = document.getElementById('nobukaEditorContent');
+        if (!modal || !content) return;
+        
+        modal.style.display = 'block';
+        content.innerHTML = '<div class="loading">📝 Нобука сканирует документы...</div>';
+        
+        try {
+            // Загружаем статус и список документов параллельно
+            const [statusRes, scanRes] = await Promise.all([
+                fetch(`${this.apiBase}/api/nobuka/documents/status`),
+                fetch(`${this.apiBase}/api/nobuka/documents/scan`)
+            ]);
+            
+            const statusData = await statusRes.json();
+            const scanData = await scanRes.json();
+            
+            if (statusData.status === 'ok' && scanData.status === 'ok') {
+                this.renderNobukaEditor(content, statusData.editor, scanData.documents);
+            } else {
+                content.innerHTML = '<div class="loading">❌ Ошибка загрузки данных</div>';
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            content.innerHTML = '<div class="loading">❌ Ошибка подключения к серверу</div>';
+        }
+    }
+
+    renderNobukaEditor(content, editorStatus, documents) {
+        const m = editorStatus.metrics || {};
+        const badgeClass = (ext) => {
+            const map = {'.md': 'badge-md', '.json': 'badge-json', '.html': 'badge-html',
+                         '.css': 'badge-css', '.js': 'badge-js', '.txt': 'badge-txt'};
+            return map[ext] || 'badge-txt';
+        };
+        
+        content.innerHTML = `
+            <div class="doc-editor-toolbar">
+                <button class="doc-editor-btn primary" id="nobukaImproveBtn">🚀 АвтоУлучшение</button>
+                <button class="doc-editor-btn" id="nobukaHistoryBtn">📜 История</button>
+                <button class="doc-editor-btn" id="nobukaBackupsBtn">💾 Резервные копии</button>
+            </div>
+            
+            <div class="editor-stats">
+                <div class="stat-card">
+                    <div class="stat-card-value">${m.documents_scanned || 0}</div>
+                    <div class="stat-card-label">Документов найдено</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${m.edits_applied || 0}</div>
+                    <div class="stat-card-label">Улучшений применено</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${m.edits_rolled_back || 0}</div>
+                    <div class="stat-card-label">Откатов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${editorStatus.history_count || 0}</div>
+                    <div class="stat-card-label">Всего операций</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: var(--accent-purple);">📄 Документы проекта (${documents.length})</h3>
+            <div class="doc-list" id="docList">
+                ${documents.map(doc => `
+                    <div class="doc-list-item" data-path="${doc.path}">
+                        <div class="doc-list-item-info">
+                            <div class="doc-list-item-name">${doc.filename}</div>
+                            <div class="doc-list-item-meta">${doc.path} · ${doc.lines} строк · ${doc.size} символов</div>
+                        </div>
+                        <span class="doc-list-item-badge ${badgeClass(doc.extension)}">${doc.extension}</span>
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div id="docEditArea" style="display:none;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                    <h3 id="editDocTitle" style="color:var(--accent-purple);"></h3>
+                    <button class="doc-editor-btn" id="closeEditBtn">← Назад к списку</button>
+                </div>
+                <textarea class="doc-edit-area" id="docEditTextarea" placeholder="Содержимое документа..."></textarea>
+                <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+                    <button class="doc-editor-btn primary" id="saveDocBtn">💾 Сохранить (с проверкой)</button>
+                    <button class="doc-editor-btn" id="cancelEditBtn">Отмена</button>
+                </div>
+                <div id="editResult"></div>
+            </div>
+        `;
+        
+        // Привязываем события
+        this.bindNobukaEditorEvents(documents);
+    }
+
+    bindNobukaEditorEvents(documents) {
+        // Клик по документу — открыть редактор
+        document.querySelectorAll('.doc-list-item').forEach(item => {
+            item.addEventListener('click', async () => {
+                const path = item.dataset.path;
+                await this.openDocForEdit(path);
+            });
+        });
+        
+        // АвтоУлучшение
+        const improveBtn = document.getElementById('nobukaImproveBtn');
+        if (improveBtn) {
+            improveBtn.addEventListener('click', () => this.runAutoImprove());
+        }
+        
+        // История
+        const historyBtn = document.getElementById('nobukaHistoryBtn');
+        if (historyBtn) {
+            historyBtn.addEventListener('click', () => this.showEditHistory());
+        }
+        
+        // Резервные копии
+        const backupsBtn = document.getElementById('nobukaBackupsBtn');
+        if (backupsBtn) {
+            backupsBtn.addEventListener('click', () => this.showBackups());
+        }
+        
+        // Кнопки редактора
+        const closeEditBtn = document.getElementById('closeEditBtn');
+        if (closeEditBtn) {
+            closeEditBtn.addEventListener('click', () => {
+                document.getElementById('docEditArea').style.display = 'none';
+                document.getElementById('docList').style.display = 'grid';
+            });
+        }
+        
+        const saveDocBtn = document.getElementById('saveDocBtn');
+        if (saveDocBtn) {
+            saveDocBtn.addEventListener('click', () => this.saveDocEdit());
+        }
+        
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        if (cancelEditBtn) {
+            cancelEditBtn.addEventListener('click', () => {
+                document.getElementById('docEditArea').style.display = 'none';
+                document.getElementById('docList').style.display = 'grid';
+            });
+        }
+    }
+
+    async openDocForEdit(path) {
+        try {
+            const response = await fetch(`${this.apiBase}/api/nobuka/documents/read?path=${encodeURIComponent(path)}`);
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+                document.getElementById('docList').style.display = 'none';
+                document.getElementById('docEditArea').style.display = 'block';
+                document.getElementById('editDocTitle').textContent = `📝 ${path}`;
+                document.getElementById('docEditTextarea').value = data.content;
+                this._currentEditPath = path;
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
+    }
+
+    async saveDocEdit() {
+        const path = this._currentEditPath;
+        const content = document.getElementById('docEditTextarea').value;
+        const resultDiv = document.getElementById('editResult');
+        
+        resultDiv.innerHTML = '<div class="edit-result warning">⏳ Нобука проверяет изменения...</div>';
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/nobuka/documents/edit`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    path: path,
+                    content: content,
+                    reason: 'Ручное редактирование через интерфейс',
+                    operator: 'user'
+                })
+            });
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+                const r = data.result;
+                if (r.success) {
+                    resultDiv.innerHTML = `<div class="edit-result success">✅ Документ сохранён! Размер: ${r.old_size} → ${r.new_size} символов. Проверки: ${r.test_report}</div>`;
+                } else if (r.rolled_back) {
+                    resultDiv.innerHTML = `<div class="edit-result error">↩️ Изменения отклонены и откачены. Причина: ${r.test_report || r.error}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="edit-result error">❌ Ошибка: ${r.error}</div>`;
+                }
+            }
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="edit-result error">❌ Ошибка подключения: ${error}</div>`;
+        }
+    }
+
+    async runAutoImprove() {
+        const content = document.getElementById('nobukaEditorContent');
+        content.innerHTML = '<div class="loading">🚀 Нобука улучшает документы...</div>';
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/nobuka/documents/improve`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+                const results = data.results || [];
+                const successCount = results.filter(r => r.success).length;
+                const rollbackCount = results.filter(r => r.rolled_back).length;
+                
+                content.innerHTML = `
+                    <div style="text-align:center;padding:2rem;">
+                        <div style="font-size:3rem;margin-bottom:1rem;">📝</div>
+                        <h3 style="color:var(--accent-purple);margin-bottom:1rem;">Нобука завершила автоУлучшение</h3>
+                        <div class="editor-stats" style="max-width:600px;margin:0 auto 1.5rem;">
+                            <div class="stat-card"><div class="stat-card-value">${results.length}</div><div class="stat-card-label">Обработано</div></div>
+                            <div class="stat-card"><div class="stat-card-value" style="color:var(--accent-green);">${successCount}</div><div class="stat-card-label">Применено</div></div>
+                            <div class="stat-card"><div class="stat-card-value" style="color:#e74c3c;">${rollbackCount}</div><div class="stat-card-label">Отклонено</div></div>
+                        </div>
+                        <div style="text-align:left;max-width:600px;margin:0 auto;">
+                            ${results.map(r => `
+                                <div class="edit-result ${r.success ? 'success' : (r.rolled_back ? 'error' : 'warning')}">
+                                    ${r.success ? '✅' : (r.rolled_back ? '↩️' : '⚠️')} 
+                                    <strong>${r.path}</strong> — ${r.reason || r.test_report || r.error}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="doc-editor-btn primary" onclick="window.app.openNobukaEditor()" style="margin-top:1.5rem;">← Назад</button>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            content.innerHTML = '<div class="loading">❌ Ошибка подключения</div>';
+        }
+    }
+
+    async showEditHistory() {
+        const content = document.getElementById('nobukaEditorContent');
+        content.innerHTML = '<div class="loading">📜 Загрузка истории...</div>';
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/nobuka/documents/history`);
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+                const history = data.history || [];
+                content.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <h3 style="color:var(--accent-purple);">📜 История редактирований (${data.total})</h3>
+                        <button class="doc-editor-btn" onclick="window.app.openNobukaEditor()">← Назад</button>
+                    </div>
+                    <div class="doc-list">
+                        ${history.length === 0 ? '<div style="text-align:center;padding:2rem;color:var(--text-secondary);">История пуста</div>' :
+                        history.slice().reverse().map(h => `
+                            <div class="doc-list-item" style="cursor:default;">
+                                <div class="doc-list-item-info">
+                                    <div class="doc-list-item-name">${h.success ? '✅' : (h.rolled_back ? '↩️' : '❌')} ${h.path}</div>
+                                    <div class="doc-list-item-meta">
+                                        ${h.operator} · ${h.reason || ''} · ${h.timestamp ? new Date(h.timestamp).toLocaleString('ru-RU') : ''}
+                                        ${h.test_report ? ' · ' + h.test_report : ''}
+                                    </div>
+                                </div>
+                                <span class="doc-list-item-badge ${h.success ? 'badge-md' : 'badge-txt'}">
+                                    ${h.success ? 'Применено' : (h.rolled_back ? 'Откат' : 'Ошибка')}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        } catch (error) {
+            content.innerHTML = '<div class="loading">❌ Ошибка</div>';
+        }
+    }
+
+    async showBackups() {
+        const content = document.getElementById('nobukaEditorContent');
+        content.innerHTML = '<div class="loading">💾 Загрузка резервных копий...</div>';
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/nobuka/documents/backups`);
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+                const backups = data.backups || [];
+                content.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <h3 style="color:var(--accent-purple);">💾 Резервные копии (${backups.length})</h3>
+                        <button class="doc-editor-btn" onclick="window.app.openNobukaEditor()">← Назад</button>
+                    </div>
+                    <div class="doc-list">
+                        ${backups.length === 0 ? '<div style="text-align:center;padding:2rem;color:var(--text-secondary);">Резервных копий нет</div>' :
+                        backups.map(b => `
+                            <div class="doc-list-item" style="cursor:default;">
+                                <div class="doc-list-item-info">
+                                    <div class="doc-list-item-name">${b.filename}</div>
+                                    <div class="doc-list-item-meta">${b.size} байт · ${new Date(b.created).toLocaleString('ru-RU')}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        } catch (error) {
+            content.innerHTML = '<div class="loading">❌ Ошибка</div>';
+        }
+    }
+
+    async viewVuglarstDocuments() {        const modal = document.getElementById('futabaProfileModal');
         const content = document.getElementById('futabaProfileContent');
         if (!modal || !content) return;
         

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌟 Wuglarst — Визуальное пространство ИИ</title>
-    <link rel="stylesheet" href="static/css/style.css?v=3.0">
+    <link rel="stylesheet" href="static/css/style.css?v=4.0">
 </head>
 <body>
     <!-- Заголовок -->
@@ -21,6 +21,7 @@
             <button id="demoBtn" class="btn btn-primary">🌱 Пробуждение</button>
             <button id="futabaProfileBtn" class="btn btn-futaba">⚖️ Профиль Футабы</button>
             <button id="createStateBtn" class="btn btn-vuglarst">🏛️ Создать Государство</button>
+            <button id="nobukaEditorBtn" class="btn btn-nobuka">📝 Нобука: Документы</button>
             <button id="refreshBtn" class="btn btn-secondary">🔄 Обновить</button>
         </div>
     </header>
@@ -94,7 +95,20 @@
         </div>
     </div>
 
+    <!-- Модальное окно редактора документов Нобуки -->
+    <div id="nobukaEditorModal" class="modal">
+        <div class="modal-content futaba-modal nobuka-modal">
+            <div class="modal-header">
+                <h2>📝 Нобука: Редактор документов</h2>
+                <span class="close-btn" onclick="document.getElementById('nobukaEditorModal').style.display='none'">&times;</span>
+            </div>
+            <div class="modal-body" id="nobukaEditorContent">
+                <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Подключение скриптов (версия 2.0 — исправление кнопки) -->
-    <script src="static/js/app.js?v=3.0"></script>
+    <script src="static/js/app.js?v=4.0"></script>
 </body>
 </html>

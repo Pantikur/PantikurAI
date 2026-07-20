@@ -2058,6 +2058,189 @@ async def list_vuglarst_documents():
 
 
 # =====================================================================
+#  NOBUKA DOCUMENT EDITOR API — Нобука редактирует документы
+# =====================================================================
+
+@app.get("/api/nobuka/documents/scan")
+async def scan_project_documents():
+    """Нобука сканирует все документы в проекте."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        documents = editor.scan_documents()
+        
+        return JSONResponse(content={
+            "status": "ok",
+            "total": len(documents),
+            "documents": documents,
+        })
+    except Exception as e:
+        logger.error(f"❌ Ошибка сканирования: {e}")
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nobuka/documents/status")
+async def get_editor_status():
+    """Статус редактора документов Нобуки."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        status = editor.get_status()
+        
+        return JSONResponse(content={"status": "ok", "editor": status})
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nobuka/documents/history")
+async def get_edit_history():
+    """История редактирований Нобуки."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        history = editor.get_history()
+        
+        return JSONResponse(content={
+            "status": "ok",
+            "total": len(history),
+            "history": history[-50:],  # последние 50
+        })
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.post("/api/nobuka/documents/improve")
+async def auto_improve_documents():
+    """Нобука автономно улучшает все документы проекта."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        results = editor.auto_improve_documents()
+        
+        applied = sum(1 for r in results if r["success"])
+        rolled_back = sum(1 for r in results if r["rolled_back"])
+        
+        return JSONResponse(content={
+            "status": "ok",
+            "message": f"Нобука обработала {len(results)} документов",
+            "applied": applied,
+            "rolled_back": rolled_back,
+            "results": results,
+        })
+    except Exception as e:
+        logger.error(f"❌ Ошибка автоУлучшения: {e}")
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.put("/api/nobuka/documents/edit")
+async def manual_edit_document(edit_data: Dict[str, str]):
+    """Ручное редактирование документа через Нобуку (с проверкой)."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        
+        rel_path = edit_data.get("path", "")
+        new_content = edit_data.get("content", "")
+        reason = edit_data.get("reason", "Ручное редактирование")
+        operator = edit_data.get("operator", "user")
+        
+        result = editor.edit_document(rel_path, new_content, reason, operator)
+        
+        return JSONResponse(content={"status": "ok", "result": result})
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nobuka/documents/read")
+async def read_document_api(path: str):
+    """Читать документ проекта."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        content = editor.read_document(path)
+        
+        if content is None:
+            return JSONResponse(content={"error": "Файл не найден"}, status_code=404)
+        
+        return JSONResponse(content={"status": "ok", "path": path, "content": content})
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nobuka/documents/backups")
+async def list_backups():
+    """Список резервных копий документов."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        backups = editor.list_backups()
+        
+        return JSONResponse(content={"status": "ok", "backups": backups})
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.post("/api/nobuka/documents/restore")
+async def restore_document(restore_data: Dict[str, str]):
+    """Восстановить документ из резервной копии."""
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT))
+    
+    try:
+        from nobuka.engine.document_editor import DocumentEditor
+        from nobuka.engine.config import NobukaConfig
+        
+        editor = DocumentEditor(NobukaConfig.default())
+        
+        rel_path = restore_data.get("path", "")
+        backup_name = restore_data.get("backup_name", "")
+        
+        success = editor.restore_from_backup(rel_path, backup_name)
+        
+        if success:
+            return JSONResponse(content={"status": "ok", "message": "Документ восстановлен"})
+        else:
+            return JSONResponse(content={"error": "Не удалось восстановить"}, status_code=500)
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+# =====================================================================
 #  SHIORI API
 # =====================================================================
 @app.get("/api/shiori/status")
