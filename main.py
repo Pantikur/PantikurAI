@@ -578,6 +578,65 @@ async def health_check():
     }
 
 
+# === Endpoint: размер модели ===
+@app.get("/model/size")
+async def get_model_size():
+    """Возвращает размер модели, токенизатора и обучающих данных"""
+    def format_size(size_bytes):
+        if size_bytes < 1024:
+            return f"{size_bytes} B"
+        elif size_bytes < 1024 ** 2:
+            return f"{size_bytes / 1024:.2f} KB"
+        elif size_bytes < 1024 ** 3:
+            return f"{size_bytes / 1024 ** 2:.2f} MB"
+        else:
+            return f"{size_bytes / 1024 ** 3:.2f} GB"
+
+    def get_file_size(path):
+        if os.path.exists(path):
+            return os.path.getsize(path)
+        return None
+
+    model_size = get_file_size("models/chat_model.pth")
+    tokenizer_size = get_file_size("data/tokenizer.json")
+    conv_size = get_file_size("data/conversations.json")
+    train_size = get_file_size("data/training_pairs.jsonl")
+
+    result = {
+        "model": {
+            "path": "models/chat_model.pth",
+            "exists": model_size is not None,
+            "size_bytes": model_size,
+            "size_human": format_size(model_size) if model_size else "Не найдена"
+        },
+        "tokenizer": {
+            "path": "data/tokenizer.json",
+            "exists": tokenizer_size is not None,
+            "size_bytes": tokenizer_size,
+            "size_human": format_size(tokenizer_size) if tokenizer_size else "Не найден"
+        },
+        "training_data": {
+            "conversations_json": {
+                "path": "data/conversations.json",
+                "exists": conv_size is not None,
+                "size_bytes": conv_size,
+                "size_human": format_size(conv_size) if conv_size else "Не найден"
+            },
+            "training_pairs_jsonl": {
+                "path": "data/training_pairs.jsonl",
+                "exists": train_size is not None,
+                "size_bytes": train_size,
+                "size_human": format_size(train_size) if train_size else "Не найден"
+            }
+        },
+        "total_size_bytes": sum(s for s in [model_size, tokenizer_size, conv_size, train_size] if s is not None),
+        "total_size_human": format_size(sum(s for s in [model_size, tokenizer_size, conv_size, train_size] if s is not None)),
+        "timestamp": datetime.now().isoformat()
+    }
+
+    return result
+
+
 # === Endpoint: мониторинг безопасности ===
 @app.get("/security")
 async def security_status():
