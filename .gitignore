@@ -49,6 +49,8 @@ models/*.bin
 
 # Исключение: tokenizer.json разрешён
 !data/tokenizer.json
+!data/conversations.json
+!data/training_pairs.jsonl
 
 # === World Engine ===
 data/worlds/
