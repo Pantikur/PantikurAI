@@ -70,12 +70,26 @@ SUSPICIOUS_PATHS = [
     ".env", ".git", ".svn", ".hg", "wp-admin", "wp-content", "phpinfo",
     "phpmyadmin", "adminer", "shell", "cmd", "exec", "eval", "backup",
     ".sql", ".dump", ".pem", ".key", ".htaccess", ".htpasswd", "config.php",
-    "web.config", ".aws", ".azure", ".docker", "kubernetes", "terraform"
+    "web.config", ".aws", ".azure", ".docker", "kubernetes", "terraform",
+    "wp-json", "wp-login", "xmlrpc.php", "rest/api", "batch/v1",
+    "wp-json/batch", "wp-json/wp/v2", "wp-json/oembed"
+]
+
+SUSPICIOUS_UA_PATTERNS = [
+    "python-requests", "curl/", "wget/", "scrapy", "nikto", "nmap",
+    "sqlmap", "masscan", "zgrab", "gobuster", "dirbuster", "wfuzz",
+    "nuclei", "burp", "acunetix", "nessus", "openvas",
+    "wordpress", "wp-cli", "jetpack"
 ]
 
 # Хранилище rate limiting: IP -> список временных меток
 rate_limit_store: Dict[str, List[float]] = defaultdict(list)
 rate_limit_lock = threading.Lock()
+
+# Хранилище атак: IP -> счётчик попыток
+attack_store: Dict[str, int] = defaultdict(int)
+attack_lock = threading.Lock()
+MAX_ATTACK_ATTEMPTS = 5  # после N попыток - бан
 
 # Чёрный список IP (автоматически пополняется)
 blocked_ips: Dict[str, datetime] = {}  # IP -> время блокировки
@@ -114,16 +128,25 @@ def is_suspicious_request(request: Request) -> Tuple[bool, str]:
     """
     ua = request.headers.get("User-Agent", "").lower()
     path = request.url.path.lower()
+    client_ip = request.client.host if request.client else "unknown"
     
     # Проверка User-Agent
-    for pattern in SUSPICIOUS_UA_PATTERNS:
-        if pattern in ua:
-            return True, f"Suspicious UA: {pattern}"
+    for suspicious in SUSPICIOUS_UA_PATTERNS:
+        if suspicious in ua:
+            return True, f"Подозрительный UA: {suspicious}"
     
-    # Проверка пути
+    # Проверка путей
     for suspicious in SUSPICIOUS_PATHS:
         if suspicious in path:
-            return True, f"Suspicious path: {suspicious}"
+            # Увеличиваем счётчик атак
+            with attack_lock:
+                attack_store[client_ip] += 1
+                if attack_store[client_ip] >= MAX_ATTACK_ATTEMPTS:
+                    # Бан IP
+                    blocked_ips[client_ip] = datetime.now() + BLOCK_DURATION
+                    logger.warning(f"🚫 IP забанен за многократные атаки: {client_ip} ({attack_store[client_ip]} попыток)")
+                    return True, f"IP забанен за атаки ({attack_store[client_ip]} попыток)"
+            return True, f"Подозрительный путь: {suspicious}"
     
     return False, ""
 
@@ -919,6 +942,10 @@ async def security_status():
             "count": len(active_blocks),
             "active_blocks": active_blocks
         },
+        "attacks": {
+            "total_blocked": sum(attack_store.values()),
+            "active_attackers": {ip: count for ip, count in attack_store.items() if count > 0}
+        },
         "suspicious_patterns": {
             "ua_patterns": len(SUSPICIOUS_UA_PATTERNS),
             "path_patterns": len(SUSPICIOUS_PATHS)
@@ -933,6 +960,30 @@ async def unblock_ip(ip: str, request: Request):
     token = request.headers.get("X-Retrain-Token")
     if token != RETRAIN_TOKEN:
         raise HTTPException(status_code=403, detail="Неверный токен")
+    
+    if ip in blocked_ips:
+        del blocked_ips[ip]
+    with attack_lock:
+        if ip in attack_store:
+            del attack_store[ip]
+    
+    logger.info(f"🔓 IP разблокирован: {ip}")
+    return {"status": "success", "message": f"IP {ip} разблокирован"}
+
+
+# === Endpoint: сбросить счётчик атак ===
+@app.post("/security/reset-attacks")
+async def reset_attacks(request: Request):
+    """Сбрасывает счётчик атак для всех IP."""
+    token = request.headers.get("X-Retrain-Token")
+    if token != RETRAIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Неверный токен")
+    
+    with attack_lock:
+        attack_store.clear()
+    
+    logger.info("🔄 Счётчик атак сброшен")
+    return {"status": "success", "message": "Счётчик атак сброшен"}
 
     if ip in blocked_ips:
         del blocked_ips[ip]
