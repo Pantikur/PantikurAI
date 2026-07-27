@@ -815,19 +815,41 @@ from fastapi.responses import FileResponse
 
 # Глобальный генератор
 ayiko_generator = None
+shiori_scanner = None
+ojidania_analyzer = None
 
 @app.on_event("startup")
 async def init_ayiko_generator():
     """Инициализация генератора изображений Айко"""
-    global ayiko_generator
+    global ayiko_generator, shiori_scanner, ojidania_analyzer
     try:
         from ayiko.image_generator import AyikoImageGenerator
         ayiko_generator = AyikoImageGenerator()
-        logger.info("🎨 Генератор изображений Айко инициализирован")
+        logger.info("OK Gen image Ayiko initialized")
     except ImportError:
-        logger.warning("⚠️ Модуль ayiko.image_generator не найден")
+        logger.warning("WARNING Module ayiko.image_generator not found")
     except Exception as e:
-        logger.error(f"❌ Ошибка инициализации: {e}")
+        logger.error(f"ERROR Init gen: {e}")
+    
+    # Инициализация сканера Шиори
+    try:
+        from shiori.wordpress_scanner import WordPressScanner
+        shiori_scanner = WordPressScanner()
+        logger.info("OK Scanner Shiori initialized")
+    except ImportError:
+        logger.warning("WARNING Module shiori.wordpress_scanner not found")
+    except Exception as e:
+        logger.error(f"ERROR Init scanner: {e}")
+    
+    # Инициализация анализатора Ojidania
+    try:
+        from ayiko.ojidania_analyzer import OjidaniaAnalyzer
+        ojidania_analyzer = OjidaniaAnalyzer()
+        logger.info("OK Ojidania Analyzer initialized")
+    except ImportError:
+        logger.warning("WARNING Module ayiko.ojidania_analyzer not found")
+    except Exception as e:
+        logger.error(f"ERROR Init analyzer: {e}")
 
 
 @app.post("/ayiko/generate")
@@ -920,6 +942,161 @@ async def ayiko_get_image(image_id: str):
     return FileResponse(filepath, media_type="image/png")
 
 
+# === Endpoint: сканирование запроса Шиори ===
+@app.post("/shiori/scan")
+async def shiori_scan_request(request: Request):
+    """
+    Сканирование запроса через Шиори
+    
+    Body JSON:
+    {
+        "ip": "192.168.1.100",
+        "path": "/wp-json/batch/v1",
+        "method": "POST",
+        "user_agent": "Mozilla/5.0",
+        "headers": {},
+        "body": {}
+    }
+    """
+    if shiori_scanner is None:
+        raise HTTPException(status_code=503, detail="Сканер Шиори не инициализирован")
+    
+    try:
+        body = await request.json()
+    except:
+        raise HTTPException(status_code=400, detail="Неверный JSON")
+    
+    try:
+        result = shiori_scanner.scan_request(body)
+        
+        if result["is_attack"]:
+            logger.warning(f"SECURITY Attack detected: {result['attack_type']} from {body.get('ip')}")
+            
+            if result["action"] == "block_ip":
+                ip = body.get("ip", "unknown")
+                blocked_ips[ip] = datetime.now() + BLOCK_DURATION
+                logger.warning(f"BAN IP blocked: {ip}")
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"❌ Ошибка сканирования: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/shiori/stats")
+async def shiori_stats():
+    """Статистика атак от Шиори"""
+    if shiori_scanner is None:
+        raise HTTPException(status_code=503, detail="Сканер Шиори не инициализирован")
+    
+    return shiori_scanner.get_stats()
+
+
+@app.get("/shiori/report")
+async def shiori_report():
+    """Отчёт безопасности от Шиори"""
+    if shiori_scanner is None:
+        raise HTTPException(status_code=503, detail="Сканер Шиори не инициализирован")
+    
+    return shiori_scanner.generate_report()
+
+
+@app.post("/shiori/unblock/{ip}")
+async def shiori_unblock_ip(ip: str, request: Request):
+    """Разблокировка IP через Шиори"""
+    if shiori_scanner is None:
+        raise HTTPException(status_code=503, detail="Сканер Шиори не инициализирован")
+    
+    token = request.headers.get("X-Retrain-Token")
+    if token != RETRAIN_TOKEN:
+        raise HTTPException(status_code=403, detail="Неверный токен")
+    
+    success = shiori_scanner.unblock_ip(ip)
+    if success:
+        logger.info(f"UNBLOCK IP unblocked by Shiori: {ip}")
+        return {"status": "success", "message": f"IP {ip} unblocked"}
+    else:
+        raise HTTPException(status_code=404, detail="IP not found in blocked list")
+
+
+# === Endpoint: анализ изображений Ojidania ===
+@app.post("/ayiko/ojidania/analyze")
+async def analyze_ojidania_image(request: Request):
+    """
+    Анализ изображения через Ojidania
+    
+    Body JSON:
+    {
+        "image_path": "ayiko/ojidania/photo.jpg"
+    }
+    """
+    if ojidania_analyzer is None:
+        raise HTTPException(status_code=503, detail="Анализатор Ojidania не инициализирован")
+    
+    try:
+        body = await request.json()
+        image_path = body.get("image_path", "")
+        
+        if not image_path:
+            raise HTTPException(status_code=400, detail="Не указан путь к изображению")
+        
+        result = ojidania_analyzer.analyze_image(image_path)
+        
+        if "error" in result:
+            raise HTTPException(status_code=400, detail=result["error"])
+        
+        logger.info(f"ANALYZE Image analyzed: {result['filename']}")
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"ERROR Analyze image: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/ayiko/ojidania/batch")
+async def batch_analyze_ojidania(request: Request):
+    """
+    Пакетный анализ всех изображений в ojidania
+    
+    Body JSON (опционально):
+    {
+        "directory": "ayiko/ojidania"
+    }
+    """
+    if ojidania_analyzer is None:
+        raise HTTPException(status_code=503, detail="Анализатор Ojidania не инициализирован")
+    
+    try:
+        body = await request.json() if await request.body() else {}
+        directory = body.get("directory", "ayiko/ojidania")
+        
+        results = ojidania_analyzer.batch_analyze(directory)
+        
+        logger.info(f"ANALYZE Batch analyzed {len(results)} images")
+        return {
+            "status": "success",
+            "count": len(results),
+            "results": results,
+            "stats": ojidania_analyzer.get_stats()
+        }
+        
+    except Exception as e:
+        logger.error(f"ERROR Batch analyze: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/ayiko/ojidania/stats")
+async def ojidania_stats():
+    """Статистика анализа Ojidania"""
+    if ojidania_analyzer is None:
+        raise HTTPException(status_code=503, detail="Анализатор Ojidania не инициализирован")
+    
+    return ojidania_analyzer.get_stats()
+
+
 # === Endpoint: мониторинг безопасности ===
 @app.get("/security")
 async def security_status():
@@ -941,6 +1118,12 @@ async def security_status():
         "blocked_ips": {
             "count": len(active_blocks),
             "active_blocks": active_blocks
+        },
+        "shiori_scanner": {
+            "total_attacks": shiori_scanner.attack_stats["total_attacks"] if shiori_scanner else 0,
+            "blocked_attacks": shiori_scanner.attack_stats["blocked_attacks"] if shiori_scanner else 0,
+            "by_type": shiori_scanner.attack_stats["by_type"] if shiori_scanner else {},
+            "by_severity": shiori_scanner.attack_stats["by_severity"] if shiori_scanner else {}
         },
         "attacks": {
             "total_blocked": sum(attack_store.values()),
