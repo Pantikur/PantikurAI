@@ -1,0 +1,217 @@
+{
+  "title": "WordPress REST API Атаки - База знаний для Шиори",
+  "version": "1.0",
+  "description": "Полная база знаний о WordPress REST API атаках для обнаружения и защиты",
+  
+  "attack_types": {
+    "rest_api_abuse": {
+      "name": "REST API Abuse",
+      "description": "Массовые запросы к REST API endpoints",
+      "severity": "high",
+      "indicators": [
+        "POST /wp-json/batch/v1",
+        "POST /wp-json/wp/v2/users",
+        "GET /wp-json/wp/v2/users",
+        "POST /wp-json/oembed/*",
+        "GET /wp-json/?rest_route=/*"
+      ],
+      "mitigation": "Блокировка IP после 5 попыток",
+      "first_detected": "2026-07-27"
+    },
+    
+    "xmlrpc_attack": {
+      "name": "XML-RPC DDoS",
+      "description": "DDoS атака через XML-RPC pingback",
+      "severity": "critical",
+      "indicators": [
+        "POST /xmlrpc.php",
+        "pingback.ping method calls",
+        "multiple pingback requests from same IP"
+      ],
+      "mitigation": "Полная блокировка xmlrpc.php",
+      "first_detected": "2026-07-27"
+    },
+    
+    "user_enumeration": {
+      "name": "User Enumeration",
+      "description": "Сбор информации о пользователях через API",
+      "severity": "medium",
+      "indicators": [
+        "GET /wp-json/wp/v2/users",
+        "GET /wp-json/wp/v2/users?per_page=100",
+        "GET /wp-json/wp/v2/types",
+        "GET /wp-json/wp/v2/categories",
+        "GET /wp-json/wp/v2/tags"
+      ],
+      "mitigation": "Ограничение количества запросов",
+      "first_detected": "2026-07-27"
+    },
+    
+    "brute_force_login": {
+      "name": "Brute Force Login",
+      "description": "Подбор паролей через REST API",
+      "severity": "critical",
+      "indicators": [
+        "POST /wp-json/wp/v2/users",
+        "POST /wp-login.php",
+        "multiple failed login attempts",
+        "rapid succession requests"
+      ],
+      "mitigation": "Блокировка IP после 3 неудачных попыток",
+      "first_detected": "2026-07-27"
+    },
+    
+    "rest_api_scanning": {
+      "name": "REST API Scanning",
+      "description": "Сканирование доступных endpoints",
+      "severity": "low",
+      "indicators": [
+        "GET /wp-json/",
+        "GET /wp-json/?rest_route=/wp/v2/*",
+        "GET /wp-json/wp/v2/*",
+        "sequential endpoint probing"
+      ],
+      "mitigation": "Rate limiting + логирование",
+      "first_detected": "2026-07-27"
+    }
+  },
+  
+  "detection_patterns": {
+    "path_patterns": [
+      "/wp-json/",
+      "/wp-json/batch/v1",
+      "/wp-json/wp/v2/users",
+      "/wp-json/oembed",
+      "/xmlrpc.php",
+      "/wp-login.php",
+      "/wp-admin/",
+      "/wp-content/",
+      "/wp-includes/",
+      "/rest/api/"
+    ],
+    
+    "request_patterns": {
+      "high_frequency": {
+        "threshold": "5 requests per minute",
+        "action": "block_ip",
+        "duration": "30 minutes"
+      },
+      "sequential_probing": {
+        "description": "sequential endpoint probing",
+        "action": "log_and_alert",
+        "threshold": "10 endpoints in 1 minute"
+      },
+      "user_enumeration": {
+        "description": "mass user data collection",
+        "action": "block_and_log",
+        "threshold": "100 users requested"
+      }
+    },
+    
+    "header_patterns": {
+      "suspicious_user_agents": [
+        "wordpress",
+        "wp-cli",
+        "jetpack",
+        "python-requests",
+        "curl/",
+        "wget/",
+        "scrapy",
+        "nikto",
+        "nmap",
+        "sqlmap",
+        "masscan",
+        "zgrab",
+        "gobuster",
+        "dirbuster",
+        "wfuzz",
+        "nuclei",
+        "burp",
+        "acunetix",
+        "nessus",
+        "openvas"
+      ],
+      
+      "suspicious_headers": [
+        "X-Forwarded-For: multiple",
+        "Authorization: Basic",
+        "Cookie: wordpress_"
+      ]
+    }
+  },
+  
+  "response_codes": {
+    "404": {
+      "description": "Not Found",
+      "wp_specific": [
+        "/wp-json/batch/v1",
+        "/wp-json/wp/v2/users",
+        "/xmlrpc.php"
+      ],
+      "action": "log_and_monitor"
+    },
+    "403": {
+      "description": "Forbidden",
+      "wp_specific": [
+        "/wp-admin/",
+        "/wp-login.php"
+      ],
+      "action": "block_ip"
+    },
+    "429": {
+      "description": "Too Many Requests",
+      "wp_specific": [
+        "all endpoints"
+      ],
+      "action": "temporary_block"
+    }
+  },
+  
+  "mitigation_strategies": {
+    "immediate": [
+      "block_ip",
+      "rate_limit",
+      "disable_endpoint"
+    ],
+    "short_term": [
+      "update_firewall_rules",
+      "enable_captcha",
+      "disable_xmlrpc"
+    ],
+    "long_term": [
+      "implement_waf",
+      "enable_two_factor_auth",
+      "regular_security_audits"
+    ]
+  },
+  
+  "signatures": {
+    "wordpress_scanner": {
+      "name": "WordPress Scanner",
+      "indicators": [
+        "sequential endpoint probing",
+        "wp-json enumeration",
+        "xmlrpc testing"
+      ],
+      "severity": "medium"
+    },
+    "brute_force_tool": {
+      "name": "Brute Force Tool",
+      "indicators": [
+        "rapid login attempts",
+        "password spraying",
+        "credential stuffing"
+      ],
+      "severity": "high"
+    },
+    "ddos_bot": {
+      "name": "DDoS Bot",
+      "indicators": [
+        "volumetric requests",
+        "pingback abuse",
+        "amplification attacks"
+      ],
+      "severity": "critical"
+    }
+  }
+}
