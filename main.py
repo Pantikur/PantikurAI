@@ -30,6 +30,19 @@ AUTO_BOOK_LEARNING_ENABLED = os.getenv("AUTO_BOOK_LEARNING", "true").lower() in 
 AUTO_BOOK_LEARNING_CYCLE = int(os.getenv("AUTO_BOOK_LEARNING_CYCLE", "10"))  # минут
 AUTO_BOOK_MAX_BOOKS = int(os.getenv("AUTO_BOOK_MAX_BOOKS", "5"))  # книг за цикл
 
+# === Авто-обучение модели (ретраин) ===
+AUTO_RETRAIN_ENABLED = os.getenv("AUTO_RETRAIN", "true").lower() in ("true", "1", "yes")
+AUTO_RETRAIN_INTERVAL = int(os.getenv("AUTO_RETRAIN_INTERVAL", "86400"))  # секунд (по умолчанию 1 день = 86400)
+LAST_RETRAIN_FILE = "data/.last_retrain_timestamp"
+
+# Хранилище статуса последнего ретраина
+retrain_status = {
+    "last_retrain": None,
+    "last_retrain_success": False,
+    "total_retrains": 0,
+    "status": "idle"  # idle, running, success, error
+}
+
 # === Настройка логирования ===
 logging.basicConfig(
     level=logging.INFO,
@@ -308,6 +321,76 @@ async def lifespan(app: FastAPI):
     logger.info("🔮 Запуск оркестратора девочек...")
     start_girls_orchestrator()
     # === КОНЕЦ АВТОЗАПУСКА ДЕВОЧЕК ===
+    
+    # === АВТО-ОБУЧЕНИЕ МОДЕЛИ (РАЗ В ДЕНЬ) ===
+    if AUTO_RETRAIN_ENABLED:
+        logger.info(f"🧠 Авто-обучение модели: ВКЛЮЧЕНО")
+        logger.info(f"   ⏱️ Интервал: {AUTO_RETRAIN_INTERVAL // 3600} часа(ов)")
+        logger.info(f"   📊 Загружаем статус последнего ретраина...")
+        
+        # Загружаем статус
+        if os.path.exists(LAST_RETRAIN_FILE):
+            try:
+                with open(LAST_RETRAIN_FILE, "r") as f:
+                    retrain_status.update(json.load(f))
+                logger.info(f"   ✅ Статус загружен: последний ретраин {retrain_status['last_retrain']}")
+            except:
+                logger.info("   ℹ️ Новый статус (первый запуск)")
+        
+        async def start_auto_retrain():
+            """Запускает авто-обучение модели раз в день"""
+            import subprocess
+            
+            async def retrain_cycle():
+                """Выполняет один цикл ретраина"""
+                try:
+                    logger.info("🧠 ЗАПУСК АВТО-ОБУЧЕНИЯ МОДЕЛИ...")
+                    retrain_status["status"] = "running"
+                    
+                    # Запускаем retrain.py
+                    result = subprocess.run(
+                        [sys.executable, "retrain.py", "--generate", "0"],
+                        capture_output=True,
+                        text=True,
+                        timeout=7200  # 2 часа таймаут
+                    )
+                    
+                    if result.returncode == 0:
+                        # Сохраняем статус
+                        retrain_status.update({
+                            "last_retrain": datetime.now().isoformat(),
+                            "last_retrain_success": True,
+                            "total_retrains": retrain_status.get("total_retrains", 0) + 1,
+                            "status": "success"
+                        })
+                        with open(LAST_RETRAIN_FILE, "w") as f:
+                            json.dump(retrain_status, f)
+                        logger.info("✅ АВТО-ОБУЧЕНИЕ ЗАВЕРШЕНО УСПЕШНО!")
+                    else:
+                        retrain_status["status"] = "error"
+                        logger.error(f"❌ Ошибка авто-обучения: {result.stderr[:500]}")
+                        
+                except subprocess.TimeoutExpired:
+                    logger.error("❌ Таймаут авто-обучения (2 часа)")
+                    retrain_status["status"] = "error"
+                except Exception as e:
+                    logger.error(f"❌ Ошибка авто-обучения: {e}")
+                    retrain_status["status"] = "error"
+            
+            # Запускаем первый ретраин через 5 минут после старта
+            await asyncio.sleep(300)
+            await retrain_cycle()
+            
+            # Потом каждые AUTO_RETRAIN_INTERVAL секунд
+            while True:
+                await asyncio.sleep(AUTO_RETRAIN_INTERVAL)
+                await retrain_cycle()
+        
+        # Запускаем фоновую задачу
+        asyncio.create_task(start_auto_retrain())
+    else:
+        logger.info("🧠 Авто-обучение модели: ОТКЛЮЧЕНО")
+    # === КОНЕЦ АВТО-ОБУЧЕНИЯ ===
     
 
     start_lifespan = asyncio.get_event_loop().time()
@@ -635,6 +718,183 @@ async def get_model_size():
     }
 
     return result
+
+
+# === Endpoint: ручное обучение модели ===
+@app.post("/retrain")
+async def manual_retrain():
+    """Ручной запуск обучения модели (ретраин)"""
+    if retrain_status["status"] == "running":
+        raise HTTPException(status_code=409, detail="Обучение уже запущено")
+    
+    import subprocess
+    
+    retrain_status["status"] = "running"
+    
+    try:
+        logger.info("🧠 РУЧНОЙ ЗАПУСК ОБУЧЕНИЯ МОДЕЛИ...")
+        
+        result = subprocess.run(
+            [sys.executable, "retrain.py", "--generate", "0"],
+            capture_output=True,
+            text=True,
+            timeout=7200  # 2 часа таймаут
+        )
+        
+        if result.returncode == 0:
+            retrain_status.update({
+                "last_retrain": datetime.now().isoformat(),
+                "last_retrain_success": True,
+                "total_retrains": retrain_status.get("total_retrains", 0) + 1,
+                "status": "success"
+            })
+            with open(LAST_RETRAIN_FILE, "w") as f:
+                json.dump(retrain_status, f)
+            
+            return {
+                "status": "success",
+                "message": "Обучение завершено успешно",
+                "total_retrains": retrain_status["total_retrains"],
+                "last_retrain": retrain_status["last_retrain"]
+            }
+        else:
+            retrain_status["status"] = "error"
+            raise HTTPException(
+                status_code=500,
+                detail=f"Ошибка обучения: {result.stderr[:500]}"
+            )
+            
+    except subprocess.TimeoutExpired:
+        retrain_status["status"] = "error"
+        raise HTTPException(status_code=504, detail="Таймаут обучения (2 часа)")
+    except Exception as e:
+        retrain_status["status"] = "error"
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# === Endpoint: статус обучения ===
+@app.get("/retrain/status")
+async def retrain_status_endpoint():
+    """Показывает статус последнего обучения модели"""
+    return {
+        "status": retrain_status["status"],
+        "last_retrain": retrain_status["last_retrain"],
+        "last_retrain_success": retrain_status["last_retrain_success"],
+        "total_retrains": retrain_status["total_retrains"],
+        "auto_retrain_enabled": AUTO_RETRAIN_ENABLED,
+        "interval_seconds": AUTO_RETRAIN_INTERVAL,
+        "interval_human": f"{AUTO_RETRAIN_INTERVAL // 3600} часа(ов)"
+    }
+
+
+# === Endpoint: генерация изображений Айко ===
+from fastapi.responses import FileResponse
+
+# Глобальный генератор
+ayiko_generator = None
+
+@app.on_event("startup")
+async def init_ayiko_generator():
+    """Инициализация генератора изображений Айко"""
+    global ayiko_generator
+    try:
+        from ayiko.image_generator import AyikoImageGenerator
+        ayiko_generator = AyikoImageGenerator()
+        logger.info("🎨 Генератор изображений Айко инициализирован")
+    except ImportError:
+        logger.warning("⚠️ Модуль ayiko.image_generator не найден")
+    except Exception as e:
+        logger.error(f"❌ Ошибка инициализации: {e}")
+
+
+@app.post("/ayiko/generate")
+async def ayiko_generate_image(request: Request):
+    """
+    Генерация изображения через Айко
+    
+    Body JSON:
+    {
+        "type": "pixel|technical|description",
+        "style": "character|landscape|abstract|pattern",
+        "palette": "retro|vintage|neon|pastel|monochrome",
+        "size": 64,
+        "technical_type": "circuit|gear|blueprint",
+        "description": "текстовое описание"
+    }
+    """
+    if ayiko_generator is None:
+        raise HTTPException(status_code=503, detail="Генератор не инициализирован")
+    
+    try:
+        body = await request.json()
+    except:
+        raise HTTPException(status_code=400, detail="Неверный JSON")
+    
+    try:
+        img_type = body.get("type", "pixel")
+        
+        if img_type == "pixel":
+            img = ayiko_generator.generate_pixel_art(
+                size=body.get("size", 64),
+                style=body.get("style", "character"),
+                palette=body.get("palette", "retro")
+            )
+        elif img_type == "technical":
+            img = ayiko_generator.generate_technical_drawing(
+                size=(512, 512),
+                type=body.get("technical_type", "circuit")
+            )
+        elif img_type == "description":
+            result = ayiko_generator.generate_from_description(
+                body.get("description", "")
+            )
+            return {
+                "status": "success",
+                "message": "Изображение сгенерировано",
+                "data": result
+            }
+        else:
+            raise HTTPException(status_code=400, detail=f"Неизвестный тип: {img_type}")
+        
+        # Сохраняем и возвращаем
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"ayiko_{timestamp}.png"
+        filepath = ayiko_generator.output_dir / filename
+        img.save(filepath)
+        
+        return {
+            "status": "success",
+            "message": "Изображение сгенерировано",
+            "filename": filename,
+            "size": img.size,
+            "format": "PNG"
+        }
+        
+    except Exception as e:
+        logger.error(f"❌ Ошибка генерации: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/ayiko/stats")
+async def ayiko_stats():
+    """Статистика сгенерированных изображений"""
+    if ayiko_generator is None:
+        raise HTTPException(status_code=503, detail="Генератор не инициализирован")
+    
+    return ayiko_generator.get_stats()
+
+
+@app.get("/ayiko/generate/{image_id}")
+async def ayiko_get_image(image_id: str):
+    """Получение сгенерированного изображения"""
+    if ayiko_generator is None:
+        raise HTTPException(status_code=503, detail="Генератор не инициализирован")
+    
+    filepath = ayiko_generator.output_dir / f"{image_id}.png"
+    if not filepath.exists():
+        raise HTTPException(status_code=404, detail="Изображение не найдено")
+    
+    return FileResponse(filepath, media_type="image/png")
 
 
 # === Endpoint: мониторинг безопасности ===

@@ -102,3 +102,11 @@ android-studio-plugin/.gradle/
 # === Temp files ===
 temp_*.txt
 test_request.json
+data/.last_retrain_timestamp
+
+# === Chat (не нужно в репозитории) ===
+PantikurChat/
+fludilka_chat_pantikur/
+
+# === Тестовые файлы ===
+test_*.png

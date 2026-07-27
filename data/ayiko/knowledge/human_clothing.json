@@ -1,0 +1,172 @@
+{
+  "title": "Одежда и аксессуары - База знаний для генерации",
+  "version": "1.0",
+  "clothing_styles": {
+    "casual": {
+      "description": "повседневная одежда",
+      "items": {
+        "tops": ["t-shirt", "tank top", "hoodie", "sweatshirt", "polo shirt"],
+        "bottoms": ["jeans", "shorts", "chinos", "joggers", "cargo pants"],
+        "shoes": ["sneakers", "sandals", "boots", "slippers"],
+        "outerwear": ["denim jacket", "windbreaker", "puffer vest", "cardigan"],
+        "accessories": ["cap", "beanie", "scarf", "belt", "backpack"]
+      },
+      "color_palettes": {
+        "tshirt": ["#FFFFFF", "#000000", "#FF0000", "#00FF00", "#0000FF", "#FFFF00"],
+        "jeans": ["#4169E1", "#1E3A8A", "#60A5FA", "#1E40AF"],
+        "sneakers": ["#FF0000", "#000000", "#FFFFFF", "#FFD700"]
+      }
+    },
+    "formal": {
+      "description": "официальная одежда",
+      "items": {
+        "tops": ["dress shirt", "vest", "waistcoat", "tie", "bow tie"],
+        "bottoms": ["dress pants", "suit trousers", "formal skirt"],
+        "shoes": ["dress shoes", "loafers", "oxfords", "heels"],
+        "outerwear": ["suit jacket", "tuxedo", "overcoat", "top hat"],
+        "accessories": ["watch", "cufflinks", "pocket square", "umbrella", "briefcase"]
+      },
+      "color_palettes": {
+        "suit": ["#000000", "#1F2937", "#374151", "#111827", "#18181B"],
+        "shirt": ["#FFFFFF", "#F9FAFB", "#F3F4F6", "#DBEAFE", "#DCFCE7"],
+        "shoes": ["#000000", "#1F2937", "#111827", "#451A03", "#713F12"]
+      }
+    },
+    "sport": {
+      "description": "спортивная одежда",
+      "items": {
+        "tops": ["sports jersey", "tank top", "compression shirt", "running vest"],
+        "bottoms": ["athletic shorts", "leggings", "track pants", "swim trunks"],
+        "shoes": ["running shoes", "basketball shoes", "cleats", "training shoes"],
+        "outerwear": ["windbreaker", "track jacket", "thermal layer", "rain jacket"],
+        "accessories": ["baseball cap", "headband", "wristband", "sports watch", "gym bag"]
+      },
+      "color_palettes": {
+        "jersey": ["#FF0000", "#00FF00", "#0000FF", "#FFD700", "#FF00FF"],
+        "shorts": ["#FF0000", "#00FF00", "#0000FF", "#FFFFFF", "#000000"],
+        "shoes": ["#FF0000", "#00FF00", "#0000FF", "#FFD700", "#FF6B35"]
+      }
+    },
+    "fantasy": {
+      "description": "фэнтези одежда",
+      "items": {
+        "tops": ["tunic", "armor chest", "robe", "leather vest", "chainmail shirt"],
+        "bottoms": ["leather pants", "cloth trousers", "skirt", "greaves"],
+        "shoes": ["boots", "sandals", "iron boots", "elven boots"],
+        "outerwear": ["cloak", "cape", "heavy armor", "enchanted robe"],
+        "accessories": ["belt", "bracer", "amulet", "ring", "crown", "hood"]
+      },
+      "color_palettes": {
+        "robe": ["#8B008B", "#4B0082", "#191970", "#006400", "#8B4513"],
+        "armor": ["#708090", "#A9A9A9", "#C0C0C0", "#B87333", "#FFD700"],
+        "cloak": ["#2F4F4F", "#000000", "#8B0000", "#191970", "#006400"]
+      }
+    },
+    "sci_fi": {
+      "description": "научная фантастика",
+      "items": {
+        "tops": ["space suit", "power armor", "cyber vest", "nanotech suit"],
+        "bottoms": ["space pants", "power armor legs", "mechanical legs"],
+        "shoes": ["magnetic boots", "jet boots", "mechanical feet"],
+        "outerwear": ["force field", "energy cloak", "shield generator"],
+        "accessories": ["helmet", "visor", "HUD glasses", "communicator", "energy weapon"]
+      },
+      "color_palettes": {
+        "space_suit": ["#FFFFFF", "#E0E0E0", "#B0B0B0", "#1E3A8A", "#000000"],
+        "armor": ["#4A5568", "#2D3748", "#1A202C", "#718096", "#A0AEC0"],
+        "helmet": ["#1A202C", "#2D3748", "#4A5568", "#718096", "#00FFFF"]
+      }
+    },
+    "historical": {
+      "description": "историческая одежда",
+      "items": {
+        "ancient": ["toga", "chiton", "sandals", "laurel wreath"],
+        "medieval": ["chainmail", "surcoat", "tabard", "leather boots"],
+        "renaissance": ["doublet", "pumpkin pants", "ruff collar", "buckled shoes"],
+        "victorian": ["corset", "crinoline", "top hat", "cane", "gloves"]
+      },
+      "color_palettes": {
+        "toga": ["#F5DEB3", "#FAEBD7", "#FFE4C4", "#DEB887"],
+        "medieval": ["#8B4513", "#654321", "#A0522D", "#D2691E"],
+        "victorian": ["#000000", "#1C1C1C", "#2F2F2F", "#8B0000", "#4B0082"]
+      }
+    }
+  },
+  "accessories": {
+    "headwear": [
+      {"name": "baseball cap", "colors": ["#000000", "#FFFFFF", "#FF0000", "#0000FF"]},
+      {"name": "beanie", "colors": ["#000000", "#FFFFFF", "#FF0000", "#00FF00"]},
+      {"name": "fedora", "colors": ["#000000", "#8B4513", "#D2691E", "#F5DEB3"]},
+      {"name": "top hat", "colors": ["#000000", "#1C1C1C", "#2F2F2F"]},
+      {"name": "crown", "colors": ["#FFD700", "#DAA520", "#B8860B", "#CD853F"]},
+      {"name": "hood", "colors": ["#000000", "#2F4F4F", "#4B0082", "#8B0000"]}
+    ],
+    "eyewear": [
+      {"name": "round glasses", "colors": ["#000000", "#8B4513", "#C0C0C0", "#FFD700"]},
+      {"name": "aviators", "colors": ["#C0C0C0", "#FFD700", "#000000"]},
+      {"name": "sunglasses", "colors": ["#000000", "#1C1C1C", "#2F2F2F", "#4B0082"]},
+      {"name": "steampunk goggles", "colors": ["#B87333", "#CD853F", "#FFD700"]}
+    ],
+    "jewelry": [
+      {"name": "ring", "colors": ["#FFD700", "#C0C0C0", "#B87333", "#FF0000"]},
+      {"name": "necklace", "colors": ["#FFD700", "#C0C0C0", "#B87333", "#000000"]},
+      {"name": "bracelet", "colors": ["#FFD700", "#C0C0C0", "#B87333", "#000000"]},
+      {"name": "earrings", "colors": ["#FFD700", "#C0C0C0", "#FF0000", "#0000FF"]}
+    ],
+    "bags": [
+      {"name": "backpack", "colors": ["#000000", "#8B4513", "#4169E1", "#228B22"]},
+      {"name": "satchel", "colors": ["#8B4513", "#A0522D", "#D2691E", "#CD853F"]},
+      {"name": "purse", "colors": ["#000000", "#8B0000", "#4B0082", "#FFD700"]},
+      {"name": "belt bag", "colors": ["#000000", "#8B4513", "#2F4F4F"]}
+    ],
+    "weapons": [
+      {"name": "sword", "colors": ["#C0C0C0", "#708090", "#FFD700"]},
+      {"name": "bow", "colors": ["#8B4513", "#A0522D", "#D2691E"]},
+      {"name": "staff", "colors": ["#8B4513", "#654321", "#A0522D"]},
+      {"name": "dagger", "colors": ["#C0C0C0", "#708090", "#FFD700"]},
+      {"name": "shield", "colors": ["#C0C0C0", "#708090", "#FFD700", "#8B0000"]}
+    ]
+  },
+  "body_details": {
+    "scars": {
+      "types": ["line", "spot", "burn", "slash", "bullet wound"],
+      "locations": ["face", "arm", "chest", "back", "leg"]
+    },
+    "birthmarks": {
+      "types": ["spot", "patch", "stripe", "circle"],
+      "locations": ["face", "arm", "shoulder", "back"]
+    },
+    "tattoos": {
+      "styles": ["geometric", "floral", "tribal", "text", "portrait", "abstract"],
+      "locations": ["arm", "chest", "back", "leg", "neck", "face"]
+    },
+    "piercings": {
+      "types": ["ear", "nose", "eyebrow", "lip", "tongue", "navel"],
+      "materials": ["gold", "silver", "steel", "plastic"]
+    }
+  },
+  "fabric_types": [
+    {"name": "cotton", "properties": ["soft", "breathable", "casual"]},
+    {"name": "leather", "properties": ["tough", "formal", "armor"]},
+    {"name": "silk", "properties": ["smooth", "elegant", "formal"]},
+    {"name": "wool", "properties": ["warm", "heavy", "winter"]},
+    {"name": "metal", "properties": ["hard", "protective", "armor"]},
+    {"name": "fabric_mechanical", "properties": ["tech", "futuristic", "sci-fi"]}
+  ],
+  "color_theory": {
+    "complementary": [
+      ["#FF0000", "#00FF00"],
+      ["#0000FF", "#FFFF00"],
+      ["#800080", "#00FF00"]
+    ],
+    "analogous": [
+      ["#FF0000", "#FF8000", "#FFFF00"],
+      ["#0000FF", "#00FFFF", "#00FF00"],
+      ["#800080", "#FF00FF", "#FF0080"]
+    ],
+    "triadic": [
+      ["#FF0000", "#00FF00", "#0000FF"],
+      ["#FF00FF", "#00FFFF", "#FFFF00"]
+    ]
+  }
+}

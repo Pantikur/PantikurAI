@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Воин",
+    "type": "warrior",
+    "body_type": "mesomorph",
+    "height": 180,
+    "hair": {"style": "short", "color": "dark"},
+    "clothing": "armor, cloak",
+    "weapon": "sword, shield",
+    "expression": "serious",
+    "pose": "standing, arms crossed"
+  },
+  {
+    "name": "Маг",
+    "type": "mage",
+    "body_type": "ectomorph",
+    "height": 170,
+    "hair": {"style": "long", "color": "light"},
+    "clothing": "robe, hat",
+    "weapon": "staff",
+    "expression": "thoughtful",
+    "pose": "standing, hands folded"
+  },
+  {
+    "name": "Лучник",
+    "type": "archer",
+    "body_type": "athletic",
+    "height": 175,
+    "hair": {"style": "short", "color": "red"},
+    "clothing": "leather armor, cloak",
+    "weapon": "bow, arrows",
+    "expression": "focused",
+    "pose": "standing, bow in hand"
+  },
+  {
+    "name": "Учёный",
+    "type": "scholar",
+    "body_type": "ectomorph",
+    "height": 165,
+    "hair": {"style": "medium", "color": "gray"},
+    "clothing": "lab coat, glasses",
+    "weapon": "books, flasks",
+    "expression": "thoughtful",
+    "pose": "sitting, at desk"
+  },
+  {
+    "name": "Торговец",
+    "type": "merchant",
+    "body_type": "endomorph",
+    "height": 170,
+    "hair": {"style": "short", "color": "dark"},
+    "clothing": "colorful clothes, belt",
+    "weapon": "scales, coins",
+    "expression": "smiling",
+    "pose": "standing, hands on hips"
+  },
+  {
+    "name": "Рыцарь",
+    "type": "knight",
+    "body_type": "mesomorph",
+    "height": 185,
+    "hair": {"style": "short", "color": "light"},
+    "clothing": "full armor, cloak",
+    "weapon": "sword, shield",
+    "expression": "determined",
+    "pose": "standing, sword in hand"
+  },
+  {
+    "name": "Ассасин",
+    "type": "assassin",
+    "body_type": "ectomorph",
+    "height": 175,
+    "hair": {"style": "short", "color": "dark"},
+    "clothing": "dark clothes, hood",
+    "weapon": "daggers",
+    "expression": "focused",
+    "pose": "standing, hands behind back"
+  },
+  {
+    "name": "Целитель",
+    "type": "healer",
+    "body_type": "mesomorph",
+    "height": 165,
+    "hair": {"style": "long", "color": "light"},
+    "clothing": "white clothes, cross",
+    "weapon": "staff, flasks",
+    "expression": "kind",
+    "pose": "standing, hands folded"
+  },
+  {
+    "name": "Бард",
+    "type": "bard",
+    "body_type": "athletic",
+    "height": 175,
+    "hair": {"style": "long", "color": "red"},
+    "clothing": "colorful clothes, cloak",
+    "weapon": "lute",
+    "expression": "smiling",
+    "pose": "standing, lute in hands"
+  },
+  {
+    "name": "Паладин",
+    "type": "paladin",
+    "body_type": "mesomorph",
+    "height": 185,
+    "hair": {"style": "short", "color": "light"},
+    "clothing": "full armor, cross",
+    "weapon": "sword, shield",
+    "expression": "determined",
+    "pose": "standing, sword in hand"
+  }
+]

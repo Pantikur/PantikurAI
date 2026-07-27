@@ -1,0 +1,139 @@
+{
+  "title": "Анатомия человека - База знаний для генерации",
+  "version": "1.0",
+  "proportions": {
+    "head_to_body_ratio": "1:7.5",
+    "ideal_height": "7.5-8 heads",
+    "golden_ratio_navel": "0.618 from ground",
+    "shoulder_width": "2 heads",
+    "waist_width": "1 head",
+    "hip_width": "2.2 heads",
+    "arm_length": "4 heads",
+    "leg_length": "3 heads",
+    "foot_length": "1 head"
+  },
+  "body_types": [
+    {"name": "ectomorph", "description": "slim, long body, narrow shoulders, few muscles", "characteristics": ["narrow", "long", "light"]},
+    {"name": "mesomorph", "description": "athletic, wide shoulders, narrow waist, many muscles", "characteristics": ["wide", "strong", "athletic"]},
+    {"name": "endomorph", "description": "round, wide hips, many fat, short limbs", "characteristics": ["round", "wide", "soft"]},
+    {"name": "athletic", "description": "V-shaped torso, wide shoulders, narrow waist", "characteristics": ["V-shape", "strong", "balanced"]},
+    {"name": "slim", "description": "long limbs, visible ribs, narrow shoulders", "characteristics": ["long", "thin", "light"]},
+    {"name": "large", "description": "wide body, thick limbs, short neck", "characteristics": ["wide", "thick", "heavy"]}
+  ],
+  "gender_differences": {
+    "male": {
+      "shoulder_to_hip_ratio": 1.2,
+      "characteristics": ["wider shoulders", "narrower hips", "more angular", "wider chest", "shorter legs proportionally", "more prominent cheekbones and jaw"]
+    },
+    "female": {
+      "shoulder_to_hip_ratio": 1.1,
+      "characteristics": ["wider hips", "more defined waist", "rounder features", "wider hips and thighs", "longer legs proportionally", "softer body lines"]
+    }
+  },
+  "face_structure": {
+    "eyes_position": "50% from top of head",
+    "nose_position": "50% from eyes to chin",
+    "mouth_position": "33% from nose to chin",
+    "ears_position": "from eyes to nose line",
+    "face_shapes": ["oval", "round", "square", "rectangular", "triangular", "heart-shaped", "elongated"],
+    "eye_shapes": ["almond", "round", "slanted", "deep-set", "protruding"],
+    "nose_shapes": ["straight", "humped", "upturned", "downturned", "wide", "narrow"],
+    "mouth_shapes": ["thin lips", "full lips", "uneven", "upturned corners", "downturned corners"]
+  },
+  "skull_and_head": {
+    "skull": {"shape": "oval", "size": "8x8 pixels at 16x16"},
+    "forehead": {"position": "top", "size": "3x4 pixels"},
+    "eye_sockets": {"count": 2, "size": "2x2 pixels each"},
+    "nasal_cavity": {"shape": "triangle", "size": "2x2 pixels"},
+    "jaw": {"shape": "U", "size": "4x2 pixels"},
+    "chin": {"position": "bottom", "size": "2x2 pixels"}
+  },
+  "face_details": {
+    "eyes": {"size": "2x2 pixels each", "distance": "2 pixels"},
+    "eyebrows": {"position": "above eyes", "size": "3x1 pixels"},
+    "nose": {"shape": "triangle", "size": "2x2 pixels"},
+    "mouth": {"shape": "line", "size": "4x1 pixels"},
+    "ears": {"size": "2x2 pixels each", "position": "sides of head"}
+  },
+  "neck": {
+    "length": "2 heads",
+    "width": "1 head",
+    "muscles": ["sternocleidomastoid"]
+  },
+  "torso": {
+    "rib_cage": {"width": "3 heads"},
+    "waist": {"width": "2 heads"},
+    "hips": {"width": "2.5 heads"},
+    "spine": "line down center of back"
+  },
+  "arms": {
+    "upper_arm": {"length": "2 heads"},
+    "forearm": {"length": "2 heads"},
+    "hand": {"length": "1 head"},
+    "fingers": {"count": 5, "size": "1 pixel each"},
+    "muscles": ["biceps", "triceps", "forearm"]
+  },
+  "legs": {
+    "thigh": {"length": "3 heads"},
+    "shin": {"length": "3 heads"},
+    "foot": {"length": "1 head"},
+    "toes": {"count": 5, "size": "1 pixel each"},
+    "muscles": ["quadriceps", "hamstrings", "calves"]
+  },
+  "muscles": {
+    "chest": ["pectoralis major", "pectoralis minor"],
+    "back": ["latissimus dorsi", "trapezius"],
+    "arms": ["biceps", "triceps", "forearm"],
+    "legs": ["quadriceps", "hamstrings", "calves"],
+    "abs": ["rectus abdominis", "obliques"]
+  },
+  "skin_colors": {
+    "light": {"base": "#F5D5B8", "shadow": "#E0B090", "highlight": "#FFD5B0", "accent": "#FFC0A0"},
+    "medium": {"base": "#C68642", "shadow": "#A06020", "highlight": "#D09050", "accent": "#B07030"},
+    "dark": {"base": "#8B5A2B", "shadow": "#603010", "highlight": "#A06030", "accent": "#704020"}
+  },
+  "hair_types": ["straight", "wavy", "curly", "afro", "coarse", "thin"],
+  "hair_lengths": ["short", "medium", "long", "very long"],
+  "hair_colors": ["black", "dark brown", "light brown", "blonde", "red", "gray", "white", "bright colors"],
+  "facial_hair": {
+    "beard": ["full", "partial", "stubble"],
+    "mustache": ["thin", "thick", "handlebar", "walrus"],
+    "eyebrows": ["thin", "thick", "arched", "straight", "angled"]
+  },
+  "body_details": {
+    "skin_textures": ["smooth", "wrinkled", "scarred", "freckled", "tattooed"],
+    "scars": "lines, spots",
+    "birthmarks": "spots on skin",
+    "tattoos": "patterns, writings",
+    "burns": "spots, scars",
+    "freckles": "small spots on face and shoulders"
+  },
+  "age_groups": {
+    "child": {"age": "0-12", "head_ratio": "1:1", "limbs": "short", "face": "large eyes, small nose and mouth"},
+    "teen": {"age": "12-18", "head_ratio": "1:2", "limbs": "long", "face": "mixed features"},
+    "adult": {"age": "18-60", "head_ratio": "1:7.5", "limbs": "proportional", "face": "adult features"},
+    "elderly": {"age": "60+", "head_ratio": "1:7", "limbs": "shorter", "face": "wrinkles, gray hair"}
+  },
+  "poses": [
+    {"name": "standing neutral", "description": "arms at sides"},
+    {"name": "standing relaxed", "description": "hands in pockets"},
+    {"name": "arms crossed", "description": "protective pose"},
+    {"name": "hands on hips", "description": "confident pose"},
+    {"name": "hands behind head", "description": "relaxed pose"},
+    {"name": "sitting straight", "description": "back straight"},
+    {"name": "sitting slouched", "description": "leaning forward"},
+    {"name": "legs crossed", "description": "relaxed pose"},
+    {"name": "walking", "description": "one step forward"},
+    {"name": "running", "description": "leaning forward, arms bent"},
+    {"name": "jumping", "description": "both feet off ground"}
+  ],
+  "expressions": [
+    {"name": "joy", "description": "smile, squinted eyes"},
+    {"name": "sadness", "description": "downturned mouth corners, lowered eyebrows"},
+    {"name": "anger", "description": "furrowed brows, clenched lips"},
+    {"name": "surprise", "description": "wide eyes, open mouth"},
+    {"name": "fear", "description": "wide eyes, open mouth"},
+    {"name": "disgust", "description": "wrinkled nose, downturned mouth corners"},
+    {"name": "neutral", "description": "relaxed face"}
+  ]
+}
