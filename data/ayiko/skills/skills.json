@@ -1,0 +1,156 @@
+{
+  "pixel_art": {
+    "name": "Пиксель-арт",
+    "category": "technique",
+    "level": 10,
+    "experience": 1844.0,
+    "techniques_mastered": [
+      "basic_pixels",
+      "color_palette",
+      "shading",
+      "dithering"
+    ],
+    "techniques_learning": [
+      "anti_aliasing"
+    ]
+  },
+  "watercolor": {
+    "name": "Акварель",
+    "category": "technique",
+    "level": 6,
+    "experience": 600,
+    "techniques_mastered": [
+      "wet_on_wet",
+      "color_mixing"
+    ],
+    "techniques_learning": [
+      "glazing",
+      "lifting"
+    ]
+  },
+  "oil_painting": {
+    "name": "Масляная живопись",
+    "category": "technique",
+    "level": 7,
+    "experience": 700,
+    "techniques_mastered": [
+      "layering",
+      "impasto"
+    ],
+    "techniques_learning": [
+      "glazing",
+      "scumbling"
+    ]
+  },
+  "charcoal": {
+    "name": "Угольный рисунок",
+    "category": "technique",
+    "level": 5,
+    "experience": 500,
+    "techniques_mastered": [
+      "blending"
+    ],
+    "techniques_learning": [
+      "hatching",
+      "stumping"
+    ]
+  },
+  "pencil": {
+    "name": "Карандаш",
+    "category": "technique",
+    "level": 9,
+    "experience": 900,
+    "techniques_mastered": [
+      "shading",
+      "line_work",
+      "texture"
+    ],
+    "techniques_learning": [
+      "cross_hatching"
+    ]
+  },
+  "color_theory": {
+    "name": "Теория Цвета",
+    "category": "theory",
+    "level": 9,
+    "experience": 900,
+    "knowledge_areas": [
+      "complementary",
+      "analogous",
+      "triadic",
+      "split_complementary"
+    ]
+  },
+  "composition": {
+    "name": "Композиция",
+    "category": "theory",
+    "level": 8,
+    "experience": 800,
+    "knowledge_areas": [
+      "rule_of_thirds",
+      "golden_ratio",
+      "symmetry",
+      "balance"
+    ]
+  },
+  "anatomy": {
+    "name": "Анатомия",
+    "category": "theory",
+    "level": 8,
+    "experience": 800,
+    "knowledge_areas": [
+      "skeletal",
+      "muscular",
+      "proportions",
+      "movement"
+    ]
+  },
+  "lighting": {
+    "name": "Свет и Тень",
+    "category": "theory",
+    "level": 7,
+    "experience": 700,
+    "knowledge_areas": [
+      "chiaroscuro",
+      "rim_light",
+      "volumetric",
+      "ambient"
+    ]
+  },
+  "character_design": {
+    "name": "Дизайн Персонажей",
+    "category": "specialization",
+    "level": 9,
+    "experience": 900,
+    "sub_skills": [
+      "expression",
+      "pose",
+      "costume",
+      "silhouette"
+    ]
+  },
+  "landscape": {
+    "name": "Пейзаж",
+    "category": "specialization",
+    "level": 7,
+    "experience": 700,
+    "sub_skills": [
+      "nature",
+      "architecture",
+      "weather",
+      "time_of_day"
+    ]
+  },
+  "technical_drawing": {
+    "name": "Техническая Графика",
+    "category": "specialization",
+    "level": 6,
+    "experience": 600,
+    "sub_skills": [
+      "blueprint",
+      "isometric",
+      "orthographic",
+      "assembly"
+    ]
+  }
+}
