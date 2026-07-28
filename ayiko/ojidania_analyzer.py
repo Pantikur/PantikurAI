@@ -1,32 +1,23 @@
 #!/usr/bin/env python3
 """
-Ayiko AI — Image Analyzer (Ojidania)
+Ayiko AI - Image Analyzer (Ojidania)
 Zone: Photo study, relief, light, clothing, mimicry analysis
-
-Functions:
-- Body relief and muscle analysis
-- Clothing draping and contours
-- Light and shadow analysis
-- Gloss effects (eyes, sweat, water)
-- Depth layers (foreground/background)
-- Composition layers
-- Facial mimicry and expressions
-- Generation based on learned patterns
 """
 
 import os
 import json
 import math
 from pathlib import Path
-from typing import List, Dict, Tuple, Any, Optional
+from typing import List, Dict, Tuple, Any
 from datetime import datetime
 
+# Импорт с обработкой ошибок
 try:
     from PIL import Image as PILImage
     from PIL import ImageDraw, ImageFilter, ImageEnhance
     import numpy as np
-except ImportError:
-    print("WARNING: PIL and numpy not installed. Install: pip install Pillow numpy")
+except ImportError as e:
+    print(f"WARNING: Missing dependencies: {e}")
     PILImage = None
     ImageDraw = None
     ImageFilter = None
@@ -53,22 +44,17 @@ class OjidaniaAnalyzer:
             "depth_layers": {},
             "facial_mimicry": {},
             "muscle_structure": {},
-            "texture_analysis": {}
+            "texture_analysis": {},
+            "objects": {},
+            "clothing_items": {},
+            "accessories": {},
+            "3d_structure": {}
         }
         
-        self.training_data = []
         self.image_count = 0
         
     def analyze_image(self, image_path: str) -> Dict:
-        """
-        Full image analysis
-        
-        Args:
-            image_path: Path to image
-        
-        Returns:
-            Dict with analysis results
-        """
+        """Full image analysis"""
         if PILImage is None:
             return {"error": "PIL not installed"}
         
@@ -88,22 +74,22 @@ class OjidaniaAnalyzer:
                 "facial_analysis": self._analyze_facial_mimicry(img_array, img.size) if img_array is not None else {},
                 "muscle_structure": self._analyze_muscle_structure(img_array, img.size) if img_array is not None else {},
                 "texture_analysis": self._analyze_textures(img_array, img.size) if img_array is not None else {},
+                "objects_detected": self._detect_objects(img_array, img.size) if img_array is not None else {},
+                "clothing_items": self._detect_clothing_items(img_array, img.size) if img_array is not None else {},
+                "accessories_detected": self._detect_accessories(img_array, img.size) if img_array is not None else {},
+                "3d_structure": self._analyze_3d_structure(img_array, img.size) if img_array is not None else {},
                 "overall_quality": self._assess_quality(img, img_array)
             }
             
-            # Save analysis
             self._save_analysis(analysis)
-            
-            # Update knowledge base
             self._update_knowledge(analysis)
-            
             self.image_count += 1
             return analysis
             
         except Exception as e:
             return {"error": str(e)}
     
-    def _analyze_basic_info(self, img: PILImage.Image) -> Dict:
+    def _analyze_basic_info(self, img: Any) -> Dict:
         """Basic image information"""
         return {
             "size": img.size,
@@ -119,14 +105,10 @@ class OjidaniaAnalyzer:
         if np is None:
             return {}
         
-        # Convert to grayscale for relief analysis
         gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
-        
-        # Calculate gradients (brightness changes = relief)
         dy, dx = np.gradient(gray)
         magnitude = np.sqrt(dx**2 + dy**2)
         
-        # Analyze body zones by location
         height, width = gray.shape
         head_zone = gray[int(height*0.1):int(height*0.3), int(width*0.3):int(width*0.7)]
         torso_zone = gray[int(height*0.3):int(height*0.6), int(width*0.25):int(width*0.75)]
@@ -164,13 +146,9 @@ class OjidaniaAnalyzer:
         gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
         height, width = gray.shape
         
-        # Analyze folds and tension
         dy, dx = np.gradient(gray)
-        
-        # Clothing zones
         upper_body = gray[int(height*0.25):int(height*0.6), int(width*0.2):int(width*0.8)]
         
-        # Calculate fabric tension
         tension_map = np.abs(dx) + np.abs(dy)
         tension_zones = {
             "shoulders": float(np.mean(tension_map[int(height*0.25):int(height*0.35), int(width*0.3):int(width*0.4)])),
@@ -179,7 +157,6 @@ class OjidaniaAnalyzer:
             "hips": float(np.mean(tension_map[int(height*0.6):int(height*0.7), int(width*0.3):int(width*0.7)]))
         }
         
-        # Classify drapery type
         drapery_type = self._classify_drapery(tension_zones)
         
         return {
@@ -195,7 +172,6 @@ class OjidaniaAnalyzer:
         if np is None:
             return {}
         
-        # Brightness analysis by zones
         height, width = img_array.shape[:2]
         top = img_array[:height//3, :]
         middle = img_array[height//3:2*height//3, :]
@@ -207,16 +183,11 @@ class OjidaniaAnalyzer:
             "bottom": float(np.mean(bottom[:, :, :3]))
         }
         
-        # Determine light direction
         left_side = img_array[:, :width//2, :3]
         right_side = img_array[:, width//2:, :3]
         
         lighting_direction = self._determine_light_direction(left_side, right_side)
-        
-        # Contrast
         contrast = float(np.std(img_array[:, :, :3].flatten()) / (np.mean(img_array[:, :, :3].flatten()) + 1e-6))
-        
-        # Shadow softness
         shadow_softness = self._analyze_shadow_softness(img_array)
         
         return {
@@ -233,17 +204,11 @@ class OjidaniaAnalyzer:
         if np is None:
             return {}
         
-        # Find bright areas (blazing highlights)
         rgb_mean = np.mean(img_array[:, :, :3], axis=2)
         bright_areas = rgb_mean > 220
-        
-        # Specular highlights analysis
         specular_intensity = float(np.sum(bright_areas) / bright_areas.size)
         
-        # Classify gloss type
         gloss_type = self._classify_gloss_type(img_array, bright_areas)
-        
-        # Reflection analysis
         reflection_quality = self._analyze_reflections(img_array, bright_areas)
         
         return {
@@ -260,34 +225,24 @@ class OjidaniaAnalyzer:
             return {}
         
         height, width = img_array.shape[:2]
-        
-        # Separate into layers by brightness and sharpness
         gray = np.mean(img_array[:, :, :3], axis=2)
         
-        # Foreground (bottom part, usually brighter)
         foreground = gray[int(height*0.6):, :]
-        
-        # Midground
         midground = gray[int(height*0.3):int(height*0.6), :]
-        
-        # Background (top part, usually darker)
         background = gray[:int(height*0.3), :]
         
-        # Layer contrast
         layer_contrast = {
             "foreground_bg": float(np.std(foreground)),
             "midground_bg": float(np.std(midground)),
             "background_bg": float(np.std(background))
         }
         
-        # Layer sharpness (depth of field)
         sharpness = {
             "foreground": float(np.std(np.gradient(foreground))),
             "midground": float(np.std(np.gradient(midground))),
             "background": float(np.std(np.gradient(background)))
         }
         
-        # Scene depth score
         depth_score = self._calculate_depth_score(sharpness)
         
         return {
@@ -319,25 +274,17 @@ class OjidaniaAnalyzer:
             return {}
         
         height, width = img_array.shape[:2]
-        
-        # Face zone (upper third, center)
         face_zone = img_array[int(height*0.15):int(height*0.45), int(width*0.3):int(width*0.7)]
         
         if face_zone.size == 0:
             return {"error": "Face zone not detected"}
         
-        # Face contrast analysis
         face_gray = np.mean(face_zone[:, :, :3], axis=2) if face_zone.shape[2] >= 3 else face_zone
-        
-        # Face shadows (determine expression)
         shadows = face_gray < np.mean(face_gray) * 0.6
         highlight_areas = face_gray > np.mean(face_gray) * 1.4
         
-        # Wrinkles and lines analysis
         edge_map = np.abs(np.gradient(face_gray))
         wrinkle_density = float(np.sum(edge_map > 30) / edge_map.size)
-        
-        # Emotion classification (simplified by shadows)
         emotion = self._classify_emotion(face_gray, shadows, highlight_areas)
         
         return {
@@ -358,14 +305,8 @@ class OjidaniaAnalyzer:
         gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
         height, width = gray.shape
         
-        # Gradients show muscle contours
         dy, dx = np.gradient(gray)
         gradient_magnitude = np.sqrt(dx**2 + dy**2)
-        
-        # Muscle zones
-        chest_zone = gray[int(height*0.3):int(height*0.5), int(width*0.3):int(width*0.7)]
-        arm_zone = gray[int(height*0.3):int(height*0.6), :]
-        leg_zone = gray[int(height*0.6):int(height*0.9), :]
         
         muscle_definition = {
             "chest": float(np.std(gradient_magnitude[int(height*0.3):int(height*0.5), int(width*0.3):int(width*0.7)])),
@@ -373,7 +314,6 @@ class OjidaniaAnalyzer:
             "legs": float(np.std(gradient_magnitude[int(height*0.6):int(height*0.9), :]))
         }
         
-        # Classify body type
         body_type = self._classify_body_type(muscle_definition)
         
         return {
@@ -389,11 +329,8 @@ class OjidaniaAnalyzer:
             return {}
         
         gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
-        
-        # Pixel variability analysis (texture)
         texture_variability = float(np.std(gray))
         
-        # Texture classification
         if texture_variability < 20:
             texture_type = "smooth"
         elif texture_variability < 50:
@@ -409,7 +346,7 @@ class OjidaniaAnalyzer:
             "detail_level": "high" if texture_variability > 80 else "medium" if texture_variability > 40 else "low"
         }
     
-    def _assess_quality(self, img: PILImage.Image, img_array: Any) -> Dict:
+    def _assess_quality(self, img: Any, img_array: Any) -> Dict:
         """Image quality assessment"""
         quality = {
             "resolution": "high" if img.width > 1000 and img.height > 1000 else "medium" if img.width > 500 else "low",
@@ -418,7 +355,6 @@ class OjidaniaAnalyzer:
         }
         
         if img_array is not None and np is not None:
-            # Sharpness estimation via gradient variance
             gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
             dy, dx = np.gradient(gray)
             sharpness_score = float(np.mean(np.sqrt(dx**2 + dy**2)))
@@ -458,6 +394,18 @@ class OjidaniaAnalyzer:
         
         if "muscle_structure" in analysis and analysis["muscle_structure"]:
             self.knowledge["muscle_structure"][analysis["filename"]] = analysis["muscle_structure"]
+        
+        if "objects_detected" in analysis and analysis["objects_detected"]:
+            self.knowledge["objects"][analysis["filename"]] = analysis["objects_detected"]
+        
+        if "clothing_items" in analysis and analysis["clothing_items"]:
+            self.knowledge["clothing_items"][analysis["filename"]] = analysis["clothing_items"]
+        
+        if "accessories_detected" in analysis and analysis["accessories_detected"]:
+            self.knowledge["accessories"][analysis["filename"]] = analysis["accessories_detected"]
+        
+        if "3d_structure" in analysis and analysis["3d_structure"]:
+            self.knowledge["3d_structure"][analysis["filename"]] = analysis["3d_structure"]
     
     def _save_training_data(self):
         """Save collected training data"""
@@ -465,11 +413,674 @@ class OjidaniaAnalyzer:
         with open(training_file, "w", encoding="utf-8") as f:
             json.dump(self.knowledge, f, ensure_ascii=False, indent=2)
     
+    # === Object Detection ===
+    
+    def _detect_objects(self, img_array: Any, size: Tuple[int, int]) -> Dict:
+        """Detect and classify objects in image"""
+        if np is None:
+            return {}
+        
+        height, width = img_array.shape[:2]
+        gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
+        
+        # Detect edges and contours
+        dy, dx = np.gradient(gray)
+        edge_map = np.sqrt(dx**2 + dy**2)
+        
+        # Find object regions
+        objects = []
+        
+        # Analyze by zones
+        zones = {
+            "head": gray[int(height*0.05):int(height*0.35), int(width*0.3):int(width*0.7)],
+            "torso": gray[int(height*0.35):int(height*0.65), int(width*0.2):int(width*0.8)],
+            "arms": [
+                gray[int(height*0.35):int(height*0.65), int(width*0.05):int(width*0.2)],
+                gray[int(height*0.35):int(height*0.65), int(width*0.8):int(width*0.95)]
+            ],
+            "legs": [
+                gray[int(height*0.65):int(height*0.95), int(width*0.3):int(width*0.45)],
+                gray[int(height*0.65):int(height*0.95), int(width*0.55):int(width*0.7)]
+            ]
+        }
+        
+        # Classify objects based on texture and shape
+        for zone_name, zone_data in zones.items():
+            if isinstance(zone_data, list):
+                for i, zone in enumerate(zone_data):
+                    obj = self._classify_zone_object(zone, zone_name, f"left" if i == 0 else "right")
+                    if obj:
+                        objects.append(obj)
+            else:
+                obj = self._classify_zone_object(zone_data, zone_name, "center")
+                if obj:
+                    objects.append(obj)
+        
+        return {
+            "objects": objects,
+            "object_count": len(objects),
+            "spatial_distribution": self._get_spatial_distribution(objects)
+        }
+    
+    def _classify_zone_object(self, zone: Any, zone_name: str, position: str) -> Dict:
+        """Classify object in a zone"""
+        if np is None or zone.size == 0:
+            return {}
+        
+        mean_val = np.mean(zone)
+        std_val = np.std(zone)
+        variance = np.var(zone)
+        
+        # Classify based on properties
+        obj_type = "unknown"
+        confidence = 0.0
+        
+        if zone_name == "head":
+            if std_val > 40:
+                obj_type = "face_with_expression"
+                confidence = 0.8
+            elif std_val > 20:
+                obj_type = "face"
+                confidence = 0.7
+            else:
+                obj_type = "head_silhouette"
+                confidence = 0.5
+        
+        elif zone_name == "torso":
+            if std_val > 50:
+                obj_type = "clothed_torso"
+                confidence = 0.85
+            elif std_val > 30:
+                obj_type = "upper_body"
+                confidence = 0.7
+            else:
+                obj_type = "torso_silhouette"
+                confidence = 0.5
+        
+        elif "arm" in zone_name:
+            if std_val > 30:
+                obj_type = "arm_with_clothing"
+                confidence = 0.8
+            else:
+                obj_type = "arm_silhouette"
+                confidence = 0.6
+        
+        elif "leg" in zone_name:
+            if std_val > 30:
+                obj_type = "leg_with_clothing"
+                confidence = 0.8
+            else:
+                obj_type = "leg_silhouette"
+                confidence = 0.6
+        
+        return {
+            "type": obj_type,
+            "zone": zone_name,
+            "position": position,
+            "mean_brightness": float(mean_val),
+            "std_deviation": float(std_val),
+            "variance": float(variance),
+            "confidence": confidence
+        }
+    
+    def _get_spatial_distribution(self, objects: List[Dict]) -> Dict:
+        """Get spatial distribution of objects"""
+        distribution = {
+            "foreground": [],
+            "midground": [],
+            "background": []
+        }
+        
+        for obj in objects:
+            if obj.get("confidence", 0) > 0.7:
+                distribution["foreground"].append(obj)
+            elif obj.get("confidence", 0) > 0.5:
+                distribution["midground"].append(obj)
+            else:
+                distribution["background"].append(obj)
+        
+        return distribution
+    
+    # === Clothing Detection ===
+    
+    def _detect_clothing_items(self, img_array: Any, size: Tuple[int, int]) -> Dict:
+        """Detect and classify clothing items"""
+        if np is None:
+            return {}
+        
+        height, width = img_array.shape[:2]
+        gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
+        
+        clothing_items = []
+        
+        # Upper body clothing
+        upper_body = gray[int(height*0.25):int(height*0.6), int(width*0.2):int(width*0.8)]
+        upper_clothing = self._classify_upper_clothing(upper_body)
+        if upper_clothing:
+            clothing_items.append(upper_clothing)
+        
+        # Lower body clothing
+        lower_body = gray[int(height*0.6):int(height*0.95), int(width*0.25):int(width*0.75)]
+        lower_clothing = self._classify_lower_clothing(lower_body)
+        if lower_clothing:
+            clothing_items.append(lower_clothing)
+        
+        # Footwear
+        footwear = self._detect_footwear(img_array, height, width)
+        if footwear:
+            clothing_items.append(footwear)
+        
+        # Headwear
+        headwear = self._detect_headwear(gray, height, width)
+        if headwear:
+            clothing_items.append(headwear)
+        
+        return {
+            "items": clothing_items,
+            "item_count": len(clothing_items),
+            "style_analysis": self._analyze_clothing_style(clothing_items)
+        }
+    
+    def _classify_upper_clothing(self, zone: Any) -> Dict:
+        """Classify upper body clothing"""
+        if np is None or zone.size == 0:
+            return {}
+        
+        std_val = np.std(zone)
+        mean_val = np.mean(zone)
+        
+        # Analyze texture and pattern
+        dy, dx = np.gradient(zone)
+        edge_density = float(np.sum(np.abs(dx) + np.abs(dy)) / zone.size)
+        
+        # Color analysis (if RGB)
+        colors = []
+        if zone.ndim == 3:
+            colors = [
+                {"r": int(np.mean(zone[:, :, 0])), "g": int(np.mean(zone[:, :, 1])), "b": int(np.mean(zone[:, :, 2]))}
+            ]
+        
+        # Classify clothing type
+        clothing_type = "unknown"
+        if edge_density > 50:
+            clothing_type = "textured_clothing"
+        elif std_val > 40:
+            clothing_type = "patterned_clothing"
+        elif std_val > 20:
+            clothing_type = "solid_clothing"
+        else:
+            clothing_type = "smooth_clothing"
+        
+        return {
+            "type": clothing_type,
+            "category": "upper_body",
+            "mean_brightness": float(mean_val),
+            "texture_complexity": float(edge_density),
+            "colors": colors,
+            "confidence": 0.8
+        }
+    
+    def _classify_lower_clothing(self, zone: Any) -> Dict:
+        """Classify lower body clothing"""
+        if np is None or zone.size == 0:
+            return {}
+        
+        std_val = np.std(zone)
+        mean_val = np.mean(zone)
+        
+        dy, dx = np.gradient(zone)
+        edge_density = float(np.sum(np.abs(dx) + np.abs(dy)) / zone.size)
+        
+        clothing_type = "unknown"
+        if edge_density > 40:
+            clothing_type = "textured_pants"
+        elif std_val > 30:
+            clothing_type = "patterned_pants"
+        elif std_val > 15:
+            clothing_type = "solid_pants"
+        else:
+            clothing_type = "smooth_pants"
+        
+        return {
+            "type": clothing_type,
+            "category": "lower_body",
+            "mean_brightness": float(mean_val),
+            "texture_complexity": float(edge_density),
+            "confidence": 0.75
+        }
+    
+    def _detect_footwear(self, img_array: Any, height: int, width: int) -> Dict:
+        """Detect footwear"""
+        if np is None:
+            return {}
+        
+        gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
+        feet_zone = gray[int(height*0.9):, :]
+        
+        if feet_zone.size == 0:
+            return {}
+        
+        std_val = np.std(feet_zone)
+        mean_val = np.mean(feet_zone)
+        
+        return {
+            "type": "footwear_detected",
+            "category": "feet",
+            "mean_brightness": float(mean_val),
+            "std_deviation": float(std_val),
+            "confidence": 0.6
+        }
+    
+    def _detect_headwear(self, gray: Any, height: int, width: int) -> Dict:
+        """Detect headwear"""
+        if np is None:
+            return {}
+        
+        head_zone = gray[int(height*0.05):int(height*0.25), int(width*0.3):int(width*0.7)]
+        
+        if head_zone.size == 0:
+            return {}
+        
+        std_val = np.std(head_zone)
+        mean_val = np.mean(head_zone)
+        
+        # Check for hat-like shape (higher edges)
+        top_edge = head_zone[0, :]
+        if np.std(top_edge) > 30:
+            return {
+                "type": "headwear_with_pattern",
+                "category": "head",
+                "mean_brightness": float(mean_val),
+                "std_deviation": float(std_val),
+                "confidence": 0.7
+            }
+        
+        return {
+            "type": "headwear_solid",
+            "category": "head",
+            "mean_brightness": float(mean_val),
+            "std_deviation": float(std_val),
+            "confidence": 0.5
+        }
+    
+    def _analyze_clothing_style(self, items: List[Dict]) -> Dict:
+        """Analyze overall clothing style"""
+        if not items:
+            return {}
+        
+        categories = [item.get("category", "") for item in items]
+        types = [item.get("type", "") for item in items]
+        
+        # Determine style based on clothing types
+        style = "casual"
+        if any("formal" in t for t in types):
+            style = "formal"
+        elif any("textured" in t or "patterned" in t for t in types):
+            style = "detailed"
+        elif any("smooth" in t for t in types):
+            style = "minimal"
+        
+        return {
+            "overall_style": style,
+            "categories": categories,
+            "types": types
+        }
+    
+    # === Accessories Detection ===
+    
+    def _detect_accessories(self, img_array: Any, size: Tuple[int, int]) -> Dict:
+        """Detect accessories in image"""
+        if np is None:
+            return {}
+        
+        height, width = img_array.shape[:2]
+        gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
+        
+        accessories = []
+        
+        # Eyewear (eyes area)
+        eyewear = self._detect_eyewear(gray, height, width)
+        if eyewear:
+            accessories.append(eyewear)
+        
+        # Jewelry (neck, wrists)
+        jewelry = self._detect_jewelry(img_array, height, width)
+        if jewelry:
+            accessories.extend(jewelry)
+        
+        # Belts
+        belt = self._detect_belt(gray, height, width)
+        if belt:
+            accessories.append(belt)
+        
+        return {
+            "accessories": accessories,
+            "accessory_count": len(accessories),
+            "categories": list(set([acc.get("category", "unknown") for acc in accessories]))
+        }
+    
+    def _detect_eyewear(self, gray: Any, height: int, width: int) -> Dict:
+        """Detect eyewear (glasses, sunglasses)"""
+        if np is None:
+            return {}
+        
+        eye_zone = gray[int(height*0.2):int(height*0.35), int(width*0.35):int(width*0.65)]
+        
+        if eye_zone.size == 0:
+            return {}
+        
+        # Look for high contrast horizontal lines (glasses frames)
+        dy, dx = np.gradient(eye_zone)
+        horizontal_edges = np.abs(dy)
+        
+        if np.mean(horizontal_edges) > 20:
+            return {
+                "type": "eyewear",
+                "category": "face",
+                "confidence": 0.7
+            }
+        
+        return {}
+    
+    def _detect_jewelry(self, img_array: Any, height: int, width: int) -> List[Dict]:
+        """Detect jewelry (necklace, bracelet, ring)"""
+        if np is None:
+            return []
+        
+        gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
+        accessories = []
+        
+        # Necklace (neck area)
+        neck_zone = gray[int(height*0.3):int(height*0.4), int(width*0.4):int(width*0.6)]
+        if neck_zone.size > 0 and np.std(neck_zone) > 25:
+            accessories.append({
+                "type": "necklace",
+                "category": "neck",
+                "confidence": 0.6
+            })
+        
+        # Bracelets (wrist areas)
+        wrist_left = gray[int(height*0.6):int(height*0.7), int(width*0.1):int(width*0.2)]
+        wrist_right = gray[int(height*0.6):int(height*0.7), int(width*0.8):int(width*0.9)]
+        
+        if np.std(wrist_left) > 20:
+            accessories.append({
+                "type": "bracelet",
+                "category": "wrist",
+                "side": "left",
+                "confidence": 0.5
+            })
+        
+        if np.std(wrist_right) > 20:
+            accessories.append({
+                "type": "bracelet",
+                "category": "wrist",
+                "side": "right",
+                "confidence": 0.5
+            })
+        
+        return accessories
+    
+    def _detect_belt(self, gray: Any, height: int, width: int) -> Dict:
+        """Detect belt"""
+        if np is None:
+            return {}
+        
+        waist_zone = gray[int(height*0.55):int(height*0.65), int(width*0.25):int(width*0.75)]
+        
+        if waist_zone.size == 0:
+            return {}
+        
+        # Look for horizontal line (belt)
+        dy, dx = np.gradient(waist_zone)
+        horizontal_contrast = np.mean(np.abs(dy))
+        
+        if horizontal_contrast > 30:
+            return {
+                "type": "belt",
+                "category": "waist",
+                "horizontal_contrast": float(horizontal_contrast),
+                "confidence": 0.7
+            }
+        
+        return {}
+    
+    # === 3D Structure Analysis ===
+    
+    def _analyze_3d_structure(self, img_array: Any, size: Tuple[int, int]) -> Dict:
+        """Analyze 3D structure and occlusion"""
+        if np is None:
+            return {}
+        
+        height, width = img_array.shape[:2]
+        gray = np.mean(img_array[:, :, :3], axis=2) if img_array.shape[2] >= 3 else img_array
+        
+        # Compute surface normals from shading
+        normals = self._compute_surface_normals(gray)
+        
+        # Detect occlusion boundaries
+        occlusions = self._detect_occlusions(gray)
+        
+        # Estimate depth from shading
+        depth_map = self._estimate_depth_from_shading(gray, normals)
+        
+        # Analyze object volumes
+        volumes = self._estimate_volumes(gray, height, width)
+        
+        # Back-side inference
+        back_inference = self._infer_back_structure(gray, volumes)
+        
+        return {
+            "surface_normals": {
+                "mean_x": float(np.mean(normals[:, 0])) if len(normals) > 0 else 0,
+                "mean_y": float(np.mean(normals[:, 1])) if len(normals) > 0 else 0,
+                "mean_z": float(np.mean(normals[:, 2])) if len(normals) > 0 else 0
+            },
+            "occlusions": occlusions,
+            "depth_map_stats": {
+                "mean_depth": float(np.mean(depth_map)) if depth_map.size > 0 else 0,
+                "depth_variance": float(np.var(depth_map)) if depth_map.size > 0 else 0,
+                "depth_range": [float(np.min(depth_map)), float(np.max(depth_map))] if depth_map.size > 0 else [0, 0]
+            },
+            "volumes": volumes,
+            "back_structure_inference": back_inference,
+            "3d_confidence": self._calculate_3d_confidence(normals, occlusions, volumes)
+        }
+    
+    def _compute_surface_normals(self, gray: Any) -> Any:
+        """Compute approximate surface normals from shading"""
+        if np is None:
+            return np.array([])
+        
+        dy, dx = np.gradient(gray)
+        
+        # Approximate normals
+        normals = np.zeros((gray.shape[0], gray.shape[1], 3), dtype=np.float32)
+        normals[:, :, 0] = -dx  # x component
+        normals[:, :, 1] = -dy  # y component
+        normals[:, :, 2] = 1    # z component (assuming front-facing)
+        
+        # Normalize
+        magnitude = np.sqrt(np.sum(normals**2, axis=2, keepdims=True))
+        magnitude = np.where(magnitude == 0, 1, magnitude)
+        normals = normals / magnitude
+        
+        return normals
+    
+    def _detect_occlusions(self, gray: Any) -> List[Dict]:
+        """Detect occlusion boundaries"""
+        if np is None:
+            return []
+        
+        dy, dx = np.gradient(gray)
+        edge_magnitude = np.sqrt(dx**2 + dy**2)
+        
+        # Find strong edges (potential occlusions)
+        threshold = np.percentile(edge_magnitude, 90)
+        occlusion_mask = edge_magnitude > threshold
+        
+        occlusions = []
+        if np.any(occlusion_mask):
+            # Find connected components (simplified)
+            occlusions.append({
+                "type": "occlusion_boundary",
+                "location": "multiple",
+                "strength": float(np.mean(edge_magnitude[occlusion_mask])),
+                "extent": float(np.sum(occlusion_mask) / occlusion_mask.size)
+            })
+        
+        return occlusions
+    
+    def _estimate_depth_from_shading(self, gray: Any, normals: Any) -> Any:
+        """Estimate depth map from shading and normals"""
+        if np is None or gray.size == 0:
+            return []
+        
+        # Simplified depth estimation from shading
+        # Brighter areas assumed closer (simplified model)
+        depth_map = 1.0 - (gray - np.min(gray)) / (np.max(gray) - np.min(gray) + 1e-6)
+        
+        return depth_map
+    
+    def _estimate_volumes(self, gray: Any, height: int, width: int) -> List[Dict]:
+        """Estimate volumes of detected objects"""
+        if np is None:
+            return []
+        
+        volumes = []
+        
+        # Head volume
+        head_zone = gray[int(height*0.05):int(height*0.35), int(width*0.3):int(width*0.7)]
+        if head_zone.size > 0:
+            volumes.append({
+                "object": "head",
+                "estimated_volume": float(head_zone.size * np.mean(head_zone) / 255.0),
+                "shape": "ellipsoid",
+                "confidence": 0.7
+            })
+        
+        # Torso volume
+        torso_zone = gray[int(height*0.35):int(height*0.65), int(width*0.2):int(width*0.8)]
+        if torso_zone.size > 0:
+            volumes.append({
+                "object": "torso",
+                "estimated_volume": float(torso_zone.size * np.mean(torso_zone) / 255.0),
+                "shape": "cylinder",
+                "confidence": 0.75
+            })
+        
+        # Arm volumes
+        arm_left = gray[int(height*0.35):int(height*0.65), int(width*0.05):int(width*0.2)]
+        arm_right = gray[int(height*0.35):int(height*0.65), int(width*0.8):int(width*0.95)]
+        
+        for i, arm_zone in enumerate([arm_left, arm_right]):
+            if arm_zone.size > 0:
+                volumes.append({
+                    "object": f"arm_{i+1}",
+                    "estimated_volume": float(arm_zone.size * np.mean(arm_zone) / 255.0),
+                    "shape": "cylinder",
+                    "confidence": 0.6
+                })
+        
+        # Leg volumes
+        leg_left = gray[int(height*0.65):int(height*0.95), int(width*0.3):int(width*0.45)]
+        leg_right = gray[int(height*0.65):int(height*0.95), int(width*0.55):int(width*0.7)]
+        
+        for i, leg_zone in enumerate([leg_left, leg_right]):
+            if leg_zone.size > 0:
+                volumes.append({
+                    "object": f"leg_{i+1}",
+                    "estimated_volume": float(leg_zone.size * np.mean(leg_zone) / 255.0),
+                    "shape": "cylinder",
+                    "confidence": 0.65
+                })
+        
+        return volumes
+    
+    def _infer_back_structure(self, gray: Any, volumes: List[Dict]) -> Dict:
+        """Infer back-side structure from front-side analysis"""
+        if np is None:
+            return {}
+        
+        inferences = []
+        
+        for volume in volumes:
+            obj = volume.get("object", "")
+            shape = volume.get("shape", "")
+            
+            if obj == "head":
+                inferences.append({
+                    "object": "head",
+                    "front_analysis": volume,
+                    "back_inference": {
+                        "shape": "curved",
+                        "features": ["occipital_bulge", "hair_coverage"],
+                        "symmetry": "high"
+                    }
+                })
+            
+            elif obj == "torso":
+                inferences.append({
+                    "object": "torso",
+                    "front_analysis": volume,
+                    "back_inference": {
+                        "shape": "curved_flat",
+                        "features": ["spine", "scapulae", "muscle_layers"],
+                        "symmetry": "medium"
+                    }
+                })
+            
+            elif "arm" in obj:
+                inferences.append({
+                    "object": obj,
+                    "front_analysis": volume,
+                    "back_inference": {
+                        "shape": "cylindrical",
+                        "features": ["muscle_groups", "joint_bulges"],
+                        "symmetry": "high"
+                    }
+                })
+            
+            elif "leg" in obj:
+                inferences.append({
+                    "object": obj,
+                    "front_analysis": volume,
+                    "back_inference": {
+                        "shape": "cylindrical",
+                        "features": ["muscle_groups", "joint_bulges", "gluteal_region"],
+                        "symmetry": "high"
+                    }
+                })
+        
+        return {
+            "inferences": inferences,
+            "overall_symmetry": "high",
+            "confidence": 0.7
+        }
+    
+    def _calculate_3d_confidence(self, normals: Any, occlusions: List[Dict], volumes: List[Dict]) -> float:
+        """Calculate confidence in 3D analysis"""
+        if np is None or len(volumes) == 0:
+            return 0.0
+        
+        # Base confidence from volume detection
+        base_confidence = min(1.0, len(volumes) * 0.2)
+        
+        # Occlusion increases confidence (more depth cues)
+        occlusion_factor = min(1.0, len(occlusions) * 0.3)
+        
+        # Normal consistency
+        normal_consistency = 0.5
+        if len(normals) > 0:
+            normal_std = np.std(normals)
+            normal_consistency = max(0.0, 1.0 - normal_std)
+        
+        return float(min(1.0, base_confidence + occlusion_factor * 0.3 + normal_consistency * 0.2))
+    
     # === Helper methods ===
     
     def _estimate_curvature(self, zone: Any) -> str:
-        """Estimate surface curvature"""
-        if zone.size == 0:
+        if np is None or zone.size == 0:
             return "flat"
         std = np.std(zone)
         if std > 50:
@@ -479,8 +1090,7 @@ class OjidaniaAnalyzer:
         return "low_curvature"
     
     def _estimate_fabric_tension(self, zone: Any) -> str:
-        """Estimate fabric tension"""
-        if zone.size == 0:
+        if np is None or zone.size == 0:
             return "loose"
         contrast = np.std(zone) / (np.mean(zone) + 1e-6)
         if contrast > 0.3:
@@ -490,8 +1100,7 @@ class OjidaniaAnalyzer:
         return "loose"
     
     def _estimate_muscle_definition(self, zone: Any) -> str:
-        """Estimate muscle definition"""
-        if zone.size == 0:
+        if np is None or zone.size == 0:
             return "none"
         std = np.std(zone)
         if std > 40:
@@ -501,7 +1110,8 @@ class OjidaniaAnalyzer:
         return "low"
     
     def _classify_drapery(self, tension_zones: Dict) -> str:
-        """Classify drapery type"""
+        if np is None:
+            return "loose"
         avg_tension = np.mean(list(tension_zones.values()))
         if avg_tension > 50:
             return "tight_fitting"
@@ -510,7 +1120,6 @@ class OjidaniaAnalyzer:
         return "loose"
     
     def _classify_fit(self, tension_zones: Dict) -> str:
-        """Classify clothing fit"""
         chest = tension_zones.get("chest", 0)
         waist = tension_zones.get("waist", 0)
         
@@ -521,7 +1130,8 @@ class OjidaniaAnalyzer:
         return "loose"
     
     def _determine_light_direction(self, left: Any, right: Any) -> str:
-        """Determine light direction"""
+        if np is None:
+            return "front"
         left_mean = np.mean(left)
         right_mean = np.mean(right)
         
@@ -535,7 +1145,8 @@ class OjidaniaAnalyzer:
             return "front-right"
     
     def _analyze_shadow_softness(self, img_array: Any) -> str:
-        """Analyze shadow softness"""
+        if np is None:
+            return "soft"
         gray = np.mean(img_array[:, :, :3], axis=2)
         dy, dx = np.gradient(gray)
         edge_width = float(np.mean(np.sqrt(dx**2 + dy**2)))
@@ -547,7 +1158,6 @@ class OjidaniaAnalyzer:
         return "very_soft"
     
     def _classify_lighting(self, contrast: float, shadow_softness: str) -> str:
-        """Classify lighting quality"""
         if contrast > 0.5:
             return "dramatic"
         elif contrast > 0.3:
@@ -555,7 +1165,8 @@ class OjidaniaAnalyzer:
         return "flat"
     
     def _find_highlights(self, img_array: Any) -> List[str]:
-        """Find highlight areas"""
+        if np is None:
+            return ["center"]
         rgb_mean = np.mean(img_array[:, :, :3], axis=2)
         bright = rgb_mean > 200
         
@@ -575,7 +1186,8 @@ class OjidaniaAnalyzer:
         return highlights if highlights else ["center"]
     
     def _classify_gloss_type(self, img_array: Any, bright_areas: Any) -> str:
-        """Classify gloss type"""
+        if np is None:
+            return "matte"
         if np.sum(bright_areas) / bright_areas.size < 0.01:
             return "matte"
         
@@ -589,14 +1201,16 @@ class OjidaniaAnalyzer:
         return "diffuse_gloss"
     
     def _analyze_reflections(self, img_array: Any, bright_areas: Any) -> Dict:
-        """Analyze reflections"""
+        if np is None:
+            return {"intensity": 0, "clarity": "soft"}
         return {
             "intensity": float(np.sum(bright_areas) / bright_areas.size),
             "clarity": "sharp" if np.sum(bright_areas) < bright_areas.size * 0.05 else "soft"
         }
     
     def _detect_wet_surfaces(self, img_array: Any) -> bool:
-        """Detect wet surfaces"""
+        if np is None:
+            return False
         rgb_mean = np.mean(img_array[:, :, :3], axis=2)
         bright_areas = rgb_mean > 220
         
@@ -605,7 +1219,8 @@ class OjidaniaAnalyzer:
         return False
     
     def _detect_eye_glint(self, img_array: Any) -> bool:
-        """Detect eye glint"""
+        if np is None:
+            return False
         height, width = img_array.shape[:2]
         
         eye_zone = img_array[int(height*0.2):int(height*0.35), int(width*0.35):int(width*0.65)]
@@ -619,7 +1234,6 @@ class OjidaniaAnalyzer:
         return np.sum(bright) > 5 and np.sum(bright) < eye_zone.size * 0.1
     
     def _classify_composition(self, sharpness: Dict, contrast: Dict) -> str:
-        """Classify composition type"""
         fg = sharpness.get("foreground", 0)
         bg = sharpness.get("background", 0)
         
@@ -630,7 +1244,8 @@ class OjidaniaAnalyzer:
         return "selective_focus"
     
     def _classify_emotion(self, face_gray: Any, shadows: Any, highlights: Any) -> str:
-        """Simplified emotion classification"""
+        if np is None:
+            return "unknown"
         shadow_ratio = np.sum(shadows) / shadows.size
         highlight_ratio = np.sum(highlights) / highlights.size
         
@@ -643,8 +1258,7 @@ class OjidaniaAnalyzer:
         return "unknown"
     
     def _estimate_facial_tension(self, face_gray: Any) -> str:
-        """Estimate facial muscle tension"""
-        if face_gray.size == 0:
+        if np is None or face_gray.size == 0:
             return "relaxed"
         gradient = np.abs(np.gradient(face_gray))
         if np.mean(gradient) > 30:
@@ -652,13 +1266,11 @@ class OjidaniaAnalyzer:
         return "relaxed"
     
     def _estimate_body_contours(self, zone: Any) -> bool:
-        """Determine body contour visibility"""
-        if zone.size == 0:
+        if np is None or zone.size == 0:
             return False
-        return np.std(zone) > 30
+        return bool(np.std(zone) > 30)
     
     def _classify_body_type(self, muscle_def: Dict) -> str:
-        """Classify body type"""
         chest = muscle_def.get("chest", 0)
         arms = muscle_def.get("arms", 0)
         
@@ -669,11 +1281,11 @@ class OjidaniaAnalyzer:
         return "slim"
     
     def _estimate_muscle_visibility(self, gradient_magnitude: Any) -> bool:
-        """Determine muscle visibility"""
+        if np is None:
+            return False
         return float(np.mean(gradient_magnitude)) > 25
     
     def _calculate_depth_score(self, sharpness: Dict) -> float:
-        """Calculate scene depth score"""
         fg = sharpness.get("foreground", 0)
         bg = sharpness.get("background", 0)
         
@@ -712,12 +1324,15 @@ class OjidaniaAnalyzer:
                 "gloss_effects": len(self.knowledge["gloss_effects"]),
                 "depth_layers": len(self.knowledge["depth_layers"]),
                 "facial_mimicry": len(self.knowledge["facial_mimicry"]),
-                "muscle_structure": len(self.knowledge["muscle_structure"])
+                "muscle_structure": len(self.knowledge["muscle_structure"]),
+                "objects": len(self.knowledge["objects"]),
+                "clothing_items": len(self.knowledge["clothing_items"]),
+                "accessories": len(self.knowledge["accessories"]),
+                "3d_structure": len(self.knowledge["3d_structure"])
             }
         }
 
 
-# API for FastAPI integration
 def create_analyzer():
     """Create analyzer instance"""
     return OjidaniaAnalyzer()
@@ -732,8 +1347,3 @@ if __name__ == "__main__":
     
     print("Testing Ojidania Image Analyzer...")
     print("Place images in ayiko/ojidania/ folder and run batch_analyze()")
-    
-    # Example usage:
-    # results = analyzer.batch_analyze("ayiko/ojidania")
-    # print(f"Analyzed {len(results)} images")
-    # print(analyzer.get_stats())

@@ -815,21 +815,51 @@ from fastapi.responses import FileResponse
 
 # Глобальный генератор
 ayiko_generator = None
+ayiko_professional = None
+ayiko_core = None
 shiori_scanner = None
 ojidania_analyzer = None
 
 @app.on_event("startup")
 async def init_ayiko_generator():
-    """Инициализация генератора изображений Айко"""
-    global ayiko_generator, shiori_scanner, ojidania_analyzer
+    """Инициализация генератора изображений Айко и её души"""
+    global ayiko_generator, shiori_scanner, ojidania_analyzer, ayiko_core, ayiko_professional
+    
+    # Инициализация профессионального генератора (все системы)
+    try:
+        from ayiko.professional_generator import AyikoProfessionalGenerator
+        ayiko_professional = AyikoProfessionalGenerator()
+        logger.info("✅ Ayiko Professional Generator v4.0 инициализирован")
+        logger.info("   - Система навыков: загружена")
+        logger.info("   - Графические техники: загружены")
+        logger.info("   - Цветовая теория: загружена")
+        logger.info("   - Композиция: загружена")
+    except ImportError:
+        logger.warning("⚠️ Module ayiko.professional_generator not found")
+    except Exception as e:
+        logger.error(f"❌ Init professional gen: {e}")
+    
+    # Базовый генератор (для обратной совместимости)
     try:
         from ayiko.image_generator import AyikoImageGenerator
         ayiko_generator = AyikoImageGenerator()
-        logger.info("OK Gen image Ayiko initialized")
+        logger.info("✅ Базовый генератор изображений Айко инициализирован")
     except ImportError:
-        logger.warning("WARNING Module ayiko.image_generator not found")
+        logger.warning("⚠️ Module ayiko.image_generator not found")
     except Exception as e:
-        logger.error(f"ERROR Init gen: {e}")
+        logger.error(f"❌ Init gen: {e}")
+    
+    # Инициализация AyikoCore (сознание, эмоции, амбиции, воля)
+    try:
+        from ayiko.engine import AyikoCore
+        from ayiko.engine.config import AyikoConfig
+        ayiko_config = AyikoConfig.default()
+        ayiko_core = AyikoCore(config=ayiko_config)
+        logger.info("✅ AyikoCore (soul, consciousness, emotions) initialized")
+    except ImportError:
+        logger.warning("⚠️ Module ayiko.engine not found")
+    except Exception as e:
+        logger.error(f"❌ Init AyikoCore: {e}")
     
     # Инициализация сканера Шиори
     try:
@@ -859,12 +889,24 @@ async def ayiko_generate_image(request: Request):
     
     Body JSON:
     {
-        "type": "pixel|technical|description",
+        "type": "pixel|technical|description|character",
         "style": "character|landscape|abstract|pattern",
         "palette": "retro|vintage|neon|pastel|monochrome",
         "size": 64,
         "technical_type": "circuit|gear|blueprint",
-        "description": "текстовое описание"
+        "description": "текстовое описание",
+        "character": {
+            "name": "имя",
+            "age": 17,
+            "body_type": "athletic",
+            "skin_color": [195, 155, 115],
+            "hair_color": [55, 35, 25],
+            "hair_style": "bun",
+            "eye_color": [45, 28, 18],
+            "clothing": [...],
+            "accessories": [...],
+            "background": "academy"
+        }
     }
     """
     if ayiko_generator is None:
@@ -898,10 +940,45 @@ async def ayiko_generate_image(request: Request):
                 "message": "Изображение сгенерировано",
                 "data": result
             }
+        elif img_type == "character":
+            # Генерация персонажа по описанию
+            character_desc = body.get("character", {})
+            
+            if not character_desc:
+                raise HTTPException(status_code=400, detail="Отсутствует описание персонажа")
+            
+            # Конвертируем цвета из списков в кортежи
+            if "skin_color" in character_desc and isinstance(character_desc["skin_color"], list):
+                character_desc["skin_color"] = tuple(character_desc["skin_color"])
+            if "hair_color" in character_desc and isinstance(character_desc["hair_color"], list):
+                character_desc["hair_color"] = tuple(character_desc["hair_color"])
+            if "eye_color" in character_desc and isinstance(character_desc["eye_color"], list):
+                character_desc["eye_color"] = tuple(character_desc["eye_color"])
+            
+            img = ayiko_generator.generate_character_from_description(
+                description=character_desc,
+                size=tuple(body.get("size", [512, 512])),
+                style=body.get("style", "realistic")
+            )
+            
+            # Сохраняем
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"ayiko_{body.get('character', {}).get('name', 'character')}_{timestamp}.png"
+            filepath = ayiko_generator.output_dir / filename
+            img.save(filepath)
+            
+            return {
+                "status": "success",
+                "message": "Персонаж сгенерирован",
+                "filename": filename,
+                "size": img.size,
+                "format": "PNG",
+                "character": character_desc.get("name", "Unknown")
+            }
         else:
             raise HTTPException(status_code=400, detail=f"Неизвестный тип: {img_type}")
         
-        # Сохраняем и возвращаем
+        # Сохраняем и возвращаем (для старых типов)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"ayiko_{timestamp}.png"
         filepath = ayiko_generator.output_dir / filename
@@ -940,6 +1017,175 @@ async def ayiko_get_image(image_id: str):
         raise HTTPException(status_code=404, detail="Изображение не найдено")
     
     return FileResponse(filepath, media_type="image/png")
+
+
+# === Endpoint: ДУША АЙКО ===
+
+@app.get("/ayiko/soul")
+async def ayiko_soul_profile():
+    """
+    Полный профиль души Айко
+    
+    Включает:
+    - Сознание и самосознание
+    - Эмоции и чувства
+    - Амбиции и цели
+    - Воля и решимость
+    - Мозги и мышление
+    """
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        profile = ayiko_core.get_full_soul_profile()
+        return profile
+    except Exception as e:
+        logger.error(f"❌ Ошибка получения профиля души: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/ayiko/contemplate")
+async def ayiko_contemplate(request: Request):
+    """
+    Глубокое размышление Айко
+    
+    Body JSON:
+    {
+        "topic": "жизнь|любовь|смерть|искусство|смысл"
+    }
+    """
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        body = await request.json()
+        topic = body.get("topic")
+        thought = ayiko_core.contemplate(topic)
+        return thought
+    except Exception as e:
+        logger.error(f"❌ Ошибка размышления: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/ayiko/feel")
+async def ayiko_feel(request: Request):
+    """
+    Испытывает эмоцию
+    
+    Body JSON:
+    {
+        "trigger": "create_art|help_sister|learn_new_thing|see_beauty",
+        "intensity": 0.8
+    }
+    """
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        body = await request.json()
+        trigger = body.get("trigger", "create_art")
+        intensity = body.get("intensity", 1.0)
+        result = ayiko_core.feel(trigger, intensity)
+        return result
+    except Exception as e:
+        logger.error(f"❌ Ошибка эмоций: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/ayiko/emotions")
+async def ayiko_emotions():
+    """Текущее эмоциональное состояние"""
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        state = ayiko_core.express_emotions()
+        return state
+    except Exception as e:
+        logger.error(f"❌ Ошибка эмоций: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/ayiko/diary")
+async def ayiko_diary():
+    """Эмоциональный дневник"""
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        diary = ayiko_core.write_diary()
+        return {"diary": diary}
+    except Exception as e:
+        logger.error(f"❌ Ошибка дневника: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/ayiko/ambitions")
+async def ayiko_ambitions():
+    """Амбиции и цели"""
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        ambitions = ayiko_core.express_ambition()
+        progress = ayiko_core.get_progress()
+        return {
+            "ambitions": ambitions,
+            "progress": progress
+        }
+    except Exception as e:
+        logger.error(f"❌ Ошибка амбиций: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/ayiko/decide")
+async def ayiko_decide(request: Request):
+    """
+    Принятие решения
+    
+    Body JSON:
+    {
+        "situation": "описание ситуации",
+        "options": ["вариант 1", "вариант 2", "вариант 3"]
+    }
+    """
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        body = await request.json()
+        situation = body.get("situation", "")
+        options = body.get("options", [])
+        decision = ayiko_core.make_decision(situation, options)
+        return decision
+    except Exception as e:
+        logger.error(f"❌ Ошибка принятия решения: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/ayiko/intention")
+async def ayiko_intention(request: Request):
+    """
+    Установить намерение
+    
+    Body JSON:
+    {
+        "intention": "что айко решила сделать",
+        "priority": "high|medium|low"
+    }
+    """
+    if ayiko_core is None:
+        raise HTTPException(status_code=503, detail="AyikoCore не инициализирован")
+    
+    try:
+        body = await request.json()
+        intention = body.get("intention", "")
+        priority = body.get("priority", "medium")
+        result = ayiko_core.set_intention(intention, priority)
+        return result
+    except Exception as e:
+        logger.error(f"❌ Ошибка намерения: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # === Endpoint: сканирование запроса Шиори ===
@@ -1095,6 +1341,15 @@ async def ojidania_stats():
         raise HTTPException(status_code=503, detail="Анализатор Ojidania не инициализирован")
     
     return ojidania_analyzer.get_stats()
+
+
+@app.get("/ayiko/ojidania/knowledge")
+async def ojidania_knowledge():
+    """Получить базу знаний Ojidania"""
+    if ojidania_analyzer is None:
+        raise HTTPException(status_code=503, detail="Анализатор Ojidania не инициализирован")
+    
+    return ojidania_analyzer.knowledge
 
 
 # === Endpoint: мониторинг безопасности ===

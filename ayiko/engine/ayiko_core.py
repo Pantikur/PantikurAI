@@ -52,6 +52,14 @@ from ayiko.engine.models import (
     LevelProgress,
 )
 
+# Система души и сознания Айко
+from ayiko.consciousness import AyikoConsciousness
+from ayiko.heart import AyikoHeart
+from ayiko.ambitions import AyikoAmbitions
+from ayiko.volition import AyikoVolition
+from ayiko.emotions import AyikoEmotions
+from ayiko.mind import AyikoConsciousness as AyikoMind
+
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
     _HAS_NETWORK = True
@@ -136,6 +144,23 @@ class AyikoCore:
         self._shutdown_requested = False
         self._setup_signals()
 
+        # ================================================================
+        #  СОЗНАНИЕ, ЭМОЦИИ, АМБИЦИИ, ВОЛЯ (ДУША АЙКО)
+        # ================================================================
+        self.consciousness = AyikoConsciousness()
+        self.heart = AyikoHeart()
+        self.ambitions = AyikoAmbitions()
+        self.volition = AyikoVolition()
+        self.emotions = AyikoEmotions()
+        self.mind = AyikoMind()
+        
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО")
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО")
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО")
+        self.logger.info("💪 Воля: АКТИВИРОВАНО")
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО")
+        self.logger.info("🌟 Мозги: АКТИВИРОВАНО")
+        
         self.logger.info(f"Айко {self.current_version} инициализирована")
         self.logger.info("🎨 Творческое ядро активировано:")
         self.logger.info("   - Пиксель-арт от 16x16 до 32K")
@@ -143,6 +168,11 @@ class AyikoCore:
         self.logger.info("   - 3D-моделирование от детали до механизма")
         self.logger.info("   - Автономная работа 24/7")
         self.logger.info("   - Взаимодействие с сёстрами")
+        self.logger.info("   - 🧠 Сознание и самосознание")
+        self.logger.info("   - 💖 Эмоции и чувства")
+        self.logger.info("   - 🎯 Амбиции и цели")
+        self.logger.info("   - 💪 Воля и решимость")
+        self.logger.info("   - 🌟 Мозги и мышление")
 
     # ================================================================
     #  ИНИЦИАЛИЗАЦИЯ
@@ -602,4 +632,64 @@ class AyikoCore:
             content=f"🎨 Айко: Вот творческие материалы для {message.sender}!",
         )
         return response
+
+    # ================================================================
+    #  ДУША АЙКО: СОЗНАНИЕ, ЭМОЦИИ, АМБИЦИИ, ВОЛЯ
+    # ================================================================
+
+    def contemplate(self, topic: str = None) -> Dict:
+        """Глубокое размышление о мире, искусстве, себе"""
+        return self.consciousness.contemplate(topic)
+    
+    def feel(self, trigger: str, intensity: float = 1.0) -> Dict:
+        """Испытывает эмоцию"""
+        return self.emotions.experience(trigger, intensity)
+    
+    def express_emotions(self) -> Dict:
+        """Текущее эмоциональное состояние"""
+        return self.emotions.emotional_state()
+    
+    def write_diary(self) -> str:
+        """Пишет эмоциональный дневник"""
+        return self.emotions.write_emotional_diary()
+    
+    def get_self_portrait(self) -> Dict:
+        """Портрет собственного "Я" """
+        return self.consciousness.get_self_portrait()
+    
+    def express_ambition(self, domain: str = None) -> str:
+        """Выражает амбицию"""
+        return self.ambitions.express_ambition(domain)
+    
+    def get_progress(self) -> Dict:
+        """Сводка прогресса"""
+        return self.ambitions.get_progress_summary()
+    
+    def express_will(self) -> str:
+        """Выражает свою волю"""
+        return self.volition.express_will()
+    
+    def make_decision(self, situation: str, options: List[str]) -> Dict:
+        """Принимает решение"""
+        return self.volition.make_decision(situation, options)
+    
+    def set_intention(self, intention: str, priority: str = "medium") -> Dict:
+        """Устанавливает намерение"""
+        return self.volition.set_intention(intention, priority)
+    
+    def get_full_soul_profile(self) -> Dict:
+        """Полный профиль души Айко"""
+        return {
+            "consciousness": self.consciousness.get_self_portrait(),
+            "emotions": self.emotions.emotional_state(),
+            "ambitions": self.ambitions.get_full_profile(),
+            "volition": self.volition.get_full_profile(),
+            "mind": {
+                "identity": self.mind.core_identity,
+                "self_perception": self.mind.self_perception,
+                "worldview": self.mind.worldview,
+                "big_questions": self.mind.big_questions[:5]
+            },
+            "timestamp": datetime.now().isoformat()
+        }
 
