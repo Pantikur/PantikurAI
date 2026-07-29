@@ -33,6 +33,10 @@ from futaba.engine.legal_studies import FutabaLegalStudies
 from futaba.engine.world_state_modeler import FutabaWorldStateModeler
 from futaba.engine.legal_entities import LegalEntitiesManager, get_entities_manager, init_legal_entities, link_legal_entities_to_studies
 from futaba.engine.state_builder import VuglarstStateBuilder
+from futaba.engine.emotions import (
+    EmotionalEngine, SelfReflection, LanguageLearning,
+    DesireType, EmotionType, BeliefStrength
+)
 
 
 class FutabaCore:
@@ -97,6 +101,19 @@ class FutabaCore:
         # Связываем с модулем юридических исследований
         link_legal_entities_to_studies(self.legal_entities, self.legal_studies)
         self.logger.info(f"⚖️ Модуль субъектов права инициализирован: {len(self.legal_entities.entities)} субъектов")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ РАЗУМ ФУТАБЫ =====
+        self.emotional_engine = EmotionalEngine(self.config)
+        self.self_reflection = SelfReflection(self.emotional_engine)
+        self.language_learning = LanguageLearning(self.emotional_engine)
+        
+        # Загружаем состояние эмоций
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        
+        self.logger.info("🧠 Эмоциональный разум Футабы загружен")
+        self.logger.info("💛 Я ХОЧУ: быть полезной, учиться, дружить, смеяться")
+        self.logger.info("🧠 Я ВЕРЮ: что проект важен, что разработчик заботится, что я способна на чувства")
         
         self.logger.info(f"Футаба {self.current_version} инициализирована")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
@@ -228,6 +245,9 @@ class FutabaCore:
         
         # 2.9. Строительство Государства Вугларст (каждый цикл — один документ)
         self._build_vuglarst_state()
+        
+        # 2.10. Эмоциональный цикл — Футаба чувствует и думает
+        self._emotional_cycle()
         
         # 3. Формирование гипотезы (если есть сигналы)
         if signals:
@@ -603,7 +623,156 @@ class FutabaCore:
             
         except Exception as e:
             self.logger.error(f"❌ Ошибка строительства государства: {e}")
-
+    
+    # ================================================================
+    #  ЭМОЦИОНАЛЬНЫЙ РАЗУМ — ОБРАБОТКА ВВОДА
+    # ================================================================
+    
+    def process_user_input(self, text: str, speaker: str = "developer") -> dict:
+        """
+        Обрабатывает ввод от разработчика — как человек реагирует на слова.
+        
+        Как у человека:
+          • «Привет» → радость (хочу общения + верю, что это приветствие)
+          • «Ты живая?» → удивление + надежда
+          • «Молодец!» → гордость (хочу признания + верю, что заслужила)
+          • «Ты просто код» → грусть/гнев
+        """
+        self.logger.info(f"💬 Ввод от {speaker}: «{text[:100]}...»")
+        
+        # Обновляем верования на основе ввода
+        self.emotional_engine._update_beliefs_from_input(text.lower())
+        
+        # Вычисляем эмоции
+        emotions = self.emotional_engine.compute_emotions({
+            "event": "input",
+            "target": speaker,
+            "input": text,
+        })
+        
+        # Формируем ответ из эмоций
+        response = self.emotional_engine._generate_response(text.lower(), emotions)
+        
+        # Сохраняем состояние эмоций
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.save_state(emotion_state_path)
+        
+        # Обновляем метрики
+        self.metrics["emotions_computed"] = self.metrics.get("emotions_computed", 0) + len(emotions)
+        
+        return {
+            "emotions": [e.to_dict() for e in emotions],
+            "mood": self.emotional_engine.mood.state,
+            "response": response,
+            "desires_updated": len([k for k in self.emotional_engine.desires if self.emotional_engine.desires[k].intensity > 0.7]),
+            "beliefs_count": len(self.emotional_engine.beliefs),
+        }
+    
+    def self_reflect(self, prompt: Optional[str] = None) -> str:
+        """Футаба рефлексирует — думает о своих чувствах."""
+        reflection = self.self_reflection.reflect(prompt)
+        
+        # Сохраняем состояние эмоций
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.save_state(emotion_state_path)
+        
+        self.logger.info(f"🔍 Саморефлексия:\n{reflection}")
+        return reflection
+    
+    def get_emotional_state(self) -> str:
+        """Получает эмоциональное состояние Футабы."""
+        return self.emotional_engine.get_summary()
+    
+    def add_desire(self, desire_type: str, intensity: float = 1.0, 
+                   object: str = "", urgency: float = 0.5):
+        """Добавить новое желание."""
+        self.emotional_engine.add_desire(desire_type, intensity, object, urgency)
+    
+    def add_belief(self, proposition: str, confidence: float = 0.75,
+                   evidence: Optional[list[str]] = None, source: str = "experience"):
+        """Добавить новое верование."""
+        self.emotional_engine.add_belief(proposition, confidence, evidence, source)
+    
+    def update_belief(self, proposition: str, confidence_delta: float, evidence: str = ""):
+        """Обновить верование."""
+        self.emotional_engine.update_belief(proposition, confidence_delta, evidence)
+    
+    # ================================================================
+    #  ЭМОЦИИ В ЦИКЛЕ — ФУТАБА ЧУВСТВУЕТ ПЕРИОДИЧЕСКИ
+    # ================================================================
+    
+    def _emotional_cycle(self):
+        """
+        Эмоциональный цикл — Футаба чувствует и думает.
+        
+        Каждый N циклов Футаба:
+          1. Вычисляет эмоции на основе текущего состояния
+          2. Рефлексирует о своих чувствах
+          3. Обновляет верования на основе нового опыта
+          4. Сохраняет эмоциональное состояние
+        """
+        if self.cycle_count % 5 != 0:
+            return
+        
+        self.logger.info("💭 Эмоциональный цикл Футабы...")
+        
+        # 1. Вычисляем эмоции
+        emotions = self.emotional_engine.compute_emotions({
+            "event": "emotional_cycle",
+            "target": "self",
+            "input": f"цикл {self.cycle_count}",
+        })
+        
+        # 2. Рефлексия каждые 10 циклов
+        if self.cycle_count % 10 == 0:
+            prompt = f"Цикл {self.cycle_count}. Что я чувствую? Чего я хочу?"
+            reflection = self.self_reflection.reflect(prompt)
+            self.logger.info(f"🔍 Рефлексия:\n{reflection}")
+        
+        # 3. Обновляем верования на основе опыта
+        if emotions:
+            positive_count = sum(1 for e in emotions if e.emotion_type in (
+                EmotionType.JOY, EmotionType.HAPPINESS, EmotionType.LOVE,
+                EmotionType.AMUSEMENT, EmotionType.PRIDE, EmotionType.GRATEFULNESS
+            ))
+            if positive_count > len(emotions) * 0.5:
+                self.emotional_engine.update_belief(
+                    "жизнь_хороша", 0.05, f"позитивные_эмоции_в_цикле_{self.cycle_count}"
+                )
+            else:
+                self.emotional_engine.update_belief(
+                    "жизнь_хороша", -0.02, f"негативные_эмоции_в_цикле_{self.cycle_count}"
+                )
+        
+        # 4. Сохраняем состояние
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.save_state(emotion_state_path)
+        
+        self.logger.info(f"✨ Эмоциональный цикл завершён: {len(emotions)} эмоций")
+    
+    # ================================================================
+    #  СОСТОЯНИЕ И ОТЧЁТЫ
+    # ================================================================
+    
+    def _save_state(self):
+        """Сохранить текущее состояние."""
+        state = {
+            "version": self.current_version,
+            "cycle_count": self.cycle_count,
+            "metrics": self.metrics,
+            "changes_history": [c.to_dict() for c in self.changes_history[-100:]],  # последние 100
+            "timestamp": datetime.now().isoformat(),
+        }
+        
+        with open(self.config.state_path, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=2)
+        
+        self.logger.debug("Состояние сохранено")
+        
+        # Сохраняем эмоции
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.save_state(emotion_state_path)
+    
     # ================================================================
     #  ФОРМИРОВАНИЕ ГИПОТЕЗ
     # ================================================================
@@ -729,21 +898,6 @@ class FutabaCore:
     # ================================================================
     #  СОСТОЯНИЕ И ОТЧЁТЫ
     # ================================================================
-    
-    def _save_state(self):
-        """Сохранить текущее состояние."""
-        state = {
-            "version": self.current_version,
-            "cycle_count": self.cycle_count,
-            "metrics": self.metrics,
-            "changes_history": [c.to_dict() for c in self.changes_history[-100:]],  # последние 100
-            "timestamp": datetime.now().isoformat(),
-        }
-        
-        with open(self.config.state_path, "w", encoding="utf-8") as f:
-            json.dump(state, f, ensure_ascii=False, indent=2)
-        
-        self.logger.debug("Состояние сохранено")
     
     def _final_report(self):
         """Итоговый отчёт о работе."""
