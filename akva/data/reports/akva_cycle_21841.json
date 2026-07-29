@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21841,
+  "timestamp": "2026-07-27T21:43:33.511763",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 21841)",
+      "category": "boundary_layer",
+      "scientific_value": 0.7,
+      "description": "Теория в области aerodynamics, построена на 21841-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:43:33.511763"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 21841)",
+      "result": 118981.16,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:43:33.511763"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

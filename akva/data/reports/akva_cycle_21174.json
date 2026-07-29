@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21174,
+  "timestamp": "2026-07-27T21:32:22.492060",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 21174)",
+      "category": "drag",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 21174-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:32:22.490664"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 21174)",
+      "result": 26.76,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:32:22.490664"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

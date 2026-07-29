@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16211,
+  "timestamp": "2026-07-27T20:09:10.558362",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 16211)",
+      "category": "number_theory",
+      "scientific_value": 0.86,
+      "description": "Теория в области mathematics, построена на 16211-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:09:10.555319"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 16211)",
+      "result": 28.658677,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:09:10.556363"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

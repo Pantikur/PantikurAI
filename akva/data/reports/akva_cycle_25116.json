@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25116,
+  "timestamp": "2026-07-27T22:38:27.892012",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 25116)",
+      "category": "linear_algebra",
+      "scientific_value": 0.86,
+      "description": "Теория в области mathematics, построена на 25116-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:27.890714"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 25116)",
+      "result": 54.7735,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:38:27.890714"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 18146,
+  "timestamp": "2026-07-27T20:41:36.266820",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 18146)",
+      "category": "number_theory",
+      "scientific_value": 0.74,
+      "description": "Теория в области mathematics, построена на 18146-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:41:36.266820"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 18146)",
+      "result": 23.7056,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:41:36.266820"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

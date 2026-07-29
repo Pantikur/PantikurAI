@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14151,
+  "timestamp": "2026-07-27T19:34:39.590600",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 14151)",
+      "category": "fracture",
+      "scientific_value": 0.93,
+      "description": "Теория в области strength_of_materials, построена на 14151-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:34:39.589591"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 14151)",
+      "result": 72.867811,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:34:39.589591"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

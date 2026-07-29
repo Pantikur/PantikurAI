@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20031,
+  "timestamp": "2026-07-27T21:13:12.633913",
+  "studied_topics": [
+    "Подъёмная сила крыла"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 20031)",
+      "category": "lift",
+      "scientific_value": 0.96,
+      "description": "Теория в области aerodynamics, построена на 20031-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:13:12.633913"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 20031)",
+      "result": 0.9025,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:13:12.633913"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

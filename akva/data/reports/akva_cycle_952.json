@@ -1,0 +1,33 @@
+{
+  "cycle_number": 952,
+  "timestamp": "2026-07-27T15:53:20.736866",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 952)",
+      "category": "fatigue",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 952-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:53:20.735870"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 952)",
+      "result": 1300.16,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:53:20.736866"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

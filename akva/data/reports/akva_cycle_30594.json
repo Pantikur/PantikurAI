@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30594,
+  "timestamp": "2026-07-28T00:10:16.864346",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 30594)",
+      "category": "probability",
+      "scientific_value": 0.73,
+      "description": "Теория в области mathematics, построена на 30594-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:10:16.863336"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 30594)",
+      "result": 5.627778,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:10:16.863336"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

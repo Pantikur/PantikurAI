@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21014,
+  "timestamp": "2026-07-27T21:29:41.506541",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 21014)",
+      "category": "fracture",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 21014-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:29:41.506541"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 21014)",
+      "result": 931896967.93,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:29:41.506541"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

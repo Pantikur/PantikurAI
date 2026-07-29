@@ -1,0 +1,33 @@
+{
+  "cycle_number": 9027,
+  "timestamp": "2026-07-27T18:08:46.595843",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 9027)",
+      "category": "linear_algebra",
+      "scientific_value": 0.86,
+      "description": "Теория в области mathematics, построена на 9027-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:08:46.595843"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 9027)",
+      "result": 314.6817,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:08:46.595843"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

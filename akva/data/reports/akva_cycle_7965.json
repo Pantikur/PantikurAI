@@ -1,0 +1,33 @@
+{
+  "cycle_number": 7965,
+  "timestamp": "2026-07-27T17:50:57.864103",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 7965)",
+      "category": "probability",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 7965-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:50:57.864103"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 7965)",
+      "result": 51.7739,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:50:57.864103"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20149,
+  "timestamp": "2026-07-27T21:15:11.304249",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 20149)",
+      "category": "turbulence",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 20149-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:15:11.304249"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 20149)",
+      "result": 348.92,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:15:11.304249"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 18025,
+  "timestamp": "2026-07-27T20:39:34.547988",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 18025)",
+      "category": "strength",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 18025-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:39:34.547482"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 18025)",
+      "result": 664.67,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:39:34.547988"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

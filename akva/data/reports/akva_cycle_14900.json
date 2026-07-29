@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14900,
+  "timestamp": "2026-07-27T19:47:12.497588",
+  "studied_topics": [
+    "Квантовая электродинамика"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 14900)",
+      "category": "relativity",
+      "scientific_value": 0.93,
+      "description": "Теория в области physics, построена на 14900-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:12.497053"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 14900)",
+      "result": 80702347.4204,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:47:12.497053"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

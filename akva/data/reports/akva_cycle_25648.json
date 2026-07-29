@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25648,
+  "timestamp": "2026-07-27T22:47:22.848408",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 25648)",
+      "category": "probability",
+      "scientific_value": 0.71,
+      "description": "Теория в области mathematics, построена на 25648-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:22.847905"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 25648)",
+      "result": 596.3297,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:22.848408"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

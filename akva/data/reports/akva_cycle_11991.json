@@ -1,0 +1,33 @@
+{
+  "cycle_number": 11991,
+  "timestamp": "2026-07-27T18:58:28.343537",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 11991)",
+      "category": "creep",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 11991-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:58:28.342532"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 11991)",
+      "result": 480230999.49,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T18:58:28.342532"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

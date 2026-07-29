@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22201,
+  "timestamp": "2026-07-27T21:49:35.563158",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 22201)",
+      "category": "quantum",
+      "scientific_value": 0.94,
+      "description": "Теория в области physics, построена на 22201-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:49:35.562652"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 22201)",
+      "result": 4462895.3336,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:49:35.562652"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25059,
+  "timestamp": "2026-07-27T22:37:30.532440",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25059)",
+      "category": "drag",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 25059-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:37:30.532440"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 25059)",
+      "result": 5007592.55,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:37:30.532440"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

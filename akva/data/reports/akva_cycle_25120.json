@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25120,
+  "timestamp": "2026-07-27T22:38:31.912813",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25120)",
+      "category": "shock_waves",
+      "scientific_value": 1.0,
+      "description": "Теория в области aerodynamics, построена на 25120-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:31.912813"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25120)",
+      "result": 1.4954,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:38:31.912813"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21187,
+  "timestamp": "2026-07-27T21:32:35.565278",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 21187)",
+      "category": "lift",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 21187-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:32:35.565278"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 21187)",
+      "result": 15737686.23,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:32:35.565278"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

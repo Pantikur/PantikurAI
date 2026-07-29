@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28947,
+  "timestamp": "2026-07-27T23:42:40.399333",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 28947)",
+      "category": "relativity",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 28947-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:42:40.398324"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 28947)",
+      "result": 3067.62,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:42:40.398324"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

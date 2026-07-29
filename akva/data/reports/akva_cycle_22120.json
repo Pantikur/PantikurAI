@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22120,
+  "timestamp": "2026-07-27T21:48:14.049367",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика сплошных сред (цикл 22120)",
+      "category": "mechanics",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 22120-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:48:14.049367"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 22120)",
+      "result": 6367360435.25,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:48:14.049367"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

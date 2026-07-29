@@ -1,0 +1,33 @@
+{
+  "cycle_number": 858,
+  "timestamp": "2026-07-27T15:51:46.135638",
+  "studied_topics": [
+    "Подъёмная сила крыла"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 858)",
+      "category": "turbulence",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 858-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:51:46.134629"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 858)",
+      "result": 547.56,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:51:46.134629"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

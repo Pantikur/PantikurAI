@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29026,
+  "timestamp": "2026-07-27T23:43:59.804771",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 29026)",
+      "category": "relativity",
+      "scientific_value": 0.97,
+      "description": "Теория в области physics, построена на 29026-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:43:59.804771"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 29026)",
+      "result": 4685588571.79,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:43:59.804771"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

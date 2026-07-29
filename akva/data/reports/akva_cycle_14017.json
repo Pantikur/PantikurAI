@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14017,
+  "timestamp": "2026-07-27T19:32:24.896905",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 14017)",
+      "category": "drag",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 14017-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:32:24.896905"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 14017)",
+      "result": 16.81,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:32:24.896905"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

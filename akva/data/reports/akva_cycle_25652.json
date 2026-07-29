@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25652,
+  "timestamp": "2026-07-27T22:47:26.870405",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 25652)",
+      "category": "stability",
+      "scientific_value": 0.76,
+      "description": "Теория в области strength_of_materials, построена на 25652-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:26.869901"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 25652)",
+      "result": 4.15,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:47:26.870405"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

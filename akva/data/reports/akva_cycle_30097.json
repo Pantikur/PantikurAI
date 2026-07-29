@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30097,
+  "timestamp": "2026-07-28T00:01:56.793011",
+  "studied_topics": [
+    "Оптика"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 30097)",
+      "category": "relativity",
+      "scientific_value": 0.91,
+      "description": "Теория в области physics, построена на 30097-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:01:56.792465"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 30097)",
+      "result": 4055.04,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:01:56.793011"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16497,
+  "timestamp": "2026-07-27T20:13:58.041106",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 16497)",
+      "category": "relativity",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 16497-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:13:58.039833"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 16497)",
+      "result": 1021589882.3,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:13:58.039833"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

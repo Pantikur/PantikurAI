@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27905,
+  "timestamp": "2026-07-27T23:25:12.837246",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 27905)",
+      "category": "lift",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 27905-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:25:12.836742"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 27905)",
+      "result": 8474593.84,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:25:12.836742"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

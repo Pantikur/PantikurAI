@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25458,
+  "timestamp": "2026-07-27T22:44:11.829355",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 25458)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.74,
+      "description": "Теория в области aerodynamics, построена на 25458-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:44:11.829355"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 25458)",
+      "result": 1387876.84,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:44:11.829355"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

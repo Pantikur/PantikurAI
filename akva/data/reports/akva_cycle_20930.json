@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20930,
+  "timestamp": "2026-07-27T21:28:17.025734",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 20930)",
+      "category": "fatigue",
+      "scientific_value": 0.91,
+      "description": "Теория в области strength_of_materials, построена на 20930-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:28:17.025734"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 20930)",
+      "result": 1133.05,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:28:17.025734"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 9161,
+  "timestamp": "2026-07-27T18:11:01.422373",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 9161)",
+      "category": "strength",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 9161-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:11:01.421361"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 9161)",
+      "result": 4.42,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:11:01.421361"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

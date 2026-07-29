@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25679,
+  "timestamp": "2026-07-27T22:47:54.009905",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 25679)",
+      "category": "fracture",
+      "scientific_value": 0.98,
+      "description": "Теория в области strength_of_materials, построена на 25679-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:54.009905"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 25679)",
+      "result": 793.95,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:47:54.009905"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

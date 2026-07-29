@@ -1,0 +1,33 @@
+{
+  "cycle_number": 2825,
+  "timestamp": "2026-07-27T16:24:45.020142",
+  "studied_topics": [
+    "Уравнения Навье-Стокса"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 2825)",
+      "category": "differential",
+      "scientific_value": 0.89,
+      "description": "Теория в области mathematics, построена на 2825-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:24:45.020142"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 2825)",
+      "result": 33.285246,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:24:45.020142"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

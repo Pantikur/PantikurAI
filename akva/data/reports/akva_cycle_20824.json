@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20824,
+  "timestamp": "2026-07-27T21:26:30.398793",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 20824)",
+      "category": "boundary_layer",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 20824-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:26:30.398793"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 20824)",
+      "result": 7915940.74,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:26:30.398793"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

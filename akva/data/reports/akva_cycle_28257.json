@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28257,
+  "timestamp": "2026-07-27T23:31:06.697107",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 28257)",
+      "category": "lift",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 28257-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:06.696602"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 28257)",
+      "result": 1.3842,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:31:06.697107"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

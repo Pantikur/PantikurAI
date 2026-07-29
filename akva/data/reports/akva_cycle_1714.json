@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1714,
+  "timestamp": "2026-07-27T16:06:07.532863",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 1714)",
+      "category": "thermodynamics",
+      "scientific_value": 0.82,
+      "description": "Теория в области physics, построена на 1714-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:06:07.532863"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 1714)",
+      "result": 6946005747.42,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T16:06:07.532863"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

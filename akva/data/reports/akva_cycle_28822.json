@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28822,
+  "timestamp": "2026-07-27T23:40:34.743832",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 28822)",
+      "category": "shock_waves",
+      "scientific_value": 1.0,
+      "description": "Теория в области aerodynamics, построена на 28822-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:40:34.743832"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 28822)",
+      "result": 496644.4,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:40:34.743832"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

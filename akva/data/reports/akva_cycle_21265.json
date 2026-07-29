@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21265,
+  "timestamp": "2026-07-27T21:33:54.044500",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 21265)",
+      "category": "differential",
+      "scientific_value": 0.93,
+      "description": "Теория в области mathematics, построена на 21265-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:33:54.044500"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 21265)",
+      "result": 78.2342,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:33:54.044500"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

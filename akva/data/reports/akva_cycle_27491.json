@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27491,
+  "timestamp": "2026-07-27T23:18:16.546200",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 27491)",
+      "category": "lift",
+      "scientific_value": 0.91,
+      "description": "Теория в области aerodynamics, построена на 27491-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:18:16.546200"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 27491)",
+      "result": 909.41,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:18:16.546200"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

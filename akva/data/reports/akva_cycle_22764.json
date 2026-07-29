@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22764,
+  "timestamp": "2026-07-27T21:59:01.954107",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 22764)",
+      "category": "fracture",
+      "scientific_value": 0.91,
+      "description": "Теория в области strength_of_materials, построена на 22764-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:59:01.953100"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 22764)",
+      "result": 6.26,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:59:01.953100"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

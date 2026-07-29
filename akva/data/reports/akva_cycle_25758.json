@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25758,
+  "timestamp": "2026-07-27T22:49:13.452622",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 25758)",
+      "category": "strength",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 25758-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:13.452622"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 25758)",
+      "result": 717.77,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:49:13.452622"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

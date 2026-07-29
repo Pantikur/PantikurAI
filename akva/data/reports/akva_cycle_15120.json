@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15120,
+  "timestamp": "2026-07-27T19:50:53.645697",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 15120)",
+      "category": "stability",
+      "scientific_value": 0.77,
+      "description": "Теория в области strength_of_materials, построена на 15120-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:50:53.645697"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 15120)",
+      "result": 9.55,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:50:53.645697"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21697,
+  "timestamp": "2026-07-27T21:41:08.657891",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 21697)",
+      "category": "stability",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 21697-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:41:08.657891"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 21697)",
+      "result": 199231708.63,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:41:08.657891"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20657,
+  "timestamp": "2026-07-27T21:23:42.368459",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 20657)",
+      "category": "fracture",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 20657-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:23:42.367955"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 20657)",
+      "result": 8.81,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:23:42.368459"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

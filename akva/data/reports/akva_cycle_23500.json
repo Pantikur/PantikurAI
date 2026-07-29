@@ -1,0 +1,33 @@
+{
+  "cycle_number": 23500,
+  "timestamp": "2026-07-27T22:11:22.278749",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 23500)",
+      "category": "relativity",
+      "scientific_value": 0.92,
+      "description": "Теория в области physics, построена на 23500-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:11:22.278246"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 23500)",
+      "result": 6506317856.19,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:11:22.278749"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

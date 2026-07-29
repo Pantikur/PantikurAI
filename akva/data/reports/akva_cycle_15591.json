@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15591,
+  "timestamp": "2026-07-27T19:58:47.155972",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 15591)",
+      "category": "lift",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 15591-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:58:47.155972"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 15591)",
+      "result": 25.67,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:58:47.155972"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21101,
+  "timestamp": "2026-07-27T21:31:09.034641",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 21101)",
+      "category": "boundary_layer",
+      "scientific_value": 0.72,
+      "description": "Теория в области aerodynamics, построена на 21101-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:31:09.034641"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 21101)",
+      "result": 519204.72,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:31:09.034641"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

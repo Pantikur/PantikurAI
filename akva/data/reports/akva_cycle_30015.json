@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30015,
+  "timestamp": "2026-07-28T00:00:34.334146",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 30015)",
+      "category": "lift",
+      "scientific_value": 0.94,
+      "description": "Теория в области aerodynamics, построена на 30015-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:00:34.334146"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 30015)",
+      "result": 1329057.62,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:00:34.334146"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

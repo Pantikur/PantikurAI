@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1262,
+  "timestamp": "2026-07-27T15:58:32.676569",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 1262)",
+      "category": "probability",
+      "scientific_value": 0.73,
+      "description": "Теория в области mathematics, построена на 1262-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:58:32.676569"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 1262)",
+      "result": 50.189007,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:58:32.676569"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

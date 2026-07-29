@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25854,
+  "timestamp": "2026-07-27T22:50:50.039611",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 25854)",
+      "category": "quantum",
+      "scientific_value": 0.98,
+      "description": "Теория в области physics, построена на 25854-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:50.039611"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 25854)",
+      "result": 3682725200.18,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:50:50.039611"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

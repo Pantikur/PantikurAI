@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1385,
+  "timestamp": "2026-07-27T16:00:36.430097",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 1385)",
+      "category": "drag",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 1385-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:00:36.430097"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 1385)",
+      "result": 8193365.82,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:00:36.430097"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

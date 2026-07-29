@@ -1,0 +1,33 @@
+{
+  "cycle_number": 3648,
+  "timestamp": "2026-07-27T16:38:32.975755",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 3648)",
+      "category": "fatigue",
+      "scientific_value": 0.97,
+      "description": "Теория в области strength_of_materials, построена на 3648-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:38:32.974747"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 3648)",
+      "result": 1299.95,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:38:32.974747"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

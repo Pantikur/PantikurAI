@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15157,
+  "timestamp": "2026-07-27T19:51:30.833425",
+  "studied_topics": [
+    "Напряжение и деформация"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 15157)",
+      "category": "stability",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 15157-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:51:30.833425"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 15157)",
+      "result": 6.74,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:51:30.833425"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

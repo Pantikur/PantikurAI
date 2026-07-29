@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6960,
+  "timestamp": "2026-07-27T17:34:07.023339",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 6960)",
+      "category": "probability",
+      "scientific_value": 0.69,
+      "description": "Теория в области mathematics, построена на 6960-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:34:07.022333"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 6960)",
+      "result": 41.207941,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:34:07.022333"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

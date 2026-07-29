@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20064,
+  "timestamp": "2026-07-27T21:13:45.821649",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20064)",
+      "category": "drag",
+      "scientific_value": 0.94,
+      "description": "Теория в области aerodynamics, построена на 20064-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:13:45.820640"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 20064)",
+      "result": 21.29,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:13:45.820640"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

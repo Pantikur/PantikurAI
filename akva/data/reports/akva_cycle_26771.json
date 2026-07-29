@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26771,
+  "timestamp": "2026-07-27T23:06:12.401617",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 26771)",
+      "category": "fatigue",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 26771-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:06:12.401617"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 26771)",
+      "result": 1000.21,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:06:12.401617"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

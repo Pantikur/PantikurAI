@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30287,
+  "timestamp": "2026-07-28T00:05:07.916867",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 30287)",
+      "category": "electromagnetism",
+      "scientific_value": 0.85,
+      "description": "Теория в области physics, построена на 30287-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:05:07.916867"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 30287)",
+      "result": 54069222.3292,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:05:07.916867"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

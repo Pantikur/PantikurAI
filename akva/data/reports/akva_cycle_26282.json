@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26282,
+  "timestamp": "2026-07-27T22:58:00.500738",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 26282)",
+      "category": "drag",
+      "scientific_value": 0.76,
+      "description": "Теория в области aerodynamics, построена на 26282-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:58:00.500738"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 26282)",
+      "result": 609.58,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:58:00.500738"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

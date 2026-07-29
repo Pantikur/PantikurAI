@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25824,
+  "timestamp": "2026-07-27T22:50:19.847155",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 25824)",
+      "category": "stiffness",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 25824-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:19.846141"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 25824)",
+      "result": 70.7,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:50:19.846141"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

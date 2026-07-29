@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27501,
+  "timestamp": "2026-07-27T23:18:26.604571",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 27501)",
+      "category": "drag",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 27501-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:18:26.603566"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 27501)",
+      "result": 1.0535,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:18:26.603566"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

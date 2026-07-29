@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20312,
+  "timestamp": "2026-07-27T21:17:55.299688",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика сплошных сред (цикл 20312)",
+      "category": "mechanics",
+      "scientific_value": 0.77,
+      "description": "Теория в области physics, построена на 20312-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:17:55.299688"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 20312)",
+      "result": 7624968536.85,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:17:55.299688"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 10291,
+  "timestamp": "2026-07-27T18:29:58.420347",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 10291)",
+      "category": "number_theory",
+      "scientific_value": 0.88,
+      "description": "Теория в области mathematics, построена на 10291-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:29:58.420347"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 10291)",
+      "result": 512.1034,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:29:58.420347"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

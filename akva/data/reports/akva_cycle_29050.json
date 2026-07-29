@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29050,
+  "timestamp": "2026-07-27T23:44:23.928780",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 29050)",
+      "category": "fracture",
+      "scientific_value": 0.96,
+      "description": "Теория в области strength_of_materials, построена на 29050-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:44:23.928780"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 29050)",
+      "result": 1.65,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:44:23.928780"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

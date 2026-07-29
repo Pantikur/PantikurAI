@@ -1,0 +1,33 @@
+{
+  "cycle_number": 4281,
+  "timestamp": "2026-07-27T16:49:12.578836",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 4281)",
+      "category": "stability",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 4281-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:49:12.577793"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 4281)",
+      "result": 0.270598,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:49:12.577793"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

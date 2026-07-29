@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21050,
+  "timestamp": "2026-07-27T21:30:17.724169",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 21050)",
+      "category": "differential",
+      "scientific_value": 0.79,
+      "description": "Теория в области mathematics, построена на 21050-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:30:17.724169"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 21050)",
+      "result": 88.4321,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:30:17.724169"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

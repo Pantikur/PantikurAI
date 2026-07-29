@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6377,
+  "timestamp": "2026-07-27T17:24:20.713266",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 6377)",
+      "category": "fatigue",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 6377-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:24:20.713266"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 6377)",
+      "result": 91.036518,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:24:20.713266"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

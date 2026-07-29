@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25157,
+  "timestamp": "2026-07-27T22:39:09.125280",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25157)",
+      "category": "boundary_layer",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 25157-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:39:09.125280"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25157)",
+      "result": 1.3071,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:39:09.125280"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

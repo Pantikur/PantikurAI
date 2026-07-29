@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15025,
+  "timestamp": "2026-07-27T19:49:18.129022",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 15025)",
+      "category": "differential",
+      "scientific_value": 0.75,
+      "description": "Теория в области mathematics, построена на 15025-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:49:18.129022"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 15025)",
+      "result": 866.3899,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:49:18.129022"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

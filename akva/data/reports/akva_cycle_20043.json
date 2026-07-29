@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20043,
+  "timestamp": "2026-07-27T21:13:24.702659",
+  "studied_topics": [
+    "Подъёмная сила крыла"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 20043)",
+      "category": "turbulence",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 20043-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:13:24.702659"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 20043)",
+      "result": 0.6885,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:13:24.702659"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

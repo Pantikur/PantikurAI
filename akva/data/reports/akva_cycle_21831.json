@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21831,
+  "timestamp": "2026-07-27T21:43:23.457407",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 21831)",
+      "category": "fracture",
+      "scientific_value": 0.88,
+      "description": "Теория в области strength_of_materials, построена на 21831-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:43:23.456397"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 21831)",
+      "result": 18.932847,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:43:23.456397"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

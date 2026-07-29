@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28725,
+  "timestamp": "2026-07-27T23:38:57.213123",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 28725)",
+      "category": "boundary_layer",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 28725-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:38:57.213123"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 28725)",
+      "result": 15.45,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:38:57.213123"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

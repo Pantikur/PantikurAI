@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25890,
+  "timestamp": "2026-07-27T22:51:26.250926",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 25890)",
+      "category": "quantum_info",
+      "scientific_value": 0.84,
+      "description": "Теория в области physics, построена на 25890-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:51:26.249913"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 25890)",
+      "result": 116516364.96,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:51:26.249913"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

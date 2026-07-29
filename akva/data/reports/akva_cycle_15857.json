@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15857,
+  "timestamp": "2026-07-27T20:03:14.601567",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 15857)",
+      "category": "differential",
+      "scientific_value": 0.86,
+      "description": "Теория в области mathematics, построена на 15857-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:03:14.600575"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 15857)",
+      "result": 12.321054,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:03:14.601567"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

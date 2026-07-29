@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28249,
+  "timestamp": "2026-07-27T23:30:58.655966",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 28249)",
+      "category": "quantum_info",
+      "scientific_value": 0.81,
+      "description": "Теория в области physics, построена на 28249-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:30:58.655966"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 28249)",
+      "result": 4609.74,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:30:58.655966"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

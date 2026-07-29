@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30840,
+  "timestamp": "2026-07-28T00:14:24.552004",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 30840)",
+      "category": "strength",
+      "scientific_value": 0.79,
+      "description": "Теория в области strength_of_materials, построена на 30840-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:14:24.552004"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 30840)",
+      "result": 766120715.37,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:14:24.552004"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25816,
+  "timestamp": "2026-07-27T22:50:11.798835",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25816)",
+      "category": "boundary_layer",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 25816-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:11.798835"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25816)",
+      "result": 5.61,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:50:11.798835"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28106,
+  "timestamp": "2026-07-27T23:28:34.892190",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 28106)",
+      "category": "creep",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 28106-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:28:34.891687"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 28106)",
+      "result": 628.01,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:28:34.891687"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

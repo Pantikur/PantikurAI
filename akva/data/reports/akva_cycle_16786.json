@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16786,
+  "timestamp": "2026-07-27T20:18:48.621579",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 16786)",
+      "category": "drag",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 16786-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:18:48.621579"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 16786)",
+      "result": 22.11,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:18:48.621579"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

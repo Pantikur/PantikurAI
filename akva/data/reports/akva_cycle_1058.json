@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1058,
+  "timestamp": "2026-07-27T15:55:07.390882",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 1058)",
+      "category": "fatigue",
+      "scientific_value": 0.8,
+      "description": "Теория в области strength_of_materials, построена на 1058-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:55:07.390882"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 1058)",
+      "result": 1838.73,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:55:07.390882"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

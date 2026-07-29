@@ -1,0 +1,33 @@
+{
+  "cycle_number": 10851,
+  "timestamp": "2026-07-27T18:39:21.770159",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 10851)",
+      "category": "fracture",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 10851-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:39:21.770159"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 10851)",
+      "result": 972596764.45,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:39:21.770159"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

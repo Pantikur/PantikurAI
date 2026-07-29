@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25851,
+  "timestamp": "2026-07-27T22:50:47.021458",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 25851)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 25851-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:47.019311"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25851)",
+      "result": 852255.94,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:50:47.020311"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

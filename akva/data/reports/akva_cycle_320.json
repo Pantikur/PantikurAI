@@ -1,0 +1,33 @@
+{
+  "cycle_number": 320,
+  "timestamp": "2026-07-27T15:42:44.739943",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 320)",
+      "category": "drag",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 320-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:42:44.739943"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 320)",
+      "result": 283756.36,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:42:44.739943"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

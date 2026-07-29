@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25735,
+  "timestamp": "2026-07-27T22:48:50.318912",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25735)",
+      "category": "boundary_layer",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 25735-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:48:50.318912"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 25735)",
+      "result": 7864403.28,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:48:50.318912"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25276,
+  "timestamp": "2026-07-27T22:41:08.778189",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 25276)",
+      "category": "turbulence",
+      "scientific_value": 0.95,
+      "description": "Теория в области aerodynamics, построена на 25276-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:41:08.777685"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25276)",
+      "result": 29.43,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:41:08.777685"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

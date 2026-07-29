@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21585,
+  "timestamp": "2026-07-27T21:39:15.982358",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 21585)",
+      "category": "shock_waves",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 21585-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:39:15.981353"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 21585)",
+      "result": 24.53,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:39:15.981353"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

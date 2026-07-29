@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27952,
+  "timestamp": "2026-07-27T23:26:00.084941",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 27952)",
+      "category": "fatigue",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 27952-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:26:00.084439"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 27952)",
+      "result": 3.14,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:26:00.084439"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

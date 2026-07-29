@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25219,
+  "timestamp": "2026-07-27T22:40:11.469377",
+  "studied_topics": [
+    "Квантовая электродинамика"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 25219)",
+      "category": "relativity",
+      "scientific_value": 0.82,
+      "description": "Теория в области physics, построена на 25219-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:40:11.469377"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 25219)",
+      "result": 1440.86,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:40:11.469377"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

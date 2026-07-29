@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25571,
+  "timestamp": "2026-07-27T22:46:05.445488",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 25571)",
+      "category": "optimization",
+      "scientific_value": 0.86,
+      "description": "Теория в области mathematics, построена на 25571-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:05.445488"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 25571)",
+      "result": 77.187003,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:46:05.445488"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

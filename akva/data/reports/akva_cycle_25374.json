@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25374,
+  "timestamp": "2026-07-27T22:42:47.316965",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25374)",
+      "category": "shock_waves",
+      "scientific_value": 0.9,
+      "description": "Теория в области aerodynamics, построена на 25374-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:42:47.315960"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 25374)",
+      "result": 999.38,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:42:47.315960"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

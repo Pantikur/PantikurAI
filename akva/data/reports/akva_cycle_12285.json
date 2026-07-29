@@ -1,0 +1,33 @@
+{
+  "cycle_number": 12285,
+  "timestamp": "2026-07-27T19:03:23.863253",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 12285)",
+      "category": "fracture",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 12285-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:03:23.862240"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 12285)",
+      "result": 863.99,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:03:23.862240"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

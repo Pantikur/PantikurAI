@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28229,
+  "timestamp": "2026-07-27T23:30:38.553850",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 28229)",
+      "category": "number_theory",
+      "scientific_value": 0.76,
+      "description": "Теория в области mathematics, построена на 28229-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:30:38.553850"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28229)",
+      "result": 36.9971,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:30:38.553850"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21765,
+  "timestamp": "2026-07-27T21:42:17.051162",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 21765)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.91,
+      "description": "Теория в области aerodynamics, построена на 21765-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:42:17.049645"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 21765)",
+      "result": 25.28,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:42:17.049645"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

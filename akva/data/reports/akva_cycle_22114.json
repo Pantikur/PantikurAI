@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22114,
+  "timestamp": "2026-07-27T21:48:08.012137",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 22114)",
+      "category": "topology",
+      "scientific_value": 0.79,
+      "description": "Теория в области mathematics, построена на 22114-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:48:08.012137"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 22114)",
+      "result": 60.2254,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:48:08.012137"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

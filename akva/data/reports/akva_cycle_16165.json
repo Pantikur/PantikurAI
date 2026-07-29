@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16165,
+  "timestamp": "2026-07-27T20:08:24.275933",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 16165)",
+      "category": "number_theory",
+      "scientific_value": 0.71,
+      "description": "Теория в области mathematics, построена на 16165-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:08:24.275933"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 16165)",
+      "result": 25.6728,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:08:24.275933"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

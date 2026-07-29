@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14568,
+  "timestamp": "2026-07-27T19:41:38.797400",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 14568)",
+      "category": "fatigue",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 14568-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:41:38.796884"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 14568)",
+      "result": 276606777.82,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:41:38.797400"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

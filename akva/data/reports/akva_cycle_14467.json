@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14467,
+  "timestamp": "2026-07-27T19:39:57.254363",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 14467)",
+      "category": "lift",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 14467-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:39:57.254363"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 14467)",
+      "result": 28.1,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:39:57.254363"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

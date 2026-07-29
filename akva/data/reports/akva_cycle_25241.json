@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25241,
+  "timestamp": "2026-07-27T22:40:33.591605",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 25241)",
+      "category": "turbulence",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 25241-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:40:33.591605"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25241)",
+      "result": 11.58,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:40:33.591605"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

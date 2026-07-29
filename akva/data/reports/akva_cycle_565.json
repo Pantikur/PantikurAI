@@ -1,0 +1,33 @@
+{
+  "cycle_number": 565,
+  "timestamp": "2026-07-27T15:46:51.365065",
+  "studied_topics": [
+    "Гравитационные волны"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 565)",
+      "category": "quantum",
+      "scientific_value": 0.95,
+      "description": "Теория в области physics, построена на 565-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:46:51.365065"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 565)",
+      "result": 8098998683.96,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:46:51.365065"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

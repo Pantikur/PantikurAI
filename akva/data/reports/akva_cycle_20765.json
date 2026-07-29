@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20765,
+  "timestamp": "2026-07-27T21:25:31.047238",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 20765)",
+      "category": "electromagnetism",
+      "scientific_value": 0.78,
+      "description": "Теория в области physics, построена на 20765-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:25:31.047238"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 20765)",
+      "result": 330800419.62,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:25:31.047238"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

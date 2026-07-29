@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25830,
+  "timestamp": "2026-07-27T22:50:25.891039",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25830)",
+      "category": "boundary_layer",
+      "scientific_value": 0.71,
+      "description": "Теория в области aerodynamics, построена на 25830-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:25.890030"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 25830)",
+      "result": 8610192.32,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:50:25.890030"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

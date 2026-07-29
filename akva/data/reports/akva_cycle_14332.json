@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14332,
+  "timestamp": "2026-07-27T19:37:41.539559",
+  "studied_topics": [
+    "Напряжение и деформация"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 14332)",
+      "category": "fracture",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 14332-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:37:41.539559"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 14332)",
+      "result": 7.97,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:37:41.539559"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

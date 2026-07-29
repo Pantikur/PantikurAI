@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6022,
+  "timestamp": "2026-07-27T17:18:23.629367",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 6022)",
+      "category": "quantum_info",
+      "scientific_value": 0.82,
+      "description": "Теория в области physics, построена на 6022-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:18:23.628863"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 6022)",
+      "result": 8395405861.81,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:18:23.628863"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

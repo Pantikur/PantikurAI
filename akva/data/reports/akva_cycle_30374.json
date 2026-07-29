@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30374,
+  "timestamp": "2026-07-28T00:06:35.463364",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 30374)",
+      "category": "relativity",
+      "scientific_value": 0.95,
+      "description": "Теория в области physics, построена на 30374-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:06:35.463364"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 30374)",
+      "result": 94201471.4147,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:06:35.463364"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14235,
+  "timestamp": "2026-07-27T19:36:04.015932",
+  "studied_topics": [
+    "Уравнения Навье-Стокса"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 14235)",
+      "category": "probability",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 14235-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:36:04.014925"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 14235)",
+      "result": 36.886271,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:36:04.014925"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

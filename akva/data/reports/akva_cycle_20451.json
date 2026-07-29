@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20451,
+  "timestamp": "2026-07-27T21:20:15.121114",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 20451)",
+      "category": "strength",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 20451-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:20:15.120105"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 20451)",
+      "result": 23.041309,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:20:15.120105"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

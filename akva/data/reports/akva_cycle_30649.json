@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30649,
+  "timestamp": "2026-07-28T00:11:12.239416",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 30649)",
+      "category": "fatigue",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 30649-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:11:12.238912"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 30649)",
+      "result": 0.286522,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:11:12.238912"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20654,
+  "timestamp": "2026-07-27T21:23:39.350767",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20654)",
+      "category": "drag",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 20654-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:23:39.350767"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 20654)",
+      "result": 282.68,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:23:39.350767"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

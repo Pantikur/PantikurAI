@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14691,
+  "timestamp": "2026-07-27T19:43:42.400553",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 14691)",
+      "category": "drag",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 14691-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:43:42.399436"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 14691)",
+      "result": 5785872.86,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:43:42.399436"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

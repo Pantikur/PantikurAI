@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27856,
+  "timestamp": "2026-07-27T23:24:23.587901",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 27856)",
+      "category": "lift",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 27856-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:24:23.587901"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 27856)",
+      "result": 6079556.71,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:24:23.587901"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

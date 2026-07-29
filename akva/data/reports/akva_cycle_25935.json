@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25935,
+  "timestamp": "2026-07-27T22:52:11.535892",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 25935)",
+      "category": "thermodynamics",
+      "scientific_value": 0.85,
+      "description": "Теория в области physics, построена на 25935-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:52:11.534887"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 25935)",
+      "result": 82266503.7575,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:52:11.534887"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

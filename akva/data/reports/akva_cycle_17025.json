@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17025,
+  "timestamp": "2026-07-27T20:22:48.852056",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 17025)",
+      "category": "relativity",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 17025-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:22:48.851047"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость волны (цикл 17025)",
+      "result": 141301985.99,
+      "formula": "v=λf",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:22:48.851047"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

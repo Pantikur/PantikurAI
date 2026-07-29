@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20171,
+  "timestamp": "2026-07-27T21:15:33.434264",
+  "studied_topics": [
+    "Матрицы и определители"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 20171)",
+      "category": "linear_algebra",
+      "scientific_value": 0.76,
+      "description": "Теория в области mathematics, построена на 20171-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:15:33.434264"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 20171)",
+      "result": 75.242723,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:15:33.434264"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

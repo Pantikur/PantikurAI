@@ -1,0 +1,33 @@
+{
+  "cycle_number": 4221,
+  "timestamp": "2026-07-27T16:48:12.244044",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 4221)",
+      "category": "differential",
+      "scientific_value": 0.81,
+      "description": "Теория в области mathematics, построена на 4221-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:48:12.243039"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 4221)",
+      "result": 52.1787,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:48:12.243039"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

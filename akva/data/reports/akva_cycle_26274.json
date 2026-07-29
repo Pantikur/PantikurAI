@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26274,
+  "timestamp": "2026-07-27T22:57:52.460104",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 26274)",
+      "category": "fatigue",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 26274-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:57:52.459093"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 26274)",
+      "result": 557.55,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:57:52.459093"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

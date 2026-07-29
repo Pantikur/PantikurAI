@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22447,
+  "timestamp": "2026-07-27T21:53:43.029728",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 22447)",
+      "category": "stiffness",
+      "scientific_value": 0.76,
+      "description": "Теория в области strength_of_materials, построена на 22447-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:53:43.029728"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 22447)",
+      "result": 0.172815,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:53:43.029728"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

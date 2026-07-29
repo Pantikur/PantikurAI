@@ -1,0 +1,33 @@
+{
+  "cycle_number": 249,
+  "timestamp": "2026-07-27T15:41:33.273829",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 249)",
+      "category": "relativity",
+      "scientific_value": 0.85,
+      "description": "Теория в области physics, построена на 249-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:41:33.271817"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 249)",
+      "result": 4359.63,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:41:33.272826"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 100,
+  "level_changes": []
+}

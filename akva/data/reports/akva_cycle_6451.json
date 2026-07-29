@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6451,
+  "timestamp": "2026-07-27T17:25:35.129411",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 6451)",
+      "category": "probability",
+      "scientific_value": 0.74,
+      "description": "Теория в области mathematics, построена на 6451-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:25:35.129411"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 6451)",
+      "result": 78.7453,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:25:35.129411"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

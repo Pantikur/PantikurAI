@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21047,
+  "timestamp": "2026-07-27T21:30:14.707886",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 21047)",
+      "category": "turbulence",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 21047-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:30:14.707886"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 21047)",
+      "result": 994.5,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:30:14.707886"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

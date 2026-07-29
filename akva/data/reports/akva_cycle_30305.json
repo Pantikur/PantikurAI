@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30305,
+  "timestamp": "2026-07-28T00:05:26.021398",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 30305)",
+      "category": "fatigue",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 30305-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:05:26.021398"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Модуль Юнга (цикл 30305)",
+      "result": 349.12,
+      "formula": "E=σ/ε",
+      "units": "GPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:05:26.021398"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

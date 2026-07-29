@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25497,
+  "timestamp": "2026-07-27T22:44:51.033047",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25497)",
+      "category": "drag",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 25497-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:44:51.032039"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 25497)",
+      "result": 1155.56,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:44:51.032039"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

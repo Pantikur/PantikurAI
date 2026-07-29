@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20008,
+  "timestamp": "2026-07-27T21:12:49.490915",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 20008)",
+      "category": "strength",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 20008-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:12:49.490915"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 20008)",
+      "result": 0.109729,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:12:49.490915"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,287 @@
+{
+  "laws": [
+    {
+      "name": "Федеральный закон №264-ФЗ 'Об ИИ'",
+      "year": 2024,
+      "description": "Основной закон об искусственном интеллекте в РФ",
+      "key_provisions": [
+        "Определение понятия ИИ",
+        "Классификация систем ИИ по уровню риска",
+        "Требования к разработчикам и пользователям ИИ",
+        "Национальная система маркировки ИИ",
+        "Экспериментальные правовые режимы"
+      ],
+      "compliance_required": true,
+      "risk_level": "high",
+      "source": "consultant.ru"
+    },
+    {
+      "name": "Стратегия развития ИИ в РФ",
+      "year": 2024,
+      "description": "Стратегия развития искусственного интеллекта на период до 2030 года",
+      "key_provisions": [
+        "Цели развития ИИ в государстве",
+        "Приоритетные направления",
+        "Меры поддержки разработки",
+        "Этические принципы ИИ"
+      ],
+      "compliance_required": false,
+      "risk_level": "medium",
+      "source": "government.ru"
+    },
+    {
+      "name": "Закон о персональных данных (152-ФЗ)",
+      "year": 2023,
+      "description": "Регулирование обработки персональных данных, включая данные для обучения ИИ",
+      "key_provisions": [
+        "Согласие на обработку персональных данных",
+        "Локализация баз данных в РФ",
+        "Трансграничная передача данных",
+        "Анонимизация данных"
+      ],
+      "compliance_required": true,
+      "risk_level": "critical",
+      "source": "consultant.ru"
+    },
+    {
+      "name": "EU AI Act",
+      "year": 2024,
+      "description": "Регламент ЕС об искусственном интеллекте",
+      "key_provisions": [
+        "Классификация ИИ по уровням риска",
+        "Запрет определённых практик ИИ",
+        "Требования к высокому риску",
+        "Прозрачность для генеративного ИИ",
+        "Надзор после выхода на рынок"
+      ],
+      "compliance_required": true,
+      "risk_level": "critical",
+      "source": "eur-lex.europa.eu"
+    },
+    {
+      "name": "GDPR",
+      "year": 2018,
+      "description": "Общий регламент по защите данных ЕС",
+      "key_provisions": [
+        "Право на объяснение решений ИИ",
+        "Автоматизированное принятие решений",
+        "Защита специальных категорий данных",
+        "Дат-протекшн по дизайну"
+      ],
+      "compliance_required": true,
+      "risk_level": "critical",
+      "source": "eur-lex.europa.eu"
+    },
+    {
+      "topic": "Авторское право на контент, сгенерированный ИИ",
+      "summary": "Правовой статус произведений, созданных искусственным интеллектом",
+      "jurisdictions": [
+        {
+          "region": "США",
+          "status": "Запрещена регистрация",
+          "case": "Thaler v. Perlmutter (2023)",
+          "ruling": "Только человеческое творчество может быть защищено авторским правом",
+          "impact": "high"
+        },
+        {
+          "region": "Евросоюз",
+          "status": "Требует человеческого участия",
+          "case": "Direktive 2001/29/EC",
+          "ruling": "Решения судов указывают на необходимость интеллектуального творческого вклада человека",
+          "impact": "high"
+        },
+        {
+          "region": "Россия",
+          "status": "Неоднозначно",
+          "case": "Гражданский кодекс РФ, часть 4",
+          "ruling": "Закон не определяет прямо, но требует творческого характера",
+          "impact": "medium"
+        },
+        {
+          "region": "Китай",
+          "status": "Признана защита",
+          "case": "Тиньичань vs Лянься (2023)",
+          "ruling": "AI-генерированное изображение защищено авторским правом",
+          "impact": "high"
+        }
+      ],
+      "recommendations": [
+        "Документируйте человеческое участие в создании контента",
+        "Используйте лицензионные модели для AI-контента",
+        "Избегайте коммерческого использования без правовой оценки",
+        "Рассмотрите патентную защиту для уникальных AI-моделей"
+      ],
+      "risk_level": "high",
+      "last_updated": "2026-07-27T15:38:17.337159"
+    },
+    {
+      "topic": "Использование данных для обучения ИИ",
+      "summary": "Правовые аспекты использования защищённого контента для обучения моделей",
+      "jurisdictions": [
+        {
+          "region": "Евросоюз",
+          "status": "Текст и данные (Text and Data Mining)",
+          "case": "GDPR + DSM Directive",
+          "ruling": "Исключения для TDM для научных исследований, коммерческое использование ограничено",
+          "impact": "critical"
+        },
+        {
+          "region": "США",
+          "status": "Добросовестное использование",
+          "case": "Authors Guild v. Google (2004+)",
+          "ruling": "Сканирование книг для поиска — добросовестное использование",
+          "impact": "medium"
+        },
+        {
+          "region": "Россия",
+          "status": "Неоднозначно",
+          "case": "Отсутствие прецедентов",
+          "ruling": "Закон не регулирует напрямую, возможны споры о нарушении авторских прав",
+          "impact": "high"
+        }
+      ],
+      "recommendations": [
+        "Используйте лицензионные данные для обучения",
+        "Рассмотрите open-source датасеты",
+        "Документируйте происхождение данных",
+        "Реализуйте mechanism для удаления данных по запросу правообладателя"
+      ],
+      "risk_level": "critical",
+      "last_updated": "2026-07-27T15:38:17.338156"
+    },
+    {
+      "name": "MIT License",
+      "type": "permissive",
+      "description": "Разрешает любое использование с указанием авторства",
+      "permissions": [
+        "commercial",
+        "modification",
+        "distribution",
+        "private_use"
+      ],
+      "conditions": [
+        "license_and_copyright_notice"
+      ],
+      "limitations": [
+        "liability",
+        "warranty"
+      ],
+      "suitable_for": "Open-source проекты, коммерческое использование"
+    },
+    {
+      "name": "Apache 2.0",
+      "type": "permissive",
+      "description": "Разрешает использование с патентным лицензированием",
+      "permissions": [
+        "commercial",
+        "modification",
+        "distribution",
+        "private_use"
+      ],
+      "conditions": [
+        "license_and_copyright_notice",
+        "state_changes"
+      ],
+      "limitations": [
+        "liability",
+        "warranty",
+        "trademark"
+      ],
+      "suitable_for": "Корпоративные open-source проекты"
+    },
+    {
+      "name": "GPL v3",
+      "type": "copyleft",
+      "description": "Требует открытия исходного кода производных работ",
+      "permissions": [
+        "commercial",
+        "modification",
+        "distribution",
+        "private_use"
+      ],
+      "conditions": [
+        "disclose_source",
+        "license"
+      ],
+      "limitations": [
+        "liability",
+        "warranty"
+      ],
+      "suitable_for": "Проекты, требующие открытия кода"
+    },
+    {
+      "name": "CC0 (Public Domain)",
+      "type": "public_domain",
+      "description": "Отказ от всех прав, передача в общественное достояние",
+      "permissions": [
+        "all"
+      ],
+      "conditions": [],
+      "limitations": [
+        "liability",
+        "warranty",
+        "patent_rights"
+      ],
+      "suitable_for": "Данные, датасеты, модели"
+    },
+    {
+      "name": "OpenRAIL-M",
+      "type": "responsible_ai",
+      "description": "Лицензия для ответственного использования ИИ-моделей",
+      "permissions": [
+        "commercial",
+        "modification",
+        "distribution",
+        "research"
+      ],
+      "conditions": [
+        "accept_use_restrictions"
+      ],
+      "limitations": [
+        "liability",
+        "warranty"
+      ],
+      "use_restrictions": [
+        "Не использовать для незаконной деятельности",
+        "Не использовать для дискриминации",
+        "Не использовать для дезинформации"
+      ],
+      "suitable_for": "ИИ-модели с этическими ограничениями"
+    },
+    {
+      "id": "CHANGE-20260727-001",
+      "type": "new_law",
+      "title": "Обновление требований к маркировке ИИ в РФ",
+      "date": "2026-07-27T15:38:17.339155",
+      "jurisdiction": "russia",
+      "description": "Роскомнадзор обновил требования к национальной системе маркировки ИИ",
+      "impact": "high",
+      "compliance_deadline": "2025-12-31",
+      "source": "government.ru"
+    },
+    {
+      "id": "CHANGE-20260727-002",
+      "type": "regulation",
+      "title": "Новые руководящие принципы AI Act в ЕС",
+      "date": "2026-07-27T15:38:17.339155",
+      "jurisdiction": "eu",
+      "description": "Европейская комиссия выпустила новые руководства по применению AI Act",
+      "impact": "high",
+      "compliance_deadline": "2025-08-02",
+      "source": "commission.europa.eu"
+    },
+    {
+      "id": "CHANGE-20260727-003",
+      "type": "court_decision",
+      "title": "Решение суда о правах на AI-генерированный контент",
+      "date": "2026-07-27T15:38:17.339155",
+      "jurisdiction": "international",
+      "description": "Суд первой инстанции рассмотрел дело о правах на контент, созданный ИИ",
+      "impact": "medium",
+      "compliance_deadline": null,
+      "source": "legal_database"
+    }
+  ],
+  "updated": "2026-07-27T15:38:17.339155",
+  "total_studied": 15
+}

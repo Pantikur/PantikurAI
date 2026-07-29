@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14494,
+  "timestamp": "2026-07-27T19:40:24.393341",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 14494)",
+      "category": "fatigue",
+      "scientific_value": 0.94,
+      "description": "Теория в области strength_of_materials, построена на 14494-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:40:24.393341"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 14494)",
+      "result": 750456048.61,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:40:24.393341"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

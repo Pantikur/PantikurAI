@@ -1,0 +1,33 @@
+{
+  "cycle_number": 11420,
+  "timestamp": "2026-07-27T18:48:54.223065",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 11420)",
+      "category": "topology",
+      "scientific_value": 0.83,
+      "description": "Теория в области mathematics, построена на 11420-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:48:54.223065"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 11420)",
+      "result": 95.585216,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:48:54.223065"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

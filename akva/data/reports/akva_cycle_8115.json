@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8115,
+  "timestamp": "2026-07-27T17:53:28.781182",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 8115)",
+      "category": "boundary_layer",
+      "scientific_value": 0.72,
+      "description": "Теория в области aerodynamics, построена на 8115-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:53:28.781182"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 8115)",
+      "result": 1.2305,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:53:28.781182"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

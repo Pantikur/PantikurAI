@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22956,
+  "timestamp": "2026-07-27T22:02:15.123300",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 22956)",
+      "category": "stability",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 22956-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:02:15.123300"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 22956)",
+      "result": 5.3,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:02:15.123300"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

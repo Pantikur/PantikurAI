@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8211,
+  "timestamp": "2026-07-27T17:55:05.441739",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 8211)",
+      "category": "differential",
+      "scientific_value": 0.82,
+      "description": "Теория в области mathematics, построена на 8211-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:55:05.440733"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 8211)",
+      "result": 97.091804,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:55:05.440733"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

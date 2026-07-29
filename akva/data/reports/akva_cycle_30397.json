@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30397,
+  "timestamp": "2026-07-28T00:06:58.602208",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 30397)",
+      "category": "turbulence",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 30397-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:06:58.602208"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 30397)",
+      "result": 2345338.83,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:06:58.602208"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30565,
+  "timestamp": "2026-07-28T00:09:47.668928",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 30565)",
+      "category": "relativity",
+      "scientific_value": 0.91,
+      "description": "Теория в области physics, построена на 30565-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:09:47.668928"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 30565)",
+      "result": 1314.76,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:09:47.668928"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

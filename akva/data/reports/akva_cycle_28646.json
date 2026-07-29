@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28646,
+  "timestamp": "2026-07-27T23:37:37.788354",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 28646)",
+      "category": "fracture",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 28646-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:37:37.788354"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 28646)",
+      "result": 43.633223,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:37:37.788354"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

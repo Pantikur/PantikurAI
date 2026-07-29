@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22367,
+  "timestamp": "2026-07-27T21:52:22.571707",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 22367)",
+      "category": "drag",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 22367-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:52:22.571202"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 22367)",
+      "result": 779921.88,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:52:22.571707"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30157,
+  "timestamp": "2026-07-28T00:02:57.152975",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 30157)",
+      "category": "strength",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 30157-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:02:57.152210"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 30157)",
+      "result": 72.481076,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:02:57.152210"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

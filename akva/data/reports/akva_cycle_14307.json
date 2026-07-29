@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14307,
+  "timestamp": "2026-07-27T19:37:16.381587",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 14307)",
+      "category": "lift",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 14307-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:37:16.381587"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 14307)",
+      "result": 0.9521,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:37:16.381587"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

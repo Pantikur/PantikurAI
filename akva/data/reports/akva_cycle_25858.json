@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25858,
+  "timestamp": "2026-07-27T22:50:54.063958",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 25858)",
+      "category": "strength",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 25858-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:54.063958"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 25858)",
+      "result": 9.97,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:50:54.063958"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21334,
+  "timestamp": "2026-07-27T21:35:03.420828",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 21334)",
+      "category": "boundary_layer",
+      "scientific_value": 0.74,
+      "description": "Теория в области aerodynamics, построена на 21334-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:35:03.420828"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 21334)",
+      "result": 6052600.19,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:35:03.420828"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

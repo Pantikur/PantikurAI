@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22087,
+  "timestamp": "2026-07-27T21:47:40.859480",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 22087)",
+      "category": "fatigue",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 22087-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:47:40.859480"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 22087)",
+      "result": 267.97,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:47:40.859480"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

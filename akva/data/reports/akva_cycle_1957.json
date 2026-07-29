@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1957,
+  "timestamp": "2026-07-27T16:10:11.942736",
+  "studied_topics": [
+    "Тригонометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 1957)",
+      "category": "linear_algebra",
+      "scientific_value": 0.87,
+      "description": "Теория в области mathematics, построена на 1957-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:10:11.942234"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 1957)",
+      "result": 378.1755,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T16:10:11.942736"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

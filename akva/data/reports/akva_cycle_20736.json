@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20736,
+  "timestamp": "2026-07-27T21:25:01.857959",
+  "studied_topics": [
+    "Напряжение и деформация"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 20736)",
+      "category": "fatigue",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 20736-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:25:01.857959"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 20736)",
+      "result": 327468520.66,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:25:01.857959"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

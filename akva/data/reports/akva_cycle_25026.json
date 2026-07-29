@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25026,
+  "timestamp": "2026-07-27T22:36:57.337743",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 25026)",
+      "category": "stability",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 25026-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:36:57.337743"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25026)",
+      "result": 8.373158,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:36:57.337743"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27340,
+  "timestamp": "2026-07-27T23:15:44.706372",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 27340)",
+      "category": "relativity",
+      "scientific_value": 0.89,
+      "description": "Теория в области physics, построена на 27340-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:15:44.706372"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 27340)",
+      "result": 9808531824.11,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:15:44.706372"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

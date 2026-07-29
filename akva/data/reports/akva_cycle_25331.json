@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25331,
+  "timestamp": "2026-07-27T22:42:04.085117",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 25331)",
+      "category": "electromagnetism",
+      "scientific_value": 0.83,
+      "description": "Теория в области physics, построена на 25331-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:42:04.085117"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 25331)",
+      "result": 4156088159.27,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:42:04.085117"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

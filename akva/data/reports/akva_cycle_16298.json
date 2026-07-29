@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16298,
+  "timestamp": "2026-07-27T20:10:38.013757",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 16298)",
+      "category": "probability",
+      "scientific_value": 0.69,
+      "description": "Теория в области mathematics, построена на 16298-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:10:38.013757"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 16298)",
+      "result": 56.9778,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:10:38.013757"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

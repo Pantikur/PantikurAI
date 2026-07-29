@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26157,
+  "timestamp": "2026-07-27T22:55:54.864138",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 26157)",
+      "category": "topology",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 26157-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:55:54.863632"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 26157)",
+      "result": 83.649337,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:55:54.864138"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

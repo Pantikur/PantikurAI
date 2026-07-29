@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30425,
+  "timestamp": "2026-07-28T00:07:26.799479",
+  "studied_topics": [
+    "Квантовая электродинамика"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 30425)",
+      "category": "thermodynamics",
+      "scientific_value": 0.76,
+      "description": "Теория в области physics, построена на 30425-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:07:26.799479"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость волны (цикл 30425)",
+      "result": 254011598.35,
+      "formula": "v=λf",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:07:26.799479"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

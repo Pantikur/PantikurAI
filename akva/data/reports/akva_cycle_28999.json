@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28999,
+  "timestamp": "2026-07-27T23:43:32.667721",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 28999)",
+      "category": "strength",
+      "scientific_value": 0.76,
+      "description": "Теория в области strength_of_materials, построена на 28999-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:43:32.667721"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 28999)",
+      "result": 67.179503,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:43:32.667721"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

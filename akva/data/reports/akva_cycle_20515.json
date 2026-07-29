@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20515,
+  "timestamp": "2026-07-27T21:21:19.511896",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 20515)",
+      "category": "differential",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 20515-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:21:19.511896"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 20515)",
+      "result": 972.3731,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:21:19.511896"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

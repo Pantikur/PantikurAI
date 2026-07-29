@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21501,
+  "timestamp": "2026-07-27T21:37:51.464110",
+  "studied_topics": [
+    "Дифференциальная геометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 21501)",
+      "category": "topology",
+      "scientific_value": 0.87,
+      "description": "Теория в области mathematics, построена на 21501-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:37:51.462890"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 21501)",
+      "result": 417.5702,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:37:51.462890"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

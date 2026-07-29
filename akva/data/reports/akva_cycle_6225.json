@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6225,
+  "timestamp": "2026-07-27T17:21:47.820658",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 6225)",
+      "category": "boundary_layer",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 6225-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:21:47.820658"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 6225)",
+      "result": 807566.74,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:21:47.820658"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

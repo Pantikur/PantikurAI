@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15920,
+  "timestamp": "2026-07-27T20:04:17.942160",
+  "studied_topics": [
+    "Оптимизация невыпуклых функций"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 15920)",
+      "category": "topology",
+      "scientific_value": 0.74,
+      "description": "Теория в области mathematics, построена на 15920-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:04:17.942160"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 15920)",
+      "result": 34.9994,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:04:17.942160"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

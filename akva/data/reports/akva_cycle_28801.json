@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28801,
+  "timestamp": "2026-07-27T23:40:13.636317",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 28801)",
+      "category": "quantum_info",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 28801-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:40:13.636317"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 28801)",
+      "result": 7065466334.92,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:40:13.636317"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

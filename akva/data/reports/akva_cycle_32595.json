@@ -1,0 +1,33 @@
+{
+  "cycle_number": 32595,
+  "timestamp": "2026-07-28T00:43:49.799414",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 32595)",
+      "category": "fracture",
+      "scientific_value": 0.99,
+      "description": "Теория в области strength_of_materials, построена на 32595-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:43:49.798404"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 32595)",
+      "result": 6.51,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:43:49.798404"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25513,
+  "timestamp": "2026-07-27T22:45:07.111452",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 25513)",
+      "category": "thermodynamics",
+      "scientific_value": 0.79,
+      "description": "Теория в области physics, построена на 25513-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:07.110947"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 25513)",
+      "result": 730096411.16,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:45:07.110947"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

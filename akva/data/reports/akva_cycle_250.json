@@ -1,0 +1,33 @@
+{
+  "cycle_number": 250,
+  "timestamp": "2026-07-27T15:41:34.280484",
+  "studied_topics": [
+    "Топология многообразий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 250)",
+      "category": "probability",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 250-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:41:34.279471"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 250)",
+      "result": 57.7554,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:41:34.279471"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 70,
+  "level_changes": []
+}

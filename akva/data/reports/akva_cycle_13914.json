@@ -1,0 +1,33 @@
+{
+  "cycle_number": 13914,
+  "timestamp": "2026-07-27T19:30:41.357163",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 13914)",
+      "category": "turbulence",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 13914-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:30:41.356157"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 13914)",
+      "result": 15.55,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:30:41.356157"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

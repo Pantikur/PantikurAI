@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25927,
+  "timestamp": "2026-07-27T22:52:03.470101",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 25927)",
+      "category": "turbulence",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 25927-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:52:03.470101"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25927)",
+      "result": 17.36,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:52:03.470101"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22991,
+  "timestamp": "2026-07-27T22:02:50.340107",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 22991)",
+      "category": "lift",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 22991-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:02:50.339603"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 22991)",
+      "result": 421370.0,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:02:50.339603"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

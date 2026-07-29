@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15014,
+  "timestamp": "2026-07-27T19:49:07.078558",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 15014)",
+      "category": "thermodynamics",
+      "scientific_value": 0.77,
+      "description": "Теория в области physics, построена на 15014-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:49:07.078558"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 15014)",
+      "result": 4305.28,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:49:07.078558"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25944,
+  "timestamp": "2026-07-27T22:52:20.588491",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 25944)",
+      "category": "creep",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 25944-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:52:20.588491"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 25944)",
+      "result": 4.85,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:52:20.588491"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

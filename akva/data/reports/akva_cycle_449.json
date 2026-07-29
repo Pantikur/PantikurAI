@@ -1,0 +1,33 @@
+{
+  "cycle_number": 449,
+  "timestamp": "2026-07-27T15:44:54.598621",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 449)",
+      "category": "optimization",
+      "scientific_value": 0.95,
+      "description": "Теория в области mathematics, построена на 449-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:44:54.598621"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 449)",
+      "result": 7.3417,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:44:54.598621"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

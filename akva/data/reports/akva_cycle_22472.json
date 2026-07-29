@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22472,
+  "timestamp": "2026-07-27T21:54:08.211686",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 22472)",
+      "category": "drag",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 22472-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:54:08.211686"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 22472)",
+      "result": 0.5246,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:54:08.211686"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

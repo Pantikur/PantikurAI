@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27080,
+  "timestamp": "2026-07-27T23:11:23.120479",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 27080)",
+      "category": "differential",
+      "scientific_value": 0.78,
+      "description": "Теория в области mathematics, построена на 27080-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:11:23.120479"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 27080)",
+      "result": 96.54063,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:11:23.120479"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20369,
+  "timestamp": "2026-07-27T21:18:52.653758",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20369)",
+      "category": "drag",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 20369-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:18:52.653758"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 20369)",
+      "result": 3076757.42,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:18:52.653758"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

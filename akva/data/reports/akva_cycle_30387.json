@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30387,
+  "timestamp": "2026-07-28T00:06:48.541255",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 30387)",
+      "category": "stability",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 30387-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:06:48.541255"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 30387)",
+      "result": 0.043832,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:06:48.541255"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

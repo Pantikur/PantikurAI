@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14424,
+  "timestamp": "2026-07-27T19:39:14.035664",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 14424)",
+      "category": "probability",
+      "scientific_value": 0.82,
+      "description": "Теория в области mathematics, построена на 14424-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:39:14.034659"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 14424)",
+      "result": 49.2235,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:39:14.034659"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

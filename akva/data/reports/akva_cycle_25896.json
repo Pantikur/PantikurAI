@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25896,
+  "timestamp": "2026-07-27T22:51:32.290428",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 25896)",
+      "category": "electromagnetism",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 25896-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:51:32.289912"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 25896)",
+      "result": 2091.76,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:51:32.290428"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

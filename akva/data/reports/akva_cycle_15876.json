@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15876,
+  "timestamp": "2026-07-27T20:03:33.710453",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 15876)",
+      "category": "differential",
+      "scientific_value": 0.77,
+      "description": "Теория в области mathematics, построена на 15876-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:03:33.709398"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 15876)",
+      "result": 97.267717,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:03:33.709398"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

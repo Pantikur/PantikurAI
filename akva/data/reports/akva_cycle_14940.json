@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14940,
+  "timestamp": "2026-07-27T19:47:52.696042",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 14940)",
+      "category": "optimization",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 14940-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:52.695029"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 14940)",
+      "result": 30.003865,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:47:52.695029"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21442,
+  "timestamp": "2026-07-27T21:36:52.097421",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 21442)",
+      "category": "turbulence",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 21442-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:36:52.097421"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 21442)",
+      "result": 116607.22,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:36:52.097421"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

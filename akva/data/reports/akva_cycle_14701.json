@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14701,
+  "timestamp": "2026-07-27T19:43:52.447832",
+  "studied_topics": [
+    "Пределы и ряды"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 14701)",
+      "category": "number_theory",
+      "scientific_value": 0.82,
+      "description": "Теория в области mathematics, построена на 14701-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:43:52.447832"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 14701)",
+      "result": 16.9791,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:43:52.447832"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15051,
+  "timestamp": "2026-07-27T19:49:44.273795",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 15051)",
+      "category": "strength",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 15051-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:49:44.273292"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 15051)",
+      "result": 1741.62,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:49:44.273795"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

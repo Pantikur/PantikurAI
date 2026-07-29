@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1141,
+  "timestamp": "2026-07-27T15:56:30.898885",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 1141)",
+      "category": "fracture",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 1141-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:56:30.898885"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 1141)",
+      "result": 62.344905,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:56:30.898885"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25063,
+  "timestamp": "2026-07-27T22:37:34.554948",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25063)",
+      "category": "shock_waves",
+      "scientific_value": 0.99,
+      "description": "Теория в области aerodynamics, построена на 25063-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:37:34.554948"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25063)",
+      "result": 26.09,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:37:34.554948"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

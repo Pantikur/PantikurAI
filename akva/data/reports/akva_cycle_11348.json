@@ -1,0 +1,33 @@
+{
+  "cycle_number": 11348,
+  "timestamp": "2026-07-27T18:47:41.799929",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 11348)",
+      "category": "stability",
+      "scientific_value": 0.91,
+      "description": "Теория в области strength_of_materials, построена на 11348-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:47:41.799929"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 11348)",
+      "result": 9.22,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T18:47:41.799929"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

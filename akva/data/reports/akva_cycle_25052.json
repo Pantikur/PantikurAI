@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25052,
+  "timestamp": "2026-07-27T22:37:23.492775",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 25052)",
+      "category": "quantum_info",
+      "scientific_value": 0.91,
+      "description": "Теория в области physics, построена на 25052-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:37:23.492775"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 25052)",
+      "result": 9527818363.62,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:37:23.492775"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

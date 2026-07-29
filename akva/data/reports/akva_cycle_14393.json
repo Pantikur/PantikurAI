@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14393,
+  "timestamp": "2026-07-27T19:38:42.885542",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 14393)",
+      "category": "probability",
+      "scientific_value": 0.85,
+      "description": "Теория в области mathematics, построена на 14393-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:38:42.885542"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 14393)",
+      "result": -770.1312,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:38:42.885542"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

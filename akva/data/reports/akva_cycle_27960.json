@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27960,
+  "timestamp": "2026-07-27T23:26:08.124174",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 27960)",
+      "category": "drag",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 27960-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:26:08.124174"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 27960)",
+      "result": 88021003.47,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:26:08.124174"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

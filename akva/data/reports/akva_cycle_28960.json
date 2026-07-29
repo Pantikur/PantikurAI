@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28960,
+  "timestamp": "2026-07-27T23:42:53.462089",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 28960)",
+      "category": "quantum",
+      "scientific_value": 0.94,
+      "description": "Теория в области physics, построена на 28960-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:42:53.462089"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 28960)",
+      "result": 15144278.2146,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:42:53.462089"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

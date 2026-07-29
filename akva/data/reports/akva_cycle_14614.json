@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14614,
+  "timestamp": "2026-07-27T19:42:25.025627",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 14614)",
+      "category": "shock_waves",
+      "scientific_value": 0.94,
+      "description": "Теория в области aerodynamics, построена на 14614-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:42:25.025627"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 14614)",
+      "result": 880325.52,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:42:25.025627"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

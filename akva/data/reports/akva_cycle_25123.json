@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25123,
+  "timestamp": "2026-07-27T22:38:34.931103",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25123)",
+      "category": "lift",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 25123-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:34.931103"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25123)",
+      "result": 0.931,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:38:34.931103"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

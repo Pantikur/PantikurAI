@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25105,
+  "timestamp": "2026-07-27T22:38:16.824060",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 25105)",
+      "category": "creep",
+      "scientific_value": 0.88,
+      "description": "Теория в области strength_of_materials, построена на 25105-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:16.824060"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 25105)",
+      "result": 2.19,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:38:16.824060"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

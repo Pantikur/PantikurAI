@@ -331,3 +331,60 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f525' in posit
 2026-07-26 22:21:26,615 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
 2026-07-26 22:21:26,622 | INFO | [OK] Токенизатор загружен: 9242 токенов
 2026-07-26 22:21:26,622 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-07-27 15:42:11,137 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-07-27 15:42:11,359 | INFO | [OK] Данные из utils сгенерированы
+2026-07-27 15:42:11,359 | INFO | [BOOKS] Обучение из книг отключено (используйте --books)
+2026-07-27 15:42:11,368 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-07-27 15:42:11,368 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-07-27 15:42:12,149 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (5247 строк)
+2026-07-27 15:42:12,156 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-07-27 15:42:12,185 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-07-27 15:42:12,191 | INFO | [OK] Токенизатор загружен: 9261 токенов
+2026-07-27 15:42:12,192 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-07-27 16:46:48,937 | ERROR | [ERR] Ошибка при обучении: [Errno 22] Invalid argument
+Traceback (most recent call last):
+  File "D:\NewCod\Pantikur\retrain.py", line 285, in run_training
+    train.main()
+  File "D:\NewCod\Pantikur\train.py", line 432, in main
+    train_model(model, dataloader, EPOCHS, DEVICE)
+  File "D:\NewCod\Pantikur\train.py", line 387, in train_model
+    safe_print(f"[INFO] Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}, LR: {current_lr:.6f}, Best: {best_loss:.4f}{gpu_info}")
+  File "D:\NewCod\Pantikur\train.py", line 47, in safe_print
+    print(msg, flush=True)
+OSError: [Errno 22] Invalid argument
+2026-07-27 16:46:49,054 | ERROR | [ERR] Обучение не удалось. Пытаемся восстановить...
+2026-07-27 16:46:49,055 | CRITICAL | [ERR] Не удалось восстановить модель!
+2026-07-27 16:51:39,647 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-07-27 16:51:39,873 | INFO | [OK] Данные из utils сгенерированы
+2026-07-27 16:51:39,873 | INFO | [BOOKS] Обучение из книг отключено (используйте --books)
+2026-07-27 16:51:39,874 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-07-27 16:51:39,874 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-07-27 16:51:40,452 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (5271 строк)
+2026-07-27 16:51:40,460 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-07-27 16:51:40,490 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-07-27 16:51:40,497 | INFO | [OK] Токенизатор загружен: 9458 токенов
+2026-07-27 16:51:40,497 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-07-28 22:33:18,841 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-07-28 22:33:19,059 | INFO | [OK] Данные из utils сгенерированы
+2026-07-28 22:33:19,059 | INFO | [BOOKS] Обучение из книг отключено (используйте --books)
+2026-07-28 22:33:19,059 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-07-28 22:33:39,847 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-07-28 22:33:39,876 | WARNING | [WARN] RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-07-28 22:33:39,876 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-07-28 22:33:40,660 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (5307 строк)
+2026-07-28 22:33:40,668 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-07-28 22:33:40,726 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-07-28 22:33:40,733 | INFO | [OK] Токенизатор загружен: 9738 токенов
+2026-07-28 22:33:40,734 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-07-28 22:54:40,430 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-07-28 22:54:40,646 | INFO | [OK] Данные из utils сгенерированы
+2026-07-28 22:54:40,646 | INFO | [BOOKS] Обучение из книг отключено (используйте --books)
+2026-07-28 22:54:40,646 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-07-28 22:55:01,051 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-07-28 22:55:01,052 | WARNING | [WARN] RPG enrichment не удался: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+2026-07-28 22:55:01,052 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-07-28 22:55:01,628 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (5307 строк)
+2026-07-28 22:55:01,635 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-07-28 22:55:01,663 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
+2026-07-28 22:55:01,668 | INFO | [OK] Токенизатор загружен: 9738 токенов
+2026-07-28 22:55:01,669 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...

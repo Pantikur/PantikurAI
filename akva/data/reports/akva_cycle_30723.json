@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30723,
+  "timestamp": "2026-07-28T00:12:26.755095",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 30723)",
+      "category": "fatigue",
+      "scientific_value": 0.8,
+      "description": "Теория в области strength_of_materials, построена на 30723-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:12:26.754088"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 30723)",
+      "result": 1807.72,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:12:26.754088"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

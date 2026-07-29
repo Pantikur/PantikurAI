@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14797,
+  "timestamp": "2026-07-27T19:45:28.959285",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 14797)",
+      "category": "relativity",
+      "scientific_value": 0.84,
+      "description": "Теория в области physics, построена на 14797-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:45:28.959285"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 14797)",
+      "result": 1709.78,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:45:28.959285"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

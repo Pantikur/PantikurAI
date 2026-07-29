@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14060,
+  "timestamp": "2026-07-27T19:33:08.119658",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 14060)",
+      "category": "fracture",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 14060-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:33:08.119658"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 14060)",
+      "result": 823426859.85,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:33:08.119658"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

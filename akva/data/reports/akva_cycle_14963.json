@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14963,
+  "timestamp": "2026-07-27T19:48:15.815048",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 14963)",
+      "category": "shock_waves",
+      "scientific_value": 0.95,
+      "description": "Теория в области aerodynamics, построена на 14963-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:48:15.815048"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 14963)",
+      "result": 565578.99,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:48:15.815048"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

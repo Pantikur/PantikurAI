@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29366,
+  "timestamp": "2026-07-27T23:49:41.545965",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 29366)",
+      "category": "drag",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 29366-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:49:41.545965"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 29366)",
+      "result": 23023.1,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:49:41.545965"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

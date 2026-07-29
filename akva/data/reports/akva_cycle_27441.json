@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27441,
+  "timestamp": "2026-07-27T23:17:26.281439",
+  "studied_topics": [
+    "Подъёмная сила крыла"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 27441)",
+      "category": "drag",
+      "scientific_value": 0.76,
+      "description": "Теория в области aerodynamics, построена на 27441-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:17:26.280435"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 27441)",
+      "result": 616548.41,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:17:26.280435"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6087,
+  "timestamp": "2026-07-27T17:19:29.017662",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 6087)",
+      "category": "linear_algebra",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 6087-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:19:29.016656"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 6087)",
+      "result": 904.2024,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:19:29.016656"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

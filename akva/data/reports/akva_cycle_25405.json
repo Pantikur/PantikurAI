@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25405,
+  "timestamp": "2026-07-27T22:43:18.495092",
+  "studied_topics": [
+    "Дифференциальная геометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 25405)",
+      "category": "topology",
+      "scientific_value": 0.85,
+      "description": "Теория в области mathematics, построена на 25405-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:43:18.495092"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 25405)",
+      "result": 14.3802,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:43:18.495092"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

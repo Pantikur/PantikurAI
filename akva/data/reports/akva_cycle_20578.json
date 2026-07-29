@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20578,
+  "timestamp": "2026-07-27T21:22:22.879689",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 20578)",
+      "category": "shock_waves",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 20578-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:22:22.879689"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20578)",
+      "result": 994200.72,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:22:22.879689"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

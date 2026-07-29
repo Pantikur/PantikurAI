@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25041,
+  "timestamp": "2026-07-27T22:37:12.429770",
+  "studied_topics": [
+    "Гравитационные волны"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 25041)",
+      "category": "electromagnetism",
+      "scientific_value": 0.91,
+      "description": "Теория в области physics, построена на 25041-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:37:12.429263"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 25041)",
+      "result": 20622202.3189,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:37:12.429770"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

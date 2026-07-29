@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22197,
+  "timestamp": "2026-07-27T21:49:31.538627",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 22197)",
+      "category": "fatigue",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 22197-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:49:31.538627"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 22197)",
+      "result": 41.729175,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:49:31.538627"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

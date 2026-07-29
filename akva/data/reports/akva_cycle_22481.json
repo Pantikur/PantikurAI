@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22481,
+  "timestamp": "2026-07-27T21:54:17.266176",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 22481)",
+      "category": "topology",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 22481-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:54:17.266176"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 22481)",
+      "result": 63.153367,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:54:17.266176"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

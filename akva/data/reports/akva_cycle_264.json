@@ -1,0 +1,33 @@
+{
+  "cycle_number": 264,
+  "timestamp": "2026-07-27T15:41:48.386183",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 264)",
+      "category": "differential",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 264-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:41:48.384919"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Решение системы уравнений (цикл 264)",
+      "result": 745.023615,
+      "formula": "AX=B",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:41:48.384919"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

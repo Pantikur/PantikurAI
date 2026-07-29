@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6591,
+  "timestamp": "2026-07-27T17:27:55.924940",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 6591)",
+      "category": "turbulence",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 6591-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:27:55.923931"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 6591)",
+      "result": 253940.83,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:27:55.923931"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

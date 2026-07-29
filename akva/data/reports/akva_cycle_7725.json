@@ -1,0 +1,33 @@
+{
+  "cycle_number": 7725,
+  "timestamp": "2026-07-27T17:46:56.471199",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 7725)",
+      "category": "probability",
+      "scientific_value": 0.7,
+      "description": "Теория в области mathematics, построена на 7725-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:46:56.470192"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 7725)",
+      "result": 32.02617,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:46:56.470192"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

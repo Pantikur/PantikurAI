@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28316,
+  "timestamp": "2026-07-27T23:32:06.023168",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 28316)",
+      "category": "thermodynamics",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 28316-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:32:06.023168"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 28316)",
+      "result": 493790686.46,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:32:06.023168"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

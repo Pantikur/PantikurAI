@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25845,
+  "timestamp": "2026-07-27T22:50:40.980846",
+  "studied_topics": [
+    "Сопротивление воздуха"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25845)",
+      "category": "drag",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 25845-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:40.979836"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25845)",
+      "result": 5.58,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:50:40.979836"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

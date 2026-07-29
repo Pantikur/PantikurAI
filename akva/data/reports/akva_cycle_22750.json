@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22750,
+  "timestamp": "2026-07-27T21:58:47.857818",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 22750)",
+      "category": "strength",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 22750-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:58:47.857818"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 22750)",
+      "result": 955803805.96,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:58:47.857818"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

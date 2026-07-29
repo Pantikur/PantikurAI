@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21405,
+  "timestamp": "2026-07-27T21:36:14.861048",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 21405)",
+      "category": "strength",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 21405-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:36:14.860037"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 21405)",
+      "result": 219840239.01,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:36:14.860037"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

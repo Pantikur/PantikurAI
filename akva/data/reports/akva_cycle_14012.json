@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14012,
+  "timestamp": "2026-07-27T19:32:19.872730",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 14012)",
+      "category": "fatigue",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 14012-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:32:19.872730"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 14012)",
+      "result": 1081.33,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:32:19.872730"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

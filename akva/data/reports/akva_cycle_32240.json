@@ -1,0 +1,33 @@
+{
+  "cycle_number": 32240,
+  "timestamp": "2026-07-28T00:37:52.964136",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 32240)",
+      "category": "fatigue",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 32240-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:37:52.964136"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 32240)",
+      "result": 1761.13,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:37:52.964136"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20570,
+  "timestamp": "2026-07-27T21:22:14.828877",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 20570)",
+      "category": "boundary_layer",
+      "scientific_value": 0.7,
+      "description": "Теория в области aerodynamics, построена на 20570-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:22:14.828877"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20570)",
+      "result": 883225.35,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:22:14.828877"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 31,
+  "timestamp": "2026-07-27T15:37:53.555735",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 31)",
+      "category": "shock_waves",
+      "scientific_value": 0.98,
+      "description": "Теория в области aerodynamics, построена на 31-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:37:53.555735"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 31)",
+      "result": 8289234.37,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:37:53.555735"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 70,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14297,
+  "timestamp": "2026-07-27T19:37:06.330746",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 14297)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 14297-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:37:06.330746"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 14297)",
+      "result": 14.31,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:37:06.330746"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

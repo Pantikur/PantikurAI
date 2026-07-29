@@ -1,0 +1,33 @@
+{
+  "cycle_number": 987,
+  "timestamp": "2026-07-27T15:53:55.954486",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 987)",
+      "category": "drag",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 987-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:53:55.953479"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 987)",
+      "result": 6372373.88,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:53:55.953479"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 281,
+  "timestamp": "2026-07-27T15:42:05.497407",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 281)",
+      "category": "drag",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 281-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:42:05.497407"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 281)",
+      "result": 4003881.71,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:42:05.497407"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 70,
+  "level_changes": []
+}

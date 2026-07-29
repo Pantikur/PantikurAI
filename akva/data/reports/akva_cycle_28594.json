@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28594,
+  "timestamp": "2026-07-27T23:36:45.520914",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 28594)",
+      "category": "strength",
+      "scientific_value": 0.75,
+      "description": "Теория в области strength_of_materials, построена на 28594-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:36:45.520914"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 28594)",
+      "result": 2.6,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:36:45.520914"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

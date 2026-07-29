@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20400,
+  "timestamp": "2026-07-27T21:19:23.836518",
+  "studied_topics": [
+    "Подъёмная сила крыла"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 20400)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 20400-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:19:23.836518"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20400)",
+      "result": 152904.68,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:19:23.836518"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

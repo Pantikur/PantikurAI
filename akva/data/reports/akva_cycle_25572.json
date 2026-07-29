@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25572,
+  "timestamp": "2026-07-27T22:46:06.452026",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 25572)",
+      "category": "stability",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 25572-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:06.451020"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25572)",
+      "result": 94.424647,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:46:06.451020"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

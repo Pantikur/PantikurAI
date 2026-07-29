@@ -1,0 +1,33 @@
+{
+  "cycle_number": 31161,
+  "timestamp": "2026-07-28T00:19:47.601345",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 31161)",
+      "category": "stability",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 31161-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:19:47.600338"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 31161)",
+      "result": 8.25,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:19:47.600338"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

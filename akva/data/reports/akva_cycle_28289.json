@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28289,
+  "timestamp": "2026-07-27T23:31:38.863461",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 28289)",
+      "category": "relativity",
+      "scientific_value": 0.85,
+      "description": "Теория в области physics, построена на 28289-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:38.862956"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 28289)",
+      "result": 9836475241.46,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:31:38.862956"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30320,
+  "timestamp": "2026-07-28T00:05:41.104640",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 30320)",
+      "category": "stiffness",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 30320-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:05:41.104640"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 30320)",
+      "result": 877393685.85,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:05:41.104640"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

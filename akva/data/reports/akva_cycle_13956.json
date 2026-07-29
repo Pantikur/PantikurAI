@@ -1,0 +1,33 @@
+{
+  "cycle_number": 13956,
+  "timestamp": "2026-07-27T19:31:23.573208",
+  "studied_topics": [
+    "Напряжение и деформация"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 13956)",
+      "category": "fatigue",
+      "scientific_value": 0.88,
+      "description": "Теория в области strength_of_materials, построена на 13956-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:31:23.572202"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 13956)",
+      "result": 7.26,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:31:23.572202"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

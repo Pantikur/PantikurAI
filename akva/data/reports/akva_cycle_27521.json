@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27521,
+  "timestamp": "2026-07-27T23:18:46.719235",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 27521)",
+      "category": "shock_waves",
+      "scientific_value": 0.98,
+      "description": "Теория в области aerodynamics, построена на 27521-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:18:46.719235"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 27521)",
+      "result": 378613.4,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:18:46.719235"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

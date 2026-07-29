@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16225,
+  "timestamp": "2026-07-27T20:09:24.640011",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 16225)",
+      "category": "thermodynamics",
+      "scientific_value": 0.76,
+      "description": "Теория в области physics, построена на 16225-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:09:24.639495"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 16225)",
+      "result": 11288815.5252,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:09:24.639495"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

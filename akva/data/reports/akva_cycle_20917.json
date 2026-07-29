@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20917,
+  "timestamp": "2026-07-27T21:28:03.954844",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 20917)",
+      "category": "linear_algebra",
+      "scientific_value": 0.86,
+      "description": "Теория в области mathematics, построена на 20917-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:28:03.954844"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 20917)",
+      "result": 57.92974,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:28:03.954844"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

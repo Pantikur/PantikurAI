@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20389,
+  "timestamp": "2026-07-27T21:19:12.772563",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 20389)",
+      "category": "optimization",
+      "scientific_value": 0.79,
+      "description": "Теория в области mathematics, построена на 20389-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:19:12.772058"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 20389)",
+      "result": 75.4159,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:19:12.772563"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

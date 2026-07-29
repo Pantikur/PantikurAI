@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21056,
+  "timestamp": "2026-07-27T21:30:23.764459",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 21056)",
+      "category": "stability",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 21056-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:30:23.764459"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 21056)",
+      "result": 5.53,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:30:23.764459"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28266,
+  "timestamp": "2026-07-27T23:31:15.744117",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 28266)",
+      "category": "drag",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 28266-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:15.743111"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 28266)",
+      "result": 938.02,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:31:15.743111"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

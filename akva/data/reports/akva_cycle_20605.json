@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20605,
+  "timestamp": "2026-07-27T21:22:50.061799",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 20605)",
+      "category": "lift",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 20605-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:22:50.061288"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20605)",
+      "result": 909452.24,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:22:50.061799"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

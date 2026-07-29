@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22012,
+  "timestamp": "2026-07-27T21:46:25.433299",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 22012)",
+      "category": "fracture",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 22012-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:46:25.433299"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 22012)",
+      "result": 89.705128,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:46:25.433299"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

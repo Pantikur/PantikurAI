@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25809,
+  "timestamp": "2026-07-27T22:50:04.753951",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 25809)",
+      "category": "number_theory",
+      "scientific_value": 0.76,
+      "description": "Теория в области mathematics, построена на 25809-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:50:04.752942"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 25809)",
+      "result": 61.8032,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:50:04.752942"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

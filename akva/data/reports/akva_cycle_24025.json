@@ -1,0 +1,33 @@
+{
+  "cycle_number": 24025,
+  "timestamp": "2026-07-27T22:20:10.431770",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 24025)",
+      "category": "differential",
+      "scientific_value": 0.95,
+      "description": "Теория в области mathematics, построена на 24025-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:20:10.431264"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 24025)",
+      "result": 329.062,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:20:10.431264"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

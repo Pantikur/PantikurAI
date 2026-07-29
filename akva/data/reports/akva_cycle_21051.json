@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21051,
+  "timestamp": "2026-07-27T21:30:18.733435",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 21051)",
+      "category": "turbulence",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 21051-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:30:18.732929"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 21051)",
+      "result": 22.0,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:30:18.732929"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

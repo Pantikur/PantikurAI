@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30875,
+  "timestamp": "2026-07-28T00:14:59.780490",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 30875)",
+      "category": "fatigue",
+      "scientific_value": 0.97,
+      "description": "Теория в области strength_of_materials, построена на 30875-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:14:59.780490"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 30875)",
+      "result": 38.50618,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:14:59.780490"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

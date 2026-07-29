@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28671,
+  "timestamp": "2026-07-27T23:38:02.920037",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 28671)",
+      "category": "probability",
+      "scientific_value": 0.75,
+      "description": "Теория в области mathematics, построена на 28671-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:38:02.918773"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28671)",
+      "result": 15.0999,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:38:02.918773"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

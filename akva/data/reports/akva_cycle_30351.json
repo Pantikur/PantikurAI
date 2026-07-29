@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30351,
+  "timestamp": "2026-07-28T00:06:12.314835",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 30351)",
+      "category": "relativity",
+      "scientific_value": 0.89,
+      "description": "Теория в области physics, построена на 30351-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:06:12.313829"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость волны (цикл 30351)",
+      "result": 82483417.42,
+      "formula": "v=λf",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:06:12.313829"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

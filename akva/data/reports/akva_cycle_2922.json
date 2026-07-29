@@ -1,0 +1,33 @@
+{
+  "cycle_number": 2922,
+  "timestamp": "2026-07-27T16:26:22.605318",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 2922)",
+      "category": "differential",
+      "scientific_value": 0.95,
+      "description": "Теория в области mathematics, построена на 2922-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:26:22.604308"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 2922)",
+      "result": 43.217635,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:26:22.604308"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

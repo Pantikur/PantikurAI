@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26461,
+  "timestamp": "2026-07-27T23:01:00.535994",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 26461)",
+      "category": "drag",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 26461-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:01:00.535994"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 26461)",
+      "result": 797409.95,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:01:00.535994"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

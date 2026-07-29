@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20632,
+  "timestamp": "2026-07-27T21:23:17.221462",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 20632)",
+      "category": "strength",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 20632-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:23:17.220954"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 20632)",
+      "result": 1.789392,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:23:17.220954"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

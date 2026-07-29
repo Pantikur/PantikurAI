@@ -1,0 +1,33 @@
+{
+  "cycle_number": 341,
+  "timestamp": "2026-07-27T15:43:05.878694",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 341)",
+      "category": "fracture",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 341-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:43:05.878694"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 341)",
+      "result": 9.78,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:43:05.878694"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20700,
+  "timestamp": "2026-07-27T21:24:25.627898",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 20700)",
+      "category": "turbulence",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 20700-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:24:25.627898"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 20700)",
+      "result": 26.64,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:24:25.627898"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

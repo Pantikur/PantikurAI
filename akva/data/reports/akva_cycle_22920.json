@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22920,
+  "timestamp": "2026-07-27T22:01:38.893203",
+  "studied_topics": [
+    "Законы Ньютона"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика сплошных сред (цикл 22920)",
+      "category": "mechanics",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 22920-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:01:38.892193"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 22920)",
+      "result": 866248205.73,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:01:38.892193"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

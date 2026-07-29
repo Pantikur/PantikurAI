@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25673,
+  "timestamp": "2026-07-27T22:47:47.979424",
+  "studied_topics": [
+    "Подъёмная сила крыла"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25673)",
+      "category": "boundary_layer",
+      "scientific_value": 0.71,
+      "description": "Теория в области aerodynamics, построена на 25673-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:47.979424"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25673)",
+      "result": 1.2426,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:47.979424"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

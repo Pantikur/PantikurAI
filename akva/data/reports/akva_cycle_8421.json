@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8421,
+  "timestamp": "2026-07-27T17:58:36.868943",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 8421)",
+      "category": "stability",
+      "scientific_value": 0.75,
+      "description": "Теория в области strength_of_materials, построена на 8421-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:58:36.867939"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 8421)",
+      "result": 65.80443,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:58:36.867939"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

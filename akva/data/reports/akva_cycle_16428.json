@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16428,
+  "timestamp": "2026-07-27T20:12:48.688262",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 16428)",
+      "category": "drag",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 16428-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:12:48.688262"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 16428)",
+      "result": 16.03,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:12:48.688262"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

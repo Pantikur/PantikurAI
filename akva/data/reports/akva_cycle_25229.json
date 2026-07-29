@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25229,
+  "timestamp": "2026-07-27T22:40:21.528055",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 25229)",
+      "category": "turbulence",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 25229-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:40:21.528055"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 25229)",
+      "result": 12569530.66,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:40:21.528055"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

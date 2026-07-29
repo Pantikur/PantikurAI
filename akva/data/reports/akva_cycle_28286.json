@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28286,
+  "timestamp": "2026-07-27T23:31:35.848078",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 28286)",
+      "category": "boundary_layer",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 28286-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:35.848078"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 28286)",
+      "result": 494167.89,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:31:35.848078"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25793,
+  "timestamp": "2026-07-27T22:49:48.655420",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 25793)",
+      "category": "stability",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 25793-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:48.655420"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Модуль Юнга (цикл 25793)",
+      "result": 179.94,
+      "formula": "E=σ/ε",
+      "units": "GPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:49:48.655420"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

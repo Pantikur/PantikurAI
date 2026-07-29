@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15934,
+  "timestamp": "2026-07-27T20:04:32.033362",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 15934)",
+      "category": "lift",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 15934-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:04:32.033362"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 15934)",
+      "result": 18.43,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:04:32.033362"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

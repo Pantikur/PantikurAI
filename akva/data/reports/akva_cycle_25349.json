@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25349,
+  "timestamp": "2026-07-27T22:42:22.187789",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25349)",
+      "category": "shock_waves",
+      "scientific_value": 0.96,
+      "description": "Теория в области aerodynamics, построена на 25349-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:42:22.187789"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25349)",
+      "result": 932461.23,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:42:22.187789"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 13224,
+  "timestamp": "2026-07-27T19:19:07.759494",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 13224)",
+      "category": "probability",
+      "scientific_value": 0.82,
+      "description": "Теория в области mathematics, построена на 13224-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:19:07.758489"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 13224)",
+      "result": 60.133359,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:19:07.758489"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21317,
+  "timestamp": "2026-07-27T21:34:46.320867",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 21317)",
+      "category": "electromagnetism",
+      "scientific_value": 0.77,
+      "description": "Теория в области physics, построена на 21317-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:34:46.320867"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 21317)",
+      "result": 1715140081.72,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:34:46.320867"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

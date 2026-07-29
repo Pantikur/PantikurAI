@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22316,
+  "timestamp": "2026-07-27T21:51:31.253441",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 22316)",
+      "category": "fatigue",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 22316-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:51:31.253441"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 22316)",
+      "result": 4.617817,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:51:31.253441"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

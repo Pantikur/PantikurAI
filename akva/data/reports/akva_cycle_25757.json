@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25757,
+  "timestamp": "2026-07-27T22:49:12.447294",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 25757)",
+      "category": "stiffness",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 25757-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:12.446790"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25757)",
+      "result": 20.033335,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:49:12.446790"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

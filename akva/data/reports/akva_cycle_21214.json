@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21214,
+  "timestamp": "2026-07-27T21:33:02.720113",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 21214)",
+      "category": "lift",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 21214-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:33:02.720113"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 21214)",
+      "result": 1064.61,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:33:02.720113"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

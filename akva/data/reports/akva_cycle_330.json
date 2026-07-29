@@ -1,0 +1,33 @@
+{
+  "cycle_number": 330,
+  "timestamp": "2026-07-27T15:42:54.809518",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 330)",
+      "category": "stability",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 330-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:42:54.808510"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 330)",
+      "result": 178744309.95,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:42:54.808510"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

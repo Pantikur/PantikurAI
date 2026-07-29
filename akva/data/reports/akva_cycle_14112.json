@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14112,
+  "timestamp": "2026-07-27T19:34:00.397569",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 14112)",
+      "category": "creep",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 14112-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:34:00.397569"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 14112)",
+      "result": 70.753919,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:34:00.397569"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

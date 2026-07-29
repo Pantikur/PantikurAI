@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27795,
+  "timestamp": "2026-07-27T23:23:22.243056",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 27795)",
+      "category": "fatigue",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 27795-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:23:22.242047"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 27795)",
+      "result": 920.31,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:23:22.242047"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

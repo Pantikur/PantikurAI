@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27051,
+  "timestamp": "2026-07-27T23:10:53.951646",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 27051)",
+      "category": "turbulence",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 27051-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:10:53.951646"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 27051)",
+      "result": 22009811.45,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:10:53.951646"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

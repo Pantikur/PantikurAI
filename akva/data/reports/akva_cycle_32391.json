@@ -1,0 +1,33 @@
+{
+  "cycle_number": 32391,
+  "timestamp": "2026-07-28T00:40:24.756749",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 32391)",
+      "category": "fatigue",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 32391-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:40:24.756245"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 32391)",
+      "result": 0.301413,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:40:24.756749"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

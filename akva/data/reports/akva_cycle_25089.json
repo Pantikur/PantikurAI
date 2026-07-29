@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25089,
+  "timestamp": "2026-07-27T22:38:00.728594",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 25089)",
+      "category": "creep",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 25089-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:00.728594"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 25089)",
+      "result": 9.09,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:38:00.728594"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

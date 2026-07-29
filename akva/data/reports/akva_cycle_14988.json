@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14988,
+  "timestamp": "2026-07-27T19:48:40.945387",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 14988)",
+      "category": "strength",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 14988-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:48:40.944382"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 14988)",
+      "result": 1.89,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:48:40.944382"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

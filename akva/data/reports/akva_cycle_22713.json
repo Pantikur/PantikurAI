@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22713,
+  "timestamp": "2026-07-27T21:58:10.645438",
+  "studied_topics": [
+    "Оптимизация невыпуклых функций"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 22713)",
+      "category": "number_theory",
+      "scientific_value": 0.68,
+      "description": "Теория в области mathematics, построена на 22713-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:58:10.644933"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 22713)",
+      "result": 86.497466,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:58:10.645438"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

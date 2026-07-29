@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14649,
+  "timestamp": "2026-07-27T19:43:00.197492",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 14649)",
+      "category": "strength",
+      "scientific_value": 0.88,
+      "description": "Теория в области strength_of_materials, построена на 14649-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:43:00.197492"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 14649)",
+      "result": 52.89476,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:43:00.197492"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

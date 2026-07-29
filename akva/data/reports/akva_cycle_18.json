@@ -1,0 +1,33 @@
+{
+  "cycle_number": 18,
+  "timestamp": "2026-07-27T15:37:40.454315",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 18)",
+      "category": "drag",
+      "scientific_value": 0.91,
+      "description": "Теория в области aerodynamics, построена на 18-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:37:40.453315"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 18)",
+      "result": 335.31,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:37:40.453315"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 100,
+  "level_changes": []
+}

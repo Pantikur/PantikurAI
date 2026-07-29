@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21021,
+  "timestamp": "2026-07-27T21:29:48.547693",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 21021)",
+      "category": "strength",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 21021-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:29:48.546682"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 21021)",
+      "result": 0.152782,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:29:48.546682"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28050,
+  "timestamp": "2026-07-27T23:27:38.597774",
+  "studied_topics": [
+    "Дифференциальная геометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 28050)",
+      "category": "number_theory",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 28050-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:27:38.596769"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28050)",
+      "result": 80.4695,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:27:38.596769"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

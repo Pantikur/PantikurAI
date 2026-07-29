@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25553,
+  "timestamp": "2026-07-27T22:45:47.341430",
+  "studied_topics": [
+    "Подъёмная сила крыла"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25553)",
+      "category": "drag",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 25553-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:47.341430"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25553)",
+      "result": 0.953,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:45:47.341430"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

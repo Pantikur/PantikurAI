@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25167,
+  "timestamp": "2026-07-27T22:39:19.180235",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 25167)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 25167-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:39:19.180235"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25167)",
+      "result": 7.43,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:39:19.180235"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

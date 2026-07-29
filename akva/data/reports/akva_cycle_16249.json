@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16249,
+  "timestamp": "2026-07-27T20:09:48.759435",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 16249)",
+      "category": "differential",
+      "scientific_value": 0.87,
+      "description": "Теория в области mathematics, построена на 16249-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:09:48.759435"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 16249)",
+      "result": 465.5877,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:09:48.759435"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

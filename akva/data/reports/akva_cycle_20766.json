@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20766,
+  "timestamp": "2026-07-27T21:25:32.055455",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 20766)",
+      "category": "lift",
+      "scientific_value": 0.96,
+      "description": "Теория в области aerodynamics, построена на 20766-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:25:32.054136"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20766)",
+      "result": 916898.23,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:25:32.054136"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

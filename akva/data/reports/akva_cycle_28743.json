@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28743,
+  "timestamp": "2026-07-27T23:39:15.311187",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 28743)",
+      "category": "quantum_info",
+      "scientific_value": 0.85,
+      "description": "Теория в области physics, построена на 28743-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:39:15.310178"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 28743)",
+      "result": 7235475877.05,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:39:15.310178"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

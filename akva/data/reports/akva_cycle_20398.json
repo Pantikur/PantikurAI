@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20398,
+  "timestamp": "2026-07-27T21:19:21.825766",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 20398)",
+      "category": "relativity",
+      "scientific_value": 0.91,
+      "description": "Теория в области physics, построена на 20398-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:19:21.825766"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 20398)",
+      "result": 310122312.2,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:19:21.825766"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

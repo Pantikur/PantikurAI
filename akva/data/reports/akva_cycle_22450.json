@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22450,
+  "timestamp": "2026-07-27T21:53:46.061954",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 22450)",
+      "category": "lift",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 22450-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:53:46.061450"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 22450)",
+      "result": 460570.55,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:53:46.061954"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

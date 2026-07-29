@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30327,
+  "timestamp": "2026-07-28T00:05:48.146808",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 30327)",
+      "category": "linear_algebra",
+      "scientific_value": 0.82,
+      "description": "Теория в области mathematics, построена на 30327-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:05:48.144789"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Решение системы уравнений (цикл 30327)",
+      "result": 5436.075921,
+      "formula": "AX=B",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:05:48.144789"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

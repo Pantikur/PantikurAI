@@ -1,0 +1,33 @@
+{
+  "cycle_number": 18158,
+  "timestamp": "2026-07-27T20:41:48.354006",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 18158)",
+      "category": "strength",
+      "scientific_value": 0.76,
+      "description": "Теория в области strength_of_materials, построена на 18158-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:41:48.354006"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 18158)",
+      "result": 43.949575,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:41:48.354006"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

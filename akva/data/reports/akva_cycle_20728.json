@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20728,
+  "timestamp": "2026-07-27T21:24:53.813502",
+  "studied_topics": [
+    "Пределы и ряды"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 20728)",
+      "category": "differential",
+      "scientific_value": 0.83,
+      "description": "Теория в области mathematics, построена на 20728-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:24:53.813502"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 20728)",
+      "result": 327.8779,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:24:53.813502"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

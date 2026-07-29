@@ -1,0 +1,33 @@
+{
+  "cycle_number": 18014,
+  "timestamp": "2026-07-27T20:39:23.486570",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 18014)",
+      "category": "shock_waves",
+      "scientific_value": 1.0,
+      "description": "Теория в области aerodynamics, построена на 18014-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:39:23.486570"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 18014)",
+      "result": 18.69,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:39:23.486570"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

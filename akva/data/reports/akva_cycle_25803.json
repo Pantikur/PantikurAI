@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25803,
+  "timestamp": "2026-07-27T22:49:58.715728",
+  "studied_topics": [
+    "Топология многообразий"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 25803)",
+      "category": "topology",
+      "scientific_value": 0.77,
+      "description": "Теория в области mathematics, построена на 25803-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:58.714720"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 25803)",
+      "result": 72.299851,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:49:58.714720"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

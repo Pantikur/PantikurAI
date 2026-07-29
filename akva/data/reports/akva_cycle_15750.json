@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15750,
+  "timestamp": "2026-07-27T20:01:27.040751",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 15750)",
+      "category": "shock_waves",
+      "scientific_value": 0.97,
+      "description": "Теория в области aerodynamics, построена на 15750-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:01:27.040751"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 15750)",
+      "result": 21.32,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:01:27.040751"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

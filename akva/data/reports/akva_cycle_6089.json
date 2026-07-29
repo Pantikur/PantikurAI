@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6089,
+  "timestamp": "2026-07-27T17:19:31.027968",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 6089)",
+      "category": "strength",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 6089-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:19:31.027968"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 6089)",
+      "result": 5.02,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:19:31.027968"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

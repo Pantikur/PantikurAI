@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21201,
+  "timestamp": "2026-07-27T21:32:49.646722",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 21201)",
+      "category": "shock_waves",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 21201-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:32:49.646722"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 21201)",
+      "result": 9152130.01,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:32:49.646722"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

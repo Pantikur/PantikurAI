@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15870,
+  "timestamp": "2026-07-27T20:03:27.671677",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 15870)",
+      "category": "lift",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 15870-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:03:27.670672"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 15870)",
+      "result": 102500.28,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:03:27.670672"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

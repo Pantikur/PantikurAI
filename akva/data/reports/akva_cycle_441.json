@@ -1,0 +1,33 @@
+{
+  "cycle_number": 441,
+  "timestamp": "2026-07-27T15:44:46.548495",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 441)",
+      "category": "lift",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 441-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:44:46.547495"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 441)",
+      "result": 582.55,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:44:46.547495"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

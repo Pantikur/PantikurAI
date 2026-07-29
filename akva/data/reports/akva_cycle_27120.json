@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27120,
+  "timestamp": "2026-07-27T23:12:03.366903",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 27120)",
+      "category": "drag",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 27120-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:12:03.365895"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 27120)",
+      "result": 202.18,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:12:03.365895"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

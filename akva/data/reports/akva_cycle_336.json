@@ -1,0 +1,33 @@
+{
+  "cycle_number": 336,
+  "timestamp": "2026-07-27T15:43:00.847814",
+  "studied_topics": [
+    "Оптика"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 336)",
+      "category": "electromagnetism",
+      "scientific_value": 0.83,
+      "description": "Теория в области physics, построена на 336-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:43:00.846806"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Энергия частицы (цикл 336)",
+      "result": 669847463842269.5,
+      "formula": "E=mc²",
+      "units": "J",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:43:00.846806"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

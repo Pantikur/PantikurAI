@@ -1,0 +1,33 @@
+{
+  "cycle_number": 937,
+  "timestamp": "2026-07-27T15:53:05.640274",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 937)",
+      "category": "number_theory",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 937-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:53:05.640274"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 937)",
+      "result": 55.2111,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:53:05.640274"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

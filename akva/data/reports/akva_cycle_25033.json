@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25033,
+  "timestamp": "2026-07-27T22:37:04.381611",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25033)",
+      "category": "shock_waves",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 25033-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:37:04.381611"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25033)",
+      "result": 43205.77,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:37:04.381611"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20624,
+  "timestamp": "2026-07-27T21:23:09.175224",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 20624)",
+      "category": "lift",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 20624-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:23:09.175224"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 20624)",
+      "result": 0.5155,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:23:09.175224"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 372,
+  "timestamp": "2026-07-27T15:43:37.093942",
+  "studied_topics": [
+    "Дифференциальная геометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 372)",
+      "category": "probability",
+      "scientific_value": 0.7,
+      "description": "Теория в области mathematics, построена на 372-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:43:37.092935"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 372)",
+      "result": 82.034947,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:43:37.092935"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

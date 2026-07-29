@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8078,
+  "timestamp": "2026-07-27T17:52:51.533969",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 8078)",
+      "category": "fracture",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 8078-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:52:51.533969"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 8078)",
+      "result": 669014565.47,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:52:51.533969"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

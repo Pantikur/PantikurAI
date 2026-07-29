@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25524,
+  "timestamp": "2026-07-27T22:45:18.168833",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25524)",
+      "category": "drag",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 25524-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:18.167821"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25524)",
+      "result": 28.3,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:45:18.167821"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

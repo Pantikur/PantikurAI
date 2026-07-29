@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20357,
+  "timestamp": "2026-07-27T21:18:40.583411",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20357)",
+      "category": "drag",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 20357-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:18:40.583411"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 20357)",
+      "result": 1.0325,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:18:40.583411"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

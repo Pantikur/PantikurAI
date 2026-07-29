@@ -1,0 +1,33 @@
+{
+  "cycle_number": 11811,
+  "timestamp": "2026-07-27T18:55:27.376788",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 11811)",
+      "category": "probability",
+      "scientific_value": 0.66,
+      "description": "Теория в области mathematics, построена на 11811-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:55:27.375779"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 11811)",
+      "result": 48.491152,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:55:27.375779"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

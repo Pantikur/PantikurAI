@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25094,
+  "timestamp": "2026-07-27T22:38:05.756259",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 25094)",
+      "category": "strength",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 25094-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:05.756259"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 25094)",
+      "result": 0.168571,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:38:05.756259"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

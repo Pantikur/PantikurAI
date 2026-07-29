@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21659,
+  "timestamp": "2026-07-27T21:40:30.428689",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 21659)",
+      "category": "linear_algebra",
+      "scientific_value": 0.82,
+      "description": "Теория в области mathematics, построена на 21659-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:40:30.428689"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 21659)",
+      "result": 573.6612,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:40:30.428689"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

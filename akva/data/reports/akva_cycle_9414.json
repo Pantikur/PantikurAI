@@ -1,0 +1,33 @@
+{
+  "cycle_number": 9414,
+  "timestamp": "2026-07-27T18:15:15.973165",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 9414)",
+      "category": "stability",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 9414-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:15:15.973165"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 9414)",
+      "result": 423257023.84,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:15:15.973165"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26401,
+  "timestamp": "2026-07-27T23:00:00.158967",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 26401)",
+      "category": "relativity",
+      "scientific_value": 0.93,
+      "description": "Теория в области physics, построена на 26401-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:00:00.158967"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 26401)",
+      "result": 2884604804.15,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:00:00.158967"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

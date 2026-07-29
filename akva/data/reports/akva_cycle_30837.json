@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30837,
+  "timestamp": "2026-07-28T00:14:21.530629",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 30837)",
+      "category": "number_theory",
+      "scientific_value": 0.88,
+      "description": "Теория в области mathematics, построена на 30837-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:14:21.530629"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 30837)",
+      "result": 37.8622,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:14:21.530629"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

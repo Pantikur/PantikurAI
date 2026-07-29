@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14196,
+  "timestamp": "2026-07-27T19:35:24.812730",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 14196)",
+      "category": "drag",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 14196-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:35:24.812730"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 14196)",
+      "result": 258132.7,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:35:24.812730"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

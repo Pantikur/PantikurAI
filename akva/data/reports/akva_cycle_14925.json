@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14925,
+  "timestamp": "2026-07-27T19:47:37.622862",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 14925)",
+      "category": "shock_waves",
+      "scientific_value": 0.99,
+      "description": "Теория в области aerodynamics, построена на 14925-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:37.622862"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 14925)",
+      "result": 27.55,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:47:37.622862"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

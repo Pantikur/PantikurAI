@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20584,
+  "timestamp": "2026-07-27T21:22:28.936146",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20584)",
+      "category": "drag",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 20584-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:22:28.936146"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 20584)",
+      "result": 46852585.33,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:22:28.936146"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25412,
+  "timestamp": "2026-07-27T22:43:25.536918",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 25412)",
+      "category": "differential",
+      "scientific_value": 0.77,
+      "description": "Теория в области mathematics, построена на 25412-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:43:25.536918"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 25412)",
+      "result": 620.2523,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:43:25.536918"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

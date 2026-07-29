@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22008,
+  "timestamp": "2026-07-27T21:46:21.413274",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 22008)",
+      "category": "shock_waves",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 22008-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:46:21.412263"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 22008)",
+      "result": 163594.85,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:46:21.412263"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28663,
+  "timestamp": "2026-07-27T23:37:54.873198",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 28663)",
+      "category": "lift",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 28663-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:37:54.873198"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 28663)",
+      "result": 15.48,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:37:54.873198"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

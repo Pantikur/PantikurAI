@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22733,
+  "timestamp": "2026-07-27T21:58:30.758804",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 22733)",
+      "category": "probability",
+      "scientific_value": 0.77,
+      "description": "Теория в области mathematics, построена на 22733-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:58:30.758804"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 22733)",
+      "result": 4.2556,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:58:30.758804"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

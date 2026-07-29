@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28893,
+  "timestamp": "2026-07-27T23:41:46.110612",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 28893)",
+      "category": "stiffness",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 28893-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:41:46.109606"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 28893)",
+      "result": 81.393083,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:41:46.109606"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21477,
+  "timestamp": "2026-07-27T21:37:27.319033",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 21477)",
+      "category": "stiffness",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 21477-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:37:27.318028"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 21477)",
+      "result": 597393758.36,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:37:27.318028"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

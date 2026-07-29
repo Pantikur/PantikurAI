@@ -1,0 +1,33 @@
+{
+  "cycle_number": 950,
+  "timestamp": "2026-07-27T15:53:18.720398",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 950)",
+      "category": "stiffness",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 950-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:53:18.720398"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 950)",
+      "result": 1111590.7,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:53:18.720398"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

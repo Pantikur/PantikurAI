@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21107,
+  "timestamp": "2026-07-27T21:31:15.069882",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 21107)",
+      "category": "lift",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 21107-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:31:15.069882"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 21107)",
+      "result": 1.2262,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:31:15.069882"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28349,
+  "timestamp": "2026-07-27T23:32:39.191465",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 28349)",
+      "category": "linear_algebra",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 28349-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:32:39.191465"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28349)",
+      "result": 70.9772,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:32:39.191465"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

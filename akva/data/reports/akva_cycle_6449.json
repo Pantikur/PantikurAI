@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6449,
+  "timestamp": "2026-07-27T17:25:33.114812",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 6449)",
+      "category": "thermodynamics",
+      "scientific_value": 0.89,
+      "description": "Теория в области physics, построена на 6449-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:25:33.114812"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 6449)",
+      "result": 768258787.52,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:25:33.114812"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

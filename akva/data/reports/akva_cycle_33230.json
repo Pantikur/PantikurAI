@@ -1,0 +1,33 @@
+{
+  "cycle_number": 33230,
+  "timestamp": "2026-07-28T00:54:28.548264",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 33230)",
+      "category": "fatigue",
+      "scientific_value": 0.91,
+      "description": "Теория в области strength_of_materials, построена на 33230-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:54:28.548264"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 33230)",
+      "result": 4.11,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:54:28.548264"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25761,
+  "timestamp": "2026-07-27T22:49:16.472175",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 25761)",
+      "category": "fracture",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 25761-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:16.471170"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25761)",
+      "result": 86.997221,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:49:16.471170"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

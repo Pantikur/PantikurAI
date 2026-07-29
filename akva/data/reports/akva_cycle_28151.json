@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28151,
+  "timestamp": "2026-07-27T23:29:20.141224",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 28151)",
+      "category": "stability",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 28151-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:29:20.140719"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 28151)",
+      "result": 80.068087,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:29:20.140719"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30781,
+  "timestamp": "2026-07-28T00:13:25.134036",
+  "studied_topics": [
+    "Оптимизация невыпуклых функций"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 30781)",
+      "category": "optimization",
+      "scientific_value": 0.78,
+      "description": "Теория в области mathematics, построена на 30781-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:13:25.133024"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 30781)",
+      "result": 88.9734,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:13:25.133024"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

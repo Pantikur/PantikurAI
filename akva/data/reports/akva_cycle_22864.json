@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22864,
+  "timestamp": "2026-07-27T22:00:42.567642",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 22864)",
+      "category": "turbulence",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 22864-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:00:42.567642"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 22864)",
+      "result": 990.22,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:00:42.567642"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

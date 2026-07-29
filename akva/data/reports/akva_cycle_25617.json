@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25617,
+  "timestamp": "2026-07-27T22:46:51.694572",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 25617)",
+      "category": "linear_algebra",
+      "scientific_value": 0.76,
+      "description": "Теория в области mathematics, построена на 25617-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:51.694068"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 25617)",
+      "result": 972.8243,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:46:51.694572"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

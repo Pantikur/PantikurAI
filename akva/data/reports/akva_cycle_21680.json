@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21680,
+  "timestamp": "2026-07-27T21:40:51.558180",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 21680)",
+      "category": "probability",
+      "scientific_value": 0.78,
+      "description": "Теория в области mathematics, построена на 21680-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:40:51.558180"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 21680)",
+      "result": 69.402376,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:40:51.558180"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

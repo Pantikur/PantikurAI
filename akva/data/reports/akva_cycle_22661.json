@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22661,
+  "timestamp": "2026-07-27T21:57:18.316270",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 22661)",
+      "category": "differential",
+      "scientific_value": 0.79,
+      "description": "Теория в области mathematics, построена на 22661-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:57:18.316270"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 22661)",
+      "result": 53.020937,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:57:18.316270"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

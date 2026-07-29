@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14396,
+  "timestamp": "2026-07-27T19:38:45.901359",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 14396)",
+      "category": "stability",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 14396-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:38:45.900854"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 14396)",
+      "result": 5.04,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:38:45.900854"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

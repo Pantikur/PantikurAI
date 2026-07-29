@@ -1,0 +1,33 @@
+{
+  "cycle_number": 23951,
+  "timestamp": "2026-07-27T22:18:56.002052",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 23951)",
+      "category": "turbulence",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 23951-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:18:56.001549"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 23951)",
+      "result": 1.0395,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:18:56.002052"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25170,
+  "timestamp": "2026-07-27T22:39:22.195997",
+  "studied_topics": [
+    "Пределы и ряды"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 25170)",
+      "category": "probability",
+      "scientific_value": 0.74,
+      "description": "Теория в области mathematics, построена на 25170-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:39:22.195493"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 25170)",
+      "result": -879.9243,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:39:22.195997"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

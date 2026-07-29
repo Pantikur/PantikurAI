@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15081,
+  "timestamp": "2026-07-27T19:50:14.429137",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 15081)",
+      "category": "fracture",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 15081-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:50:14.429137"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 15081)",
+      "result": 5.76,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:50:14.429137"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

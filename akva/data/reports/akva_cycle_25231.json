@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25231,
+  "timestamp": "2026-07-27T22:40:23.539224",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25231)",
+      "category": "lift",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 25231-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:40:23.539224"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25231)",
+      "result": 106817.78,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:40:23.539224"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

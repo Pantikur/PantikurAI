@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28715,
+  "timestamp": "2026-07-27T23:38:47.160333",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 28715)",
+      "category": "creep",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 28715-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:38:47.160333"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 28715)",
+      "result": 26.003455,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:38:47.160333"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

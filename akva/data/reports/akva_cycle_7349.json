@@ -1,0 +1,33 @@
+{
+  "cycle_number": 7349,
+  "timestamp": "2026-07-27T17:40:38.279623",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 7349)",
+      "category": "probability",
+      "scientific_value": 0.85,
+      "description": "Теория в области mathematics, построена на 7349-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:40:38.279623"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 7349)",
+      "result": 50.6252,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:40:38.279623"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

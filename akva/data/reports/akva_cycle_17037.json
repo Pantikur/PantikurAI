@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17037,
+  "timestamp": "2026-07-27T20:23:00.913781",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 17037)",
+      "category": "drag",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 17037-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:23:00.912698"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 17037)",
+      "result": 5.16,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:23:00.912698"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

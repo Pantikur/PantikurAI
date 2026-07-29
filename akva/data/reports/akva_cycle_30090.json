@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30090,
+  "timestamp": "2026-07-28T00:01:49.754148",
+  "studied_topics": [
+    "Пределы и ряды"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 30090)",
+      "category": "probability",
+      "scientific_value": 0.75,
+      "description": "Теория в области mathematics, построена на 30090-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:01:49.753142"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 30090)",
+      "result": 88.651569,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:01:49.753142"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

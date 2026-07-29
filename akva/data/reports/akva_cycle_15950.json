@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15950,
+  "timestamp": "2026-07-27T20:04:48.116427",
+  "studied_topics": [
+    "Гравитационные волны"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 15950)",
+      "category": "relativity",
+      "scientific_value": 0.93,
+      "description": "Теория в области physics, построена на 15950-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:04:48.116427"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 15950)",
+      "result": 106605811.61,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:04:48.116427"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

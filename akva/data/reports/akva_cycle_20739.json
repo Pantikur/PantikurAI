@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20739,
+  "timestamp": "2026-07-27T21:25:04.872716",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 20739)",
+      "category": "shock_waves",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 20739-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:25:04.872716"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 20739)",
+      "result": 29.8,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:25:04.872716"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

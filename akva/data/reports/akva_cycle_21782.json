@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21782,
+  "timestamp": "2026-07-27T21:42:34.151430",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 21782)",
+      "category": "lift",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 21782-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:42:34.151430"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 21782)",
+      "result": 28205089.06,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:42:34.151430"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

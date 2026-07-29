@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22107,
+  "timestamp": "2026-07-27T21:48:00.971045",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 22107)",
+      "category": "fatigue",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 22107-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:48:00.970039"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 22107)",
+      "result": 67.580758,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:48:00.970039"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

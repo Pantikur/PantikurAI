@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21757,
+  "timestamp": "2026-07-27T21:42:09.005091",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 21757)",
+      "category": "lift",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 21757-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:42:09.005091"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 21757)",
+      "result": 578.52,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:42:09.005091"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

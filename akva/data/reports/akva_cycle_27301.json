@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27301,
+  "timestamp": "2026-07-27T23:15:05.478153",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 27301)",
+      "category": "turbulence",
+      "scientific_value": 0.9,
+      "description": "Теория в области aerodynamics, построена на 27301-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:15:05.477644"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 27301)",
+      "result": 18.68,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:15:05.478153"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25656,
+  "timestamp": "2026-07-27T22:47:30.890810",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 25656)",
+      "category": "fracture",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 25656-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:30.889801"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25656)",
+      "result": 51.011614,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:30.889801"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

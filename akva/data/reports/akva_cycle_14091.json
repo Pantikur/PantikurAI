@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14091,
+  "timestamp": "2026-07-27T19:33:39.286054",
+  "studied_topics": [
+    "Уравнения Навье-Стокса"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 14091)",
+      "category": "optimization",
+      "scientific_value": 0.88,
+      "description": "Теория в области mathematics, построена на 14091-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:33:39.285038"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 14091)",
+      "result": 167.6428,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:33:39.285038"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

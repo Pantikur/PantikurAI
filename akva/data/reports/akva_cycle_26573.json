@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26573,
+  "timestamp": "2026-07-27T23:02:53.222033",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 26573)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 26573-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:02:53.221529"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 26573)",
+      "result": 22.21,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:02:53.221529"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

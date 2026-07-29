@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8194,
+  "timestamp": "2026-07-27T17:54:48.270628",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 8194)",
+      "category": "fracture",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 8194-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:54:48.270628"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 8194)",
+      "result": 1775.77,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:54:48.270628"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

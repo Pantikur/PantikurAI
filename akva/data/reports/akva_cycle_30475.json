@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30475,
+  "timestamp": "2026-07-28T00:08:17.112290",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 30475)",
+      "category": "drag",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 30475-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:08:17.112290"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 30475)",
+      "result": 94651.34,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:08:17.112290"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

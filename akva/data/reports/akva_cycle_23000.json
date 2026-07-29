@@ -1,0 +1,33 @@
+{
+  "cycle_number": 23000,
+  "timestamp": "2026-07-27T22:02:59.390980",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 23000)",
+      "category": "probability",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 23000-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:02:59.390980"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 23000)",
+      "result": 343.9268,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:02:59.390980"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

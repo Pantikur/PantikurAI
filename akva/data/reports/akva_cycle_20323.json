@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20323,
+  "timestamp": "2026-07-27T21:18:06.366446",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 20323)",
+      "category": "shock_waves",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 20323-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:18:06.366446"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 20323)",
+      "result": 3121717.41,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:18:06.366446"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

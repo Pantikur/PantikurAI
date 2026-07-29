@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20421,
+  "timestamp": "2026-07-27T21:19:44.949597",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 20421)",
+      "category": "number_theory",
+      "scientific_value": 0.7,
+      "description": "Теория в области mathematics, построена на 20421-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:19:44.948592"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 20421)",
+      "result": 50.376159,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:19:44.948592"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

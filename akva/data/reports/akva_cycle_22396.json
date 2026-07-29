@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22396,
+  "timestamp": "2026-07-27T21:52:51.729815",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 22396)",
+      "category": "turbulence",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 22396-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:52:51.729815"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 22396)",
+      "result": 328.51,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:52:51.729815"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

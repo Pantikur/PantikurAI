@@ -1,0 +1,33 @@
+{
+  "cycle_number": 24913,
+  "timestamp": "2026-07-27T22:35:03.657631",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 24913)",
+      "category": "stability",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 24913-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:35:03.657631"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 24913)",
+      "result": 2.445928,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:35:03.657631"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

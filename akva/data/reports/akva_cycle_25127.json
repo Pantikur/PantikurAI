@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25127,
+  "timestamp": "2026-07-27T22:38:38.953997",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25127)",
+      "category": "lift",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 25127-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:38.953492"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 25127)",
+      "result": 93303129.78,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:38:38.953997"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

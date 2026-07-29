@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22964,
+  "timestamp": "2026-07-27T22:02:23.168620",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 22964)",
+      "category": "creep",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 22964-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:02:23.168620"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 22964)",
+      "result": 743034010.03,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:02:23.168620"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

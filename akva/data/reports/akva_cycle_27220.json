@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27220,
+  "timestamp": "2026-07-27T23:13:43.989729",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 27220)",
+      "category": "lift",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 27220-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:13:43.989729"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 27220)",
+      "result": 693550.73,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:13:43.989729"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

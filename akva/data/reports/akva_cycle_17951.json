@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17951,
+  "timestamp": "2026-07-27T20:38:20.117987",
+  "studied_topics": [
+    "Комбинаторика"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 17951)",
+      "category": "number_theory",
+      "scientific_value": 0.83,
+      "description": "Теория в области mathematics, построена на 17951-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:38:20.117987"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 17951)",
+      "result": 29.28752,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:38:20.117987"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

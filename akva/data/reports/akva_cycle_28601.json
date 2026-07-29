@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28601,
+  "timestamp": "2026-07-27T23:36:52.558409",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 28601)",
+      "category": "stability",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 28601-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:36:52.558409"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 28601)",
+      "result": 8.16,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:36:52.558409"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25986,
+  "timestamp": "2026-07-27T22:53:03.008008",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25986)",
+      "category": "boundary_layer",
+      "scientific_value": 0.73,
+      "description": "Теория в области aerodynamics, построена на 25986-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:53:03.007000"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25986)",
+      "result": 1.0882,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:53:03.008008"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

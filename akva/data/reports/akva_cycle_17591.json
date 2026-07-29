@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17591,
+  "timestamp": "2026-07-27T20:32:18.070990",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 17591)",
+      "category": "turbulence",
+      "scientific_value": 0.95,
+      "description": "Теория в области aerodynamics, построена на 17591-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:32:18.070990"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 17591)",
+      "result": 1.447,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:32:18.070990"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

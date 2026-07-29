@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28474,
+  "timestamp": "2026-07-27T23:34:44.871424",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 28474)",
+      "category": "strength",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 28474-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:34:44.870905"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 28474)",
+      "result": 0.433339,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:34:44.870905"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25865,
+  "timestamp": "2026-07-27T22:51:01.106335",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25865)",
+      "category": "shock_waves",
+      "scientific_value": 0.97,
+      "description": "Теория в области aerodynamics, построена на 25865-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:51:01.106335"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25865)",
+      "result": 34919.24,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:51:01.106335"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

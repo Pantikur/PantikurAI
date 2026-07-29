@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15147,
+  "timestamp": "2026-07-27T19:51:20.779655",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 15147)",
+      "category": "drag",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 15147-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:51:20.779655"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 15147)",
+      "result": 5.56,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:51:20.779655"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

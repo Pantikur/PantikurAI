@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25616,
+  "timestamp": "2026-07-27T22:46:50.689461",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25616)",
+      "category": "lift",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 25616-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:50.689461"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25616)",
+      "result": 1.396,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:46:50.689461"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

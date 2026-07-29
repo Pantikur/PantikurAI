@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22941,
+  "timestamp": "2026-07-27T22:02:00.034424",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика сплошных сред (цикл 22941)",
+      "category": "mechanics",
+      "scientific_value": 0.71,
+      "description": "Теория в области physics, построена на 22941-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:02:00.034424"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 22941)",
+      "result": 246758097.34,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:02:00.034424"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14901,
+  "timestamp": "2026-07-27T19:47:13.504136",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 14901)",
+      "category": "stability",
+      "scientific_value": 0.88,
+      "description": "Теория в области strength_of_materials, построена на 14901-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:13.504136"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 14901)",
+      "result": 4.920046,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:47:13.504136"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

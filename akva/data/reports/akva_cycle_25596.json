@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25596,
+  "timestamp": "2026-07-27T22:46:30.584114",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 25596)",
+      "category": "linear_algebra",
+      "scientific_value": 0.9,
+      "description": "Теория в области mathematics, построена на 25596-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:30.583110"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 25596)",
+      "result": 652.2847,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:46:30.583110"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

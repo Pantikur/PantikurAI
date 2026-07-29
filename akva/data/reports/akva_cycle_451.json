@@ -1,0 +1,33 @@
+{
+  "cycle_number": 451,
+  "timestamp": "2026-07-27T15:44:56.612204",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 451)",
+      "category": "creep",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 451-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:44:56.612204"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 451)",
+      "result": 3.25,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:44:56.612204"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22157,
+  "timestamp": "2026-07-27T21:48:51.291839",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 22157)",
+      "category": "fracture",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 22157-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:48:51.291839"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 22157)",
+      "result": 3.72,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:48:51.291839"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

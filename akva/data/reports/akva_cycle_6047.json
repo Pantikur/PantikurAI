@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6047,
+  "timestamp": "2026-07-27T17:18:48.764159",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 6047)",
+      "category": "linear_algebra",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 6047-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:18:48.764159"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 6047)",
+      "result": 29.119982,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:18:48.764159"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

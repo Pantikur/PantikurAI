@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29451,
+  "timestamp": "2026-07-27T23:51:06.989991",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 29451)",
+      "category": "fatigue",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 29451-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:51:06.988984"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 29451)",
+      "result": 197987587.6,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:51:06.988984"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

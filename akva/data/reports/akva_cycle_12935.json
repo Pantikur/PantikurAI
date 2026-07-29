@@ -1,0 +1,33 @@
+{
+  "cycle_number": 12935,
+  "timestamp": "2026-07-27T19:14:17.229878",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 12935)",
+      "category": "fatigue",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 12935-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:14:17.229878"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 12935)",
+      "result": 6.62,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:14:17.229878"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

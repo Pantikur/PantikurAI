@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28786,
+  "timestamp": "2026-07-27T23:39:58.554794",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 28786)",
+      "category": "fracture",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 28786-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:39:58.554794"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 28786)",
+      "result": 28.383403,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:39:58.554794"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

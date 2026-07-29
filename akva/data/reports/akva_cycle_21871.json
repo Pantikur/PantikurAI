@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21871,
+  "timestamp": "2026-07-27T21:44:03.675783",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 21871)",
+      "category": "shock_waves",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 21871-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:44:03.675261"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 21871)",
+      "result": 1142.51,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:44:03.675783"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

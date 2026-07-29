@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25602,
+  "timestamp": "2026-07-27T22:46:36.615005",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 25602)",
+      "category": "turbulence",
+      "scientific_value": 0.94,
+      "description": "Теория в области aerodynamics, построена на 25602-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:36.613998"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25602)",
+      "result": 13.42,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:46:36.613998"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

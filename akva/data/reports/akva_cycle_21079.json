@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21079,
+  "timestamp": "2026-07-27T21:30:46.902019",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 21079)",
+      "category": "strength",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 21079-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:30:46.902019"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 21079)",
+      "result": 1269.2,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:30:46.902019"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17414,
+  "timestamp": "2026-07-27T20:29:20.133290",
+  "studied_topics": [
+    "Квантовая электродинамика"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 17414)",
+      "category": "relativity",
+      "scientific_value": 0.85,
+      "description": "Теория в области physics, построена на 17414-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:29:20.133290"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 17414)",
+      "result": 7464416943.22,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:29:20.133290"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

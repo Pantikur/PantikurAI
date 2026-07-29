@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20085,
+  "timestamp": "2026-07-27T21:14:06.936039",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 20085)",
+      "category": "stiffness",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 20085-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:14:06.936039"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 20085)",
+      "result": 564.57,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:14:06.936039"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

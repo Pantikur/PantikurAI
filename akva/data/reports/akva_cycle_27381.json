@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27381,
+  "timestamp": "2026-07-27T23:16:25.946654",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 27381)",
+      "category": "drag",
+      "scientific_value": 0.76,
+      "description": "Теория в области aerodynamics, построена на 27381-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:16:25.946654"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 27381)",
+      "result": 1.3699,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:16:25.946654"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28362,
+  "timestamp": "2026-07-27T23:32:52.257622",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 28362)",
+      "category": "stability",
+      "scientific_value": 0.77,
+      "description": "Теория в области strength_of_materials, построена на 28362-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:32:52.256616"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 28362)",
+      "result": 36.375309,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:32:52.256616"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

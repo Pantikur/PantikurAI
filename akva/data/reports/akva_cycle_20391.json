@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20391,
+  "timestamp": "2026-07-27T21:19:14.786228",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 20391)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 20391-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:19:14.785218"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 20391)",
+      "result": 25.13,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:19:14.785218"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

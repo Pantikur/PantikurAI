@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28251,
+  "timestamp": "2026-07-27T23:31:00.667751",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 28251)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.72,
+      "description": "Теория в области aerodynamics, построена на 28251-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:00.667218"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 28251)",
+      "result": 25.86,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:31:00.667751"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

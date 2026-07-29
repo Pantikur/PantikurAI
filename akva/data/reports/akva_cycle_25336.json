@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25336,
+  "timestamp": "2026-07-27T22:42:09.114314",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25336)",
+      "category": "shock_waves",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 25336-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:42:09.114314"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 25336)",
+      "result": 551.94,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:42:09.114314"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

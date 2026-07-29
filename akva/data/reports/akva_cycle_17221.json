@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17221,
+  "timestamp": "2026-07-27T20:26:05.918906",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 17221)",
+      "category": "lift",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 17221-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:26:05.918906"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 17221)",
+      "result": 155817.89,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:26:05.918906"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

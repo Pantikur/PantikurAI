@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25802,
+  "timestamp": "2026-07-27T22:49:57.710056",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 25802)",
+      "category": "turbulence",
+      "scientific_value": 0.9,
+      "description": "Теория в области aerodynamics, построена на 25802-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:57.709551"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25802)",
+      "result": 18.03,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:49:57.710056"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

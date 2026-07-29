@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14936,
+  "timestamp": "2026-07-27T19:47:48.677561",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 14936)",
+      "category": "creep",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 14936-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:48.676973"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 14936)",
+      "result": 4.75,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:47:48.677561"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 2860,
+  "timestamp": "2026-07-27T16:25:20.222175",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 2860)",
+      "category": "probability",
+      "scientific_value": 0.7,
+      "description": "Теория в области mathematics, построена на 2860-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:25:20.222175"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 2860)",
+      "result": 88.401224,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:25:20.222175"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

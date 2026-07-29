@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20631,
+  "timestamp": "2026-07-27T21:23:16.216749",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 20631)",
+      "category": "shock_waves",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 20631-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:23:16.216749"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20631)",
+      "result": 746424.61,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:23:16.216749"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

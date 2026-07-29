@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25907,
+  "timestamp": "2026-07-27T22:51:43.355604",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25907)",
+      "category": "boundary_layer",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 25907-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:51:43.355091"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 25907)",
+      "result": 17165000.51,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:51:43.355604"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

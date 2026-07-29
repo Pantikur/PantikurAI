@@ -1,0 +1,33 @@
+{
+  "cycle_number": 24447,
+  "timestamp": "2026-07-27T22:27:14.871401",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 24447)",
+      "category": "strength",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 24447-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:27:14.870390"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 24447)",
+      "result": 706226235.07,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:27:14.870390"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 13020,
+  "timestamp": "2026-07-27T19:15:42.691826",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 13020)",
+      "category": "number_theory",
+      "scientific_value": 0.71,
+      "description": "Теория в области mathematics, построена на 13020-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:15:42.691290"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 13020)",
+      "result": 31.847867,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:15:42.691826"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

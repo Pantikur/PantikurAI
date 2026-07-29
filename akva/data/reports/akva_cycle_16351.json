@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16351,
+  "timestamp": "2026-07-27T20:11:31.287197",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 16351)",
+      "category": "fatigue",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 16351-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:11:31.287197"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 16351)",
+      "result": 166861504.22,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:11:31.287197"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

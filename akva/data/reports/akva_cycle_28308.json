@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28308,
+  "timestamp": "2026-07-27T23:31:57.984936",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 28308)",
+      "category": "stability",
+      "scientific_value": 0.77,
+      "description": "Теория в области strength_of_materials, построена на 28308-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:57.983539"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 28308)",
+      "result": 436.07,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:31:57.983539"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25655,
+  "timestamp": "2026-07-27T22:47:29.884181",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 25655)",
+      "category": "strength",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 25655-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:29.883666"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Модуль Юнга (цикл 25655)",
+      "result": 370.56,
+      "formula": "E=σ/ε",
+      "units": "GPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:29.883666"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

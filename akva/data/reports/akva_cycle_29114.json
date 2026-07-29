@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29114,
+  "timestamp": "2026-07-27T23:45:28.274495",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 29114)",
+      "category": "stability",
+      "scientific_value": 0.79,
+      "description": "Теория в области strength_of_materials, построена на 29114-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:45:28.274495"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 29114)",
+      "result": 75.903706,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:45:28.274495"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

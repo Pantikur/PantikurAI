@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20964,
+  "timestamp": "2026-07-27T21:28:51.212102",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20964)",
+      "category": "drag",
+      "scientific_value": 0.91,
+      "description": "Теория в области aerodynamics, построена на 20964-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:28:51.211092"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 20964)",
+      "result": 26246291.7,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:28:51.211092"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

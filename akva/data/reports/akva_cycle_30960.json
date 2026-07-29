@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30960,
+  "timestamp": "2026-07-28T00:16:25.329471",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 30960)",
+      "category": "boundary_layer",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 30960-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:16:25.328465"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 30960)",
+      "result": 78237429.23,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:16:25.328465"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

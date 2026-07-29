@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25611,
+  "timestamp": "2026-07-27T22:46:45.665953",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25611)",
+      "category": "boundary_layer",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 25611-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:45.664935"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 25611)",
+      "result": 14261084.99,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:46:45.664935"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

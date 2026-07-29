@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21691,
+  "timestamp": "2026-07-27T21:41:02.624972",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 21691)",
+      "category": "fracture",
+      "scientific_value": 0.99,
+      "description": "Теория в области strength_of_materials, построена на 21691-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:41:02.624440"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 21691)",
+      "result": 7.58,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:41:02.624440"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

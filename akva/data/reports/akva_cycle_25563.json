@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25563,
+  "timestamp": "2026-07-27T22:45:57.398774",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25563)",
+      "category": "drag",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 25563-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:57.397766"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25563)",
+      "result": 16.34,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:45:57.397766"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28491,
+  "timestamp": "2026-07-27T23:35:01.978611",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 28491)",
+      "category": "probability",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 28491-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:35:01.977601"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 28491)",
+      "result": 97.327092,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:35:01.977601"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

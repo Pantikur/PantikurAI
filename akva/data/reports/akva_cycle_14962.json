@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14962,
+  "timestamp": "2026-07-27T19:48:14.811588",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 14962)",
+      "category": "quantum",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 14962-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:48:14.811588"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 14962)",
+      "result": 1405.78,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:48:14.811588"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

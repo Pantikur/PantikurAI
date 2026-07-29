@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21576,
+  "timestamp": "2026-07-27T21:39:06.931461",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 21576)",
+      "category": "lift",
+      "scientific_value": 0.94,
+      "description": "Теория в области aerodynamics, построена на 21576-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:39:06.930194"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 21576)",
+      "result": 1.4296,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:39:06.930194"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

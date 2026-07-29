@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26131,
+  "timestamp": "2026-07-27T22:55:28.733732",
+  "studied_topics": [
+    "Термодинамика неравновесных процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 26131)",
+      "category": "relativity",
+      "scientific_value": 0.96,
+      "description": "Теория в области physics, построена на 26131-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:55:28.733732"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 26131)",
+      "result": 3870854698.07,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:55:28.733732"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

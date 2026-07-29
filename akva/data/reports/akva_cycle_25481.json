@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25481,
+  "timestamp": "2026-07-27T22:44:34.951898",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 25481)",
+      "category": "stiffness",
+      "scientific_value": 0.75,
+      "description": "Теория в области strength_of_materials, построена на 25481-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:44:34.951394"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 25481)",
+      "result": 45419652.71,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:44:34.951394"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

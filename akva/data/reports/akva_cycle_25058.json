@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25058,
+  "timestamp": "2026-07-27T22:37:29.528289",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 25058)",
+      "category": "electromagnetism",
+      "scientific_value": 0.92,
+      "description": "Теория в области physics, построена на 25058-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:37:29.528289"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 25058)",
+      "result": 3450994415.59,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:37:29.528289"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

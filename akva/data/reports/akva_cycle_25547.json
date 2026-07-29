@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25547,
+  "timestamp": "2026-07-27T22:45:41.302461",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25547)",
+      "category": "shock_waves",
+      "scientific_value": 0.97,
+      "description": "Теория в области aerodynamics, построена на 25547-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:41.302461"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25547)",
+      "result": 1.2451,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:45:41.302461"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

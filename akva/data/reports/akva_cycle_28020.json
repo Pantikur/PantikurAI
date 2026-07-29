@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28020,
+  "timestamp": "2026-07-27T23:27:08.449130",
+  "studied_topics": [
+    "Уравнения Навье-Стокса"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 28020)",
+      "category": "linear_algebra",
+      "scientific_value": 0.89,
+      "description": "Теория в области mathematics, построена на 28020-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:27:08.449130"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Решение системы уравнений (цикл 28020)",
+      "result": 7729.103179,
+      "formula": "AX=B",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:27:08.449130"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

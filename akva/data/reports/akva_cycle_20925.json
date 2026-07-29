@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20925,
+  "timestamp": "2026-07-27T21:28:11.999395",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 20925)",
+      "category": "thermodynamics",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 20925-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:28:11.998891"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 20925)",
+      "result": 220428627.95,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:28:11.999395"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

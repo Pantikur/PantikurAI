@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25658,
+  "timestamp": "2026-07-27T22:47:32.898784",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 25658)",
+      "category": "fracture",
+      "scientific_value": 0.91,
+      "description": "Теория в области strength_of_materials, построена на 25658-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:32.898784"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 25658)",
+      "result": 8349521.51,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:32.898784"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

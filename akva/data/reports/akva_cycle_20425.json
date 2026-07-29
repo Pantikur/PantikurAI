@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20425,
+  "timestamp": "2026-07-27T21:19:48.968980",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20425)",
+      "category": "drag",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 20425-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:19:48.968980"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 20425)",
+      "result": 13.04,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:19:48.968980"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

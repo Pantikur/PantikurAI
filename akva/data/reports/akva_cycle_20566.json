@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20566,
+  "timestamp": "2026-07-27T21:22:10.808418",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 20566)",
+      "category": "quantum",
+      "scientific_value": 0.97,
+      "description": "Теория в области physics, построена на 20566-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:22:10.808418"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 20566)",
+      "result": 8343613126.19,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:22:10.808418"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22872,
+  "timestamp": "2026-07-27T22:00:50.616901",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 22872)",
+      "category": "drag",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 22872-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:00:50.615890"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 22872)",
+      "result": 1.4007,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:00:50.615890"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

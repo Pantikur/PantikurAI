@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22486,
+  "timestamp": "2026-07-27T21:54:22.296967",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 22486)",
+      "category": "linear_algebra",
+      "scientific_value": 0.89,
+      "description": "Теория в области mathematics, построена на 22486-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:54:22.296967"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 22486)",
+      "result": 90.056028,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:54:22.296967"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

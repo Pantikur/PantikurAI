@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1594,
+  "timestamp": "2026-07-27T16:04:06.787174",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 1594)",
+      "category": "shock_waves",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 1594-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:04:06.787174"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 1594)",
+      "result": 0.9646,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:04:06.787174"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20000,
+  "timestamp": "2026-07-27T21:12:41.444722",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 20000)",
+      "category": "probability",
+      "scientific_value": 0.81,
+      "description": "Теория в области mathematics, построена на 20000-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:12:41.444722"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 20000)",
+      "result": 178.5397,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:12:41.444722"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

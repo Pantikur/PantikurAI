@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30725,
+  "timestamp": "2026-07-28T00:12:28.763048",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 30725)",
+      "category": "drag",
+      "scientific_value": 0.74,
+      "description": "Теория в области aerodynamics, построена на 30725-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:12:28.763048"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 30725)",
+      "result": 1.4064,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:12:28.763048"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

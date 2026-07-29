@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14302,
+  "timestamp": "2026-07-27T19:37:11.357561",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 14302)",
+      "category": "differential",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 14302-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:37:11.357561"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 14302)",
+      "result": 6.08771,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:37:11.357561"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

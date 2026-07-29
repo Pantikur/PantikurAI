@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15985,
+  "timestamp": "2026-07-27T20:05:23.291090",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 15985)",
+      "category": "stiffness",
+      "scientific_value": 0.72,
+      "description": "Теория в области strength_of_materials, построена на 15985-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:05:23.291090"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Модуль Юнга (цикл 15985)",
+      "result": 127.67,
+      "formula": "E=σ/ε",
+      "units": "GPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:05:23.291090"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

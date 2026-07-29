@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25253,
+  "timestamp": "2026-07-27T22:40:45.659135",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 25253)",
+      "category": "differential",
+      "scientific_value": 0.79,
+      "description": "Теория в области mathematics, построена на 25253-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:40:45.659135"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 25253)",
+      "result": 54.368761,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:40:45.659135"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

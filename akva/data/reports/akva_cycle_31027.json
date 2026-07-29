@@ -1,0 +1,33 @@
+{
+  "cycle_number": 31027,
+  "timestamp": "2026-07-28T00:17:32.775997",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 31027)",
+      "category": "fracture",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 31027-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:17:32.775997"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 31027)",
+      "result": 2.599576,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:17:32.775997"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

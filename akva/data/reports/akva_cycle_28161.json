@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28161,
+  "timestamp": "2026-07-27T23:29:30.192472",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 28161)",
+      "category": "stability",
+      "scientific_value": 0.82,
+      "description": "Теория в области strength_of_materials, построена на 28161-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:29:30.191963"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 28161)",
+      "result": 0.431273,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:29:30.192472"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

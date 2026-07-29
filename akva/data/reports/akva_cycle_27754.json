@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27754,
+  "timestamp": "2026-07-27T23:22:41.030460",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 27754)",
+      "category": "lift",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 27754-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:22:41.029957"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 27754)",
+      "result": 645204.58,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:22:41.029957"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

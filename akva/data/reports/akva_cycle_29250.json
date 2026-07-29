@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29250,
+  "timestamp": "2026-07-27T23:47:44.970084",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 29250)",
+      "category": "shock_waves",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 29250-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:47:44.969078"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 29250)",
+      "result": 65780041.22,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:47:44.969078"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

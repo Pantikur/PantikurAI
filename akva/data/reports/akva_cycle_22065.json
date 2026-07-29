@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22065,
+  "timestamp": "2026-07-27T21:47:18.723699",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 22065)",
+      "category": "electromagnetism",
+      "scientific_value": 0.95,
+      "description": "Теория в области physics, построена на 22065-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:47:18.723699"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 22065)",
+      "result": 4420718976.45,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:47:18.723699"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

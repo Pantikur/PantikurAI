@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15844,
+  "timestamp": "2026-07-27T20:03:01.536800",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 15844)",
+      "category": "turbulence",
+      "scientific_value": 0.95,
+      "description": "Теория в области aerodynamics, построена на 15844-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:03:01.536293"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 15844)",
+      "result": 7.31,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:03:01.536293"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

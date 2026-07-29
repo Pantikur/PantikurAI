@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29228,
+  "timestamp": "2026-07-27T23:47:22.856165",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 29228)",
+      "category": "topology",
+      "scientific_value": 0.74,
+      "description": "Теория в области mathematics, построена на 29228-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:47:22.856165"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 29228)",
+      "result": 76.556486,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:47:22.856165"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

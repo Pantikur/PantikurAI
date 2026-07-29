@@ -1,0 +1,33 @@
+{
+  "cycle_number": 751,
+  "timestamp": "2026-07-27T15:49:58.486177",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 751)",
+      "category": "relativity",
+      "scientific_value": 0.88,
+      "description": "Теория в области physics, построена на 751-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:49:58.486177"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость волны (цикл 751)",
+      "result": 109423383.6,
+      "formula": "v=λf",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:49:58.486177"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1294,
+  "timestamp": "2026-07-27T15:59:04.868603",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 1294)",
+      "category": "relativity",
+      "scientific_value": 0.86,
+      "description": "Теория в области physics, построена на 1294-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:59:04.868099"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 1294)",
+      "result": 4186.42,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:59:04.868603"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

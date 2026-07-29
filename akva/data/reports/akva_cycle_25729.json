@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25729,
+  "timestamp": "2026-07-27T22:48:44.284087",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 25729)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.9,
+      "description": "Теория в области aerodynamics, построена на 25729-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:48:44.283581"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25729)",
+      "result": 810544.01,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:48:44.284087"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

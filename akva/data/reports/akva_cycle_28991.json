@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28991,
+  "timestamp": "2026-07-27T23:43:24.626248",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 28991)",
+      "category": "relativity",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 28991-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:43:24.626248"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 28991)",
+      "result": 7776450043.26,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:43:24.626248"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

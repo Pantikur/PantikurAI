@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30341,
+  "timestamp": "2026-07-28T00:06:02.260694",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 30341)",
+      "category": "fracture",
+      "scientific_value": 0.96,
+      "description": "Теория в области strength_of_materials, построена на 30341-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:06:02.260694"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 30341)",
+      "result": 218713208.06,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:06:02.260694"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

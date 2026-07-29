@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30325,
+  "timestamp": "2026-07-28T00:05:46.135423",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 30325)",
+      "category": "fatigue",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 30325-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:05:46.135423"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 30325)",
+      "result": 0.030312,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:05:46.135423"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

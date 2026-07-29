@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21313,
+  "timestamp": "2026-07-27T21:34:42.297544",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 21313)",
+      "category": "relativity",
+      "scientific_value": 0.93,
+      "description": "Теория в области physics, построена на 21313-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:34:42.297544"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 21313)",
+      "result": 1846872886.04,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:34:42.297544"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

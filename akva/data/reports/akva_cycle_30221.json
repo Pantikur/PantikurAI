@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30221,
+  "timestamp": "2026-07-28T00:04:01.546683",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 30221)",
+      "category": "quantum",
+      "scientific_value": 0.81,
+      "description": "Теория в области physics, построена на 30221-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:04:01.546683"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Энергия частицы (цикл 30221)",
+      "result": 494302290966363.4,
+      "formula": "E=mc²",
+      "units": "J",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:04:01.546683"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15222,
+  "timestamp": "2026-07-27T19:52:36.165041",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 15222)",
+      "category": "shock_waves",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 15222-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:52:36.165041"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 15222)",
+      "result": 15.06,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:52:36.165041"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

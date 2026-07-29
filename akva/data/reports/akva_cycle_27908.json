@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27908,
+  "timestamp": "2026-07-27T23:25:15.853100",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 27908)",
+      "category": "fatigue",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 27908-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:25:15.853100"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 27908)",
+      "result": 664961249.35,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:25:15.853100"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

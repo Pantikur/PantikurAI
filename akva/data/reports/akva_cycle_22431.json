@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22431,
+  "timestamp": "2026-07-27T21:53:26.935600",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 22431)",
+      "category": "fracture",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 22431-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:53:26.935600"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 22431)",
+      "result": 785434000.19,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:53:26.935600"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

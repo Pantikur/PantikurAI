@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20364,
+  "timestamp": "2026-07-27T21:18:47.623532",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 20364)",
+      "category": "lift",
+      "scientific_value": 0.9,
+      "description": "Теория в области aerodynamics, построена на 20364-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:18:47.623532"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20364)",
+      "result": 307569.34,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:18:47.623532"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 31957,
+  "timestamp": "2026-07-28T00:33:08.396941",
+  "studied_topics": [
+    "Модуль Юнга"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 31957)",
+      "category": "fracture",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 31957-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:33:08.396941"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 31957)",
+      "result": 5.82,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:33:08.396941"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

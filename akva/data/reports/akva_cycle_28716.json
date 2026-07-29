@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28716,
+  "timestamp": "2026-07-27T23:38:48.167896",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 28716)",
+      "category": "fracture",
+      "scientific_value": 0.89,
+      "description": "Теория в области strength_of_materials, построена на 28716-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:38:48.166888"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 28716)",
+      "result": 8.9,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:38:48.166888"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

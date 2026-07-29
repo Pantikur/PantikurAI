@@ -1,0 +1,33 @@
+{
+  "cycle_number": 276,
+  "timestamp": "2026-07-27T15:42:00.468132",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 276)",
+      "category": "linear_algebra",
+      "scientific_value": 0.87,
+      "description": "Теория в области mathematics, построена на 276-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:42:00.467131"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 276)",
+      "result": 597.5656,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:42:00.467131"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

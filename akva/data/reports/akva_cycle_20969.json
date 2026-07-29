@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20969,
+  "timestamp": "2026-07-27T21:28:56.238684",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 20969)",
+      "category": "stability",
+      "scientific_value": 0.79,
+      "description": "Теория в области strength_of_materials, построена на 20969-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:28:56.238684"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 20969)",
+      "result": 4.30701,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:28:56.238684"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25149,
+  "timestamp": "2026-07-27T22:39:01.081645",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25149)",
+      "category": "lift",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 25149-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:39:01.081645"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 25149)",
+      "result": 21.62,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:39:01.081645"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

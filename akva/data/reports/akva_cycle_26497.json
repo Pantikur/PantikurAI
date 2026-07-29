@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26497,
+  "timestamp": "2026-07-27T23:01:36.750657",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 26497)",
+      "category": "fracture",
+      "scientific_value": 1.0,
+      "description": "Теория в области strength_of_materials, построена на 26497-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:01:36.750153"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 26497)",
+      "result": 4.92,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:01:36.750657"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

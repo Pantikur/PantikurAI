@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28676,
+  "timestamp": "2026-07-27T23:38:07.948622",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 28676)",
+      "category": "turbulence",
+      "scientific_value": 0.95,
+      "description": "Теория в области aerodynamics, построена на 28676-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:38:07.948622"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 28676)",
+      "result": 23.28,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:38:07.948622"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

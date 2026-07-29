@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22916,
+  "timestamp": "2026-07-27T22:01:34.871038",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 22916)",
+      "category": "boundary_layer",
+      "scientific_value": 0.76,
+      "description": "Теория в области aerodynamics, построена на 22916-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:01:34.871038"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 22916)",
+      "result": 14.21,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:01:34.871038"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

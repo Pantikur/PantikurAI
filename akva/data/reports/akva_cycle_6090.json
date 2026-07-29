@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6090,
+  "timestamp": "2026-07-27T17:19:32.033310",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 6090)",
+      "category": "thermodynamics",
+      "scientific_value": 0.86,
+      "description": "Теория в области physics, построена на 6090-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:19:32.032303"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость волны (цикл 6090)",
+      "result": 184900490.59,
+      "formula": "v=λf",
+      "units": "m/s",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:19:32.032303"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

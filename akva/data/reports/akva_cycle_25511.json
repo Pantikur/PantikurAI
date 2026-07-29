@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25511,
+  "timestamp": "2026-07-27T22:45:05.101329",
+  "studied_topics": [
+    "Гравитационные волны"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 25511)",
+      "category": "relativity",
+      "scientific_value": 0.92,
+      "description": "Теория в области physics, построена на 25511-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:05.101329"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 25511)",
+      "result": 7953186523.89,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:45:05.101329"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16125,
+  "timestamp": "2026-07-27T20:07:44.067815",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 16125)",
+      "category": "boundary_layer",
+      "scientific_value": 0.73,
+      "description": "Теория в области aerodynamics, построена на 16125-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:07:44.067815"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 16125)",
+      "result": 7.06,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:07:44.067815"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

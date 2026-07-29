@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30925,
+  "timestamp": "2026-07-28T00:15:50.102044",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 30925)",
+      "category": "relativity",
+      "scientific_value": 0.91,
+      "description": "Теория в области physics, построена на 30925-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:15:50.102044"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 30925)",
+      "result": 4605.44,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:15:50.102044"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

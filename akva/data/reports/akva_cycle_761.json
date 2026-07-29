@@ -1,0 +1,33 @@
+{
+  "cycle_number": 761,
+  "timestamp": "2026-07-27T15:50:08.547406",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 761)",
+      "category": "stability",
+      "scientific_value": 0.75,
+      "description": "Теория в области strength_of_materials, построена на 761-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:50:08.547406"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 761)",
+      "result": 4.2,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:50:08.547406"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

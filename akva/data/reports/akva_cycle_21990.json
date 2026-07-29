@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21990,
+  "timestamp": "2026-07-27T21:46:03.317392",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 21990)",
+      "category": "creep",
+      "scientific_value": 0.8,
+      "description": "Теория в области strength_of_materials, построена на 21990-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:46:03.316889"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 21990)",
+      "result": 23.139429,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:46:03.317392"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

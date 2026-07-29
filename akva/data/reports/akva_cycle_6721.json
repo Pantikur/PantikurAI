@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6721,
+  "timestamp": "2026-07-27T17:30:06.675206",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 6721)",
+      "category": "probability",
+      "scientific_value": 0.81,
+      "description": "Теория в области mathematics, построена на 6721-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:30:06.675206"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 6721)",
+      "result": -352.034,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:30:06.675206"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

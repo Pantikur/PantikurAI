@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22720,
+  "timestamp": "2026-07-27T21:58:17.682709",
+  "studied_topics": [
+    "Уравнения Навье-Стокса"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 22720)",
+      "category": "differential",
+      "scientific_value": 0.86,
+      "description": "Теория в области mathematics, построена на 22720-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:58:17.682709"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 22720)",
+      "result": 77.4818,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:58:17.682709"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

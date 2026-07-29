@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28065,
+  "timestamp": "2026-07-27T23:27:53.679317",
+  "studied_topics": [
+    "Дифференциальная геометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 28065)",
+      "category": "number_theory",
+      "scientific_value": 0.87,
+      "description": "Теория в области mathematics, построена на 28065-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:27:53.678308"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28065)",
+      "result": 72.042,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:27:53.678308"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

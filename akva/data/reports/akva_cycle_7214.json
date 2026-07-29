@@ -1,0 +1,33 @@
+{
+  "cycle_number": 7214,
+  "timestamp": "2026-07-27T17:38:22.491534",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 7214)",
+      "category": "fracture",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 7214-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:38:22.491534"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 7214)",
+      "result": 29023941.61,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:38:22.491534"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

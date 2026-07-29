@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14794,
+  "timestamp": "2026-07-27T19:45:25.941557",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 14794)",
+      "category": "fracture",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 14794-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:45:25.941557"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 14794)",
+      "result": 0.332284,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:45:25.941557"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

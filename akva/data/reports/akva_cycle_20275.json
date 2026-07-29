@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20275,
+  "timestamp": "2026-07-27T21:17:18.072289",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 20275)",
+      "category": "fatigue",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 20275-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:17:18.072289"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 20275)",
+      "result": 0.23446,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:17:18.072289"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

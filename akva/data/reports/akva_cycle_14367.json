@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14367,
+  "timestamp": "2026-07-27T19:38:16.716999",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 14367)",
+      "category": "stability",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 14367-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:38:16.716493"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 14367)",
+      "result": 1662.6,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:38:16.716999"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

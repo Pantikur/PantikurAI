@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30349,
+  "timestamp": "2026-07-28T00:06:10.299330",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 30349)",
+      "category": "topology",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 30349-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:06:10.299330"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 30349)",
+      "result": 18.9009,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:06:10.299330"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

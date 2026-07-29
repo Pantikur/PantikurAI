@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30366,
+  "timestamp": "2026-07-28T00:06:27.398512",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 30366)",
+      "category": "shock_waves",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 30366-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:06:27.398512"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 30366)",
+      "result": 12.79,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:06:27.398512"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

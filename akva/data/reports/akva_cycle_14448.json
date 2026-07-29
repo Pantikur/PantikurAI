@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14448,
+  "timestamp": "2026-07-27T19:39:38.151533",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 14448)",
+      "category": "fatigue",
+      "scientific_value": 0.78,
+      "description": "Теория в области strength_of_materials, построена на 14448-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:39:38.151533"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 14448)",
+      "result": 575426198.3,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:39:38.151533"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

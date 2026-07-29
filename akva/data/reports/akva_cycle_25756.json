@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25756,
+  "timestamp": "2026-07-27T22:49:11.440927",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 25756)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 25756-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:11.440927"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25756)",
+      "result": 968165.5,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:49:11.440927"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

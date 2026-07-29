@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28221,
+  "timestamp": "2026-07-27T23:30:30.500249",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 28221)",
+      "category": "number_theory",
+      "scientific_value": 0.7,
+      "description": "Теория в области mathematics, построена на 28221-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:30:30.499241"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28221)",
+      "result": 81.8513,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:30:30.499241"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

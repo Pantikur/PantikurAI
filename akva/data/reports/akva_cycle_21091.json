@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21091,
+  "timestamp": "2026-07-27T21:30:58.974901",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 21091)",
+      "category": "probability",
+      "scientific_value": 0.73,
+      "description": "Теория в области mathematics, построена на 21091-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:30:58.974901"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 21091)",
+      "result": 15.6546,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:30:58.974901"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

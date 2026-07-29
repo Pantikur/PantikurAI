@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27290,
+  "timestamp": "2026-07-27T23:14:54.411760",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 27290)",
+      "category": "shock_waves",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 27290-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:14:54.411254"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 27290)",
+      "result": 11.36,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:14:54.411254"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

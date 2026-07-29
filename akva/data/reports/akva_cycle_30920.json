@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30920,
+  "timestamp": "2026-07-28T00:15:45.050558",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 30920)",
+      "category": "fatigue",
+      "scientific_value": 0.98,
+      "description": "Теория в области strength_of_materials, построена на 30920-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:15:45.050558"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 30920)",
+      "result": 576660796.17,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:15:45.050558"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

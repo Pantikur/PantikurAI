@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30825,
+  "timestamp": "2026-07-28T00:14:09.470160",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 30825)",
+      "category": "lift",
+      "scientific_value": 0.94,
+      "description": "Теория в области aerodynamics, построена на 30825-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:14:09.469154"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 30825)",
+      "result": 161902.86,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:14:09.469154"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

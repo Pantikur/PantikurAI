@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15158,
+  "timestamp": "2026-07-27T19:51:31.837564",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 15158)",
+      "category": "turbulence",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 15158-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:51:31.837564"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 15158)",
+      "result": 6901911.21,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:51:31.837564"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

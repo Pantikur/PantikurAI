@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21223,
+  "timestamp": "2026-07-27T21:33:11.772766",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 21223)",
+      "category": "shock_waves",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 21223-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:33:11.772766"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 21223)",
+      "result": 1.1808,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:33:11.772766"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

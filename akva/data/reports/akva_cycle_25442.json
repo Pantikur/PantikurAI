@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25442,
+  "timestamp": "2026-07-27T22:43:55.744918",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25442)",
+      "category": "drag",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 25442-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:43:55.744413"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 25442)",
+      "result": 1278860.45,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:43:55.744918"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

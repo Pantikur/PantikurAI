@@ -1,0 +1,33 @@
+{
+  "cycle_number": 12750,
+  "timestamp": "2026-07-27T19:11:11.242832",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 12750)",
+      "category": "quantum_info",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 12750-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:11:11.242832"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 12750)",
+      "result": 12658213.0565,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:11:11.242832"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

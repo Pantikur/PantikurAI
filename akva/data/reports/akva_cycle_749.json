@@ -1,0 +1,33 @@
+{
+  "cycle_number": 749,
+  "timestamp": "2026-07-27T15:49:56.475189",
+  "studied_topics": [
+    "Матрицы и определители"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 749)",
+      "category": "number_theory",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 749-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:49:56.475189"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 749)",
+      "result": 12.7421,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:49:56.475189"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

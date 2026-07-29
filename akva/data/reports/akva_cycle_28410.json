@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28410,
+  "timestamp": "2026-07-27T23:33:40.512895",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 28410)",
+      "category": "differential",
+      "scientific_value": 0.85,
+      "description": "Теория в области mathematics, построена на 28410-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:33:40.512895"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28410)",
+      "result": 42.6121,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:33:40.512895"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

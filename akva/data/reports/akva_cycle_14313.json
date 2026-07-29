@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14313,
+  "timestamp": "2026-07-27T19:37:22.411934",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 14313)",
+      "category": "fracture",
+      "scientific_value": 0.88,
+      "description": "Теория в области strength_of_materials, построена на 14313-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:37:22.411934"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 14313)",
+      "result": 0.449513,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:37:22.411934"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

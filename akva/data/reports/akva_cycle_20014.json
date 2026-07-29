@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20014,
+  "timestamp": "2026-07-27T21:12:55.524807",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 20014)",
+      "category": "creep",
+      "scientific_value": 0.93,
+      "description": "Теория в области strength_of_materials, построена на 20014-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:12:55.524807"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 20014)",
+      "result": 0.174219,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:12:55.524807"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

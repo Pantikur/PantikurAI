@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14263,
+  "timestamp": "2026-07-27T19:36:32.157671",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 14263)",
+      "category": "probability",
+      "scientific_value": 0.74,
+      "description": "Теория в области mathematics, построена на 14263-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:36:32.157155"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 14263)",
+      "result": 463.4479,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:36:32.157671"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

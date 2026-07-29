@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21874,
+  "timestamp": "2026-07-27T21:44:06.690815",
+  "studied_topics": [
+    "Оптимизация невыпуклых функций"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 21874)",
+      "category": "probability",
+      "scientific_value": 0.81,
+      "description": "Теория в области mathematics, построена на 21874-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:44:06.690310"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 21874)",
+      "result": 89.72246,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:44:06.690310"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

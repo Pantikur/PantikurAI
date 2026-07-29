@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15889,
+  "timestamp": "2026-07-27T20:03:46.778603",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 15889)",
+      "category": "drag",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 15889-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:03:46.778098"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 15889)",
+      "result": 7526651.95,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:03:46.778603"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

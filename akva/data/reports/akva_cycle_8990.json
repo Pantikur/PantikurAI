@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8990,
+  "timestamp": "2026-07-27T18:08:09.360051",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 8990)",
+      "category": "stability",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 8990-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:08:09.360051"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 8990)",
+      "result": 813.55,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T18:08:09.360051"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

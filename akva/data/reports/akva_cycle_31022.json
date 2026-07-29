@@ -1,0 +1,33 @@
+{
+  "cycle_number": 31022,
+  "timestamp": "2026-07-28T00:17:27.726311",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 31022)",
+      "category": "turbulence",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 31022-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:17:27.726311"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 31022)",
+      "result": 21.74,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:17:27.726311"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

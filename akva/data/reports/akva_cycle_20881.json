@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20881,
+  "timestamp": "2026-07-27T21:27:27.744094",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 20881)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.76,
+      "description": "Теория в области aerodynamics, построена на 20881-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:27:27.744094"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 20881)",
+      "result": 607074.41,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:27:27.744094"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

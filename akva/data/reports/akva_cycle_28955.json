@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28955,
+  "timestamp": "2026-07-27T23:42:48.437198",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 28955)",
+      "category": "strength",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 28955-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:42:48.437198"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 28955)",
+      "result": 0.492193,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:42:48.437198"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

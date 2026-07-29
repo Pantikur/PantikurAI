@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14888,
+  "timestamp": "2026-07-27T19:47:00.437049",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 14888)",
+      "category": "number_theory",
+      "scientific_value": 0.85,
+      "description": "Теория в области mathematics, построена на 14888-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:00.437049"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 14888)",
+      "result": 229.1209,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:47:00.437049"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

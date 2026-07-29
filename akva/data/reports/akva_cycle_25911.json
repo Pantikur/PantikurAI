@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25911,
+  "timestamp": "2026-07-27T22:51:47.380646",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 25911)",
+      "category": "fracture",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 25911-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:51:47.380646"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 25911)",
+      "result": 1.77,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:51:47.380646"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

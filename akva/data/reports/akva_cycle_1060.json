@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1060,
+  "timestamp": "2026-07-27T15:55:09.402640",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 1060)",
+      "category": "fatigue",
+      "scientific_value": 0.79,
+      "description": "Теория в области strength_of_materials, построена на 1060-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:55:09.402640"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 1060)",
+      "result": 4.93,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:55:09.402640"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

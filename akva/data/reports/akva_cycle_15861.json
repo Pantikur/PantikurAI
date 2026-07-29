@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15861,
+  "timestamp": "2026-07-27T20:03:18.625058",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 15861)",
+      "category": "fatigue",
+      "scientific_value": 0.94,
+      "description": "Теория в области strength_of_materials, построена на 15861-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:03:18.625058"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 15861)",
+      "result": 3.05,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:03:18.625058"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

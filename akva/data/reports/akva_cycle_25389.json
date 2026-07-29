@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25389,
+  "timestamp": "2026-07-27T22:43:02.404469",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 25389)",
+      "category": "strength",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 25389-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:43:02.403439"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 25389)",
+      "result": 258296133.33,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:43:02.403439"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

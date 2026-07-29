@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25559,
+  "timestamp": "2026-07-27T22:45:53.374095",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25559)",
+      "category": "drag",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 25559-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:53.373590"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25559)",
+      "result": 1.3131,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:45:53.374095"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

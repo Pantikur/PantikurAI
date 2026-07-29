@@ -1,0 +1,33 @@
+{
+  "cycle_number": 493,
+  "timestamp": "2026-07-27T15:45:38.896104",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 493)",
+      "category": "lift",
+      "scientific_value": 0.96,
+      "description": "Теория в области aerodynamics, построена на 493-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:45:38.896104"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 493)",
+      "result": 0.813,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:45:38.896104"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

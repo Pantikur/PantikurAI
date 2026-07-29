@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20125,
+  "timestamp": "2026-07-27T21:14:47.151841",
+  "studied_topics": [
+    "Гравитационные волны"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 20125)",
+      "category": "quantum",
+      "scientific_value": 0.8,
+      "description": "Теория в области physics, построена на 20125-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:14:47.151336"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 20125)",
+      "result": 67623383.0312,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:14:47.151336"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

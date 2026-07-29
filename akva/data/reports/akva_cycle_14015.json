@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14015,
+  "timestamp": "2026-07-27T19:32:22.886109",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 14015)",
+      "category": "stiffness",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 14015-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:32:22.886109"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 14015)",
+      "result": 2.01,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:32:22.886109"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

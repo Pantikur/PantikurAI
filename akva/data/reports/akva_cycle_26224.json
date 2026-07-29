@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26224,
+  "timestamp": "2026-07-27T22:57:02.213142",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 26224)",
+      "category": "probability",
+      "scientific_value": 0.81,
+      "description": "Теория в области mathematics, построена на 26224-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:57:02.213142"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 26224)",
+      "result": 4.361904,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:57:02.213142"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

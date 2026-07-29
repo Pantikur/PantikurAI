@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21222,
+  "timestamp": "2026-07-27T21:33:10.767036",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 21222)",
+      "category": "topology",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 21222-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:33:10.767036"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 21222)",
+      "result": 38.0073,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:33:10.767036"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

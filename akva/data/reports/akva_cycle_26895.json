@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26895,
+  "timestamp": "2026-07-27T23:08:17.121898",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 26895)",
+      "category": "drag",
+      "scientific_value": 0.74,
+      "description": "Теория в области aerodynamics, построена на 26895-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:08:17.120888"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 26895)",
+      "result": 9.02,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:08:17.120888"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

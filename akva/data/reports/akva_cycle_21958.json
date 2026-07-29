@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21958,
+  "timestamp": "2026-07-27T21:45:31.144927",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 21958)",
+      "category": "stability",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 21958-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:45:31.144421"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Модуль Юнга (цикл 21958)",
+      "result": 23.24,
+      "formula": "E=σ/ε",
+      "units": "GPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:45:31.144421"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

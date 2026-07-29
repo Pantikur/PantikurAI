@@ -1,0 +1,33 @@
+{
+  "cycle_number": 23327,
+  "timestamp": "2026-07-27T22:08:28.276658",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 23327)",
+      "category": "differential",
+      "scientific_value": 0.76,
+      "description": "Теория в области mathematics, построена на 23327-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:08:28.276658"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 23327)",
+      "result": 52.647842,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:08:28.276658"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

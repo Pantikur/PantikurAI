@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25143,
+  "timestamp": "2026-07-27T22:38:55.049806",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25143)",
+      "category": "lift",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 25143-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:55.048796"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25143)",
+      "result": 458119.23,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:38:55.048796"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

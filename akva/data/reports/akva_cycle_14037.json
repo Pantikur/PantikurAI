@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14037,
+  "timestamp": "2026-07-27T19:32:44.997644",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 14037)",
+      "category": "number_theory",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 14037-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:32:44.997644"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 14037)",
+      "result": 90.379387,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:32:44.997644"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

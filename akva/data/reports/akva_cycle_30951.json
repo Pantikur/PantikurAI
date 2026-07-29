@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30951,
+  "timestamp": "2026-07-28T00:16:16.274634",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 30951)",
+      "category": "electromagnetism",
+      "scientific_value": 0.79,
+      "description": "Теория в области physics, построена на 30951-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:16:16.273621"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость волны (цикл 30951)",
+      "result": 222867058.69,
+      "formula": "v=λf",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:16:16.273621"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

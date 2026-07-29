@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20105,
+  "timestamp": "2026-07-27T21:14:27.043067",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 20105)",
+      "category": "shock_waves",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 20105-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:14:27.043067"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 20105)",
+      "result": 14.02,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:14:27.043067"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

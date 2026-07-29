@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25936,
+  "timestamp": "2026-07-27T22:52:12.544636",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 25936)",
+      "category": "linear_algebra",
+      "scientific_value": 0.84,
+      "description": "Теория в области mathematics, построена на 25936-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:52:12.544636"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 25936)",
+      "result": 59.6225,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:52:12.544636"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

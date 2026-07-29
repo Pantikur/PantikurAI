@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26780,
+  "timestamp": "2026-07-27T23:06:21.449985",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 26780)",
+      "category": "probability",
+      "scientific_value": 0.79,
+      "description": "Теория в области mathematics, построена на 26780-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:06:21.449985"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 26780)",
+      "result": 40.994199,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:06:21.449985"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

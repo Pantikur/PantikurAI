@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21281,
+  "timestamp": "2026-07-27T21:34:10.125520",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 21281)",
+      "category": "number_theory",
+      "scientific_value": 0.88,
+      "description": "Теория в области mathematics, построена на 21281-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:34:10.125014"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 21281)",
+      "result": 98.3395,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:34:10.125014"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

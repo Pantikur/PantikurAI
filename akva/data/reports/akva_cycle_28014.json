@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28014,
+  "timestamp": "2026-07-27T23:27:02.419191",
+  "studied_topics": [
+    "Теория категорий"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 28014)",
+      "category": "probability",
+      "scientific_value": 0.7,
+      "description": "Теория в области mathematics, построена на 28014-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:27:02.419191"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28014)",
+      "result": 27.0407,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:27:02.419191"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

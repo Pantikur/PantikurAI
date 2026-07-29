@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21064,
+  "timestamp": "2026-07-27T21:30:31.812478",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 21064)",
+      "category": "fracture",
+      "scientific_value": 0.97,
+      "description": "Теория в области strength_of_materials, построена на 21064-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:30:31.812478"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 21064)",
+      "result": 0.40668,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:30:31.812478"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

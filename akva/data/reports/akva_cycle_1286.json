@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1286,
+  "timestamp": "2026-07-27T15:58:56.823122",
+  "studied_topics": [
+    "Пределы и ряды"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 1286)",
+      "category": "differential",
+      "scientific_value": 0.81,
+      "description": "Теория в области mathematics, построена на 1286-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:58:56.823122"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 1286)",
+      "result": 60.6452,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:58:56.823122"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

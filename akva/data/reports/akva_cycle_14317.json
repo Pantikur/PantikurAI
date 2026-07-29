@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14317,
+  "timestamp": "2026-07-27T19:37:26.451713",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 14317)",
+      "category": "shock_waves",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 14317-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:37:26.451713"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 14317)",
+      "result": 13716.02,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:37:26.451713"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

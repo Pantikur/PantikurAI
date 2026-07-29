@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27848,
+  "timestamp": "2026-07-27T23:24:15.545905",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 27848)",
+      "category": "shock_waves",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 27848-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:24:15.545905"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 27848)",
+      "result": 31076.18,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:24:15.545905"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

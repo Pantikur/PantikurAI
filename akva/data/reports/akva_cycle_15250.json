@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15250,
+  "timestamp": "2026-07-27T19:53:04.311387",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 15250)",
+      "category": "fatigue",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 15250-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:53:04.311387"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 15250)",
+      "result": 677359400.86,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:53:04.311387"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

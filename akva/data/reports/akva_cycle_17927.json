@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17927,
+  "timestamp": "2026-07-27T20:37:55.973706",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 17927)",
+      "category": "lift",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 17927-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:37:55.973706"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 17927)",
+      "result": 679684.51,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:37:55.973706"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

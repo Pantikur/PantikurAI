@@ -1,0 +1,33 @@
+{
+  "cycle_number": 325,
+  "timestamp": "2026-07-27T15:42:49.777871",
+  "studied_topics": [
+    "Пределы и ряды"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 325)",
+      "category": "optimization",
+      "scientific_value": 0.91,
+      "description": "Теория в области mathematics, построена на 325-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:42:49.777871"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 325)",
+      "result": 61.1256,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:42:49.777871"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

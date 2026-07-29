@@ -1,0 +1,33 @@
+{
+  "cycle_number": 31270,
+  "timestamp": "2026-07-28T00:21:37.271031",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 31270)",
+      "category": "number_theory",
+      "scientific_value": 0.82,
+      "description": "Теория в области mathematics, построена на 31270-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:21:37.271031"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 31270)",
+      "result": 759.7843,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-28T00:21:37.271031"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 10414,
+  "timestamp": "2026-07-27T18:32:02.128847",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 10414)",
+      "category": "fatigue",
+      "scientific_value": 0.97,
+      "description": "Теория в области strength_of_materials, построена на 10414-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:32:02.128847"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 10414)",
+      "result": 725.19,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:32:02.128847"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

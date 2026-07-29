@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26257,
+  "timestamp": "2026-07-27T22:57:35.376444",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 26257)",
+      "category": "drag",
+      "scientific_value": 0.74,
+      "description": "Теория в области aerodynamics, построена на 26257-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:57:35.376444"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 26257)",
+      "result": 587406.55,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:57:35.376444"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

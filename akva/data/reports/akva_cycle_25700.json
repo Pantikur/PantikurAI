@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25700,
+  "timestamp": "2026-07-27T22:48:15.121591",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 25700)",
+      "category": "topology",
+      "scientific_value": 0.88,
+      "description": "Теория в области mathematics, построена на 25700-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:48:15.121591"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 25700)",
+      "result": -177.4247,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:48:15.121591"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

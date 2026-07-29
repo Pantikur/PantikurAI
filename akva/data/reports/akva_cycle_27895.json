@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27895,
+  "timestamp": "2026-07-27T23:25:02.786992",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 27895)",
+      "category": "topology",
+      "scientific_value": 0.85,
+      "description": "Теория в области mathematics, построена на 27895-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:25:02.786992"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 27895)",
+      "result": 92.6564,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:25:02.786992"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

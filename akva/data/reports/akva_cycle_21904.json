@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21904,
+  "timestamp": "2026-07-27T21:44:36.862699",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 21904)",
+      "category": "turbulence",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 21904-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:44:36.862699"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 21904)",
+      "result": 26.43,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:44:36.862699"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

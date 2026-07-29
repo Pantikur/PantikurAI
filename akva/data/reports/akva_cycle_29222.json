@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29222,
+  "timestamp": "2026-07-27T23:47:16.825672",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 29222)",
+      "category": "drag",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 29222-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:47:16.825672"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 29222)",
+      "result": 8723851.52,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:47:16.825672"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

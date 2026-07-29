@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27791,
+  "timestamp": "2026-07-27T23:23:18.223327",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 27791)",
+      "category": "shock_waves",
+      "scientific_value": 0.99,
+      "description": "Теория в области aerodynamics, построена на 27791-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:23:18.223327"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 27791)",
+      "result": 9194180.83,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:23:18.223327"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

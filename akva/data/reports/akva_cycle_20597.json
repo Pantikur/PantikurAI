@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20597,
+  "timestamp": "2026-07-27T21:22:42.012979",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 20597)",
+      "category": "quantum_info",
+      "scientific_value": 0.92,
+      "description": "Теория в области physics, построена на 20597-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:22:42.012979"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 20597)",
+      "result": 621636547.0,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:22:42.012979"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

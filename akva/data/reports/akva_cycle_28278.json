@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28278,
+  "timestamp": "2026-07-27T23:31:27.806380",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 28278)",
+      "category": "linear_algebra",
+      "scientific_value": 0.73,
+      "description": "Теория в области mathematics, построена на 28278-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:27.806380"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 28278)",
+      "result": 15.7467,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:31:27.806380"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

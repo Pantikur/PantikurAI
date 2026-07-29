@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25957,
+  "timestamp": "2026-07-27T22:52:33.671217",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 25957)",
+      "category": "quantum",
+      "scientific_value": 0.96,
+      "description": "Теория в области physics, построена на 25957-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:52:33.671217"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 25957)",
+      "result": 920797761.72,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:52:33.671217"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

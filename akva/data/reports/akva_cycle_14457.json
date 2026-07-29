@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14457,
+  "timestamp": "2026-07-27T19:39:47.205535",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 14457)",
+      "category": "number_theory",
+      "scientific_value": 0.7,
+      "description": "Теория в области mathematics, построена на 14457-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:39:47.204524"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 14457)",
+      "result": 6.802412,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:39:47.204524"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

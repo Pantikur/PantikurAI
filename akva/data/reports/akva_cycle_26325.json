@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26325,
+  "timestamp": "2026-07-27T22:58:43.713945",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 26325)",
+      "category": "electromagnetism",
+      "scientific_value": 0.96,
+      "description": "Теория в области physics, построена на 26325-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:58:43.713440"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Энергия частицы (цикл 26325)",
+      "result": 493316566472231.2,
+      "formula": "E=mc²",
+      "units": "J",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:58:43.713945"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26148,
+  "timestamp": "2026-07-27T22:55:45.819242",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 26148)",
+      "category": "stability",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 26148-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:55:45.819242"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 26148)",
+      "result": 38.261203,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:55:45.819242"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

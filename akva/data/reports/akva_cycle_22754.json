@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22754,
+  "timestamp": "2026-07-27T21:58:51.878799",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 22754)",
+      "category": "boundary_layer",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 22754-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:58:51.878799"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 22754)",
+      "result": 926591.21,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:58:51.878799"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

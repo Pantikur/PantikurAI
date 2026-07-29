@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16221,
+  "timestamp": "2026-07-27T20:09:20.622329",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 16221)",
+      "category": "relativity",
+      "scientific_value": 1.0,
+      "description": "Теория в области physics, построена на 16221-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:09:20.621324"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость волны (цикл 16221)",
+      "result": 288523365.14,
+      "formula": "v=λf",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:09:20.621324"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

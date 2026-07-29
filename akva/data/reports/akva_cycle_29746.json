@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29746,
+  "timestamp": "2026-07-27T23:56:03.750769",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 29746)",
+      "category": "lift",
+      "scientific_value": 0.93,
+      "description": "Теория в области aerodynamics, построена на 29746-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:56:03.750769"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 29746)",
+      "result": 460251.88,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:56:03.750769"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

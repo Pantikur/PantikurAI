@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22955,
+  "timestamp": "2026-07-27T22:02:14.115051",
+  "studied_topics": [
+    "Теория вероятностей стохастических процессов"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 22955)",
+      "category": "number_theory",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 22955-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:02:14.115051"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 22955)",
+      "result": 54.9538,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:02:14.115051"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

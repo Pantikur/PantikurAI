@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21979,
+  "timestamp": "2026-07-27T21:45:52.257000",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 21979)",
+      "category": "shock_waves",
+      "scientific_value": 0.97,
+      "description": "Теория в области aerodynamics, построена на 21979-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:45:52.257000"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 21979)",
+      "result": 707366.8,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:45:52.257000"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

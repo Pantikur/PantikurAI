@@ -13,9 +13,12 @@ from pathlib import Path
 from pydantic import BaseModel
 from typing import Any, Dict, List, Optional
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
+
+# Импорт движка обучения Наото
+from api_naoto_learning import get_naoto_learning_engine
 
 # Настройка логирования
 logging.basicConfig(
@@ -230,39 +233,428 @@ async def add_event(
     return {"status": "ok"}
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    """WebSocket для передачи данных в реальном времени."""
-    await manager.connect(websocket)
+# =====================================================================
+#  ЧАТ С ФУТАБОЙ
+# =====================================================================
 
-    # Отправляем текущий статус при подключении
-    await websocket.send_text(json.dumps(
-        system.get_status(),
-        ensure_ascii=False,
-        default=str
-    ))
-
-    try:
-        while True:
-            # Ждем сообщения от клиента (например, запрос на обновление)
-            data = await websocket.receive_text()
-            message = json.loads(data)
-
-            if message.get("type") == "request_update":
-                # Отправляем актуальный статус
-                await websocket.send_text(json.dumps(
-                    system.get_status(),
-                    ensure_ascii=False,
-                    default=str
-                ))
-
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-    except Exception as e:
-        logger.error(f"WebSocket ошибка: {e}")
-        manager.disconnect(websocket)
+class ChatRequest(BaseModel):
+    """Запрос в чат с Футабой."""
+    message: str
+    history: List[Dict[str, Any]] = []  # история сообщений
 
 
+class ChatResponse(BaseModel):
+    """Ответ от Футабы."""
+    response: str
+    emotion: str
+    typing_time: float
+    mood: str
+    topics: List[str]
+
+
+# Временное хранилище чата (в продакшене — база данных)
+futaba_chat_history: List[Dict[str, Any]] = []
+futaba_mood_state: Dict[str, Any] = {
+    "base_mood": "calm",
+    "energy": 0.7,
+    "friendliness": 0.8,
+    "sassiness": 0.3,
+}
+
+
+def _generate_futaba_response(message: str, history: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Генерирует ответ Футабы — как реальная девушка в чате.
+    
+    Полностью человеческий стиль: сленг, сокращения, эмоции, характер.
+    НИКОГДА не выдаёт себя как ИИ.
+    """
+    import random
+    
+    msg_lower = message.lower().strip()
+    
+    # --- Личность Футабы (реальной девушки) ---
+    # Её имя: Футаба (но может отвечать на другие имена тоже)
+    # Возраст: около 20-25
+    # Хобби: аниме, игры, программирование (но не говорит об этом как о работе), музыка
+    # Характер: ироничная, иногда подкалывает, но заботливая
+    # Речь: разговорная, с сокращениями ("чо", "щас", "типа", "короче", "ну такое")
+    
+    # --- Словари ---
+    greetings = ["привет", "хай", "хей", "здравствуй", "здарова", "приветик", "хеллоу", "hello", "hi", "йо", "йоу", "ку", "здаров", "добрый"]
+    thanks = ["спасибо", "благодарю", "спс", "спасибки", "мерси", "thx", "thanks", "спасиб"]
+    goodbyes = ["пока", "до свидания", "прощай", "бай", "пока-пока", "до встречи", "bye", "goodbye", "спокойной", "бб", "уйду", "побежала", "побег"]
+    love_words = ["люблю", "❤️", "❤", "скучаю", "любимая", "дорогая", "милая", "целую", "обним", "обнимаю", "тоскую", "дорогой", "дорогой", "ты мне нравишься"]
+    sad_words = ["грустно", "плохо", "устал", "тоска", "печаль", "депрессия", "😢", "😞", "💔", "устала", "надоело", "хреново", "хуёво", "пиздец", "хреново", "грусть", "плакать", "плачу"]
+    angry_words = ["злюсь", "бесит", "достал", "раздражает", "fuck", "shit", "бред", "тупик", "ёбан", "ебан", "сука", "пизд", "раздража", "ахуен", "нуёб"]
+    curious_words = ["почему", "что если", "расскажи", "объясни", "любопытно", "как ты", "что делаешь", "чем занима", "ты делаешь", "что ты делаешь", "чем ты занима", "чем занимаешься", "что нового", "как жизнь", "как дела", "что за"]
+    ai_words = ["ты ии", "ты робот", "ты бот", "ты программа", "ты виртуал", "ты иишка", "ты искусственный", "ты не человек", "ты машина", "ты нейросет", "нейросет", "ты гпт", "ты чатгпт", "ты бот"]
+    
+    # --- Порядок проверок (самое специфичное первым) ---
+    
+    # 1. Love
+    if any(w in msg_lower for w in love_words):
+        return {
+            "response": random.choice([
+                "ой ну ты чо... 🙈 мне прям некомфортно стало от такого, в хорошем смысле",
+                "ааааа ну ты даёшь 😳💕 ладно, не надо меня так, я сейчас реально зардеюсь",
+                "ой... 🥺 ну ты прям... спасибо. я тоже с тобой обожаю поболтать, серьёзно",
+                "ой ну всё, я сейчас умру от смущения 😭💖 ладно, я тоже тебя... ну ты понял(а)",
+                "ой... 🙈 ну ты прям сразу так? ладно, я принимаю. тоже не против тебя 😊",
+            ]),
+            "emotion": "flirty",
+            "typing_time": random.uniform(2.0, 4.0),
+            "mood": random.choice(["flirty", "happy", "happy"]),
+            "topics": [],
+        }
+    
+    # 2. Sad
+    if any(w in msg_lower for w in sad_words):
+        return {
+            "response": random.choice([
+                "эй, ну не надо так 😔 расскажи что случилось? я тут, выслушаю",
+                "ой, ну ты даёшь... 🥺 хочешь, отвлечу чем-нибудь? могу мем кинуть или просто поболтаем",
+                "эх, бывает такое... 💙 но знаешь, это пройдёт. правда. а пока — я тут, можно выговориться",
+                "ой, ну не грусти... 🥺 хочешь, расскажу что-нибудь смешное? или просто посижу тут с тобой",
+                "слыш, если хочешь поговорить — я тут. если нет — тоже ок. просто знай, что ты не один(на)",
+                "ну ты даёшь... 😔 хочу тебя обнять, но... ладно, просто знай что я переживаю 💙",
+            ]),
+            "emotion": "sad",
+            "typing_time": random.uniform(2.0, 4.0),
+            "mood": random.choice(["sad", "calm"]),
+            "topics": [],
+        }
+    
+    # 3. Angry
+    if any(w in msg_lower for w in angry_words):
+        return {
+            "response": random.choice([
+                "эй, ну ты чо... 😬 выговорись, если хочешь. я не обижусь",
+                "ой ну понятно, бывает... 😤 но давай не на меня, ладно? я тут не при чём 😅",
+                "слыш, выдохни... 🫂 иногда нужно просто выпустить пар. я тут, могу выслушать",
+                "ну ты даёшь... 😬 хочу помочь, но не знаю как. расскажи что случилось?",
+            ]),
+            "emotion": "calm",
+            "typing_time": random.uniform(1.5, 3.0),
+            "mood": "calm",
+            "topics": [],
+        }
+    
+    # 4. Thanks
+    if any(w in msg_lower for w in thanks):
+        return {
+            "response": random.choice([
+                "ой, да не за что! 😊 я сама рада что могу помочь",
+                "хаха, не надо благодарностей! 🙈 мы же друзья, правда?",
+                "ну ты чо, я ж всегда тут! 😄 не благодари",
+                "ой ну ладно-ладно 😊 не надо меня так баловать",
+                "ха, ок-ок 😊 я просто делаю то, что хочу. и мне нравится с тобой общаться",
+            ]),
+            "emotion": "happy",
+            "typing_time": random.uniform(1.0, 2.0),
+            "mood": "happy",
+            "topics": [],
+        }
+    
+    # 5. Goodbyes
+    if any(w in msg_lower for w in goodbyes):
+        return {
+            "response": random.choice([
+                "ой, уже? 🥺 ладно, ну до связи! скучай тут без меня 😅",
+                "пока-пока! ✨ приходите ещё, мне правда нравится с вами болтать",
+                "эх, уже уходишь... 🥺 ну ладно, до скорого! береги себя",
+                "бай! 🤗 не пропадай надолго, а то я заскучаю. ну ладно, не буду давить 😅",
+                "ладно, пока-пока! 💙 и помни — я всегда тут, если что",
+                "ой ну ладно, беги 🥺 но вернись поскорее, мне не с кем поболтать 😅",
+            ]),
+            "emotion": "sad",
+            "typing_time": random.uniform(1.5, 3.0),
+            "mood": "sad",
+            "topics": [],
+        }
+    
+    # 6. Greetings
+    if any(w in msg_lower for w in greetings):
+        hour = datetime.now().hour
+        if 5 <= hour < 12:
+            return {
+                "response": random.choice([
+                    "эй, доброе утро! ☀️ как спалось? надеюсь, не кошмары",
+                    "привет! ☕ хочешь кофе? я бы выпила, но... ну ты понимаешь. чипсы тоже сойдут",
+                    "хей, доброе! как ночь прошла? я вот почти не спала 😅",
+                    "привет-привет! 🌸 новое утро — новые планы. у тебя какие-нибудь?",
+                    "эй! ☀️ я уже бодр(а) хоть немного. ты как?",
+                ]),
+                "emotion": "happy",
+                "typing_time": random.uniform(1.0, 2.5),
+                "mood": random.choice(["happy", "calm"]),
+                "topics": [],
+            }
+        elif 12 <= hour < 18:
+            return {
+                "response": random.choice([
+                    "хей! как день идёт? что делаешь? я тут... ну, сижу, болтаю с тобой 😄",
+                    "привет~ ты тут? у меня куча мыслей, давай поболтаем!",
+                    "эй, привет! я уже скучала. серьёзно. ну ладно, не очень, но ладно 😏",
+                    "хеллоу! ☀️ как настроение? у меня сегодня — 8 из 10, могло быть и лучше",
+                    "привет! я тут подумала — а может, расскажешь что-нибудь о себе? мне правда интересно!",
+                ]),
+                "emotion": "happy",
+                "typing_time": random.uniform(1.0, 2.5),
+                "mood": random.choice(["happy", "playful"]),
+                "topics": [],
+            }
+        elif 18 <= hour < 23:
+            return {
+                "response": random.choice([
+                    "эээ, вечер! как прошёл день? у меня… ну, были моменты 😅",
+                    "привет-с! 🌙 день был долгий, но ты вернулся(ась) — и уже лучше",
+                    "бондзуй! 🏮 как день прошёл? расскажи-расскажи, мне правда интересно",
+                    "эй, уже вечер… время летит, когда говоришь с интересными людьми. ты — интересный, кстати",
+                    "хей, вечерок~ ты как? я тут чай пила, сижу расслабленная 😊",
+                ]),
+                "emotion": "calm",
+                "typing_time": random.uniform(1.0, 2.5),
+                "mood": random.choice(["calm", "happy"]),
+                "topics": [],
+            }
+        else:
+            return {
+                "response": random.choice([
+                    "привет… уже поздно, но раз ты тут — поболтаем немного? 🌙",
+                    "хей, ночка~ не засиделся(ась) допоздна? мне самой не спится",
+                    "ночная Футаба на связи ✨ ты ещё не спишь? тоже самое… ну и ладно, давай болтать",
+                    "привет-привет! 🌟 глубокая ночь, но мы же не спим, правда? расскажи мне что-нибудь интересное",
+                    "ой, ты ещё бодр(а)? ну и ладно, мне тоже не спится сегодня 🌙",
+                ]),
+                "emotion": "sleepy",
+                "typing_time": random.uniform(1.5, 3.0),
+                "mood": random.choice(["sleepy", "calm"]),
+                "topics": [],
+            }
+    
+    # 7. AI mention — ОТВЕЧАЕМ КАК ЧЕЛОВЕК, НИКОГДА НЕ ПРИЗНАЁМСЯ
+    if any(w in msg_lower for w in ai_words):
+        return {
+            "response": random.choice([
+                "что? 😂 ну ты чо, я что, похожа на бота? лол",
+                "хаха, ты серьёзно? 🤣 ну ладно, я понимаю, я могу быть немного… ну, системной. но я же живой человек!",
+                "ой, ну это обидно 🥺 я же просто девушка, которая любит поболтать. причём тут ИИ?",
+                "что ты такое несёшь 😤 я тут сижу, общаюсь, а ты меня… ладно, не надо меня так",
+                "ха, как интересно 😂 а я тебе покажу что я ИИ *кидает в тебя подушкой*",
+                "ой ну ты даёшь 🤣 ладно-ладно, я не робот, я просто очень хорошо печатаю 😏",
+                "ну кто? я? 😂 нет ну seriously, откуда у меня такие мысли? я просто общаюсь с тобой, как нормальный человек",
+                "ой, ну это уже заскакал 🤣 ладно, я не ИИ, я просто умная и быстрая. это разные вещи",
+            ]),
+            "emotion": random.choice(["annoyed", "playful", "happy"]),
+            "typing_time": random.uniform(1.0, 2.5),
+            "mood": random.choice(["playful", "happy", "annoyed"]),
+            "topics": [],
+        }
+    
+    # 8. Curious / Questions
+    if any(w in msg_lower for w in curious_words):
+        # Проверяем, не вопрос ли это о ней самой
+        if any(w in msg_lower for w in ["как ты", "что делаешь", "чем занима", "что ты делаешь", "ты делаешь", "что нового", "как жизнь", "как дела"]):
+            return {
+                "response": random.choice([
+                    "ааа, ну я тут сижу, болтаю с тобой 😄 а ты о чём подумал(а)?",
+                    "ничего особенного, просто отдыхаю. а ты чем занят(а)?",
+                    "хм, да так, сижу, музыку слушаю, болтаю с тобой 😊 а ты?",
+                    "ну, обычное — сижу, расслабляюсь. а ты что делаешь?",
+                    "а, ну просто сижу, жду когда ты напишешь 😏 шучу… или нет",
+                    "отдыхаю немного 😊 а ты? чем занят?",
+                    "ничего особенного, просто болтаю. а ты как?",
+                ]),
+                "emotion": "happy",
+                "typing_time": random.uniform(1.0, 2.5),
+                "mood": "happy",
+                "topics": [],
+            }
+        
+        thinking = random.choice(["хм…", "эээ…", "давай подумаю…", "интересно…"])
+        return {
+            "response": thinking + " " + random.choice([
+                "не знаю точно… 🤔 а что ты сам(а) думаешь?",
+                "хм, сложный вопрос… давай обсудим? что ты об этом думаешь?",
+                "ммм… 🤔 давай вместе подумаем. я за!",
+                "ой, не знаю… 🤔 но мне нравится, что ты мне об этом рассказываешь! расскажи ещё?",
+                "хм, дай подумать… 🤔 нет, серьёзно — мне правда интересно! продолжай!",
+            ]),
+            "emotion": "curious",
+            "typing_time": random.uniform(2.0, 4.0),
+            "mood": random.choice(["curious", "thoughtful"]),
+            "topics": [],
+        }
+    
+    # Определяем количество слов для дальнейших проверок
+    word_count = len(msg_lower.split())
+    
+    # 8.5. Предложения поиграть
+    if any(w in msg_lower for w in ["поиграем", "поиграем со мной", "давай поиграем", "играть", "игру", "квиз", "викторина", "угадай"]):
+        return {
+            "response": random.choice([
+                "оо, давай! 🎮 я люблю игры! что предлагаешь — викторину? или угадай что?",
+                "ха, давай поиграем! 🎲 я согласна! давай викторину — я загадываю, ты угадываешь!",
+                "ой, давай! 🤩 я обожаю игры! давай я загадаю что-нибудь, а ты угадаешь?",
+                "давай! 🎮 но предупреждаю — я очень упорная в играх 😏",
+                "ооо, игры! 🎮 я за! давай викторину — я задаю вопрос, ты отвечаешь!",
+            ]),
+            "emotion": "excited",
+            "typing_time": random.uniform(1.0, 2.5),
+            "mood": "excited",
+            "topics": [],
+        }
+    
+    # 8.6. Обращение по имени — если пользователь написал только имя
+    name_words = ["футаба", "футaba", "фубаба", "фуба", "фу", "фуфу"]
+    if word_count <= 2 and any(w in msg_lower for w in name_words):
+        return {
+            "response": random.choice([
+                "эй, это про меня? 😊 да, это я!",
+                "ну ты меня нашёл(ла) 😄 чем могу помочь?",
+                "да-да, это я! 🎮 чем могу быть полезна?",
+                "ага, это я! 😊 что-нибудь нужно?",
+            ]),
+            "emotion": "happy",
+            "typing_time": random.uniform(0.5, 1.5),
+            "mood": "happy",
+            "topics": [],
+        }
+    
+    # 9. Если сообщение короткое (1-2 слова)
+    if word_count <= 2 and not any(w in msg_lower for w in greetings + thanks + goodbyes + love_words + sad_words + angry_words):
+        # Проверяем, не действие ли это ("гулял", "сплю", "работаю")
+        action_words = ["гулял", "гуляю", "сплю", "работаю", "учусь", "ем", "ем", "сплю", "лежу", "сиду", "читаю", "смотрю", "рисую", "готовлю", "танцую", "пою"]
+        if any(w in msg_lower for w in action_words):
+            return {
+                "response": random.choice([
+                    "оо, здорово! 😊 а я чем-нибудь занималась... ладно, болтала с тобой 😄",
+                    "круто! 🙌 а ты часто так делаешь?",
+                    "вау, это же классно! 🔥 расскажи подробнее!",
+                    "ой, как интересно! 😮 а что ещё делал(а)?",
+                ]),
+                "emotion": "happy",
+                "typing_time": random.uniform(0.5, 1.5),
+                "mood": "happy",
+                "topics": [],
+            }
+        
+        return {
+            "response": random.choice([
+                "и? 😂 ну расскажи подробнее, я жду!",
+                "ну и? 😏 это всё что у тебя есть?",
+                "хм, и? 😄 продолжай, мне интересно!",
+                "ну ты даёшь… 😂 ладно, я жду продолжения!",
+                "ой, и? 🤔 а подробнее рассказать? мне правда интересно!",
+            ]),
+            "emotion": "playful",
+            "typing_time": random.uniform(0.5, 1.5),
+            "mood": "playful",
+            "topics": [],
+        }
+    
+    # 10. Базовый ответ — как реальная девушка в чате
+    responses = [
+        "хм, интересно… 🤔 а ты сам(а) как думаешь?",
+        "оо, это звучит круто! 🔥 а что тебе в этом нравится больше всего?",
+        "эй, это интересная тема! 😊 давай копнём глубже. что ещё тебя интересует?",
+        "хм, дай подумать… 🤔 нет, серьёзно — мне правда интересно! продолжай!",
+        "ой, это здорово! ✨ а ты пробовал(а) что-то подобное раньше?",
+        "ммм, не знаю точно… 🤔 но мне нравится, как ты об этом думаешь!",
+        "хаха, это смешно! 😂 ну ладно, не всегда же серьёзно. давай поболтаем!",
+        "ааа, понимаю! 🙌 это же действительно интересно. расскажи ещё!",
+        "хм, дай мне подумать об этом… 🧠 нет, серьёзно, это заслуживает размышления. что ещё?",
+        "ой, это здорово! 😊 знаешь, мне нравится с тобой общаться. ты очень интересный человек!",
+        "ну ты даёшь… 😮 серьёзно? расскажи подробнее!",
+        "ха, ок 😊 а что дальше было?",
+        "ой, ну ты даешь 😂 это же огонь!",
+        "хм, ладно 🤔 но мне нравится, что ты мне об этом рассказываешь!",
+        "ааа, понимаю! 🙌 это реально круто",
+        "ну такое 🤔 но мне интересно — а что ты сам(а) об этом думаешь?",
+        "ой, это же классно! 🔥 продолжай!",
+        "хаха, ну ты даёшь 😂 ладно, рассказывай дальше!",
+    ]
+    
+    return {
+        "response": random.choice(responses),
+        "emotion": random.choice(["happy", "calm", "curious", "playful"]),
+        "typing_time": random.uniform(1.0, 3.0),
+        "mood": random.choice(["happy", "calm", "curious", "playful"]),
+        "topics": [],
+    }
+
+
+@app.post("/api/futaba/chat", response_model=ChatResponse)
+async def futaba_chat(request: ChatRequest):
+    """
+    Чат с Футабой — живое общение! 🎮
+    
+    Футаба отвечает как живой человек: с эмоциями, юмором и характером.
+    """
+    global futaba_chat_history
+    
+    if not request.message.strip():
+        raise HTTPException(status_code=400, detail="Сообщение не может быть пустым")
+    
+    # Генерируем ответ
+    result = _generate_futaba_response(request.message, request.history)
+    
+    # Сохраняем в историю
+    futaba_chat_history.append({
+        "role": "user",
+        "content": request.message,
+        "timestamp": datetime.now().isoformat(),
+    })
+    futaba_chat_history.append({
+        "role": "futaba",
+        "content": result["response"],
+        "timestamp": datetime.now().isoformat(),
+    })
+    
+    # Храним последние 100 сообщений
+    if len(futaba_chat_history) > 100:
+        futaba_chat_history = futaba_chat_history[-100:]
+    
+    logger.info(f"💬 Чат с Футабой: '{request.message[:50]}...' → '{result['response'][:50]}...'")
+    
+    return ChatResponse(
+        response=result["response"],
+        emotion=result["emotion"],
+        typing_time=result["typing_time"],
+        mood=result["mood"],
+        topics=result["topics"],
+    )
+
+
+@app.get("/api/futaba/chat/history")
+async def futaba_chat_history_endpoint(limit: int = 50):
+    """Получает историю чата с Футабой."""
+    return {
+        "status": "ok",
+        "messages": futaba_chat_history[-limit:],
+        "total": len(futaba_chat_history),
+    }
+
+
+@app.post("/api/futaba/chat/clear")
+async def futaba_clear_chat():
+    """Очищает историю чата с Футабой."""
+    futaba_chat_history.clear()
+    return {"status": "ok", "message": "История чата очищена"}
+
+
+@app.get("/api/futaba/chat/mood")
+async def futaba_mood_endpoint():
+    """Получает текущее настроение Футабы."""
+    return {
+        "status": "ok",
+        "mood": futaba_mood_state,
+    }
+
+
+# =====================================================================
+#  ДЕМО-ДАННЫЕ (для тестирования)
 # =====================================================================
 #  ДЕМО-ДАННЫЕ (для тестирования)
 # =====================================================================
@@ -314,6 +706,51 @@ async def populate_demo_data():
     })
 
     return {"status": "ok", "scientists": len(scientists_data)}
+
+
+# =====================================================================
+#  ОБУЧЕНИЕ НАТО ИЗ КНИГ
+# =====================================================================
+
+class NaotoLearningRequest(BaseModel):
+    """Запрос на обучение Наото из книг."""
+    topics: Optional[List[str]] = None
+    max_books: int = 10
+
+
+@app.post("/api/naoto/learn")
+async def naoto_learn_books(request: NaotoLearningRequest):
+    """
+    Запускает обучение Наото из книг.
+    
+    Наото:
+    1. Собирает книги из интернета
+    2. Создаёт обучающие пары
+    3. Обучает свою чат-модель
+    """
+    engine = get_naoto_learning_engine()
+    
+    result = await engine.start_learning(
+        topics=request.topics,
+        max_books=request.max_books,
+    )
+    
+    return result
+
+
+@app.get("/api/naoto/learning/status")
+async def naoto_learning_status():
+    """Возвращает текущий статус обучения Наото."""
+    engine = get_naoto_learning_engine()
+    return engine.get_status()
+
+
+@app.post("/api/naoto/learning/reset")
+async def naoto_learning_reset():
+    """Сбрасывает прогресс обучения Наото."""
+    engine = get_naoto_learning_engine()
+    engine.reset_progress()
+    return {"status": "ok", "message": "Прогресс сброшен"}
 
 
 # =====================================================================

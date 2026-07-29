@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22885,
+  "timestamp": "2026-07-27T22:01:03.690181",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 22885)",
+      "category": "drag",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 22885-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:01:03.690181"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 22885)",
+      "result": 10.72,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:01:03.690181"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

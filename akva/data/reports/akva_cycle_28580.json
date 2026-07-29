@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28580,
+  "timestamp": "2026-07-27T23:36:31.452199",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 28580)",
+      "category": "strength",
+      "scientific_value": 0.79,
+      "description": "Теория в области strength_of_materials, построена на 28580-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:36:31.452199"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 28580)",
+      "result": 571983728.81,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:36:31.452199"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

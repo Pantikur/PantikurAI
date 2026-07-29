@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14657,
+  "timestamp": "2026-07-27T19:43:08.238987",
+  "studied_topics": [
+    "Оптимизация невыпуклых функций"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 14657)",
+      "category": "optimization",
+      "scientific_value": 0.89,
+      "description": "Теория в области mathematics, построена на 14657-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:43:08.238987"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 14657)",
+      "result": 99.7778,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:43:08.238987"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

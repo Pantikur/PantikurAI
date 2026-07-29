@@ -1,0 +1,33 @@
+{
+  "cycle_number": 18250,
+  "timestamp": "2026-07-27T20:43:20.902394",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 18250)",
+      "category": "drag",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 18250-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:43:20.902394"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 18250)",
+      "result": 3553225.88,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:43:20.902394"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

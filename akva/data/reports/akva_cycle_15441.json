@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15441,
+  "timestamp": "2026-07-27T19:56:16.332086",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 15441)",
+      "category": "strength",
+      "scientific_value": 0.93,
+      "description": "Теория в области strength_of_materials, построена на 15441-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:56:16.332086"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 15441)",
+      "result": 365686979.03,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:56:16.332086"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

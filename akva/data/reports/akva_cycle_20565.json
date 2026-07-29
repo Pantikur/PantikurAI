@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20565,
+  "timestamp": "2026-07-27T21:22:09.801772",
+  "studied_topics": [
+    "Уравнения Навье-Стокса"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 20565)",
+      "category": "optimization",
+      "scientific_value": 0.81,
+      "description": "Теория в области mathematics, построена на 20565-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:22:09.800768"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 20565)",
+      "result": 329.884,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:22:09.800768"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

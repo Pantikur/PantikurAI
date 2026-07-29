@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25741,
+  "timestamp": "2026-07-27T22:48:56.355722",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25741)",
+      "category": "lift",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 25741-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:48:56.355722"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25741)",
+      "result": 58718.48,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:48:56.355722"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

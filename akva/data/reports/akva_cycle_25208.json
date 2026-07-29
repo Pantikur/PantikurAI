@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25208,
+  "timestamp": "2026-07-27T22:40:00.408478",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 25208)",
+      "category": "shock_waves",
+      "scientific_value": 0.97,
+      "description": "Теория в области aerodynamics, построена на 25208-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:40:00.407970"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 25208)",
+      "result": 3438071.85,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:40:00.407970"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

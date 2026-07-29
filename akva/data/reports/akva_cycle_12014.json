@@ -1,0 +1,33 @@
+{
+  "cycle_number": 12014,
+  "timestamp": "2026-07-27T18:58:51.458654",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 12014)",
+      "category": "fatigue",
+      "scientific_value": 0.79,
+      "description": "Теория в области strength_of_materials, построена на 12014-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:58:51.458654"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 12014)",
+      "result": 723166486.46,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T18:58:51.458654"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

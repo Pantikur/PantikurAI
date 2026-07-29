@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29235,
+  "timestamp": "2026-07-27T23:47:29.891543",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 29235)",
+      "category": "drag",
+      "scientific_value": 0.9,
+      "description": "Теория в области aerodynamics, построена на 29235-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:47:29.891038"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 29235)",
+      "result": 8.33,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:47:29.891543"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

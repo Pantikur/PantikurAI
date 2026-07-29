@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15381,
+  "timestamp": "2026-07-27T19:55:15.992775",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 15381)",
+      "category": "stiffness",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 15381-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:55:15.991765"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 15381)",
+      "result": 9.35,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:55:15.991765"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

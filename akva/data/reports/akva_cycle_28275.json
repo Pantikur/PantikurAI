@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28275,
+  "timestamp": "2026-07-27T23:31:24.790326",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 28275)",
+      "category": "boundary_layer",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 28275-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:31:24.790326"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 28275)",
+      "result": 4245308.8,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:31:24.790326"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

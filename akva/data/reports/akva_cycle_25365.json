@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25365,
+  "timestamp": "2026-07-27T22:42:38.270885",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 25365)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 25365-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:42:38.269879"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25365)",
+      "result": 0.5776,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:42:38.269879"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

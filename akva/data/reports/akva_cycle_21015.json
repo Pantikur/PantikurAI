@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21015,
+  "timestamp": "2026-07-27T21:29:42.512645",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 21015)",
+      "category": "topology",
+      "scientific_value": 0.75,
+      "description": "Теория в области mathematics, построена на 21015-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:29:42.511636"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 21015)",
+      "result": 40.221098,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:29:42.511636"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

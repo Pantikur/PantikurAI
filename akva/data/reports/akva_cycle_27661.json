@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27661,
+  "timestamp": "2026-07-27T23:21:07.524604",
+  "studied_topics": [
+    "Функциональный анализ"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 27661)",
+      "category": "number_theory",
+      "scientific_value": 0.68,
+      "description": "Теория в области mathematics, построена на 27661-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:21:07.524604"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 27661)",
+      "result": 49.7052,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:21:07.524604"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

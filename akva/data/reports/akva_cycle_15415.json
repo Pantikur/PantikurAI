@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15415,
+  "timestamp": "2026-07-27T19:55:50.188021",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 15415)",
+      "category": "fatigue",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 15415-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:55:50.188021"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 15415)",
+      "result": 0.101278,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:55:50.188021"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

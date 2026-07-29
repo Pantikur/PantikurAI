@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21936,
+  "timestamp": "2026-07-27T21:45:09.029263",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 21936)",
+      "category": "probability",
+      "scientific_value": 0.75,
+      "description": "Теория в области mathematics, построена на 21936-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:45:09.029263"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 21936)",
+      "result": 64.2029,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:45:09.029263"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

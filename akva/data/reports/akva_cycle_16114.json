@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16114,
+  "timestamp": "2026-07-27T20:07:33.012936",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 16114)",
+      "category": "fatigue",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 16114-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:07:33.012936"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 16114)",
+      "result": 97.398986,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:07:33.012936"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

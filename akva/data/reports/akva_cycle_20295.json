@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20295,
+  "timestamp": "2026-07-27T21:17:38.189358",
+  "studied_topics": [
+    "Квантовая электродинамика"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 20295)",
+      "category": "quantum_info",
+      "scientific_value": 0.82,
+      "description": "Теория в области physics, построена на 20295-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:17:38.188853"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 20295)",
+      "result": 103413778.18,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:17:38.189358"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

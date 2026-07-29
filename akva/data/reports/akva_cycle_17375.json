@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17375,
+  "timestamp": "2026-07-27T20:28:40.867781",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 17375)",
+      "category": "drag",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 17375-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:28:40.867781"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 17375)",
+      "result": 1.0853,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:28:40.867781"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

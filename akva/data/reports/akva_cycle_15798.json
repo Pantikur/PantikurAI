@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15798,
+  "timestamp": "2026-07-27T20:02:15.293363",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 15798)",
+      "category": "drag",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 15798-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:02:15.292357"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 15798)",
+      "result": 290493.48,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:02:15.292357"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

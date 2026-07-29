@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27735,
+  "timestamp": "2026-07-27T23:22:21.919444",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 27735)",
+      "category": "lift",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 27735-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:22:21.918438"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 27735)",
+      "result": 309284.67,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:22:21.918438"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

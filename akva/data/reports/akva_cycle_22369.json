@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22369,
+  "timestamp": "2026-07-27T21:52:24.581880",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 22369)",
+      "category": "drag",
+      "scientific_value": 0.92,
+      "description": "Теория в области aerodynamics, построена на 22369-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:52:24.581880"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 22369)",
+      "result": 26.62,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:52:24.581880"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

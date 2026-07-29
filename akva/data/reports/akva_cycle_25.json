@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25,
+  "timestamp": "2026-07-27T15:37:47.507608",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 25)",
+      "category": "stability",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 25-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:37:47.507608"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25)",
+      "result": 61.079319,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:37:47.507608"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 70,
+  "level_changes": []
+}

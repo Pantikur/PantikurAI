@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15061,
+  "timestamp": "2026-07-27T19:49:54.323105",
+  "studied_topics": [
+    "Интегральное исчисление"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 15061)",
+      "category": "differential",
+      "scientific_value": 0.94,
+      "description": "Теория в области mathematics, построена на 15061-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:49:54.323105"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 15061)",
+      "result": 60.235622,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:49:54.323105"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

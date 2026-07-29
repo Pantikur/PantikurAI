@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20775,
+  "timestamp": "2026-07-27T21:25:41.108467",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 20775)",
+      "category": "fracture",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 20775-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:25:41.107461"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 20775)",
+      "result": 838343206.97,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:25:41.107461"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

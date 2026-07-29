@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27275,
+  "timestamp": "2026-07-27T23:14:39.323404",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 27275)",
+      "category": "fracture",
+      "scientific_value": 0.8,
+      "description": "Теория в области strength_of_materials, построена на 27275-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:14:39.323404"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 27275)",
+      "result": 8.62,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:14:39.323404"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

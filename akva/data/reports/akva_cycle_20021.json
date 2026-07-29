@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20021,
+  "timestamp": "2026-07-27T21:13:02.576826",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 20021)",
+      "category": "electromagnetism",
+      "scientific_value": 0.94,
+      "description": "Теория в области physics, построена на 20021-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:13:02.576322"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Частота колебаний (цикл 20021)",
+      "result": 739446272.14,
+      "formula": "f=1/T",
+      "units": "Hz",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:13:02.576826"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

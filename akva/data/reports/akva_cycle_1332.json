@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1332,
+  "timestamp": "2026-07-27T15:59:43.120241",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 1332)",
+      "category": "fracture",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 1332-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:59:43.119233"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 1332)",
+      "result": 3.54,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:59:43.119233"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

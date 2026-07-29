@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28608,
+  "timestamp": "2026-07-27T23:36:59.594786",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 28608)",
+      "category": "drag",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 28608-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:36:59.594786"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 28608)",
+      "result": 4944481.69,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:36:59.594786"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

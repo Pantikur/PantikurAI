@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25422,
+  "timestamp": "2026-07-27T22:43:35.597511",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 25422)",
+      "category": "stability",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 25422-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:43:35.597511"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Модуль Юнга (цикл 25422)",
+      "result": 387.5,
+      "formula": "E=σ/ε",
+      "units": "GPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:43:35.597511"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 5914,
+  "timestamp": "2026-07-27T17:16:34.998055",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 5914)",
+      "category": "drag",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 5914-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:16:34.998055"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 5914)",
+      "result": 9615886.46,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:16:34.998055"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

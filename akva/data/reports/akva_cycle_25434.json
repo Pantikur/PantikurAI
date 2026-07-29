@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25434,
+  "timestamp": "2026-07-27T22:43:47.701760",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 25434)",
+      "category": "fatigue",
+      "scientific_value": 0.85,
+      "description": "Теория в области strength_of_materials, построена на 25434-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:43:47.701252"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 25434)",
+      "result": 474187492.36,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:43:47.701760"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25645,
+  "timestamp": "2026-07-27T22:47:19.832648",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 25645)",
+      "category": "stability",
+      "scientific_value": 0.93,
+      "description": "Теория в области strength_of_materials, построена на 25645-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:19.832648"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25645)",
+      "result": 66.975112,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:19.832648"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

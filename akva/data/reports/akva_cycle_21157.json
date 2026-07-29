@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21157,
+  "timestamp": "2026-07-27T21:32:05.384621",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 21157)",
+      "category": "shock_waves",
+      "scientific_value": 0.91,
+      "description": "Теория в области aerodynamics, построена на 21157-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:32:05.384621"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 21157)",
+      "result": 541920.23,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:32:05.384621"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

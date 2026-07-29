@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14916,
+  "timestamp": "2026-07-27T19:47:28.580155",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Ползучесть при высоких температурах (цикл 14916)",
+      "category": "creep",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 14916-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:28.580155"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 14916)",
+      "result": 1208.73,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:47:28.580155"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

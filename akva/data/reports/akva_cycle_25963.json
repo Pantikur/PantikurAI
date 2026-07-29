@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25963,
+  "timestamp": "2026-07-27T22:52:39.722480",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 25963)",
+      "category": "turbulence",
+      "scientific_value": 0.91,
+      "description": "Теория в области aerodynamics, построена на 25963-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:52:39.722480"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 25963)",
+      "result": 68412522.58,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:52:39.722480"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

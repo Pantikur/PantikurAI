@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20994,
+  "timestamp": "2026-07-27T21:29:21.391235",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 20994)",
+      "category": "fatigue",
+      "scientific_value": 0.96,
+      "description": "Теория в области strength_of_materials, построена на 20994-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:29:21.374118"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 20994)",
+      "result": 37.518195,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:29:21.374118"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

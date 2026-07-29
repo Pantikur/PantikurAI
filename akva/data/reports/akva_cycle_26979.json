@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26979,
+  "timestamp": "2026-07-27T23:09:41.560539",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 26979)",
+      "category": "drag",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 26979-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:09:41.559533"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 26979)",
+      "result": 183188.97,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:09:41.559533"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

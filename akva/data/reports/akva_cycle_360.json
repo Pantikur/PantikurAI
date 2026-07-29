@@ -1,0 +1,33 @@
+{
+  "cycle_number": 360,
+  "timestamp": "2026-07-27T15:43:25.016171",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 360)",
+      "category": "fracture",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 360-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:43:25.015649"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 360)",
+      "result": 589547038.44,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:43:25.015649"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

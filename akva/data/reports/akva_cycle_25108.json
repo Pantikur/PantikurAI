@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25108,
+  "timestamp": "2026-07-27T22:38:19.840405",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 25108)",
+      "category": "drag",
+      "scientific_value": 0.74,
+      "description": "Теория в области aerodynamics, построена на 25108-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:19.840405"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 25108)",
+      "result": 0.8932,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:38:19.840405"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

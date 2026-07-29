@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20222,
+  "timestamp": "2026-07-27T21:16:24.753301",
+  "studied_topics": [
+    "Линейные уравнения"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 20222)",
+      "category": "optimization",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 20222-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:16:24.753301"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Интеграл Римана (цикл 20222)",
+      "result": 287.6963,
+      "formula": "∫f(x)dx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:16:24.753301"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

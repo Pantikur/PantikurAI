@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22381,
+  "timestamp": "2026-07-27T21:52:36.647596",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 22381)",
+      "category": "number_theory",
+      "scientific_value": 0.73,
+      "description": "Теория в области mathematics, построена на 22381-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:52:36.647053"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 22381)",
+      "result": 689.2994,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:52:36.647053"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

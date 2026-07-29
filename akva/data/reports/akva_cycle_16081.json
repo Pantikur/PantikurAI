@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16081,
+  "timestamp": "2026-07-27T20:06:59.797812",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 16081)",
+      "category": "stability",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 16081-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:06:59.797812"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 16081)",
+      "result": 1304.41,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:06:59.797812"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 500,
+  "timestamp": "2026-07-27T15:45:45.941358",
+  "studied_topics": [
+    "Гравитационные волны"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 500)",
+      "category": "quantum",
+      "scientific_value": 0.97,
+      "description": "Теория в области physics, построена на 500-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:45:45.941358"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 500)",
+      "result": 6714146075.27,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:45:45.941358"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21951,
+  "timestamp": "2026-07-27T21:45:24.110285",
+  "studied_topics": [
+    "Квантовая электродинамика"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 21951)",
+      "category": "quantum",
+      "scientific_value": 0.94,
+      "description": "Теория в области physics, построена на 21951-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:45:24.109276"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 21951)",
+      "result": 46616337.0484,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:45:24.109276"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

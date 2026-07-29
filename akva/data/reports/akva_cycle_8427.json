@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8427,
+  "timestamp": "2026-07-27T17:58:42.919247",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 8427)",
+      "category": "fracture",
+      "scientific_value": 0.86,
+      "description": "Теория в области strength_of_materials, построена на 8427-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:58:42.918237"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 8427)",
+      "result": 0.213803,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:58:42.918237"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

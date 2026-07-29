@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28148,
+  "timestamp": "2026-07-27T23:29:17.124675",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 28148)",
+      "category": "strength",
+      "scientific_value": 0.84,
+      "description": "Теория в области strength_of_materials, построена на 28148-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:29:17.124675"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 28148)",
+      "result": 0.01708,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:29:17.124675"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

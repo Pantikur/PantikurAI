@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26400,
+  "timestamp": "2026-07-27T22:59:59.151912",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Турбулентность и переходные явления (цикл 26400)",
+      "category": "turbulence",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 26400-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:59:59.150906"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 26400)",
+      "result": 1.1094,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:59:59.150906"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

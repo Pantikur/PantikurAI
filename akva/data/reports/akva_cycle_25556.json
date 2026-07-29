@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25556,
+  "timestamp": "2026-07-27T22:45:50.358855",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 25556)",
+      "category": "fatigue",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 25556-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:50.358352"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 25556)",
+      "result": 367.96,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:45:50.358352"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

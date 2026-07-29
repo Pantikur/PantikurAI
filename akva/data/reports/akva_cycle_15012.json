@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15012,
+  "timestamp": "2026-07-27T19:49:05.069307",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 15012)",
+      "category": "strength",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 15012-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:49:05.068299"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 15012)",
+      "result": 54.623955,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:49:05.068299"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25650,
+  "timestamp": "2026-07-27T22:47:24.857027",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 25650)",
+      "category": "number_theory",
+      "scientific_value": 0.78,
+      "description": "Теория в области mathematics, построена на 25650-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:24.857027"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 25650)",
+      "result": 90.425649,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:24.857027"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

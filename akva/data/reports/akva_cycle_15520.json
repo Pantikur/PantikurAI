@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15520,
+  "timestamp": "2026-07-27T19:57:35.786049",
+  "studied_topics": [
+    "Прочность при растяжении"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 15520)",
+      "category": "fracture",
+      "scientific_value": 0.93,
+      "description": "Теория в области strength_of_materials, построена на 15520-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:57:35.786049"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 15520)",
+      "result": 296730994.13,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:57:35.786049"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

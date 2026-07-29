@@ -1,0 +1,33 @@
+{
+  "cycle_number": 780,
+  "timestamp": "2026-07-27T15:50:27.655414",
+  "studied_topics": [
+    "Уравнения Навье-Стокса"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 780)",
+      "category": "probability",
+      "scientific_value": 0.72,
+      "description": "Теория в области mathematics, построена на 780-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:50:27.654404"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 780)",
+      "result": 39.569284,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:50:27.654404"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

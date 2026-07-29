@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15957,
+  "timestamp": "2026-07-27T20:04:55.156288",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 15957)",
+      "category": "strength",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 15957-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:04:55.156288"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 15957)",
+      "result": 1509.76,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T20:04:55.156288"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

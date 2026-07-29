@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28818,
+  "timestamp": "2026-07-27T23:40:30.724890",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 28818)",
+      "category": "drag",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 28818-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:40:30.723875"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 28818)",
+      "result": 3669938.43,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:40:30.723875"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

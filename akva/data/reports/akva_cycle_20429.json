@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20429,
+  "timestamp": "2026-07-27T21:19:52.991433",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20429)",
+      "category": "drag",
+      "scientific_value": 0.79,
+      "description": "Теория в области aerodynamics, построена на 20429-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:19:52.991433"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 20429)",
+      "result": 220.69,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:19:52.991433"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

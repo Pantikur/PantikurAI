@@ -1,0 +1,33 @@
+{
+  "cycle_number": 16431,
+  "timestamp": "2026-07-27T20:12:51.702903",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 16431)",
+      "category": "fracture",
+      "scientific_value": 0.9,
+      "description": "Теория в области strength_of_materials, построена на 16431-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:12:51.702903"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 16431)",
+      "result": 993787982.74,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:12:51.702903"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20121,
+  "timestamp": "2026-07-27T21:14:43.131561",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 20121)",
+      "category": "electromagnetism",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 20121-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:14:43.130551"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 20121)",
+      "result": 4666294530.88,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:14:43.130551"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

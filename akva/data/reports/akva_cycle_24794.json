@@ -1,0 +1,33 @@
+{
+  "cycle_number": 24794,
+  "timestamp": "2026-07-27T22:33:03.930247",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 24794)",
+      "category": "drag",
+      "scientific_value": 0.76,
+      "description": "Теория в области aerodynamics, построена на 24794-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:33:03.930247"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 24794)",
+      "result": 55266.44,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:33:03.930247"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

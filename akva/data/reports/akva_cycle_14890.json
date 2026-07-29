@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14890,
+  "timestamp": "2026-07-27T19:47:02.447536",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 14890)",
+      "category": "fatigue",
+      "scientific_value": 0.94,
+      "description": "Теория в области strength_of_materials, построена на 14890-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:47:02.447536"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 14890)",
+      "result": 75.161124,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:47:02.447536"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

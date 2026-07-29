@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25866,
+  "timestamp": "2026-07-27T22:51:02.115180",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 25866)",
+      "category": "stiffness",
+      "scientific_value": 0.79,
+      "description": "Теория в области strength_of_materials, построена на 25866-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:51:02.114174"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 25866)",
+      "result": 139761758.77,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:51:02.114174"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

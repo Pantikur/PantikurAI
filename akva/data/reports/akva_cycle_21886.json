@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21886,
+  "timestamp": "2026-07-27T21:44:18.758383",
+  "studied_topics": [
+    "Усталость материалов при циклических нагрузках"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 21886)",
+      "category": "strength",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 21886-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:44:18.758383"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 21886)",
+      "result": 7.14,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:44:18.758383"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

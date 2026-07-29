@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25184,
+  "timestamp": "2026-07-27T22:39:36.272420",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 25184)",
+      "category": "fatigue",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 25184-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:39:36.271915"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Предел прочности (цикл 25184)",
+      "result": 256.48,
+      "formula": "σ=F/A",
+      "units": "MPa",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:39:36.271915"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

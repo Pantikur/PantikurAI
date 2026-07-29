@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27425,
+  "timestamp": "2026-07-27T23:17:10.191856",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 27425)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.83,
+      "description": "Теория в области aerodynamics, построена на 27425-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:17:10.191856"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 27425)",
+      "result": 18.36,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:17:10.191856"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

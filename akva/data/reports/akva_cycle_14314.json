@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14314,
+  "timestamp": "2026-07-27T19:37:23.436261",
+  "studied_topics": [
+    "Число Маха"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 14314)",
+      "category": "shock_waves",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 14314-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:37:23.436261"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 14314)",
+      "result": 1.1481,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:37:23.436261"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

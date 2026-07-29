@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21901,
+  "timestamp": "2026-07-27T21:44:33.848335",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 21901)",
+      "category": "differential",
+      "scientific_value": 0.78,
+      "description": "Теория в области mathematics, построена на 21901-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:44:33.848335"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 21901)",
+      "result": 94.8363,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:44:33.848335"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

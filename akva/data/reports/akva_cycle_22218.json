@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22218,
+  "timestamp": "2026-07-27T21:49:52.657322",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 22218)",
+      "category": "relativity",
+      "scientific_value": 1.0,
+      "description": "Теория в области physics, построена на 22218-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:49:52.656316"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 22218)",
+      "result": 3758.96,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:49:52.656316"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

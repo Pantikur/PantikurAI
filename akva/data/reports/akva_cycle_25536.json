@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25536,
+  "timestamp": "2026-07-27T22:45:30.238612",
+  "studied_topics": [
+    "Термодинамика базовая"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 25536)",
+      "category": "thermodynamics",
+      "scientific_value": 0.87,
+      "description": "Теория в области physics, построена на 25536-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:45:30.238107"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 25536)",
+      "result": 7124809642.94,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:45:30.238612"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

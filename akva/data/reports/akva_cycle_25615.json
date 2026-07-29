@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25615,
+  "timestamp": "2026-07-27T22:46:49.683469",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25615)",
+      "category": "lift",
+      "scientific_value": 0.9,
+      "description": "Теория в области aerodynamics, построена на 25615-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:46:49.683469"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 25615)",
+      "result": 1164.77,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:46:49.683469"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

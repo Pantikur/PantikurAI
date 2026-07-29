@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14073,
+  "timestamp": "2026-07-27T19:33:21.191903",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 14073)",
+      "category": "drag",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 14073-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:33:21.190897"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 14073)",
+      "result": 19.06,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:33:21.190897"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

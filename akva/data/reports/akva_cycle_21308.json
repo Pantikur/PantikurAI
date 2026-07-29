@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21308,
+  "timestamp": "2026-07-27T21:34:37.269328",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 21308)",
+      "category": "drag",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 21308-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:34:37.269328"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 21308)",
+      "result": 4398187.68,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:34:37.269328"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

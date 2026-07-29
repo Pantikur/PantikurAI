@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26940,
+  "timestamp": "2026-07-27T23:09:02.354199",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 26940)",
+      "category": "lift",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 26940-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:09:02.354199"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 26940)",
+      "result": 422323.26,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:09:02.354199"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

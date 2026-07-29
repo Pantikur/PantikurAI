@@ -1,0 +1,33 @@
+{
+  "cycle_number": 12105,
+  "timestamp": "2026-07-27T19:00:22.916679",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 12105)",
+      "category": "fatigue",
+      "scientific_value": 0.92,
+      "description": "Теория в области strength_of_materials, построена на 12105-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:00:22.916174"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 12105)",
+      "result": 0.400005,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:00:22.916679"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8730,
+  "timestamp": "2026-07-27T18:03:47.848396",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 8730)",
+      "category": "lift",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 8730-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:03:47.847391"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 8730)",
+      "result": 1.313,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:03:47.847391"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

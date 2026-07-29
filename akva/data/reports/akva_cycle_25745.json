@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25745,
+  "timestamp": "2026-07-27T22:49:00.378101",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 25745)",
+      "category": "fracture",
+      "scientific_value": 0.96,
+      "description": "Теория в области strength_of_materials, построена на 25745-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:49:00.378101"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 25745)",
+      "result": 52.959859,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:49:00.378101"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

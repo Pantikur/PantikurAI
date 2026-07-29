@@ -1,0 +1,33 @@
+{
+  "cycle_number": 12022,
+  "timestamp": "2026-07-27T18:58:59.498564",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 12022)",
+      "category": "drag",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 12022-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:58:59.498564"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 12022)",
+      "result": 805778.77,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:58:59.498564"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

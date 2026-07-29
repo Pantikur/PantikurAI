@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29049,
+  "timestamp": "2026-07-27T23:44:22.925036",
+  "studied_topics": [
+    "Тригонометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 29049)",
+      "category": "optimization",
+      "scientific_value": 0.92,
+      "description": "Теория в области mathematics, построена на 29049-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:44:22.924026"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 29049)",
+      "result": 16.984983,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:44:22.924026"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

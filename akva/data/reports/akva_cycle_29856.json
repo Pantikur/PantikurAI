@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29856,
+  "timestamp": "2026-07-27T23:57:54.450715",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 29856)",
+      "category": "drag",
+      "scientific_value": 0.81,
+      "description": "Теория в области aerodynamics, построена на 29856-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:57:54.450715"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 29856)",
+      "result": 0.9467,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:57:54.450715"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

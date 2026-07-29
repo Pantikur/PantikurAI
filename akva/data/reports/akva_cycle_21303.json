@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21303,
+  "timestamp": "2026-07-27T21:34:32.236396",
+  "studied_topics": [
+    "Оптика"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 21303)",
+      "category": "electromagnetism",
+      "scientific_value": 0.78,
+      "description": "Теория в области physics, построена на 21303-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:34:32.236396"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 21303)",
+      "result": 71124061.2347,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:34:32.236396"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 87,
+  "level_changes": []
+}

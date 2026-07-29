@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25164,
+  "timestamp": "2026-07-27T22:39:16.164234",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 25164)",
+      "category": "lift",
+      "scientific_value": 0.96,
+      "description": "Теория в области aerodynamics, построена на 25164-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:39:16.163225"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25164)",
+      "result": 491134.4,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:39:16.163225"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

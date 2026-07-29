@@ -1,0 +1,33 @@
+{
+  "cycle_number": 11921,
+  "timestamp": "2026-07-27T18:57:17.947415",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 11921)",
+      "category": "lift",
+      "scientific_value": 0.87,
+      "description": "Теория в области aerodynamics, построена на 11921-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:57:17.947415"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 11921)",
+      "result": 15.5,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:57:17.947415"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

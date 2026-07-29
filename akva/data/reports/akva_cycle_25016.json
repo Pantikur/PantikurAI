@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25016,
+  "timestamp": "2026-07-27T22:36:47.275000",
+  "studied_topics": [
+    "Уравнение Бернулли"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 25016)",
+      "category": "boundary_layer",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 25016-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:36:47.275000"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 25016)",
+      "result": 151988.68,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:36:47.275000"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

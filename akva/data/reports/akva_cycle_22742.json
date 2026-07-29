@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22742,
+  "timestamp": "2026-07-27T21:58:39.813718",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 22742)",
+      "category": "lift",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 22742-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:58:39.813188"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 22742)",
+      "result": 6132091.79,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:58:39.813188"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

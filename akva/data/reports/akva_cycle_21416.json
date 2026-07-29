@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21416,
+  "timestamp": "2026-07-27T21:36:25.927909",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 21416)",
+      "category": "shock_waves",
+      "scientific_value": 0.91,
+      "description": "Теория в области aerodynamics, построена на 21416-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:36:25.927909"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 21416)",
+      "result": 7159576.73,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:36:25.927909"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

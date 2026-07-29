@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17357,
+  "timestamp": "2026-07-27T20:28:22.744386",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 17357)",
+      "category": "differential",
+      "scientific_value": 0.91,
+      "description": "Теория в области mathematics, построена на 17357-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:28:22.744386"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 17357)",
+      "result": 13.756088,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:28:22.744386"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

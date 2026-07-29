@@ -1,0 +1,33 @@
+{
+  "cycle_number": 571,
+  "timestamp": "2026-07-27T15:46:57.402818",
+  "studied_topics": [
+    "Тригонометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 571)",
+      "category": "linear_algebra",
+      "scientific_value": 0.8,
+      "description": "Теория в области mathematics, построена на 571-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:46:57.402818"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 571)",
+      "result": 51.9198,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:46:57.402818"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

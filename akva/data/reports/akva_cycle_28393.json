@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28393,
+  "timestamp": "2026-07-27T23:33:23.419274",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 28393)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 28393-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:33:23.418763"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 28393)",
+      "result": 910817.52,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:33:23.418763"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

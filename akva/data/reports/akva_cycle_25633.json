@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25633,
+  "timestamp": "2026-07-27T22:47:07.776453",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 25633)",
+      "category": "differential",
+      "scientific_value": 0.77,
+      "description": "Теория в области mathematics, построена на 25633-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:47:07.776453"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 25633)",
+      "result": 87.1911,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:47:07.776453"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

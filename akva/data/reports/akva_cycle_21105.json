@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21105,
+  "timestamp": "2026-07-27T21:31:13.057991",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 21105)",
+      "category": "thermodynamics",
+      "scientific_value": 0.86,
+      "description": "Теория в области physics, построена на 21105-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:31:13.056981"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 21105)",
+      "result": 1529271784.1,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:31:13.056981"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

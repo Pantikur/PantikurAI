@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15161,
+  "timestamp": "2026-07-27T19:51:34.852960",
+  "studied_topics": [
+    "Ползучесть материалов при высоких температурах"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 15161)",
+      "category": "strength",
+      "scientific_value": 0.94,
+      "description": "Теория в области strength_of_materials, построена на 15161-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:51:34.852960"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 15161)",
+      "result": 499860004.03,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:51:34.852960"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

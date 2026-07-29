@@ -1,0 +1,33 @@
+{
+  "cycle_number": 959,
+  "timestamp": "2026-07-27T15:53:27.777001",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Аэроупругость гибких конструкций (цикл 959)",
+      "category": "aeroelasticity",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 959-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:53:27.776474"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 959)",
+      "result": 20.06,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T15:53:27.776474"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

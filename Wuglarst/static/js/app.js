@@ -9,7 +9,7 @@ class WuglarstApp {
         this.selectedScientist = null;
         this.scientists = {};
         this.events = [];
-        this.apiBase = '/wuglarst';
+        this.apiBase = '';
         this.init();
     }
 
@@ -25,6 +25,11 @@ class WuglarstApp {
         const demoBtn = document.getElementById('demoBtn');
         if (demoBtn) {
             demoBtn.addEventListener('click', () => this.loadDemo());
+        }
+        
+        const chatBtn = document.getElementById('chatBtn');
+        if (chatBtn) {
+            chatBtn.addEventListener('click', () => this.openChat());
         }
         
         const futabaBtn = document.getElementById('futabaProfileBtn');
@@ -58,7 +63,7 @@ class WuglarstApp {
     }
 
     connectWebSocket() {
-        this.ws = new WebSocket('/wuglarst/ws');
+        this.ws = new WebSocket('/ws');
         this.ws.onopen = () => {
             this.updateConnectionStatus('connected');
         };
@@ -221,6 +226,233 @@ class WuglarstApp {
         notif.textContent = message;
         document.body.appendChild(notif);
         setTimeout(() => notif.remove(), 3000);
+    }
+
+    // =====================================================================
+    //  ЧАТ С ФУТАБОЙ
+    // =====================================================================
+
+    async openChat() {
+        const modal = document.getElementById('chatModal');
+        if (!modal) return;
+        
+        modal.style.display = 'block';
+        
+        // Фокус на поле ввода
+        setTimeout(() => {
+            const input = document.getElementById('chatInput');
+            if (input) input.focus();
+        }, 200);
+        
+        // Привязываем Enter и кнопку отправки
+        const input = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('chatSendBtn');
+        const clearBtn = document.getElementById('clearChatBtn');
+        
+        if (input) {
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.sendChatMessage();
+                }
+            });
+        }
+        
+        if (sendBtn) {
+            sendBtn.addEventListener('click', () => this.sendChatMessage());
+        }
+        
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => this.clearChat());
+        }
+        
+        // Загружаем историю
+        await this.loadChatHistory();
+    }
+
+    closeChat() {
+        const modal = document.getElementById('chatModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    async sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        if (!input) return;
+        
+        const message = input.value.trim();
+        if (!message) return;
+        
+        // Очищаем поле ввода
+        input.value = '';
+        
+        // Добавляем сообщение пользователя
+        this.addChatMessage('user', message);
+        
+        // Показываем индикатор "печатает"
+        const typingEl = document.getElementById('chatTyping');
+        if (typingEl) typingEl.classList.remove('hidden');
+        
+        // Прокручиваем вниз
+        this.scrollChatToBottom();
+        
+        try {
+            // Отправляем запрос
+            const response = await fetch(`${this.apiBase}/api/futaba/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+            
+            const data = await response.json();
+            
+            if (data.response) {
+                // Убираем индикатор "печатает"
+                if (typingEl) typingEl.classList.add('hidden');
+                
+                // Добавляем ответ Футабы
+                this.addChatMessage('futaba', data.response, data.emotion, data.mood);
+                
+                // Обновляем индикатор настроения
+                if (data.mood) {
+                    this.updateChatMood(data.mood);
+                }
+            } else {
+                if (typingEl) typingEl.style.display = 'none';
+                this.addChatMessage('futaba', 'ой, что-то пошло не так 😅 попробуй ещё раз!');
+            }
+        } catch (error) {
+            console.error('Ошибка отправки сообщения:', error);
+            if (typingEl) typingEl.style.display = 'none';
+            this.addChatMessage('futaba', 'хм, связь потерялась... 😔 попробуй ещё раз!');
+        }
+        
+        this.scrollChatToBottom();
+    }
+
+    addChatMessage(role, text, emotion = '', mood = '') {
+        const messagesEl = document.getElementById('chatMessages');
+        if (!messagesEl) return;
+        
+        const messageEl = document.createElement('div');
+        messageEl.className = `chat-message ${role}`;
+        
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        
+        const avatar = role === 'futaba' ? '🎮' : '👤';
+        const bubbleClass = role === 'futaba' ? 'futaba-bubble' : 'user-bubble';
+        
+        messageEl.innerHTML = `
+            <div class="chat-avatar">${avatar}</div>
+            <div class="chat-bubble ${bubbleClass}">
+                <div class="chat-bubble-text">${this.escapeHtml(text)}</div>
+                <div class="chat-bubble-time">${timeStr}</div>
+            </div>
+        `;
+        
+        messagesEl.appendChild(messageEl);
+    }
+
+    updateChatMood(mood) {
+        const moodTextEl = document.getElementById('chatMoodText');
+        if (!moodTextEl) return;
+        
+        const moodMap = {
+            'happy': '😊 радостное',
+            'playful': '😜 игривое',
+            'excited': '🤩 в восторге',
+            'calm': '🌸 спокойное',
+            'curious': '🤔 любопытное',
+            'thoughtful': '💭 задумчивое',
+            'sad': '😔 грустное',
+            'annoyed': '😒 раздражённое',
+            'flirty': '😘 нежное',
+            'sleepy': '😴 сонное',
+        };
+        
+        moodTextEl.textContent = moodMap[mood] || '😐 обычное';
+    }
+
+    async loadChatHistory() {
+        try {
+            const response = await fetch(`${this.apiBase}/api/futaba/chat/history?limit=50`);
+            const data = await response.json();
+            
+            if (data.status === 'ok' && data.messages) {
+                const messagesEl = document.getElementById('chatMessages');
+                if (!messagesEl) return;
+                
+                // Очищаем и перерисовываем
+                messagesEl.innerHTML = '';
+                
+                for (const msg of data.messages) {
+                    const avatar = msg.role === 'futaba' ? '🎮' : '👤';
+                    const bubbleClass = msg.role === 'futaba' ? 'futaba-bubble' : 'user-bubble';
+                    
+                    const now = new Date(msg.timestamp);
+                    const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                    
+                    const messageEl = document.createElement('div');
+                    messageEl.className = `chat-message ${msg.role}`;
+                    messageEl.innerHTML = `
+                        <div class="chat-avatar">${avatar}</div>
+                        <div class="chat-bubble ${bubbleClass}">
+                            <div class="chat-bubble-text">${this.escapeHtml(msg.content)}</div>
+                            <div class="chat-bubble-time">${timeStr}</div>
+                        </div>
+                    `;
+                    messagesEl.appendChild(messageEl);
+                }
+                
+                this.scrollChatToBottom();
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки истории чата:', error);
+        }
+    }
+
+    async clearChat() {
+        if (!confirm('Очистить историю чата с Футабой?')) return;
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/futaba/chat/clear`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            
+            if (data.status === 'ok') {
+                const messagesEl = document.getElementById('chatMessages');
+                if (messagesEl) {
+                    messagesEl.innerHTML = `
+                        <div class="chat-message futaba">
+                            <div class="chat-avatar">🎮</div>
+                            <div class="chat-bubble futaba-bubble">
+                                <div class="chat-bubble-text">ой, всё стерла! 🫣 ну ладно, давай начнём сначала! привет! 👋😊</div>
+                                <div class="chat-bubble-time">сейчас</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        } catch (error) {
+            console.error('Ошибка очистки чата:', error);
+        }
+    }
+
+    scrollChatToBottom() {
+        const messagesEl = document.getElementById('chatMessages');
+        if (messagesEl) {
+            setTimeout(() => {
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+            }, 50);
+        }
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     // ===== ПРОФИЛЬ ФУТАБЫ =====
@@ -916,15 +1148,217 @@ document.addEventListener('DOMContentLoaded', () => {
     window.app = new WuglarstApp();
 });
 
-document.addEventListener('click', (event) => {
-    if (event.target.closest('.close-btn')) window.app.closeFutabaProfile();
-});
+// === ОБУЧЕНИЕ НАТО ИЗ КНИГ ===
+class NaotoLearningManager {
+    constructor() {
+        this.pollInterval = null;
+        this.logs = [];
+    }
+    
+    openModal() {
+        const modal = document.getElementById('naotoLearnModal');
+        if (modal) {
+            modal.style.display = 'block';
+            modal.classList.remove('hidden');
+            this.startPolling();
+            this.updateStatus();
+        }
+    }
+    
+    closeModal() {
+        const modal = document.getElementById('naotoLearnModal');
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+        }
+        this.stopPolling();
+    }
+    
+    async startPolling() {
+        this.stopPolling();
+        this.pollInterval = setInterval(async () => {
+            await this.updateStatus();
+        }, 2000);
+    }
+    
+    stopPolling() {
+        if (this.pollInterval) {
+            clearInterval(this.pollInterval);
+            this.pollInterval = null;
+        }
+    }
+    
+    async updateStatus() {
+        try {
+            const response = await fetch(`${this.apiBase}/api/naoto/learning/status`);
+            const data = await response.json();
+            
+            if (data.status) {
+                this.renderStatus(data.status);
+            }
+        } catch (error) {
+            console.error('Ошибка получения статуса:', error);
+        }
+    }
+    
+    renderStatus(status) {
+        const statusText = document.getElementById('naotoStatusText');
+        const progressBar = document.getElementById('naotoProgressBar');
+        const progressText = document.getElementById('naotoProgressText');
+        const progressDetail = document.getElementById('naotoProgressDetail');
+        const progress = document.getElementById('naotoProgress');
+        
+        if (!statusText || !progressBar) return;
+        
+        // Обновляем текст статуса
+        const statusMap = {
+            'idle': 'готова',
+            'collecting': 'собирает книги...',
+            'creating_pairs': 'создаёт обучающие пары...',
+            'training': 'обучает модель...',
+            'completed': 'обучение завершено!',
+            'error': 'ошибка',
+        };
+        
+        const statusClass = `status-${status.status}`;
+        statusText.className = statusClass;
+        statusText.textContent = `Статус: ${statusMap[status.status] || 'неизвестно'}`;
+        
+        // Обновляем прогресс-бар
+        if (progress) {
+            progress.classList.remove('hidden');
+            const percent = Math.round((status.progress || 0) * 100);
+            progressBar.style.width = `${percent}%`;
+            progressText.textContent = `${percent}%`;
+            
+            // Детали прогресса
+            const details = [];
+            if (status.books_collected > 0) details.push(`📚 ${status.books_collected} книг`);
+            if (status.pairs_created > 0) details.push(`📝 ${status.pairs_created} пар`);
+            if (status.current_book) details.push(`📖 ${status.current_book}`);
+            
+            progressDetail.textContent = details.length > 0 ? details.join(' | ') : '';
+        }
+    }
+    
+    async startLearning() {
+        const startBtn = document.getElementById('startNaotoLearnBtn');
+        if (!startBtn) return;
+        
+        startBtn.disabled = true;
+        startBtn.textContent = '⏳ Обучение...';
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/naoto/learn`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ max_books: 5 }),
+            });
+            
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                this.addLog('✅ Обучение запущено успешно!', 'success');
+            } else {
+                this.addLog(`❌ Ошибка: ${data.message}`, 'error');
+            }
+        } catch (error) {
+            this.addLog(`❌ Ошибка запуска: ${error.message}`, 'error');
+        }
+        
+        startBtn.disabled = false;
+        startBtn.textContent = '🚀 Начать обучение';
+    }
+    
+    async resetProgress() {
+        if (!confirm('Сбросить прогресс обучения?')) return;
+        
+        try {
+            const response = await fetch(`${this.apiBase}/api/naoto/learning/reset`, {
+                method: 'POST',
+            });
+            
+            const data = await response.json();
+            this.addLog('🔄 Прогресс сброшен', 'info');
+        } catch (error) {
+            this.addLog(`❌ Ошибка сброса: ${error.message}`, 'error');
+        }
+    }
+    
+    addLog(message, type = 'info') {
+        const logsContainer = document.getElementById('naotoLogsContainer');
+        const logsSection = document.getElementById('naotoLogs');
+        
+        if (!logsContainer) return;
+        
+        const logEntry = document.createElement('div');
+        logEntry.className = `log-entry log-${type}`;
+        logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        
+        logsContainer.appendChild(logEntry);
+        logsContainer.scrollTop = logsContainer.scrollHeight;
+        
+        if (logsSection) {
+            logsSection.classList.remove('hidden');
+        }
+        
+        this.logs.push({ message, type, time: new Date() });
+    }
+}
+
+// Глобальный менеджер обучения
+window.naotoLearning = new NaotoLearningManager();
 
 document.addEventListener('click', (event) => {
-    const modal = document.getElementById('futabaProfileModal');
-    if (event.target === modal) window.app.closeFutabaProfile();
+    if (event.target.closest('.close-btn')) {
+        // Закрываем все модальные окна
+        const chatModal = document.getElementById('chatModal');
+        if (chatModal && chatModal.style.display === 'block') {
+            window.app.closeChat();
+        }
+        window.app?.closeFutabaProfile();
+        
+        const naotoModal = document.getElementById('naotoLearnModal');
+        if (naotoModal && naotoModal.style.display === 'block') {
+            window.naotoLearning.closeModal();
+        }
+    }
 });
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') window.app.closeFutabaProfile();
+    if (event.key === 'Escape') {
+        const chatModal = document.getElementById('chatModal');
+        if (chatModal && chatModal.style.display === 'block') {
+            window.app.closeChat();
+        }
+        
+        const naotoModal = document.getElementById('naotoLearnModal');
+        if (naotoModal && naotoModal.style.display === 'block') {
+            window.naotoLearning.closeModal();
+        }
+    }
+});
+
+// Обработчики для обучения Наото
+document.addEventListener('DOMContentLoaded', () => {
+    const naotoLearnBtn = document.getElementById('naotoLearnBtn');
+    if (naotoLearnBtn) {
+        naotoLearnBtn.addEventListener('click', () => {
+            window.naotoLearning.openModal();
+        });
+    }
+    
+    const startNaotoLearnBtn = document.getElementById('startNaotoLearnBtn');
+    if (startNaotoLearnBtn) {
+        startNaotoLearnBtn.addEventListener('click', () => {
+            window.naotoLearning.startLearning();
+        });
+    }
+    
+    const resetNaotoLearnBtn = document.getElementById('resetNaotoLearnBtn');
+    if (resetNaotoLearnBtn) {
+        resetNaotoLearnBtn.addEventListener('click', () => {
+            window.naotoLearning.resetProgress();
+        });
+    }
 });

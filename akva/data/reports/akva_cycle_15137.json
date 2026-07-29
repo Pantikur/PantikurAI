@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15137,
+  "timestamp": "2026-07-27T19:51:10.731171",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 15137)",
+      "category": "topology",
+      "scientific_value": 0.88,
+      "description": "Теория в области mathematics, построена на 15137-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:51:10.731171"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 15137)",
+      "result": 5.6804,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:51:10.731171"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

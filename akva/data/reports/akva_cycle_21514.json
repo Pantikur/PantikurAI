@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21514,
+  "timestamp": "2026-07-27T21:38:04.539439",
+  "studied_topics": [
+    "Критерии прочности (Треска, фон Мизес)"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 21514)",
+      "category": "stiffness",
+      "scientific_value": 0.87,
+      "description": "Теория в области strength_of_materials, построена на 21514-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:38:04.539439"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Деформация материала (цикл 21514)",
+      "result": 0.292411,
+      "formula": "ε=ΔL/L",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:38:04.539439"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

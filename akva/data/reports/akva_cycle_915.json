@@ -1,0 +1,33 @@
+{
+  "cycle_number": 915,
+  "timestamp": "2026-07-27T15:52:43.490695",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 915)",
+      "category": "optimization",
+      "scientific_value": 0.91,
+      "description": "Теория в области mathematics, построена на 915-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:52:43.490174"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Вероятность события (цикл 915)",
+      "result": 0.9412,
+      "formula": "P(A)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:52:43.490174"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21784,
+  "timestamp": "2026-07-27T21:42:36.161963",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Топологический анализ данных (цикл 21784)",
+      "category": "topology",
+      "scientific_value": 0.71,
+      "description": "Теория в области mathematics, построена на 21784-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:42:36.161963"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 21784)",
+      "result": 6.202875,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:42:36.161963"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

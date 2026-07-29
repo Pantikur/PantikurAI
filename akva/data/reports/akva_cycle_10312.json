@@ -1,0 +1,33 @@
+{
+  "cycle_number": 10312,
+  "timestamp": "2026-07-27T18:30:19.539850",
+  "studied_topics": [
+    "Механика разрушения трещин"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 10312)",
+      "category": "fatigue",
+      "scientific_value": 0.83,
+      "description": "Теория в области strength_of_materials, построена на 10312-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T18:30:19.539850"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 10312)",
+      "result": 9.93,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T18:30:19.539850"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21754,
+  "timestamp": "2026-07-27T21:42:05.985291",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 21754)",
+      "category": "drag",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 21754-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:42:05.985291"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 21754)",
+      "result": 1169.45,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:42:05.985291"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

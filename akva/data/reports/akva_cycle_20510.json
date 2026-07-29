@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20510,
+  "timestamp": "2026-07-27T21:21:14.483815",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Ударные волны сверхзвукового обтекания (цикл 20510)",
+      "category": "shock_waves",
+      "scientific_value": 0.88,
+      "description": "Теория в области aerodynamics, построена на 20510-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:21:14.483815"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 20510)",
+      "result": 9532585.04,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:21:14.483815"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

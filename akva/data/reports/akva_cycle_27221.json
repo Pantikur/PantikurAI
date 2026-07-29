@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27221,
+  "timestamp": "2026-07-27T23:13:44.998974",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 27221)",
+      "category": "relativity",
+      "scientific_value": 0.94,
+      "description": "Теория в области physics, построена на 27221-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:13:44.998467"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 27221)",
+      "result": 2755.7,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:13:44.998467"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

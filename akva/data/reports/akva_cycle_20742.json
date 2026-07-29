@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20742,
+  "timestamp": "2026-07-27T21:25:07.891027",
+  "studied_topics": [
+    "Подъёмная сила крыла сложной формы"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20742)",
+      "category": "drag",
+      "scientific_value": 0.85,
+      "description": "Теория в области aerodynamics, построена на 20742-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:25:07.891027"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Число Рейнольдса (цикл 20742)",
+      "result": 79994186.23,
+      "formula": "Re=ρ×v×L/μ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:25:07.891027"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

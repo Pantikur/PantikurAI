@@ -19,6 +19,8 @@
                 <span>Подключение...</span>
             </div>
             <button id="demoBtn" class="btn btn-primary">🌱 Пробуждение</button>
+            <button id="chatBtn" class="btn btn-chat">💬 Чат с Футабой</button>
+            <button id="naotoLearnBtn" class="btn btn-naoto">📚 Обучить Наото</button>
             <button id="futabaProfileBtn" class="btn btn-futaba">⚖️ Профиль Футабы</button>
             <button id="createStateBtn" class="btn btn-vuglarst">🏛️ Создать Государство</button>
             <button id="nobukaEditorBtn" class="btn btn-nobuka">📝 Нобука: Документы</button>
@@ -104,6 +106,98 @@
             </div>
             <div class="modal-body" id="nobukaEditorContent">
                 <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно чата с Футабой -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content chat-modal">
+            <div class="modal-header chat-header">
+                <div class="chat-header-info">
+                    <span class="chat-avatar-header">🎮</span>
+                    <div>
+                        <h2>💬 Чат с Футабой</h2>
+                        <div class="chat-status" id="chatStatus">
+                            <span class="status-dot status-working"></span>
+                            <span>Онлайн</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="btn-small" id="clearChatBtn" title="Очистить чат">🗑️</button>
+                    <span class="close-btn" onclick="document.getElementById('chatModal').style.display='none'">&times;</span>
+                </div>
+            </div>
+            <div class="modal-body chat-body">
+                <!-- История сообщений -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message futaba">
+                        <div class="chat-avatar">🎮</div>
+                        <div class="chat-bubble futaba-bubble">
+                            <div class="chat-bubble-text">эй! 👋 Я Футаба. Давай поболтаем! О чём хочешь поговорить? 😊</div>
+                            <div class="chat-bubble-time">сейчас</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Индикатор "печатает" -->
+                <div class="chat-typing hidden" id="chatTyping">
+                    <div class="chat-avatar">🎮</div>
+                    <div class="chat-bubble futaba-bubble">
+                        <div class="typing-indicator">
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Поле ввода -->
+                <div class="chat-input-container">
+                    <div class="chat-mood-indicator" id="chatMoodIndicator">
+                        <span>Настроение:</span>
+                        <span id="chatMoodText">😊 спокойное</span>
+                    </div>
+                    <div class="chat-input-row">
+                        <input type="text" id="chatInput" placeholder="Напиши что-нибудь Футабе..." autocomplete="off">
+                        <button id="chatSendBtn" class="btn btn-chat-send">➤</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Обучение Наото -->
+    <div id="naotoLearnModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📚 Обучение Наото</h2>
+                <div class="chat-header-actions">
+                    <span class="close-btn" onclick="document.getElementById('naotoLearnModal').style.display='none'">&times;</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="naoto-learning-status" id="naotoLearningStatus">
+                    <p>Наото готова собирать книги и обучаться из них.</p>
+                    <p class="status-idle" id="naotoStatusText">Статус: готова</p>
+                </div>
+                
+                <div class="naoto-learning-controls">
+                    <button id="startNaotoLearnBtn" class="btn btn-primary">🚀 Начать обучение</button>
+                    <button id="resetNaotoLearnBtn" class="btn btn-secondary">🔄 Сбросить прогресс</button>
+                </div>
+                
+                <div class="naoto-learning-progress hidden" id="naotoProgress">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="naotoProgressBar"></div>
+                    </div>
+                    <p class="progress-text" id="naotoProgressText">0%</p>
+                    <p class="progress-detail" id="naotoProgressDetail">Сбор книг...</p>
+                </div>
+                
+                <div class="naoto-logs hidden" id="naotoLogs">
+                    <h3>📋 Журнал:</h3>
+                    <div class="logs-container" id="naotoLogsContainer"></div>
+                </div>
             </div>
         </div>
     </div>

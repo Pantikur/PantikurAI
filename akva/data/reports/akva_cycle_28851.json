@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28851,
+  "timestamp": "2026-07-27T23:41:03.898047",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 28851)",
+      "category": "differential",
+      "scientific_value": 0.88,
+      "description": "Теория в области mathematics, построена на 28851-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:41:03.897037"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 28851)",
+      "result": 34.506343,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:41:03.897037"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

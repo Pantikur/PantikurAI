@@ -1,0 +1,33 @@
+{
+  "cycle_number": 8454,
+  "timestamp": "2026-07-27T17:59:10.090671",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория вероятностей стохастических процессов (цикл 8454)",
+      "category": "probability",
+      "scientific_value": 0.77,
+      "description": "Теория в области mathematics, построена на 8454-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:59:10.087655"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 8454)",
+      "result": -336.6123,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T17:59:10.087655"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

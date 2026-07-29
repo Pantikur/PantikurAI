@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15374,
+  "timestamp": "2026-07-27T19:55:08.953676",
+  "studied_topics": [
+    "Теория чисел"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 15374)",
+      "category": "optimization",
+      "scientific_value": 0.92,
+      "description": "Теория в области mathematics, построена на 15374-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:55:08.953676"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Ряд Тейлора (цикл 15374)",
+      "result": 37.88734,
+      "formula": "Σ f⁽ⁿ⁾(a)/n! * (x-a)ⁿ",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:55:08.953676"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

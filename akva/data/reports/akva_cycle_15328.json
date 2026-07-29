@@ -1,0 +1,33 @@
+{
+  "cycle_number": 15328,
+  "timestamp": "2026-07-27T19:54:22.709877",
+  "studied_topics": [
+    "Тригонометрия"
+  ],
+  "theories_built": [
+    {
+      "name": "Оптимизация невыпуклых функций (цикл 15328)",
+      "category": "optimization",
+      "scientific_value": 0.95,
+      "description": "Теория в области mathematics, построена на 15328-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:54:22.709877"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 15328)",
+      "result": 30.3832,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:54:22.709877"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

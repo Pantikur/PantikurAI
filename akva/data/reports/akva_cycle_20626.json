@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20626,
+  "timestamp": "2026-07-27T21:23:11.188018",
+  "studied_topics": [
+    "Ударные волны сверхзвукового обтекания"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20626)",
+      "category": "drag",
+      "scientific_value": 0.86,
+      "description": "Теория в области aerodynamics, построена на 20626-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:23:11.188018"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 20626)",
+      "result": 5978607.54,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:23:11.188018"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

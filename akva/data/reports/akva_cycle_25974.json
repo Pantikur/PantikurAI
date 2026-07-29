@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25974,
+  "timestamp": "2026-07-27T22:52:50.782545",
+  "studied_topics": [
+    "Гравитационные волны"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 25974)",
+      "category": "quantum_info",
+      "scientific_value": 0.91,
+      "description": "Теория в области physics, построена на 25974-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:52:50.781537"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 25974)",
+      "result": 4095.58,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:52:50.781537"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

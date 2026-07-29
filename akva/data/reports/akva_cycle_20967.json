@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20967,
+  "timestamp": "2026-07-27T21:28:54.229786",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Термодинамика неравновесных процессов (цикл 20967)",
+      "category": "thermodynamics",
+      "scientific_value": 0.78,
+      "description": "Теория в области physics, построена на 20967-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:28:54.228778"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 20967)",
+      "result": 2094.45,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:28:54.228778"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

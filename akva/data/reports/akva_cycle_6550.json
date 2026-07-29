@@ -1,0 +1,33 @@
+{
+  "cycle_number": 6550,
+  "timestamp": "2026-07-27T17:27:14.685003",
+  "studied_topics": [
+    "Момент инерции"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 6550)",
+      "category": "fracture",
+      "scientific_value": 0.98,
+      "description": "Теория в области strength_of_materials, построена на 6550-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T17:27:14.685003"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 6550)",
+      "result": 5.13,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T17:27:14.685003"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

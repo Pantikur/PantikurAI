@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20124,
+  "timestamp": "2026-07-27T21:14:46.147169",
+  "studied_topics": [
+    "Турбулентность и пограничный слой"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20124)",
+      "category": "drag",
+      "scientific_value": 0.84,
+      "description": "Теория в области aerodynamics, построена на 20124-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:14:46.146163"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 20124)",
+      "result": 18.64,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:14:46.146163"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

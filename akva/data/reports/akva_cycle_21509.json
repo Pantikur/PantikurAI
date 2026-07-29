@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21509,
+  "timestamp": "2026-07-27T21:37:59.509600",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Усталость материалов при циклических нагрузках (цикл 21509)",
+      "category": "fatigue",
+      "scientific_value": 0.91,
+      "description": "Теория в области strength_of_materials, построена на 21509-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:37:59.509600"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 21509)",
+      "result": 60553040.29,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:37:59.509600"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

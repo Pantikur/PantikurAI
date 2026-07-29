@@ -1,0 +1,33 @@
+{
+  "cycle_number": 1491,
+  "timestamp": "2026-07-27T16:02:23.126841",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 1491)",
+      "category": "fracture",
+      "scientific_value": 0.97,
+      "description": "Теория в области strength_of_materials, построена на 1491-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T16:02:23.125830"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Коэффициент запаса (цикл 1491)",
+      "result": 8.04,
+      "formula": "n=σ_пред/σ_раб",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T16:02:23.125830"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

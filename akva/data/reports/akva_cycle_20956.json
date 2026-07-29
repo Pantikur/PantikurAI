@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20956,
+  "timestamp": "2026-07-27T21:28:43.167339",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 20956)",
+      "category": "stability",
+      "scientific_value": 0.8,
+      "description": "Теория в области strength_of_materials, построена на 20956-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:28:43.167339"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 20956)",
+      "result": 90.897808,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:28:43.167339"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

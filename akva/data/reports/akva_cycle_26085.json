@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26085,
+  "timestamp": "2026-07-27T22:54:42.510838",
+  "studied_topics": [
+    "Квантовая механика многотельных систем"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 26085)",
+      "category": "relativity",
+      "scientific_value": 0.97,
+      "description": "Теория в области physics, построена на 26085-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:54:42.509834"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 26085)",
+      "result": 521132742.93,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:54:42.509834"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

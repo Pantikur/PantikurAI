@@ -1,0 +1,33 @@
+{
+  "cycle_number": 27714,
+  "timestamp": "2026-07-27T23:22:00.812692",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Прочность композитных материалов (цикл 27714)",
+      "category": "strength",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 27714-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:22:00.811686"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 27714)",
+      "result": 546945151.27,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:22:00.811686"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

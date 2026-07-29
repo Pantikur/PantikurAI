@@ -1,0 +1,33 @@
+{
+  "cycle_number": 17107,
+  "timestamp": "2026-07-27T20:24:11.261338",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 17107)",
+      "category": "drag",
+      "scientific_value": 0.78,
+      "description": "Теория в области aerodynamics, построена на 17107-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T20:24:11.260833"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 17107)",
+      "result": 441863.79,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T20:24:11.260833"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14041,
+  "timestamp": "2026-07-27T19:32:49.019954",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 14041)",
+      "category": "electromagnetism",
+      "scientific_value": 0.93,
+      "description": "Теория в области physics, построена на 14041-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:32:49.019954"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 14041)",
+      "result": 2408.97,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:32:49.019954"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

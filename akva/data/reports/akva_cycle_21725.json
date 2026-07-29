@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21725,
+  "timestamp": "2026-07-27T21:41:36.814280",
+  "studied_topics": [
+    "Квантовая электродинамика"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая механика многотельных систем (цикл 21725)",
+      "category": "quantum",
+      "scientific_value": 0.84,
+      "description": "Теория в области physics, построена на 21725-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:41:36.814280"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Температура равновесия (цикл 21725)",
+      "result": 2200.49,
+      "formula": "T=Q/mc",
+      "units": "K",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:41:36.814280"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

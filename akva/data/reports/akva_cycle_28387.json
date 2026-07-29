@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28387,
+  "timestamp": "2026-07-27T23:33:17.388675",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 28387)",
+      "category": "drag",
+      "scientific_value": 0.94,
+      "description": "Теория в области aerodynamics, построена на 28387-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:33:17.388675"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила сопротивления (цикл 28387)",
+      "result": 506327.19,
+      "formula": "D=Cd×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:33:17.388675"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21516,
+  "timestamp": "2026-07-27T21:38:06.552434",
+  "studied_topics": [
+    "Аэродинамика микролетательных аппаратов"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 21516)",
+      "category": "drag",
+      "scientific_value": 0.8,
+      "description": "Теория в области aerodynamics, построена на 21516-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:38:06.552434"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 21516)",
+      "result": 6862451.22,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:38:06.552434"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

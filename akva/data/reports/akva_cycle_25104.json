@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25104,
+  "timestamp": "2026-07-27T22:38:15.818422",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика разрушения трещин (цикл 25104)",
+      "category": "fracture",
+      "scientific_value": 0.95,
+      "description": "Теория в области strength_of_materials, построена на 25104-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:38:15.818422"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 25104)",
+      "result": 747894689.88,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:38:15.818422"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

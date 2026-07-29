@@ -1,0 +1,33 @@
+{
+  "cycle_number": 26027,
+  "timestamp": "2026-07-27T22:53:44.217189",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 26027)",
+      "category": "drag",
+      "scientific_value": 0.76,
+      "description": "Теория в области aerodynamics, построена на 26027-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:53:44.217189"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 26027)",
+      "result": 5868553.69,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T22:53:44.217189"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

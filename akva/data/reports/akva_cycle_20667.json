@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20667,
+  "timestamp": "2026-07-27T21:23:52.444793",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 20667)",
+      "category": "drag",
+      "scientific_value": 0.77,
+      "description": "Теория в области aerodynamics, построена на 20667-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:23:52.443788"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Скорость звука (цикл 20667)",
+      "result": 1020.72,
+      "formula": "a=√(γ×R×T)",
+      "units": "m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:23:52.443788"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

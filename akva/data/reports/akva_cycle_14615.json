@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14615,
+  "timestamp": "2026-07-27T19:42:26.029323",
+  "studied_topics": [
+    "Метод Монте-Карло"
+  ],
+  "theories_built": [
+    {
+      "name": "Линейная алгебра многомерных пространств (цикл 14615)",
+      "category": "linear_algebra",
+      "scientific_value": 0.87,
+      "description": "Теория в области mathematics, построена на 14615-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:42:26.029323"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 14615)",
+      "result": 91.5451,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T19:42:26.029323"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

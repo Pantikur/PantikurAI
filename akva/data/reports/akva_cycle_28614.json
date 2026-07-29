@@ -1,0 +1,33 @@
+{
+  "cycle_number": 28614,
+  "timestamp": "2026-07-27T23:37:05.626285",
+  "studied_topics": [
+    "Квантовая запутанность"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 28614)",
+      "category": "electromagnetism",
+      "scientific_value": 0.8,
+      "description": "Теория в области physics, построена на 28614-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:37:05.624763"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 28614)",
+      "result": 2920687789.66,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T23:37:05.624763"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

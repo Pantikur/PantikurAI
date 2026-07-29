@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22477,
+  "timestamp": "2026-07-27T21:54:13.241062",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Обобщённое дифференциальное уравнение (цикл 22477)",
+      "category": "differential",
+      "scientific_value": 0.93,
+      "description": "Теория в области mathematics, построена на 22477-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:54:13.240556"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Собственные значения матрицы (цикл 22477)",
+      "result": 7.5379,
+      "formula": "Ax=λx",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:54:13.240556"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 30796,
+  "timestamp": "2026-07-28T00:13:40.266044",
+  "studied_topics": [
+    "Компьютерная гидродинамика (CFD)"
+  ],
+  "theories_built": [
+    {
+      "name": "Подъёмная сила крыла сложной формы (цикл 30796)",
+      "category": "lift",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 30796-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-28T00:13:40.266044"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическое число Маха (цикл 30796)",
+      "result": 0.8834,
+      "formula": "M_crit",
+      "units": "",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-28T00:13:40.266044"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

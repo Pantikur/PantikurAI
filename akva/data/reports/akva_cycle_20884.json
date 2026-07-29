@@ -1,0 +1,33 @@
+{
+  "cycle_number": 20884,
+  "timestamp": "2026-07-27T21:27:30.762192",
+  "studied_topics": [
+    "Прочность композитных материалов"
+  ],
+  "theories_built": [
+    {
+      "name": "Жёсткость балочных конструкций (цикл 20884)",
+      "category": "stiffness",
+      "scientific_value": 0.77,
+      "description": "Теория в области strength_of_materials, построена на 20884-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:27:30.762192"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Критическая нагрузка Эйлера (цикл 20884)",
+      "result": 51650726.96,
+      "formula": "P_cr=π²×E×I/(K×L)²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:27:30.762192"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

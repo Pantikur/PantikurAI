@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22429,
+  "timestamp": "2026-07-27T21:53:24.922353",
+  "studied_topics": [
+    "Относительность и гравитация"
+  ],
+  "theories_built": [
+    {
+      "name": "Квантовая запутанность и информация (цикл 22429)",
+      "category": "quantum_info",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 22429-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:53:24.922353"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 22429)",
+      "result": 1771616551.27,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T21:53:24.922353"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

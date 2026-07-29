@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22749,
+  "timestamp": "2026-07-27T21:58:46.853031",
+  "studied_topics": [
+    "Анализ напряжений методом конечных элементов"
+  ],
+  "theories_built": [
+    {
+      "name": "Устойчивость сжатых стержней (цикл 22749)",
+      "category": "stability",
+      "scientific_value": 0.81,
+      "description": "Теория в области strength_of_materials, построена на 22749-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:58:46.852527"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Момент инерции (цикл 22749)",
+      "result": 10.377138,
+      "formula": "I=∫y²dA",
+      "units": "m⁴",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:58:46.852527"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

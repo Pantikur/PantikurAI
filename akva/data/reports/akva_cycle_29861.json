@@ -1,0 +1,33 @@
+{
+  "cycle_number": 29861,
+  "timestamp": "2026-07-27T23:57:59.480345",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Сопротивление воздуха турбулентного потока (цикл 29861)",
+      "category": "drag",
+      "scientific_value": 0.89,
+      "description": "Теория в области aerodynamics, построена на 29861-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T23:57:59.480345"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмная сила (цикл 29861)",
+      "result": 7258428.83,
+      "formula": "L=Cl×0.5×ρ×v²×S",
+      "units": "N",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T23:57:59.480345"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

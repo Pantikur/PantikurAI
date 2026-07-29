@@ -1,0 +1,33 @@
+{
+  "cycle_number": 22820,
+  "timestamp": "2026-07-27T21:59:58.301916",
+  "studied_topics": [
+    "Аэроупругость"
+  ],
+  "theories_built": [
+    {
+      "name": "Пограничный слой на шероховатой поверхности (цикл 22820)",
+      "category": "boundary_layer",
+      "scientific_value": 0.82,
+      "description": "Теория в области aerodynamics, построена на 22820-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:59:58.301916"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Подъёмное отношение (цикл 22820)",
+      "result": 28.45,
+      "formula": "L/D",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:59:58.301916"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

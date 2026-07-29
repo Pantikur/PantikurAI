@@ -1,0 +1,33 @@
+{
+  "cycle_number": 991,
+  "timestamp": "2026-07-27T15:53:59.979001",
+  "studied_topics": [
+    "Механика твердого тела"
+  ],
+  "theories_built": [
+    {
+      "name": "Механика сплошных сред (цикл 991)",
+      "category": "mechanics",
+      "scientific_value": 0.78,
+      "description": "Теория в области physics, построена на 991-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T15:53:59.979001"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Сила тяготения (цикл 991)",
+      "result": 526306244.65,
+      "formula": "F=G*m1*m2/r²",
+      "units": "N",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T15:53:59.979001"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 57,
+  "level_changes": []
+}

@@ -1,0 +1,33 @@
+{
+  "cycle_number": 21891,
+  "timestamp": "2026-07-27T21:44:23.797743",
+  "studied_topics": [
+    "Плазменная физика"
+  ],
+  "theories_built": [
+    {
+      "name": "Электромагнитная теория поля (цикл 21891)",
+      "category": "electromagnetism",
+      "scientific_value": 0.86,
+      "description": "Теория в области physics, построена на 21891-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T21:44:23.784673"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Импульс частицы (цикл 21891)",
+      "result": 29810943.6965,
+      "formula": "p=mv",
+      "units": "kg·m/s",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T21:44:23.784673"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 105,
+  "level_changes": []
+}

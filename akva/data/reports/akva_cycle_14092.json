@@ -1,0 +1,33 @@
+{
+  "cycle_number": 14092,
+  "timestamp": "2026-07-27T19:33:40.290425",
+  "studied_topics": [
+    "Численные методы"
+  ],
+  "theories_built": [
+    {
+      "name": "Теория чисел и криптография (цикл 14092)",
+      "category": "number_theory",
+      "scientific_value": 0.75,
+      "description": "Теория в области mathematics, построена на 14092-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T19:33:40.290425"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Дифференциальное уравнение (цикл 14092)",
+      "result": -346.4717,
+      "formula": "dy/dx = f(x,y)",
+      "units": "",
+      "conditions": "",
+      "verified": true,
+      "timestamp": "2026-07-27T19:33:40.290425"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}

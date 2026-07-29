@@ -1,0 +1,33 @@
+{
+  "cycle_number": 25259,
+  "timestamp": "2026-07-27T22:40:51.688706",
+  "studied_topics": [
+    "Физика элементарных частиц"
+  ],
+  "theories_built": [
+    {
+      "name": "Относительность и гравитация (цикл 25259)",
+      "category": "relativity",
+      "scientific_value": 0.9,
+      "description": "Теория в области physics, построена на 25259-м цикле",
+      "formulas": [],
+      "evidence": [],
+      "created_at": "2026-07-27T22:40:51.688706"
+    }
+  ],
+  "calculations_done": [
+    {
+      "name": "Энергия частицы (цикл 25259)",
+      "result": 595528430238370.0,
+      "formula": "E=mc²",
+      "units": "J",
+      "conditions": "",
+      "verified": false,
+      "timestamp": "2026-07-27T22:40:51.688706"
+    }
+  ],
+  "communication_log": [],
+  "personality_changes": {},
+  "xp_gained": 75,
+  "level_changes": []
+}
