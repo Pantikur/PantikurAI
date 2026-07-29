@@ -1,0 +1,43 @@
+{
+  "chat_model": {
+    "version": "latest",
+    "repo_id": "Pantikur/pantikur-chat-model",
+    "size_estimate_mb": 52,
+    "files": {
+      "chat_model.pth": {
+        "exists": true,
+        "size_mb": 52.02,
+        "hash_sha256": "3b3e47fc4ba2c05d693873c39fbcef5fc01576a902f9a158b9f1df5ad7720c84"
+      }
+    }
+  },
+  "rugpt3": {
+    "version": "latest",
+    "repo_id": "sberbank-ai/rugpt3small_based_on_gpt2",
+    "size_estimate_mb": 260,
+    "files": {
+      "config.json": {
+        "exists": true,
+        "size_mb": 0.0,
+        "hash_sha256": "d8bff97c68d7f789365a2865ec27a7cabf663707d5626afaa4216b165cb83df4"
+      },
+      "pytorch_model.bin": {
+        "exists": true,
+        "size_mb": 525.75,
+        "hash_sha256": "0d2a4a387b0430654bb1f6813436bd31f8e10a06e18ea0e5c41b33120b78458e"
+      },
+      "tokenizer.model": {
+        "exists": false,
+        "size_mb": 0
+      },
+      "special_tokens_map.json": {
+        "exists": false,
+        "size_mb": 0
+      },
+      "tokenizer_config.json": {
+        "exists": false,
+        "size_mb": 0
+      }
+    }
+  }
+}
