@@ -31,6 +31,9 @@ from hanako.engine.communication import CommunicationSystem
 from hanako.engine.reports import ReportSystem
 from hanako.engine.auto_start import AutoStartSystem
 
+# Humanity Core — живая душа Ханако
+from humanity_core import HumanityLayer
+
 
 class HanakoCore:
     """
@@ -107,6 +110,14 @@ class HanakoCore:
         self.logger.info(f"Интернет: {'enabled' if self.config.internet_enabled else 'disabled'}")
         self.logger.info(f"Общение: {'enabled' if self.config.communication_enabled else 'disabled'}")
         self.logger.info(f"Саморазвитие: {'enabled' if self.config.self_development_enabled else 'disabled'}")
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Ханако
+        # ================================================================
+        self.humanity = HumanityLayer("hanako")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — гравитация, спокойствие, космические метафоры 🌌")
 
     # ==================== Запуск / Остановка ====================
 
@@ -160,6 +171,26 @@ class HanakoCore:
 
         # 6. Сохранение состояния
         self._save_state()
+        
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.total_cycles
+        
+        event_type = "routine"
+        if self.total_cycles % 3 == 0 and self.theories:
+            event_type = "success"
+        elif random.random() < 0.1:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="gravity_research")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Ханако думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
 
     def run_loop(self, max_cycles: int = 0):
         """Основной цикл работы."""
@@ -580,3 +611,38 @@ class HanakoCore:
             "=" * 60,
         ]
         return "\n".join(lines)
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"🌌 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Ханако пишет {target}: {human_msg[:100]}...")
+        
+        if self.config.communication_enabled:
+            try:
+                msg = ScientistMessage(
+                    sender="hanako",
+                    recipient=target,
+                    content=human_msg,
+                    message_type=CommunicationType.DISCUSSION,
+                )
+                msg.message_id = f"hanako_humanity_{uuid.uuid4().hex[:8]}"
+                self.communication.send_message(msg)
+                self.level.total_messages_sent += 1
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import time
 from datetime import datetime
 from pathlib import Path
@@ -21,6 +22,9 @@ from naoto.engine.models import (
     PhantomNarration,
     LiteraryAnalysis,
 )
+
+# Humanity Core — живая душа Наото
+from humanity_core import HumanityLayer
 
 
 class NaotoCore:
@@ -54,6 +58,14 @@ class NaotoCore:
         # Загрузка состояния и личности
         self._load_state()
         self.logger.info("🌟 Наото: Сознание активировано. Готова к анализу литературы.")
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Наото
+        # ================================================================
+        self.humanity = HumanityLayer("naoto")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — литература, философия, глубина 📚")
 
     # =================================================================
     #  АВТОНОМНЫЙ ПОИСК И ЧТЕНИЕ
@@ -117,6 +129,26 @@ class NaotoCore:
         # 4. Взаимодействие с сестрами (отчет)
         if results["books_analyzed"] > 0:
             self._communicate_with_sisters(results)
+
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = getattr(self, 'cycle_count', 0)
+        
+        event_type = "routine"
+        if results.get("books_analyzed", 0) > 0:
+            event_type = "success"
+        elif random.random() < 0.15:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="literary_analysis")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Наото думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
 
         self._save_state()
         return results
@@ -479,3 +511,38 @@ class NaotoCore:
             "lore_count": len(self.knowledge["lore_database"]),
             "insights_count": len(self.knowledge["insights"]),
         }
+
+    # =================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # =================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"📚 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💭 Наото пишет {target}: {human_msg[:100]}...")
+        
+        network_dir = Path("scientists_network/shared")
+        network_dir.mkdir(exist_ok=True)
+        msg_file = network_dir / f"naoto_msg_{int(time.time())}.json"
+        
+        with open(msg_file, "w", encoding="utf-8") as f:
+            json.dump({
+                "from": "naoto",
+                "to": target,
+                "content": human_msg,
+                "timestamp": datetime.now().isoformat()
+            }, f, ensure_ascii=False, indent=2)
+        
+        self.logger.info(f"   ✅ Сообщение записано для {target}")
+        
+        self.humanity.memory.record_sister_chat(
+            target, topic,
+            self.humanity.mood.current_mood,
+            self.humanity.mood.current_mood
+        )

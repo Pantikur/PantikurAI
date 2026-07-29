@@ -31,6 +31,9 @@ from web_access import LatislaneWebAccess
 from universal_analyzer import UniversalAnalyzer
 from ml_optimizer import MLOptimizer
 
+# Humanity Core — живая душа Латислейн
+from humanity_core import HumanityLayer
+
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
     _HAS_NETWORK = True
@@ -106,6 +109,14 @@ class LatislaneCore:
 
         # Инициализация random
         self._init_random()
+
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Латислейн
+        # ================================================================
+        self.humanity = HumanityLayer("latislane")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — тело, анатомия, точность 🧬")
 
         self.logger.info(f"Нобука {self.current_version} инициализирована")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
@@ -253,6 +264,26 @@ class LatislaneCore:
         # 9. ML-оптимизация (каждые 10 циклов)
         if self.cycle_count % 10 == 0:
             self._optimize_ml_pipeline()
+
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.cycle_count
+        
+        event_type = "routine"
+        if self.metrics.get("issues_fixed", 0) > 0 and self.cycle_count % 5 == 0:
+            event_type = "success"
+        elif random.random() < 0.1:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="body_research")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Латислейн думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
 
         self.logger.info(f"Цикл {self.cycle_count} завершён")
 
@@ -817,3 +848,38 @@ class LatislaneCore:
         self.logger.info(f"Исправлений безопасности: {self.metrics['security_fixes']}")
         self.logger.info(f"Оптимизаций: {self.metrics['performance_improvements']}")
         self.logger.info("=" * 60)
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"🧬 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Латислейн пишет {target}: {human_msg[:100]}...")
+        
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                msg = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="latislane",
+                    recipient=target,
+                    content=human_msg,
+                )
+                self.network.send_message(msg)
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")

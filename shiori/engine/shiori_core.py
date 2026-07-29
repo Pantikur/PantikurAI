@@ -30,6 +30,9 @@ from shiori.engine.threat_hunter import ThreatHunter
 from shiori.engine.patch_manager import PatchManager
 from shiori.engine.web_access import ShioriWebAccess
 
+# Humanity Core — живая душа Шиори
+from humanity_core import HumanityLayer
+
 
 class ShioriCore:
     """
@@ -87,6 +90,14 @@ class ShioriCore:
         self.logger.info(f"Шиори {self.current_version} инициализирована")
         self.logger.info(f"Защищает: {self.config.parent_system}")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Шиори
+        # ================================================================
+        self.humanity = HumanityLayer("shiori")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — безопасность, сухая логика, скрытая забота 🛡️")
     
     # ================================================================
     #  ИНИЦИАЛИЗАЦИЯ
@@ -221,6 +232,26 @@ class ShioriCore:
         # 6. Периодическое саморазвитие
         if self.cycle_count % 10 == 0:
             self._self_improve()
+        
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.cycle_count
+        
+        event_type = "routine"
+        if self.metrics.get("threats_mitigated", 0) > 0 and self.cycle_count % 3 == 0:
+            event_type = "success"
+        elif random.random() < 0.1:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="security_scan")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Шиори думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
         
         self.logger.info(f"Цикл защиты {self.cycle_count} завершён")
     
@@ -564,3 +595,38 @@ class ShioriCore:
         self.logger.info(f"Целостность системы: {self.security_state.system_integrity:.2%}")
         self.logger.info(f"Статус сети: {self.security_state.network_status}")
         self.logger.info("=" * 60)
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"🛡️ [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Шиори пишет {target}: {human_msg[:100]}...")
+        
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                msg = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="shiori",
+                    recipient=target,
+                    content=human_msg,
+                )
+                self.network.send_message(msg)
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")

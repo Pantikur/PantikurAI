@@ -34,6 +34,9 @@ from lucy.engine.character_developer import CharacterDeveloper
 from lucy.engine.report_generator import ReportGenerator
 from scientists_network.network import get_network, Message, MessageType, RequestPriority
 
+# Humanity Core — живая душа Люси
+from humanity_core import HumanityLayer
+
 
 class LucyCore:
     """
@@ -104,6 +107,14 @@ class LucyCore:
         self.logger.info("🌐 Доступ в интернет: ВКЛ")
         self.logger.info("📁 Изучение проекта: ВКЛ")
         self.logger.info("💪 Развитие характера: ВКЛ")
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Люси
+        # ================================================================
+        self.humanity = HumanityLayer("lucy")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — двигатели, энергия, прагматизм ⚡")
     
     def _setup_logging(self):
         """Настроить логирование."""
@@ -265,6 +276,26 @@ class LucyCore:
         
         # 9. Сохранение
         self._save_state()
+        
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.cycle_count
+        
+        event_type = "routine"
+        if self.metrics.get("designs_created", 0) > 0 and self.cycle_count % 5 == 0:
+            event_type = "success"
+        elif random.random() < 0.1:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="engine_design")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Люси думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
         
         self.logger.info(f"\n✅ Цикл {self.cycle_count} завершён")
         self.logger.info(f"📊 Уровень: Lvl {self.knowledge_level.current_level} — {self.knowledge_level.level_name}")
@@ -505,3 +536,39 @@ class LucyCore:
             "calculations_count": len(self.calculations),
             "papers_count": len(self.papers),
         }
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"⚡ [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Люси пишет {target}: {human_msg[:100]}...")
+        
+        if self.network:
+            try:
+                msg = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="lucy",
+                    recipient=target,
+                    content=human_msg,
+                    priority=RequestPriority.NORMAL,
+                )
+                self.network.send_message(msg)
+                self.metrics["interactions"] += 1
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.error(f"❌ Ошибка взаимодействия: {e}")

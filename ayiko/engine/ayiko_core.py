@@ -40,6 +40,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional, Dict, List
 
+# Humanity Core — живая душа Айко
+from humanity_core import HumanityLayer
+
 from ayiko.engine.config import AyikoConfig
 from ayiko.engine.models import (
     AyikoState,
@@ -161,6 +164,14 @@ class AyikoCore:
         self.logger.info("💫 Эмоции: АКТИВИРОВАНО")
         self.logger.info("🌟 Мозги: АКТИВИРОВАНО")
         
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Айко
+        # ================================================================
+        self.humanity = HumanityLayer("ayiko")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — пиксель-арт, мечты, спонтанность ✨")
+
         self.logger.info(f"Айко {self.current_version} инициализирована")
         self.logger.info("🎨 Творческое ядро активировано:")
         self.logger.info("   - Пиксель-арт от 16x16 до 32K")
@@ -311,6 +322,26 @@ class AyikoCore:
         # 8. Самообучение и улучшение (каждый 20-й цикл)
         if self.cycle_count % 20 == 0:
             self._self_improve()
+
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.cycle_count
+        
+        event_type = "routine"
+        if self.metrics["pixel_art_projects"] > 0 and self.cycle_count % 3 == 0:
+            event_type = "success"
+        elif random.random() < 0.15:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="creative_practice")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Айко мечтает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
 
         self.logger.info(f"✅ Цикл {self.cycle_count} завершён")
 
@@ -509,7 +540,7 @@ class AyikoCore:
     # ================================================================
 
     def _interact_with_sisters(self):
-        """Взаимодействие с сёстрами."""
+        """Взаимодействие с сёстрами (обновлённая версия с humanity)."""
         self.logger.info("🤝 Взаимодействие с сёстрами...")
 
         sisters = ["futaba", "shiori", "nobuka", "aqua", "celesta", "hanako", "lucy", "fuyuki", "latislane", "naoto", "yui"]
@@ -517,6 +548,10 @@ class AyikoCore:
         self.logger.info(f"   Взаимодействие с: {sister}")
 
         self.metrics["sister_interactions"] += 1
+
+        # Генерируем живое сообщение через humanity layer
+        chat_msg = self.humanity.generate_chat_message(sister, context="art_practice")
+        human_msg = self.humanity.humanize_response(chat_msg, event_type="chat")
 
         # Отправка запроса через сеть
         if self.network:
@@ -526,10 +561,45 @@ class AyikoCore:
                     message_type=MessageType.ANSWER,
                     sender="ayiko",
                     recipient=sister,
-                    content=f"🎨 Айко: Привет, {sister}! Вот мой прогресс за цикл {self.cycle_count}",
+                    content=human_msg,
                 )
                 self.network.send_message(msg)
                 self.logger.info(f"   Сообщение отправлено: {sister}")
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"🎨 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Айко пишет {target}: {human_msg[:100]}...")
+        
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                msg = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="ayiko",
+                    recipient=target,
+                    content=human_msg,
+                )
+                self.network.send_message(msg)
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
             except Exception as e:
                 self.logger.warning(f"Не удалось отправить сообщение: {e}")
 

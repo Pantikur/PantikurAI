@@ -24,6 +24,9 @@ from .web_access import AkvaWebAccess
 from .reporter import AkvaReporter
 from .communicator import AkvaCommunicator
 
+# Humanity Core — живая душа Аква
+from humanity_core import HumanityLayer
+
 
 logger = logging.getLogger("AkvaCore")
 
@@ -222,6 +225,14 @@ class AkvaCore:
         self.logger.info(f"Аква {self.current_version} инициализирована")
         self.logger.info(f"Фокус: {', '.join(self.config.research_areas)}")
         self.logger.info(f"Характер: {self.personality.level_description()}")
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Аква
+        # ================================================================
+        self.humanity = HumanityLayer("akva")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — математика, физика, элегантность 📐")
 
     def _setup_logging(self):
         log_handler = logging.FileHandler(
@@ -546,6 +557,26 @@ class AkvaCore:
 
         if self.cycle_count % self.config.save_state_every_n_cycles == 0:
             self._save_state()
+        
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.cycle_count
+        
+        event_type = "routine"
+        if self.metrics.get("theories_built", 0) > 0 and self.cycle_count % 3 == 0:
+            event_type = "success"
+        elif random.random() < 0.1:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="math_research")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Аква думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
 
         # Укрепление характера (периодически)
         if self.total_cycles % 5 == 0:
@@ -655,3 +686,32 @@ class AkvaCore:
     def stop(self):
         self._shutdown_requested = True
         self.logger.info("🛑 Аква остановлена")
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"📐 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Аква пишет {target}: {human_msg[:100]}...")
+        
+        if self.config.communication_enabled:
+            try:
+                self.communicator.send_message("akva", target, human_msg, msg_type)
+                self.metrics["messages_sent"] += 1
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")

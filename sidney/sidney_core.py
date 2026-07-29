@@ -23,6 +23,9 @@ from datetime import datetime
 
 from .engine.engine_core import EngineCore
 
+# Humanity Core — живая душа Сидни
+from humanity_core import HumanityLayer
+
 logger = logging.getLogger("sidney.core")
 
 # 12 девочек для взаимодействия
@@ -114,6 +117,14 @@ class SidneyCore:
         logger.info(f"   🎮 Движков: 8")
         logger.info(f"   👭 Девочек в сети: {len(SISTERS)}")
         logger.info(f"   🧠 Автономность: {self.autonomy_level}")
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Сидни
+        # ================================================================
+        self.humanity = HumanityLayer("sidney")
+        self.humanity.current_cycle = 0
+        logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        logger.info(f"   🎭 Характер: {self.humanity.name} — игровой движок, IT-юмор, лояльность 🎮")
     
     def _ensure_directories(self):
         """Создание необходимых директорий."""
@@ -420,6 +431,26 @@ class SidneyCore:
                 # 5. Обновление характера
                 self._update_character()
                 
+                # ================================================================
+                #  HUMANITY CYCLE — Настроение, душа, спонтанность
+                # ================================================================
+                self.humanity.current_cycle = cycle_count
+                
+                event_type = "routine"
+                if self.system_state.get("total_optimizations", 0) > 0 and cycle_count % 3 == 0:
+                    event_type = "success"
+                elif random.random() < 0.1:
+                    event_type = "failure"
+                
+                humanity_result = self.humanity.cycle_step(event_type=event_type, context="engine_development")
+                
+                if humanity_result.get("thought"):
+                    logger.info(f"💭 Сидни думает: {humanity_result['thought']}")
+                
+                initiative = humanity_result.get("initiative")
+                if initiative:
+                    self._send_spontaneous_message(initiative)
+                
                 # Сохранение
                 self._save_state()
                 self._save_knowledge()
@@ -583,4 +614,48 @@ class SidneyCore:
         
         logger.info(f"  📡 → server: {message_type}")
         return response
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"🎮 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        logger.info(f"💬 Сидни пишет {target}: {human_msg[:100]}...")
+        
+        if target in SISTERS:
+            try:
+                # Взаимодействие с сестрой через систему Сидни
+                self.system_state["sisters_network"][target]["last_contact"] = datetime.now().isoformat()
+                self.system_state["total_interactions"] += 1
+                
+                # Запись в общую папкуScientists Network
+                network_dir = Path("scientists_network/shared")
+                network_dir.mkdir(exist_ok=True)
+                msg_file = network_dir / f"sidney_msg_{int(time.time())}.json"
+                
+                with open(msg_file, "w", encoding="utf-8") as f:
+                    json.dump({
+                        "from": "sidney",
+                        "to": target,
+                        "content": human_msg,
+                        "timestamp": datetime.now().isoformat()
+                    }, f, ensure_ascii=False, indent=2)
+                
+                logger.info(f"   ✅ Сообщение записано для {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                logger.warning(f"  ⚠️ Не удалось отправить сообщение: {e}")
 

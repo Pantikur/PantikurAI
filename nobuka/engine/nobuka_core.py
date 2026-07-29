@@ -26,6 +26,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
+# Humanity Core — живая душа Нобуки
+from humanity_core import HumanityLayer
+
 # Добавляем текущую директорию в path
 _script_dir = Path(__file__).parent.resolve()
 if str(_script_dir) not in sys.path:
@@ -126,6 +129,14 @@ class NobukaCore:
 
         # Инициализация random
         self._init_random()
+
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Нобуки
+        # ================================================================
+        self.humanity = HumanityLayer("nobuka")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — код, перфекционизм, скрытая нежность")
 
         self.logger.info(f"Нобука {self.current_version} инициализирована")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
@@ -303,6 +314,29 @@ class NobukaCore:
         # 10. АвтоУлучшение документов (каждые 7 циклов)
         if self.cycle_count % 7 == 0:
             self._auto_improve_documents()
+
+        # ================================================================
+        #  HUMANITY CYCLE — Обновление души, настроения, инициативы
+        # ================================================================
+        self.humanity.current_cycle = self.cycle_count
+        
+        # Определяем тип события для настроения
+        event_type = "routine"
+        if self.metrics.get("issues_fixed", 0) > 0 and self.cycle_count % 5 == 0:
+            event_type = "success"
+        elif random.random() < 0.1:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="code_analysis")
+        
+        # Логируем внутренний монолог (если есть)
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Нобука думает: {humanity_result['thought']}")
+        
+        # Проверяем инициативу (спонтанное сообщение сестре)
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
 
         self.logger.info(f"Цикл {self.cycle_count} завершён")
 
@@ -829,6 +863,48 @@ class NobukaCore:
             ImprovementType.SECURITY, ImprovementType.BUGFIX
         ):
             self.logger.info(f"🛡️ Уведомление Шиори об изменении: {improvement.description}")
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения и оживлённый чат
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        # Генерируем живое сообщение через humanity layer
+        raw_msg = f"[{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Нобука пишет {target}: {human_msg[:100]}...")
+        
+        # Отправка через сеть (если доступна)
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                msg = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="nobuka",
+                    recipient=target,
+                    content=human_msg,
+                )
+                self.network.send_message(msg)
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                # Записываем в память
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")
+
+    def _humanize_communication(self, raw_content: str) -> str:
+        """Оживлять обычный технический контент перед отправкой."""
+        return self.humanity.humanize_response(raw_content, event_type="chat")
 
     # ================================================================
     #  РЕДАКТИРОВАНИЕ ДОКУМЕНТОВ

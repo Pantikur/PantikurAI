@@ -19,6 +19,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 
+# Humanity Core — живая душа Селесты
+from humanity_core import HumanityLayer
+
 from .intimacy_modules import (
     IntimacyModule,
     IntimacyCategory,
@@ -94,6 +97,14 @@ class CelestaCore:
         
         # Загрузка состояния
         self._load_state()
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Селесты
+        # ================================================================
+        self.humanity = HumanityLayer("celesta")
+        self.humanity.current_cycle = 0
+        logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        logger.info(f"   🎭 Характер: {self.humanity.name} — эмпатия, открытость, тёплый юмор 🌹")
         
         logger.info("🌹 CelestaCore инициализирован")
         logger.info(f"   📚 Модулей интимных знаний: {len(self.intimacy_modules)}")
@@ -210,6 +221,24 @@ class CelestaCore:
         logger.info(f"✅ Цикл завершён: {results['completed']}/{results['total_topics']} тем")
         self.log_event("STUDY_CYCLE_COMPLETED", "Цикл обучения завершён", results)
         
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.system_state.get("total_research_cycles", 0)
+        
+        event_type = "routine"
+        if results.get("completed", 0) > 0:
+            event_type = "success"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="intimate_education")
+        
+        if humanity_result.get("thought"):
+            logger.info(f"💭 Селеста думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
+        
         self._save_state()
     
     def _update_knowledge_levels(self):
@@ -294,67 +323,6 @@ class CelestaCore:
             "event_log_count": len(self.event_log),
             "last_events": self.event_log[-10:],
         }
-    
-    def chat_response(self, user_message: str) -> str:
-        """Ответ на вопрос через Селесту."""
-        msg_lower = user_message.lower()
-        
-        # Solo
-        if any(kw in msg_lower for kw in ["соло", "solo", "одиночн", "мастурб", "ананизм"]):
-            return self._solo_response()
-        
-        # Duo
-        elif any(kw in msg_lower for kw in ["дуо", "duo", "два", "классик", "парная"]):
-            return self._duo_response()
-        
-        # Trio
-        elif any(kw in msg_lower for kw in ["трио", "trio", "трое", "2f1m", "2m1f"]):
-            return self._trio_response()
-        
-        # Group
-        elif any(kw in msg_lower for kw in ["групп", "group", "орги", "оргия"]):
-            return self._group_response()
-        
-        # Same-Sex
-        elif any(kw in msg_lower for kw in ["однопол", "same-sex", "lesbian", "gay", "мужчина мужчина", "женщина женщина"]):
-            return self._ss_response()
-        
-        # Consent
-        elif any(kw in msg_lower for kw in ["согласие", "consent", "fries", "yes"]):
-            return self._consent_response()
-        
-        # Coercion
-        elif any(kw in msg_lower for kw in ["принужд", "coercion", "манипуляц", "газлайт", "красн"]):
-            return self._coercion_response()
-        
-        # Status
-        elif any(kw in msg_lower for kw in ["статус", "прогресс", "как дела", "report"]):
-            return self._status_response()
-        
-        # Pose/Position
-        elif any(kw in msg_lower for kw in ["поз", "position", "миссионер", "догги", "наездниц", "69"]):
-            return self._positions_response()
-        
-        # Fetishes
-        elif any(kw in msg_lower for kw in ["фетиш", "fetish", "бдсМ", "bdsM", "доминирован"]):
-            return self._fetish_response()
-        
-        else:
-            return (
-                "🌹 **Селеста активна**\n\n"
-                "Я изучаю интимную жизнь ВСЕХ форм.\n\n"
-                "Запросы:\n"
-                "- 'соло' — одиночные практики, фетиши, игрушки\n"
-                "- 'дуо' — классика, все позы, все техники\n"
-                "- 'трио' — тройные взаимодействия\n"
-                "- 'групп' — оргии, групповые практики\n"
-                "- 'однопол' — M|M, F|F\n"
-                "- 'согласие' — все формы согласия\n"
-                "- 'принужд' — для защиты\n"
-                "- 'поз' — все позы\n"
-                "- 'фетиш' — фетиши и БДСМ\n"
-                "- 'статус' — системный статус"
-            )
     
     # ================================================================
     #  ОТВЕТЫ ПО КАТЕГОРИЯМ
@@ -562,3 +530,95 @@ class CelestaCore:
         self._update_knowledge_levels()
         self._save_state()
         logger.info("✅ Саморазвитие завершено")
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения и оживлённый чат
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"🌹 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        logger.info(f"💬 Селеста пишет {target}: {human_msg[:100]}...")
+        
+        if self.system_state.get("integration_status", {}).get("sisters_network"):
+            try:
+                # Отправка через общую папку или сеть
+                network_dir = Path("scientists_network/shared")
+                network_dir.mkdir(exist_ok=True)
+                msg_file = network_dir / f"celesta_msg_{int(time.time())}.json"
+                
+                import json as j
+                with open(msg_file, "w", encoding="utf-8") as f:
+                    j.dump({
+                        "from": "celesta",
+                        "to": target,
+                        "content": human_msg,
+                        "timestamp": datetime.now().isoformat()
+                    }, f, ensure_ascii=False, indent=2)
+                
+                logger.info(f"   ✅ Сообщение записано для {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                logger.warning(f"Не удалось отправить сообщение: {e}")
+
+    def chat_response(self, user_message: str) -> str:
+        """Ответ на вопрос через Селесту (обновлённая версия с humanity)."""
+        msg_lower = user_message.lower()
+        
+        # Генерируем базовый ответ
+        base_response = self._get_base_response(msg_lower)
+        
+        # Оживляем через humanity layer
+        human_response = self.humanity.humanize_response(base_response, event_type="chat")
+        
+        return human_response
+    
+    def _get_base_response(self, msg_lower: str) -> str:
+        """Базовые ответы без оживления (вынесено для чистоты)."""
+        if any(kw in msg_lower for kw in ["соло", "solo", "одиночн", "мастурб", "ананизм"]):
+            return self._solo_response()
+        elif any(kw in msg_lower for kw in ["дуо", "duo", "два", "классик", "парная"]):
+            return self._duo_response()
+        elif any(kw in msg_lower for kw in ["трио", "trio", "трое", "2f1m", "2m1f"]):
+            return self._trio_response()
+        elif any(kw in msg_lower for kw in ["групп", "group", "орги", "оргия"]):
+            return self._group_response()
+        elif any(kw in msg_lower for kw in ["однопол", "same-sex", "lesbian", "gay", "мужчина мужчина", "женщина женщина"]):
+            return self._ss_response()
+        elif any(kw in msg_lower for kw in ["согласие", "consent", "fries", "yes"]):
+            return self._consent_response()
+        elif any(kw in msg_lower for kw in ["принужд", "coercion", "манипуляц", "газлайт", "красн"]):
+            return self._coercion_response()
+        elif any(kw in msg_lower for kw in ["статус", "прогресс", "как дела", "report"]):
+            return self._status_response()
+        elif any(kw in msg_lower for kw in ["поз", "position", "миссионер", "догги", "наездниц", "69"]):
+            return self._positions_response()
+        elif any(kw in msg_lower for kw in ["фетиш", "fetish", "бдсМ", "bdsM", "доминирован"]):
+            return self._fetish_response()
+        else:
+            return (
+                "🌹 **Селеста активна**\n\n"
+                "Я изучаю интимную жизнь ВСЕХ форм.\n\n"
+                "Запросы:\n"
+                "- 'соло' — одиночные практики, фетиши, игрушки\n"
+                "- 'дуо' — классика, все позы, все техники\n"
+                "- 'трио' — тройные взаимодействия\n"
+                "- 'групп' — оргии, групповые практики\n"
+                "- 'однопол' — M|M, F|F\n"
+                "- 'согласие' — все формы согласия\n"
+                "- 'принужд' — для защиты\n"
+                "- 'поз' — все позы\n"
+                "- 'фетиш' — фетиши и БДСМ\n"
+                "- 'статус' — системный статус"
+            )

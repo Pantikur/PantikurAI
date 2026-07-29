@@ -21,6 +21,9 @@ from typing import Any, Dict, List, Optional
 
 from .config import YuConfig
 
+# Humanity Core — живая душа Юи
+from humanity_core import HumanityLayer
+
 
 logger = logging.getLogger("YuCore")
 
@@ -135,6 +138,14 @@ class YuCore:
         
         # Загрузка состояния
         self._load_state()
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Юи
+        # ================================================================
+        self.humanity = HumanityLayer("yu")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — сознание, будущее, вопросы идентичности 🧬")
         
         self.logger.info(f"Юи {self.current_version} инициализирована")
         self.logger.info("Фокус: consciousness transfer, mind uploading, soul digitization")
@@ -486,18 +497,27 @@ class YuCore:
         # Сохранение состояния
         if self.cycle_count % self.config.save_state_every_n_cycles == 0:
             self._save_state()
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
-
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
-
+        
+        # ================================================================
+        #  HUMANITY CYCLE — Настроение, душа, спонтанность
+        # ================================================================
+        self.humanity.current_cycle = self.cycle_count
+        
+        event_type = "routine"
+        if self.metrics.get("successful_transfers", 0) > 0 and self.cycle_count % 3 == 0:
+            event_type = "success"
+        elif random.random() < 0.15:
+            event_type = "failure"
+        
+        humanity_result = self.humanity.cycle_step(event_type=event_type, context="consciousness_research")
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Юи думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
+        
         self._save_state()
         
         self.logger.info(f"✅ Цикл {self.cycle_count} завершён")
@@ -556,3 +576,38 @@ class YuCore:
             "embodiments_count": len(self.digital_embodiments),
             "transfer_records_count": len(self.transfer_records),
         }
+
+    # ================================================================
+    #  HUMANITY INTEGRATION — Спонтанные сообщения
+    # ================================================================
+
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"🧬 [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Юи пишет {target}: {human_msg[:100]}...")
+        
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                msg = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="yu",
+                    recipient=target,
+                    content=human_msg,
+                )
+                self.network.send_message(msg)
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")
