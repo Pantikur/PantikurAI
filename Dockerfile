@@ -93,11 +93,11 @@ COPY scientists_network/ ./scientists_network/
 
 # === ВАЛИДАЦИЯ ===
 RUN ls -la /app/models/ && \
-    if [ ! -f /app/models/chat_model.pth ]; then \
-        echo "❌ Ошибка: файл chat_model.pth отсутствует!"; \
+    if [ ! -d /app/models/rugpt3 ]; then \
+        echo "❌ Ошибка: папка rugpt3 отсутствует!"; \
         exit 1; \
     fi && \
-    echo "✅ Модель найдена: /app/models/chat_model.pth"
+    echo "✅ RUGPT3 найдена: /app/models/rugpt3"
 
 # === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000
