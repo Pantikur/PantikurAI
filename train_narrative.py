@@ -1,14 +1,14 @@
-# train_narrative.py — обучение на повествовательных примерах
+# train_narrative.py — дообучение RUGPT3 на повествовательных примерах
 
 import torch
 import json
 import os
-from train import ChatDataset, ChatNN, train  # используем существующие классы
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # Пути
 DATA_FILE = "data/narrative_examples/examples.json"
-MODEL_PATH = "models/chat_model.pth"
-DATA_SAVE_PATH = "data/chat_data.pkl"
+MODEL_PATH = "models/rugpt3"  # RUGPT3
+BASE_MODEL = "sberbank-ai/rugpt3small_based_on_gpt2"
 
 # Загружаем дополнительные данные
 def load_narrative_data():
@@ -21,23 +21,53 @@ def load_narrative_data():
     print(f"✅ Загружено {len(data)} повествовательных примеров")
     return data
 
-# Расширяем основной train()
+# Дообучение RUGPT3
 def train_with_narrative():
-    # Загружаем базовые данные
-    from train import load_conversations, build_vocab, ChatDataset, ChatNN
-    base_data = load_conversations()
-    
-    # Добавляем повествовательные
     narrative_data = load_narrative_data()
-    full_data = base_data + narrative_data
+    if not narrative_data:
+        print("⚠️ Нет данных для дообучения")
+        return
     
-    # Продолжаем как в train.py
-    word_to_idx, idx_to_word = build_vocab(full_data)
-    dataset = ChatDataset(full_data, word_to_idx, 32)
+    print("🤖 Загрузка RUGPT3...")
+    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
+    model = AutoModelForCausalLM.from_pretrained(BASE_MODEL)
     
-    # Модель и обучение — как в оригинале
-    model = ChatNN(len(word_to_idx), 128, 256, 2).to("cpu")
-    # ... (остальное — аналогично train.py)
+    # Формируем тексты из примеров
+    texts = [ex.get("text", ex.get("prompt", "")) for ex in narrative_data if ex]
+    texts = [t for t in texts if t and len(t) > 10]
+    
+    print(f"📝 Формируем датасет: {len(texts)} текстов")
+    
+    # Токенизация
+    encodings = tokenizer("\n\n".join(texts), return_tensors="pt")
+    
+    # Простое дообучение (gradient accumulation)
+    from torch.utils.data import DataLoader, TensorDataset
+    
+    dataset = TensorDataset(encodings["input_ids"], encodings["attention_mask"])
+    dataloader = DataLoader(dataset, batch_size=2, shuffle=True)
+    
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+    
+    print("🚀 Начало дообучения...")
+    model.train()
+    for epoch in range(3):
+        total_loss = 0
+        for batch_input, batch_mask in dataloader:
+            optimizer.zero_grad()
+            outputs = model(input_ids=batch_input, attention_mask=batch_mask, labels=batch_input)
+            loss = outputs.loss
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
+        
+        print(f"Эпоха {epoch+1}/3, Loss: {total_loss/len(dataloader):.4f}")
+    
+    # Сохранение
+    os.makedirs(os.path.dirname(MODEL_PATH) or ".", exist_ok=True)
+    model.save_pretrained(MODEL_PATH)
+    tokenizer.save_pretrained(MODEL_PATH)
+    print(f"✅ RUGPT3 дообучен и сохранён в {MODEL_PATH}")
 
 if __name__ == "__main__":
     train_with_narrative()

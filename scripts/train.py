@@ -7,34 +7,63 @@ sys.path.append(project_root)
 
 # Теперь можно импортировать модули
 import torch
-from src.preprocess import prepare_chat_dataset
-from src.chat_model import train_model
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # Создаём необходимые директории
-os.makedirs('Wuglarst/data', exist_ok=True)
-os.makedirs('Wuglarst/models', exist_ok=True)
+os.makedirs(os.path.join(project_root, 'models', 'rugpt3'), exist_ok=True)
 
 # Загружаем диалоги из JSON
 import json
 with open(os.path.join(project_root, 'data', 'conversations.json'), 'r', encoding='utf-8') as f:
     conversations = json.load(f)
 
-# Подготавливаем датасет
-print("Preparing dataset...")
-data = prepare_chat_dataset(conversations, vocab_size=5000, max_length=20)
+print(f"📝 Загружено {len(conversations)} диалогов")
 
-# Обучаем модель
-print("\nTraining model...")
-model = train_model(
-    data_file='Wuglarst/data/chat_data.pkl',
-    vocab_size=data['vocab_size'],
-    embedding_dim=128,
-    hidden_dim=256,
-    num_layers=2,
-    epochs=200,
-    batch_size=16,
-    lr=0.001
-)
+# Дообучение RUGPT3
+print("\n🤖 Загрузка RUGPT3...")
+BASE_MODEL = "sberbank-ai/rugpt3small_based_on_gpt2"
+MODEL_PATH = os.path.join(project_root, 'models', 'rugpt3')
 
-print("\nTraining completed!")
-print("You can now run python -m src.chatbot to start chatting")
+tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
+model = AutoModelForCausalLM.from_pretrained(BASE_MODEL)
+
+# Формируем тексты
+texts = []
+for conv in conversations:
+    if isinstance(conv, dict) and "messages" in conv:
+        for msg in conv["messages"]:
+            if isinstance(msg, dict) and "text" in msg:
+                texts.append(msg["text"])
+    elif isinstance(conv, str):
+        texts.append(conv)
+
+texts = [t for t in texts if t and len(t) > 5]
+print(f"📊 Формируем датасет: {len(texts)} текстов")
+
+# Токенизация
+encodings = tokenizer("\n\n".join(texts[:1000]), return_tensors="pt")  # Ограничиваем для скорости
+
+from torch.utils.data import DataLoader, TensorDataset
+dataset = TensorDataset(encodings["input_ids"], encodings["attention_mask"])
+dataloader = DataLoader(dataset, batch_size=2, shuffle=True)
+
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+
+print("🚀 Начало дообучения...")
+model.train()
+for epoch in range(3):
+    total_loss = 0
+    for batch_input, batch_mask in dataloader:
+        optimizer.zero_grad()
+        outputs = model(input_ids=batch_input, attention_mask=batch_mask, labels=batch_input)
+        loss = outputs.loss
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item()
+    
+    print(f"Эпоха {epoch+1}/3, Loss: {total_loss/len(dataloader):.4f}")
+
+# Сохранение
+model.save_pretrained(MODEL_PATH)
+tokenizer.save_pretrained(MODEL_PATH)
+print(f"✅ RUGPT3 дообучена и сохранена в {MODEL_PATH}")

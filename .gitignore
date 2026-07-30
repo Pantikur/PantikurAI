@@ -44,13 +44,20 @@ data/*.joblib
 data/*.bin
 data/*.safetensors
 models/*.pt
+models/*.pth
 models/*.joblib
 models/*.bin
+models/*.safetensors
+models/*.onnx
+models/*.gguf
 
 # Исключение: tokenizer.json разрешён
 !data/tokenizer.json
 !data/conversations.json
 !data/training_pairs.jsonl
+
+# README для моделей разрешён
+models/README.md
 
 # === World Engine ===
 data/worlds/

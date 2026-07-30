@@ -353,14 +353,14 @@ class ImprovementCreator:
         },
         "celesta": {
             "name": "Селеста",
-            "emoji": "🧬",
-            "focus": "Биология, анатомия, биомеханика",
+            "emoji": "🌹",
+            "focus": "Интимная жизнь, сексология, причины и последствия",
             "folder": "celesta",
             "improvements": [
-                "anatomy_model",
-                "biomech_simulator",
-                "tissue_generator",
-                "cell_renderer",
+                "intimacy_analyzer",
+                "cause_effect_model",
+                "consent_framework",
+                "safety_protocol",
             ]
         },
         "akira": {
@@ -389,14 +389,14 @@ class ImprovementCreator:
         },
         "naoto": {
             "name": "Наото",
-            "emoji": "🔍",
-            "focus": "Детали, визуальный анализ, детекция",
+            "emoji": "📚",
+            "focus": "Литература, анализ текстов, скрытые смыслы",
             "folder": "naoto",
             "improvements": [
-                "visual_analyzer",
-                "detail_detector",
-                "pattern_matcher",
-                "anomaly_finder",
+                "literary_analyzer",
+                "character_breakdown",
+                "hidden_meaning_finder",
+                "world_explorer",
             ]
         },
         "yui": {

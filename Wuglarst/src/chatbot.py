@@ -1,4 +1,4 @@
-# Wuglarst/src/chatbot.py (обновлённая, production-ready версия)
+# Wuglarst/src/chatbot.py (обновлённая версия с RUGPT3)
 
 import sys
 import io
@@ -12,8 +12,7 @@ import re
 import random
 from datetime import datetime
 from typing import List, Dict, Any, Optional
-from . import chat_model
-from .chat_model import ChatNN
+from transformers import AutoTokenizer, AutoModelForCausalLM
 # from .web_search import WebSearch  # Отключён — поиск в чате отключён
 from .cultural_references import get_cultural_phrase
 from .intuition import IntuitionEngine, IntuitionResult
@@ -32,10 +31,12 @@ import threading
 import logging
 import asyncio
 
-# === Настройки RPG ===
-RPG_MAX_LENGTH = 256
-RPG_TEMPERATURE = 0.85
-RPG_TOP_P = 0.92
+# === Настройки RUGPT3 ===
+RUGPT3_MAX_LENGTH = 512
+RUGPT3_TEMPERATURE = 0.85
+RUGPT3_TOP_P = 0.92
+RUGPT3_BASE = "sberbank-ai/rugpt3small_based_on_gpt2"
+RUGPT3_VUGLARST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "models", "rugpt3_vuglarst")
 
 # Импортируем KnowledgeManager
 KnowledgeManager: Any = None  # type: ignore
@@ -50,7 +51,7 @@ except ImportError:
 
 class SimpleTokenizer:
     """Токенизатор, совместимый с tokenizer.json"""
-    def __init__(self, tokenizer_path: str, max_length: int = RPG_MAX_LENGTH):
+    def __init__(self, tokenizer_path: str, max_length: int = RUGPT3_MAX_LENGTH):
         with open(tokenizer_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.vocab = data["vocab"]
@@ -98,100 +99,55 @@ class SimpleTokenizer:
 
 class ChatBot:
     def __init__(self, model_path: str, data_path: str, device: str | None = None):
+        """Инициализация RUGPT3 вместо ChatNN."""
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer_path = data_path
         self.model_path = model_path
-        self._user_gender = None  # "мальчик" | "девочка" — устанавливается из API
-        self._user_skin_tone = None  # "светлая" | "смуглая" | "темная" — устанавливается из API
-        self._user_hair_color = None  # "блондин" | "рыжая" | "каштановая" | "чёрная" | "натуральная" | "розовый" | "голубой" | "фиолетовый" | "зеленый" | "пепельный" | "радужный" | "разноцветный" | "крашеный"
-        self._user_penis_size = None  # "маленький" | "средний" | "большой" | "огромный" — устанавливается из API
-        self._user_penis_thickness = None  # "тонкий" | "средний" | "толстый" | "очень толстый" — устанавливается из API
-        self._user_penis_shape = None  # "прямой" | "изогнутый вверх" | "изогнутый вниз" | "стреловидный" | "булавовидный" | "округлый" — устанавливается из API
-
-        # Загружаем токенизатор
-        self.tokenizer = SimpleTokenizer(self.tokenizer_path)
-        self.vocab_size = len(self.tokenizer.vocab)
-        self.max_length = RPG_MAX_LENGTH  # теперь 256
-
-        # Определяем vocab_size из checkpoint, чтобы избежать size mismatch
-        checkpoint_vocab_size = None
-        try:
-            temp_sd = torch.load(self.model_path, map_location="cpu", weights_only=True)
-            # embedding.weight[0] = vocab_size
-            checkpoint_vocab_size = temp_sd["embedding.weight"].shape[0]
-            del temp_sd
-        except Exception:
-            pass
-
-        # Используем vocab_size из checkpoint, если он больше текущего
-        model_vocab_size = max(self.vocab_size, checkpoint_vocab_size) if checkpoint_vocab_size else self.vocab_size
-        if checkpoint_vocab_size and checkpoint_vocab_size != self.vocab_size:
-            print(f"[WARN] vocab_size mismatch: checkpoint={checkpoint_vocab_size}, tokenizer={self.vocab_size}, model={model_vocab_size}")
-
-        # Загружаем модель — улучшенные параметры по умолчанию
-        self.model = ChatNN(
-            vocab_size=model_vocab_size,
-            embedding_dim=128,
-            hidden_dim=512,
-            num_layers=4,        # Улучшено: 4 слоя вместо 2
-            max_length=self.max_length,
-            pad_token_id=self.tokenizer.pad_token_id,
-            eos_token_id=self.tokenizer.eos_token_id,
-            head_count=4,         # Multi-head attention
-            dropout=0.1           # Улучшено: 0.1 вместо 0.3
-        ).to(self.device)
-
-        try:
-            state_dict = torch.load(self.model_path, map_location=self.device, weights_only=True)
-            
-            # Маппинг state_dict: если размеры не совпадают, обрезаем/дополняем
-            mapped_sd = {}
-            for k, v in state_dict.items():
-                if k == "embedding.weight":
-                    if v.shape[0] > self.model.embedding.weight.shape[0]:
-                        # Обрезаем до размера модели
-                        mapped_sd[k] = v[:self.model.embedding.weight.shape[0]]
-                    elif v.shape[0] < self.model.embedding.weight.shape[0]:
-                        # Дополняем случайными значениями
-                        new_weight = torch.zeros(self.model.embedding.weight.shape, dtype=v.dtype, device=self.device)
-                        new_weight[:v.shape[0]] = v
-                        # Копируем первый токен как дефолтный
-                        new_weight[v.shape[0]:] = v[0]
-                        mapped_sd[k] = new_weight
-                    else:
-                        mapped_sd[k] = v
-                elif k == "fc.weight":
-                    if v.shape[0] > self.model.fc.weight.shape[0]:
-                        mapped_sd[k] = v[:self.model.fc.weight.shape[0]]
-                    elif v.shape[0] < self.model.fc.weight.shape[0]:
-                        new_weight = torch.zeros(self.model.fc.weight.shape, dtype=v.dtype, device=self.device)
-                        new_weight[:v.shape[0]] = v
-                        new_weight[v.shape[0]:] = v[0]
-                        mapped_sd[k] = new_weight
-                    else:
-                        mapped_sd[k] = v
-                elif k == "fc.bias":
-                    if v.shape[0] > self.model.fc.bias.shape[0]:
-                        mapped_sd[k] = v[:self.model.fc.bias.shape[0]]
-                    elif v.shape[0] < self.model.fc.bias.shape[0]:
-                        new_bias = torch.zeros(self.model.fc.bias.shape, dtype=v.dtype, device=self.device)
-                        new_bias[:v.shape[0]] = v
-                        new_bias[v.shape[0]:] = v[0]
-                        mapped_sd[k] = new_bias
-                    else:
-                        mapped_sd[k] = v
-                else:
-                    mapped_sd[k] = v
-            
-            self.model.load_state_dict(mapped_sd, strict=False)
-            self.model.eval()
-            print(f"[OK] Model loaded: {self.model_path} on {self.device}")
-        except Exception as e:
-            raise RuntimeError(f"[FAIL] Failed to load model: {e}")
+        
+        # Определяем путь к модели
+        if os.path.exists(model_path):
+            self.rugpt_path = model_path
+        elif os.path.exists(RUGPT3_VUGLARST):
+            self.rugpt_path = RUGPT3_VUGLARST
+        else:
+            self.rugpt_path = RUGPT3_BASE
+        
+        print(f"[RUGPT3] Загрузка модели: {self.rugpt_path}")
+        
+        # Загружаем RUGPT3
+        self.tokenizer = AutoTokenizer.from_pretrained(self.rugpt_path)
+        self.model = AutoModelForCausalLM.from_pretrained(
+            self.rugpt_path,
+            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+            device_map="auto" if torch.cuda.is_available() else None
+        )
+        
+        if torch.cuda.is_available():
+            print(f"[RUGPT3] Загружено на GPU: {torch.cuda.get_device_name(0)}")
+        else:
+            print("[RUGPT3] Загружено на CPU")
+        
+        self._user_gender = None
+        self._user_skin_tone = None
+        self._user_hair_color = None
+        self._user_penis_size = None
+        self._user_penis_thickness = None
+        self._user_penis_shape = None
+        
+        # Инициализация движков
+        self.intuition = IntuitionEngine()
+        self.social = SocialEngine()
+        self.cognitive = CognitiveEngine()
+        self.emotional = EmotionalIntelligenceEngine()
+        self.physiological = PhysiologicalEngine()
+        self.special_cognitive = SpecialCognitiveEngine()
+        self.imagination = ImaginationEngine()
+        self.professions = ProfessionEngine()
+        self.manipulation = ManipulationEngine()
+        self.context = ContextAnalyzer()
+        self.world = WorldEngine()
 
         # Поиск и знания
-        # self.web_search = WebSearch()  # Отключён — поиск в чате отключён
-        self.web_search_enabled = False  # Флаг отключения поиска
+        self.web_search_enabled = False
         self.knowledge_cache = {}
         self.knowledge_file = "data/knowledge_cache.json"
         self._load_knowledge_cache()
@@ -592,100 +548,45 @@ class ChatBot:
     def _generate_response_with_sampling(
         self,
         input_text: str,
-        max_length: int = RPG_MAX_LENGTH,
-        temperature: float = RPG_TEMPERATURE,
-        top_p: float = RPG_TOP_P,
+        max_length: int = RUGPT3_MAX_LENGTH,
+        temperature: float = RUGPT3_TEMPERATURE,
+        top_p: float = RUGPT3_TOP_P,
         max_words: int = 80,
         min_words: int = 5
     ) -> str:
-        """
-        Генерация с улучшенным nucleus sampling.
-        Улучшения:
-        - Убран repeat_count (был false positive на повторяющихся предлогах)
-        - Better temperature scaling
-        - Min words guarantee
-        """
+        """Генерация через RUGPT3 с nucleus sampling."""
         self.model.eval()
-        tokens = self._clean_text(input_text).split()
-        input_ids = self.tokenizer.encode(" ".join(tokens), add_eos=False)
-        input_tensor = torch.tensor([input_ids], dtype=torch.long).to(self.device)
-        mask = (input_tensor != self.tokenizer.pad_token_id).float().to(self.device)
-
-        import time
-        start_gen = time.time()
-
-        generated_ids = []
-        current_input = input_tensor
-        current_mask = mask
-
-        word_count = 0
-        prev_word = ""
-
+        
+        # Токенизация через RUGPT3
+        inputs = self.tokenizer.encode(input_text, return_tensors="pt")
+        if torch.cuda.is_available():
+            inputs = inputs.to("cuda")
+        
+        # Генерация
         with torch.no_grad():
-            for step in range(max_length):
-                step_start = time.time()
-                logits = self.model(current_input, mask=current_mask)[:, -1, :]
-                
-                # Temperature scaling с penalty для повторений
-                logits = logits / max(temperature, 0.1)
-                
-                # Nucleus sampling (top_p)
-                sorted_logits, sorted_indices = torch.sort(logits, descending=True)
-                cumulative_probs = torch.softmax(sorted_logits, dim=-1).cumsum(dim=-1)
-                
-                # Remove tokens below top_p
-                sorted_indices_to_remove = cumulative_probs > top_p
-                sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
-                sorted_indices_to_remove[..., 0] = 0
-                indices_to_remove = sorted_indices[sorted_indices_to_remove]
-                logits[0, indices_to_remove] = float('-inf')
-
-                probs = torch.softmax(logits, dim=-1)
-                
-                # Penalty for repeating last 3 words
-                if word_count >= 3 and generated_ids:
-                    recent_words = []
-                    for gid in generated_ids[-10:]:
-                        w = self.tokenizer.inverse_vocab.get(int(gid), "")
-                        if w and w not in ["<PAD>", "<UNK>", "<EOS>"]:
-                            recent_words.append(w)
-                    # Последние 3 уникальных слова
-                    recent_unique = list(set(recent_words[-3:]))
-                    for gid in generated_ids[-10:]:
-                        w = self.tokenizer.inverse_vocab.get(int(gid), "")
-                        if w in recent_unique and w not in ["<PAD>", "<UNK>", "<EOS>"]:
-                            probs[0, gid] *= 0.3  # penalty 70%
-
-                next_token = int(torch.multinomial(probs, num_samples=1).item())
-
-                if next_token == self.tokenizer.eos_token_id:
-                    # Не останавливаемся раньше min_words
-                    if word_count < min_words:
-                        next_token = self.tokenizer.unk_token_id
-                    else:
-                        break
-
-                if next_token not in [self.tokenizer.pad_token_id, self.tokenizer.unk_token_id]:
-                    generated_ids.append(next_token)
-                    word = self.tokenizer.inverse_vocab.get(next_token, "<UNK>")
-                    if word != prev_word:
-                        prev_word = word
-                    word_count += 1
-
-                    # Ранняя остановка: макс слов
-                    if word_count >= max_words:
-                        break
-
-                new_token = torch.tensor([[next_token]], device=self.device)
-                current_input = torch.cat([current_input, new_token], dim=1)
-                current_input = current_input[:, -self.max_length:]
-
-                new_mask = torch.ones((1, 1), device=self.device)
-                current_mask = torch.cat([current_mask, new_mask], dim=1)
-                current_mask = current_mask[:, -self.max_length:]
-
-        decoded = self.tokenizer.decode(generated_ids).strip()
-        return decoded
+            outputs = self.model.generate(
+                inputs.input_ids,
+                max_length=max_length,
+                temperature=temperature,
+                top_p=top_p,
+                do_sample=True,
+                pad_token_id=self.tokenizer.eos_token_id,
+                eos_token_id=self.tokenizer.eos_token_id
+            )
+        
+        # Декодируем только новое
+        generated_ids = outputs[0][inputs.input_ids.shape[1]:]
+        response = self.tokenizer.decode(generated_ids, skip_special_tokens=True)
+        
+        # Фильтр по словам
+        words = response.split()
+        if len(words) < min_words:
+            return input_text[-50:] + " " + response
+        if len(words) > max_words:
+            words = words[:max_words]
+            response = " ".join(words)
+        
+        return response.strip()
 
 
     def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat") -> str:  # type: ignore[complexity]

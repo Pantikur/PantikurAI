@@ -156,9 +156,11 @@ if not os.path.exists("logs"):
 
 # === Пути ===
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "models" / "chat_model.pth"
+MODEL_PATH = BASE_DIR / "models" / "rugpt3"
 DATA_PATH = BASE_DIR / "data" / "tokenizer.json"
 CONVERSATIONS_JSON = BASE_DIR / "data" / "conversations.json"
+RUGPT3_BASE = "sberbank-ai/rugpt3small_based_on_gpt2"  # Базовая модель
+RUGPT3_VUGLARST = BASE_DIR / "models" / "rugpt3_vuglarst"  # Дообученная на Вугларсте
 
 # === Добавляем Wuglarst/src в путь (точно для импорта src.chatbot) ===
 WUGLARST_DIR = BASE_DIR / "Wuglarst"
@@ -272,33 +274,32 @@ AUTO_WEB_SEARCH_MIN_LENGTH = int(os.getenv("AUTO_WEB_SEARCH_MIN_LENGTH", "2"))  
 AUTO_WEB_SEARCH_EXTRACT_DEPTH = int(os.getenv("AUTO_WEB_SEARCH_EXTRACT_DEPTH", "1"))  # глубина извлечения слов
 AUTO_WEB_SEARCH_MAX_NEW_WORDS = int(os.getenv("AUTO_WEB_SEARCH_MAX_NEW_WORDS", "10"))  # макс новых слов из определения
 
-# === Импорт ChatBot с резервом ===
-def import_chatbot():
-    global chatbot
-    try:
-        from src.chatbot import ChatBot  # type: ignore
-        logger.info("✅ Импортирован: src.chatbot.ChatBot")
-        return ChatBot
-    except ImportError as e:
-        logger.error(f"❌ Ошибка импорта из src: {e}")
-
-    try:
-        import importlib.util
-        chatbot_path = WUGLARST_DIR / "src" / "chatbot.py"
-        if not chatbot_path.exists():
-            raise FileNotFoundError(f"Файл не найден: {chatbot_path}")
-
-        spec = importlib.util.spec_from_file_location("src.chatbot", chatbot_path)
-        if spec is None or spec.loader is None:
-            raise RuntimeError(f"Не удалось создать spec для {chatbot_path}")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        sys.modules["src.chatbot"] = module
-        logger.info("✅ Модуль src.chatbot загружен вручную")
-        return module.ChatBot
-    except Exception as e:
-        logger.critical(f"💥 Не удалось загрузить ChatBot: {e}")
-        raise
+# === Импорт RUGPT3 вместо ChatBot ===
+def load_rugpt3():
+    """Загружает RUGPT3 модель вместо ChatBot."""
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+    import torch
+    
+    logger.info("🤖 Загрузка RUGPT3 вместо ChatBot...")
+    
+    # Используем дообученную модель если есть, иначе базовую
+    model_path = str(RUGPT3_VUGLARST) if RUGPT3_VUGLARST.exists() else RUGPT3_BASE
+    
+    logger.info(f"   📦 Модель: {model_path}")
+    
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_path,
+        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+        device_map="auto" if torch.cuda.is_available() else None
+    )
+    
+    if torch.cuda.is_available():
+        logger.info("   ✅ RUGPT3 загружен на GPU")
+    else:
+        logger.info("   ✅ RUGPT3 загружен на CPU")
+    
+    return {"tokenizer": tokenizer, "model": model}
 
 
 # === Lifespan: загрузка при старте и остановке ===
@@ -450,20 +451,19 @@ async def lifespan(app: FastAPI):
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
     # === КОНЕЦ АСИНХРОННОГО ЗАПУСКА ===
 
-    # === Фоновая загрузка ChatBot + WebSearch (не блокирует запуск сервера) ===
+    # === Фоновая загрузка RUGPT3 (не блокирует запуск сервера) ===
     async def load_chatbot_background():
         global chatbot, web_search
         try:
-            logger.info("🔁 Загружаю чат-бот (в фоне)...")
+            logger.info("🔁 Загружаю RUGPT3 (в фоне)...")
             load_start = asyncio.get_event_loop().time()
-            ChatBot = import_chatbot()
-            new_bot = await asyncio.to_thread(ChatBot, str(MODEL_PATH), str(DATA_PATH))
+            rugpt3 = await asyncio.to_thread(load_rugpt3)
             load_time = asyncio.get_event_loop().time() - load_start
-            logger.info(f"📦 ChatBot загружен за {load_time:.2f} сек")
+            logger.info(f"📦 RUGPT3 загружен за {load_time:.2f} сек")
 
             with CHATBOT_LOCK:
-                chatbot = new_bot
-            logger.info("✅ Чат-бот успешно загружен!")
+                chatbot = rugpt3
+            logger.info("✅ RUGPT3 успешно загружен!")
 
             if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
                 logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
@@ -564,7 +564,7 @@ async def lifespan(app: FastAPI):
 
 
 async def auto_reload_chatbot_loop():
-    """Фоновая задача: периодически проверяет файлы и загружает бота, когда они появятся."""
+    """Фоновая задача: периодически проверяет файлы и загружает RUGPT3, когда они появятся."""
     global chatbot
     check_interval = 10  # секунд
     max_attempts = 60  # максимум 10 минут (60 * 10с)
@@ -573,29 +573,23 @@ async def auto_reload_chatbot_loop():
         await asyncio.sleep(check_interval)
         
         # Проверяем наличие файлов
-        if not MODEL_PATH.exists():
+        if not RUGPT3_VUGLARST.exists() and RUGPT3_BASE != "sberbank-ai/rugpt3small_based_on_gpt2":
             logger.debug(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): модель ещё не найдена")
             continue
-        if not DATA_PATH.exists():
-            logger.debug(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): токенизатор ещё не найден")
-            continue
         
-        logger.info(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): файлы найдены, пробуем загрузить бота...")
+        logger.info(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): модели найдены, пробуем загрузить RUGPT3...")
         try:
             load_start = asyncio.get_event_loop().time()
-            ChatBot = import_chatbot()
-            new_bot = ChatBot(str(MODEL_PATH), str(DATA_PATH))
+            rugpt3 = load_rugpt3()
             load_time = asyncio.get_event_loop().time() - load_start
             with CHATBOT_LOCK:
-                chatbot = new_bot
-            logger.info(f"✅ Бот успешно загружен авто-загрузкой за {load_time:.2f} сек!")
-            if hasattr(new_bot, 'dataset') and new_bot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
-                logger.info(f"📚 Обучено на {len(new_bot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
+                chatbot = rugpt3
+            logger.info(f"✅ RUGPT3 успешно загружен авто-загрузкой за {load_time:.2f} сек!")
             return  # Успешно загружено, выходим
         except Exception as e:
-            logger.error(f"❌ Авто-загрузка бота не удалась (попытка {attempt}): {e}")
+            logger.error(f"❌ Авто-загрузка RUGPT3 не удалась (попытка {attempt}): {e}")
     
-    logger.warning("⚠️ Авто-загрузка бота: исчерпано максимальное число попыток")
+    logger.warning("⚠️ Авто-загрузка RUGPT3: исчерпано максимальное число попыток")
 
 
 # === FastAPI приложение ===
@@ -703,36 +697,35 @@ async def get_model_size():
             return os.path.getsize(path)
         return None
 
-    model_size = get_file_size("models/chat_model.pth")
+    model_size = get_file_size("models/rugpt3")
     tokenizer_size = get_file_size("data/tokenizer.json")
     conv_size = get_file_size("data/conversations.json")
     train_size = get_file_size("data/training_pairs.jsonl")
-
-    result = {
-        "model": {
-            "path": "models/chat_model.pth",
-            "exists": model_size is not None,
-            "size_bytes": model_size,
-            "size_human": format_size(model_size) if model_size else "Не найдена"
-        },
+    
+    model_info = {
+        "name": "RUGPT3",
+        "path": "models/rugpt3",
+        "exists": model_size is not None,
+        "size_bytes": model_size,
+        "size_human": format_size(model_size) if model_size else "Не найдена",
         "tokenizer": {
             "path": "data/tokenizer.json",
             "exists": tokenizer_size is not None,
             "size_bytes": tokenizer_size,
-            "size_human": format_size(tokenizer_size) if tokenizer_size else "Не найден"
+            "size_human": format_size(tokenizer_size) if tokenizer_size else "Не найден",
         },
         "training_data": {
             "conversations_json": {
                 "path": "data/conversations.json",
                 "exists": conv_size is not None,
                 "size_bytes": conv_size,
-                "size_human": format_size(conv_size) if conv_size else "Не найден"
+                "size_human": format_size(conv_size) if conv_size else "Не найден",
             },
             "training_pairs_jsonl": {
                 "path": "data/training_pairs.jsonl",
                 "exists": train_size is not None,
                 "size_bytes": train_size,
-                "size_human": format_size(train_size) if train_size else "Не найден"
+                "size_human": format_size(train_size) if train_size else "Не найден",
             }
         },
         "total_size_bytes": sum(s for s in [model_size, tokenizer_size, conv_size, train_size] if s is not None),
@@ -740,7 +733,7 @@ async def get_model_size():
         "timestamp": datetime.now().isoformat()
     }
 
-    return result
+    return model_info
 
 
 # === Endpoint: ручное обучение модели ===
@@ -2973,15 +2966,14 @@ def run_retrain_sync():
         )
         if result.returncode == 0:
             logger.info("🎉 Ретраин завершён успешно!")
-            # Перезагрузка модели
+            # Перезагрузка RUGPT3
             try:
-                ChatBot = import_chatbot()
-                new_bot = ChatBot(str(MODEL_PATH), str(DATA_PATH))
+                rugpt3 = load_rugpt3()
                 with CHATBOT_LOCK:
-                    chatbot = new_bot
-                logger.info("🔁 Модель перезагружена после обучения")
+                    chatbot = rugpt3
+                logger.info("🔁 RUGPT3 перезагружена после обучения")
             except Exception as e:
-                logger.error(f"❌ Не удалось перезагрузить модель: {e}")
+                logger.error(f"❌ Не удалось перезагрузить RUGPT3: {e}")
         else:
             logger.error(f"❌ Ошибка ретраина: {result.stderr}")
     except subprocess.TimeoutExpired:

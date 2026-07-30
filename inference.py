@@ -8,7 +8,7 @@ import os
 from collections import Counter
 
 # === Настройки ===
-MODEL_PATH = "models/chat_model.pth"
+MODEL_PATH = "models/rugpt3"
 DATA_PATH = "data/chat_data.pkl"
 
 MAX_LENGTH = 64

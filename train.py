@@ -1,4 +1,4 @@
-# train.py — обучение Transformer модели (ChatNN из chat_model.py)
+# train.py — обучение RUGPT3 модели
 
 import torch
 import torch.nn as nn
@@ -8,13 +8,14 @@ import json
 import os
 from collections import Counter
 import re
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # === Настройки ===
 DATA_DIR = "data"
 OLD_DATA_PATH = os.path.join(DATA_DIR, "chat_data.pkl")
 CONVERSATIONS_JSON = os.path.join(DATA_DIR, "conversations.json")
 TRAINING_PAIRS_JSONL = os.path.join(DATA_DIR, "training_pairs.jsonl")
-MODEL_PATH = "models/chat_model.pth"
+MODEL_PATH = "models/rugpt3"
 
 MAX_LENGTH = 256
 BATCH_SIZE = 16
@@ -27,11 +28,11 @@ MAX_GRAD_NORM = 1.0  # Gradient clipping для стабильности
 
 os.makedirs("models", exist_ok=True)
 
-# Добавляем путь для импорта ChatNN
+# Добавляем путь для импорта
 import sys
-sys.path.append(".")  # Чтобы можно было импортировать из Wuglarst
+sys.path.append(".")
 
-from Wuglarst.src.chat_model import ChatNN
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 # === Вспомогательные функции ===
@@ -408,44 +409,58 @@ def main():
 
     # Загружаем данные
     temp_data = joblib.load(data_file)
+    
+    # Загружаем RUGPT3
+    safe_print("[🤖] Загрузка RUGPT3 для дообучения...")
+    tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
+    model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
 
-    # Создаём модель
-    model = ChatNN(
-        vocab_size=temp_data["vocab_size"],
-        embedding_dim=EMBEDDING_DIM,
-        hidden_dim=HIDDEN_DIM,
-        num_layers=NUM_LAYERS,
-        max_length=MAX_LENGTH,
-        pad_token_id=0,
-        eos_token_id=temp_data["word_to_idx"]["<EOS>"]
-    ).to(DEVICE)
+    safe_print("[FIRE] РЕТРАИН: дообучение RUGPT3 с нуля на всех данных")
 
-    # ПРИ РЕТРАИНЕ: не загружаем старые веса — обучаем с нуля
-    # model = load_model_weights(model, MODEL_PATH, DEVICE)
-    safe_print("[FIRE] РЕТРАИН: обучение модели с нуля на всех данных")
+    # Формируем тексты из данных
+    texts = []
+    if "samples" in temp_data:
+        for sample in temp_data["samples"]:
+            if isinstance(sample, dict):
+                texts.append(sample.get("text", sample.get("prompt", "")))
+            elif isinstance(sample, str):
+                texts.append(sample)
+    texts = [t for t in texts if t and len(t) > 5]
+    
+    if not texts:
+        safe_print("[WARN] Нет текстов для дообучения — сохраняем базовую модель")
+        texts = ["Привет! Как дела?"]
 
-    # Датасет и даталоадер
-    dataset = ChatDataset(data_file)
-    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
+    safe_print(f"[📊] Формируем датасет: {len(texts)} текстов")
+    
+    # Токенизация и дообучение
+    encodings = tokenizer("\n\n".join(texts[:500]), return_tensors="pt")
+    from torch.utils.data import DataLoader, TensorDataset
+    dataset = TensorDataset(encodings["input_ids"], encodings["attention_mask"])
+    dataloader = DataLoader(dataset, batch_size=2, shuffle=True)
+    
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+    
+    safe_print("[🚀] Начало дообучения...")
+    model.train()
+    for epoch in range(3):
+        total_loss = 0
+        for batch_input, batch_mask in dataloader:
+            optimizer.zero_grad()
+            outputs = model(input_ids=batch_input, attention_mask=batch_mask, labels=batch_input)
+            loss = outputs.loss
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
+        safe_print(f"[INFO] Эпоха {epoch+1}/3, Loss: {total_loss/len(dataloader):.4f}")
 
-    # Обучение
-    train_model(model, dataloader, EPOCHS, DEVICE)
+    # Сохраняем RUGPT3
+    os.makedirs(os.path.dirname(MODEL_PATH) or ".", exist_ok=True)
+    model.save_pretrained(MODEL_PATH)
+    tokenizer.save_pretrained(MODEL_PATH)
 
-    # Сохраняем веса
-    torch.save(model.state_dict(), MODEL_PATH)
-
-    # Сохраняем метаданные
-    joblib.dump({
-        "word_to_idx": temp_data["word_to_idx"],
-        "idx_to_word": temp_data["idx_to_word"],
-        "vocab_size": temp_data["vocab_size"],
-        "max_length": MAX_LENGTH,
-        "samples": temp_data["samples"]
-    }, OLD_DATA_PATH)
-
-    safe_print("[HAPPY] Модель успешно обучена и сохранена!")
-    safe_print(f"[INFO] Метаданные: {OLD_DATA_PATH}")
-    safe_print(f"[SAVE] Веса: {MODEL_PATH}")
+    safe_print("[HAPPY] RUGPT3 успешно дообучена и сохранена!")
+    safe_print(f"[SAVE] Модель: {MODEL_PATH}")
 
 
 if __name__ == "__main__":

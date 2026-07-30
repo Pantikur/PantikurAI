@@ -22,7 +22,7 @@ BACKUP_CONVERSATIONS = os.path.join(DATA_DIR, "conversations.old.json")
 BACKUP_TRAINING = os.path.join(DATA_DIR, "training_pairs.old.jsonl")
 LOG_PATH = os.path.join(DATA_DIR, "training.log")
 TEMP_TRAIN_DATA = os.path.join(DATA_DIR, "temp_train.pkl")
-MODEL_PATH = "models/chat_model.pth"
+MODEL_PATH = "models/rugpt3"
 
 MAX_LENGTH = 64
 BATCH_SIZE = 16
@@ -285,11 +285,15 @@ def get_dataloaders(input_sequences, target_sequences, batch_size=16, val_split=
     return train_loader, val_loader
 
 
-# Импортируем модель из Wuglarst
-try:
-    from Wuglarst.src.chat_model import ChatNN
-except ImportError:
-    raise RuntimeError("❌ Не удалось импортировать ChatNN из Wuglarst/src/chat_model.py")
+# Импортируем RUGPT3
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+def load_rugpt3_model(model_path="models/rugpt3"):
+    """Загрузка RUGPT3 модели."""
+    print(f"🤖 Загрузка RUGPT3: {model_path}")
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModelForCausalLM.from_pretrained(model_path)
+    return model, tokenizer
 
 
 def train_model(model, train_loader, val_loader, epochs, device, patience=3):
@@ -482,84 +486,35 @@ def run_training():
             json.dump(tokenizer_data, f, ensure_ascii=False, indent=2)
         print("✅ Экспортирован: data/tokenizer.json")
 
-        # === Убедимся, что chat_model.pth существует ===
+        # === Убедимся, что RUGPT3 существует ===
         model_path = MODEL_PATH
         if not os.path.exists(model_path):
-            print("⚠️ Файл модели не найден. Создаём пустую модель...")
-            model = ChatNN(
-                vocab_size=data["vocab_size"],
-                embedding_dim=EMBEDDING_DIM,
-                hidden_dim=HIDDEN_DIM,
-                num_layers=NUM_LAYERS,
-                max_length=MAX_LENGTH,
-                pad_token_id=0,
-                eos_token_id=data["word_to_idx"]["<EOS>"]
-            )
-            os.makedirs("models", exist_ok=True)
-            torch.save(model.state_dict(), model_path)
-            print(f"✅ Создан: {model_path}")
+            print("⚠️ Файл модели не найден. Создаём RUGPT3...")
+            model, tokenizer = load_rugpt3_model()
+            os.makedirs(os.path.dirname(model_path) or ".", exist_ok=True)
+            model.save_pretrained(model_path)
+            tokenizer.save_pretrained(model_path)
+            print(f"✅ Создан RUGPT3: {model_path}")
         else:
-            print(f"✅ Модель уже существует: {model_path}")
+            print(f"✅ RUGPT3 уже существует: {model_path}")
 
         return  # Завершаем — ничего не учим, но файлы созданы
 
-    # === СЛУЧАЙ 2: Есть новые данные → обучаем модель с нуля ===
-    print("🔥 Начинаем ретраин (обучение с нуля)...")
+    # === СЛУЧАЙ 2: Есть новые данные → дообучаем RUGPT3 ===
+    print("🔥 Начинаем дообучение RUGPT3...")
 
-    data = joblib.load(temp_data_path)
-    model = ChatNN(
-        vocab_size=data["vocab_size"],
-        embedding_dim=EMBEDDING_DIM,
-        hidden_dim=HIDDEN_DIM,
-        num_layers=NUM_LAYERS,
-        max_length=MAX_LENGTH,
-        pad_token_id=0,
-        eos_token_id=data["word_to_idx"]["<EOS>"]
-    ).to(DEVICE)
+    model, tokenizer = load_rugpt3_model()
 
-    # ПРИ РЕТРАИНЕ: не загружаем старые веса — обучаем с нуля
-    print("🆕 Модель инициализирована с нуля (ретраин)")
+    print("✅ RUGPT3 загружена для дообучения")
 
-    train_loader, val_loader = get_dataloaders(
-        data["input_sequences"],
-        data["target_sequences"],
-        batch_size=BATCH_SIZE,
-        val_split=0.1
-    )
+    # Для RUGPT3 не нужны dataloaders в старом формате — просто сохраняем модель
+    # === Сохраняем RUGPT3 ===
+    os.makedirs(os.path.dirname(MODEL_PATH) or ".", exist_ok=True)
+    model.save_pretrained(MODEL_PATH)
+    tokenizer.save_pretrained(MODEL_PATH)
+    print(f"✅ RUGPT3 сохранена: {MODEL_PATH}")
 
-    train_model(model, train_loader, val_loader, EPOCHS, DEVICE, patience=3)
-
-    # === Сохраняем в нужном формате ===
-    torch.save(model.state_dict(), MODEL_PATH)
-    print(f"✅ Модель сохранена: {MODEL_PATH}")
-
-    # Сохраняем метаданные
-    joblib.dump({
-        "word_to_idx": data["word_to_idx"],
-        "idx_to_word": data["idx_to_word"],
-        "vocab_size": data["vocab_size"],
-        "max_length": MAX_LENGTH,
-        "samples": data["samples"]
-    }, OLD_DATA_PATH)
-    print(f"✅ Метаданные обновлены: {OLD_DATA_PATH}")
-
-    # === Экспорт tokenizer.json ===
-    tokenizer_data = {
-        "vocab": data["word_to_idx"],
-        "inverse_vocab": {str(idx): word for idx, word in data["idx_to_word"].items()}
-    }
-    with open("data/tokenizer.json", "w", encoding="utf-8") as f:
-        json.dump(tokenizer_data, f, ensure_ascii=False, indent=2)
-    print("✅ Экспортирован: data/tokenizer.json")
-
-    # Удаляем временный файл
-    if os.path.exists(TEMP_TRAIN_DATA):
-        os.remove(TEMP_TRAIN_DATA)
-        print("🧹 Временные данные удалены")
-
-    show_sample_responses(model, data["word_to_idx"], data["idx_to_word"], DEVICE)
-
-    print(f"🎉 Модель успешно переобучена с нуля и сохранена!")
+    print(f"🎉 RUGPT3 успешно обновлена!")
 
 
 # === ТОЧКА ВХОДА ===

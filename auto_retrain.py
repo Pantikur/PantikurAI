@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 DATA_DIR = "data"
-MODEL_PATH = "models/chat_model.pth"
+MODEL_PATH = "models/rugpt3"
 
 # Файлы, за которыми следим
 WATCHED_FILES = ["conversations.json", "training_pairs.jsonl"]
