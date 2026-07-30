@@ -93,7 +93,7 @@ COPY scientists_network/ ./scientists_network/
 
 # === ЗАГРУЗКА МОДЕЛИ ИЗ HUGGINGFACE ===
 RUN pip install --no-cache-dir huggingface_hub && \
-    python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Pantikur/PantikurAI-RUGPT3', local_dir='models/rugpt3')" 2>/dev/null || echo "⚠️ Модель не загружена (нет сети)"
+    python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Pantikur/Wuglarst', local_dir='models/rugpt3')" 2>/dev/null || echo "⚠️ Модель не загружена (нет сети)"
 
 # === ВАЛИДАЦИЯ ===
 RUN if [ -d /app/models/rugpt3 ] && [ "$(ls -A /app/models/rugpt3)" ]; then \

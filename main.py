@@ -156,7 +156,7 @@ if not os.path.exists("logs"):
 
 # === Пути ===
 BASE_DIR = Path(__file__).resolve().parent
-HF_MODEL_ID = "Pantikur/PantikurAI-RUGPT3"  # HuggingFace модель
+HF_MODEL_ID = "Pantikur/Wuglarst"  # HuggingFace модель
 DATA_PATH = BASE_DIR / "data" / "tokenizer.json"
 CONVERSATIONS_JSON = BASE_DIR / "data" / "conversations.json"
 

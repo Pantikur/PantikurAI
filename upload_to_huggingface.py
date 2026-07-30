@@ -7,7 +7,7 @@ from huggingface_hub import HfApi, login
 # === НАСТРОЙКИ ===
 HF_TOKEN = os.getenv("HF_TOKEN", "your_token_here")  # Или введи вручную
 MODEL_PATH = "models/rugpt3_vuglarst/merged"  # Дообученная модель
-REPO_ID = "Pantikur/PantikurAI-RUGPT3"  # Твой репозиторий на HF
+REPO_ID = "Pantikur/Wuglarst"  # Твой репозиторий на HF
 
 def upload_model():
     print("Вход в HuggingFace...")
