@@ -7,6 +7,8 @@ data/*
 !data/config.yaml
 
 models/*
+!models/rugpt3/
+!models/rugpt3_vuglarst/
 !models/*.pth
 
 # Wuglarst — ОСТАВЛЯЕМ ВСЁ для mount
