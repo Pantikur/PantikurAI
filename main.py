@@ -156,11 +156,9 @@ if not os.path.exists("logs"):
 
 # === Пути ===
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "models" / "rugpt3"
+HF_MODEL_ID = "Pantikur/PantikurAI-RUGPT3"  # HuggingFace модель
 DATA_PATH = BASE_DIR / "data" / "tokenizer.json"
 CONVERSATIONS_JSON = BASE_DIR / "data" / "conversations.json"
-RUGPT3_BASE = "sberbank-ai/rugpt3small_based_on_gpt2"  # Базовая модель
-RUGPT3_VUGLARST = BASE_DIR / "models" / "rugpt3_vuglarst"  # Дообученная на Вугларсте
 
 # === Добавляем Wuglarst/src в путь (точно для импорта src.chatbot) ===
 WUGLARST_DIR = BASE_DIR / "Wuglarst"
@@ -276,23 +274,26 @@ AUTO_WEB_SEARCH_MAX_NEW_WORDS = int(os.getenv("AUTO_WEB_SEARCH_MAX_NEW_WORDS", "
 
 # === Импорт RUGPT3 вместо ChatBot ===
 def load_rugpt3():
-    """Загружает RUGPT3 модель вместо ChatBot."""
+    """Загружает RUGPT3 из HuggingFace."""
     from transformers import AutoTokenizer, AutoModelForCausalLM
     import torch
     
-    logger.info("🤖 Загрузка RUGPT3 вместо ChatBot...")
+    logger.info(f"🤖 Загрузка RUGPT3 из HuggingFace: {HF_MODEL_ID}...")
     
-    # Используем дообученную модель если есть, иначе базовую
-    model_path = str(RUGPT3_VUGLARST) if RUGPT3_VUGLARST.exists() else RUGPT3_BASE
-    
-    logger.info(f"   📦 Модель: {model_path}")
-    
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_path,
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        device_map="auto" if torch.cuda.is_available() else None
-    )
+    # Пробуем загрузить из HF, если нет сети — fallback на базовую
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(HF_MODEL_ID)
+        model = AutoModelForCausalLM.from_pretrained(
+            HF_MODEL_ID,
+            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+            device_map="auto" if torch.cuda.is_available() else None
+        )
+        logger.info("✅ RUGPT3 загружена из HuggingFace")
+    except Exception as e:
+        logger.warning(f"⚠️ Не удалось загрузить из HF ({e}), использую базовую...")
+        from_pretrained = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
+        tokenizer = from_pretrained
+        model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
     
     if torch.cuda.is_available():
         logger.info("   ✅ RUGPT3 загружен на GPU")
@@ -423,7 +424,7 @@ async def lifespan(app: FastAPI):
     # Проверяем обязательные файлы — НЕ бросаем ошибку, чтобы не блокировать старт
     # Файлы могут подмонтироваться позже (volumes в Docker)
     missing = []
-    for path, name in [(DATA_PATH, "токенизатор"), (MODEL_PATH, "модель")]:
+    for path, name in [(DATA_PATH, "токенизатор")]:
         if not path.exists():
             logger.warning(f"⚠️ Файл не найден: {name} → {path} (будет попытка загрузки позже)")
             missing.append(name)
@@ -442,11 +443,9 @@ async def lifespan(app: FastAPI):
 
     if CONVERSATIONS_JSON.exists():
         try:
-            model_mtime = MODEL_PATH.stat().st_mtime
             data_mtime = CONVERSATIONS_JSON.stat().st_mtime
-            if data_mtime > model_mtime:
-                logger.warning("🎂 Новые данные в conversations.json — запускаю ретраин в фоне...")
-                asyncio.create_task(launch_retrain_async())  # ← ✅ не блокирует
+            logger.warning(f"🎂 Есть данные для обучения — запускаю ретраин в фоне...")
+            asyncio.create_task(launch_retrain_async())  # ← ✅ не блокирует
         except Exception as e:
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
     # === КОНЕЦ АСИНХРОННОГО ЗАПУСКА ===
@@ -564,20 +563,15 @@ async def lifespan(app: FastAPI):
 
 
 async def auto_reload_chatbot_loop():
-    """Фоновая задача: периодически проверяет файлы и загружает RUGPT3, когда они появятся."""
+    """Фоновая задача: периодически загружает RUGPT3 из HuggingFace."""
     global chatbot
     check_interval = 10  # секунд
-    max_attempts = 60  # максимум 10 минут (60 * 10с)
+    max_attempts = 60  # максимум 10 минут
     
     for attempt in range(1, max_attempts + 1):
         await asyncio.sleep(check_interval)
         
-        # Проверяем наличие файлов
-        if not RUGPT3_VUGLARST.exists() and RUGPT3_BASE != "sberbank-ai/rugpt3small_based_on_gpt2":
-            logger.debug(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): модель ещё не найдена")
-            continue
-        
-        logger.info(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): модели найдены, пробуем загрузить RUGPT3...")
+        logger.info(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): загружаю RUGPT3...")
         try:
             load_start = asyncio.get_event_loop().time()
             rugpt3 = load_rugpt3()

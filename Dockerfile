@@ -91,13 +91,16 @@ COPY yu/ ./yu/
 COPY ayiko/ ./ayiko/
 COPY scientists_network/ ./scientists_network/
 
+# === ЗАГРУЗКА МОДЕЛИ ИЗ HUGGINGFACE ===
+RUN pip install --no-cache-dir huggingface_hub && \
+    python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Pantikur/PantikurAI-RUGPT3', local_dir='models/rugpt3')" 2>/dev/null || echo "⚠️ Модель не загружена (нет сети)"
+
 # === ВАЛИДАЦИЯ ===
-RUN ls -la /app/models/ && \
-    if [ ! -d /app/models/rugpt3 ]; then \
-        echo "❌ Ошибка: папка rugpt3 отсутствует!"; \
-        exit 1; \
-    fi && \
-    echo "✅ RUGPT3 найдена: /app/models/rugpt3"
+RUN if [ -d /app/models/rugpt3 ] && [ "$(ls -A /app/models/rugpt3)" ]; then \
+        echo "✅ RUGPT3 найдена в /app/models/rugpt3"; \
+    else \
+        echo "⚠️ RUGPT3 не найдена — будет загружена при запуске из HuggingFace"; \
+    fi
 
 # === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000

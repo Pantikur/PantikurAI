@@ -7,9 +7,7 @@ data/*
 !data/config.yaml
 
 models/*
-!models/rugpt3/
-!models/rugpt3_vuglarst/
-!models/*.pth
+# Модель загружается из HuggingFace при сборке
 
 # Wuglarst — ОСТАВЛЯЕМ ВСЁ для mount
 # Исключаем только документацию
