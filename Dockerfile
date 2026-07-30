@@ -90,6 +90,7 @@ COPY naoto/ ./naoto/
 COPY yu/ ./yu/
 COPY ayiko/ ./ayiko/
 COPY scientists_network/ ./scientists_network/
+COPY autonomous_girls_v2.py ./
 
 # === ЗАГРУЗКА МОДЕЛИ ИЗ HUGGINGFACE ===
 RUN pip install --no-cache-dir huggingface_hub && \

@@ -46,3 +46,37 @@ services:
       retries: 10
     stdin_open: true
     tty: true
+
+  # === АВТОНОМНЫЕ ДЕВОЧКИ (24/7) ===
+  autonomous-girls:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pantikurai/autonomous-girls:latest
+    container_name: pantikur-girls
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HF_TOKEN=${HF_TOKEN:-}
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./shared_knowledge.json:/app/shared_knowledge.json
+      - ./global_progress.json:/app/global_progress.json
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./futaba:/app/futaba
+      - ./shiori:/app/shiori
+      - ./nobuka:/app/nobuka
+      - ./naoto:/app/naoto
+      - ./hanako:/app/hanako
+      - ./fuyuki:/app/fuyuki
+      - ./lucy:/app/lucy
+      - ./latislane:/app/latislane
+      - ./celesta:/app/celesta
+      - ./akva:/app/akva
+      - ./yu:/app/yu
+      - ./ayiko:/app/ayiko
+      - ./sidney:/app/sidney
+    command: python autonomous_girls_v2.py
