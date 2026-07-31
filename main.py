@@ -223,12 +223,12 @@ def start_girls_orchestrator():
         
         import subprocess
         
-        orchestrator_path = Path(__file__).parent / "orchestrator.py"
+        orchestrator_path = Path(__file__).parent / "orchestrator_v3.py"
         if not orchestrator_path.exists():
-            logger.warning("⚠️ orchestrator.py не найден — девочки не запущены")
+            logger.warning("⚠️ orchestrator_v3.py не найден — девочки не запущены")
             return
         
-        cmd = [sys.executable, str(orchestrator_path)] + GIRLS_TO_RUN
+        cmd = [sys.executable, str(orchestrator_path)]
         
         logger.info(f"🚀 Запуск оркестратора: {' '.join(cmd)}")
         

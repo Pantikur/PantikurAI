@@ -91,6 +91,8 @@ COPY yu/ ./yu/
 COPY ayiko/ ./ayiko/
 COPY scientists_network/ ./scientists_network/
 COPY autonomous_girls_v2.py ./
+COPY orchestrator_v3.py ./
+COPY orchestrator.py ./
 COPY humanity_core.py ./
 
 # === ЗАГРУЗКА МОДЕЛИ ИЗ HUGGINGFACE ===
