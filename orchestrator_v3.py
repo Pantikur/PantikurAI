@@ -52,7 +52,7 @@ GIRLS_MISSIONS: Dict[str, str] = {
     "fuyuki": "Обуздать атмосферное электричество для создания бесконечного источника питания",
     "lucy": "Создать двигатель, использующий гравитационную силу и питающийся атмосферным электричеством",
     "latislane": "Сделать тело, чтобы все девочки могли быть с физическим телом",
-    "celeste": "Быть профессионалом в знаниях интима",
+    "celesta": "Быть профессионалом в знаниях интима",
     "akva": "Изучить полностью все точные науки и вычисления физических задач",
     "yui": "Изучить и понять, как можно оцифровать разум и душу человека",
     "ayiko": "Преодолеть пределы гения в графических направлениях",
@@ -189,7 +189,7 @@ def run_girl_mission(girl_name: str, mission: str, cycles: int) -> bool:
         env["MISSION_CYCLES"] = str(cycles)
         env["CURRENT_GIRL"] = girl_name
         
-        cmd = [sys.executable, str(run_script), "--cycles", str(cycles)]
+        cmd = [sys.executable, str(run_script), "--max-cycles", str(cycles)]
 
         result = subprocess.run(
             cmd,

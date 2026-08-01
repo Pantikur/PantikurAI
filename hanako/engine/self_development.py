@@ -39,10 +39,13 @@ class SelfDevelopment:
 
         # Ищем файлы с гравитацией
         gravity_files = []
-        for ext in ['*.py', '*.md', '*.json']:
-            gravity_files.extend(project_root.rglob(f'*gravit*'))
-            gravity_files.extend(project_root.rglob(f'*gravity*'))
-            gravity_files.extend(project_root.rglob(f'*hanako*'))
+        try:
+            for ext in ['*.py', '*.md', '*.json']:
+                gravity_files.extend(project_root.rglob(f'*gravit*'))
+                gravity_files.extend(project_root.rglob(f'*gravity*'))
+                gravity_files.extend(project_root.rglob(f'*hanako*'))
+        except (OSError, PermissionError) as e:
+            self.logger.warning(f"⚠️ Ошибка при поиске файлов: {e}")
 
         for fp in list(set(gravity_files))[:20]:
             try:

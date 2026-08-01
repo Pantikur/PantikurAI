@@ -1,12 +1,12 @@
 """
-Точка входа для запуска автономного ядра Нобука.
+Точка входа для запуска автономного ядра Латислейн.
 
 Использование:
-    python -m nobuka.engine.run              # постоянная работа
-    python -m nobuka.engine.run --demo       # демо-режим (5 циклов)
-    python -m nobuka.engine.run --analyze    # только анализ проекта
-    python -m nobuka.engine.run --tests      # только тестирование
-    python -m nobuka.engine.run --status     # показать состояние
+    python -m latislane.engine.run              # постоянная работа
+    python -m latislane.engine.run --demo       # демо-режим (5 циклов)
+    python -m latislane.engine.run --analyze    # только анализ проекта
+    python -m latislane.engine.run --tests      # только тестирование
+    python -m latislane.engine.run --status     # показать состояние
 """
 
 from __future__ import annotations
@@ -26,21 +26,21 @@ for _stream in (sys.stdout, sys.stderr):
     if _reconfigure is not None:
         _reconfigure(encoding="utf-8")
 
-from config import NobukaConfig
-from nobuka_core import NobukaCore
+from config import LatislaneConfig
+from latislane_core import LatislaneCore
 from code_analyzer import CodeAnalyzer
 from test_runner import TestRunner
 from universal_analyzer import UniversalAnalyzer
 from ml_optimizer import MLOptimizer
 
 
-def cmd_run(config: NobukaConfig):
-    """Запустить постоянную работу Нобука."""
-    core = NobukaCore(config)
+def cmd_run(config: LatislaneConfig):
+    """Запустить постоянную работу Латислейн."""
+    core = LatislaneCore(config)
     core.run()
 
 
-def cmd_analyze(config: NobukaConfig):
+def cmd_analyze(config: LatislaneConfig):
     """Запустить только анализ проекта (Python)."""
     print("=" * 60)
     print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
@@ -79,7 +79,7 @@ def cmd_analyze(config: NobukaConfig):
         print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
 
 
-def cmd_universal_analyze(config: NobukaConfig):
+def cmd_universal_analyze(config: LatislaneConfig):
     """Запустить универсальный анализ всех файлов проекта."""
     print("=" * 80)
     print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
@@ -104,7 +104,7 @@ def cmd_universal_analyze(config: NobukaConfig):
     print(f"📄 Текстовый отчёт сохранён: {txt_path}")
 
 
-def cmd_ml_optimize(config: NobukaConfig):
+def cmd_ml_optimize(config: LatislaneConfig):
     """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
     print("=" * 80)
     print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
@@ -129,7 +129,7 @@ def cmd_ml_optimize(config: NobukaConfig):
     print(f"📄 Текстовый отчёт сохранён: {txt_path}")
 
 
-def cmd_tests(config: NobukaConfig):
+def cmd_tests(config: LatislaneConfig):
     """Запустить только тестирование."""
     print("=" * 60)
     print("🧪 ТЕСТИРОВАНИЕ НОБУКИ")
@@ -146,7 +146,7 @@ def cmd_tests(config: NobukaConfig):
     print(f"  Время: {report.duration_seconds:.1f}с")
 
 
-def cmd_status(config: NobukaConfig):
+def cmd_status(config: LatislaneConfig):
     """Показать текущее состояние Нобука."""
     state_path = config.state_path
 
@@ -232,9 +232,9 @@ def main():
 
     # Конфигурация
     if args.demo:
-        config = NobukaConfig.demo()
+        config = LatislaneConfig.demo()
     else:
-        config = NobukaConfig.default()
+        config = LatislaneConfig.default()
 
     if args.interval is not None:
         config.cycle_interval = args.interval
