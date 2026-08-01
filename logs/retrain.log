@@ -388,3 +388,20 @@ OSError: [Errno 22] Invalid argument
 2026-07-28 22:55:01,663 | INFO | [SAVE] Резервная копия модели: D:\NewCod\Pantikur\models\chat_model.pth.backup
 2026-07-28 22:55:01,668 | INFO | [OK] Токенизатор загружен: 9738 токенов
 2026-07-28 22:55:01,669 | INFO | [FIRE] Запуск ретраина (обучение с нуля)...
+2026-08-01 17:52:41,392 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-08-01 17:52:41,613 | INFO | [OK] Данные из utils сгенерированы
+2026-08-01 17:52:41,615 | INFO | [BOOKS] Обучение из книг отключено (используйте --books)
+2026-08-01 17:52:41,622 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-08-01 17:52:41,622 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-08-01 17:52:42,363 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (5307 строк)
+2026-08-01 17:52:42,371 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
+2026-08-01 17:59:31,564 | INFO | [DATA] Генерация данных из utils (human_params, races, character)...
+2026-08-01 17:59:31,787 | INFO | [OK] Данные из utils сгенерированы
+2026-08-01 17:59:31,787 | INFO | [BOOKS] Запуск автономного обучения из книг...
+2026-08-01 17:59:32,032 | INFO | [OK] Обучение из книг завершено
+2026-08-01 17:59:32,032 | INFO | [AI] Генерация 10 новых диалогов через GigaChat...
+2026-08-01 17:59:52,552 | INFO | [OK] Диалоги с GigaChat добавлены в conversations.json
+2026-08-01 17:59:52,553 | INFO | [OK] RPG-сцены добавлены в training_pairs.jsonl
+2026-08-01 17:59:52,553 | INFO | [DATA] Сборка данных: C:\Users\baura\AppData\Local\Programs\Python\Python311\python.exe build_training_data.py --config configs/prod.yaml
+2026-08-01 17:59:53,102 | INFO | [OK] Данные собраны: D:\NewCod\Pantikur\data\training_pairs.jsonl (5310 строк)
+2026-08-01 17:59:53,109 | INFO | [SAVE] Резервная копия токенизатора: D:\NewCod\Pantikur\data\tokenizer.json.backup
