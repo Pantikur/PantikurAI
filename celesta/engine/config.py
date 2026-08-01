@@ -67,6 +67,9 @@ class CelestaConfig:
     # === Безопасность ===
     hard_stop_on_constitution_violation: bool = True
 
+    # === Анализ файлов ===
+    max_file_lines: int = 10000           # максимум строк в файле для анализа
+
     # === Взаимодействие с сёстрами ===
     notify_futaba_on_change: bool = True
     notify_shiori_on_security_change: bool = True

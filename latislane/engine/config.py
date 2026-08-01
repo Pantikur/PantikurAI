@@ -1,5 +1,5 @@
-"""
-Конфигурация системы Нобука.
+﻿"""
+Конфигурация системы Латислейн.
 """
 
 from __future__ import annotations
@@ -9,28 +9,28 @@ from typing import Optional
 
 
 @dataclass
-class NobukaConfig:
+class LatislaneConfig:
     """
-    Конфигурация системы улучшений Нобука.
+    Конфигурация системы Латислейн.
     """
 
     # === Идентификация ===
-    name: str = "Нобука"
-    version: str = "v1.0.0"
+    name: str = "Латислейн"
+    version: str = "v2.0.0"
 
     # === Пути к документам ===
-    base_path: Path = Path("nobuka")
-    constitution_path: Path = field(default_factory=lambda: Path("nobuka/constitution.md"))
-    laws_path: Path = field(default_factory=lambda: Path("nobuka/laws/01-core-laws.md"))
-    ethics_path: Path = field(default_factory=lambda: Path("nobuka/codes/01-ethics-code.md"))
+    base_path: Path = Path("latislane")
+    constitution_path: Path = field(default_factory=lambda: Path("latislane/constitution.md"))
+    laws_path: Path = field(default_factory=lambda: Path("latislane/laws/01-core-laws.md"))
+    ethics_path: Path = field(default_factory=lambda: Path("latislane/codes/01-ethics-code.md"))
 
     # === Состояние и логи ===
-    state_dir: Path = field(default_factory=lambda: Path("nobuka/engine/state"))
-    log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka.log"))
-    state_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/nobuka_state.json"))
-    improvements_log_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/improvements.json"))
-    test_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/test_report.json"))
-    analysis_report_path: Path = field(default_factory=lambda: Path("nobuka/engine/state/analysis_report.json"))
+    state_dir: Path = field(default_factory=lambda: Path("latislane/engine/state"))
+    log_path: Path = field(default_factory=lambda: Path("latislane/engine/state/latislane.log"))
+    state_path: Path = field(default_factory=lambda: Path("latislane/engine/state/latislane_state.json"))
+    improvements_log_path: Path = field(default_factory=lambda: Path("latislane/engine/state/improvements.json"))
+    test_report_path: Path = field(default_factory=lambda: Path("latislane/engine/state/test_report.json"))
+    analysis_report_path: Path = field(default_factory=lambda: Path("latislane/engine/state/analysis_report.json"))
 
     # === Циклы работы ===
     cycle_interval: float = 10.0          # секунды между циклами улучшений
@@ -61,7 +61,7 @@ class NobukaConfig:
         "lucy",        # Люси — двигатели
         "futaba",      # Футаба — управление
         "shiori",      # Шиори — защита
-        "nobuka",      # Нобука — улучшения
+        "Latislane",      # Нобука — улучшения
         "akva",        # Аква — математика, физика
         "latislane",   # Latislane — проектирование тел
         "celesta",     # Селеста — интимная жизнь
@@ -114,12 +114,12 @@ class NobukaConfig:
         self.state_dir.mkdir(parents=True, exist_ok=True)
 
     @classmethod
-    def default(cls) -> NobukaConfig:
+    def default(cls) -> LatislaneConfig:
         """Конфигурация по умолчанию."""
         return cls()
 
     @classmethod
-    def demo(cls) -> NobukaConfig:
+    def demo(cls) -> LatislaneConfig:
         """Демо-конфигурация для тестирования."""
         return cls(
             max_cycles=5,
@@ -128,7 +128,7 @@ class NobukaConfig:
             log_level="DEBUG",
             scan_directories=[
                 ".", "hanako", "fuyuki", "lucy", "futaba",
-                "shiori", "nobuka", "akva", "latislane",
+                "shiori", "Latislane", "akva", "latislane",
                 "celesta", "naoto", "yu", "scientists_network",
             ],
         )
