@@ -12,6 +12,7 @@ import sys
 import time
 import subprocess
 import logging
+import json
 from datetime import datetime
 
 # Настройка логирования
@@ -200,7 +201,6 @@ if __name__ == "__main__":
     sys.path.append(".")
     
     try:
-        import json
         main()
     except ImportError as e:
         logger.error(f"❌ Необходимые модули не найдены: {e}")

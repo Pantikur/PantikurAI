@@ -3,10 +3,17 @@
 import os
 import sys
 import time
+import subprocess
 import logging
+import json
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Optional
+
+# Принудительный UTF-8 для Windows
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # Добавляем корень проекта в путь
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -224,6 +231,12 @@ class AutoBookLearning:
                 safe_print(f"[✅] Цикл завершён: {len(all_pairs)} пар собрано")
                 self.logger.info(f"Cycle completed: {len(all_pairs)} pairs")
                 
+                # Ханано: АВТОМАТИЧЕСКОЕ ПЕРЕОБУЧЕНИЕ МОДЕЛИ
+                # Каждые 5 циклов запускаем переобучение
+                if self.state["total_cycles"] % 5 == 0:
+                    safe_print(f"\n[🧠] Ханано: Каждые 5 циклов — переобучение модели")
+                    self._run_model_retrain()
+                
                 return True
             else:
                 safe_print(f"[⚠️] Не удалось собрать пары в этом цикле")
@@ -267,6 +280,50 @@ class AutoBookLearning:
                 for pair in new_pairs:
                     f.write(pair + "\n")
             safe_print(f"[💾] Создан {main_file.name} с {len(new_pairs)} пар")
+
+    def _run_model_retrain(self):
+        """
+        Запускает переобучение модели после сбора данных.
+        Ханako сама обучает модель без напоминаний.
+        """
+        try:
+            project_root = Path(__file__).resolve().parent.parent
+            retrain_script = project_root / "retrain.py"
+            
+            if not retrain_script.exists():
+                safe_print(f"[⚠️] retrain.py не найден — пропуск обучения")
+                return False
+            
+            safe_print(f"\n[🧠] Ханано: Запуск переобучения модели...")
+            safe_print(f"[📚] Данных для обучения: {self.state.get('total_pairs', 0)} пар")
+            
+            # Запускаем retrain.py
+            result = subprocess.run(
+                [sys.executable, str(retrain_script), "--books"],
+                cwd=str(project_root),
+                capture_output=True,
+                text=True,
+                timeout=1800  # 30 минут на обучение
+            )
+            
+            if result.returncode == 0:
+                safe_print(f"[✅] Модель успешно переобучена!")
+                self.state["last_retrain"] = datetime.now().isoformat()
+                self.state["total_retrains"] = self.state.get("total_retrains", 0) + 1
+                self._save_state()
+                return True
+            else:
+                safe_print(f"[⚠️] Ошибка переобучения (продолжаем работу)")
+                self.logger.warning(f"Retrain failed: {result.stderr[:200]}")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            safe_print(f"[⏰] Таймаут переобучения (30 мин) — модель работает со старыми весами")
+            return False
+        except Exception as e:
+            safe_print(f"[⚠️] Ошибка запуска обучения: {e}")
+            self.logger.error(f"Retrain error: {e}", exc_info=True)
+            return False
 
     def run_continuous(self):
         """

@@ -6,9 +6,15 @@ from torch.utils.data import Dataset, DataLoader
 import joblib
 import json
 import os
+import sys
 from collections import Counter
 import re
 from transformers import AutoTokenizer, AutoModelForCausalLM
+
+# Принудительный UTF-8 для Windows
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # === Настройки ===
 DATA_DIR = "data"

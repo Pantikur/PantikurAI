@@ -80,3 +80,20 @@ services:
       - ./ayiko:/app/ayiko
       - ./sidney:/app/sidney
     command: python autonomous_girls_v2.py
+
+  # === АВТООБУЧЕНИЕ МОДЕЛИ (Ханако) ===
+  auto-learn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pantikurai/auto-learn:latest
+    container_name: pantikur-auto-learn
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+    command: python auto_learn_cycle.py
