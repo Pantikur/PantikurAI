@@ -69,6 +69,40 @@ class NaotoCore:
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — литература, философия, глубина 📚")
 
     # =================================================================
+    #  ОСНОВНОЙ ЦИКЛ
+    # =================================================================
+
+    def run(self, cycles: int = 10):
+        """
+        Запустить основной цикл работы Наото.
+        
+        Args:
+            cycles: количество циклов (по умолчанию 10)
+        """
+        self.logger.info("=" * 60)
+        self.logger.info("🟢 ЗАПУСК АВТОНОМНОГО ЯДРА НААТО")
+        self.logger.info("=" * 60)
+
+        for i in range(cycles):
+            self.logger.info(f"\n📚 Цикл {i + 1}/{cycles}")
+            
+            try:
+                # Автономный поиск и чтение книг
+                results = self.autonomous_search_and_read()
+                self.logger.info(f"📊 Результат: {results['books_found']} книг, {results['insights_gained']} инсайтов")
+                
+                # Эволюция личности
+                self.evolve_personality()
+                
+            except Exception as e:
+                self.logger.exception(f"Ошибка в цикле {i + 1}: {e}")
+            
+            # Пауза между циклами
+            time.sleep(1)
+
+        self.logger.info(f"✅ Цикл завершён. Всего циклов: {cycles}")
+
+    # =================================================================
     #  АВТОНОМНЫЙ ПОИСК И ЧТЕНИЕ
     # =================================================================
 

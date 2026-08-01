@@ -2,31 +2,40 @@
 📊 ОТЧЁТ АНАЛИЗА ПРОЕКТА
 ================================================================================
 
-Всего файлов: 30
-Текстовых файлов: 30
+Всего файлов: 89
+Текстовых файлов: 89
 
 --- По расширениям (ТОП-10) ---
-  .py                 11
-  .md                  9
-  .json                6
-  .txt                 2
+  .py                 52
+  .json               12
+  .txt                12
+  .md                 11
   .log                 2
 
 --- По размеру ---
-  1-10KB              15
-  10-100KB            11
-  < 1KB                3
+  10-100KB            19
+  1-10KB              55
+  < 1KB               14
   100KB-1MB            1
+
+--- Дубликаты файлов ---
+  🔄 code_analyzer.py
+      sandbox/test_mode/created/code_analyzer.py
 
 --- Проблемы (ТОП-20) ---
   [info] forge_character.py: 6 строк длиннее 120 символов
   [info] forge_character.py: 25 строк с пробелами в конце
-  [info] engine\ml_optimizer.py: 58 строк с пробелами в конце
-  [warning] engine\nobuka_core.py: Файл слишком большой: 830 строк
-  [info] engine\nobuka_core.py: 33 строк с пробелами в конце
-  [warning] engine\universal_analyzer.py: Файл слишком большой: 608 строк
-  [info] engine\universal_analyzer.py: 54 строк с пробелами в конце
-  [warning] engine\web_access.py: Файл слишком большой: 714 строк
-  [info] engine\web_access.py: 75 строк с пробелами в конце
+  [info] orchestrator_all_sisters.py: 20 строк с пробелами в конце
+  [warning] engine/document_editor.py: Файл слишком большой: 563 строк
+  [info] engine/document_editor.py: 62 строк с пробелами в конце
+  [info] engine/ml_optimizer.py: 58 строк с пробелами в конце
+  [warning] engine/nobuka_core.py: Файл слишком большой: 985 строк
+  [info] engine/nobuka_core.py: 50 строк с пробелами в конце
+  [warning] engine/test_mode_creation.py: Файл слишком большой: 802 строк
+  [info] engine/test_mode_creation.py: 84 строк с пробелами в конце
+  [warning] engine/universal_analyzer.py: Файл слишком большой: 608 строк
+  [info] engine/universal_analyzer.py: 54 строк с пробелами в конце
+  [warning] engine/web_access.py: Файл слишком большой: 714 строк
+  [info] engine/web_access.py: 75 строк с пробелами в конце
 
 ================================================================================

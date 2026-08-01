@@ -130,6 +130,9 @@ class NobukaCore:
         # Инициализация random
         self._init_random()
 
+        # Характер Нобуки
+        self.character = None
+
         # ================================================================
         #  HUMANITY LAYER — Живая душа Нобуки
         # ================================================================
@@ -193,13 +196,13 @@ class NobukaCore:
                     self._save_state()
 
                 # Укрепление характера (периодически)
-                if self.cycle_count % 5 == 0:
+                if self.cycle_count % 5 == 0 and self.character is not None:
                     strengthened = self.character.strengthen_strengths()
                     if strengthened > 0:
                         self.logger.info(f"Character strengthened: {strengthened} traits")
 
                 # Эволюция характера (периодически)
-                if self.cycle_count % 10 == 0:
+                if self.cycle_count % 10 == 0 and self.character is not None:
                     evolved = self.character.evolve_traits()
                     if evolved:
                         self.logger.info("Character evolved")
