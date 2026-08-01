@@ -193,13 +193,13 @@ class NobukaCore:
                     self._save_state()
 
                 # Укрепление характера (периодически)
-                if self.total_cycles % 5 == 0:
+                if self.cycle_count % 5 == 0:
                     strengthened = self.character.strengthen_strengths()
                     if strengthened > 0:
                         self.logger.info(f"Character strengthened: {strengthened} traits")
 
                 # Эволюция характера (периодически)
-                if self.total_cycles % 10 == 0:
+                if self.cycle_count % 10 == 0:
                     evolved = self.character.evolve_traits()
                     if evolved:
                         self.logger.info("Character evolved")

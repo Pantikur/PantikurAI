@@ -189,7 +189,11 @@ def run_girl_mission(girl_name: str, mission: str, cycles: int) -> bool:
         env["MISSION_CYCLES"] = str(cycles)
         env["CURRENT_GIRL"] = girl_name
         
-        cmd = [sys.executable, str(run_script), "--max-cycles", str(cycles)]
+        # Hanako использует --cycles, остальные --max-cycles
+        if girl_name == "hanako":
+            cmd = [sys.executable, str(run_script), "--cycles", str(cycles)]
+        else:
+            cmd = [sys.executable, str(run_script), "--max-cycles", str(cycles)]
 
         result = subprocess.run(
             cmd,

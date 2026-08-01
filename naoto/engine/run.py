@@ -1,12 +1,12 @@
-"""
-Точка входа для запуска автономного ядра Нобука.
+﻿"""
+Точка входа для запуска автономного ядра Наото — Литературного Аналитика.
 
 Использование:
-    python -m nobuka.engine.run              # постоянная работа
-    python -m nobuka.engine.run --demo       # демо-режим (5 циклов)
-    python -m nobuka.engine.run --analyze    # только анализ проекта
-    python -m nobuka.engine.run --tests      # только тестирование
-    python -m nobuka.engine.run --status     # показать состояние
+    python -m naoto.engine.run              # постоянная работа
+    python -m naoto.engine.run --demo       # демо-режим (5 циклов)
+    python -m naoto.engine.run --analyze    # только анализ проекта
+    python -m naoto.engine.run --tests      # только тестирование
+    python -m naoto.engine.run --status     # показать состояние
 """
 
 from __future__ import annotations
@@ -26,24 +26,24 @@ for _stream in (sys.stdout, sys.stderr):
     if _reconfigure is not None:
         _reconfigure(encoding="utf-8")
 
-from config import NobukaConfig
-from nobuka_core import NobukaCore
+from config import NaotoConfig
+from naoto_core import NaotoCore
 from code_analyzer import CodeAnalyzer
 from test_runner import TestRunner
 from universal_analyzer import UniversalAnalyzer
 from ml_optimizer import MLOptimizer
 
 
-def cmd_run(config: NobukaConfig):
-    """Запустить постоянную работу Нобука."""
-    core = NobukaCore(config)
+def cmd_run(config: NaotoConfig):
+    """Запустить постоянную работу Наото."""
+    core = NaotoCore(config)
     core.run()
 
 
-def cmd_analyze(config: NobukaConfig):
+def cmd_analyze(config: NaotoConfig):
     """Запустить только анализ проекта (Python)."""
     print("=" * 60)
-    print("🐍 АНАЛИЗ PYTHON-КОДА НОБУКИ")
+    print("🐍 АНАЛИЗ PYTHON-КОДА НААТО")
     print("=" * 60)
 
     analyzer = CodeAnalyzer(config)
@@ -79,7 +79,7 @@ def cmd_analyze(config: NobukaConfig):
         print(f"📏 Самый длинный: {sorted_by_lines[0].path} ({sorted_by_lines[0].lines} строк)")
 
 
-def cmd_universal_analyze(config: NobukaConfig):
+def cmd_universal_analyze(config: NaotoConfig):
     """Запустить универсальный анализ всех файлов проекта."""
     print("=" * 80)
     print("📊 УНИВЕРСАЛЬНЫЙ АНАЛИЗ ВСЕХ ФАЙЛОВ ПРОЕКТА")
@@ -104,7 +104,7 @@ def cmd_universal_analyze(config: NobukaConfig):
     print(f"📄 Текстовый отчёт сохранён: {txt_path}")
 
 
-def cmd_ml_optimize(config: NobukaConfig):
+def cmd_ml_optimize(config: NaotoConfig):
     """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
     print("=" * 80)
     print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
@@ -129,10 +129,10 @@ def cmd_ml_optimize(config: NobukaConfig):
     print(f"📄 Текстовый отчёт сохранён: {txt_path}")
 
 
-def cmd_tests(config: NobukaConfig):
+def cmd_tests(config: NaotoConfig):
     """Запустить только тестирование."""
     print("=" * 60)
-    print("🧪 ТЕСТИРОВАНИЕ НОБУКИ")
+    print("🧪 ТЕСТИРОВАНИЕ НААТО")
     print("=" * 60)
 
     runner = TestRunner(config)
@@ -146,7 +146,7 @@ def cmd_tests(config: NobukaConfig):
     print(f"  Время: {report.duration_seconds:.1f}с")
 
 
-def cmd_status(config: NobukaConfig):
+def cmd_status(config: NaotoConfig):
     """Показать текущее состояние Нобука."""
     state_path = config.state_path
 
@@ -158,7 +158,7 @@ def cmd_status(config: NobukaConfig):
         state = json.load(f)
 
     print("=" * 60)
-    print("📊 СОСТОЯНИЕ НОБУКИ")
+    print("📊 СОСТОЯНИЕ НААТО")
     print("=" * 60)
     print(f"Версия: {state.get('version', '?')}")
     print(f"Циклов выполнено: {state.get('cycle_count', 0)}")
@@ -232,9 +232,9 @@ def main():
 
     # Конфигурация
     if args.demo:
-        config = NobukaConfig.demo()
+        config = NaotoConfig.demo()
     else:
-        config = NobukaConfig.default()
+        config = NaotoConfig.default()
 
     if args.interval is not None:
         config.cycle_interval = args.interval

@@ -80,6 +80,15 @@ class ShioriCore:
         # Состояние безопасности
         self.security_state = SecurityState(version=self.config.version)
         
+        # Сеть для общения с сёстрами
+        self.network = None
+        try:
+            from scientists_network.network import get_network
+            self.network = get_network(str(Path(__file__).parent.parent.parent.parent))
+            self.logger.info("🔗 Подключена к Scientists Network")
+        except Exception:
+            self.logger.info("ℹ️ Scientists Network недоступна")
+        
         # Сигналы
         self._shutdown_requested = False
         self._setup_signals()
