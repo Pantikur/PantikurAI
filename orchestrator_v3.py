@@ -154,6 +154,11 @@ def record_milestone(progress: dict, girl_name: str, description: str):
 
 def git_commit_and_push(message: str) -> bool:
     try:
+        # Проверяем, что git доступен
+        if not subprocess.run(["which", "git"], capture_output=True).returncode == 0:
+            logger.warning("⚠️ Git не найден в контейнере — пропускаем коммит")
+            return False
+            
         logger.info(f"📦 Git commit: {message}")
         subprocess.run(["git", "add", "."], cwd=str(PROJECT_ROOT), check=True, capture_output=True)
         subprocess.run(

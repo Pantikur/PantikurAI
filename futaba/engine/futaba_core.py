@@ -733,7 +733,7 @@ class FutabaCore:
         if emotions:
             positive_count = sum(1 for e in emotions if e.emotion_type in (
                 EmotionType.JOY, EmotionType.HAPPINESS, EmotionType.LOVE,
-                EmotionType.AMUSEMENT, EmotionType.PRIDE, EmotionType.GRATEFULNESS
+                EmotionType.AMUSEMENT, EmotionType.PRIDE, EmotionType.GRATEITUDE
             ))
             if positive_count > len(emotions) * 0.5:
                 self.emotional_engine.update_belief(
