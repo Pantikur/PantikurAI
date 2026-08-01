@@ -79,7 +79,7 @@ services:
       - ./yu:/app/yu
       - ./ayiko:/app/ayiko
       - ./sidney:/app/sidney
-    command: python autonomous_girls_v2.py
+    command: python orchestrator_v3.py
 
   # === АВТООБУЧЕНИЕ МОДЕЛИ (Ханако) ===
   auto-learn:
