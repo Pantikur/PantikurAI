@@ -273,8 +273,87 @@ AUTO_WEB_SEARCH_EXTRACT_DEPTH = int(os.getenv("AUTO_WEB_SEARCH_EXTRACT_DEPTH", "
 AUTO_WEB_SEARCH_MAX_NEW_WORDS = int(os.getenv("AUTO_WEB_SEARCH_MAX_NEW_WORDS", "10"))  # макс новых слов из определения
 
 # === Импорт RUGPT3 вместо ChatBot ===
+class RUGPT3Bot:
+    """Обёртка над RUGPT3 моделью для совместимости с ChatBot API."""
+    
+    def __init__(self, tokenizer, model):
+        self.tokenizer = tokenizer
+        self.model = model
+        self.context_enabled = False
+        self.manipulation_enabled = False
+        self.world_engine_enabled = False
+        self.world_engine = None
+    
+    def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat") -> str:
+        """Генерация ответа через RUGPT3."""
+        import torch
+        
+        # Строим контекст
+        context = []
+        last_user_msg = ""
+        
+        for msg in messages:
+            if not msg["message"].strip():
+                continue
+            role = "Пользователь" if msg["is_own"] else "Бот"
+            context.append(f"{role}: {msg['message']}")
+        
+        for msg in reversed(messages):
+            if msg["is_own"]:
+                last_user_msg = msg["message"].strip()
+                break
+        
+        if not last_user_msg:
+            return json.dumps({"response": "Я здесь! 🤖"}, ensure_ascii=False)
+        
+        # Строим промпт
+        context_str = "\n".join(context[-10:])  # Последние 10 сообщений
+        
+        if mode == "chat":
+            prompt = f"{context_str}\nБот:"
+        elif mode == "rpg":
+            prompt = f"{context_str}\nБот:"
+        elif mode == "continue":
+            prompt = f"{context_str}\nБот:"
+        else:
+            prompt = f"{context_str}\nБот:"
+        
+        # Генерация
+        try:
+            self.model.eval()
+            inputs = self.tokenizer.encode(prompt, return_tensors="pt")
+            
+            if torch.cuda.is_available():
+                inputs = inputs.to("cuda")
+            
+            with torch.no_grad():
+                outputs = self.model.generate(
+                    inputs.input_ids,
+                    max_length=512,
+                    temperature=0.8,
+                    top_p=0.9,
+                    do_sample=True,
+                    pad_token_id=self.tokenizer.eos_token_id,
+                    eos_token_id=self.tokenizer.eos_token_id
+                )
+            
+            generated_ids = outputs[0][inputs.input_ids.shape[1]:]
+            response = self.tokenizer.decode(generated_ids, skip_special_tokens=True)
+            
+            # Убираем имя "Бот:" из ответа
+            if response.startswith("Бот:"):
+                response = response[4:].strip()
+            elif response.startswith("Пользователь:"):
+                response = response[11:].strip()
+            
+            return response.strip()
+        except Exception as e:
+            logger.error(f"Ошибка генерации RUGPT3: {e}")
+            return "Я здесь! 🤖"
+
+
 def load_rugpt3():
-    """Загружает RUGPT3 из HuggingFace."""
+    """Загружает RUGPT3 из HuggingFace и оборачивает в RUGPT3Bot."""
     from transformers import AutoTokenizer, AutoModelForCausalLM
     import torch
     
@@ -291,8 +370,7 @@ def load_rugpt3():
         logger.info("✅ RUGPT3 загружена из HuggingFace")
     except Exception as e:
         logger.warning(f"⚠️ Не удалось загрузить из HF ({e}), использую базовую...")
-        from_pretrained = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
-        tokenizer = from_pretrained
+        tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
         model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
     
     if torch.cuda.is_available():
@@ -300,7 +378,8 @@ def load_rugpt3():
     else:
         logger.info("   ✅ RUGPT3 загружен на CPU")
     
-    return {"tokenizer": tokenizer, "model": model}
+    # Оборачиваем в RUGPT3Bot
+    return RUGPT3Bot(tokenizer, model)
 
 
 # === Lifespan: загрузка при старте и остановке ===
@@ -2926,7 +3005,10 @@ async def predict(request: Request):
 
     except Exception as e:
         logger.error(f"❌ Ошибка генерации: {e}", exc_info=True)
-        return {"response": "Извини, произошла ошибка."}
+        import traceback
+        error_details = traceback.format_exc()
+        logger.error(f"📋 Детали ошибки: {error_details[:500]}")
+        return {"response": f"Извини, произошла ошибка. ({type(e).__name__}: {str(e)[:100]})"}
 
 
 # === Ретраин (защищённое) ===
