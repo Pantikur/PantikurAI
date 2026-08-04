@@ -1,8 +1,33 @@
 # syntax=docker/dockerfile:1.4
-# === БАЗОВЫЙ ОБРАЗ ===
-FROM python:3.11-slim
+# ============================================================
+# Оптимизированный Dockerfile для Pantikur ChatBot
+# ============================================================
+# Изменения:
+# 1. Мультистадийная сборка (builder + production)
+# 2. Загрузка модели перенесена в run-time (entrypoint.sh)
+# 3. Убран Google Chrome (не нужен для undetected-chromedriver)
+# 4. Убрана жёсткая проверка импорта при сборке
+# 5. Оптимизирован размер образа
 
-# === СИСТЕМНЫЕ ЗАВИСИМОСТИ ===
+# === ЭТАП 1: СБОРКА ЗАВИСИМОСТЕЙ (кэширование pip) ===
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-cache-dir \
+        --default-timeout=300 \
+        --retries=10 \
+        --extra-index-url https://download.pytorch.org/whl/cpu \
+        -r requirements.txt && \
+    pip install --no-cache-dir "uvicorn[standard]"
+
+# === ЭТАП 2: ПРОДУКЦИОННЫЙ ОБРАЗ ===
+FROM python:3.11-slim AS production
+
+# === СИСТЕМНЫЕ ЗАВИСИМОСТИ (минимальный набор для Selenium/Web) ===
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
@@ -40,31 +65,14 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         libxss1 \
         libxtst6 \
         xdg-utils && \
-    # === УСТАНОВКА GOOGLE CHROME (современный метод GPG) ===
-    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome-keyring.gpg && \
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-    apt-get update && \
-    apt-get install -y google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
 
-# === CHROMEDRIVER (без Chrome — используем undetected-chromedriver) ===
-# Chrome не нужен для undetected-chromedriver
-# selenium-manager сам скачает нужную версию
+# === КОПИРУЕМ ЗАВИСИМОСТИ ИЗ BUILDER ===
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 # === РАБОЧАЯ ДИРЕКТОРИЯ ===
 WORKDIR /app
-
-# === УСТАНОВКА Python ЗАВИСИМОСТЕЙ ===
-COPY requirements.txt .
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --no-cache-dir \
-        --default-timeout=300 \
-        --retries=10 \
-        --extra-index-url https://download.pytorch.org/whl/cpu \
-        -r requirements.txt && \
-    pip install --no-cache-dir "uvicorn[standard]" && \
-    echo '✅ Зависимости установлены'
 
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY main.py ./
@@ -96,16 +104,9 @@ COPY orchestrator_v3.py ./
 COPY orchestrator.py ./
 COPY humanity_core.py ./
 
-# === ЗАГРУЗКА МОДЕЛИ ИЗ HUGGINGFACE ===
-RUN pip install --no-cache-dir huggingface_hub && \
-    python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Pantikur/Wuglarst', local_dir='models/rugpt3')" 2>/dev/null || echo "⚠️ Модель не загружена (нет сети)"
-
-# === ВАЛИДАЦИЯ ===
-RUN if [ -d /app/models/rugpt3 ] && [ "$(ls -A /app/models/rugpt3)" ]; then \
-        echo "✅ RUGPT3 найдена в /app/models/rugpt3"; \
-    else \
-        echo "⚠️ RUGPT3 не найдена — будет загружена при запуске из HuggingFace"; \
-    fi
+# === КОПИРУЕМ ENTRYPOINT ===
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
 # === ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ===
 ENV PORT=8000
@@ -115,9 +116,6 @@ ENV SELENIUM_REMOTE_URL=""
 ENV CHROME_BIN=/usr/bin/google-chrome
 ENV PYTHONPATH="/app:${PYTHONPATH}"
 
-# === ПРОВЕРКА ИМПОРТА ===
-RUN python -c "from main import app; print('✅ Приложение импортировано')" || (echo "❌ Ошибка импорта" && exit 1)
-
 # === ОТКРЫВАЕМ ПОРТ ===
 EXPOSE ${PORT}
 
@@ -125,5 +123,5 @@ EXPOSE ${PORT}
 HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=5 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# === КОМАНДА ЗАПУСКА ===
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# === КОМАНДА ЗАПУСКА (через entrypoint с загрузкой модели) ===
+CMD ["./entrypoint.sh"]

@@ -1,25 +1,66 @@
-# === Docker ignore (для изоляции от хоста) ===
-# Но разрешаем нужные файлы
+# === Docker ignore (оптимизированный) ===
 
+# === Git ===
+.git/
+.gitignore
+.gitattributes
+
+# === Виртуальные окружения ===
+.venv/
+venv/
+.env
+.env.*
+
+# === Кэш Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# === Логи и данные (будут смонтированы через volumes) ===
+logs/
 data/*
 !data/tokenizer.json
 !data/chat_data.pkl
 !data/config.yaml
+!data/conversations.json
 
+# === Модели (будут смонтированы или загружены при старте) ===
 models/*
-# Модель загружается из HuggingFace при сборке
 
-# Wuglarst — ОСТАВЛЯЕМ ВСЁ для mount
-# Исключаем только документацию
-
-# Прочее
-__pycache__/
-*.pyc
-logs/
-.env
-.env.*
-.venv/
-venv/
-.git/
+# === IDE и OS ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
 Thumbs.db
+
+# === Документация (не нужны в production) ===
+*.md
+!README.md
+
+# === Скрипты разработки (не нужны в production) ===
+android-studio-plugin/
+KotlinApiModels.kt
+KotlinAssistantApi.kt
+*.kt
+
+# === Файлы деплоя (не нужны внутри контейнера) ===
+DEPLOY*.md
+DEPLOYMENT.md
+
+# === Локальные временные файлы ===
+*.log
+*.tmp
+*.bak
+events.json
+auto_start.json
+generated_worlds.json
+global_progress.json
+knowledge_level.json
+my_character.json
+my_character.yaml
+messages.json
