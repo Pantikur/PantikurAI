@@ -54,7 +54,7 @@ DEPLOY*.md
 DEPLOYMENT.md
 
 # === Локальные временные файлы ===
-*.log
+**/*.log
 *.tmp
 *.bak
 events.json
@@ -65,3 +65,15 @@ knowledge_level.json
 my_character.json
 my_character.yaml
 messages.json
+
+# === Android/Gradle (не нужны на сервере) ===
+PantikurChat/
+gradle*/
+**/*.zip
+**/*.jar
+**/*.apk
+**/build/
+
+# === Runtime-данные внутри модулей (регенерируются при старте) ===
+**/data/communication/
+**/ojidania/
