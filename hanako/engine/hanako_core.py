@@ -89,10 +89,10 @@ class HanakoCore:
         # Система общения с 11 девочками
         self.communication = CommunicationSystem(self.config)
 
-        # Система отчётов
+# Система отчётов
         self.reports = ReportSystem(self.config)
 
-        # Автозапуск
+# Автозапуск
         self.auto_start = AutoStartSystem(self.config)
 
         # Уровень знаний
@@ -166,7 +166,7 @@ class HanakoCore:
         # 4. Укрепление характера
         self._do_character_review(now)
 
-        # 5. Написание отчёта (периодически)
+# 5. Написание отчёта (периодически)
         self._do_report(now)
 
         # 6. Сохранение состояния
@@ -402,7 +402,7 @@ class HanakoCore:
             self.level.add_category_xp(len(docs) * 3, "self_development")
             self.logger.info(f"📖 Прочитано {len(docs)} документов")
 
-        # Анализ научной литературы
+# Анализ научной литературы
         papers = self.self_dev.analyze_scientific_papers()
         if papers:
             self.level.add_category_xp(papers * 10, "gravity_theory")

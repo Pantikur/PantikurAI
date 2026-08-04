@@ -35,10 +35,7 @@ MAX_GRAD_NORM = 1.0  # Gradient clipping для стабильности
 os.makedirs("models", exist_ok=True)
 
 # Добавляем путь для импорта
-import sys
 sys.path.append(".")
-
-from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 # === Вспомогательные функции ===
@@ -415,58 +412,121 @@ def main():
 
     # Загружаем данные
     temp_data = joblib.load(data_file)
-    
+
     # Загружаем RUGPT3
-    safe_print("[🤖] Загрузка RUGPT3 для дообучения...")
+    safe_print("[AI] Загрузка RUGPT3 для дообучения...")
     tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
     model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
 
-    safe_print("[FIRE] РЕТРАИН: дообучение RUGPT3 с нуля на всех данных")
+    # Pad token
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
 
-    # Формируем тексты из данных
+    safe_print("[FIRE] РЕТРАИН: дообучение RUGPT3 на всех данных")
+
+    # Формируем тексты из данных — ИСПРАВЛЕНО: поддерживаем list, dict, str
     texts = []
     if "samples" in temp_data:
         for sample in temp_data["samples"]:
-            if isinstance(sample, dict):
-                texts.append(sample.get("text", sample.get("prompt", "")))
+            if isinstance(sample, list) and len(sample) >= 2:
+                # Формат [user, bot] — основной формат из collect_training_samples
+                user_text = str(sample[0]).strip()
+                bot_text = str(sample[1]).strip()
+                if user_text and bot_text:
+                    texts.append(f"Пользователь: {user_text}\nАссистент: {bot_text}{tokenizer.eos_token}")
+            elif isinstance(sample, dict):
+                t = sample.get("text", sample.get("prompt", ""))
+                if t:
+                    texts.append(str(t).strip())
             elif isinstance(sample, str):
-                texts.append(sample)
+                if sample.strip():
+                    texts.append(sample.strip())
+
     texts = [t for t in texts if t and len(t) > 5]
-    
+
     if not texts:
         safe_print("[WARN] Нет текстов для дообучения — сохраняем базовую модель")
-        texts = ["Привет! Как дела?"]
+        texts = ["Пользователь: Привет!\nАссистент: Здравствуй!" + tokenizer.eos_token]
 
-    safe_print(f"[📊] Формируем датасет: {len(texts)} текстов")
-    
-    # Токенизация и дообучение
-    encodings = tokenizer("\n\n".join(texts[:500]), return_tensors="pt")
+    safe_print(f"[DATA] Формируем датасет: {len(texts)} текстов")
+
+    # Правильная токенизация: каждый текст отдельно, с truncation
     from torch.utils.data import DataLoader, TensorDataset
-    dataset = TensorDataset(encodings["input_ids"], encodings["attention_mask"])
-    dataloader = DataLoader(dataset, batch_size=2, shuffle=True)
-    
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
-    
-    safe_print("[🚀] Начало дообучения...")
+    import torch
+
+    block_size = 256  # Максимальная длина последовательности
+    all_input_ids = []
+
+    for text in texts:
+        enc = tokenizer(text, truncation=True, max_length=block_size, return_tensors="pt")
+        all_input_ids.append(enc["input_ids"].squeeze(0))
+
+    # Склеиваем все токены в один длинный массив и нарезаем на блоки
+    cat_ids = torch.cat(all_input_ids, dim=0)
+    safe_print(f"[DATA] Всего токенов: {len(cat_ids)}")
+
+    # Нарезаем на блоки фиксированной длины
+    blocks = []
+    for i in range(0, len(cat_ids) - block_size, block_size):
+        blocks.append(cat_ids[i:i + block_size])
+
+    if not blocks:
+        # Если данных очень мало — дублируем
+        chunk = cat_ids[:block_size]
+        if len(chunk) < block_size:
+            pad_len = block_size - len(chunk)
+            chunk = torch.cat([chunk, torch.full((pad_len,), tokenizer.pad_token_id, dtype=chunk.dtype)])
+        blocks = [chunk]
+
+    input_ids = torch.stack(blocks)
+    safe_print(f"[DATA] Блоков для обучения: {len(blocks)} (размер: {block_size} токенов)")
+
+    dataset = TensorDataset(input_ids)
+    dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
+
+    # Оптимизатор с scheduler
+    optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5, weight_decay=0.01)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=3 * len(dataloader))
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    safe_print(f"[INFO] Устройство: {device}")
+    model = model.to(device)
     model.train()
-    for epoch in range(3):
+
+    num_epochs = 3
+    safe_print(f"[RUN] Начало дообучения ({num_epochs} эпох)...")
+
+    for epoch in range(num_epochs):
         total_loss = 0
-        for batch_input, batch_mask in dataloader:
+        num_batches = 0
+        for (batch_input,) in dataloader:
+            batch_input = batch_input.to(device)
+            attention_mask = torch.ones_like(batch_input)
+            labels = batch_input.clone()
+
             optimizer.zero_grad()
-            outputs = model(input_ids=batch_input, attention_mask=batch_mask, labels=batch_input)
+            outputs = model(input_ids=batch_input, attention_mask=attention_mask, labels=labels)
             loss = outputs.loss
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optimizer.step()
+            scheduler.step()
+
             total_loss += loss.item()
-        safe_print(f"[INFO] Эпоха {epoch+1}/3, Loss: {total_loss/len(dataloader):.4f}")
+            num_batches += 1
+
+        avg_loss = total_loss / max(num_batches, 1)
+        gpu_info = f" | GPU: {torch.cuda.memory_allocated() / 1024**2:.0f} MB" if device.type == "cuda" else ""
+        safe_print(f"[INFO] Эпоха {epoch+1}/{num_epochs}, Loss: {avg_loss:.4f}{gpu_info}")
 
     # Сохраняем RUGPT3
-    os.makedirs(os.path.dirname(MODEL_PATH) or ".", exist_ok=True)
+    os.makedirs(MODEL_PATH, exist_ok=True)
     model.save_pretrained(MODEL_PATH)
     tokenizer.save_pretrained(MODEL_PATH)
 
     safe_print("[HAPPY] RUGPT3 успешно дообучена и сохранена!")
     safe_print(f"[SAVE] Модель: {MODEL_PATH}")
+    safe_print(f"[DATA] Обучено на {len(texts)} текстах, {len(cat_ids)} токенов")
 
 
 if __name__ == "__main__":

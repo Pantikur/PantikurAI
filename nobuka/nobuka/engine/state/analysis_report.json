@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-08-01T15:06:01.592346",
-  "cycle": 5,
+  "timestamp": "2026-08-04T10:03:27.196127",
+  "cycle": 70,
   "files_count": 49,
   "total_issues": 48,
   "files": [
@@ -126,18 +126,18 @@
     },
     {
       "path": "engine/nobuka_core.py",
-      "lines": 985,
+      "lines": 988,
       "functions": 32,
       "classes": 1,
-      "complexity": 110,
+      "complexity": 112,
       "duplicates_percent": 0.0,
       "has_docstrings": false,
       "test_coverage": 0.0,
       "issues_count": 8,
       "issues": [
-        "Слишком много строк: 985 > 300",
-        "Высокая сложность: 110 > 10",
-        "Длинная функция '__init__': 67 > 50 строк",
+        "Слишком много строк: 988 > 300",
+        "Высокая сложность: 112 > 10",
+        "Длинная функция '__init__': 70 > 50 строк",
         "Длинная функция 'run': 53 > 50 строк",
         "Длинная функция '_cycle': 96 > 50 строк",
         "Длинная функция '_handle_scientist_requests': 54 > 50 строк",

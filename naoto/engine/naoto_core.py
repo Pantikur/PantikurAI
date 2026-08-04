@@ -165,15 +165,17 @@ class NaotoCore:
         if results["books_analyzed"] > 0:
             self._communicate_with_sisters(results)
         
-        # 5. АВТООБУЧЕНИЕ МОДЕЛИ на прочитанных книгах
+# 4. АВТООБУЧЕНИЕ МОДЕЛИ на прочитанных книгах
         if results["books_analyzed"] > 0:
             self.logger.info("📚 Наото: Начинаю автообучение модели на прочитанном...")
             training_results = self._train_model_from_books()
             results["training_pairs"] = training_results.get("pairs_created", 0)
-            results["dialogues_generated"] = training_results.get("dialogues_generated", 0)
-            results["jsonl_entries"] = training_results.get("jsonl_entries", 0)
             results["training_triggered"] = training_results.get("training_triggered", False)
-            self.logger.info(f"🎯 Автообучение: {training_results['pairs_created']} пар, {training_results['jsonl_entries']} записей JSONL")
+            results["training_loss"] = training_results.get("final_loss", None)
+            if training_results.get("success"):
+                self.logger.info(f"🎯 Модель обучена! Loss: {training_results['final_loss']:.4f}")
+            else:
+                self.logger.warning(f"⚠️ Обучение: {training_results.get('reason', 'неизвестная ошибка')}")
 
         # ================================================================
         #  HUMANITY CYCLE — Настроение, душа, спонтанность
@@ -480,174 +482,223 @@ class NaotoCore:
 
     def _train_model_from_books(self) -> Dict:
         """
-        Автоматическое обучение основной модели на проанализированных книгах.
+        Полноценное обучение RUGPT3 модели на данных из книг.
         
         Процесс:
-        1. Собирает все проанализированные книги из базы знаний
-        2. Формирует training pairs (question/answer) из анализа
-        3. Генерирует диалоговые примеры на основе прочитанного
-        4. Создаёт JSONL файл для fine-tune RUGPT
-        5. Запускает обучение модели
+        1. Собирает все данные: книги + conversations.json + training_pairs.jsonl
+        2. Сохраняет в правильном формате (user/bot) в data/training_pairs.jsonl
+        3. Запускает train.main() — правильное дообучение RUGPT3
         """
-        self.logger.info("🧠 Наото: Запуск автообучения модели на прочитанных книгах...")
+        self.logger.info("🧠 Наото: Запуск обучения RUGPT3 на книгах...")
         
         training_results = {
             "pairs_created": 0,
-            "dialogues_generated": 0,
-            "jsonl_entries": 0,
             "training_triggered": False,
+            "success": False,
+            "reason": "",
+            "final_loss": None,
             "errors": []
         }
         
         try:
-            # 1. Формируем training pairs из проанализированных книг
-            training_pairs = self._generate_training_pairs()
-            training_results["pairs_created"] = len(training_pairs)
+            # 1. Собираем все данные из книг
+            book_pairs = self._collect_all_book_pairs()
+            training_results["pairs_created"] = len(book_pairs)
             
-            if not training_pairs:
+            if not book_pairs and not self._has_existing_data():
                 self.logger.info("⚠️ Нет данных для обучения — сначала нужно прочитать книги")
+                training_results["reason"] = "no_data"
                 return training_results
             
-            # 2. Генерируем диалоговые примеры на основе прочитанного
-            dialogues = self._generate_dialogue_examples(training_pairs)
-            training_results["dialogues_generated"] = len(dialogues)
+            # 2. Сохраняем пары из книг в training_pairs.jsonl
+            if book_pairs:
+                self._save_book_pairs(book_pairs)
+                self.logger.info(f"💾 Сохранено {len(book_pairs)} пар из книг в training_pairs.jsonl")
             
-            # 3. Создаём JSONL файл для fine-tune
-            jsonl_path = self._save_training_jsonl(training_pairs, dialogues)
-            training_results["jsonl_entries"] = len(training_pairs) + len(dialogues)
-            self.logger.info(f"💾 Training data сохранена: {jsonl_path} ({len(training_pairs) + len(dialogues)} записей)")
+            # 3. Запускаем обучение RUGPT3
+            self.logger.info("🚀 Запуск обучения RUGPT3 на всех данных...")
+            train_success = self._trigger_fine_tune()
             
-            # 4. Запускаем fine-tune (если есть данные)
-            if len(training_pairs) + len(dialogues) >= 10:
-                training_triggered = self._trigger_fine_tune(jsonl_path)
-                training_results["training_triggered"] = training_triggered
-            
-            self.logger.info("✅ Автообучение завершено!")
+            if train_success:
+                training_results["training_triggered"] = True
+                training_results["success"] = True
+                training_results["reason"] = "completed"
+                self.logger.info("✅ RUGPT3 успешно обучена на книгах!")
+            else:
+                training_results["reason"] = "training_failed"
+                self.logger.warning("⚠️ Обучение RUGPT3 не удалось")
             
         except Exception as e:
-            error_msg = f"Ошибка автообучения: {e}"
+            error_msg = f"Ошибка обучения: {e}"
             self.logger.error(error_msg)
             training_results["errors"].append(error_msg)
+            training_results["reason"] = str(e)
         
         return training_results
-    
-    def _generate_training_pairs(self) -> List[Dict]:
-        """Генерирует training pairs (question/answer) из проанализированных книг."""
+
+    def _collect_all_book_pairs(self) -> List[Dict]:
+        """
+        Собирает ВСЕ обучающие пары из книг:
+        - Из базы знаний Наото (лор, инсайты, прочитанные книги)
+        - Из data/books_training_pairs.jsonl (если есть)
+        """
         pairs = []
+        seen = set()
         
-        for lore_entry in self.knowledge.get("lore_database", [])[:20]:  # Топ-20
-            pairs.append({
-                "input": f"Что известно о {lore_entry.get('type', 'мире')} в литературе?",
-                "output": lore_entry.get("content", ""),
-                "source": "literary_lore",
-                "book_id": lore_entry.get("book_id", "unknown")
-            })
+        # 1. Из базы знаний Наото
+        for lore_entry in self.knowledge.get("lore_database", []):
+            content = lore_entry.get("content", "") if isinstance(lore_entry, dict) else str(lore_entry)
+            if content and len(content) > 10:
+                pair = {"user": f"Расскажи о лоре: {lore_entry.get('type', 'мир')}", "bot": content}
+                key = content[:100]
+                if key not in seen:
+                    seen.add(key)
+                    pairs.append(pair)
         
-        for insight in self.knowledge.get("insights", [])[:20]:
-            pairs.append({
-                "input": f"Какой скрытый смысл в произведении?",
-                "output": insight.get("content", ""),
-                "source": "hidden_meaning",
-                "book_id": insight.get("book_id", "unknown")
-            })
+        for insight in self.knowledge.get("insights", []):
+            content = insight.get("content", "") if isinstance(insight, dict) else str(insight)
+            if content and len(content) > 10:
+                pair = {"user": "Какой глубокий смысл в этом?", "bot": content}
+                key = content[:100]
+                if key not in seen:
+                    seen.add(key)
+                    pairs.append(pair)
         
-        for book in self.knowledge.get("books_read", [])[:10]:
-            pairs.append({
-                "input": f"О чём книга '{book.get('title', 'unknown')}'?",
-                "output": f"Анализ: {book.get('analysis_summary', 'Нет описания')}",
-                "source": "book_summary",
-                "book_id": book.get("id", "unknown")
-            })
+        for book in self.knowledge.get("books_read", []):
+            title = book.get("title", "книга") if isinstance(book, dict) else str(book)
+            summary = book.get("analysis_summary", "") if isinstance(book, dict) else ""
+            if summary:
+                pair = {"user": f"О чём книга '{title}'?", "bot": summary}
+                key = summary[:100]
+                if key not in seen:
+                    seen.add(key)
+                    pairs.append(pair)
         
+        # 2. Из data/books_training_pairs.jsonl (если есть)
+        books_file = Path("data/books_training_pairs.jsonl")
+        if books_file.exists():
+            with open(books_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        entry = json.loads(line)
+                        if "user" in entry and "bot" in entry:
+                            user_text = str(entry["user"]).strip()
+                            bot_text = str(entry["bot"]).strip()
+                            if user_text and bot_text and len(user_text) > 2:
+                                key = bot_text[:100]
+                                if key not in seen:
+                                    seen.add(key)
+                                    pairs.append({"user": user_text, "bot": bot_text})
+                    except Exception:
+                        continue
+        
+        self.logger.info(f"📚 Собрано {len(pairs)} уникальных пар из книг")
         return pairs
-    
-    def _generate_dialogue_examples(self, training_pairs: List[Dict]) -> List[Dict]:
-        """Генерирует диалоговые примеры на основе прочитанного."""
-        dialogues = []
+
+    def _has_existing_data(self) -> bool:
+        """Проверяет, есть ли уже данные для обучения в training_pairs.jsonl."""
+        tp_file = Path("data/training_pairs.jsonl")
+        if tp_file.exists() and tp_file.stat().st_size > 100:
+            count = 0
+            with open(tp_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        count += 1
+            self.logger.info(f"📊 В training_pairs.jsonl уже есть {count} записей")
+            return count > 5
+        return False
+
+    def _save_book_pairs(self, pairs: List[Dict]):
+        """Добавляет пары из книг в общий training_pairs.jsonl."""
+        tp_file = Path("data/training_pairs.jsonl")
+        tp_file.parent.mkdir(parents=True, exist_ok=True)
         
-        for pair in training_pairs[:15]:  # Топ-15
-            dialogue = {
-                "input": f"Расскажи о литературном произведении: {pair['input']}",
-                "output": f"Наото анализирует: {pair['output']}",
-                "source": f"naoto_dialogue_{pair['source']}",
-                "style": "literary_analysis"
-            }
-            dialogues.append(dialogue)
-        
-        return dialogues
-    
-    def _save_training_jsonl(self, pairs: List[Dict], dialogues: List[Dict]) -> str:
-        """Сохраняет training data в JSONL формат для fine-tune."""
-        jsonl_path = Path("naoto/data/training_data.jsonl")
-        jsonl_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        with open(jsonl_path, "w", encoding="utf-8") as f:
-            # Записываем training pairs
+        with open(tp_file, "a", encoding="utf-8") as f:
             for pair in pairs:
-                entry = {
-                    "input": pair["input"],
-                    "output": pair["output"],
-                    "source": pair.get("source", "literary"),
-                    "book_id": pair.get("book_id", "unknown")
-                }
-                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
-            
-            # Записываем диалоги
-            for dlg in dialogues:
-                entry = {
-                    "input": dlg["input"],
-                    "output": dlg["output"],
-                    "source": dlg.get("source", "dialogue"),
-                    "style": dlg.get("style", "analysis")
-                }
-                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+                f.write(json.dumps(pair, ensure_ascii=False) + "\n")
         
-        return str(jsonl_path)
+        self.logger.info(f"💾 Добавлено {len(pairs)} пар в {tp_file}")
     
-    def _trigger_fine_tune(self, jsonl_path: str) -> bool:
-        """Запускает fine-tune RUGPT модели на данных Наото."""
+    def _trigger_fine_tune(self) -> bool:
+        """
+        Запускает настоящее обучение RUGPT3 через train.py.
+        """
+        import subprocess
+        
         try:
-            self.logger.info("🚀 Запуск fine-tune RUGPT на данных из книг...")
+            self.logger.info("🚀 Запуск обучения RUGPT3 через train.py...")
             
-            # Проверяем, есть ли fine_tune скрипт
-            fine_tune_script = Path("fine_tune_rugpt.py")
-            if not fine_tune_script.exists():
-                self.logger.warning("⚠️ fine_tune_rugpt.py не найден — пропуск обучения")
+            project_root = Path(__file__).resolve().parent.parent.parent
+            train_script = project_root / "train.py"
+            
+            if not train_script.exists():
+                self.logger.error(f"❌ train.py не найден: {train_script}")
                 return False
             
-            # Формируем команду
-            import subprocess
-            cmd = [
-                sys.executable, "fine_tune_rugpt.py",
-                "--data", jsonl_path,
-                "--output", "naoto/engine/state/naoto_finetuned"
-            ]
+            self.logger.info(f"📊 Запуск: {sys.executable} {train_script}")
             
-            # Запускаем обучение (в реальном сценарии — через subprocess)
-            # Для безопасности — просто логгируем, что нужно запустить
-            self.logger.info(f"💡 Для запуска обучения выполните:")
-            self.logger.info(f"   python fine_tune_rugpt.py --data {jsonl_path}")
+            result = subprocess.run(
+                [sys.executable, str(train_script)],
+                cwd=str(project_root),
+                capture_output=True,
+                text=True,
+                timeout=3600,  # 1 час на обучение
+                encoding='utf-8',
+                errors='replace',
+            )
             
-            # Сохраняем метаданные для последующего обучения
-            metadata = {
-                "jsonl_path": jsonl_path,
-                "entries_count": sum(1 for _ in open(jsonl_path, encoding="utf-8")),
-                "created_at": datetime.now().isoformat(),
-                "model_name": "sberbank-ai/rugpt3small_based_on_gpt2",
-                "status": "ready_for_training"
-            }
-            
-            metadata_path = Path("naoto/engine/state/training_metadata.json")
-            metadata_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(metadata_path, "w", encoding="utf-8") as f:
-                json.dump(metadata, f, ensure_ascii=False, indent=2)
-            
-            self.logger.info("📊 Метаданные обучения сохранены")
-            return True
-            
-        except Exception as e:
-            self.logger.error(f"Ошибка запуска fine-tune: {e}")
+            if result.returncode == 0:
+                self.logger.info("✅ Обучение RUGPT3 завершено успешно!")
+                if result.stdout:
+                    # Ищем финальный loss в выводе
+                    for line in result.stdout.split('\n'):
+                        if 'Loss' in line or 'loss' in line or 'HAPPY' in line or 'SAVE' in line:
+                            self.logger.info(f"   {line.strip()}")
+                # Сохраняем метаданные
+                self._save_training_metadata(success=True)
+                return True
+            else:
+                self.logger.error(f"❌ Ошибка обучения (код {result.returncode})")
+                if result.stderr:
+                    self.logger.error(f"   {result.stderr[:500]}")
+                self._save_training_metadata(success=False, error=result.stderr[:200] if result.stderr else "")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            self.logger.error("⏰ Таймаут обучения (1 час)")
             return False
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка запуска обучения: {e}")
+            return False
+    
+    def _save_training_metadata(self, success: bool, error: str = ""):
+        """Сохраняет метаданные об обучении."""
+        metadata = {
+            "last_training": datetime.now().isoformat(),
+            "success": success,
+            "error": error,
+            "model_path": "models/rugpt3",
+            "total_retrains": self._get_retrain_count() + (1 if success else 0),
+        }
+        
+        metadata_path = Path("naoto/engine/state/training_metadata.json")
+        metadata_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(metadata_path, "w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+    
+    def _get_retrain_count(self) -> int:
+        """Получает количество ретраинов из метаданных."""
+        metadata_path = Path("naoto/engine/state/training_metadata.json")
+        if metadata_path.exists():
+            try:
+                with open(metadata_path, "r", encoding="utf-8") as f:
+                    return json.load(f).get("total_retrains", 0)
+            except Exception:
+                pass
+        return 0
     
     # =================================================================
     #  ВЗАИМОДЕЙСТВИЕ С СЕСТРАМИ

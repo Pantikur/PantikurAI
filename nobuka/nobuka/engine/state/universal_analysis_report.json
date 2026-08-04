@@ -1,17 +1,18 @@
 {
-  "total_files": 89,
+  "total_files": 91,
   "by_extension": {
     ".py": 52,
-    ".json": 12,
-    ".txt": 12,
+    ".json": 13,
+    ".txt": 13,
     ".md": 11,
     ".log": 2
   },
   "by_size": {
-    "10-100KB": 19,
-    "1-10KB": 55,
-    "< 1KB": 14,
-    "100KB-1MB": 1
+    "10-100KB": 18,
+    "1-10KB": 56,
+    "< 1KB": 15,
+    "100KB-1MB": 1,
+    "> 1MB": 1
   },
   "issues": [
     {
@@ -79,13 +80,13 @@
     {
       "path": "engine/nobuka_core.py",
       "extension": ".py",
-      "size": 47188,
-      "lines": 985,
+      "size": 47324,
+      "lines": 988,
       "issues": [
         {
           "type": "large_file",
           "severity": "warning",
-          "message": "Файл слишком большой: 985 строк"
+          "message": "Файл слишком большой: 988 строк"
         },
         {
           "type": "trailing_whitespace",
@@ -147,9 +148,22 @@
           "message": "75 строк с пробелами в конце"
         }
       ]
+    },
+    {
+      "path": "nobuka/engine/state/nobuka.log",
+      "extension": ".log",
+      "size": 4545005,
+      "lines": 39839,
+      "issues": [
+        {
+          "type": "large_file",
+          "severity": "warning",
+          "message": "Текстовый файл слишком большой: 39839 строк"
+        }
+      ]
     }
   ],
-  "text_files_analyzed": 89,
+  "text_files_analyzed": 91,
   "python_files": [
     {
       "path": "code_analyzer.py",
@@ -244,13 +258,13 @@
     {
       "path": "engine/nobuka_core.py",
       "extension": ".py",
-      "size": 47188,
-      "lines": 985,
+      "size": 47324,
+      "lines": 988,
       "issues": [
         {
           "type": "large_file",
           "severity": "warning",
-          "message": "Файл слишком большой: 985 строк"
+          "message": "Файл слишком большой: 988 строк"
         },
         {
           "type": "trailing_whitespace",
@@ -633,22 +647,29 @@
     {
       "path": "nobuka/engine/state/analysis_report.json",
       "extension": ".json",
-      "size": 17914,
+      "size": 17915,
       "lines": 656,
+      "issues": []
+    },
+    {
+      "path": "nobuka/engine/state/ml_optimization_report.json",
+      "extension": ".json",
+      "size": 938,
+      "lines": 24,
       "issues": []
     },
     {
       "path": "nobuka/engine/state/nobuka_state.json",
       "extension": ".json",
-      "size": 552,
+      "size": 556,
       "lines": 23,
       "issues": []
     },
     {
       "path": "nobuka/engine/state/universal_analysis_report.json",
       "extension": ".json",
-      "size": 18121,
-      "lines": 778,
+      "size": 18822,
+      "lines": 807,
       "issues": []
     },
     {
@@ -770,9 +791,17 @@
       "size": 3049
     }
   ],
-  "large_files": [],
+  "large_files": [
+    {
+      "path": "nobuka/engine/state/nobuka.log",
+      "name": "nobuka.log",
+      "extension": ".log",
+      "size": 4545005,
+      "modified": 1785837806.1573212
+    }
+  ],
   "empty_files": [],
   "old_files": [],
-  "timestamp": "2026-08-01T15:06:01.594594",
-  "cycle": 5
+  "timestamp": "2026-08-04T10:03:27.198177",
+  "cycle": 70
 }
