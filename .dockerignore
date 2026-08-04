@@ -41,6 +41,7 @@ Thumbs.db
 # === Документация (не нужны в production) ===
 *.md
 !README.md
+!web_researcher_README.md
 
 # === Скрипты разработки (не нужны в production) ===
 android-studio-plugin/
