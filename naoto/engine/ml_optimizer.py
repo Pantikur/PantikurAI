@@ -1,7 +1,7 @@
 """
 ML Optimizer — Оптимизатор процесса машинного обучения.
 
-Нобука анализирует проблемы в коде обучения и автоматически:
+Наото анализирует проблемы в коде обучения и автоматически:
   - Улучшает скрипты обучения (train.py, main.py и др.)
   - Оптимизирует обработку данных (JSONL, CSV)
   - Устраняет дубликаты и устаревшие файлы
@@ -20,13 +20,13 @@ from pathlib import Path
 from typing import Any, Optional
 from datetime import datetime
 
-from nobuka.engine.config import NobukaConfig
+from naoto.engine.config import NaotoConfig
 
 
 class MLOptimizer:
     """
-    Оптимизатор процесса машинного обучения.
-    
+    Оптимизатор процесса машинного обучения Наото.
+
     Автоматически находит проблемы в коде обучения и исправляет их.
     """
 
@@ -43,7 +43,7 @@ class MLOptimizer:
         "data", "models", "Pantikur", "Wuglarst",
     ]
 
-    def __init__(self, config: NobukaConfig):
+    def __init__(self, config: NaotoConfig):
         self.config = config
         self.project_root = config.project_root
         self.logger = __import__('logging').getLogger("MLOptimizer")
@@ -415,7 +415,7 @@ class MLOptimizer:
         """Генерация человекочитаемого отчёта."""
         lines = [
             "=" * 80,
-            "🧠 ОТЧЁТ ML-OPTIMIZATORA (Нобука)",
+            "🧠 ОТЧЁТ ML-OPTIMIZATORA (Наото)",
             "=" * 80,
             "",
             f"Время анализа: {report.get('timestamp', '?')}",

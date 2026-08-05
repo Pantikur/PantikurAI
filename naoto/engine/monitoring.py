@@ -1,5 +1,5 @@
 """
-Мониторинг графических трендов Наото.
+Мониторинг литературных трендов Наото.
 """
 
 from __future__ import annotations
@@ -16,14 +16,14 @@ from naoto.engine.config import NaotoConfig
 
 class NaotoMonitoring:
     """
-    Мониторинг графических трендов.
+    Мониторинг литературных трендов.
     
     Отслеживает:
-    - Новые техники рисования
-    - Новые инструменты (Blender, Maya, ZBrush и т.д.)
-    - Тренды на арт-платформах
-    - Обновления стандартов технической графики
-    - Новые AI-инструменты для генерации графики
+    - Новые значимые произведения литературы
+    - Тренды жанров и направлений
+    - Литературные премии и лауреатов
+    - Новые методы литературного анализа
+    - Современные литературные теории
     """
 
     def __init__(self, config: NaotoConfig, web_access=None):
@@ -35,11 +35,11 @@ class NaotoMonitoring:
         
         # База отслеженных трендов
         self.trend_database: Dict[str, List[Dict[str, Any]]] = {
-            "techniques": [],
-            "tools": [],
-            "styles": [],
-            "technology": [],
-            "standards": []
+            "books": [],
+            "genres": [],
+            "authors": [],
+            "theories": [],
+            "awards": []
         }
         
         # Загрузка базы трендов
@@ -56,7 +56,7 @@ class NaotoMonitoring:
             return
         
         self._monitoring_active = True
-        self.logger.info("📊 Запуск мониторинга графических трендов")
+        self.logger.info("📊 Запуск мониторинга литературных трендов")
         
         # Первый цикл мониторинга
         self.run_cycle()
@@ -114,169 +114,178 @@ class NaotoMonitoring:
     # ================================================================
 
     def _monitor_techniques(self) -> List[Dict[str, Any]]:
-        """Мониторинг новых техник рисования."""
-        self.logger.info("🎨 Мониторинг техник рисования")
+        """Мониторинг новых значимых книг."""
+        self.logger.info("📖 Мониторинг новых книг")
         
-        new_techniques = [
+        new_books = [
             {
-                "name": "Digital watercolor blending",
-                "category": "techniques",
-                "description": "Цифровая техника смешивания акварели",
-                "platform": "artstation",
-                "source_url": "https://www.artstation.com/techniques/watercolor",
+                "name": "Современная русская проза 2025-2026",
+                "category": "books",
+                "description": "Новые значимые произведения современных авторов",
+                "platform": "litres",
+                "source_url": "https://www.litres.ru/novinki/",
                 "popularity": random.uniform(0.5, 0.95)
             },
             {
-                "name": "Procedural shading in Blender",
-                "category": "techniques",
-                "description": "Процедурное затенение в Blender",
-                "platform": "blenderartists",
-                "source_url": "https://blenderartists.org/procedural-shading",
+                "name": "Мировая литература месяца",
+                "category": "books",
+                "description": "Ключевые зарубежные новинки и переводы",
+                "platform": "goodreads",
+                "source_url": "https://www.goodreads.com/new_releases",
                 "popularity": random.uniform(0.6, 0.9)
             },
             {
-                "name": "AI-assisted concept art",
-                "category": "techniques",
-                "description": "Использование AI для создания концепт-арта",
-                "platform": "behance",
-                "source_url": "https://www.behance.net/ai-concept-art",
+                "name": "Фэнтези и фантастика новинки",
+                "category": "books",
+                "description": "Свежие произведения жанра фэнтези и НФ",
+                "platform": "fantlab",
+                "source_url": "https://fantlab.ru/news",
                 "popularity": random.uniform(0.7, 0.98)
             }
         ]
         
-        return new_techniques
+        return new_books
 
     def _monitor_tools(self) -> List[Dict[str, Any]]:
-        """Мониторинг новых инструментов."""
-        self.logger.info("🔧 Мониторинг инструментов")
+        """Мониторинг жанров и направлений."""
+        self.logger.info("🎭 Мониторинг жанров")
         
-        new_tools = [
+        new_genres = [
             {
-                "name": "Blender 4.2",
-                "category": "tools",
-                "description": "Обновление Blender с новыми функциями геометрии",
-                "platform": "blenderartists",
-                "source_url": "https://blender.org/download/release-notes-4.2",
-                "type": "software_update",
+                "name": "LitRPG и прогресс-фэнтези",
+                "category": "genres",
+                "description": "Рост популярности жанра игровых миров",
+                "platform": "author.today",
+                "source_url": "https://author.today/genres",
+                "type": "genre_trend",
                 "importance": "high"
             },
             {
-                "name": "Adobe Substance 3D",
-                "category": "tools",
-                "description": "Новые возможности для PBR-текстурирования",
-                "platform": "behance",
-                "source_url": "https://www.adobe.com/products/substance-3d.html",
-                "type": "software_update",
+                "name": "Космическая опера нового поколения",
+                "category": "genres",
+                "description": "Возрождение жанра с современными темами",
+                "platform": "fantlab",
+                "source_url": "https://fantlab.ru/",
+                "type": "genre_trend",
                 "importance": "medium"
             },
             {
-                "name": "Krita 6.0",
-                "category": "tools",
-                "description": "Обновление открытой программы для цифрового рисования",
-                "platform": "deviantart",
-                "source_url": "https://krita.org/en/krita-6-0/",
-                "type": "software_update",
+                "name": "Психологический детектив",
+                "category": "genres",
+                "description": "Углубление в психологию преступления",
+                "platform": "litres",
+                "source_url": "https://www.litres.ru/detektivy/",
+                "type": "genre_trend",
                 "importance": "medium"
             }
         ]
         
-        return new_tools
+        return new_genres
 
     def _monitor_styles(self) -> List[Dict[str, Any]]:
-        """Мониторинг стилей и направлений."""
-        self.logger.info("🖌️ Мониторинг стилей")
+        """Мониторинг современных авторов."""
+        self.logger.info("✍️ Мониторинг авторов")
         
-        new_styles = [
+        new_authors = [
             {
-                "name": "Neo-photorealism",
-                "category": "styles",
-                "description": "Новый фотореализм с элементами сюрреализма",
-                "platform": "artstation",
-                "source_url": "https://www.artstation.com/trending/neo-photorealism",
+                "name": "Лауреаты литературных премий",
+                "category": "authors",
+                "description": "Авторы, получившие признание в этом сезоне",
+                "platform": "gorky.media",
+                "source_url": "https://gorky.media/news/",
                 "popularity": random.uniform(0.4, 0.85)
             },
             {
-                "name": "Low-poly retro",
-                "category": "styles",
-                "description": "Ретро-стиль с low-poly графикой",
-                "platform": "artstation",
-                "source_url": "https://www.artstation.com/trending/low-poly",
+                "name": "Дебютанты года",
+                "category": "authors",
+                "description": "Перспективные новые голоса в литературе",
+                "platform": "litres",
+                "source_url": "https://www.litres.ru/",
                 "popularity": random.uniform(0.5, 0.8)
             },
             {
-                "name": "AI-enhanced traditional",
-                "category": "styles",
-                "description": "Традиционное искусство с AI-улучшениями",
-                "platform": "behance",
-                "source_url": "https://www.behance.net/ai-enhanced-traditional",
+                "name": "Международные бестселлеры",
+                "category": "authors",
+                "description": "Авторы, покорившие мировые чарты",
+                "platform": "goodreads",
+                "source_url": "https://www.goodreads.com/",
                 "popularity": random.uniform(0.6, 0.9)
             }
         ]
         
-        return new_styles
+        return new_authors
 
     def _monitor_technology(self) -> List[Dict[str, Any]]:
-        """Мониторинг технологий."""
-        self.logger.info("⚡ Мониторинг технологий")
+        """Мониторинг литературных теорий."""
+        self.logger.info("📚 Мониторинг литературных теорий")
         
-        new_tech = [
+        new_theories = [
             {
-                "name": "Real-time ray tracing",
-                "category": "technology",
-                "description": "Технология трассировки лучей в реальном времени",
-                "platform": "github",
-                "source_url": "https://github.com/topics/realtime-raytracing",
-                "type": "rendering",
+                "name": "Новый историзм в анализе",
+                "category": "theories",
+                "description": "Современный подход к контекстуальному анализу",
+                "platform": "scholar",
+                "source_url": "https://scholar.google.com/",
+                "type": "theory",
                 "impact": "high"
             },
             {
-                "name": "Neural style transfer",
-                "category": "technology",
-                "description": "Нейросетевая передача стиля для графики",
-                "platform": "github",
-                "source_url": "https://github.com/topics/neural-style-transfer",
-                "type": "ai",
+                "name": "Постколониальная критика",
+                "category": "theories",
+                "description": "Анализ литературы через призму колониального опыта",
+                "platform": "scholar",
+                "source_url": "https://scholar.google.com/",
+                "type": "theory",
                 "impact": "medium"
             },
             {
-                "name": "Procedural generation",
-                "category": "technology",
-                "description": "Процедурная генерация 3D-контента",
-                "platform": "github",
-                "source_url": "https://github.com/topics/procedural-generation",
-                "type": "generation",
+                "name": "Нарратология: новая волна",
+                "category": "theories",
+                "description": "Современные методы анализа повествовательных структур",
+                "platform": "scholar",
+                "source_url": "https://scholar.google.com/",
+                "type": "theory",
                 "impact": "high"
             }
         ]
         
-        return new_tech
+        return new_theories
 
     def _monitor_standards(self) -> List[Dict[str, Any]]:
-        """Мониторинг стандартов технической графики."""
-        self.logger.info("📐 Мониторинг стандартов")
+        """Мониторинг литературных премий."""
+        self.logger.info("🏆 Мониторинг литературных премий")
         
-        new_standards = [
+        new_awards = [
             {
-                "name": "ISO 128-1:2024",
-                "category": "standards",
-                "description": "Общие принципы представления технических чертежей",
-                "platform": "iso",
-                "source_url": "https://www.iso.org/standard/128-1-2024",
-                "type": "iso_update",
+                "name": "Нобелевская премия по литературе",
+                "category": "awards",
+                "description": "Лауреат и обоснование присуждения",
+                "platform": "nobelprize",
+                "source_url": "https://www.nobelprize.org/",
+                "type": "award",
                 "importance": "high"
             },
             {
-                "name": "GLS-1-2024",
-                "category": "standards",
-                "description": "Обновление государственных стандартов оформления чертежей",
-                "platform": "gost",
-                "source_url": "https://docs.cntd.ru/gls-1-2024",
-                "type": "gost_update",
+                "name": "«Большая книга» — финалисты",
+                "category": "awards",
+                "description": "Короткий список национальной премии",
+                "platform": "bigbook",
+                "source_url": "https://bigbook.ru/",
+                "type": "award",
+                "importance": "high"
+            },
+            {
+                "name": "Премия Хьюго — номинанты",
+                "category": "awards",
+                "description": "Лучшие произведения фантастики года",
+                "platform": "thehugoawards",
+                "source_url": "https://www.thehugoawards.org/",
+                "type": "award",
                 "importance": "medium"
             }
         ]
         
-        return new_standards
+        return new_awards
 
     # ================================================================
     #  КЛАССИФИКАЦИЯ РЕЛЕВАНТНОСТИ

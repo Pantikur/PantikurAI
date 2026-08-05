@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any, Optional
 from collections import Counter
 
-from nobuka.engine.config import NobukaConfig
+from naoto.engine.config import NaotoConfig
 
 
 class UniversalAnalyzer:
@@ -92,7 +92,7 @@ class UniversalAnalyzer:
         '.o', '.a', '.lib',  # Объектные файлы
     }
 
-    def __init__(self, config: NobukaConfig):
+    def __init__(self, config: NaotoConfig):
         self.config = config
         self.project_root = config.project_root
 

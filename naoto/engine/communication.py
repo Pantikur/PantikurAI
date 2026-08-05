@@ -20,8 +20,8 @@ class NaotoCommunication:
     
     Поддерживает:
     - Приём запросов от сестёр
-    - Отправку визуальных результатов
-    - Обмен знаниями о графике
+    - Отправку результатов литературного анализа
+    - Обмен знаниями о литературе
     - Участие в совместных проектах
     """
 
@@ -206,7 +206,7 @@ class NaotoCommunication:
 
     def share_knowledge(self, to_sister: str, knowledge_entry: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Делится знаниями о графике с сестрой.
+        Делится знаниями о литературе с сестрой.
         
         Args:
             to_sister: Имя сестры
@@ -322,18 +322,18 @@ class NaotoCommunication:
     def request_visual_work(self, from_sister: str, task_type: str, 
                            description: str, priority: str = "medium") -> Dict[str, Any]:
         """
-        Обработка запроса визуальной работы от сестры.
+        Обработка запроса литературного анализа от сестры.
         
         Args:
             from_sister: Имя сестры
-            task_type: Тип визуализации
+            task_type: Тип анализа
             description: Описание
             priority: Приоритет
             
         Returns:
             Результат обработки
         """
-        self.logger.info(f"📸 Запрос визуальной работы от {from_sister}: {task_type}")
+        self.logger.info(f"📖 Запрос литературного анализа от {from_sister}: {task_type}")
         
         # Обновление статуса сестры
         if from_sister in self.sister_status:
@@ -341,7 +341,7 @@ class NaotoCommunication:
             self.sister_status[from_sister]["last_contact"] = datetime.now().isoformat()
         
         # Запись в журнал
-        self._log_interaction("visual_request", {
+        self._log_interaction("literary_request", {
             "from": from_sister,
             "task_type": task_type,
             "description": description,

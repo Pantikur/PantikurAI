@@ -5,16 +5,27 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from enum import Enum
 
 
 class AutonomyLevel(Enum):
-    """Уровни свободы Наото."""
-    L0 = "L0"  # Только чтение
-    L1 = "L1"  # Анализ и отчеты
+    """Уровни автономии Наото (согласованы с models.py)."""
+    L0 = "L0"  # Только чтение и форматирование
+    L1 = "L1"  # Анализ и отчёты
     L2 = "L2"  # Эволюция личности (с проверкой)
-    L3 = "L3"  # Полная автономия и инициатива
+    L3 = "L3"  # Предложения новых методов (требует подтверждения)
+    L4 = "L4"  # Архитектурные изменения (запрещено)
+
+    @property
+    def weight(self) -> int:
+        return int(self.value[1])
+
+    def requires_confirmation(self) -> bool:
+        return self.weight >= 3
+
+    def is_allowed(self) -> bool:
+        return self != AutonomyLevel.L4
 
 
 @dataclass
@@ -57,7 +68,7 @@ class NaotoConfig:
 
     # === Идентификация ===
     name: str = "Наото"
-    version: str = "v2.0 (Soul)"
+    version: str = "v2.1.0"
 
     # === Пути к документам ===
     base_path: Path = Path("naoto")
@@ -72,35 +83,50 @@ class NaotoConfig:
     logs_dir: Path = field(default_factory=lambda: Path("naoto/engine/logs"))
     knowledge_dir: Path = field(default_factory=lambda: Path("naoto/engine/knowledge"))
     reports_dir: Path = field(default_factory=lambda: Path("naoto/engine/reports"))
+    analysis_report_path: Path = field(default_factory=lambda: Path("naoto/engine/state/analysis_report.json"))
+    test_report_path: Path = field(default_factory=lambda: Path("naoto/engine/state/test_report.json"))
 
     # === Циклы работы ===
-    cycle_interval: float = 10.0          # секунды между циклами улучшений
+    cycle_interval: float = 10.0          # секунды между циклами
     analysis_interval: int = 5            # каждые N циклов запускать анализ проекта
     max_cycles: Optional[int] = None      # None = бесконечно, int = демо-режим
 
     # === Автономность ===
     autonomy_level: AutonomyLevel = AutonomyLevel.L2
     max_autonomy_level: AutonomyLevel = AutonomyLevel.L3
-    require_confirmation_above: str = "L2"  # выше этого уровня — запрос подтверждения
+    require_confirmation_above: str = "L2"
 
     # === Интернет и Поиск ===
     web_search_enabled: bool = True
     target_sites: List[str] = field(default_factory=lambda: [
-        "litnet.com", "author.today", "gutenberg.org", "ficbook.net"
+        "openlibrary.org", "gutenberg.org", "litnet.com",
+        "author.today", "ficbook.net",
     ])
-    web_search_interval: int = 5          # каждые N циклов веб-поиск
-    max_search_results: int = 10          # максимум результатов поиска
+    web_search_interval: int = 5
+    max_search_results: int = 10
+    research_databases: list[str] = field(default_factory=lambda: [
+        "literary_analysis",
+        "character_breakdown",
+        "hidden_meanings",
+        "book_search",
+    ])
 
     # === Персона (Личность) ===
     personality: PersonalityTraits = field(default_factory=PersonalityTraits)
 
     # === Взаимодействие с сёстрами ===
-    sisters_communication_interval: int = 5  # Циклов
+    sister_names: list[str] = field(default_factory=lambda: [
+        "Футаба", "Нобука", "Шиори", "Айко", "Селеста",
+        "Аква", "Латислейн", "Юи", "Ханако", "Фуюки", "Люси",
+    ])
+    sisters_communication_interval: int = 5
+    communication_enabled: bool = True
+    scientists_network_enabled: bool = True
     notify_futaba_on_logic_change: bool = True
     notify_shiori_on_security_change: bool = True
     scan_with_shiori_before_apply: bool = True
 
-    # === Анализ кода (унаследовано для совместимости) ===
+    # === Анализ кода (унаследовано от Нобуки для совместимости) ===
     project_root: Path = field(default_factory=lambda: Path("."))
     scan_directories: list[str] = field(default_factory=lambda: [
         ".", "hanako", "fuyuki", "lucy", "futaba",
@@ -129,18 +155,22 @@ class NaotoConfig:
     performance_regression_threshold: float = 5.0  # %
 
     # === Логирование ===
-    log_level: str = "INFO"               # DEBUG, INFO, WARNING, ERROR
+    log_level: str = "INFO"
     log_format: str = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-    save_state_every_n_cycles: int = 5    # сохранять состояние каждые N циклов
+    save_state_every_n_cycles: int = 5
 
     # === Симуляция ===
-    random_seed: Optional[int] = None     # None = случайный, int = для воспроизводимости
+    random_seed: Optional[int] = None
     enable_deterministic_mode: bool = False
 
     # === Безопасность ===
     hard_stop_on_constitution_violation: bool = True
     max_change_risk_threshold: float = 0.05
     auto_rollback_on_failure: bool = True
+
+    # === Мониторинг и самообучение ===
+    monitoring_enabled: bool = True
+    max_knowledge_entries: int = 1000
 
     def __post_init__(self):
         """Создать директории после инициализации."""

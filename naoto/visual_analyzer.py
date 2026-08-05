@@ -2,25 +2,25 @@
 """
 Модуль улучшения для Наото — visual_analyzer
 Зона: Детали, визуальный анализ, детекция
-Создан Нобукой в тестовом режиме
+Создан Наото в тестовом режиме
 Дата: 2026-07-18
 Цикл: 20260718_165903
 """
 
-# Автоматически сгенерировано Нобукой
+# Автоматически сгенерировано Наото
 
 
 class VisualAnalyzer:
     """Класс для улучшения: visual_analyzer
     
     Назначение: Детали, визуальный анализ, детекция
-    Создана: Нобука (2026-07-18)
+    Создана: Наото (2026-07-18)
     """
     
     def __init__(self):
         self.name = "Наото"
         self.focus = "Детали, визуальный анализ, детекция"
-        self.created_by = "Нобука"
+        self.created_by = "Наото"
         self.cycle_id = "20260718_165903"
         self.improvement_type = "visual_analyzer"
         
@@ -60,7 +60,7 @@ def validate():
     
     # Проверка базовых атрибутов
     assert module.name == "Наото", f"Имя: {module.name}"
-    assert module.created_by == "Нобука", f"Создатель: {module.created_by}"
+    assert module.created_by == "Наото", f"Создатель: {module.created_by}"
     assert module.improvement_type == "visual_analyzer"
     
     # Проверка работы (run() должен возвращать True)

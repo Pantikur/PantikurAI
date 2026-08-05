@@ -37,7 +37,7 @@ from ml_optimizer import MLOptimizer
 def cmd_run(config: NaotoConfig):
     """Запустить постоянную работу Наото."""
     core = NaotoCore(config)
-    core.run()
+    core.run(cycles=config.max_cycles or 10)
 
 
 def cmd_analyze(config: NaotoConfig):
@@ -107,7 +107,7 @@ def cmd_universal_analyze(config: NaotoConfig):
 def cmd_ml_optimize(config: NaotoConfig):
     """Запустить ML-оптимизатор для улучшения процесса обучения модели."""
     print("=" * 80)
-    print("🧠 ML-OPTIMIZATOR (Нобука — оптимизация обучения)")
+    print("🧠 ML-OPTIMIZATOR (Наото — оптимизация обучения)")
     print("=" * 80)
 
     optimizer = MLOptimizer(config)
@@ -147,11 +147,11 @@ def cmd_tests(config: NaotoConfig):
 
 
 def cmd_status(config: NaotoConfig):
-    """Показать текущее состояние Нобука."""
+    """Показать текущее состояние Наото."""
     state_path = config.state_path
 
     if not state_path.exists():
-        print("Нобука ещё не запускалась. Состояние отсутствует.")
+        print("Наото ещё не запускалась. Состояние отсутствует.")
         return
 
     with open(state_path, "r", encoding="utf-8") as f:
@@ -160,27 +160,23 @@ def cmd_status(config: NaotoConfig):
     print("=" * 60)
     print("📊 СОСТОЯНИЕ НААТО")
     print("=" * 60)
-    print(f"Версия: {state.get('version', '?')}")
-    print(f"Циклов выполнено: {state.get('cycle_count', 0)}")
-    print(f"Последнее обновление: {state.get('timestamp', '?')}")
-    print()
-    print("Метрики:")
-    for key, value in state.get("metrics", {}).items():
-        print(f"  {key}: {value}")
+    print(f"Версия: {state.get('version', config.version)}")
+    print(f"Прочитано книг: {state.get('books_count', 0)}")
+    print(f"Элементов лора: {state.get('lore_count', 0)}")
+    print(f"Последнее обновление: {state.get('last_update', '?')}")
     print()
 
-    improvements = state.get("improvements_history", [])
-    if improvements:
-        print(f"Последние улучшения ({len(improvements)}):")
-        for imp in improvements[-5:]:
-            status = "✅" if imp.get("applied") else "⏸️"
-            print(f"  {status} {imp.get('version_after', '?')}: "
-                  f"{imp.get('description', '?')}")
+    personality = state.get("personality", {})
+    if personality:
+        print("Личность:")
+        for key, value in personality.items():
+            print(f"  {key}: {value}")
+        print()
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Нобука — автономная система улучшений и модернизации",
+        description="Наото — автономный литературный аналитик и исследователь",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__
     )
@@ -194,6 +190,16 @@ def main():
         "--analyze",
         action="store_true",
         help="Запустить только анализ проекта"
+    )
+    parser.add_argument(
+        "--search",
+        action="store_true",
+        help="Только поиск и анализ книг"
+    )
+    parser.add_argument(
+        "--evolve",
+        action="store_true",
+        help="Только саморазвитие личности"
     )
     parser.add_argument(
         "--tests",
@@ -248,6 +254,12 @@ def main():
         cmd_universal_analyze(config)
     elif args.status:
         cmd_status(config)
+    elif args.search:
+        core = NaotoCore(config)
+        core.run_search()
+    elif args.evolve:
+        core = NaotoCore(config)
+        core.run_evolve()
     elif args.analyze:
         cmd_analyze(config)
     elif args.tests:

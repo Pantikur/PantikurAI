@@ -1,5 +1,5 @@
 """
-Модуль самообучения Наото.
+Модуль самообучения Наото — литературный анализ.
 """
 
 from __future__ import annotations
@@ -12,14 +12,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from naoto.engine.config import NaotoConfig
-from naoto.engine.models import VisualResult
 
 
 class NaotoSelfLearning:
     """
     Модуль самообучения Наото.
     
-    Анализирует работы, извлекает техники, расширяет базу знаний.
+    Анализирует литературные произведения, извлекает техники анализа,
+    расширяет базу знаний о литературе.
     """
 
     def __init__(self, config: NaotoConfig):
@@ -33,14 +33,14 @@ class NaotoSelfLearning:
             "references_analyzed": [],
             "trends_integrated": [],
             "skill_progress": {
-                "perspective": 0.5,
-                "lighting": 0.5,
-                "anatomy": 0.5,
-                "texture": 0.5,
-                "composition": 0.5,
-                "color_theory": 0.5,
-                "3d_modeling": 0.5,
-                "technical_drawing": 0.5
+                "text_analysis": 0.5,
+                "character_analysis": 0.5,
+                "subtext_detection": 0.5,
+                "theme_identification": 0.5,
+                "style_analysis": 0.5,
+                "symbolism": 0.5,
+                "genre_knowledge": 0.5,
+                "comparative_analysis": 0.5
             }
         }
         
@@ -53,11 +53,11 @@ class NaotoSelfLearning:
 
     def analyze_content(self, content: str, category: str, source_url: str) -> Dict[str, Any]:
         """
-        Анализирует контент и извлекает техники.
+        Анализирует литературный контент и извлекает техники анализа.
         
         Args:
             content: Текст контента
-            category: Категория (perspective, lighting, anatomy, texture, composition)
+            category: Категория (text_analysis, character_analysis, subtext_detection, ...)
             source_url: Источник
             
         Returns:
@@ -93,56 +93,64 @@ class NaotoSelfLearning:
         return analysis
 
     def _extract_techniques(self, content: str, category: str) -> List[str]:
-        """Извлекает техники из контента."""
+        """Извлекает техники литературного анализа из контента."""
         # Словари техник по категориям
         technique_dictionaries = {
-            "perspective": [
-                "one_point_perspective",
-                "two_point_perspective",
-                "three_point_perspective",
-                "atmospheric_perspective",
-                "isometric_projection",
-                "orthographic_projection"
+            "text_analysis": [
+                "close_reading",
+                "narrative_structure",
+                "stylistic_analysis",
+                "lexical_analysis",
+                "syntactic_analysis",
+                "mood_analysis"
             ],
-            "lighting": [
-                "chiaroscuro",
-                "sfumato",
-                "three_point_lighting",
-                "rim_lighting",
-                "volumetric_lighting",
-                "global_illumination"
+            "character_analysis": [
+                "character_arc",
+                "motivation_analysis",
+                "psychological_portrait",
+                "dialogue_analysis",
+                "relationship_mapping",
+                "arc_progression"
             ],
-            "anatomy": [
-                "proportional_analysis",
-                "gesture_drawing",
-                "muscle_structure",
-                "skeletal_framework",
-                "facial_anatomy",
-                "dynamic_pose"
+            "subtext_detection": [
+                "symbol_detection",
+                "irony_analysis",
+                "metaphor_mapping",
+                "implicit_meaning",
+                "authorial_subtext",
+                "coded_language"
             ],
-            "texture": [
-                "procedural_texturing",
-                "hand_painted_textures",
-                "photobashing",
-                "normal_mapping",
-                "displacement_mapping",
-                "subsurface_scattering"
+            "theme_identification": [
+                "theme_tracing",
+                "motif_identification",
+                "recurring_imagery",
+                "idea_progression",
+                "contrast_analysis",
+                "central_conflict"
             ],
-            "composition": [
-                "rule_of_thirds",
-                "golden_ratio",
-                "leading_lines",
-                "framing",
-                "balance_and_contrast",
-                "visual_hierarchy"
+            "style_analysis": [
+                "author_voice",
+                "rhythm_analysis",
+                "sentence_structure",
+                "word_choice",
+                "pacing_analysis",
+                "genre_style"
+            ],
+            "symbolism": [
+                "symbol_interpretation",
+                "allegory_mapping",
+                "archetype_recognition",
+                "mythological_reference",
+                "color_symbolism",
+                "object_symbolism"
             ],
             "general": [
-                "value_study",
-                "color_theory",
-                "edge_control",
-                "form_building",
-                "negative_space",
-                "visual_storytelling"
+                "deep_reading",
+                "contextual_analysis",
+                "comparative_method",
+                "structural_breakdown",
+                "thematic_synthesis",
+                "critical_interpretation"
             ]
         }
         
@@ -158,12 +166,12 @@ class NaotoSelfLearning:
     def _extract_key_ideas(self, content: str) -> List[str]:
         """Извлекает ключевые идеи из контента."""
         ideas = [
-            "Композиция определяет баланс визуала",
-            "Свет создаёт настроение и объём",
-            "Пропорции — основа реалистичности",
-            "Текстуры добавляют достоверность",
-            "Цвета влияют на восприятие",
-            "Детали создают глубину"
+            "Скрытый смысл важнее поверхностного сюжета",
+            "Персонаж раскрывается через мотивы и выбор",
+            "Символы связывают текст с культурным контекстом",
+            "Авторский стиль — это голос произведения",
+            "Тема проявляется через повторяющиеся мотивы",
+            "Подтекст создаёт глубину повествования"
         ]
         
         # Если контент большой, извлекаем больше
@@ -196,11 +204,13 @@ class NaotoSelfLearning:
         
         # Бонус за категорию
         category_bonus = {
-            "perspective": 0.1,
-            "lighting": 0.1,
-            "anatomy": 0.1,
-            "texture": 0.1,
-            "composition": 0.15,
+            "text_analysis": 0.1,
+            "character_analysis": 0.1,
+            "subtext_detection": 0.15,
+            "theme_identification": 0.1,
+            "style_analysis": 0.1,
+            "symbolism": 0.15,
+            "comparative_analysis": 0.12,
             "general": 0.05
         }
         base += category_bonus.get(category, 0.05)
@@ -246,16 +256,16 @@ class NaotoSelfLearning:
         # Сохранение
         self._save_knowledge()
 
-    def record_creation(self, result: VisualResult, creation_type: str) -> None:
-        """Записывает созданную работу в базу знаний."""
+    def record_creation(self, result: Any, creation_type: str) -> None:
+        """Записывает проведённый литературный анализ в базу знаний."""
         entry = {
             "entry_id": f"CRE-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000, 9999)}",
             "type": creation_type,
-            "result_id": result.result_id,
-            "description": result.description,
-            "quality_score": result.quality_score,
-            "techniques": result.techniques_applied,
-            "references": result.references_used,
+            "result_id": getattr(result, "result_id", "") or getattr(result, "book_id", ""),
+            "description": getattr(result, "description", "") or getattr(result, "author_intent", ""),
+            "quality_score": getattr(result, "quality_score", 0.0) or 0.5,
+            "techniques": getattr(result, "techniques_applied", []),
+            "references": getattr(result, "references_used", []),
             "timestamp": datetime.now().isoformat()
         }
         
@@ -266,13 +276,24 @@ class NaotoSelfLearning:
             self.knowledge_base["references_analyzed"] = self.knowledge_base["references_analyzed"][-2500:]
         
         # Обновление прогресса
-        if creation_type == "sketch":
-            self.knowledge_base["skill_progress"]["composition"] = min(
-                self.knowledge_base["skill_progress"]["composition"] + 0.01, 1.0
+        if creation_type == "book_analysis":
+            self.knowledge_base["skill_progress"]["text_analysis"] = min(
+                self.knowledge_base["skill_progress"]["text_analysis"] + 0.01, 1.0
             )
-        elif creation_type == "3d":
-            self.knowledge_base["skill_progress"]["3d_modeling"] = min(
-                self.knowledge_base["skill_progress"]["3d_modeling"] + 0.01, 1.0
+            self.knowledge_base["skill_progress"]["theme_identification"] = min(
+                self.knowledge_base["skill_progress"]["theme_identification"] + 0.01, 1.0
+            )
+        elif creation_type == "character_breakdown":
+            self.knowledge_base["skill_progress"]["character_analysis"] = min(
+                self.knowledge_base["skill_progress"]["character_analysis"] + 0.01, 1.0
+            )
+        elif creation_type == "hidden_meaning":
+            self.knowledge_base["skill_progress"]["subtext_detection"] = min(
+                self.knowledge_base["skill_progress"]["subtext_detection"] + 0.01, 1.0
+            )
+        elif creation_type == "symbolism":
+            self.knowledge_base["skill_progress"]["symbolism"] = min(
+                self.knowledge_base["skill_progress"]["symbolism"] + 0.01, 1.0
             )
         
         self._save_knowledge()

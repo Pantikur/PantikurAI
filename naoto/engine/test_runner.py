@@ -19,8 +19,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from nobuka.engine.config import NobukaConfig
-from nobuka.engine.models import (
+from naoto.engine.config import NaotoConfig
+from naoto.engine.models import (
     BenchmarkResult, TestCase, TestReport, TestResult,
 )
 
@@ -30,7 +30,7 @@ class TestRunner:
     Тестировщик — запуск и управление тестами.
     """
 
-    def __init__(self, config: NobukaConfig):
+    def __init__(self, config: NaotoConfig):
         self.config = config
         self.project_root = config.project_root
 

@@ -1,12 +1,15 @@
 """
-Модели данных системы Нобука.
+Модели данных системы Наото.
 
 Содержит:
-  - Constitution, Law — фундаментальная база улучшений
-  - ImprovementRecord, LogEntry — журнал улучшений
-  - CodeMetric, FileAnalysis — метрики и анализ кода
-  - TestCase, TestResult — модели тестирования
-  - CodeChange, RefactorPlan — модели изменений и рефакторинга
+  - LiteraryAnalysis, CharacterProfile, LoreEntry — литературный анализ
+  - PhantomNarration — скрытое повествование
+  - PersonalityTraits, AutonomyLevel — личность и уровни автономии
+  - ImprovementRecord, LogEntry — журнал изменений
+  - CodeMetric, FileAnalysis, Issue — анализ кода
+  - TestCase, TestResult, TestReport — тестирование
+  - CodeChange, RefactorPlan — изменения и рефакторинг
+  - BenchmarkResult — бенчмарки
 """
 
 from __future__ import annotations
@@ -20,23 +23,8 @@ from typing import Any, Optional
 #  ПЕРЕЧИСЛЕНИЯ
 # =====================================================================
 
-class AutonomyLevel(Enum):
-    """Уровни автономности Нобуки (см. протокол саморазвития)."""
-    L0 = "L0"  # Полная автономия — опечатки, форматирование
-    L1 = "L1"  # Автономные патчи — исправление багов
-    L2 = "L2"  # Автономный рефакторинг — оптимизация
-    L3 = "L3"  # Предложения — новые функции (требует подтверждения)
-    L4 = "L4"  # Запрещено — архитектурные изменения
-
-    @property
-    def weight(self) -> int:
-        return int(self.value[1])
-
-    def requires_confirmation(self) -> bool:
-        return self.weight >= 3
-
-    def is_allowed(self) -> bool:
-        return self != AutonomyLevel.L4
+# AutonomyLevel импортируется из config.py
+from naoto.engine.config import AutonomyLevel
 
 
 class ImprovementType(Enum):

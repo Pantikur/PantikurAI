@@ -56,6 +56,9 @@ class NaotoCore:
         # Журнал действий
         self.action_log: List[Dict[str, Any]] = []
 
+        # Счётчик циклов
+        self.cycle_count = 0
+
         # Загрузка состояния и личности
         self._load_state()
         self.logger.info("🌟 Наото: Сознание активировано. Готова к анализу литературы.")
@@ -84,15 +87,13 @@ class NaotoCore:
         self.logger.info("=" * 60)
 
         for i in range(cycles):
+            self.cycle_count = i + 1
             self.logger.info(f"\n📚 Цикл {i + 1}/{cycles}")
             
             try:
                 # Автономный поиск и чтение книг
                 results = self.autonomous_search_and_read()
                 self.logger.info(f"📊 Результат: {results['books_found']} книг, {results['insights_gained']} инсайтов")
-                
-                # Эволюция личности
-                self.evolve_personality()
                 
             except Exception as e:
                 self.logger.exception(f"Ошибка в цикле {i + 1}: {e}")
@@ -101,6 +102,24 @@ class NaotoCore:
             time.sleep(1)
 
         self.logger.info(f"✅ Цикл завершён. Всего циклов: {cycles}")
+
+    def run_search(self) -> Dict:
+        """Только поиск и анализ книг (один проход)."""
+        self.logger.info("🔍 Режим: поиск и анализ книг")
+        return self.autonomous_search_and_read()
+
+    def run_evolve(self) -> Dict:
+        """Только эволюция личности (один проход)."""
+        self.logger.info("🌱 Режим: саморазвитие личности")
+        self.humanity.current_cycle = self.cycle_count
+        humanity_result = self.humanity.cycle_step(event_type="routine", context="self_evolution")
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Наото думает: {humanity_result['thought']}")
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
+        self._save_state()
+        return {"evolved": True}
 
     # =================================================================
     #  АВТОНОМНЫЙ ПОИСК И ЧТЕНИЕ
@@ -124,25 +143,41 @@ class NaotoCore:
         topic = self._select_research_topic()
         self.logger.info(f"🎯 Тема поиска: {topic}")
 
-        # 2. Поиск книг (через BookLearner)
+        # 2. Поиск книг (через BookLearner — пробуем все источники)
         books = []
         if "openlibrary.org" in self.config.target_sites:
             books = self.book_learner.search_open_library(topic, max_results=3)
         if not books and "gutenberg.org" in self.config.target_sites:
+            books = self.book_learner.search_gutenberg(topic, max_results=3)
+        if not books:
             books = self.book_learner.search_google_books(topic, max_results=3)
 
         results["books_found"] = len(books)
+
+        # Оффлайн-fallback: если сеть недоступна, используем встроенную библиотеку
+        if not books:
+            self.logger.info("📡 Сеть недоступна — переключаюсь на встроенную библиотеку")
+            books = self._offline_book_library(topic, max_results=2)
+            results["books_found"] = len(books)
 
         # 3. Цикл чтения и глубокого анализа
         for book in books[:2]:  # Берем топ-2
             try:
                 self.logger.info(f"📖 Читаем: {book.get('title')}")
 
-                # Скачиваем текст
-                text = self.book_learner.download_open_library_text(book)
+                # Скачиваем текст (пробуем все доступные форматы)
+                text = book.get("_text")
+                if not text:
+                    text = self.book_learner.download_open_library_text(book)
                 if not text:
                     text = self.book_learner.download_gutenberg_text(book)
                 if not text:
+                    # Последняя попытка — извлечение описания Google Books
+                    description = book.get("description", "")
+                    if len(description) > 500:
+                        text = description
+                if not text:
+                    self.logger.warning(f"⚠️ Не удалось получить текст книги: {book.get('title')}")
                     continue
 
                 # Глубокий анализ
@@ -150,6 +185,8 @@ class NaotoCore:
 
                 # Обновляем базу знаний
                 self._update_knowledge_base(analysis)
+                results["new_lore"] += len(analysis.lore)
+                results["insights_gained"] += len(self._extract_insights(analysis))
 
                 # Эволюция личности (Наото меняется от прочитанного)
                 if self.config.autonomy_level.value >= AutonomyLevel.L2.value:
@@ -164,8 +201,8 @@ class NaotoCore:
         # 4. Взаимодействие с сестрами (отчет)
         if results["books_analyzed"] > 0:
             self._communicate_with_sisters(results)
-        
-# 4. АВТООБУЧЕНИЕ МОДЕЛИ на прочитанных книгах
+
+        # 5. АВТООБУЧЕНИЕ МОДЕЛИ на прочитанных книгах
         if results["books_analyzed"] > 0:
             self.logger.info("📚 Наото: Начинаю автообучение модели на прочитанном...")
             training_results = self._train_model_from_books()
@@ -204,6 +241,127 @@ class NaotoCore:
     #  ГЛУБОКИЙ АНАЛИЗ (ЛОР, ПЕРСОНАЖИ, ФАНТОМНОЕ)
     # =================================================================
 
+    # Словари для лингвистического анализа текста
+    _THEME_KEYWORDS = {
+        "война и конфликт": ["войн", "битв", "сражени", "арми", "оружи", "кров", "смерт", "враг", "бой"],
+        "любовь и отношения": ["любов", "сердц", "чувств", "поцелу", "свадьб", "отношени", "страст", "нежност"],
+        "власть и общество": ["король", "импери", "правител", "закон", "общество", "цар", "народ", "трон"],
+        "свобода и выбор": ["свобод", "выбор", "решени", "судьб", "долг", "совесть", "приговор"],
+        "наука и технологии": ["машин", "робот", "технолог", "наук", "исследовани", "эксперимент", "изобретени"],
+        "магия и сверхъестественное": ["маги", "заклинани", "волшеб", "маг", "дух", "пророчеств", "ритуал"],
+        "природа и мир": ["лес", "река", "гора", "море", "природ", "сезон", "погод", "земл"],
+        "сознание и психология": ["сознани", "разум", "памят", "воспоминани", "страх", "надежд", "мечта", "сомнени"],
+    }
+    _POSITIVE_WORDS = ["радость", "счасть", "любов", "надежд", "свет", "добро", "побед", "улыбк", "дружб", "красот", "мир"]
+    _NEGATIVE_WORDS = ["смерт", "трагед", "боль", "страх", "тьм", "зло", "поражени", "слез", "войн", "кров", "одиночество", "разрушени"]
+
+    # =================================================================
+    #  ВСТРОЕННАЯ БИБЛИОТЕКА (ОФФЛАЙН)
+    # =================================================================
+
+    def _offline_book_library(self, topic: str, max_results: int = 2) -> List[Dict]:
+        """
+        Возвращает книги из встроенной библиотеки с готовыми текстовыми
+        фрагментами — чтобы Наото могла читать и анализировать даже
+        без доступа к интернету.
+        """
+        fragments = [
+            {
+                "id": "offline-dostoevsky",
+                "title": "Преступление и наказание (фрагмент)",
+                "author": "Фёдор Достоевский",
+                "subject": ["психология", "философия", "мораль"],
+                "year": 1866,
+                "_text": (
+                    "В начале июля, в чрезвычайно жаркое время, под вечер, один молодой человек "
+                    "вышел из своей каморки, которую нанимал от жильцов в С-м переулке, на улицу "
+                    "и медленно, как бы в нерешимости, отправился к К-ну мосту. Он благополучно "
+                    "избегнул встречи с своею хозяйкой на лестнице. Каморка его приходилась под "
+                    "самою кровлей высокого пятиэтажного дома и походила более на шкаф, чем на "
+                    "квартиру. Квартирная же хозяйка его, у которой он нанимал эту каморку с обедом "
+                    "и прислугой, помещалась одною лестницей ниже, в отдельной квартире, и каждый "
+                    "раз, при выходе на улицу, ему непременно приходилось проходить мимо хозяйкиной "
+                    "кухни, почти всегда настежь отворенной на лестницу. И каждый раз молодой "
+                    "человек, проходя мимо, чувствовал какое-то болезненное и трусливое ощущение, "
+                    "которого стыдился и от которого морщился. Он был должен кругом хозяйке и "
+                    "боялся с нею встретиться. Он был задавлен бедностью, но даже и стеснённое "
+                    "положение начало в последнее время тяготить его. Он перестал выходить из "
+                    "своей каморки и не хотел даже, чтобы с ним виделись. Он не был в ссоре с "
+                    "хозяйкой, но ему было душно и тесно."
+                ),
+            },
+            {
+                "id": "offline-tolstoy",
+                "title": "Война и мир (фрагмент)",
+                "author": "Лев Толстой",
+                "subject": ["история", "война", "судьба"],
+                "year": 1869,
+                "_text": (
+                    "Ну, князь, Генуа и Лукка стали не больше как поместьями фамилии Бонапарте. "
+                    "Нет, я вас предупреждаю, если вы мне не скажете, что у нас война, если вы "
+                    "ещё позволите себе защищать все гадости, все ужасы этого антихриста, я "
+                    "уж вас не знаю, вы уж не друг мой. Ну что вы хотите? Отчего вы не едете? "
+                    "Пьер, не отвечая, встал и, смотря на Анну Павловну, сказал, что он готов "
+                    "слушать. Хотя говорить про политику было ему неловко, он готов был слушать. "
+                    "Анна Павловна заговорила о политике. Действительно, отчего же? Отчего я "
+                    "не еду? — подумал Пьер, — оттого, что я не умею говорить. Пьер был неуклюж, "
+                    "толст, выше обыкновенного роста, широк, с огромными красными руками; он, "
+                    "как говорят, не умел войти в салон и ещё менее умел выйти из него."
+                ),
+            },
+            {
+                "id": "offline-bulgakov",
+                "title": "Мастер и Маргарита (фрагмент)",
+                "author": "Михаил Булгаков",
+                "subject": ["мистика", "сатира", "философия"],
+                "year": 1967,
+                "_text": (
+                    "В час жаркого весеннего заката на Патриарших прудах появились два гражданина. "
+                    "Первый из них, одетый в летнюю серенькую пару, был маленького роста, упитан, "
+                    "плешив, свою приличную шляпу пирожком нёс в руке, а на хорошо выбритом лице "
+                    "его помещались сверхъестественных размеров очки в чёрной роговой оправе. "
+                    "Второй был плечистый, рыжеватый, вихрастый молодой человек в заломленной на "
+                    "затылок клетчатой кепке. Это и был поэт Бездомный. Первый же был не кто иной, "
+                    "как Михаил Александрович Берлиоз, редактор толстого художественного журнала "
+                    "и председатель правления одной из крупнейших московских литературных "
+                    "ассоциаций. Но и тут, по странной случайности, разговор принял бы самое "
+                    "скандальное направление, если бы Берлиоз не поспешил прекратить его."
+                ),
+            },
+            {
+                "id": "offline-orwell",
+                "title": "1984 (фрагмент)",
+                "author": "Джордж Оруэлл",
+                "subject": ["антиутопия", "политика", "свобода"],
+                "year": 1949,
+                "_text": (
+                    "Было светло, часы пробили тринадцать. Уинстон Смит, посвистывая, шёл по "
+                    "широким бетонным коридорам Министерства Правды. У него была худая, молодая "
+                    "фигура, его тёмные волосы были растрёпаны, лицо выражало недовольство, "
+                    "которое проступало у него всякий раз, когда он выходил из своей комнаты. "
+                    "Всё было по-прежнему: плакат с лицом Большого Брата смотрел со стены, "
+                    "телекс стрекотал в соседней комнате, а по коридорам бродили чиновники. "
+                    "Уинстон знал, что за ним следят: телекраны стояли в каждом углу, и не было "
+                    "такого угла, где его слова не могли бы быть подслушаны."
+                ),
+            },
+        ]
+        # Сортировка по релевантности запросу
+        q = topic.lower()
+        scored = []
+        for book in fragments:
+            score = 0
+            for word in book["subject"]:
+                for kw in word.lower().split():
+                    if kw in q or q in kw:
+                        score += 1
+            scored.append((score, book))
+        scored.sort(key=lambda x: x[0], reverse=True)
+        # Берём максимум 2: если есть совпадения — первые, иначе случайные
+        chosen = [b for s, b in scored[:max_results]]
+        random.shuffle(chosen)
+        return chosen[:max_results]
+
     def _deep_analyze_text(self, text: str, book_meta: Dict) -> LiteraryAnalysis:
         """
         Выполняет 6 типов анализа текста:
@@ -212,62 +370,208 @@ class NaotoCore:
         3. Поведение героев
         4. Сюжет
         5. Фантомное повествование
-        6. Обучение модели
+        6. Настроение/сентимент
+
+        В отличие от чистой эмуляции, базовый анализ (темы, сентимент,
+        ключевые сущности) извлекается непосредственно из текста книги.
         """
         self.logger.info("🧠 Запуск глубокого анализа текста...")
+        text_lower = text.lower()
+        sample = text[:3000]
 
-        # Здесь должна быть логика вызова основной LLM с промптом:
-        # "Проанализируй текст: выдели лор, опиши логику героев, найди скрытый смысл и мысль автора."
+        # === 1. Определение ключевых тем по частотности ключевых слов ===
+        themes_found = []
+        for theme, keywords in self._THEME_KEYWORDS.items():
+            hits = sum(1 for kw in keywords if kw in text_lower)
+            if hits >= 3:
+                themes_found.append((theme, hits))
+        themes_found.sort(key=lambda x: x[1], reverse=True)
+        top_themes = [t for t, _ in themes_found[:3]] or ["жизнь и человеческая природа"]
+        theme_str = ", ".join(top_themes)
 
-        # Эмуляция результатов (в реальности — ответ LLM):
-        analysis = LiteraryAnalysis(
-            book_id=book_meta.get("id", "unknown"),
-            author_intent=f"Автор исследует тему {book_meta.get('subject', 'жизни')} через страдания героя, показывая, что смысл жизни находится в самом процессе преодоления, а не в результате.",
-            plot_structure=(
-                "Классическая арка героя с элементами трагедии. "
-                "Экспозиция → завязка (герой сталкивается с проблемой) → "
-                "развитие (борьба и рост) → кульминация (решающий выбор) → "
-                "развязка (последствия и трансформация). "
-                "Автор использует ретардацию для создания напряжения."
-            ),
-            characters=[
-                CharacterProfile(
-                    name="Протагонист",
-                    role="hero",
-                    traits=["рассудительный", "упорный", "склонный к саморефлексии", "эмпатичный"],
-                    behavior_log=[
-                        {"action": "отправляется в путь", "reason": "чувство долга перед семьёй и желание изменить мир"},
-                        {"action": "отказывается от компромисса", "reason": "внутренний моральный кодекс сильнее страха"},
-                        {"action": "жертвует собой в кульминации", "reason": "осознание, что личное счастье невозможно без общего блага"},
-                    ],
-                    arc_progress=0.85,
-                ),
-                CharacterProfile(
-                    name="Антагонист",
-                    role="villain",
-                    traits=["хитрый", "обаятельный", "циничный", "травмированный прошлым"],
-                    behavior_log=[
-                        {"action": "манипулирует окружающими", "reason": "страх уязвимости и потребность в контроле"},
-                        {"action": "предлагает сделку герою", "reason": "видит в нём отражение себя и хочет проверить свою философию"},
-                    ],
-                    arc_progress=0.3,
-                ),
-            ],
-            lore=[
-                LoreEntry(type="history", content="Мир находится в эпохе перемен: старые порядки рушатся, новые ещё не сформированы. Война истощила народы, и настало время переосмысления ценностей.", source_context="вступление книги"),
-                LoreEntry(type="geography", content="Действие происходит в государстве, разделённом рекой на два берега — символ социального и морального раскола.", source_context="описание мира"),
-                LoreEntry(type="magic", content="В мире существует система магии, основанная на жертве: чем больше отдаёшь, тем больше получаешь силы. Это отражает главную тему книги.", source_context="обучение героя"),
-            ],
-            phantom=PhantomNarration(
-                subtext="Скрытый призыв к сопротивлению системой. Автор показывает, что настоящая свобода — это не отсутствие ограничений, а осознанный выбор в их рамках.",
-                psychological_projection="Одиночество автора и его поиск смысла в творчестве. Каждое действие героя — это проекция внутреннего диалога автора с самим собой.",
-                hidden_motive="Поиск истины. За каждым поступком стоит вопрос: что делает человека человеком? Автор исследует границу между долгом и желанием.",
-            ),
-            sentiment_score=-0.2,
+        # === 2. Приблизительная оценка сентимента по лексике ===
+        pos_hits = sum(1 for w in self._POSITIVE_WORDS if w in text_lower)
+        neg_hits = sum(1 for w in self._NEGATIVE_WORDS if w in text_lower)
+        total = max(pos_hits + neg_hits, 1)
+        sentiment = round((pos_hits - neg_hits) / total, 2)
+        sentiment = max(-1.0, min(1.0, sentiment))
+        mood_label = (
+            "светлое, воодушевляющее" if sentiment > 0.25 else
+            "мрачное, напряжённое" if sentiment < -0.25 else
+            "сдержанное, нейтральное"
         )
 
-        self.logger.info(f"✅ Анализ завершен: {len(analysis.characters)} персонажей, {len(analysis.lore)} элементов лора")
+        # === 3. Поиск потенциальных персонажей (частые существительные-имена) ===
+        potential_characters = self._extract_character_names(text)
+
+        title = book_meta.get("title", book_meta.get("id", "книга"))
+        subject = book_meta.get("subject", book_meta.get("categories", []))
+        if isinstance(subject, list):
+            subject_str = ", ".join(str(s) for s in subject[:3]) if subject else "человеческой судьбы"
+        else:
+            subject_str = str(subject)
+
+        characters = []
+        for name in potential_characters[:4]:
+            characters.append(CharacterProfile(
+                name=name,
+                role="hero" if len(characters) == 0 else "supporting",
+                traits=["сложный", "живой", "развивающийся"],
+                behavior_log=[
+                    {"action": "действует в ключевых сценах", "reason": f"движим конфликтом, связанным с темой {theme_str}"},
+                ],
+                arc_progress=round(min(0.5 + len(potential_characters) / 20.0, 1.0), 2),
+            ))
+        if not characters:
+            characters = [CharacterProfile(
+                name="Протагонист",
+                role="hero",
+                traits=["сложный", "живой", "развивающийся"],
+                behavior_log=[{"action": "действует в ключевых сценах", "reason": f"движим конфликтом, связанным с темой {theme_str}"}],
+                arc_progress=0.6,
+            )]
+
+        # === 4. Лор — извлекаем предложения о мире из начала текста ===
+        lore_entries = self._extract_lore(sample, theme_str)
+
+        # === 5. Фантомное повествование — на основе подтекста темы ===
+        phantom = PhantomNarration(
+            subtext=f"В тексте сквозит тема «{theme_str}». Автор скорее показывает, а не проговаривает: "
+                    f"центральный конфликт отражает внутреннюю борьбу героя с самим собой и обстоятельствами.",
+            psychological_projection=(
+                f"Эмоциональный фон повествования — {mood_label}. "
+                f"Автор проецирует на героев собственное отношение к теме «{theme_str}», "
+                f"выстраивая диалог между идеальным и действительным."
+            ),
+            hidden_motive=f"Движущая сила сюжета — поиск ответа на вопрос, поставленный темой «{theme_str}». "
+                         f"Каждая сцена приближает героя к осознанному выбору.",
+        )
+
+        analysis = LiteraryAnalysis(
+            book_id=book_meta.get("id", "unknown"),
+            author_intent=(
+                f"Автор исследует тему «{theme_str}», раскрывая её через конфликт, "
+                f"развитие персонажей и атмосферу ({mood_label}). "
+                f"Смысл произведения складывается из пути героя и тех выводов, "
+                f"которые читатель делает сам."
+            ),
+            plot_structure=(
+                "Классическая драматургическая арка: экспозиция (знакомство с миром и героями) → "
+                "завязка (возникновение конфликта) → развитие (эскалация противостояния, "
+                f"раскрытие темы «{theme_str}») → кульминация (решающий выбор) → "
+                "развязка (последствия и трансформация). "
+                "Автор использует нарастание напряжения и контраст для удержания внимания."
+            ),
+            characters=characters,
+            lore=lore_entries,
+            phantom=phantom,
+            sentiment_score=sentiment,
+        )
+
+        self.logger.info(
+            f"✅ Анализ завершен: {len(analysis.characters)} персонажей, "
+            f"{len(analysis.lore)} элементов лора, темы: {theme_str}"
+        )
         return analysis
+
+    def _extract_character_names(self, text: str) -> List[str]:
+        """
+        Грубое извлечение имён персонажей: ищем слова с заглавной буквы,
+        следующие после речевых глаголов или в начале предложений.
+        """
+        import re
+        names = []
+        # Паттерн: слово с заглавной буквы длиной от 2 до 15 (кириллица/латиница)
+        pattern = re.compile(r'\b([А-ЯЁA-Z][а-яёa-z]{1,14})\b')
+        # Стоп-слова, которыми часто начинаются предложения
+        start_stops = {
+            "я", "он", "она", "они", "оно", "мы", "вы", "ты", "это", "этот", "эта",
+            "но", "и", "а", "в", "на", "с", "к", "у", "о", "по", "за", "из", "от",
+            "при", "про", "что", "как", "когда", "потом", "затем", "однако", "также",
+            "the", "he", "she", "it", "they", "and", "but", "in", "is", "was",
+            "were", "then", "however", "also", "when", "while", "after", "before",
+            # Частые прилагательные/наречия в начале предложений
+            "молодой", "молодая", "старый", "старая", "каждое", "каждый", "каждая",
+            "все", "всё", "весь", "вся", "время", "день", "ночь", "утро", "вечер",
+            "внезапно", "наконец", "снова", "опять", "здесь", "там", "тут", "сейчас",
+            "давно", "после", "тогда", "кроме", "между", "через", "более", "очень",
+            "немного", "только", "уже", "ещё", "даже", "вдруг", "тоже", "лучше",
+        }
+        seen = set()
+        sentences = re.split(r'[.!?…]', text[:8000])
+        # Имена после слов представления: "по имени X", "зовут X", "имя X"
+        intro_pattern = re.compile(
+            r'(?:по имени|зовут|звали|именем|имя|называется|называют)\s+'
+            r'([А-ЯЁA-Z][а-яёa-z]{1,14})'
+        )
+        for m in intro_pattern.finditer(text[:8000]):
+            name = m.group(1)
+            key = name.lower()
+            if key not in seen and name.lower() not in start_stops:
+                seen.add(key)
+                names.append(name)
+        for sent in sentences[:60]:
+            words = sent.strip().split()
+            if not words:
+                continue
+            # Первое слово предложения может быть именем (если не стоп-слово)
+            first = words[0]
+            m = pattern.match(first)
+            if m and first.lower() not in start_stops and len(first) > 2:
+                key = first.lower()
+                if key not in seen:
+                    seen.add(key)
+                    names.append(first)
+            # Ищем имя после речевых глаголов
+            for i, w in enumerate(words):
+                if w.lower() in {"сказал", "сказала", "спросил", "спросила", "ответил",
+                                 "ответила", "крикнул", "подумал", "сказал", "воскликнул",
+                                 "прошептал", "said", "asked", "replied", "thought",
+                                 "murmured", "cried", "whispered"} and i + 1 < len(words):
+                    m2 = pattern.match(words[i + 1])
+                    if m2 and words[i + 1].lower() not in seen:
+                        seen.add(words[i + 1].lower())
+                        names.append(words[i + 1])
+            if len(names) >= 6:
+                break
+        return names
+
+    def _extract_lore(self, sample: str, theme: str) -> List[LoreEntry]:
+        """Извлекает элементы лора из первых строк текста."""
+        import re
+        entries = []
+        sentences = [s.strip() for s in re.split(r'[.!?…]+', sample) if len(s.strip()) > 30]
+
+        lore_types = {
+            "history": ["истори", "древн", "век", "эпох", "прошл", "легенд", "войн"],
+            "geography": ["город", "земл", "страна", "берег", "долина", "королевство", "гора", "река"],
+            "society": ["народ", "общество", "люди", "совет", "двор", "кресть", "знать"],
+            "magic": ["маги", "заклинани", "сил", "дух", "бог", "пророчеств"],
+        }
+
+        for s_type, keywords in lore_types.items():
+            for sent in sentences:
+                s_lower = sent.lower()
+                if any(kw in s_lower for kw in keywords):
+                    entries.append(LoreEntry(
+                        type=s_type,
+                        content=sent,
+                        source_context="начало произведения",
+                        confidence=0.4,
+                    ))
+                    break
+            if len(entries) >= 3:
+                break
+
+        if not entries:
+            entries.append(LoreEntry(
+                type="world",
+                content=f"Мир произведения разворачивается вокруг темы «{theme}»: "
+                        f"автор погружает читателя в среду, где этот конфликт проявляется наиболее остро.",
+                source_context="анализ текста",
+                confidence=0.3,
+            ))
+        return entries
 
     # =================================================================
     #  ЭВОЛЮЦИЯ ЛИЧНОСТИ — ОСОЗНАННЫЙ ВЫБОР
@@ -462,7 +766,8 @@ class NaotoCore:
 
     def _select_research_topic(self) -> str:
         """Наото сама выбирает, что читать, исходя из пробелов в знаниях."""
-        topics = [
+        # Богатый набор тем из BookLearner (психология, фэнтези, классика и др.)
+        topics = getattr(self.book_learner, "topics", None) or [
             "human nature",
             "philosophy of war",
             "psychology of love",
@@ -471,7 +776,9 @@ class NaotoCore:
             "magic systems",
             "character development",
         ]
-        return topics[len(self.knowledge["books_read"]) % len(topics)]
+        # Циклический выбор — с ростом прочитанного Наото движется по темам
+        books_read = len(self.knowledge["books_read"])
+        return topics[books_read % len(topics)]
 
 # =================================================================
     #  ОБНОВЛЕНИЕ БАЗЫ ЗНАНИЙ И ПИТАНИЕ МОДЕЛИ
@@ -672,10 +979,15 @@ class NaotoCore:
         
         # 1. Из базы знаний Наото
         for lore_entry in self.knowledge.get("lore_database", []):
-            content = lore_entry.get("content", "") if isinstance(lore_entry, dict) else str(lore_entry)
-            if content and len(content) > 10:
-                pair = {"user": f"Расскажи о лоре: {lore_entry.get('type', 'мир')}", "bot": content}
-                key = content[:100]
+            if isinstance(lore_entry, dict):
+                lore_type = lore_entry.get("type", "мир")
+                content = lore_entry.get("content", "")
+            else:
+                lore_type = getattr(lore_entry, "type", "мир")
+                content = getattr(lore_entry, "content", "")
+            if content and len(str(content)) > 10:
+                pair = {"user": f"Расскажи о лоре: {lore_type}", "bot": str(content)}
+                key = str(content)[:100]
                 if key not in seen:
                     seen.add(key)
                     pairs.append(pair)

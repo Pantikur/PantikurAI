@@ -18,8 +18,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from nobuka.engine.config import NobukaConfig
-from nobuka.engine.models import CodeMetric, FileAnalysis, Issue
+from naoto.engine.config import NaotoConfig
+from naoto.engine.models import CodeMetric, FileAnalysis, Issue
 
 
 class CodeAnalyzer:
@@ -27,7 +27,7 @@ class CodeAnalyzer:
     Статический анализатор кода.
     """
 
-    def __init__(self, config: NobukaConfig):
+    def __init__(self, config: NaotoConfig):
         self.config = config
         self.max_lines = config.max_file_lines
         self.max_function_lines = config.max_function_lines
