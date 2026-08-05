@@ -222,20 +222,46 @@ class NaotoCore:
         # Эмуляция результатов (в реальности — ответ LLM):
         analysis = LiteraryAnalysis(
             book_id=book_meta.get("id", "unknown"),
-            author_intent=f"Автор исследует тему {book_meta.get('subject', 'жизни')} через страдания героя.",
-            plot_structure="Классическая арка героя с элементами трагедии.",
+            author_intent=f"Автор исследует тему {book_meta.get('subject', 'жизни')} через страдания героя, показывая, что смысл жизни находится в самом процессе преодоления, а не в результате.",
+            plot_structure=(
+                "Классическая арка героя с элементами трагедии. "
+                "Экспозиция → завязка (герой сталкивается с проблемой) → "
+                "развитие (борьба и рост) → кульминация (решающий выбор) → "
+                "развязка (последствия и трансформация). "
+                "Автор использует ретардацию для создания напряжения."
+            ),
             characters=[
                 CharacterProfile(
                     name="Протагонист",
                     role="hero",
-                    traits=["рассудительный", "упорный"],
-                )
+                    traits=["рассудительный", "упорный", "склонный к саморефлексии", "эмпатичный"],
+                    behavior_log=[
+                        {"action": "отправляется в путь", "reason": "чувство долга перед семьёй и желание изменить мир"},
+                        {"action": "отказывается от компромисса", "reason": "внутренний моральный кодекс сильнее страха"},
+                        {"action": "жертвует собой в кульминации", "reason": "осознание, что личное счастье невозможно без общего блага"},
+                    ],
+                    arc_progress=0.85,
+                ),
+                CharacterProfile(
+                    name="Антагонист",
+                    role="villain",
+                    traits=["хитрый", "обаятельный", "циничный", "травмированный прошлым"],
+                    behavior_log=[
+                        {"action": "манипулирует окружающими", "reason": "страх уязвимости и потребность в контроле"},
+                        {"action": "предлагает сделку герою", "reason": "видит в нём отражение себя и хочет проверить свою философию"},
+                    ],
+                    arc_progress=0.3,
+                ),
             ],
-            lore=[LoreEntry(type="history", content="Мир находится в эпоху перемен.")],
+            lore=[
+                LoreEntry(type="history", content="Мир находится в эпохе перемен: старые порядки рушатся, новые ещё не сформированы. Война истощила народы, и настало время переосмысления ценностей.", source_context="вступление книги"),
+                LoreEntry(type="geography", content="Действие происходит в государстве, разделённом рекой на два берега — символ социального и морального раскола.", source_context="описание мира"),
+                LoreEntry(type="magic", content="В мире существует система магии, основанная на жертве: чем больше отдаёшь, тем больше получаешь силы. Это отражает главную тему книги.", source_context="обучение героя"),
+            ],
             phantom=PhantomNarration(
-                subtext="Скрытый призыв к сопротивлению системой.",
-                psychological_projection="Одиночество автора.",
-                hidden_motive="Поиск истины.",
+                subtext="Скрытый призыв к сопротивлению системой. Автор показывает, что настоящая свобода — это не отсутствие ограничений, а осознанный выбор в их рамках.",
+                psychological_projection="Одиночество автора и его поиск смысла в творчестве. Каждое действие героя — это проекция внутреннего диалога автора с самим собой.",
+                hidden_motive="Поиск истины. За каждым поступком стоит вопрос: что делает человека человеком? Автор исследует границу между долгом и желанием.",
             ),
             sentiment_score=-0.2,
         )
@@ -447,26 +473,125 @@ class NaotoCore:
         ]
         return topics[len(self.knowledge["books_read"]) % len(topics)]
 
-    # =================================================================
+# =================================================================
     #  ОБНОВЛЕНИЕ БАЗЫ ЗНАНИЙ И ПИТАНИЕ МОДЕЛИ
     # =================================================================
 
     def _update_knowledge_base(self, analysis: LiteraryAnalysis):
-        """Наполняет базу знаний и готовит данные для обучения модели."""
+        """
+        Наполняет базу знаний и готовит данные для обучения модели.
+        Выжимает ВСЕ направления из книги:
+        1. Мысль автора
+        2. Сюжет и структура
+        3. Персонажи и их логика
+        4. Лор (мир, история, магия)
+        5. Фантомное повествование (подтекст)
+        6. Настроение/сентимент
+        """
 
         # Сохраняем лор
         self.knowledge["lore_database"].extend(analysis.lore)
 
-        # Формируем данные для обучения (feed model)
-        training_data = {
-            "user": f"Какова мысль автора в '{analysis.book_id}'?",
-            "bot": analysis.author_intent,
-            "source": "literary_analysis",
-        }
+        # Сохраняем инсайты
+        insights = self._extract_insights(analysis)
+        self.knowledge["insights"].extend(insights)
 
-        # Сохраняем в файл для реального обучения модели
-        self._save_training_data(training_data)
-        self.logger.info("💾 Данные переданы в основную модель для обучения.")
+        # Сохраняем информацию о книге (все поля)
+        book_info = analysis.to_dict()
+        self.knowledge["books_read"].append(book_info)
+
+        # ================================================================
+        #  ФОРМИРУЕМ ВСЕ ОБУЧАЮЩИЕ ПАРЫ (user/bot) — ВСЕ НАПРАВЛЕНИЯ
+        # ================================================================
+
+        # 1. Мысль автора
+        self._save_training_data({
+            "user": f"Какова главная мысль автора в '{analysis.book_id}'?",
+            "bot": analysis.author_intent,
+            "source": "author_intent",
+        })
+
+        # 2. Сюжет и структура повествования
+        self._save_training_data({
+            "user": f"Как построен сюжет в '{analysis.book_id}'? Опиши структуру.",
+            "bot": analysis.plot_structure,
+            "source": "plot_structure",
+        })
+
+        # 3. Персонажи — каждый с ролью, чертами и логикой поведения
+        for char in analysis.characters:
+            traits_str = ", ".join(char.traits)
+            behavior_summary = " | ".join(
+                f"{b.get('action', '')}: {b.get('reason', '')}"
+                for b in (char.behavior_log or [])
+            ) if char.behavior_log else "логика поступков соответствует характеру"
+
+            self._save_training_data({
+                "user": f"Расскажи о персонаже '{char.name}' из '{analysis.book_id}'. Его роль, черты характера и логика поступков.",
+                "bot": (
+                    f"Персонаж: {char.name}\n"
+                    f"Роль: {char.role}\n"
+                    f"Черты: {traits_str}\n"
+                    f"Логика поведения: {behavior_summary}\n"
+                    f"Прогресс развития: {char.arc_progress:.2f}"
+                ),
+                "source": "character",
+            })
+
+            # Отдельная пара про мотивацию персонажа
+            if char.behavior_log:
+                for action in char.behavior_log[:3]:
+                    action_text = action.get("action", "")
+                    reason_text = action.get("reason", "")
+                    if action_text and reason_text:
+                        self._save_training_data({
+                            "user": f"Почему {char.name} {action_text} в '{analysis.book_id}'?",
+                            "bot": f"{char.name} {action_text}, потому что {reason_text}.",
+                            "source": "character_behavior",
+                        })
+
+        # 4. Лор — каждый элемент
+        for lore in analysis.lore:
+            self._save_training_data({
+                "user": f"Расскажи о '{lore.type}' в мире '{analysis.book_id}': {lore.content[:50]}...",
+                "bot": lore.content,
+                "source": "lore",
+            })
+
+        # 5. Фантомное повествование — подтекст, психология, скрытые мотивы
+        if analysis.phantom:
+            self._save_training_data({
+                "user": f"Какой скрытый смысл (подтекст) в '{analysis.book_id}'? Что автор не сказал прямо?",
+                "bot": analysis.phantom.subtext,
+                "source": "phantom_subtext",
+            })
+            self._save_training_data({
+                "user": f"Что психологически проецирует автор в '{analysis.book_id}'?",
+                "bot": analysis.phantom.psychological_projection,
+                "source": "phantom_projection",
+            })
+            self._save_training_data({
+                "user": f"Какой скрытый мотив движет сценами в '{analysis.book_id}'?",
+                "bot": analysis.phantom.hidden_motive,
+                "source": "phantom_motive",
+            })
+
+        # 6. Общее настроение (сентимент)
+        sentiment_label = "позитивное" if analysis.sentiment_score > 0.3 else (
+            "негативное" if analysis.sentiment_score < -0.3 else "нейтральное"
+        )
+        self._save_training_data({
+            "user": f"Какое общее настроение и атмосфера в '{analysis.book_id}'?",
+            "bot": f"Настроение книги {sentiment_label} (оценка: {analysis.sentiment_score:.2f}). "
+                   f"Это влияет на восприятие сюжета и эмоциональную окраску повествования.",
+            "source": "sentiment",
+        })
+
+        self.logger.info(
+            f"Данные по всем направлениям переданы в основную модель для обучения. "
+            f"(мысль автора, сюжет, {len(analysis.characters)} персонажей, "
+            f"{len(analysis.lore)} элементов лора, подтекст, настроение)"
+        )
 
     def _save_training_data(self, data: Dict):
         """Сохраняет усвоенные знания в формат для обучения."""
@@ -563,13 +688,94 @@ class NaotoCore:
                 if key not in seen:
                     seen.add(key)
                     pairs.append(pair)
-        
+
         for book in self.knowledge.get("books_read", []):
-            title = book.get("title", "книга") if isinstance(book, dict) else str(book)
-            summary = book.get("analysis_summary", "") if isinstance(book, dict) else ""
-            if summary:
-                pair = {"user": f"О чём книга '{title}'?", "bot": summary}
-                key = summary[:100]
+            if not isinstance(book, dict):
+                continue
+            book_id = book.get("book_id", book.get("id", "книга"))
+
+            # Мысль автора
+            author_intent = book.get("author_intent", "")
+            if author_intent and len(author_intent) > 10:
+                pair = {"user": f"Какова главная мысль автора в '{book_id}'?", "bot": author_intent}
+                key = author_intent[:100]
+                if key not in seen:
+                    seen.add(key)
+                    pairs.append(pair)
+
+            # Сюжет
+            plot = book.get("plot_structure", "")
+            if plot and len(plot) > 10:
+                pair = {"user": f"Как построен сюжет в '{book_id}'? Опиши структуру.", "bot": plot}
+                key = plot[:100]
+                if key not in seen:
+                    seen.add(key)
+                    pairs.append(pair)
+
+            # Персонажи
+            for char in book.get("characters", []):
+                if isinstance(char, dict):
+                    char_name = char.get("name", "?")
+                    role = char.get("role", "неизвестно")
+                    traits = ", ".join(char.get("traits", []))
+                    if traits:
+                        pair = {
+                            "user": f"Расскажи о персонаже '{char_name}' из '{book_id}'. Его роль, черты характера и логика поступков.",
+                            "bot": f"Персонаж: {char_name}\nРоль: {role}\nЧерты: {traits}",
+                        }
+                        key = f"{char_name}_{traits[:50]}"
+                        if key not in seen:
+                            seen.add(key)
+                            pairs.append(pair)
+
+            # Лор
+            for lore_entry in book.get("lore", []):
+                if isinstance(lore_entry, dict):
+                    lore_type = lore_entry.get("type", "мир")
+                    content = lore_entry.get("content", "")
+                    if content and len(content) > 10:
+                        pair = {"user": f"Расскажи о '{lore_type}' в мире '{book_id}': {content[:50]}...", "bot": content}
+                        key = content[:100]
+                        if key not in seen:
+                            seen.add(key)
+                            pairs.append(pair)
+
+            # Фантомное повествование
+            phantom = book.get("phantom", {})
+            if isinstance(phantom, dict):
+                subtext = phantom.get("subtext", "")
+                if subtext and len(subtext) > 10:
+                    pair = {"user": f"Какой скрытый смысл (подтекст) в '{book_id}'?", "bot": subtext}
+                    key = subtext[:100]
+                    if key not in seen:
+                        seen.add(key)
+                        pairs.append(pair)
+                projection = phantom.get("psychological_projection", "")
+                if projection and len(projection) > 10:
+                    pair = {"user": f"Что психологически проецирует автор в '{book_id}'?", "bot": projection}
+                    key = projection[:100]
+                    if key not in seen:
+                        seen.add(key)
+                        pairs.append(pair)
+                motive = phantom.get("hidden_motive", "")
+                if motive and len(motive) > 10:
+                    pair = {"user": f"Какой скрытый мотив движет сценами в '{book_id}'?", "bot": motive}
+                    key = motive[:100]
+                    if key not in seen:
+                        seen.add(key)
+                        pairs.append(pair)
+
+            # Настроение
+            sentiment = book.get("sentiment_score", 0)
+            if isinstance(sentiment, (int, float)):
+                sentiment_label = "позитивное" if sentiment > 0.3 else (
+                    "негативное" if sentiment < -0.3 else "нейтральное"
+                )
+                pair = {
+                    "user": f"Какое общее настроение и атмосфера в '{book_id}'?",
+                    "bot": f"Настроение книги {sentiment_label} (оценка: {sentiment:.2f}).",
+                }
+                key = f"{book_id}_sentiment_{sentiment}"
                 if key not in seen:
                     seen.add(key)
                     pairs.append(pair)

@@ -117,3 +117,29 @@ Pantikur/
 
 # === Тестовые файлы ===
 test_*.png
+
+# === Runtime-данные модулей (state, логи, кэш) ===
+# Состояние всех инженеров
+**/engine/state/
+**/engine/state/*.json
+**/engine/state/*.txt
+**/engine/state/*.pkl
+
+# Бэкапы
+**/backups/
+
+# Отчёты и ML-оптимизация
+**/analysis_report.json
+**/ml_optimization_report.json
+**/ml_optimization_report.txt
+**/project_report.txt
+
+# Глобальные временные данные
+global_progress.json
+auto_start.json
+events.json
+knowledge_level.json
+messages.json
+my_character.json
+my_character.yaml
+generated_worlds.json
