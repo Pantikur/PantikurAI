@@ -3,6 +3,17 @@ set -e
 
 echo "🚀 Запуск Pantikur ChatBot..."
 
+# === СОЗДАЁМ RUNTIME-ДІРЕКТОРИИ (если смонтированы через volumes) ===
+echo "📁 Инициализация runtime-директорий..."
+mkdir -p /app/akva/data/communication
+mkdir -p /app/akva/data/reports
+mkdir -p /app/akva/akva/engine/state
+mkdir -p /app/ayiko/ojidania
+mkdir -p /app/ayiko/aiko_foto
+mkdir -p /app/fuyuki/data
+mkdir -p /app/fuyuki/models
+mkdir -p /app/fuyuki/engine/state
+
 # === ЗАГРУЗКА МОДЕЛИ ИЗ HUGGINGFACE (только при первом запуске) ===
 if [ ! -d "/app/models/rugpt3" ] || [ -z "$(ls -A /app/models/rugpt3 2>/dev/null)" ]; then
     echo "📥 Загрузка модели Pantikur/Wuglarst из HuggingFace..."

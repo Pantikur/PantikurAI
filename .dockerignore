@@ -77,3 +77,72 @@ gradle*/
 # === Runtime-данные внутри модулей (регенерируются при старте) ===
 **/data/communication/
 **/ojidania/
+
+# === akva — runtime-данные (~368 МБ, НЕ нужны в образе) ===
+akva/data/
+akva/akva/engine/state/
+akva/data/reports/
+
+# === ayiko — runtime-данные (~146 МБ, НЕ нужны в образе) ===
+ayiko/ojidania/
+ayiko/aiko_foto/
+
+# === fuyuki — большие данные (~57 МБ) ===
+fuyuki/data/
+fuyuki/models/
+fuyuki/engine/state/
+
+# === Бинарные модели (загружаются при старте из HuggingFace) ===
+# Исключаем только внутри модулей, НЕ в корневом data/
+akva/**/*.pt
+akva/**/*.pth
+akva/**/*.safetensors
+akva/**/*.ckpt
+ayiko/**/*.pt
+ayiko/**/*.pth
+ayiko/**/*.safetensors
+ayiko/**/*.ckpt
+fuyuki/**/*.pt
+fuyuki/**/*.pth
+fuyuki/**/*.safetensors
+fuyuki/**/*.ckpt
+hanako/**/*.pt
+hanako/**/*.pth
+hanako/**/*.safetensors
+hanako/**/*.ckpt
+lucy/**/*.pt
+lucy/**/*.pth
+lucy/**/*.safetensors
+lucy/**/*.ckpt
+futaba/**/*.pt
+futaba/**/*.pth
+futaba/**/*.safetensors
+futaba/**/*.ckpt
+shiori/**/*.pt
+shiori/**/*.pth
+shiori/**/*.safetensors
+shiori/**/*.ckpt
+nobuka/**/*.pt
+nobuka/**/*.pth
+nobuka/**/*.safetensors
+nobuka/**/*.ckpt
+latislane/**/*.pt
+latislane/**/*.pth
+latislane/**/*.safetensors
+latislane/**/*.ckpt
+celesta/**/*.pt
+celesta/**/*.pth
+celesta/**/*.safetensors
+celesta/**/*.ckpt
+naoto/**/*.pt
+naoto/**/*.pth
+naoto/**/*.safetensors
+naoto/**/*.ckpt
+yu/**/*.pt
+yu/**/*.pth
+yu/**/*.safetensors
+yu/**/*.ckpt
+scientists_network/**/*.pt
+scientists_network/**/*.pth
+scientists_network/**/*.safetensors
+scientists_network/**/*.ckpt
