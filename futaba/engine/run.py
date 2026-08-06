@@ -19,10 +19,10 @@ import json
 import sys
 from pathlib import Path
 
-# Добавляем текущую директорию и папку engine в path
-_script_dir = Path(__file__).parent.resolve()
-if str(_script_dir) not in sys.path:
-    sys.path.insert(0, str(_script_dir))
+# Добавляем корень проекта в path для пакетных импортов
+_project_root = Path(__file__).parent.parent.parent.resolve()
+if str(_project_root) not in sys.path:
+    sys.path.insert(0, str(_project_root))
 
 # Принудительный UTF-8 для вывода (Windows-консоль использует cp1251)
 for _stream in (sys.stdout, sys.stderr):
@@ -30,8 +30,8 @@ for _stream in (sys.stdout, sys.stderr):
     if _reconfigure is not None:
         _reconfigure(encoding="utf-8")
 
-from config import FutabaConfig
-from futaba_core import FutabaCore
+from futaba.engine.config import FutabaConfig
+from futaba.engine.futaba_core import FutabaCore
 
 
 def cmd_run(config: FutabaConfig):

@@ -368,9 +368,26 @@ class OjidaniaAnalyzer:
         filename = Path(analysis["filename"]).stem
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         output_file = self.output_dir / f"{filename}_{timestamp}_analysis.json"
-        
+
         with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(analysis, f, ensure_ascii=False, indent=2)
+            json.dump(analysis, f, ensure_ascii=False, indent=2, default=self._json_default)
+
+    @staticmethod
+    def _json_default(obj):
+        """Конвертер numpy-типов и прочих для JSON."""
+        # numpy scalars
+        if hasattr(obj, "item"):
+            try:
+                return obj.item()
+            except Exception:
+                pass
+        # numpy bool
+        if isinstance(obj, (bool,)):
+            return bool(obj)
+        # numpy arrays
+        if hasattr(obj, "tolist"):
+            return obj.tolist()
+        return str(obj)
     
     def _update_knowledge(self, analysis: Dict):
         """Update knowledge base from analysis"""

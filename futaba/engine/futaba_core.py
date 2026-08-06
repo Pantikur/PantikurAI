@@ -74,6 +74,10 @@ class FutabaCore:
             "compliance_reports_generated": 0,
             "world_simulations_run": 0,
             "ideal_states_modeled": 0,
+            "sister_interactions": 0,
+            "reports_written": 0,
+            "knowledge_entries": 0,
+            "vuglarst_documents_built": 0,
         }
         
         # Логирование
@@ -89,6 +93,15 @@ class FutabaCore:
         # Строитель Государства Вугларст
         self.state_builder = VuglarstStateBuilder(self.config)
         
+        # Сеть учёных (для координации девочек)
+        self.network = None
+        try:
+            from scientists_network.network import get_network
+            self.network = get_network()
+        except Exception as e:
+            self.logger.warning(f"Сеть учёных недоступна: {e}")
+            self.network = None
+        
         # Сигналы
         self._shutdown_requested = False
         self._setup_signals()
@@ -101,6 +114,9 @@ class FutabaCore:
         # Связываем с модулем юридических исследований
         link_legal_entities_to_studies(self.legal_entities, self.legal_studies)
         self.logger.info(f"⚖️ Модуль субъектов права инициализирован: {len(self.legal_entities.entities)} субъектов")
+        
+        # ===== ХАРАКТЕР ФУТАБЫ =====
+        self.character = CharacterSystem("futaba", self.config.state_dir)
         
         # ===== ЭМОЦИОНАЛЬНЫЙ РАЗУМ ФУТАБЫ =====
         self.emotional_engine = EmotionalEngine(self.config)
@@ -125,6 +141,15 @@ class FutabaCore:
     def _setup_logging(self):
         """Настроить логирование."""
         self.config.state_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Переключаем консоль на UTF-8 (Windows использует cp1251)
+        for _stream in (sys.stdout, sys.stderr):
+            _reconfigure = getattr(_stream, "reconfigure", None)
+            if _reconfigure is not None:
+                try:
+                    _reconfigure(encoding="utf-8")
+                except Exception:
+                    pass
         
         logging.basicConfig(
             level=getattr(logging, self.config.log_level),
@@ -168,21 +193,19 @@ class FutabaCore:
                 # Сохранение состояния периодически
                 if self.cycle_count % self.config.save_state_every_n_cycles == 0:
                     self._save_state()
-                
+
                 # Укрепление характера (периодически)
                 if self.cycle_count % 5 == 0:
                     strengthened = self.character.strengthen_strengths()
                     if strengthened > 0:
-                        self.logger.info(f"Character strengthened: {strengthened} traits")
+                        self.logger.info(f"🌱 Характер укреплён: {strengthened} черт")
 
                 # Эволюция характера (периодически)
                 if self.cycle_count % 10 == 0:
                     evolved = self.character.evolve_traits()
                     if evolved:
-                        self.logger.info("Character evolved")
+                        self.logger.info("🌱 Характер эволюционировал")
 
-                self._save_state()
-                
                 # Пауза между циклами
                 time.sleep(self.config.cycle_interval)
             
@@ -248,6 +271,17 @@ class FutabaCore:
         
         # 2.10. Эмоциональный цикл — Футаба чувствует и думает
         self._emotional_cycle()
+
+        # 2.11. Координация девочек (периодически)
+        if self.cycle_count % self.config.communication_interval == 0:
+            self._communicate_with_sisters()
+        
+        # 2.12. Написание отчёта Разработчику (периодически)
+        if self.cycle_count % self.config.report_interval == 0:
+            self._write_report()
+        
+        # 2.13. Ведение журнала знаний (каждый цикл)
+        self._update_knowledge_journal()
         
         # 3. Формирование гипотезы (если есть сигналы)
         if signals:
@@ -625,7 +659,125 @@ class FutabaCore:
             self.logger.error(f"❌ Ошибка строительства государства: {e}")
     
     # ================================================================
+    #  КООРДИНАЦИЯ ДЕВОЧЕК
+    # ================================================================
+    
+    def _communicate_with_sisters(self):
+        """Координация и воспитание девочек — Футаба как ГЛАВЗАМ."""
+        self.logger.info("🤝 Координация девочек...")
+        
+        sisters = self.config.girls_to_manage
+        sister = random.choice(sisters)
+        self.metrics["sister_interactions"] += 1
+        
+        # Типы общения: координация, поддержка, запрос отчёта
+        msg_type = random.choice(["coordination", "support", "report_request"])
+        
+        if msg_type == "coordination":
+            message = f"⚖️ [coordination] Координация: проверь приоритеты текущей задачи, {sister}."
+        elif msg_type == "support":
+            message = f"💛 [support] {sister}, ты отлично работаешь. Если нужна помощь — я рядом."
+        else:
+            message = f"📊 [report_request] {sister}, подготовь краткий отчёт о своём прогрессе."
+        
+        self.logger.info(f"   📨 Футаба → {sister}: {message[:90]}...")
+        
+        # Отправка через сеть учёных
+        if self.network is None:
+            self.logger.info(f"   ⚠️ Сеть учёных недоступна — сообщение записано в лог")
+            return
+        
+        try:
+            from scientists_network.network import Message, MessageType
+            msg = Message(
+                message_type=MessageType.KNOWLEDGE_SHARE,
+                sender="futaba",
+                recipient=sister,
+                content=message,
+            )
+            self.network.send_message(msg)
+            self.logger.info(f"   ✅ Сообщение отправлено: {sister}")
+        except Exception as e:
+            self.logger.warning(f"   ⚠️ Не удалось отправить сообщение: {e}")
+    
+    # ================================================================
+    #  ОТЧЁТЫ РАЗРАБОТЧИКУ
+    # ================================================================
+    
+    def _write_report(self):
+        """Написание отчёта Разработчику — прозрачность (Закон 5)."""
+        self.logger.info("📊 Написание отчёта Разработчику...")
+        
+        report = {
+            "timestamp": datetime.now().isoformat(),
+            "cycle": self.cycle_count,
+            "version": self.current_version,
+            "summary": f"Футаба отработала {self.cycle_count} циклов как ГЛАВЗАМ проекта.",
+            "metrics": dict(self.metrics),
+            "recommendations": [
+                "Продолжать изучение правовых отраслей",
+                "Координировать сёстер согласно приоритетам",
+                "Развивать Государство Вугларст",
+            ],
+        }
+        
+        # Сохраняем отчёт
+        reports = []
+        if self.config.reports_path.exists():
+            try:
+                with open(self.config.reports_path, "r", encoding="utf-8") as f:
+                    reports = json.load(f)
+            except Exception:
+                reports = []
+        
+        reports.append(report)
+        with open(self.config.reports_path, "w", encoding="utf-8") as f:
+            json.dump(reports[-50:], f, ensure_ascii=False, indent=2)
+        
+        self.metrics["reports_written"] += 1
+        self.logger.info(f"   ✅ Отчёт сохранён: {self.config.reports_path}")
+    
+    # ================================================================
+    #  ЖУРНАЛ ЗНАНИЙ
+    # ================================================================
+    
+    def _update_knowledge_journal(self):
+        """Ведение журнала знаний — саморазвитие (Закон 7)."""
+        # Журнал обновляется периодически, не каждый цикл, чтобы не плодить записи
+        if self.cycle_count % 2 != 0:
+            return
+        
+        try:
+            journal = []
+            if self.config.knowledge_journal_path.exists():
+                try:
+                    with open(self.config.knowledge_journal_path, "r", encoding="utf-8") as f:
+                        journal = json.load(f)
+                except Exception:
+                    journal = []
+            
+            # Тема из изученных законов или из эмоционального опыта
+            topic = f"Правовая практика: изучено {self.metrics['laws_studied']} законов"
+            entry = {
+                "timestamp": datetime.now().isoformat(),
+                "topic": topic,
+                "level": self.config.current_knowledge_level,
+                "source": "futaba_cycle",
+                "notes": f"Цикл {self.cycle_count}. Футаба развивается как главный заместитель.",
+                "related_topics": list(self.config.law_branches_to_study[:5]),
+            }
+            
+            journal.append(entry)
+            with open(self.config.knowledge_journal_path, "w", encoding="utf-8") as f:
+                json.dump(journal[-self.config.max_topics_studied:], f, ensure_ascii=False, indent=2)
+            
+            self.metrics["knowledge_entries"] = len(journal)
+        except Exception as e:
+            self.logger.warning(f"   ⚠️ Ошибка журнала знаний: {e}")
+    
+    # ================================================================
     #  ЭМОЦИОНАЛЬНЫЙ РАЗУМ — ОБРАБОТКА ВВОДА
+
     # ================================================================
     
     def process_user_input(self, text: str, speaker: str = "developer") -> dict:
@@ -733,7 +885,7 @@ class FutabaCore:
         if emotions:
             positive_count = sum(1 for e in emotions if e.emotion_type in (
                 EmotionType.JOY, EmotionType.HAPPINESS, EmotionType.LOVE,
-                EmotionType.AMUSEMENT, EmotionType.PRIDE, EmotionType.GRATEITUDE
+                EmotionType.AMUSEMENT, EmotionType.PRIDE, EmotionType.GRATITUDE
             ))
             if positive_count > len(emotions) * 0.5:
                 self.emotional_engine.update_belief(
@@ -910,4 +1062,9 @@ class FutabaCore:
         self.logger.info(f"Изменений применено: {self.metrics['changes_applied']}")
         self.logger.info(f"Испытаний проведено: {self.metrics['trials_run']}")
         self.logger.info(f"Лучший score полигона: {self.metrics['best_trial_score']:.2f}")
+        self.logger.info(f"⚖️ Законов изучено: {self.metrics['laws_studied']}")
+        self.logger.info(f"🤝 Координаций с сёстрами: {self.metrics['sister_interactions']}")
+        self.logger.info(f"📊 Отчётов написано: {self.metrics['reports_written']}")
+        self.logger.info(f"🧠 Записей знаний: {self.metrics['knowledge_entries']}")
+        self.logger.info(f"🌍 Симуляций миров: {self.metrics['world_simulations_run']}")
         self.logger.info("=" * 60)

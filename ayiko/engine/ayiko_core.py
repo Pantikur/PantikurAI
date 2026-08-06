@@ -55,6 +55,9 @@ from ayiko.engine.models import (
     LevelProgress,
 )
 
+# Художественный движок Айко (генерация изображений + 3D + референсы)
+from ayiko.art_engine import AyikoArtEngine
+
 # Система души и сознания Айко
 from ayiko.consciousness import AyikoConsciousness
 from ayiko.heart import AyikoHeart
@@ -134,6 +137,13 @@ class AyikoCore:
         self._setup_logging()
         self.logger = logging.getLogger("AyikoCore")
 
+        # Художественный движок (генерация картинок, 3D, референсы)
+        self.art = AyikoArtEngine(
+            output_dir=str(self.config.art_output_dir),
+            references_dir=str(self.config.references_dir),
+            analysis_dir=str(self.config.references_analysis_dir),
+        )
+
         # Сеть учёных
         self.network = None
         if _HAS_NETWORK and get_network is not None:
@@ -193,6 +203,15 @@ class AyikoCore:
         """Настроить логирование."""
         self.config.state_dir.mkdir(parents=True, exist_ok=True)
 
+        # Переключаем консоль на UTF-8 (Windows использует cp1251)
+        for _stream in (sys.stdout, sys.stderr):
+            _reconfigure = getattr(_stream, "reconfigure", None)
+            if _reconfigure is not None:
+                try:
+                    _reconfigure(encoding="utf-8")
+                except Exception:
+                    pass
+
         logging.basicConfig(
             level=getattr(logging, self.config.log_level),
             format=self.config.log_format,
@@ -247,20 +266,6 @@ class AyikoCore:
                 if self.cycle_count % self.config.save_state_every_n_cycles == 0:
                     self._save_state()
 
-                # Укрепление характера (периодически)
-                if self.total_cycles % 5 == 0:
-                    strengthened = self.character.strengthen_strengths()
-                    if strengthened > 0:
-                        self.logger.info(f"Character strengthened: {strengthened} traits")
-
-                # Эволюция характера (периодически)
-                if self.total_cycles % 10 == 0:
-                    evolved = self.character.evolve_traits()
-                    if evolved:
-                        self.logger.info("Character evolved")
-
-                self._save_state()
-
                 # Пауза между циклами
                 time.sleep(self.config.cycle_interval)
 
@@ -272,9 +277,6 @@ class AyikoCore:
 
         finally:
             self._final_report()
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
 
         self._save_state()
 
@@ -297,30 +299,39 @@ class AyikoCore:
         self._analyze_current_level()
 
         # 2. Пиксель-арт (каждый цикл)
-        self._pixel_art_practice()
+        if self.config.art_enabled:
+            self._pixel_art_practice()
 
         # 3. Техническая графика (каждый 3-й цикл)
-        if self.cycle_count % 3 == 0:
+        if self.cycle_count % self.config.art_technical_interval == 0 and self.config.art_enabled:
             self._technical_graphic_practice()
 
         # 4. 3D-моделирование (каждый 5-й цикл)
-        if self.cycle_count % 5 == 0:
+        if self.cycle_count % self.config.art_3d_interval == 0 and self.config.art_enabled:
             self._3d_modeling_practice()
 
-        # 5. Написание пояснительных записок (каждый 2-й цикл)
+        # 4.5. Сцена/пейзаж (каждый 4-й цикл)
+        if self.cycle_count % 4 == 0 and self.config.art_enabled:
+            self._scene_practice()
+
+        # 5. Обучение на референсах из ojidania (каждые N циклов)
+        if self.cycle_count % self.config.learn_references_interval == 0:
+            self._learn_from_references()
+
+        # 6. Написание пояснительных записок (каждый 2-й цикл)
         if self.cycle_count % 2 == 0:
             self._write_reports()
 
-        # 6. Интернет-поиск (каждый 7-й цикл)
-        if self.cycle_count % 7 == 0 and self.config.web_search_enabled:
+        # 7. Интернет-поиск (каждый 7-й цикл)
+        if self.cycle_count % self.config.web_search_interval == 0 and self.config.web_search_enabled:
             self._search_internet()
 
-        # 7. Взаимодействие с сёстрами (каждый 10-й цикл)
-        if self.cycle_count % 10 == 0:
+        # 8. Взаимодействие с сёстрами (каждый 10-й цикл)
+        if self.cycle_count % self.config.interact_with_sisters_interval == 0:
             self._interact_with_sisters()
 
-        # 8. Самообучение и улучшение (каждый 20-й цикл)
-        if self.cycle_count % 20 == 0:
+        # 9. Самообучение и улучшение (каждый 20-й цикл)
+        if self.cycle_count % self.config.self_improve_interval == 0:
             self._self_improve()
 
         # ================================================================
@@ -355,7 +366,8 @@ class AyikoCore:
 
         # Проверка прогресса по каждому направлению
         for direction, prog in self.progress.items():
-            if prog.should_promote():
+            # Повышаем уровень каждые N завершённых проектов
+            if prog.projects_completed >= prog.current_level * 5 and prog.current_level < prog.target_level:
                 old_level = prog.current_level
                 prog.current_level += 1
                 self.logger.info(f"🎉 Повышение уровня {direction}: {old_level} → {prog.current_level}")
@@ -365,25 +377,24 @@ class AyikoCore:
     # ================================================================
 
     def _pixel_art_practice(self):
-        """Практика пиксель-арта."""
+        """Практика пиксель-арта — реальная генерация изображения."""
         self.logger.info("🎨 Практика пиксель-арта...")
 
         level = self.progress["pixel_art"].current_level
         size_map = {
-            1: "16x16",
-            2: "32x32",
-            3: "128x128",
-            4: "256x256",
-            5: "512x512",
-            6: "1024x1024",
-            7: "2048x2048",
-            8: "4096x4096",
-            9: "8192x8192",
-            10: "32768x32768",
+            1: "16x16", 2: "32x32", 3: "128x128", 4: "256x256", 5: "512x512",
+            6: "1024x1024", 7: "2048x2048", 8: "4096x4096", 9: "8192x8192", 10: "32768x32768",
         }
-
         size = size_map.get(level, "32x32")
         self.logger.info(f"   Уровень: {level}, Размер: {size}")
+
+        try:
+            # Реально генерируем пиксель-арт
+            px = min(512, 16 * (2 ** (level - 1)))
+            path = self.art.generate_pixel_art((px, px))
+            self.logger.info(f"   ✅ Сгенерирован пиксель-арт: {path}")
+        except Exception as e:
+            self.logger.warning(f"   ⚠️ Не удалось сгенерировать пиксель-арт: {e}")
 
         # Создание проекта пиксель-арта
         project = PixelArtProject(
@@ -395,6 +406,7 @@ class AyikoCore:
         )
         self.projects_pixel_art.append(project)
         self.metrics["pixel_art_projects"] += 1
+        self.progress["pixel_art"].projects_completed += 1
 
         # Добавление в базу знаний
         entry = KnowledgeEntry(
@@ -412,25 +424,24 @@ class AyikoCore:
     # ================================================================
 
     def _technical_graphic_practice(self):
-        """Практика технической графики."""
+        """Практика технической графики — реальная генерация чертежа."""
         self.logger.info("📐 Практика технической графики...")
 
         level = self.progress["technical_graphic"].current_level
         type_map = {
-            1: "набросок",
-            2: "концепт-арт",
-            3: "чертёж (виды)",
-            4: "чертёж (разрезы)",
-            5: "сборный чертёж",
-            6: "сборный чертёж (сложный)",
-            7: "ГОСТ мастерство",
-            8: "инновационный чертёж",
-            9: "мастер чертежей",
-            10: "трансцендентный чертёж",
+            1: "blueprint", 2: "circuit", 3: "gear", 4: "isometric_tech",
+            5: "blueprint", 6: "circuit", 7: "gear", 8: "isometric_tech",
+            9: "blueprint", 10: "isometric_tech",
         }
 
-        drawing_type = type_map.get(level, "набросок")
+        drawing_type = type_map.get(level, "blueprint")
         self.logger.info(f"   Уровень: {level}, Тип: {drawing_type}")
+
+        try:
+            path = self.art.generate_technical((512, 512), drawing_type)
+            self.logger.info(f"   ✅ Сгенерирован чертёж: {path}")
+        except Exception as e:
+            self.logger.warning(f"   ⚠️ Не удалось сгенерировать чертёж: {e}")
 
         # Создание проекта графики
         project = TechnicalDrawingProject(
@@ -442,32 +453,32 @@ class AyikoCore:
         )
         self.projects_graphic.append(project)
         self.metrics["graphic_projects"] += 1
+        self.progress["technical_graphic"].projects_completed += 1
 
     # ================================================================
     #  3D-МОДЕЛИРОВАНИЕ
     # ================================================================
 
     def _3d_modeling_practice(self):
-        """Практика 3D-моделирования."""
+        """Практика 3D-моделирования — реальная генерация 3D-изображения."""
         self.logger.info("🧊 Практика 3D-моделирования...")
 
         level = self.progress["3d_modeling"].current_level
         type_map = {
-            1: "простая деталь (примитивы)",
-            2: "деталь (extrude, bevel)",
-            3: "деталь (NURBS)",
-            4: "деталь (скелетная анимация)",
-            5: "сложный механизм (10-30 деталей)",
-            6: "сложный механизм (30-50 деталей)",
-            7: "максимальный механизм (50-100 деталей)",
-            8: "прорывной механизм (100+ деталей)",
-            9: "легендарный механизм",
-            10: "трансцендентная сборка",
+            1: "object", 2: "object", 3: "voxel", 4: "isometric",
+            5: "wireframe", 6: "isometric", 7: "voxel", 8: "wireframe",
+            9: "isometric", 10: "object",
         }
 
-        model_type = type_map.get(level, "примитивы")
+        model_type = type_map.get(level, "object")
         detail_count = level * 10
         self.logger.info(f"   Уровень: {level}, Тип: {model_type}, Деталей: ~{detail_count}")
+
+        try:
+            path = self.art.generate_3d((512, 512), model_type)
+            self.logger.info(f"   ✅ Сгенерирован 3D-рендер: {path}")
+        except Exception as e:
+            self.logger.warning(f"   ⚠️ Не удалось сгенерировать 3D: {e}")
 
         # Создание 3D проекта
         project = Model3DProject(
@@ -479,6 +490,42 @@ class AyikoCore:
         )
         self.projects_3d.append(project)
         self.metrics["3d_projects"] += 1
+        self.progress["3d_modeling"].projects_completed += 1
+
+    def _scene_practice(self):
+        """Практика генерации сцен/пейзажей."""
+        self.logger.info("🏞️ Практика генерации сцены...")
+
+        try:
+            path = self.art.generate_scene((512, 512))
+            self.logger.info(f"   ✅ Сгенерирована сцена: {path}")
+        except Exception as e:
+            self.logger.warning(f"   ⚠️ Не удалось сгенерировать сцену: {e}")
+
+    def _learn_from_references(self):
+        """Изучение референсных изображений из папки ojidania."""
+        self.logger.info("📸 Изучение референсов из ojidania...")
+
+        try:
+            result = self.art.analyze_references(limit=10)
+            analyzed = result.get("analyzed", 0)
+            total = result.get("total_available", 0)
+            self.logger.info(f"   📚 Изучено {analyzed} изображений (всего доступно: {total})")
+
+            if analyzed > 0:
+                # Добавляем знания из референсов
+                entry = KnowledgeEntry(
+                    content=f"Изучено {analyzed} референсов: свет, анатомия, одежда, 3D-структура",
+                    category=KnowledgeCategory.LEARNING.value,
+                    source="ojidania",
+                    tags=["reference", "anatomy", "lighting", "3d_structure"],
+                    confidence=0.85,
+                )
+                self.references.append(entry)
+                self.metrics["knowledge_entries"] += 1
+                self.metrics["internet_downloads"] += analyzed
+        except Exception as e:
+            self.logger.warning(f"   ⚠️ Не удалось изучить референсы: {e}")
 
     # ================================================================
     #  ОТЧЁТЫ
@@ -511,7 +558,6 @@ class AyikoCore:
         """Поиск учебных материалов в интернете."""
         self.logger.info("🌐 Поиск учебных материалов в интернете...")
 
-        # TODO: Интеграция с web_access.py
         topics = [
             "pixel art techniques",
             "technical drawing tutorial",
@@ -651,7 +697,7 @@ class AyikoCore:
     def _final_report(self):
         """Финальный отчёт."""
         self.logger.info("=" * 60)
-        self.logger.info("📊 ФИНАЛЬНЫЙ ОТЧЁТ АЙКО")
+        self.logger.info("📊 ИТОГОВЫЙ ОТЧЁТ АЙКО")
         self.logger.info("=" * 60)
         self.logger.info(f"Циклов выполнено: {self.cycle_count}")
         self.logger.info(f"Пиксель-арт проектов: {self.metrics['pixel_art_projects']}")
@@ -661,6 +707,14 @@ class AyikoCore:
         self.logger.info(f"Загрузок из интернета: {self.metrics['internet_downloads']}")
         self.logger.info(f"Взаимодействий с сёстрами: {self.metrics['sister_interactions']}")
         self.logger.info(f"Улучшений: {self.metrics['self_improvements']}")
+        # Статистика художественного движка
+        art_stats = self.art.get_stats()
+        self.logger.info(f"🖼️ Всего изображений сгенерировано: {art_stats.get('total_images', 0)}")
+        self.logger.info(f"   Пиксель-арт: {art_stats.get('pixel_art', 0)}")
+        self.logger.info(f"   Техническая графика: {art_stats.get('technical', 0)}")
+        self.logger.info(f"   3D-рендеры: {art_stats.get('3d', 0)}")
+        self.logger.info(f"   Сцены: {art_stats.get('character', 0)}")
+        self.logger.info(f"   Референсов изучено: {art_stats.get('references_analyzed', 0)}")
 
     # ================================================================
     #  ПОМОЩЬ УЧЁНЫМ

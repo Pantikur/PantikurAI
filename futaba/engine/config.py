@@ -33,6 +33,7 @@ class FutabaConfig:
     character_path: Path = field(default_factory=lambda: Path("futaba/engine/state/my_character.yaml"))
     reports_path: Path = field(default_factory=lambda: Path("futaba/engine/state/reports.json"))
     legal_documents_path: Path = field(default_factory=lambda: Path("futaba/engine/state/legal_documents.json"))
+    trials_log_path: Path = field(default_factory=lambda: Path("futaba/engine/state/trials_log.json"))
 
     # === Циклы работы ===
     cycle_interval: float = 10.0          # секунды между циклами управления
