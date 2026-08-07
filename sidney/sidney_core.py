@@ -76,7 +76,9 @@ class SidneyCore:
             "game_design": 1,
             "shader_programming": 2,
             "ml_integration": 1,
-            "network_architecture": 2
+            "network_architecture": 2,
+            "voxel_rendering": 1,
+            "hybrid_rendering": 1
         }
         
         # === Движок ===
@@ -114,7 +116,7 @@ class SidneyCore:
         self._load_state()
         
         logger.info("🌟 SidneyCore инициализирован")
-        logger.info(f"   🎮 Движков: 8")
+        logger.info(f"   🎮 Движков: 9 (включая гибридный «полигон ↔ воксель»)")
         logger.info(f"   👭 Девочек в сети: {len(SISTERS)}")
         logger.info(f"   🧠 Автономность: {self.autonomy_level}")
         
@@ -422,6 +424,10 @@ class SidneyCore:
                 # 2. Оптимизация движков
                 self._optimize_engines()
                 
+                # 2.5. Демонстрация гибридного рендера (каждые 5 циклов)
+                if cycle_count % 5 == 0:
+                    self._demonstrate_hybrid_rendering()
+                
                 # 3. Взаимодействие с девочками
                 self._interact_with_sisters()
                 
@@ -496,9 +502,77 @@ class SidneyCore:
         for i in range(optimization_count):
             engine_name = random.choice([
                 "renderers", "physics", "audio", "animation",
-                "ai", "network", "scripting", "level_editor"
+                "ai", "network", "scripting", "level_editor", "voxelization"
             ])
             logger.info(f"     🔧 Оптимизация: {engine_name}")
+    
+    def _demonstrate_hybrid_rendering(self):
+        """
+        Демонстрация флагманской технологии Сидни —
+        гибридного рендера «полигон ↔ воксель».
+
+        Идея: объект выглядит как красивый полигональный меш,
+        но при контакте делится на воксели с собственной физикой.
+        """
+        engine = self.engine
+        if not engine or not engine.renderers or not engine.renderers.voxel_engine:
+            logger.warning("  ⚠️ Гибридный движок недоступен для демонстрации")
+            return
+        
+        logger.info("  🧊 Демонстрация гибридного рендера «полигон ↔ воксель»...")
+        
+        # 1. Создаём гибридный объект
+        entity = engine.spawn_hybrid_object(
+            mesh_name="demo_asteroid",
+            material_name="rock",
+            position=(0, 0, 0),
+            scale=(2, 2, 2),
+            voxel_resolution=16,
+        )
+        if not entity:
+            logger.warning("  ⚠️ Не удалось создать демонстрационный объект")
+            return
+        
+        hybrid_name = entity.get("hybrid_name", "demo_asteroid_0")
+        
+        # 2. Показываем полигональную репрезентацию (красивая картинка)
+        rep = engine.renderers.voxel_engine.get_render_representation(hybrid_name)
+        logger.info(f"     🎨 Взгляд (полигон): {rep.get('triangles', 0)} треугольников, PBR-материал")
+        
+        # 3. КОНТАКТ — объект делится на воксели
+        engine.interact_with_object(hybrid_name, contact_point=(0, 1, 0), force=1.5)
+        
+        # 4. Ждём завершения морфинга
+        import time as _time
+        vx = engine.renderers.voxel_engine
+        safety = 0
+        while vx.objects[hybrid_name]["mode"] in ("voxelizing", "rebuilding") and safety < 200:
+            vx.update(0.1)
+            safety += 1
+        
+        # 5. Итоговое состояние
+        rep = engine.renderers.voxel_engine.get_render_representation(hybrid_name)
+        logger.info(f"     🧊 Контакт (воксель): {rep.get('voxels', 0)} вокселей с физикой")
+        
+        # 6. Отпускание — обратно в полигоны
+        engine.release_object(hybrid_name)
+        safety = 0
+        while vx.objects[hybrid_name]["mode"] in ("voxelizing", "rebuilding") and safety < 200:
+            vx.update(0.1)
+            safety += 1
+        
+        rep = engine.renderers.voxel_engine.get_render_representation(hybrid_name)
+        logger.info(f"     🎨 Отпускание (полигон): {rep.get('triangles', 0)} треугольников")
+        
+        # 7. Повышаем знания
+        self.knowledge_levels["voxel_rendering"] = min(
+            5, self.knowledge_levels.get("voxel_rendering", 1) + 1
+        )
+        self.knowledge_levels["hybrid_rendering"] = min(
+            5, self.knowledge_levels.get("hybrid_rendering", 1) + 1
+        )
+        
+        logger.info("  ✅ Демонстрация гибридного рендера завершена")
     
     def _interact_with_sisters(self):
         """Взаимодействие с другими девочками."""

@@ -1,6 +1,6 @@
 """
 Ядро игрового движка Сидни.
-Управляет всеми 8 движками и их взаимодействием.
+Управляет всеми 9 движками и их взаимодействием.
 """
 
 import json
@@ -19,7 +19,7 @@ class EngineCore:
     Основное ядро игрового движка Сидни.
     
     Управляет:
-    - Инициализацией и жизненным циклом всех 8 движков
+    - Инициализацией и жизненным циклом всех 9 движков
     - Синхронизацией между движками
     - Производительностью и оптимизацией
     - Состоянием системы и бэкапами
@@ -46,6 +46,7 @@ class EngineCore:
         self.network = None
         self.scripting = None
         self.level_editor = None
+        self.voxelization = None
         
         # === Состояние ===
         self.state_file = self.engine_root / "state" / "sidney_state.json"
@@ -80,7 +81,8 @@ class EngineCore:
                 "ai": 0,
                 "network": 0,
                 "scripting": 0,
-                "level_editor": 0
+                "level_editor": 0,
+                "voxelization": 0
             }
         }
         
@@ -122,11 +124,14 @@ class EngineCore:
             # 8. Редактор уровней
             self._init_level_editor()
             
+            # 9. Гибридная система «полигон ↔ воксель»
+            self._init_voxelization()
+            
             self.is_initialized = True
             self.start_time = time.time()
             self.state["initialized_at"] = datetime.now().isoformat()
             
-            logger.info("✅ Все 8 движков инициализированы")
+            logger.info("✅ Все 9 движков инициализированы")
             self._save_state()
             self._emit_event("engine_initialized")
             
@@ -200,6 +205,103 @@ class EngineCore:
         self.level_editor.initialize()
         self.state["engines"]["level_editor"] = {"status": "active", "version": "1.0.0"}
         logger.info("  🏗️ Редактор уровней: активен")
+    
+    def _init_voxelization(self):
+        """Инициализация гибридной системы «полигон ↔ воксель»."""
+        from .voxelization.voxel_core import VoxelCore
+        self.voxelization = VoxelCore()
+        self.voxelization.initialize()
+        self.state["engines"]["voxelization"] = {"status": "active", "version": "1.0.0"}
+        logger.info("  🧊 Гибридная система «полигон ↔ воксель»: активна")
+    
+    # ================================================================
+    #  ГИБРИДНАЯ СИСТЕМА: ПОЛИГОН ↔ ВОКСЕЛЬ
+    # ================================================================
+    
+    def spawn_hybrid_object(self, mesh_name: str, material_name: str = "default",
+                            position=(0, 0, 0), scale=(1, 1, 1),
+                            voxel_resolution: int = 16) -> Dict[str, Any]:
+        """
+        Создать гибридный объект:
+        - красивый полигон при взгляде;
+        - воксели при контакте.
+        """
+        if not self.renderers or not self.renderers.voxel_engine:
+            logger.error("  ❌ Гибридный движок не инициализирован")
+            return {}
+        
+        entity = self.renderers.add_hybrid_entity(
+            "default", mesh_name, material_name,
+            position=position, scale=scale,
+            voxel_resolution=voxel_resolution,
+        )
+        
+        if not entity:
+            return {}
+        
+        # Физическая воксельная репрезентация
+        hybrid = entity.get("hybrid", {})
+        if self.physics and hybrid:
+            self.physics.create_voxel_bodies(
+                name=hybrid["name"],
+                voxel_count=hybrid["voxel_count"],
+                origin=position,
+                voxel_size=0.2,
+            )
+        
+        logger.info(f"  🎮 Гибридный объект '{entity['hybrid_name']}' спавнен")
+        return entity
+    
+    def interact_with_object(self, entity_name: str, contact_point=None,
+                             force: float = 1.0) -> Dict[str, Any]:
+        """
+        КОНТАКТ с объектом: полигональный объект делится на воксели.
+        Одновременно запускаются:
+        - рендер: морфинг полигон → воксельная сетка;
+        - физика: воксели получают собственные тела и силы.
+        """
+        result = {"entity": entity_name}
+        
+        # 1. Рендер: вокселизация
+        if self.renderers:
+            r = self.renderers.interact(entity_name, contact_point, force)
+            result["render"] = r
+        
+        # 2. Физика: разлёт вокселей от точки контакта
+        if self.physics:
+            force_vec = (force * 3.0, force * 5.0, force * 3.0)
+            self.physics.apply_voxel_force(
+                entity_name, force_vec,
+                impact_point=contact_point,
+                radius=3.0,
+            )
+            result["physics"] = "voxels_impulsed"
+        
+        self.state["total_interactions"] = self.state.get("total_interactions", 0) + 1
+        logger.info(f"  🎮 Контакт с '{entity_name}': объект разделился на воксели")
+        return result
+    
+    def release_object(self, entity_name: str) -> Dict[str, Any]:
+        """ОТПУСКАНИЕ: воксели собираются обратно в полигон."""
+        result = {"entity": entity_name}
+        if self.renderers:
+            result["render"] = self.renderers.release(entity_name)
+        logger.info(f"  🎮 '{entity_name}' снова полигональный")
+        return result
+    
+    def get_hybrid_status(self) -> Dict[str, Any]:
+        """Статус гибридной системы."""
+        status = {"hybrid_objects": []}
+        if self.renderers and self.renderers.voxel_engine:
+            vx = self.renderers.voxel_engine
+            status = vx.get_status()
+            status["objects"] = [
+                vx.get_object_state(name)
+                for name in vx.objects
+            ]
+        if self.physics:
+            status["physics_voxel_bodies"] = self.physics.get_voxel_bodies_status()
+        return status
     
     def start(self):
         """Запуск основного цикла движка."""
@@ -343,6 +445,8 @@ class EngineCore:
                 "ai": self.ai.get_status() if self.ai else "unknown",
                 "network": self.network.get_status() if self.network else "unknown",
                 "scripting": self.scripting.get_status() if self.scripting else "unknown",
-                "level_editor": self.level_editor.get_status() if self.level_editor else "unknown"
-            }
+                "level_editor": self.level_editor.get_status() if self.level_editor else "unknown",
+                "voxelization": self.voxelization.get_status() if self.voxelization else "unknown"
+            },
+            "hybrid_rendering": self.get_hybrid_status()
         }

@@ -24,6 +24,9 @@ class PhysicsCore:
         # Разрушаемые объекты
         self.destructible: Dict[str, Any] = {}
         
+        # Воксельные тела (для гибридной системы)
+        self.voxel_bodies: Dict[str, Any] = {}
+        
         # Жидкости
         self.fluids: Dict[str, Any] = {}
         
@@ -37,6 +40,7 @@ class PhysicsCore:
         self.stats = {
             "body_count": 0,
             "collision_count": 0,
+            "voxel_body_count": 0,
             "framerate": 0,
             "simulation_speed": 1.0
         }
@@ -177,6 +181,110 @@ class PhysicsCore:
         
         self.stats["body_count"] = len(self.bodies)
     
+    def create_voxel_bodies(self, name: str, voxel_count: int,
+                            origin: Tuple[float, float, float] = (0, 0, 0),
+                            voxel_size: float = 0.5,
+                            mass_per_voxel: float = 0.1) -> Dict[str, Any]:
+        """
+        Создать воксельные тела из гибридного объекта.
+
+        Каждый воксель — отдельное физическое тело (мини-куб).
+        Это и есть «объект делится на воксели» на уровне физики.
+        """
+        voxel_body = {
+            "name": name,
+            "voxel_count": voxel_count,
+            "origin": origin,
+            "voxel_size": voxel_size,
+            "mass_per_voxel": mass_per_voxel,
+            "bodies_created": 0,
+            "active": True,
+        }
+        
+        self.voxel_bodies[name] = voxel_body
+        
+        # Создаём лёгкие тела-воксели (лимит для производительности)
+        limit = min(voxel_count, 200)
+        for i in range(limit):
+            body_name = f"{name}_voxel_{i}"
+            self.create_rigidbody(
+                name=body_name,
+                shape="box",
+                mass=mass_per_voxel,
+                position=origin,
+                dimensions=(voxel_size, voxel_size, voxel_size)
+            )
+            voxel_body["bodies_created"] += 1
+        
+        self.stats["voxel_body_count"] = len(self.voxel_bodies)
+        self.stats["body_count"] = len(self.bodies)
+        
+        logger.info(f"  🧊 Воксельные тела '{name}' созданы: {limit} мини-кубов")
+        return voxel_body
+    
+    def apply_voxel_force(self, voxel_body_name: str, force: Tuple[float, float, float],
+                          impact_point: Optional[Tuple[float, float, float]] = None,
+                          radius: float = 2.0):
+        """
+        Применить силу к воксельным телам (удар, взрыв, контакт).
+
+        Воксели вблизи точки контакта получают силу и разлетаются.
+        """
+        if voxel_body_name not in self.voxel_bodies:
+            logger.error(f"  ❌ Воксельное тело '{voxel_body_name}' не найдено")
+            return
+        
+        vb = self.voxel_bodies[voxel_body_name]
+        # Локальная точка контакта (разворачиваем Optional явно)
+        impact: Tuple[float, float, float]
+        if impact_point is None:
+            origin = vb["origin"]
+            impact = (origin[0], origin[1], origin[2])
+        else:
+            impact = impact_point
+        
+        # Применяем силу к ближайшим вокселям
+        applied = 0
+        for i in range(vb["bodies_created"]):
+            body_name = f"{voxel_body_name}_voxel_{i}"
+            body = self.bodies.get(body_name)
+            if not body or not body.get("position"):
+                continue
+            
+            # Расстояние от вокселя до точки контакта
+            dist = (
+                (body["position"][0] - impact[0]) ** 2 +
+                (body["position"][1] - impact[1]) ** 2 +
+                (body["position"][2] - impact[2]) ** 2
+            ) ** 0.5
+            
+            if dist <= radius:
+                # Сила убывает с расстоянием
+                falloff = 1.0 - dist / radius
+                scaled_force = (
+                    force[0] * falloff,
+                    force[1] * falloff,
+                    force[2] * falloff,
+                )
+                self.apply_force(body_name, scaled_force)
+                applied += 1
+        
+        if applied:
+            logger.info(f"  💥 Сила применена к {applied} вокселям '{voxel_body_name}'")
+        self.stats["collision_count"] += 1
+    
+    def get_voxel_bodies_status(self) -> List[Dict[str, Any]]:
+        """Статус всех воксельных тел."""
+        return [
+            {
+                "name": name,
+                "voxel_count": vb["voxel_count"],
+                "bodies_created": vb["bodies_created"],
+                "active": vb["active"],
+            }
+            for name, vb in self.voxel_bodies.items()
+        ]
+    
     def create_fluid(self, name: str, volume: float = 100,
                      viscosity: float = 0.001, density: float = 1000) -> Dict[str, Any]:
         """Создание симуляции жидкости."""
@@ -274,6 +382,8 @@ class PhysicsCore:
             "body_count": self.stats["body_count"],
             "collision_count": len(self.collisions),
             "destructible_count": len(self.destructible),
+            "voxel_bodies": self.get_voxel_bodies_status(),
+            "voxel_body_count": self.stats["voxel_body_count"],
             "fluid_count": len(self.fluids),
             "cloth_count": len(self.cloths),
             "stats": self.stats

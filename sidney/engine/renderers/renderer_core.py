@@ -35,10 +35,15 @@ class RendererCore:
         # Постобработка
         self.post_effects: List[str] = []
         
+        # Гибридная система «полигон ↔ воксель» (делегируется VoxelCore)
+        self.voxel_engine = None
+        self.render_mode = "hybrid"   # "polygon" | "voxel" | "hybrid"
+        
         # Метрики
         self.stats = {
             "draw_calls": 0,
             "triangles": 0,
+            "voxels": 0,
             "textures_loaded": 0,
             "fps": 0
         }
@@ -61,6 +66,9 @@ class RendererCore:
             # Default post-effects
             self.post_effects = ["bloom", "tonemap"]
             
+            # Активируем гибридный рендер (полигон + воксель)
+            self.activate_hybrid_rendering()
+            
             self.is_initialized = True
             logger.info("  ✅ Графический движок инициализирован")
             return True
@@ -68,6 +76,77 @@ class RendererCore:
         except Exception as e:
             logger.error(f"  ❌ Ошибка инициализации: {e}")
             return False
+    
+    def activate_hybrid_rendering(self):
+        """Активировать гибридную систему «полигон ↔ воксель»."""
+        try:
+            from ..voxelization.voxel_core import VoxelCore
+            self.voxel_engine = VoxelCore()
+            self.voxel_engine.initialize()
+            self.render_mode = "hybrid"
+            logger.info("  🧊 Гибридный рендер «полигон ↔ воксель» активирован")
+        except Exception as e:
+            logger.warning(f"  ⚠️ Гибридный рендер недоступен: {e}")
+            self.render_mode = "polygon"
+    
+    def set_render_mode(self, mode: str):
+        """Переключить режим рендера: polygon | voxel | hybrid."""
+        if mode in ("polygon", "voxel", "hybrid"):
+            self.render_mode = mode
+            logger.info(f"  🎨 Режим рендера: {mode}")
+        else:
+            logger.warning(f"  ⚠️ Неизвестный режим рендера: {mode}")
+    
+    def add_hybrid_entity(self, scene_name: str, mesh_name: str, material_name: str,
+                          position: Tuple[float, float, float] = (0, 0, 0),
+                          scale: Tuple[float, float, float] = (1, 1, 1),
+                          voxel_resolution: int = 16) -> Dict[str, Any]:
+        """
+        Добавить гибридный объект: красивые полигоны при взгляде,
+        воксели при контакте.
+        """
+        if not self.voxel_engine:
+            logger.error("  ❌ Гибридный движок не активирован")
+            return {}
+        
+        # 1. Обычная полигональная сущность в сцене
+        entity = self.add_entity(
+            scene_name, mesh_name, material_name,
+            position=position, scale=scale
+        )
+        if not entity:
+            return {}
+        
+        # 2. Гибридная репрезентация
+        hname = f"{mesh_name}_{len(self.voxel_engine.objects)}"
+        hybrid = self.voxel_engine.create_hybrid_object(
+            name=hname,
+            mesh_name=mesh_name,
+            material_name=material_name,
+            position=position,
+            scale=scale,
+            voxel_resolution=voxel_resolution,
+        )
+        entity["hybrid"] = hybrid
+        entity["hybrid_name"] = hname
+        
+        logger.info(f"  🧊 Гибридный объект '{hname}' добавлен в сцену")
+        return entity
+    
+    def interact(self, entity_name: str, contact_point=None, force: float = 1.0) -> Dict[str, Any]:
+        """
+        КОНТАКТ с объектом — объект делится на воксели.
+        Публичное API для игрового кода.
+        """
+        if not self.voxel_engine:
+            return {"error": "Гибридный движок не активирован"}
+        return self.voxel_engine.interact(entity_name, contact_point, force)
+    
+    def release(self, entity_name: str) -> Dict[str, Any]:
+        """ОТПУСКАНИЕ — воксели собираются обратно в полигоны."""
+        if not self.voxel_engine:
+            return {"error": "Гибридный движок не активирован"}
+        return self.voxel_engine.release(entity_name)
     
     def create_scene(self, name: str) -> Dict[str, Any]:
         """Создание новой сцены."""
@@ -200,20 +279,45 @@ class RendererCore:
         logger.info(f"  ✨ Пост-эффект '{effect}': {'вкл' if enabled else 'выкл'}")
     
     def render_frame(self, scene_name: Optional[str] = None) -> Dict[str, Any]:
-        """Рендеринг кадра (симуляция)."""
+        """Рендеринг кадра (симуляция, учитывает гибридные объекты)."""
         scene = self.scenes.get(scene_name or self.current_scene)
         if not scene:
             return {}
         
         # Симуляция метрик рендеринга
         entity_count = len(scene.get("entities", []))
-        self.stats["draw_calls"] = entity_count * 3
-        self.stats["triangles"] = entity_count * 500
+        triangles = 0
+        voxels = 0
+        draw_calls = 0
+        
+        for entity in scene.get("entities", []):
+            hybrid_name = entity.get("hybrid_name")
+            if hybrid_name and self.voxel_engine:
+                rep = self.voxel_engine.get_render_representation(hybrid_name)
+                if rep["representation"] == "polygon":
+                    triangles += rep.get("triangles", 500)
+                    draw_calls += 1
+                elif rep["representation"] == "voxel":
+                    voxels += rep.get("voxels", 0)
+                    draw_calls += 1
+                elif rep["representation"] == "morph":
+                    triangles += rep.get("triangles", 500)
+                    voxels += rep.get("voxels", 0)
+                    draw_calls += 2  # обе репрезентации при морфинге
+            else:
+                triangles += 500
+                draw_calls += 1
+        
+        self.stats["draw_calls"] = draw_calls
+        self.stats["triangles"] = triangles
+        self.stats["voxels"] = voxels
         
         return {
             "scene": scene_name or self.current_scene,
             "draw_calls": self.stats["draw_calls"],
             "triangles": self.stats["triangles"],
+            "voxels": self.stats["voxels"],
+            "render_mode": self.render_mode,
             "post_effects": self.post_effects
         }
     
@@ -221,6 +325,10 @@ class RendererCore:
         """Обновление графического движка."""
         if not self.is_initialized:
             return
+        
+        # Обновление гибридных объектов (морфинг, физика вокселей)
+        if self.voxel_engine:
+            self.voxel_engine.update(dt)
         
         # Симуляция рендеринга
         self.render_frame()
@@ -234,5 +342,7 @@ class RendererCore:
             "meshes": len(self.meshes),
             "materials": len(self.materials),
             "lights": len(self.lights),
+            "render_mode": self.render_mode,
+            "hybrid": self.voxel_engine.get_status() if self.voxel_engine else None,
             "stats": self.stats
         }
