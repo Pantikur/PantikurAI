@@ -104,6 +104,11 @@ class NobukaConfig:
     max_change_risk_threshold: float = 0.05
     auto_rollback_on_failure: bool = True
 
+    # === Итеративная доработка (Закон 1: рабочий код) ===
+    # Сколько попыток доработать код, если тесты не прошли.
+    # Нобука не выбрасывает код при первой неудаче — она чинит его.
+    max_fix_attempts: int = 3
+
     # === Взаимодействие с сёстрами ===
     notify_futaba_on_logic_change: bool = True
     notify_shiori_on_security_change: bool = True

@@ -172,6 +172,8 @@ class ImprovementRecord:
     tests_added: int = 0
     tests_affected: int = 0
     lines_changed: int = 0
+    fix_attempts: int = 0              # сколько раз дорабатывался код после неудачного теста
+    fix_history: list[str] = field(default_factory=list)  # описание внесённых исправлений
     performance_impact: float = 0.0       # процент изменения производительности
     test_coverage_before: float = 0.0
     test_coverage_after: float = 0.0
@@ -197,6 +199,8 @@ class ImprovementRecord:
             "tests_added": self.tests_added,
             "tests_affected": self.tests_affected,
             "lines_changed": self.lines_changed,
+            "fix_attempts": self.fix_attempts,
+            "fix_history": self.fix_history,
             "performance_impact": self.performance_impact,
             "test_coverage_before": self.test_coverage_before,
             "test_coverage_after": self.test_coverage_after,
