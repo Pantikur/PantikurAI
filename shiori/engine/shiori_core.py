@@ -19,7 +19,6 @@ import signal
 import sys
 import time
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Optional
 
 from shiori.engine.config import ShioriConfig
@@ -77,6 +76,9 @@ class ShioriCore:
         self.patch_manager = PatchManager(self.config)
         self.web_access = ShioriWebAccess(self.config)
         
+        # ===== ХАРАКТЕР ШИОРИ =====
+        self.character = CharacterSystem("shiori", self.config.state_dir)
+        
         # Состояние безопасности
         self.security_state = SecurityState(version=self.config.version)
         
@@ -84,7 +86,7 @@ class ShioriCore:
         self.network = None
         try:
             from scientists_network.network import get_network
-            self.network = get_network(str(Path(__file__).parent.parent.parent.parent))
+            self.network = get_network()
             self.logger.info("🔗 Подключена к Scientists Network")
         except Exception:
             self.logger.info("ℹ️ Scientists Network недоступна")
@@ -115,6 +117,15 @@ class ShioriCore:
     def _setup_logging(self):
         """Настроить логирование."""
         self.config.state_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Переключаем консоль на UTF-8 (Windows использует cp1251)
+        for _stream in (sys.stdout, sys.stderr):
+            _reconfigure = getattr(_stream, "reconfigure", None)
+            if _reconfigure is not None:
+                try:
+                    _reconfigure(encoding="utf-8")
+                except Exception:
+                    pass
         
         logging.basicConfig(
             level=getattr(logging, self.config.log_level),
@@ -160,19 +171,17 @@ class ShioriCore:
                     self._save_state()
                 
                 # Укрепление характера (периодически)
-                if self.total_cycles % 5 == 0:
+                if self.cycle_count % 5 == 0:
                     strengthened = self.character.strengthen_strengths()
                     if strengthened > 0:
-                        self.logger.info(f"Character strengthened: {strengthened} traits")
+                        self.logger.info(f"🛡️ Характер укреплён: {strengthened} черт")
 
                 # Эволюция характера (периодически)
-                if self.total_cycles % 10 == 0:
+                if self.cycle_count % 10 == 0:
                     evolved = self.character.evolve_traits()
                     if evolved:
-                        self.logger.info("Character evolved")
+                        self.logger.info("🛡️ Характер эволюционировал")
 
-                self._save_state()
-                
                 # Пауза между циклами
                 time.sleep(self.config.cycle_interval)
             
@@ -184,20 +193,6 @@ class ShioriCore:
         
         finally:
             self._final_report()
-            
-        # Укрепление характера (периодически)
-        if self.total_cycles % 5 == 0:
-            strengthened = self.character.strengthen_strengths()
-            if strengthened > 0:
-                self.logger.info(f"Character strengthened: {strengthened} traits")
-
-        # Эволюция характера (периодически)
-        if self.total_cycles % 10 == 0:
-            evolved = self.character.evolve_traits()
-            if evolved:
-                self.logger.info("Character evolved")
-
-        self._save_state()
     
     def _should_stop(self) -> bool:
         """Проверить условия остановки."""

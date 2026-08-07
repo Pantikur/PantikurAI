@@ -536,7 +536,7 @@ class ResearchMonitor:
         
         # Инициализация сети учёных
         from scientists_network.network import get_network
-        self.network = get_network(str(Path(".")))
+        self.network = get_network()
         self.logger.info("🌐 Scientists Network подключена")
         
         self.logger.info("🔬 ResearchMonitor инициализирован")

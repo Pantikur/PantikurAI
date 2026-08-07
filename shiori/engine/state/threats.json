@@ -1,16 +1,31 @@
 {
-  "timestamp": "2026-07-14T15:56:40.086290",
+  "timestamp": "2026-08-07T17:33:54.741467",
   "threats": [
     {
-      "id": "THR-20260714155630-9131",
-      "category": "internal_anomaly",
-      "level": "L1",
-      "source": "192.168.221.23",
-      "description": "Обнаружена угроза: internal_anomaly",
-      "timestamp": "2026-07-14T15:56:30.064622",
-      "confidence": 0.6828041817074496,
+      "id": "THR-20260807173346-6073",
+      "category": "apt",
+      "level": "L0",
+      "source": "192.168.178.243",
+      "description": "Обнаружена угроза: apt",
+      "timestamp": "2026-08-07T17:33:46.732545",
+      "confidence": 0.7483073567371865,
       "affected_components": [
         "core",
+        "database",
+        "core"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via unauthorized_access"
+    },
+    {
+      "id": "THR-20260807173346-7906",
+      "category": "ransomware",
+      "level": "L3",
+      "source": "192.168.177.238",
+      "description": "Обнаружена угроза: ransomware",
+      "timestamp": "2026-08-07T17:33:46.732545",
+      "confidence": 0.8503076481556244,
+      "affected_components": [
         "database",
         "api"
       ],
@@ -18,47 +33,30 @@
       "mitigation_action": "Responded via unauthorized_access"
     },
     {
-      "id": "THR-20260714155636-7943",
+      "id": "THR-20260807173346-4706",
+      "category": "data_exfiltration",
+      "level": "L3",
+      "source": "192.168.67.23",
+      "description": "Обнаружена угроза: data_exfiltration",
+      "timestamp": "2026-08-07T17:33:46.732545",
+      "confidence": 0.697508433879646,
+      "affected_components": [
+        "network",
+        "core"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via unauthorized_access"
+    },
+    {
+      "id": "THR-20260807173352-1658",
       "category": "apt",
-      "level": "L1",
-      "source": "192.168.83.182",
+      "level": "L2",
+      "source": "192.168.239.94",
       "description": "Обнаружена угроза: apt",
-      "timestamp": "2026-07-14T15:56:36.075065",
-      "confidence": 0.8408387903293136,
+      "timestamp": "2026-08-07T17:33:52.740579",
+      "confidence": 0.8198674721130076,
       "affected_components": [
-        "network",
-        "network",
         "database"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via unauthorized_access"
-    },
-    {
-      "id": "THR-20260714155636-1629",
-      "category": "malware",
-      "level": "L1",
-      "source": "192.168.190.230",
-      "description": "Обнаружена угроза: malware",
-      "timestamp": "2026-07-14T15:56:36.075065",
-      "confidence": 0.8540491747812633,
-      "affected_components": [
-        "network",
-        "database",
-        "core"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via unauthorized_access"
-    },
-    {
-      "id": "THR-20260714155636-1768",
-      "category": "api_abuse",
-      "level": "L1",
-      "source": "192.168.240.145",
-      "description": "Обнаружена угроза: api_abuse",
-      "timestamp": "2026-07-14T15:56:36.075065",
-      "confidence": 0.7235275026101515,
-      "affected_components": [
-        "core"
       ],
       "mitigated": true,
       "mitigation_action": "Responded via unauthorized_access"

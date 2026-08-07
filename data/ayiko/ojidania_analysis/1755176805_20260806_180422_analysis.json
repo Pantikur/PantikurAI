@@ -1,0 +1,72 @@
+{
+  "filename": "1755176805.jpg",
+  "timestamp": "2026-08-06T18:04:22.174958",
+  "basic_info": {
+    "size": [
+      640,
+      960
+    ],
+    "mode": "RGB",
+    "format": "JPEG",
+    "width": 640,
+    "height": 960,
+    "aspect_ratio": 0.6666666666666666
+  },
+  "body_relief": {
+    "relief_intensity": 5.065813724479728,
+    "body_zones": {
+      "head": {
+        "avg_brightness": 52.73463270399305,
+        "contrast": 34.92511800249829,
+        "detail_level": "high"
+      },
+      "torso": {
+        "avg_brightness": 74.45072337962962,
+        "curvature": "high_curvature",
+        "fabric_tension": "tight"
+      },
+      "limbs": {
+        "avg_brightness": 47.871685112847224,
+        "muscle_definition": "medium"
+      }
+    },
+    "surface_texture": {
+      "smoothness": 0.10256795533795113,
+      "roughness": 1.7271918211225716
+    }
+  },
+  "clothing_analysis": {
+    "drapery_type": "loose",
+    "fabric_tension": {
+      "shoulders": 7.283230251736112,
+      "chest": 12.48826919367284,
+      "waist": 13.680383752893519,
+      "hips": 9.06936306423611
+    },
+    "wrinkle_density": 0.077548828125,
+    "body_contours_visible": true,
+    "fit_type": "loose"
+  },
+  "lighting": {
+    "brightness_zones": {
+      "top": 36.724293619791666,
+      "middle": 58.193834635416664,
+      "bottom": 42.515340169270836
+    },
+    "light_direction": "front-left",
+    "contrast": 1.1161072878492238,
+    "shadow_softness": "very_soft",
+    "lighting_quality": "dramatic",
+    "highlight_areas": [
+      "middle"
+    ]
+  },
+  "gloss_effects": {
+    "specular_intensity": 0.0003304036458333333,
+    "gloss_type": "matte",
+    "reflection_quality": {
+      "intensity": 0.0003304036458333333,
+      "clarity": "sharp"
+    },
+    "wet_effect": false,
+    "eye_glint": 

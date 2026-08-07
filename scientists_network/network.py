@@ -56,6 +56,7 @@ class MessageType(Enum):
     CONSCIOUSNESS = "consciousness" # Исследование сознания (Юи)
     MIND_UPLOAD = "mind_upload"     # Перенос разума (Юи)
     SOUL_DIGITIZATION = "soul_digitization"  # Оцифровка души (Юи)
+    KNOWLEDGE_SHARE = "knowledge_share"  # Обмен знаниями (все учёные)
     
     # Чтение и знания (Айко)
     BOOK_READING = "book_reading"       # Чтение книги (Айко)
@@ -257,6 +258,10 @@ class ScientistsNetwork:
     def register_scientist(self, name: str, core_instance: Any):
         """Зарегистрировать учёного в сети."""
         with self._lock:
+            if name in self._scientists:
+                # Обновляем только экземпляр, не пересоздавая очередь
+                self._scientists[name] = core_instance
+                return
             self._scientists[name] = core_instance
             self._message_queues[name] = Queue(maxsize=100)
             logger.info(f"👤 {name} подключена к Scientists Network")
@@ -687,7 +692,6 @@ def get_network(base_dir: str = ".") -> ScientistsNetwork:
             _network_instance = ScientistsNetwork(base_dir)
             _network_instance.load_state()
         return _network_instance
-
 
 def reset_network():
     """Сбросить глобальный экземпляр (для тестирования)."""

@@ -76,7 +76,25 @@
       "mitigation": "SBOM (Software Bill of Materials) + мониторинг зависимостей",
       "source": "CVE Database Analysis",
       "learned_at": "2026-07-14T15:56:34.071343"
+    },
+    {
+      "type": "apt",
+      "name": "Долгосрочная инфильтрация через поставщиков",
+      "description": "Целенаправленная атака через компрометацию цепочки поставок ПО",
+      "severity": "critical",
+      "mitigation": "Проверка целостности зависимостей + аудит поставщиков",
+      "source": "APT Group Analysis",
+      "learned_at": "2026-08-07T17:33:50.737629"
+    },
+    {
+      "type": "apt",
+      "name": "Zero-day через уязвимость в библиотеке",
+      "description": "Использование неизвестной уязвимости в популярной библиотеке",
+      "severity": "critical",
+      "mitigation": "SBOM (Software Bill of Materials) + мониторинг зависимостей",
+      "source": "CVE Database Analysis",
+      "learned_at": "2026-08-07T17:33:50.738638"
     }
   ],
-  "last_updated": "2026-07-14T15:56:34.071343"
+  "last_updated": "2026-08-07T17:33:50.738638"
 }

@@ -6,7 +6,7 @@
     "threats_detected": 4,
     "threats_mitigated": 4,
     "incidents_created": 4,
-    "incidents_resolved": 6,
+    "incidents_resolved": 3,
     "patches_applied": 1,
     "false_positives": 0,
     "system_integrity": 1.0
@@ -18,22 +18,37 @@
     "active_threats": 0,
     "resolved_threats": 4,
     "total_scans": 5,
-    "quarantine_count": 0,
-    "last_scan_time": "2026-07-14T15:56:38.077479",
+    "quarantine_count": 2,
+    "last_scan_time": "2026-08-07T17:33:54.741467",
     "protection_rules_count": 0,
     "knowledge_base_size": 0
   },
   "threats_history": [
     {
-      "id": "THR-20260714155630-9131",
-      "category": "internal_anomaly",
-      "level": "L1",
-      "source": "192.168.221.23",
-      "description": "Обнаружена угроза: internal_anomaly",
-      "timestamp": "2026-07-14T15:56:30.064622",
-      "confidence": 0.6828041817074496,
+      "id": "THR-20260807173346-6073",
+      "category": "apt",
+      "level": "L0",
+      "source": "192.168.178.243",
+      "description": "Обнаружена угроза: apt",
+      "timestamp": "2026-08-07T17:33:46.732545",
+      "confidence": 0.7483073567371865,
       "affected_components": [
         "core",
+        "database",
+        "core"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via unauthorized_access"
+    },
+    {
+      "id": "THR-20260807173346-7906",
+      "category": "ransomware",
+      "level": "L3",
+      "source": "192.168.177.238",
+      "description": "Обнаружена угроза: ransomware",
+      "timestamp": "2026-08-07T17:33:46.732545",
+      "confidence": 0.8503076481556244,
+      "affected_components": [
         "database",
         "api"
       ],
@@ -41,47 +56,30 @@
       "mitigation_action": "Responded via unauthorized_access"
     },
     {
-      "id": "THR-20260714155636-7943",
+      "id": "THR-20260807173346-4706",
+      "category": "data_exfiltration",
+      "level": "L3",
+      "source": "192.168.67.23",
+      "description": "Обнаружена угроза: data_exfiltration",
+      "timestamp": "2026-08-07T17:33:46.732545",
+      "confidence": 0.697508433879646,
+      "affected_components": [
+        "network",
+        "core"
+      ],
+      "mitigated": true,
+      "mitigation_action": "Responded via unauthorized_access"
+    },
+    {
+      "id": "THR-20260807173352-1658",
       "category": "apt",
-      "level": "L1",
-      "source": "192.168.83.182",
+      "level": "L2",
+      "source": "192.168.239.94",
       "description": "Обнаружена угроза: apt",
-      "timestamp": "2026-07-14T15:56:36.075065",
-      "confidence": 0.8408387903293136,
+      "timestamp": "2026-08-07T17:33:52.740579",
+      "confidence": 0.8198674721130076,
       "affected_components": [
-        "network",
-        "network",
         "database"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via unauthorized_access"
-    },
-    {
-      "id": "THR-20260714155636-1629",
-      "category": "malware",
-      "level": "L1",
-      "source": "192.168.190.230",
-      "description": "Обнаружена угроза: malware",
-      "timestamp": "2026-07-14T15:56:36.075065",
-      "confidence": 0.8540491747812633,
-      "affected_components": [
-        "network",
-        "database",
-        "core"
-      ],
-      "mitigated": true,
-      "mitigation_action": "Responded via unauthorized_access"
-    },
-    {
-      "id": "THR-20260714155636-1768",
-      "category": "api_abuse",
-      "level": "L1",
-      "source": "192.168.240.145",
-      "description": "Обнаружена угроза: api_abuse",
-      "timestamp": "2026-07-14T15:56:36.075065",
-      "confidence": 0.7235275026101515,
-      "affected_components": [
-        "core"
       ],
       "mitigated": true,
       "mitigation_action": "Responded via unauthorized_access"
@@ -89,14 +87,14 @@
   ],
   "incidents_history": [
     {
-      "id": "INC-20260714155630-4069",
+      "id": "INC-20260807173346-3879",
       "type": "unauthorized_access",
-      "threat_id": "THR-20260714155630-9131",
-      "severity": "L1",
-      "description": "Инцидент на основе угрозы THR-20260714155630-9131",
-      "timestamp": "2026-07-14T15:56:30.064622",
+      "threat_id": "THR-20260807173346-6073",
+      "severity": "L0",
+      "description": "Инцидент на основе угрозы THR-20260807173346-6073",
+      "timestamp": "2026-08-07T17:33:46.732545",
       "status": "resolved",
-      "resolved_at": "2026-07-14T15:56:30.064622",
+      "resolved_at": "2026-08-07T17:33:46.732545",
       "response_actions": [
         "Logged for analysis"
       ],
@@ -105,14 +103,48 @@
       "blocked_sources": []
     },
     {
-      "id": "WEB-3-8595",
+      "id": "INC-20260807173346-1852",
+      "type": "unauthorized_access",
+      "threat_id": "THR-20260807173346-7906",
+      "severity": "L3",
+      "description": "Инцидент на основе угрозы THR-20260807173346-7906",
+      "timestamp": "2026-08-07T17:33:46.732545",
+      "status": "contained",
+      "resolved_at": null,
+      "response_actions": [
+        "Blocked source: 192.168.177.238",
+        "Quarantined affected files"
+      ],
+      "alerted": [],
+      "quarantine_files": [],
+      "blocked_sources": []
+    },
+    {
+      "id": "INC-20260807173346-8551",
+      "type": "unauthorized_access",
+      "threat_id": "THR-20260807173346-4706",
+      "severity": "L3",
+      "description": "Инцидент на основе угрозы THR-20260807173346-4706",
+      "timestamp": "2026-08-07T17:33:46.733545",
+      "status": "contained",
+      "resolved_at": null,
+      "response_actions": [
+        "Blocked source: 192.168.67.23",
+        "Quarantined affected files"
+      ],
+      "alerted": [],
+      "quarantine_files": [],
+      "blocked_sources": []
+    },
+    {
+      "id": "WEB-3-3284",
       "type": "api_abuse",
       "threat_id": null,
       "severity": "L1",
       "description": "Улучшение защиты из веба: Удалённое выполнение кода через обработку входных данных",
-      "timestamp": "2026-07-14T15:56:34.073339",
+      "timestamp": "2026-08-07T17:33:50.739638",
       "status": "resolved",
-      "resolved_at": "2026-07-14T15:56:34.073339",
+      "resolved_at": "2026-08-07T17:33:50.739638",
       "response_actions": [
         "Applied from web: cve_fix"
       ],
@@ -121,14 +153,14 @@
       "blocked_sources": []
     },
     {
-      "id": "WEB-3-7112",
+      "id": "WEB-3-7817",
       "type": "api_abuse",
       "threat_id": null,
       "severity": "L1",
       "description": "Улучшение защиты из веба: Многослойная защита: сетевой, хост, прикладной уровни",
-      "timestamp": "2026-07-14T15:56:34.074337",
+      "timestamp": "2026-08-07T17:33:50.739638",
       "status": "resolved",
-      "resolved_at": "2026-07-14T15:56:34.074337",
+      "resolved_at": "2026-08-07T17:33:50.739638",
       "response_actions": [
         "Applied from web: defense_practice"
       ],
@@ -137,53 +169,22 @@
       "blocked_sources": []
     },
     {
-      "id": "INC-20260714155636-4563",
+      "id": "INC-20260807173352-6228",
       "type": "unauthorized_access",
-      "threat_id": "THR-20260714155636-7943",
-      "severity": "L1",
-      "description": "Инцидент на основе угрозы THR-20260714155636-7943",
-      "timestamp": "2026-07-14T15:56:36.075065",
-      "status": "resolved",
-      "resolved_at": "2026-07-14T15:56:36.075065",
+      "threat_id": "THR-20260807173352-1658",
+      "severity": "L2",
+      "description": "Инцидент на основе угрозы THR-20260807173352-1658",
+      "timestamp": "2026-08-07T17:33:52.740579",
+      "status": "investigating",
+      "resolved_at": null,
       "response_actions": [
-        "Logged for analysis"
-      ],
-      "alerted": [],
-      "quarantine_files": [],
-      "blocked_sources": []
-    },
-    {
-      "id": "INC-20260714155636-2132",
-      "type": "unauthorized_access",
-      "threat_id": "THR-20260714155636-1629",
-      "severity": "L1",
-      "description": "Инцидент на основе угрозы THR-20260714155636-1629",
-      "timestamp": "2026-07-14T15:56:36.076079",
-      "status": "resolved",
-      "resolved_at": "2026-07-14T15:56:36.076079",
-      "response_actions": [
-        "Logged for analysis"
-      ],
-      "alerted": [],
-      "quarantine_files": [],
-      "blocked_sources": []
-    },
-    {
-      "id": "INC-20260714155636-4008",
-      "type": "unauthorized_access",
-      "threat_id": "THR-20260714155636-1768",
-      "severity": "L1",
-      "description": "Инцидент на основе угрозы THR-20260714155636-1768",
-      "timestamp": "2026-07-14T15:56:36.076079",
-      "status": "resolved",
-      "resolved_at": "2026-07-14T15:56:36.076079",
-      "response_actions": [
-        "Logged for analysis"
+        "Alert sent to Vuglarst",
+        "Enhanced monitoring enabled"
       ],
       "alerted": [],
       "quarantine_files": [],
       "blocked_sources": []
     }
   ],
-  "timestamp": "2026-07-14T15:56:40.085293"
+  "timestamp": "2026-08-07T17:33:54.741467"
 }

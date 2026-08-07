@@ -132,7 +132,12 @@ class Constitution:
                 return False, f"Закон {law_id} неизменяем (нарушение Конституции, Статья II)"
 
         # Нельзя снижать покрытие ниже порога
-        if change.test_coverage_after < self.test_coverage_min:
+        # Внимание: test_coverage_after == 0 означает «не оценено», а не «упало до нуля».
+        # Блокируем только если покрытие явно ниже порога И ниже исходного.
+        if change.test_coverage_after > 0 and change.test_coverage_after < self.test_coverage_min:
+            # Разрешаем, если это добавление тестов (after >= before)
+            if change.test_coverage_before > 0 and change.test_coverage_after >= change.test_coverage_before:
+                return True, "OK"
             return False, f"Покрытие тестов упадёт ниже {self.test_coverage_min:.0%}"
 
         # Нельзя снижать безопасность

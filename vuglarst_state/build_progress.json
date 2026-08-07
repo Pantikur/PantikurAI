@@ -1,0 +1,110 @@
+{
+  "started_at": "2026-08-06T18:48:38.377588",
+  "status": "in_progress",
+  "current_step": 10,
+  "total_steps": 10,
+  "completed_documents": [
+    "constitution.md",
+    "declaration.md",
+    "civil_code.md",
+    "criminal_code.md",
+    "administrative_code.md",
+    "labor_code.md",
+    "tax_code.md",
+    "international_law.md",
+    "flags.md",
+    "anthem.md"
+  ],
+  "pending_documents": [],
+  "research_log": [
+    {
+      "timestamp": "2026-08-06T18:48:38.506589",
+      "query": "как написать конституцию государства структура статьи",
+      "results_count": 3,
+      "sources": [
+        "https://learn.example.com/как написать конституцию государства структура статьи-1",
+        "https://learn.example.com/как написать конституцию государства структура статьи-2",
+        "https://learn.example.com/как написать конституцию государства структура статьи-3"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T18:48:40.509683",
+      "query": "декларация независимости государства пример структура",
+      "results_count": 3,
+      "sources": [
+        "https://learn.example.com/декларация независимости государства пример структура-1",
+        "https://learn.example.com/декларация независимости государства пример структура-2",
+        "https://learn.example.com/декларация независимости государства пример структура-3"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T18:48:42.514865",
+      "query": "гражданский кодекс структура разделы статьи",
+      "results_count": 1,
+      "sources": [
+        "general_legal_database"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T18:48:44.519290",
+      "query": "уголовный кодекс структура преступления наказания",
+      "results_count": 1,
+      "sources": [
+        "general_legal_database"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T18:48:46.584885",
+      "query": "кодекс административных правонарушений структура",
+      "results_count": 1,
+      "sources": [
+        "general_legal_database"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T19:31:53.016315",
+      "query": "трудовой кодекс структура права работников",
+      "results_count": 1,
+      "sources": [
+        "general_legal_database"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T19:31:55.020611",
+      "query": "налоговый кодекс структура налоги сборы",
+      "results_count": 1,
+      "sources": [
+        "general_legal_database"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T19:31:57.032036",
+      "query": "международное право государство суверенитет договоры",
+      "results_count": 1,
+      "sources": [
+        "general_legal_database"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T19:31:59.034954",
+      "query": "государственные символы флаг герб гимн значение",
+      "results_count": 3,
+      "sources": [
+        "https://learn.example.com/государственные символы флаг герб гимн значение-1",
+        "https://learn.example.com/государственные символы флаг герб гимн значение-2",
+        "https://learn.example.com/государственные символы флаг герб гимн значение-3"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T19:32:01.098847",
+      "query": "государственный гимн текст структура",
+      "results_count": 3,
+      "sources": [
+        "https://learn.example.com/государственный гимн текст структура-1",
+        "https://learn.example.com/государственный гимн текст структура-2",
+        "https://learn.example.com/государственный гимн текст структура-3"
+      ]
+    }
+  ],
+  "last_updated": "2026-08-06T19:32:01.099841"
+}
