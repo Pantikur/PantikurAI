@@ -770,7 +770,19 @@ async def get_model_size():
             return os.path.getsize(path)
         return None
 
-    model_size = get_file_size("models/rugpt3")
+    def get_dir_size(path):
+        """Рекурсивный подсчёт размера директории"""
+        if not os.path.exists(path):
+            return None
+        total = 0
+        for dirpath, dirnames, filenames in os.walk(path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                if os.path.isfile(fp):
+                    total += os.path.getsize(fp)
+        return total if total > 0 else None
+
+    model_size = get_dir_size("models/rugpt3")
     tokenizer_size = get_file_size("data/tokenizer.json")
     conv_size = get_file_size("data/conversations.json")
     train_size = get_file_size("data/training_pairs.jsonl")
