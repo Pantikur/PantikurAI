@@ -399,7 +399,7 @@ class ImprovementCreator:
                 "world_explorer",
             ]
         },
-        "yui": {
+        "yu": {
             "name": "Юи",
             "emoji": "🧠",
             "focus": "Перенос сознания, когнитивные науки",

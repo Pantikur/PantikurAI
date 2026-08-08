@@ -69,6 +69,8 @@ class CelestaConfig:
 
     # === Анализ файлов ===
     max_file_lines: int = 10000           # максимум строк в файле для анализа
+    max_function_lines: int = 50          # максимум строк в функции
+    max_complexity: int = 10              # максимум цикломатической сложности
 
     # === Взаимодействие с сёстрами ===
     notify_futaba_on_change: bool = True

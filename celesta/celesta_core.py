@@ -550,7 +550,7 @@ class CelestaCore:
             try:
                 # Отправка через общую папку или сеть
                 network_dir = Path("scientists_network/shared")
-                network_dir.mkdir(exist_ok=True)
+                network_dir.mkdir(parents=True, exist_ok=True)
                 msg_file = network_dir / f"celesta_msg_{int(time.time())}.json"
                 
                 import json as j

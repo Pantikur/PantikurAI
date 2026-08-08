@@ -589,7 +589,7 @@ class AyikoCore:
         """Взаимодействие с сёстрами (обновлённая версия с humanity)."""
         self.logger.info("🤝 Взаимодействие с сёстрами...")
 
-        sisters = ["futaba", "shiori", "nobuka", "aqua", "celesta", "hanako", "lucy", "fuyuki", "latislane", "naoto", "yui"]
+        sisters = ["futaba", "shiori", "nobuka", "akva", "celesta", "hanako", "lucy", "fuyuki", "latislane", "naoto", "yu"]
         sister = random.choice(sisters)
         self.logger.info(f"   Взаимодействие с: {sister}")
 

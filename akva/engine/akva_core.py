@@ -225,6 +225,10 @@ class AkvaCore:
         self.logger.info(f"Аква {self.current_version} инициализирована")
         self.logger.info(f"Фокус: {', '.join(self.config.research_areas)}")
         self.logger.info(f"Характер: {self.personality.level_description()}")
+
+        # Система характера (общая для всех девочек)
+        self.character = CharacterSystem("akva", self.config.state_dir)
+        self.logger.info(f"Character loaded: {self.character.get_traits().temperament}")
         
         # ================================================================
         #  HUMANITY LAYER — Живая душа Аква

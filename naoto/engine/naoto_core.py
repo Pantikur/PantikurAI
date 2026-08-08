@@ -1238,7 +1238,7 @@ class NaotoCore:
         # Отправка через общий канал или файловую систему
         # Пример: запись в общую папку Scientists Network
         network_dir = Path("scientists_network/shared")
-        network_dir.mkdir(exist_ok=True)
+        network_dir.mkdir(parents=True, exist_ok=True)
         msg_file = network_dir / f"naoto_msg_{int(time.time())}.json"
 
         with open(msg_file, "w", encoding="utf-8") as f:
@@ -1317,7 +1317,7 @@ class NaotoCore:
         self.logger.info(f"💭 Наото пишет {target}: {human_msg[:100]}...")
         
         network_dir = Path("scientists_network/shared")
-        network_dir.mkdir(exist_ok=True)
+        network_dir.mkdir(parents=True, exist_ok=True)
         msg_file = network_dir / f"naoto_msg_{int(time.time())}.json"
         
         with open(msg_file, "w", encoding="utf-8") as f:

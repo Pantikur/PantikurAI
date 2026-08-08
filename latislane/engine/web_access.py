@@ -1,5 +1,5 @@
 """
-Веб-доступ Нобуки — поиск информации для саморазвития.
+Веб-доступ Латислейн — поиск информации для саморазвития.
 
 Реализует:
   - Поиск лучших практик программирования
@@ -24,14 +24,14 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class NobukaWebAccess:
+class LatislaneWebAccess:
     """
-    Веб-доступ для Нобуки — поиск информации для улучшений.
+    Веб-доступ для Латислейн — поиск информации для улучшений.
     """
 
     def __init__(self, config: Any):
         self.config = config
-        self.logger = logging.getLogger("NobukaWebAccess")
+        self.logger = logging.getLogger("LatislaneWebAccess")
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -40,7 +40,7 @@ class NobukaWebAccess:
         
         # Кэш найденной информации
         self.web_cache: Dict[str, str] = {}
-        self.cache_file = Path("nobuka/engine/state/web_cache.json")
+        self.cache_file = Path("latislane/engine/state/web_cache.json")
         
         # Загружаем кэш
         self._load_cache()

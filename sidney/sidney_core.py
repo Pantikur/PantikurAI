@@ -712,7 +712,7 @@ class SidneyCore:
                 
                 # Запись в общую папкуScientists Network
                 network_dir = Path("scientists_network/shared")
-                network_dir.mkdir(exist_ok=True)
+                network_dir.mkdir(parents=True, exist_ok=True)
                 msg_file = network_dir / f"sidney_msg_{int(time.time())}.json"
                 
                 with open(msg_file, "w", encoding="utf-8") as f:
