@@ -284,8 +284,15 @@ class RUGPT3Bot:
         self.world_engine_enabled = False
         self.world_engine = None
     
-    def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat") -> str:
-        """Генерация ответа через RUGPT3."""
+    def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat", memory_data: str | None = None) -> str:
+        """Генерация ответа через RUGPT3.
+        
+        Двухпроходная генерация:
+        - Проход 1 (memory_data=None): модель получает контекст диалога и может
+          запросить архивные данные через [MEMORY_QUERY]{...}[/MEMORY_QUERY]
+        - Проход 2 (memory_data!=None): модель получает контекст + архивные данные
+          и генерирует финальный ответ
+        """
         import torch
         
         # Строим контекст
@@ -310,7 +317,35 @@ class RUGPT3Bot:
         context_str = "\n".join(context[-10:])  # Последние 10 сообщений
         
         if mode == "chat":
-            prompt = f"{context_str}\nБот:"
+            if memory_data:
+                # === ПРОХОД 2: модель получила архивные данные и генерирует финальный ответ ===
+                prompt = (
+                    f"{context_str}\n\n"
+                    f"[АРХИВНЫЕ ДАННЫЕ ИЗ ПАМЯТИ]\n{memory_data}\n[/АРХИВНЫЕ ДАННЫЕ]\n\n"
+                    f"Ты получил(а) данные из архива памяти. Используй их в своём ответе, "
+                    f"чтобы продолжить сцену логично. Не упоминай, что это архив — "
+                    f"отвечай как персонаж, естественно.\n\nБот:"
+                )
+            else:
+                # === ПРОХОД 1: модель решает, нужны ли ей архивные данные ===
+                prompt = (
+                    f"{context_str}\n\n"
+                    f"Ты — персонаж в ролевой игре. Отвечай от имени своего персонажа, "
+                    f"продолжая сцену, с учётом лора и отношений.\n"
+                    f"ВАЖНО: если тебе для ответа не хватает информации из архива памяти "
+                    f"(хронология прошлых событий, где находится предмет, что было в локации, "
+                    f"отношения с персонажем) — ты МОЖЕШЬ запросить её. Для этого начни ответ "
+                    f"со строки [MEMORY_QUERY] и в ней укажи JSON с нужными данными, например:\n"
+                    f"[MEMORY_QUERY]{{\"timeline\": 5}}[/MEMORY_QUERY]\n"
+                    f"[MEMORY_QUERY]{{\"item\": \"ключ\"}}[/MEMORY_QUERY]\n"
+                    f"[MEMORY_QUERY]{{\"location\": \"Комната Лилиан\"}}[/MEMORY_QUERY]\n"
+                    f"[MEMORY_QUERY]{{\"relationship\": \"Виктор\"}}[/MEMORY_QUERY]\n"
+                    f"[MEMORY_QUERY]{{\"items\": \"all\"}}[/MEMORY_QUERY]\n"
+                    f"[MEMORY_QUERY]{{\"scene\": 10}}[/MEMORY_QUERY]\n"
+                    f"[MEMORY_QUERY]{{\"full\": true}}[/MEMORY_QUERY]\n"
+                    f"Ты можешь запросить только ОДИН запрос за раз. Если данных достаточно — "
+                    f"просто отвечай как персонаж.\n\nБот:"
+                )
         elif mode == "rpg":
             prompt = f"{context_str}\nБот:"
         elif mode == "continue":
@@ -329,7 +364,7 @@ class RUGPT3Bot:
             with torch.no_grad():
                 outputs = self.model.generate(
                     inputs.input_ids,
-                    max_length=512,
+                    max_length=1024,
                     temperature=0.8,
                     top_p=0.9,
                     do_sample=True,
@@ -2696,12 +2731,13 @@ class MessageItem(BaseModel):
     def message_not_empty(cls, v):
         if not v or not v.strip():
             raise ValueError('Сообщение не может быть пустым')
-        return v.strip()[:500]
+        return v.strip()
 
 
 class ChatRequest(BaseModel):
     messages: List[MessageItem]
     mode: str = "chat"
+    memory_data: str | None = None  # Данные из архива памяти (ответ на memory_query)
 
     @validator('mode')
     def mode_must_be_valid(cls, v):
@@ -3003,13 +3039,28 @@ async def predict(request: Request):
 
             start_subgen = asyncio.get_event_loop().time()
             HumanParamsDetector.apply_params_to_bot(local_bot, params)
-            response = local_bot.generate_response(valid_msgs, mode="chat").strip()
+            response = local_bot.generate_response(valid_msgs, mode="chat", memory_data=req.memory_data).strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ chat: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
 
             if not response:
                 response = "Я здесь! 🤖"
                 logger.warning("⚠️ Пустой ответ → fallback")
+
+            # === ДВУХПРОХОДНАЯ ГЕНЕРАЦИЯ: обработка запроса к архиву памяти ===
+            # Если модель запросила архивные данные — возвращаем их отдельным полем
+            if req.memory_data is None and "[MEMORY_QUERY]" in response:
+                import re as _re
+                m = _re.search(r"\[MEMORY_QUERY\](.*?)\[/MEMORY_QUERY\]", response, _re.DOTALL)
+                if m:
+                    try:
+                        memory_query = json.loads(m.group(1).strip())
+                        # Убираем запрос из ответа
+                        response = response.replace(f"[MEMORY_QUERY]{m.group(1)}[/MEMORY_QUERY]", "").strip()
+                        logger.info(f"🔍 Модель запросила архив: {memory_query}")
+                        return {"response": response, "memory_query": memory_query}
+                    except Exception as _e:
+                        logger.warning(f"⚠️ Не удалось распарсить memory_query: {_e}")
 
         total_elapsed = asyncio.get_event_loop().time() - start_time
         logger.info(f"✅ Ответ сгенерирован за {total_elapsed:.2f} сек | Mode: {mode} | len={len(response)}")
