@@ -76,6 +76,7 @@ WORKDIR /app
 
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY main.py ./
+COPY train.py ./
 COPY Wuglarst/ ./Wuglarst/
 COPY utils/ ./utils/
 COPY data/ ./data/

@@ -44,13 +44,22 @@ retrain_status = {
 }
 
 # === Настройка логирования ===
+# Логи пишутся в stdout (нужно для Docker/TimeWeb) и, если задан APP_LOG_FILE,
+# дублируются в файл — это даёт Нобуке доступ к логам приложения.
+APP_LOG_FILE = os.getenv("APP_LOG_FILE", "logs/app.log")
+logging_handlers = [logging.StreamHandler(sys.stdout)]
+if APP_LOG_FILE:
+    try:
+        _log_dir = os.path.dirname(APP_LOG_FILE) or "."
+        os.makedirs(_log_dir, exist_ok=True)
+        logging_handlers.append(logging.FileHandler(APP_LOG_FILE, encoding="utf-8"))
+    except Exception as _e:
+        print(f"⚠️ Не удалось открыть файл лога {APP_LOG_FILE}: {_e}", flush=True)
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        # logging.FileHandler("logs/app.log")  # ← раскомментируйте для логов в файл
-    ]
+    handlers=logging_handlers,
 )
 logger = logging.getLogger("main")
 

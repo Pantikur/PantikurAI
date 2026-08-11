@@ -1,4 +1,4 @@
-"""
+﻿"""
 Ядро постоянной работы Нобуки — автономный цикл улучшений и модернизации.
 
 Реализует:
@@ -46,6 +46,8 @@ from web_access import NobukaWebAccess
 from universal_analyzer import UniversalAnalyzer
 from ml_optimizer import MLOptimizer
 from document_editor import DocumentEditor
+from log_reader import AppLogReader
+from error_fixer import ErrorFixer
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
@@ -113,6 +115,17 @@ class NobukaCore:
         self.ml_optimizer = MLOptimizer(self.config)
         self.test_runner = TestRunner(self.config)
         self.web_access = NobukaWebAccess(self.config)
+
+        # Читатель логов приложения (main.py / TimeWeb)
+        self.log_reader = AppLogReader(self.config)
+        self.logger.info("📋 Мониторинг логов приложения активирован")
+
+        # Поиск и исправление реальных ошибок в коде
+        self.error_fixer = ErrorFixer(self.config)
+        self.logger.info("🔧 ErrorFixer инициализирован: поиск и исправление реальных ошибок")
+
+        # Уже залогированные проблемы (чтобы не дублировать сообщения)
+        self._reported_issues: set[str] = set()
 
         # Редактор документов — Нобука редактирует вкладки и документы по всему проекту
         self.document_editor = DocumentEditor(self.config)
@@ -505,6 +518,89 @@ class NobukaCore:
                 "context": "Устаревшая зависимость",
             })
 
+        # 5. Реальные сигналы из логов приложения (main.py / TimeWeb)
+        signals.extend(self._collect_app_log_signals())
+
+        # 6. Реальные проблемы из кода (AST-анализ ErrorFixer)
+        signals.extend(self._collect_code_issues())
+
+        return signals
+
+    def _collect_app_log_signals(self) -> list[dict[str, Any]]:
+        """
+        Собрать сигналы из логов приложения (main.py).
+
+        Нобука читает лог приложения на TimeWeb (или локально), находит
+        ERROR/WARNING/CRITICAL и превращает их в сигналы для pipeline улучшений.
+        """
+        if not self.config.app_log_monitoring_enabled:
+            return []
+
+        try:
+            entries = self.log_reader.read_new_entries()
+            if not entries:
+                return []
+
+            signals = self.log_reader.extract_signals(entries)
+
+            if signals:
+                self.metrics["issues_found"] += len(signals)
+                self.logger.info(
+                    f"📋 Найдено {len(signals)} проблем в логах приложения: "
+                    f"{self.log_reader.log_path}"
+                )
+                for s in signals[:3]:
+                    self.logger.info(f"   [{s['severity']}] {s['context'][:100]}...")
+
+            return signals
+
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка чтения логов приложения: {e}")
+            return []
+
+    def _collect_code_issues(self) -> list[dict[str, Any]]:
+        """
+        Найти реальные ошибки в коде проекта через AST-анализ.
+
+        Каждая найденная проблема превращается в сигнал bug_detected
+        с прикреплённым issue (файл, строка, категория, стратегия правки).
+        """
+        if not self.config.error_fixer_enabled:
+            return []
+
+        try:
+            issues = self.error_fixer.find_project_issues(
+                only_fixable=False,
+                limit=self.config.error_scan_limit,
+            )
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка анализа кода ErrorFixer: {e}")
+            return []
+
+        severity_map = {"error": "high", "warning": "medium", "info": "low"}
+        signals = []
+
+        for issue in issues[:self.config.error_fix_max_per_cycle]:
+            signals.append({
+                "type": "bug_detected",
+                "severity": severity_map.get(issue.get("severity", ""), "medium"),
+                "file": issue.get("file", "unknown"),
+                "line": issue.get("line", 0),
+                "context": issue.get("description", "Проблема в коде"),
+                "issue": issue,
+            })
+            self.metrics["issues_found"] += 1
+
+            # Логируем новые проблемы один раз (без повторов в каждом цикле)
+            sig = f"{issue.get('file')}:{issue.get('line')}:{issue.get('category')}"
+            if sig not in self._reported_issues:
+                self._reported_issues.add(sig)
+                self.logger.info(
+                    f"🔍 Найдена проблема: [{issue.get('category')}] "
+                    f"{issue.get('file')}:{issue.get('line')} — "
+                    f"{issue.get('description')}"
+                )
+
         return signals
 
     # ================================================================
@@ -856,10 +952,32 @@ class NobukaCore:
         """
         Тестирование С итеративной доработкой (Закон 1: рабочий код).
 
-        Если тесты не прошли — Нобука НЕ выбрасывает код, а дорабатывает
-        его (до max_fix_attempts раз), пока он не станет рабочим.
+        Если улучшение связано с РЕАЛЬНОЙ проблемой из кода (ErrorFixer) —
+        Нобука применяет настоящую правку и проверяет её compile() + повторным
+        анализом. Только после успешной проверки улучшение считается применённым.
         Сдаётся только после исчерпания всех попыток.
+
+        Для улучшений без реального issue (симуляция/демо) — прежний
+        вероятностный flow.
         """
+        issue = self._extract_issue(improvement)
+
+        # Реальная проблема из кода
+        if issue is not None:
+            if issue.get("fixable") and self.config.error_fix_auto_apply:
+                self._real_fix_flow(improvement, issue)
+            else:
+                # Неисправимая проблема — анализируем и логируем
+                reason = issue.get("suggestion", "Требуется ручное исправление")
+                self.logger.warning(
+                    f"🔍 Ошибка требует ручного исправления: "
+                    f"{issue.get('file')}:{issue.get('line')} — "
+                    f"{issue.get('description')}"
+                )
+                self.logger.warning(f"   💡 Рекомендация: {reason}")
+            return
+
+        # ---- Симулированный flow (нет реального issue) ----
         max_attempts = getattr(self.config, "max_fix_attempts", 3)
         attempt = 0
 
@@ -897,6 +1015,99 @@ class NobukaCore:
             # Дорабатываем: анализируем ошибку и исправляем код
             fix_desc = self._fix_improvement(improvement)
             self.logger.info(f"🔧 Попытка доработки {attempt}/{max_attempts}: {fix_desc}")
+
+    def _extract_issue(self, improvement: ImprovementRecord) -> Optional[dict]:
+        """
+        Достать реальную проблему из улучшения (если она прикреплена в trigger).
+        """
+        try:
+            signal = json.loads(improvement.trigger)
+        except Exception:
+            return None
+        issue = signal.get("issue") if isinstance(signal, dict) else None
+        return issue if isinstance(issue, dict) else None
+
+    def _real_fix_flow(self, improvement: ImprovementRecord, issue: dict):
+        """
+        Применить РЕАЛЬНЫЕ правки кода с проверкой и откатом.
+
+        Использует fix_file_issues(): файл пересканируется после каждой правки,
+        поэтому номера строк не «устаревают». Каждая правка проверяется
+        compile() + повторным анализом, при неудаче файл откатывается.
+
+        Если проблема уже устранена в предыдущем цикле — фиксируем без правок.
+        """
+        max_attempts = getattr(self.config, "max_fix_attempts", 3)
+        file_path = issue.get("file", "")
+        target_desc = issue.get("description", "")
+
+        # Проблема уже устранена ранее?
+        try:
+            current = self.error_fixer.find_issues_in_file(file_path, skip_cache=True)
+            already_fixed = not any(
+                i.get("description") == target_desc for i in current
+            )
+        except Exception:
+            already_fixed = False
+
+        if already_fixed:
+            improvement.fix_history.append("Проблема уже устранена (повторный анализ)")
+            improvement.tests_added = 0
+            self.logger.info(f"✅ Проблема уже исправлена: {file_path} — {target_desc}")
+            self._apply_improvement(improvement)
+            return
+
+        attempt = 0
+        while True:
+            results: list[dict] = []
+            try:
+                results = self.error_fixer.fix_file_issues(
+                    file_path,
+                    max_fixes=self.config.error_fix_max_per_cycle,
+                )
+            except Exception as e:
+                self.logger.error(f"❌ Ошибка применения правок {file_path}: {e}")
+
+            fixed = [r for r in results if r.get("fixed")]
+
+            if fixed:
+                for r in fixed:
+                    improvement.fix_history.append(r["description"])
+                improvement.lines_changed = sum(r["lines_changed"] for r in fixed)
+                improvement.tests_added = 0
+                improvement.tests_affected = 0
+                self.metrics["fix_attempts_success"] += 1
+                self.logger.info(
+                    f"✅ Реальных правок применено: {len(fixed)} — {file_path}"
+                )
+                for r in fixed:
+                    self.logger.info(f"   • {r['description']}")
+                self._apply_improvement(improvement)
+                return
+
+            # Правки не удались — файл уже откачен внутри fix_issue
+            attempt += 1
+            improvement.fix_attempts = attempt
+            self.metrics["fix_attempts"] += 1
+
+            if attempt >= max_attempts:
+                error = "нет исправимых проблем"
+                if results:
+                    error = results[0].get("error", error)
+                self.logger.warning(
+                    f"❌ Не удалось исправить после {max_attempts} попыток "
+                    f"({file_path}): {error}"
+                )
+                improvement.rolled_back = True
+                improvement.rollback_reason = error
+                self.metrics["improvements_rolled_back"] += 1
+                self.metrics["fix_attempts_failed"] += 1
+                return
+
+            self.logger.info(
+                f"🔧 Попытка доработки {attempt}/{max_attempts}: "
+                f"{results[0].get('error', 'правка не удалась') if results else 'нет результата'}"
+            )
 
     def _fix_improvement(self, improvement: ImprovementRecord) -> str:
         """

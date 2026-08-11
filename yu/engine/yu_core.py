@@ -19,7 +19,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from .config import YuConfig
+try:
+    # Запуск как скрипт: python yu/engine/run.py (engine в sys.path)
+    from config import YuConfig
+except ImportError:  # Запуск как пакет: python -m yu.engine.run
+    from .config import YuConfig
 
 # Humanity Core — живая душа Юи
 from humanity_core import HumanityLayer

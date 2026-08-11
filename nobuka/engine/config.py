@@ -114,9 +114,32 @@ class NobukaConfig:
     notify_shiori_on_security_change: bool = True
     scan_with_shiori_before_apply: bool = True
 
+    # === Мониторинг логов приложения (main.py / TimeWeb) ===
+    app_log_monitoring_enabled: bool = True       # читать логи приложения в цикле
+    app_log_path: Optional[Path] = None           # явный путь к app.log (если None — автопоиск)
+    # Типичные места расположения логов приложения (в т.ч. на TimeWeb)
+    app_log_candidates: list[Path] = field(default_factory=lambda: [
+        Path("logs/app.log"),                                  # локальная разработка / контейнер
+        Path("~/.local/logs/app.log"),                         # Linux home
+        Path("~/logs/app.log"),                                # TimeWeb: домашняя директория
+        Path("/var/log/app.log"),                              # системные логи
+        Path("/var/www/logs/app.log"),                         # TimeWeb: веб-папки
+        Path("/opt/pantikur/logs/app.log"),                    # серверные установки
+    ])
+    app_log_tail_lines: int = 200                  # сколько строк читать при первом запуске
+    app_log_offset_state: Path = field(default_factory=lambda: Path("nobuka/engine/state/app_log_offset.json"))
+
+    # === Поиск и исправление реальных ошибок ===
+    error_fixer_enabled: bool = True               # включить ErrorFixer
+    error_scan_limit: int = 200                    # макс. файлов за одно сканирование
+    error_fix_auto_apply: bool = True              # автоматически применять правки
+    error_fix_max_per_cycle: int = 5               # макс. исправлений за цикл
+    error_fix_backup_dir: Path = field(default_factory=lambda: Path("nobuka/engine/state/error_fix_backups"))
+
     def __post_init__(self):
         """Создать директории после инициализации."""
         self.state_dir.mkdir(parents=True, exist_ok=True)
+        self.error_fix_backup_dir.mkdir(parents=True, exist_ok=True)
 
     @classmethod
     def default(cls) -> NobukaConfig:

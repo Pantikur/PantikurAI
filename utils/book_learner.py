@@ -14,6 +14,7 @@ import logging
 import hashlib
 import urllib.request
 import urllib.parse
+import urllib.error
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -22,6 +23,41 @@ from html.parser import HTMLParser
 
 # Добавляем корень проекта в путь
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+
+def urlopen_with_retry(req: urllib.request.Request, timeout: int = 10,
+                       max_retries: int = 3, source: str = "") -> "urllib.request.urlopen":
+    """
+    Открывает URL с повторными попытками при HTTP 429/503 (лимит запросов).
+
+    Учитывает заголовок Retry-After, иначе использует экспоненциальную паузу
+    с джиттером. Возвращает объект ответа либо выбрасывает последнее исключение
+    после исчерпания попыток.
+    """
+    last_exc: Optional[Exception] = None
+    for attempt in range(max_retries + 1):
+        try:
+            return urllib.request.urlopen(req, timeout=timeout)
+        except urllib.error.HTTPError as e:
+            last_exc = e
+            if e.code in (429, 503) and attempt < max_retries:
+                retry_after = e.headers.get("Retry-After") if e.headers else None
+                if retry_after and retry_after.strip().isdigit():
+                    delay = min(int(retry_after.strip()), 30)
+                else:
+                    delay = (2 ** attempt) + random.uniform(0.5, 1.5)
+                safe_print(f"[WAIT] HTTP {e.code} {source} — пауза {delay:.1f}с, "
+                           f"попытка {attempt + 1}/{max_retries}")
+                time.sleep(delay)
+                continue
+            raise
+        except urllib.error.URLError as e:
+            last_exc = e
+            raise
+    # На случай, если цикл завершился без возврата (не должно происходить)
+    if last_exc:
+        raise last_exc
+    raise RuntimeError("urlopen_with_retry: неожиданное завершение")
 
 # === HTML Parser для извлечения текста ===
 class LitnetHTMLParser(HTMLParser):
@@ -202,7 +238,7 @@ class BookLearner:
             req = urllib.request.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0')
             
-            with urllib.request.urlopen(req, timeout=10) as response:
+            with urlopen_with_retry(req, timeout=10, source="Google Books") as response:
                 data = json.loads(response.read().decode('utf-8'))
             
             books = []
@@ -244,7 +280,7 @@ class BookLearner:
             req = urllib.request.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0')
             
-            with urllib.request.urlopen(req, timeout=10) as response:
+            with urlopen_with_retry(req, timeout=10, source="Gutenberg") as response:
                 data = json.loads(response.read().decode('utf-8'))
             
             books = []
@@ -286,7 +322,7 @@ class BookLearner:
             req.add_header('Connection', 'keep-alive')
             
             try:
-                with urllib.request.urlopen(req, timeout=15) as response:
+                with urlopen_with_retry(req, timeout=15, source="Литнет") as response:
                     if response.status != 200:
                         safe_print(f"[WARN] HTTP {response.status} для {tag_name}")
                         return []
@@ -466,7 +502,7 @@ class BookLearner:
             req = urllib.request.Request(url)
             req.add_header('User-Agent', 'Mozilla/5.0')
             
-            with urllib.request.urlopen(req, timeout=10) as response:
+            with urlopen_with_retry(req, timeout=10, source="Open Library") as response:
                 data = json.loads(response.read().decode('utf-8'))
             
             books = []

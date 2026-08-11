@@ -12,7 +12,7 @@ from typing import Dict, List, Optional
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from utils.book_learner import BookLearner
+from utils.book_learner import BookLearner, urlopen_with_retry
 
 def safe_print(msg: str):
     """Безопасный print для Windows."""
@@ -73,7 +73,7 @@ class AuthorTodayParser:
             req.add_header('Accept-Language', 'ru-RU,ru;q=0.9')
             req.add_header('Referer', 'https://author.today/')
             
-            with urllib.request.urlopen(req, timeout=15) as response:
+            with urlopen_with_retry(req, timeout=15, source="Author.Today") as response:
                 html = response.read().decode('utf-8', errors='ignore')
             
             # === РАЗБИВАЕМ НА БЛОКИ ПО КНИГАМ ===
@@ -157,7 +157,7 @@ class AuthorTodayParser:
             req.add_header('Accept', 'text/html,application/xhtml+xml')
             req.add_header('Accept-Language', 'ru-RU,ru;q=0.9')
             
-            with urllib.request.urlopen(req, timeout=15) as response:
+            with urlopen_with_retry(req, timeout=15, source="Author.Today") as response:
                 html = response.read().decode('utf-8', errors='ignore')
             
             # Извлекаем описание из JSON-LD

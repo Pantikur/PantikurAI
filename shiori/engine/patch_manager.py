@@ -10,6 +10,7 @@
 
 from __future__ import annotations
 import json
+import logging
 import random
 from datetime import datetime
 from pathlib import Path
@@ -29,6 +30,7 @@ class PatchManager:
         self.patches_applied: list[Patch] = []
         self.backup_dir = config.state_dir / "backups"
         self.backup_dir.mkdir(parents=True, exist_ok=True)
+        self.logger = logging.getLogger("ShioriPatchManager")
     
     # ================================================================
     #  СОЗДАНИЕ И ПРИМЕНЕНИЕ ПАТЧЕЙ
@@ -51,6 +53,7 @@ class PatchManager:
             description=description,
         )
         
+        self.logger.debug(f"Создан патч {patch.id} для уязвимости {vulnerability_id}: {description}")
         return patch
     
     def apply_patch(self, patch: Patch) -> bool:
@@ -63,8 +66,11 @@ class PatchManager:
         Returns:
             True если успешно, False если ошибка
         """
+        self.logger.info(f"🔧 Применение патча: {patch.id} (уязвимость {patch.vulnerability_id})")
+        
         # Проверка перед применением
         if not self._pre_patch_checks(patch):
+            self.logger.warning(f"⚠️ Отклонено предварительными проверками: {patch.id}")
             return False
         
         # Резервное копирование
@@ -76,11 +82,14 @@ class PatchManager:
         
         if success:
             patch.applied = True
+            patch.success = True
             patch.applied_at = datetime.now().isoformat()
             patch.applied_by = "Shiori"
             self.patches_applied.append(patch)
+            self.logger.info(f"✅ Патч применён успешно: {patch.id} — {patch.description}")
             return True
         else:
+            self.logger.warning(f"❌ Патч не применён: {patch.id} — {patch.description}")
             # Откат при неудаче
             if self.config.rollback_on_failure:
                 self._rollback_patch(patch)
@@ -92,6 +101,7 @@ class PatchManager:
         """
         # Проверка валидности ID
         if not patch.vulnerability_id or not patch.vulnerability_id.startswith("VULN-"):
+            self.logger.warning(f"Неверный ID уязвимости у патча {patch.id}: {patch.vulnerability_id}")
             return False
         
         # Проверка доступности резервной копии
@@ -116,6 +126,8 @@ class PatchManager:
         backup_path = self.backup_dir / f"backup_{patch.id}.json"
         with open(backup_path, "w", encoding="utf-8") as f:
             json.dump(backup_data, f, ensure_ascii=False, indent=2)
+        
+        self.logger.debug(f"Резервная копия создана: {backup_path}")
     
     def _simulate_patch_application(self, patch: Patch) -> bool:
         """
@@ -127,22 +139,24 @@ class PatchManager:
           - Тестирование функциональности
         """
         # 90% успешных патчей (симуляция)
-        return random.random() < 0.9
+        result = random.random() < 0.9
+        self.logger.debug(f"Симуляция применения патча {patch.id}: {'успех' if result else 'отказ'}")
+        return result
     
     def _rollback_patch(self, patch: Patch):
         """
         Откатить патч при неудачном применении.
         """
-        self.logger = None  # В реальной системе logging.getLogger
-        
         # Восстановление из резервной копии
         backup_path = self.backup_dir / f"backup_{patch.id}.json"
         if backup_path.exists():
+            self.logger.debug(f"Восстановление из резервной копии: {backup_path}")
             # В реальной системе восстановление данных
             pass
         
         patch.applied = False
         patch.rollback_available = False
+        self.logger.warning(f"↩️ Откат патча: {patch.id} (уязвимость {patch.vulnerability_id})")
     
     # ================================================================
     #  УПРАВЛЕНИЕ ПАТЧАМИ
@@ -224,4 +238,5 @@ class PatchManager:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(log_data, f, ensure_ascii=False, indent=2)
         
+        self.logger.debug(f"Журнал патчей экспортирован: {path}")
         return path

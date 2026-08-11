@@ -146,6 +146,67 @@ def cmd_tests(config: NobukaConfig):
     print(f"  Время: {report.duration_seconds:.1f}с")
 
 
+def cmd_fix_errors(config: NobukaConfig):
+    """Запустить поиск и исправление реальных ошибок в коде (ErrorFixer)."""
+    print("=" * 70)
+    print("🐞 НОБУКА: ПОИСК И ИСПРАВЛЕНИЕ РЕАЛЬНЫХ ОШИБОК")
+    print("=" * 70)
+
+    from error_fixer import ErrorFixer
+
+    fixer = ErrorFixer(config)
+
+    # 1. Найти
+    print("\n🔍 Шаг 1: поиск проблем...")
+    issues = fixer.find_project_issues(only_fixable=False,
+                                       limit=config.error_scan_limit)
+    fixable = [i for i in issues if i.get("fixable")]
+    print(f"   Всего проблем: {len(issues)} (исправимых: {len(fixable)})")
+    for i in issues:
+        mark = "🛠️" if i.get("fixable") else "ℹ️"
+        print(f"   {mark} [{i['category']}/{i['severity']}] "
+              f"{i['file']}:{i['line']} — {i['description'][:80]}")
+
+    if not fixable:
+        print("\n✅ Исправимых проблем нет — всё в порядке!")
+        return
+
+    # 2. Исправить (по файлам, не более лимита)
+    print(f"\n🔧 Шаг 2: исправление (до {config.error_fix_max_per_cycle} файлов)...")
+    fixed_files: list[str] = []
+    processed_files: set[str] = set()
+
+    for issue in fixable:
+        file = issue.get("file")
+        if file in processed_files:
+            continue
+        processed_files.add(file)
+        results = fixer.fix_file_issues(file)
+        fixed = [r for r in results if r.get("fixed")]
+        if fixed:
+            fixed_files.append(file)
+            print(f"   ✅ {file}")
+            for r in fixed:
+                print(f"       • {r['description']}")
+        if len(processed_files) >= config.error_fix_max_per_cycle:
+            break
+
+    # 3. Итог
+    print("\n" + "=" * 70)
+    print(f"📊 ИТОГО: исправлено файлов: {len(fixed_files)}")
+    for f in fixed_files:
+        print(f"   - {f}")
+    print("Резервные копии: "
+          f"{config.error_fix_backup_dir}")
+
+    # 4. Оставшиеся проблемы (неисправимые)
+    remaining = [i for i in issues if not i.get("fixable")]
+    if remaining:
+        print(f"\nℹ️ Требуют ручного внимания ({len(remaining)}):")
+        for i in remaining[:10]:
+            print(f"   - {i['file']}:{i['line']} {i['description'][:70]}")
+
+
 def cmd_status(config: NobukaConfig):
     """Показать текущее состояние Нобука."""
     state_path = config.state_path
@@ -206,6 +267,11 @@ def main():
         help="Универсальный анализ всех файлов проекта"
     )
     parser.add_argument(
+        "--fix-errors",
+        action="store_true",
+        help="Поиск и исправление реальных ошибок в коде (ErrorFixer)"
+    )
+    parser.add_argument(
         "--ml",
         action="store_true",
         help="ML-оптимизатор: улучшение процесса обучения модели"
@@ -242,7 +308,9 @@ def main():
         config.max_cycles = args.max_cycles
 
     # Команды
-    if args.ml:
+    if args.fix_errors:
+        cmd_fix_errors(config)
+    elif args.ml:
         cmd_ml_optimize(config)
     elif args.universal:
         cmd_universal_analyze(config)

@@ -31,37 +31,97 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from utils.book_learner import safe_print, BookLearner
 
 
+def _find_chrome_binary() -> Optional[str]:
+    """
+    Ищет исполняемый файл Chrome/Chromium.
+    Приоритет: переменные окружения (CHROME_BIN / CHROME_BINARY_PATH), затем PATH.
+    """
+    # 1) Переменные окружения (задаются в Dockerfile/контейнере)
+    for env in ('CHROME_BIN', 'CHROME_BINARY_PATH', 'CHROMIUM_BIN'):
+        path = os.environ.get(env, '').strip()
+        if path:
+            found = shutil.which(path)
+            if found:
+                return found
+            if Path(path).exists():
+                return path
+
+    # 2) Поиск в PATH
+    candidates = ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser']
+    for name in candidates:
+        found = shutil.which(name)
+        if found:
+            return found
+
+    return None
+
+
+def _install_chrome_linux() -> bool:
+    """
+    Устанавливает Chrome/Chromium на Linux без устаревшего apt-key.
+    Сначала пробует chromium из штатных репозиториев, затем .deb Google напрямую.
+    """
+    try:
+        # 1) Chromium из репозитория дистрибутива (не требует ключей Google)
+        for pkg in ('chromium', 'chromium-browser'):
+            result = subprocess.run(
+                ['apt-get', 'install', '-y', '--no-install-recommends', pkg],
+                capture_output=True,
+            )
+            if result.returncode == 0 and _find_chrome_binary():
+                return True
+
+        # 2) Google Chrome из официального .deb (без apt-key, ставим пакет напрямую)
+        deb_path = '/tmp/google-chrome-stable_current_amd64.deb'
+        dl = subprocess.run(
+            ['wget', '-q', '-O', deb_path,
+             'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'],
+            capture_output=True,
+        )
+        if dl.returncode == 0:
+            install = subprocess.run(
+                ['apt-get', 'install', '-y', deb_path],
+                capture_output=True,
+            )
+            if install.returncode == 0 and _find_chrome_binary():
+                return True
+
+        return False
+    except Exception as e:
+        safe_print(f"[❌] Ошибка установки Chrome: {e}")
+        return False
+
+
 def _ensure_chrome_installed() -> bool:
     """
     Проверяет наличие Chrome/Chromium и устанавливает его, если отсутствует.
-    Работает на Linux (apt).
+    Работает на Linux (apt) под root.
     """
-    # Проверяем, есть ли уже Chrome
-    chrome_paths = ['google-chrome', 'google-chrome-stable', 'chromium-browser', 'chromium']
-    for path in chrome_paths:
-        if shutil.which(path):
-            safe_print(f"✅ Chrome найден: {path}")
-            return True
-    
-    # Если нет — пытаемся установить (только если root)
-    if os.geteuid() == 0:
-        safe_print("[⚙️] Chrome не найден. Попытка установки...")
-        try:
-            subprocess.run(['apt-get', 'update'], check=True, capture_output=True)
-            subprocess.run(['apt-get', 'install', '-y', 'wget', 'gnupg'], check=True, capture_output=True)
-            subprocess.run(['wget', '-q', '-O', '-', 'https://dl.google.com/linux/linux_signing_key.pub'], 
-                          stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) | subprocess.run(['apt-key', 'add', '-'], input=subprocess.PIPE)
-            
-            # Альтернативный способ установки Chromium (более надёжный для контейнеров)
-            subprocess.run(['apt-get', 'install', '-y', 'chromium-browser'], check=True, capture_output=True)
-            safe_print("[✅] Chromium установлен успешно!")
-            return True
-        except Exception as e:
-            safe_print(f"[❌] Не удалось установить Chrome: {e}")
-            return False
-    else:
-        safe_print("[⚠️] Chrome не найден. Запуск от root для установки.")
+    found = _find_chrome_binary()
+    if found:
+        safe_print(f"✅ Chrome найден: {found}")
+        return True
+
+    # Установка возможна только на Linux под root
+    if os.name != "posix" or not hasattr(os, 'geteuid') or os.geteuid() != 0:
+        safe_print("[⚠️] Chrome не найден. Установите Chrome или укажите CHROME_BIN.")
+        safe_print("[ℹ️] Автор.Today работает без Chrome (парсится без JavaScript).")
         return False
+
+    safe_print("[⚙️] Chrome не найден. Попытка установки...")
+    try:
+        subprocess.run(['apt-get', 'update'], check=True, capture_output=True)
+    except Exception as e:
+        safe_print(f"[❌] Не удалось обновить репозитории: {e}")
+        return False
+
+    if _install_chrome_linux():
+        safe_print("[✅] Chrome установлен успешно!")
+        return True
+
+    safe_print("[❌] Не удалось установить Chrome")
+    safe_print("[ℹ️] Автор.Today работает без Chrome (парсится без JavaScript).")
+    return False
 
 
 class SeleniumBookParser:

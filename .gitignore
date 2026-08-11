@@ -111,6 +111,10 @@ temp_*.txt
 test_request.json
 data/.last_retrain_timestamp
 
+# === Временные тесты и логи ассистента ===
+.koda_tmp/
+app-logs-*.txt
+
 # === Chat (не нужно в репозитории) ===
 PantikurChat/
 Pantikur/
