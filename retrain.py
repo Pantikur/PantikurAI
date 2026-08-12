@@ -26,10 +26,10 @@ MODELS_DIR = BASE_DIR / "models"
 TRAINING_PAIRS_PATH = DATA_DIR / "training_pairs.jsonl"
 CONVERSATIONS_JSON = DATA_DIR / "conversations.json"
 TOKENIZER_PATH = DATA_DIR / "tokenizer.json"
-MODEL_PATH = MODELS_DIR / "rugpt3"
+MODEL_PATH = MODELS_DIR / "qwen2.5-3b"
 
 BACKUP_TOKENIZER = DATA_DIR / "tokenizer.json.backup"
-BACKUP_MODEL = MODELS_DIR / "rugpt3.backup"
+BACKUP_MODEL = MODELS_DIR / "qwen2.5-3b.backup"
 
 # Гиперпараметры (можно вынести в конфиг)
 VOCAB_SIZE = 1000
@@ -407,7 +407,7 @@ def main():
     if TOKENIZER_PATH.exists() and MODEL_PATH.exists():
         t_size = TOKENIZER_PATH.stat().st_size // 1024
         m_size = MODEL_PATH.stat().st_size // 1024
-        logger.info(f"[OK] Успешно: tokenizer.json ({t_size} КБ), rugpt3 ({m_size} КБ)")
+        logger.info(f"[OK] Успешно: tokenizer.json ({t_size} КБ), qwen2.5-3b ({m_size} КБ)")
     else:
         logger.critical("[ERR] Фатально: один из артефактов отсутствует!")
         sys.exit(1)

@@ -1,4 +1,4 @@
-# train.py — обучение RUGPT3 модели
+# train.py — обучение Qwen2.5-3B модели
 
 import torch
 import torch.nn as nn
@@ -21,7 +21,7 @@ DATA_DIR = "data"
 OLD_DATA_PATH = os.path.join(DATA_DIR, "chat_data.pkl")
 CONVERSATIONS_JSON = os.path.join(DATA_DIR, "conversations.json")
 TRAINING_PAIRS_JSONL = os.path.join(DATA_DIR, "training_pairs.jsonl")
-MODEL_PATH = "models/rugpt3"
+MODEL_PATH = "models/qwen2.5-3b"
 
 MAX_LENGTH = 256
 BATCH_SIZE = 16
@@ -413,16 +413,16 @@ def main():
     # Загружаем данные
     temp_data = joblib.load(data_file)
 
-    # Загружаем RUGPT3
-    safe_print("[AI] Загрузка RUGPT3 для дообучения...")
-    tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
-    model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
+    # Загружаем Qwen2.5-3B
+    safe_print("[AI] Загрузка Qwen2.5-3B для дообучения...")
+    tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
+    model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
 
     # Pad token
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    safe_print("[FIRE] РЕТРАИН: дообучение RUGPT3 на всех данных")
+    safe_print("[FIRE] РЕТРАИН: дообучение Qwen2.5-3B на всех данных")
 
     # Формируем тексты из данных — ИСПРАВЛЕНО: поддерживаем list, dict, str
     texts = []
@@ -519,12 +519,12 @@ def main():
         gpu_info = f" | GPU: {torch.cuda.memory_allocated() / 1024**2:.0f} MB" if device.type == "cuda" else ""
         safe_print(f"[INFO] Эпоха {epoch+1}/{num_epochs}, Loss: {avg_loss:.4f}{gpu_info}")
 
-    # Сохраняем RUGPT3
+    # Сохраняем Qwen2.5-3B
     os.makedirs(MODEL_PATH, exist_ok=True)
     model.save_pretrained(MODEL_PATH)
     tokenizer.save_pretrained(MODEL_PATH)
 
-    safe_print("[HAPPY] RUGPT3 успешно дообучена и сохранена!")
+    safe_print("[HAPPY] Qwen2.5-3B успешно дообучена и сохранена!")
     safe_print(f"[SAVE] Модель: {MODEL_PATH}")
     safe_print(f"[DATA] Обучено на {len(texts)} текстах, {len(cat_ids)} токенов")
 

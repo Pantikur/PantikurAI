@@ -282,9 +282,9 @@ AUTO_WEB_SEARCH_MIN_LENGTH = int(os.getenv("AUTO_WEB_SEARCH_MIN_LENGTH", "2"))  
 AUTO_WEB_SEARCH_EXTRACT_DEPTH = int(os.getenv("AUTO_WEB_SEARCH_EXTRACT_DEPTH", "1"))  # глубина извлечения слов
 AUTO_WEB_SEARCH_MAX_NEW_WORDS = int(os.getenv("AUTO_WEB_SEARCH_MAX_NEW_WORDS", "10"))  # макс новых слов из определения
 
-# === Импорт RUGPT3 вместо ChatBot ===
-class RUGPT3Bot:
-    """Обёртка над RUGPT3 моделью для совместимости с ChatBot API."""
+# === Импорт Qwen2.5-3B вместо ChatBot ===
+class QwenBot:
+    """Обёртка над Qwen2.5-3B моделью для совместимости с ChatBot API."""
     
     def __init__(self, tokenizer, model):
         self.tokenizer = tokenizer
@@ -295,7 +295,7 @@ class RUGPT3Bot:
         self.world_engine = None
     
     def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat", memory_data: str | None = None) -> str:
-        """Генерация ответа через RUGPT3.
+        """Генерация ответа через Qwen2.5-3B.
         
         Двухпроходная генерация:
         - Проход 1 (memory_data=None): модель получает контекст диалога и может
@@ -328,16 +328,7 @@ class RUGPT3Bot:
         
         if mode == "chat":
             if memory_data:
-                # === ПРОХОД 2: модель получила архивные данные и генерирует финальный ответ ===
-                prompt = (
-                    f"{context_str}\n\n"
-                    f"[АРХИВНЫЕ ДАННЫЕ ИЗ ПАМЯТИ]\n{memory_data}\n[/АРХИВНЫЕ ДАННЫЕ]\n\n"
-                    f"Ты получил(а) данные из архива памяти. Используй их в своём ответе, "
-                    f"чтобы продолжить сцену логично. Не упоминай, что это архив — "
-                    f"отвечай как персонаж, естественно.\n\nБот:"
-                )
-            else:
-                # === ПРОХОД 1: модель решает, нужны ли ей архивные данные ===
+                # === ПРОХОД 2: модель решает, нужны ли ей архивные данные ===
                 prompt = (
                     f"{context_str}\n\n"
                     f"Ты — персонаж в ролевой игре. Отвечай от имени своего персонажа, "
@@ -356,6 +347,9 @@ class RUGPT3Bot:
                     f"Ты можешь запросить только ОДИН запрос за раз. Если данных достаточно — "
                     f"просто отвечай как персонаж.\n\nБот:"
                 )
+            else:
+                # Строим промпт для Qwen2.5
+                prompt = f"{context_str}\nПользователь: {last_user_msg}\nБот:"
         elif mode == "rpg":
             prompt = f"{context_str}\nБот:"
         elif mode == "continue":
@@ -393,17 +387,17 @@ class RUGPT3Bot:
             
             return response.strip()
         except Exception as e:
-            logger.error(f"Ошибка генерации RUGPT3: {e}")
+            logger.error(f"Ошибка генерации Qwen2.5: {e}")
             return "Я здесь! 🤖"
 
 
-def load_rugpt3():
+def load_qwen_model():
     """Загружает модель ТОЛЬКО из локальных папок (без интернета).
     
     Приоритет загрузки:
     1. models/qwen2.5-3b (Qwen2.5-3B с 4-bit квантизацией)
-    2. models/rugpt3 (старая ruGPT3)
-    3. models/rugpt3_vuglarst/merged (дообученная ruGPT3)
+    2. models/rugpt3_vuglarst/merged (дообученная ruGPT3)
+    3. models/rugpt3 (старая ruGPT3)
     """
     from transformers import AutoTokenizer, AutoModelForCausalLM
     import torch
@@ -492,16 +486,16 @@ def load_rugpt3():
             continue
     
     if tokenizer is None:
-        # Fallback: пробуем загрузить sberbank-ai/rugpt3small из кэша transformers
-        logger.info("🤖 Фоллбэк: пытаюсь загрузить sberbank-ai/rugpt3small из кэша transformers...")
+        # Fallback: пробуем загрузить Qwen2.5-3B из кэша transformers
+        logger.info("🤖 Фоллбэк: пытаюсь загрузить Qwen2.5-3B из кэша transformers...")
         try:
-            tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
-            model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
-            logger.info("✅ Загружена базовая ruGPT3-small (из кэша transformers)")
-            model_name = "ruGPT3-small (fallback)"
+            tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
+            model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
+            logger.info("✅ Загружена Qwen2.5-3B (из кэша transformers)")
+            model_name = "Qwen2.5-3B (fallback)"
         except Exception as e:
             logger.critical(f"❌ Не удалось загрузить НИ ОДНОЙ модели: {e}")
-            logger.critical("💡 Положите модель в папку models/qwen2.5-3b или models/rugpt3")
+            logger.critical("💡 Положите модель в папку models/qwen2.5-3b или models/qwen2.5-1.5b")
             raise RuntimeError("Не удалось загрузить модель")
     
     if torch.cuda.is_available():
@@ -509,8 +503,8 @@ def load_rugpt3():
     else:
         logger.info("   ✅ Модель загружена на CPU")
     
-    # Оборачиваем в RUGPT3Bot
-    return RUGPT3Bot(tokenizer, model)
+    # Оборачиваем в QwenBot
+    return QwenBot(tokenizer, model)
 
 
 # === Lifespan: загрузка при старте и остановке ===
@@ -660,19 +654,22 @@ async def lifespan(app: FastAPI):
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
     # === КОНЕЦ АСИНХРОННОГО ЗАПУСКА ===
 
-    # === Фоновая загрузка RUGPT3 (не блокирует запуск сервера) ===
+    # === Фоновая загрузка Qwen2.5-3B (не блокирует запуск сервера) ===
     async def load_chatbot_background():
-        global chatbot, web_search
+        """Загружает Qwen2.5-3B в фоне, не блокируя запуск сервера."""
+        global chatbot
+        
+        logger.info("🔁 Загружаю Qwen2.5-3B (в фоне)...")
+        load_start = time.time()
+        
         try:
-            logger.info("🔁 Загружаю RUGPT3 (в фоне)...")
-            load_start = asyncio.get_event_loop().time()
-            rugpt3 = await asyncio.to_thread(load_rugpt3)
-            load_time = asyncio.get_event_loop().time() - load_start
-            logger.info(f"📦 RUGPT3 загружен за {load_time:.2f} сек")
-
+            qwen_model = await asyncio.to_thread(load_qwen_model)
+            load_time = time.time() - load_start
+            logger.info(f"📦 Qwen2.5-3B загружен за {load_time:.2f} сек")
+            
             with CHATBOT_LOCK:
-                chatbot = rugpt3
-            logger.info("✅ RUGPT3 успешно загружен!")
+                chatbot = qwen_model
+            logger.info("✅ Qwen2.5-3B успешно загружен!")
 
             if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
                 logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
@@ -773,27 +770,25 @@ async def lifespan(app: FastAPI):
 
 
 async def auto_reload_chatbot_loop():
-    """Фоновая задача: периодически загружает RUGPT3 из HuggingFace."""
+    """Фоновая задача: периодически загружает Qwen2.5-3B."""
     global chatbot
-    check_interval = 10  # секунд
-    max_attempts = 60  # максимум 10 минут
+    
+    max_attempts = 3
+    load_start = time.time()
     
     for attempt in range(1, max_attempts + 1):
-        await asyncio.sleep(check_interval)
-        
-        logger.info(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): загружаю RUGPT3...")
+        logger.info(f"🔄 Авто-загрузка (попытка {attempt}/{max_attempts}): загружаю Qwen2.5-3B...")
         try:
-            load_start = asyncio.get_event_loop().time()
-            rugpt3 = load_rugpt3()
-            load_time = asyncio.get_event_loop().time() - load_start
+            qwen_model = load_qwen_model()
+            load_time = time.time() - load_start
             with CHATBOT_LOCK:
-                chatbot = rugpt3
-            logger.info(f"✅ RUGPT3 успешно загружен авто-загрузкой за {load_time:.2f} сек!")
-            return  # Успешно загружено, выходим
+                chatbot = qwen_model
+            logger.info(f"✅ Qwen2.5-3B успешно загружен авто-загрузкой за {load_time:.2f} сек!")
+            return
         except Exception as e:
-            logger.error(f"❌ Авто-загрузка RUGPT3 не удалась (попытка {attempt}): {e}")
+            logger.error(f"❌ Авто-загрузка Qwen2.5-3B не удалась (попытка {attempt}): {e}")
     
-    logger.warning("⚠️ Авто-загрузка RUGPT3: исчерпано максимальное число попыток")
+    logger.warning("⚠️ Авто-загрузка Qwen2.5-3B: исчерпано максимальное число попыток")
 
 
 # === FastAPI приложение ===
@@ -913,14 +908,14 @@ async def get_model_size():
                     total += os.path.getsize(fp)
         return total if total > 0 else None
 
-    model_size = get_dir_size("models/rugpt3")
-    tokenizer_size = get_file_size("data/tokenizer.json")
-    conv_size = get_file_size("data/conversations.json")
-    train_size = get_file_size("data/training_pairs.jsonl")
+    model_size = get_dir_size("models/qwen2.5-3b") or get_dir_size("models/rugpt3")
+    tokenizer_size = get_dir_size("models/qwen2.5-3b") or get_dir_size("models/rugpt3")
+    conv_size = get_dir_size("data")
+    train_size = get_dir_size("data")
     
-    model_info = {
-        "name": "RUGPT3",
-        "path": "models/rugpt3",
+    return {
+        "name": "Qwen2.5-3B",
+        "path": "models/qwen2.5-3b",
         "exists": model_size is not None,
         "size_bytes": model_size,
         "size_human": format_size(model_size) if model_size else "Не найдена",
@@ -3201,14 +3196,14 @@ def run_retrain_sync():
         )
         if result.returncode == 0:
             logger.info("🎉 Ретраин завершён успешно!")
-            # Перезагрузка RUGPT3
+            # Перезагрузка Qwen2.5-3B
             try:
-                rugpt3 = load_rugpt3()
+                qwen_model = load_qwen_model()
                 with CHATBOT_LOCK:
-                    chatbot = rugpt3
-                logger.info("🔁 RUGPT3 перезагружена после обучения")
+                    chatbot = qwen_model
+                logger.info("🔁 Qwen2.5-3B перезагружена после обучения")
             except Exception as e:
-                logger.error(f"❌ Не удалось перезагрузить RUGPT3: {e}")
+                logger.error(f"❌ Не удалось перезагрузить Qwen2.5-3B: {e}")
         else:
             logger.error(f"❌ Ошибка ретраина: {result.stderr}")
     except subprocess.TimeoutExpired:

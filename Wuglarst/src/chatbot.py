@@ -1,4 +1,4 @@
-# Wuglarst/src/chatbot.py (обновлённая версия с RUGPT3)
+# Wuglarst/src/chatbot.py (обновлённая версия с Qwen2.5-3B)
 
 import sys
 import io
@@ -31,12 +31,12 @@ import threading
 import logging
 import asyncio
 
-# === Настройки RUGPT3 ===
-RUGPT3_MAX_LENGTH = 512
-RUGPT3_TEMPERATURE = 0.85
-RUGPT3_TOP_P = 0.92
-RUGPT3_BASE = "sberbank-ai/rugpt3small_based_on_gpt2"
-RUGPT3_VUGLARST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "models", "rugpt3_vuglarst")
+# === Настройки Qwen2.5-3B ===
+QWEN25_MAX_LENGTH = 512
+QWEN25_TEMPERATURE = 0.85
+QWEN25_TOP_P = 0.92
+QWEN25_BASE = "Qwen/Qwen2.5-3B-Instruct"
+QWEN25_VUGLARST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "models", "qwen2.5-3b")
 
 # Импортируем KnowledgeManager
 KnowledgeManager: Any = None  # type: ignore
@@ -51,7 +51,7 @@ except ImportError:
 
 class SimpleTokenizer:
     """Токенизатор, совместимый с tokenizer.json"""
-    def __init__(self, tokenizer_path: str, max_length: int = RUGPT3_MAX_LENGTH):
+    def __init__(self, tokenizer_path: str, max_length: int = QWEN25_MAX_LENGTH):
         with open(tokenizer_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.vocab = data["vocab"]
@@ -99,21 +99,21 @@ class SimpleTokenizer:
 
 class ChatBot:
     def __init__(self, model_path: str, data_path: str, device: str | None = None):
-        """Инициализация RUGPT3 вместо ChatNN."""
+        """Инициализация Qwen2.5-3B вместо ChatNN."""
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.model_path = model_path
         
         # Определяем путь к модели
         if os.path.exists(model_path):
             self.rugpt_path = model_path
-        elif os.path.exists(RUGPT3_VUGLARST):
-            self.rugpt_path = RUGPT3_VUGLARST
+        elif os.path.exists(QWEN25_VUGLARST):
+            self.rugpt_path = QWEN25_VUGLARST
         else:
-            self.rugpt_path = RUGPT3_BASE
+            self.rugpt_path = QWEN25_BASE
         
-        print(f"[RUGPT3] Загрузка модели: {self.rugpt_path}")
+        print(f"[Qwen2.5] Загрузка модели: {self.rugpt_path}")
         
-        # Загружаем RUGPT3
+        # Загружаем Qwen2.5
         self.tokenizer = AutoTokenizer.from_pretrained(self.rugpt_path)
         self.model = AutoModelForCausalLM.from_pretrained(
             self.rugpt_path,
@@ -122,9 +122,9 @@ class ChatBot:
         )
         
         if torch.cuda.is_available():
-            print(f"[RUGPT3] Загружено на GPU: {torch.cuda.get_device_name(0)}")
+            print(f"[Qwen2.5] Загружено на GPU: {torch.cuda.get_device_name(0)}")
         else:
-            print("[RUGPT3] Загружено на CPU")
+            print("[Qwen2.5] Загружено на CPU")
         
         self._user_gender = None
         self._user_skin_tone = None
@@ -548,16 +548,16 @@ class ChatBot:
     def _generate_response_with_sampling(
         self,
         input_text: str,
-        max_length: int = RUGPT3_MAX_LENGTH,
-        temperature: float = RUGPT3_TEMPERATURE,
-        top_p: float = RUGPT3_TOP_P,
+        max_length: int = QWEN25_MAX_LENGTH,
+        temperature: float = QWEN25_TEMPERATURE,
+        top_p: float = QWEN25_TOP_P,
         max_words: int = 80,
         min_words: int = 5
     ) -> str:
-        """Генерация через RUGPT3 с nucleus sampling."""
+        """Генерация через Qwen2.5 с nucleus sampling."""
         self.model.eval()
         
-        # Токенизация через RUGPT3
+        # Токенизация через Qwen2.5
         inputs = self.tokenizer.encode(input_text, return_tensors="pt")
         if torch.cuda.is_available():
             inputs = inputs.to("cuda")
