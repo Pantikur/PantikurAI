@@ -46,14 +46,14 @@ api = HfApi()
 # Конфигурация моделей
 MODELS = {
     "vuglarst": {
-        "local_path": "models/rugpt3_vuglarst",
-        "repo_id": "Pantikur/pantikur-rugpt3-vuglarst",
-        "description": "RUGPT3 Small fine-tuned on Vuglarst data",
+        "local_path": "models/qwen2.5-3b",
+        "repo_id": "Pantikur/qwen2.5-3b",
+        "description": "Qwen2.5-3B base model",
     },
-    "rugpt3": {
-        "local_path": "models/rugpt3",
-        "repo_id": "Pantikur/pantikur-rugpt3",
-        "description": "RUGPT3 Small base model",
+    "qwen2.5-3b": {
+        "local_path": "models/qwen2.5-3b",
+        "repo_id": "Pantikur/qwen2.5-3b",
+        "description": "Qwen2.5-3B base model",
     },
 }
 
@@ -122,7 +122,7 @@ def main():
         models_to_upload = args
     else:
         print("[PROMPT] Which models to upload?")
-        print("  Options: vuglarst, rugpt3, --all")
+        print("  Options: qwen2.5-3b, --all")
         print("  Use --list to see available")
         return
     
@@ -138,7 +138,7 @@ def main():
     if success_count > 0:
         print("\n[TIP] To use uploaded model:")
         print("  from transformers import AutoModelForCausalLM")
-        print("  model = AutoModelForCausalLM.from_pretrained('Pantikur/pantikur-rugpt3-vuglarst')")
+        print("  model = AutoModelForCausalLM.from_pretrained('Pantikur/qwen2.5-3b')")
 
 
 if __name__ == "__main__":

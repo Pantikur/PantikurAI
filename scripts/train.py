@@ -10,7 +10,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # Создаём необходимые директории
-os.makedirs(os.path.join(project_root, 'models', 'rugpt3'), exist_ok=True)
+os.makedirs(os.path.join(project_root, 'models', 'qwen2.5-3b'), exist_ok=True)
 
 # Загружаем диалоги из JSON
 import json
@@ -19,10 +19,10 @@ with open(os.path.join(project_root, 'data', 'conversations.json'), 'r', encodin
 
 print(f"📝 Загружено {len(conversations)} диалогов")
 
-# Дообучение RUGPT3
-print("\n🤖 Загрузка RUGPT3...")
-BASE_MODEL = "sberbank-ai/rugpt3small_based_on_gpt2"
-MODEL_PATH = os.path.join(project_root, 'models', 'rugpt3')
+# Дообучение Qwen2.5-3B
+print("\n🤖 Загрузка Qwen2.5-3B...")
+BASE_MODEL = "Qwen/Qwen2.5-3B-Instruct"
+MODEL_PATH = os.path.join(project_root, 'models', 'qwen2.5-3b')
 
 tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
 model = AutoModelForCausalLM.from_pretrained(BASE_MODEL)
@@ -66,4 +66,4 @@ for epoch in range(3):
 # Сохранение
 model.save_pretrained(MODEL_PATH)
 tokenizer.save_pretrained(MODEL_PATH)
-print(f"✅ RUGPT3 дообучена и сохранена в {MODEL_PATH}")
+print(f"✅ Qwen2.5-3B дообучена и сохранена в {MODEL_PATH}")

@@ -33,8 +33,8 @@ print(f"[OK] Token: {hf_token[:10]}...")
 api = HfApi()
 
 # Загружаем vuglarst модель
-local_path = "models/rugpt3_vuglarst"
-repo_id = "pantikur/pantikur-rugpt3-vuglarst"
+local_path = "models/qwen2.5-3b"
+repo_id = "pantikur/qwen2.5-3b"
 
 print(f"\n[UPLOAD] {local_path} → {repo_id}")
 

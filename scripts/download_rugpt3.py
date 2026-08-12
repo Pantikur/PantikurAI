@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
-Загрузка RUGPT3 Small через transformers.
+Загрузка Qwen2.5-3B через transformers.
 
-Этот скрипт скачивает RUGPT3 Small от Sber и сохраняет в models/.
-Модель будет доступна для импорта в любой части проекта.
+Этот скрипт скачивает Qwen2.5-3B от Qwen и сохраняет в models/.
 
-Использование:
-    python scripts/download_rugpt3.py
+Пример:
+    python scripts/download_qwen.py
 """
 
 import os
@@ -20,7 +19,7 @@ if sys.platform == 'win32':
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 print("=" * 60)
-print("[RUGPT3] Загрузка RUGPT3 Small от Sber")
+print("[Qwen2.5] Загрузка Qwen2.5-3B от Qwen")
 print("=" * 60)
 
 # Проверяем что установлены нужные библиотеки
@@ -38,8 +37,8 @@ except ImportError:
     print("[ERROR] Install transformers: pip install transformers")
     sys.exit(1)
 
-MODEL_NAME = "sberbank-ai/rugpt3small_based_on_gpt2"
-SAVE_DIR = Path(__file__).parent.parent / "models" / "rugpt3"
+MODEL_NAME = "Qwen/Qwen2.5-3B-Instruct"
+SAVE_DIR = Path(__file__).parent.parent / "models" / "qwen2.5-3b"
 
 print(f"\n[INFO] Model: {MODEL_NAME}")
 print(f"[INFO] Save to: {SAVE_DIR}")
@@ -78,7 +77,7 @@ print(f"[OK] Saved {len(files)} files")
 print(f"[OK] Total size: {total_size_mb:.0f} MB")
 
 print("\n" + "=" * 60)
-print("[SUCCESS] RUGPT3 Small loaded successfully!")
+print("[SUCCESS] Qwen2.5-3B Small loaded successfully!")
 print("=" * 60)
 print()
 print("Usage in code:")

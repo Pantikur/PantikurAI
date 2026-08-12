@@ -22,7 +22,7 @@ BACKUP_CONVERSATIONS = os.path.join(DATA_DIR, "conversations.old.json")
 BACKUP_TRAINING = os.path.join(DATA_DIR, "training_pairs.old.jsonl")
 LOG_PATH = os.path.join(DATA_DIR, "training.log")
 TEMP_TRAIN_DATA = os.path.join(DATA_DIR, "temp_train.pkl")
-MODEL_PATH = "models/rugpt3"
+MODEL_PATH = "models/qwen2.5-3b"
 
 MAX_LENGTH = 64
 BATCH_SIZE = 16
@@ -285,12 +285,12 @@ def get_dataloaders(input_sequences, target_sequences, batch_size=16, val_split=
     return train_loader, val_loader
 
 
-# Импортируем RUGPT3
+# Импортируем Qwen2.5-3B
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-def load_rugpt3_model(model_path="models/rugpt3"):
-    """Загрузка RUGPT3 модели."""
-    print(f"🤖 Загрузка RUGPT3: {model_path}")
+def load_qwen_model(model_path="models/qwen2.5-3b"):
+    """Загрузка Qwen2.5-3B модели."""
+    print(f"🤖 Загрузка Qwen2.5-3B: {model_path}")
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForCausalLM.from_pretrained(model_path)
     return model, tokenizer
@@ -486,35 +486,35 @@ def run_training():
             json.dump(tokenizer_data, f, ensure_ascii=False, indent=2)
         print("✅ Экспортирован: data/tokenizer.json")
 
-        # === Убедимся, что RUGPT3 существует ===
+        # === Убедимся, что Qwen2.5-3B существует ===
         model_path = MODEL_PATH
         if not os.path.exists(model_path):
-            print("⚠️ Файл модели не найден. Создаём RUGPT3...")
-            model, tokenizer = load_rugpt3_model()
+            print("⚠️ Файл модели не найден. Создаём Qwen2.5-3B...")
+            model, tokenizer = load_qwen_model()
             os.makedirs(os.path.dirname(model_path) or ".", exist_ok=True)
             model.save_pretrained(model_path)
             tokenizer.save_pretrained(model_path)
-            print(f"✅ Создан RUGPT3: {model_path}")
+            print(f"✅ Создан Qwen2.5-3B: {model_path}")
         else:
-            print(f"✅ RUGPT3 уже существует: {model_path}")
+            print(f"✅ Qwen2.5-3B уже существует: {model_path}")
 
         return  # Завершаем — ничего не учим, но файлы созданы
 
-    # === СЛУЧАЙ 2: Есть новые данные → дообучаем RUGPT3 ===
-    print("🔥 Начинаем дообучение RUGPT3...")
+    # === СЛУЧАЙ 2: Есть новые данные → дообучаем Qwen2.5-3B ===
+    print("🔥 Начинаем дообучение Qwen2.5-3B...")
 
-    model, tokenizer = load_rugpt3_model()
+    model, tokenizer = load_qwen_model()
 
-    print("✅ RUGPT3 загружена для дообучения")
+    print("✅ Qwen2.5-3B загружена для дообучения")
 
-    # Для RUGPT3 не нужны dataloaders в старом формате — просто сохраняем модель
-    # === Сохраняем RUGPT3 ===
+    # Для Qwen2.5-3B не нужны dataloaders в старом формате — просто сохраняем модель
+    # === Сохраняем Qwen2.5-3B ===
     os.makedirs(os.path.dirname(MODEL_PATH) or ".", exist_ok=True)
     model.save_pretrained(MODEL_PATH)
     tokenizer.save_pretrained(MODEL_PATH)
-    print(f"✅ RUGPT3 сохранена: {MODEL_PATH}")
+    print(f"✅ Qwen2.5-3B сохранена: {MODEL_PATH}")
 
-    print(f"🎉 RUGPT3 успешно обновлена!")
+    print(f"🎉 Qwen2.5-3B успешно обновлена!")
 
 
 # === ТОЧКА ВХОДА ===

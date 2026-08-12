@@ -29,7 +29,7 @@ class DialogDataset(Dataset):
 
 # Загружаем модель и токенизатор
 def fine_tune():
-    model_name = "sberbank-ai/rugpt3small_based_on_gpt2"
+    model_name = "Qwen/Qwen2.5-3B-Instruct"
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name)
     
@@ -39,7 +39,7 @@ def fine_tune():
     
     # Настраиваем аргументы обучения
     training_args = TrainingArguments(
-        output_dir="./rugpt3_finetuned",
+        output_dir="./qwen2.5-3b_finetuned",
         num_train_epochs=3,
         per_device_train_batch_size=2,
         save_steps=100,
@@ -69,10 +69,10 @@ def fine_tune():
     trainer.train()
 
     # Сохраняем модель
-    trainer.save_model("./rugpt3_finetuned")
-    tokenizer.save_pretrained("./rugpt3_finetuned")
-    
-    print("✅ Модель дообучена и сохранена в ./rugpt3_finetuned")
+    trainer.save_model("./qwen2.5-3b_finetuned")
+    tokenizer.save_pretrained("./qwen2.5-3b_finetuned")
+
+    print("✅ Модель дообучена и сохранена в ./qwen2.5-3b_finetuned")
 
 if __name__ == "__main__":
     fine_tune()

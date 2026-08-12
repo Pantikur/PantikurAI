@@ -1,4 +1,4 @@
-# train_narrative.py — дообучение RUGPT3 на повествовательных примерах
+# train_narrative.py — дообучение Qwen2.5-3B на повествовательных примерах
 
 import torch
 import json
@@ -7,8 +7,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # Пути
 DATA_FILE = "data/narrative_examples/examples.json"
-MODEL_PATH = "models/rugpt3"  # RUGPT3
-BASE_MODEL = "sberbank-ai/rugpt3small_based_on_gpt2"
+MODEL_PATH = "models/qwen2.5-3b"  # Qwen2.5-3B
+BASE_MODEL = "Qwen/Qwen2.5-3B-Instruct"
 
 # Загружаем дополнительные данные
 def load_narrative_data():
@@ -21,14 +21,14 @@ def load_narrative_data():
     print(f"✅ Загружено {len(data)} повествовательных примеров")
     return data
 
-# Дообучение RUGPT3
+# Дообучение Qwen2.5-3B
 def train_with_narrative():
     narrative_data = load_narrative_data()
     if not narrative_data:
         print("⚠️ Нет данных для дообучения")
         return
     
-    print("🤖 Загрузка RUGPT3...")
+    print("🤖 Загрузка Qwen2.5-3B...")
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
     model = AutoModelForCausalLM.from_pretrained(BASE_MODEL)
     
@@ -67,7 +67,7 @@ def train_with_narrative():
     os.makedirs(os.path.dirname(MODEL_PATH) or ".", exist_ok=True)
     model.save_pretrained(MODEL_PATH)
     tokenizer.save_pretrained(MODEL_PATH)
-    print(f"✅ RUGPT3 дообучен и сохранён в {MODEL_PATH}")
+    print(f"✅ Qwen2.5-3B дообучен и сохранён в {MODEL_PATH}")
 
 if __name__ == "__main__":
     train_with_narrative()

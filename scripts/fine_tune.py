@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Дообучение RUGPT3 Small на данных Вугларста.
+Дообучение Qwen2.5-3B на данных Вугларста.
 
 Использует LoRA (Low-Rank Adaptation) для эффективного дообучения:
   • Дообучается только 1-2% параметров
   • Работает на CPU (медленно, но работает)
   • Экономит RAM (~8 ГБ вместо ~24 ГБ)
-  • Результат: models/rugpt3_vuglarst/
+  • Результат: models/qwen2.5-3b/
 
 Использование:
     python scripts/fine_tune.py              # начать обучение
@@ -45,7 +45,7 @@ from transformers import (
 from peft import LoraConfig, get_peft_model, TaskType, PeftModel
 
 print("=" * 60)
-print("[FINE-TUNE] Дообучение RUGPT3 Small — Вугларст Edition")
+print("[FINE-TUNE] Дообучение Qwen2.5-3B — Вугларст Edition")
 print("=" * 60)
 
 
@@ -53,8 +53,8 @@ print("=" * 60)
 @dataclass
 class TrainConfig:
     """Конфигурация обучения."""
-    base_model: str = "models/rugpt3"  # Базовая модель
-    output_dir: str = "models/rugpt3_vuglarst"  # Куда сохранять
+    base_model: str = "models/qwen2.5-3b"  # Базовая модель
+    output_dir: str = "models/qwen2.5-3b-finetuned"  # Куда сохранять
     dataset_path: str = "data/training_dataset.jsonl"  # Датасет
     epochs: int = 3  # Эпохи обучения
     batch_size: int = 2  # Размер батча
@@ -312,7 +312,7 @@ def main():
     """Главная функция."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="Дообучение RUGPT3 на данных Вугларста")
+    parser = argparse.ArgumentParser(description="Дообучение Qwen2.5-3B на данных Вугларста")
     parser.add_argument("--epochs", type=int, default=3, help="Количество эпох (default: 3)")
     parser.add_argument("--batch-size", type=int, default=2, help="Размер батча (default: 2)")
     parser.add_argument("--lora-r", type=int, default=8, help="LoRA rank (default: 8)")

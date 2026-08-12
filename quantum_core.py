@@ -22,7 +22,7 @@ class QuantumCore:
     def __init__(self, model_path):
         print(f"[INIT] Загрузка квантового ядра из {model_path}...")
         
-        # Загружаем модель (нашу дообученную RUGPT3)
+        # Загружаем модель (Qwen2.5-3B)
         self.tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_path,
@@ -127,7 +127,7 @@ class QuantumCore:
 # --- Запуск ---
 if __name__ == "__main__":
     # Путь к нашей модели
-    MODEL_PATH = "models/rugpt3_vuglarst/merged/"
+    MODEL_PATH = "models/qwen2.5-3b/"
     
     if not os.path.exists(MODEL_PATH):
         print(f"Ошибка: Путь {MODEL_PATH} не найден. Сначала скачайте или обучите модель.")

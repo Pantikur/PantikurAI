@@ -186,7 +186,7 @@ class QuantumCore:
 
 # --- Запуск ---
 if __name__ == "__main__":
-    MODEL_PATH = "models/rugpt3_vuglarst/merged/"
+    MODEL_PATH = "models/qwen2.5-3b/"
     
     if not os.path.exists(MODEL_PATH):
         print(f"Ошибка: Путь {MODEL_PATH} не найден.")

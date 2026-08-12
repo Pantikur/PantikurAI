@@ -1,4 +1,4 @@
-# upload_to_huggingface.py — загрузка RUGPT3 на HuggingFace Hub
+# upload_to_huggingface.py — загрузка Qwen2.5-3B на HuggingFace Hub
 # Использование: python upload_to_huggingface.py
 
 import os
@@ -6,7 +6,7 @@ from huggingface_hub import HfApi, login
 
 # === НАСТРОЙКИ ===
 HF_TOKEN = os.getenv("HF_TOKEN", "your_token_here")  # Или введи вручную
-MODEL_PATH = "models/rugpt3_vuglarst/merged"  # Дообученная модель
+MODEL_PATH = "models/qwen2.5-3b"  # Qwen2.5-3B
 REPO_ID = "Pantikur/Wuglarst"  # Твой репозиторий на HF
 
 def upload_model():

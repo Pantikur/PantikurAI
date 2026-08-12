@@ -12,7 +12,7 @@ import torch
 if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
-BASE_MODEL = "models/rugpt3"
+BASE_MODEL = "models/qwen2.5-3b"
 LORA_MODEL = "models/rugpt3_vuglarst/lora_weights"
 MERGED_MODEL = "models/rugpt3_vuglarst/merged"
 

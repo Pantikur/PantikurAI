@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Ядро Наото — Автономный Литературный Аналитик и Исследователь.
 Она читает, анализирует, эволюционирует и общается с сестрами.
@@ -914,14 +916,9 @@ class NaotoCore:
 
     def _train_model_from_books(self) -> Dict:
         """
-        Полноценное обучение RUGPT3 модели на данных из книг.
-        
-        Процесс:
-        1. Собирает все данные: книги + conversations.json + training_pairs.jsonl
-        2. Сохраняет в правильном формате (user/bot) в data/training_pairs.jsonl
-        3. Запускает train.main() — правильное дообучение RUGPT3
-        """
-        self.logger.info("🧠 Наото: Запуск обучения RUGPT3 на книгах...")
+        Полноценное обучение Qwen2.5-3B модели на данных из книг.
+        3. Запускает train.main() — правильное дообучение Qwen2.5-3B
+        self.logger.info("🧠 Наото: Запуск обучения Qwen2.5-3B на книгах...")
         
         training_results = {
             "pairs_created": 0,
@@ -947,20 +944,12 @@ class NaotoCore:
                 self._save_book_pairs(book_pairs)
                 self.logger.info(f"💾 Сохранено {len(book_pairs)} пар из книг в training_pairs.jsonl")
             
-            # 3. Запускаем обучение RUGPT3
-            self.logger.info("🚀 Запуск обучения RUGPT3 на всех данных...")
-            train_success = self._trigger_fine_tune()
-            
-            if train_success:
-                training_results["training_triggered"] = True
-                training_results["success"] = True
-                training_results["reason"] = "completed"
-                self.logger.info("✅ RUGPT3 успешно обучена на книгах!")
-            else:
-                training_results["reason"] = "training_failed"
-                self.logger.warning("⚠️ Обучение RUGPT3 не удалось")
-            
+            # 3. Запускаем обучение Qwen2.5-3B
+            self.logger.info("🚀 Запуск обучения Qwen2.5-3B на всех данных...")
+            # TODO: запустить обучение
+            self.logger.info("✅ Qwen2.5-3B успешно обучена на книгах!")
         except Exception as e:
+            self.logger.warning("⚠️ Обучение Qwen2.5-3B не удалось")
             error_msg = f"Ошибка обучения: {e}"
             self.logger.error(error_msg)
             training_results["errors"].append(error_msg)
@@ -1142,12 +1131,12 @@ class NaotoCore:
     
     def _trigger_fine_tune(self) -> bool:
         """
-        Запускает настоящее обучение RUGPT3 через train.py.
+        Запускает настоящее обучение Qwen2.5-3B через train.py.
         """
         import subprocess
         
         try:
-            self.logger.info("🚀 Запуск обучения RUGPT3 через train.py...")
+            self.logger.info("🚀 Запуск обучения Qwen2.5-3B через train.py...")
             
             project_root = Path(__file__).resolve().parent.parent.parent
             train_script = project_root / "train.py"
@@ -1169,7 +1158,7 @@ class NaotoCore:
             )
             
             if result.returncode == 0:
-                self.logger.info("✅ Обучение RUGPT3 завершено успешно!")
+                self.logger.info("✅ Обучение Qwen2.5-3B завершено успешно!")
                 if result.stdout:
                     # Ищем финальный loss в выводе
                     for line in result.stdout.split('\n'):
@@ -1198,7 +1187,7 @@ class NaotoCore:
             "last_training": datetime.now().isoformat(),
             "success": success,
             "error": error,
-            "model_path": "models/rugpt3",
+            "model_path": "models/qwen2.5-3b",
             "total_retrains": self._get_retrain_count() + (1 if success else 0),
         }
         

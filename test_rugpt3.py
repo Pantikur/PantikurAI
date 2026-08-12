@@ -1,14 +1,14 @@
 """
-Тест RUGPT3 — проверяем что модель загружается и отвечает.
+Тест Qwen2.5-3B — проверяем что модель загружается и отвечает.
 """
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
-MODEL_PATH = "models/rugpt3"
+MODEL_PATH = "models/qwen2.5-3b"
 
 print("=" * 60)
-print("[TEST] RUGPT3 Small Test")
+print("[TEST] Qwen2.5-3B Test")
 print("=" * 60)
 
 # Загружаем
@@ -45,5 +45,5 @@ print(f"  Parameters: {sum(p.numel() for p in model.parameters()):,}")
 print(f"  Device: {'CPU' if not torch.cuda.is_available() else 'GPU'}")
 
 print("\n" + "=" * 60)
-print("[SUCCESS] RUGPT3 works!")
+print("[SUCCESS] Qwen2.5-3B works!")
 print("=" * 60)
