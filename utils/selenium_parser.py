@@ -188,7 +188,10 @@ class SeleniumBookParser:
             
             # Скрываем признаки автоматизации
             self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-            
+
+            # Таймаут загрузки страниц — чтобы не висеть 120 сек на зависших сайтах
+            self.driver.set_page_load_timeout(30)
+
             safe_print("[✅] WebDriver запущен")
             return True
             

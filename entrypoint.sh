@@ -30,7 +30,6 @@ try:
         repo_id=model_id,
         local_dir=local_dir,
         local_dir_use_symlinks=False,
-        timeout=300
     )
     print(f'✅ Модель {model_id} загружена в {local_dir}')
 except Exception as e:

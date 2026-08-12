@@ -397,25 +397,48 @@ class RUGPT3Bot:
 
 
 def load_rugpt3():
-    """Загружает RUGPT3 из HuggingFace и оборачивает в RUGPT3Bot."""
+    """Загружает RUGPT3: локальная модель → HuggingFace → базовая."""
     from transformers import AutoTokenizer, AutoModelForCausalLM
     import torch
-    
-    logger.info(f"🤖 Загрузка RUGPT3 из HuggingFace: {HF_MODEL_ID}...")
-    
-    # Пробуем загрузить из HF, если нет сети — fallback на базовую
-    try:
-        tokenizer = AutoTokenizer.from_pretrained(HF_MODEL_ID)
-        model = AutoModelForCausalLM.from_pretrained(
-            HF_MODEL_ID,
-            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-            device_map="auto" if torch.cuda.is_available() else None
-        )
-        logger.info("✅ RUGPT3 загружена из HuggingFace")
-    except Exception as e:
-        logger.warning(f"⚠️ Не удалось загрузить из HF ({e}), использую базовую...")
-        tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
-        model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
+
+    LOCAL_MODEL_DIR = str(BASE_DIR / "models" / "rugpt3")
+
+    # 1. Сначала проверяем локальную модель (уже скачана)
+    if os.path.isdir(LOCAL_MODEL_DIR) and os.path.exists(os.path.join(LOCAL_MODEL_DIR, "config.json")):
+        logger.info(f"🤖 Загрузка RUGPT3 из локальной папки: {LOCAL_MODEL_DIR}...")
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(LOCAL_MODEL_DIR)
+            model = AutoModelForCausalLM.from_pretrained(
+                LOCAL_MODEL_DIR,
+                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                device_map="auto" if torch.cuda.is_available() else None
+            )
+            logger.info("✅ RUGPT3 загружена из локальной папки")
+        except Exception as e:
+            logger.warning(f"⚠️ Локальная модель повреждена ({e}), пробую HuggingFace...")
+            tokenizer = None
+            model = None
+    else:
+        tokenizer = None
+        model = None
+
+    # 2. Пробуем HuggingFace (если локальной нет или она повреждена)
+    if tokenizer is None:
+        hf_token = os.getenv("HF_TOKEN") or os.getenv("HUGGING_FACE_HUB_TOKEN")
+        logger.info(f"🤖 Загрузка RUGPT3 из HuggingFace: {HF_MODEL_ID}...")
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(HF_MODEL_ID, token=hf_token)
+            model = AutoModelForCausalLM.from_pretrained(
+                HF_MODEL_ID,
+                token=hf_token,
+                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                device_map="auto" if torch.cuda.is_available() else None
+            )
+            logger.info("✅ RUGPT3 загружена из HuggingFace")
+        except Exception as e:
+            logger.warning(f"⚠️ Не удалось загрузить из HF ({e}), использую базовую...")
+            tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
+            model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
     
     if torch.cuda.is_available():
         logger.info("   ✅ RUGPT3 загружен на GPU")

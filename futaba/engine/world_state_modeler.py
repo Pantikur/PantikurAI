@@ -73,8 +73,14 @@ class FutabaWorldStateModeler:
                     self.simulation_results = data.get("results", [])
                     self.logger.info(f"Загружены результаты: {len(self.simulation_results)} симуляций")
             except Exception as e:
-                self.logger.warning(f"Ошибка загрузки результатов: {e}")
+                self.logger.warning(f"Ошибка загрузки результатов (файл повреждён): {e}")
                 self.simulation_results = []
+                # Удаляем повреждённый файл, чтобы при следующем запуске он пересоздался
+                try:
+                    self.results_file.unlink()
+                    self.logger.info("Повреждённый файл результатов удалён, будет пересоздан")
+                except Exception:
+                    pass
 
     def _save_results(self):
         """Сохраняет результаты моделирования."""
