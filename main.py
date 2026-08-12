@@ -165,7 +165,8 @@ if not os.path.exists("logs"):
 
 # === Пути ===
 BASE_DIR = Path(__file__).resolve().parent
-HF_MODEL_ID = "Pantikur/Wuglarst"  # HuggingFace модель
+# === Локальная модель (не требует интернета) ===
+LOCAL_MODEL_PATH = str(BASE_DIR / "models" / "qwen2.5-3b")
 DATA_PATH = BASE_DIR / "data" / "tokenizer.json"
 CONVERSATIONS_JSON = BASE_DIR / "data" / "conversations.json"
 
@@ -397,53 +398,116 @@ class RUGPT3Bot:
 
 
 def load_rugpt3():
-    """Загружает RUGPT3: локальная модель → HuggingFace → базовая."""
+    """Загружает модель ТОЛЬКО из локальных папок (без интернета).
+    
+    Приоритет загрузки:
+    1. models/qwen2.5-3b (Qwen2.5-3B с 4-bit квантизацией)
+    2. models/rugpt3 (старая ruGPT3)
+    3. models/rugpt3_vuglarst/merged (дообученная ruGPT3)
+    """
     from transformers import AutoTokenizer, AutoModelForCausalLM
     import torch
-
-    LOCAL_MODEL_DIR = str(BASE_DIR / "models" / "rugpt3")
-
-    # 1. Сначала проверяем локальную модель (уже скачана)
-    if os.path.isdir(LOCAL_MODEL_DIR) and os.path.exists(os.path.join(LOCAL_MODEL_DIR, "config.json")):
-        logger.info(f"🤖 Загрузка RUGPT3 из локальной папки: {LOCAL_MODEL_DIR}...")
+    
+    # Список локальных моделей для проверки
+    local_models = [
+        ("models/qwen2.5-3b", "Qwen2.5-3B (новая, быстрая)"),
+        ("models/rugpt3_vuglarst/merged", "ruGPT3-Vuglarst (дообученная)"),
+        ("models/rugpt3", "ruGPT3 (базовая)"),
+    ]
+    
+    tokenizer = None
+    model = None
+    model_name = None
+    
+    for model_path, display_name in local_models:
+        full_path = str(BASE_DIR / model_path)
+        if not os.path.isdir(full_path) or not os.path.exists(os.path.join(full_path, "config.json")):
+            continue
+        
+        logger.info(f"🤖 Загрузка модели: {display_name} ({full_path})...")
         try:
-            tokenizer = AutoTokenizer.from_pretrained(LOCAL_MODEL_DIR)
-            model = AutoModelForCausalLM.from_pretrained(
-                LOCAL_MODEL_DIR,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                device_map="auto" if torch.cuda.is_available() else None
-            )
-            logger.info("✅ RUGPT3 загружена из локальной папки")
+            # Проверяем, это Qwen2.5 или ruGPT3
+            is_qwen = False
+            config_path = os.path.join(full_path, "config.json")
+            with open(config_path, "r", encoding="utf-8") as f:
+                import json
+                config = json.load(f)
+                is_qwen = config.get("model_type", "").startswith("qwen")
+            
+            if is_qwen and torch.cuda.is_available():
+                # Qwen2.5 с 4-bit квантизацией для экономии VRAM
+                try:
+                    from transformers import BitsAndBytesConfig
+                    
+                    quantization_config = BitsAndBytesConfig(
+                        load_in_4bit=True,
+                        bnb_4bit_compute_dtype=torch.float16,
+                        bnb_4bit_quant_type="nf4",
+                        bnb_4bit_use_double_quant=True,
+                    )
+                    
+                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True)
+                    model = AutoModelForCausalLM.from_pretrained(
+                        full_path,
+                        quantization_config=quantization_config,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    logger.info(f"✅ {display_name} загружена с 4-bit квантизацией (экономия VRAM)")
+                except ImportError:
+                    logger.warning("⚠️ bitsandbytes не установлен, загружаю без квантизации...")
+                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True)
+                    model = AutoModelForCausalLM.from_pretrained(
+                        full_path,
+                        torch_dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    logger.info(f"✅ {display_name} загружена (float16, без квантизации)")
+                except Exception as e:
+                    logger.warning(f"⚠️ Ошибка квантизации ({e}), пробую без неё...")
+                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True)
+                    model = AutoModelForCausalLM.from_pretrained(
+                        full_path,
+                        torch_dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    logger.info(f"✅ {display_name} загружена (float16, без квантизации)")
+            else:
+                # Старая ruGPT3 или CPU
+                tokenizer = AutoTokenizer.from_pretrained(full_path)
+                model = AutoModelForCausalLM.from_pretrained(
+                    full_path,
+                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                    device_map="auto" if torch.cuda.is_available() else None
+                )
+                logger.info(f"✅ {display_name} загружена")
+            
+            model_name = display_name
+            break
+            
         except Exception as e:
-            logger.warning(f"⚠️ Локальная модель повреждена ({e}), пробую HuggingFace...")
-            tokenizer = None
-            model = None
-    else:
-        tokenizer = None
-        model = None
-
-    # 2. Пробуем HuggingFace (если локальной нет или она повреждена)
+            logger.warning(f"⚠️ Не удалось загрузить {display_name}: {e}")
+            continue
+    
     if tokenizer is None:
-        hf_token = os.getenv("HF_TOKEN") or os.getenv("HUGGING_FACE_HUB_TOKEN")
-        logger.info(f"🤖 Загрузка RUGPT3 из HuggingFace: {HF_MODEL_ID}...")
+        # Fallback: пробуем загрузить sberbank-ai/rugpt3small из кэша transformers
+        logger.info("🤖 Фоллбэк: пытаюсь загрузить sberbank-ai/rugpt3small из кэша transformers...")
         try:
-            tokenizer = AutoTokenizer.from_pretrained(HF_MODEL_ID, token=hf_token)
-            model = AutoModelForCausalLM.from_pretrained(
-                HF_MODEL_ID,
-                token=hf_token,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                device_map="auto" if torch.cuda.is_available() else None
-            )
-            logger.info("✅ RUGPT3 загружена из HuggingFace")
-        except Exception as e:
-            logger.warning(f"⚠️ Не удалось загрузить из HF ({e}), использую базовую...")
             tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
             model = AutoModelForCausalLM.from_pretrained("sberbank-ai/rugpt3small_based_on_gpt2")
+            logger.info("✅ Загружена базовая ruGPT3-small (из кэша transformers)")
+            model_name = "ruGPT3-small (fallback)"
+        except Exception as e:
+            logger.critical(f"❌ Не удалось загрузить НИ ОДНОЙ модели: {e}")
+            logger.critical("💡 Положите модель в папку models/qwen2.5-3b или models/rugpt3")
+            raise RuntimeError("Не удалось загрузить модель")
     
     if torch.cuda.is_available():
-        logger.info("   ✅ RUGPT3 загружен на GPU")
+        logger.info(f"   ✅ Модель загружена на GPU: {torch.cuda.get_device_name(0)}")
     else:
-        logger.info("   ✅ RUGPT3 загружен на CPU")
+        logger.info("   ✅ Модель загружена на CPU")
     
     # Оборачиваем в RUGPT3Bot
     return RUGPT3Bot(tokenizer, model)

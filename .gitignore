@@ -50,6 +50,7 @@ models/*.bin
 models/*.safetensors
 models/*.onnx
 models/*.gguf
+models/qwen2.5-3b/  # Локальная модель Qwen (6 ГБ)
 
 # Исключение: tokenizer.json разрешён
 !data/tokenizer.json
