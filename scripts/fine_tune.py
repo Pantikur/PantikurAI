@@ -275,8 +275,8 @@ def train(config: TrainConfig):
         tokenizer.save_pretrained(output_path / "lora_weights")
     
     # Если есть peft, можно слить веса
-    merged_model = model.merge_and_unload()
-    merged_model.save_pretrained(output_path / "merged")
+    merged_model = model.merge_and_unload()  # type: ignore
+    merged_model.save_pretrained(output_path / "merged")  # type: ignore
     tokenizer.save_pretrained(output_path / "merged")
     print(f"  [OK] Мerged модель сохранена в merged/")
     

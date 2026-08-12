@@ -27,7 +27,7 @@ base_model = AutoModelForCausalLM.from_pretrained(BASE_MODEL)
 
 print("[2/3] Применение LoRA весов...")
 model = PeftModel.from_pretrained(base_model, LORA_MODEL)
-model = model.merge_and_unload()  # Слияние весов
+model = model.merge_and_unload()  # type: ignore  # Слияние весов
 print("[OK] Модель загружена!")
 
 # Тестируем
