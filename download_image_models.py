@@ -11,6 +11,7 @@ download_image_models.py — Скачивает модели для генера
 
 Все модели скачиваются в папку models/image_models/ и не попадают в git.
 """
+from __future__ import annotations
 
 import os
 import sys

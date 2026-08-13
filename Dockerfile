@@ -78,6 +78,9 @@ WORKDIR /app
 COPY main.py ./
 COPY train.py ./
 COPY retrain.py ./
+COPY auto_retrain.py ./
+COPY generate_training_data.py ./
+COPY bot_learns_from_gigachat.py ./
 COPY Wuglarst/ ./Wuglarst/
 COPY utils/ ./utils/
 COPY data/ ./data/

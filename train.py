@@ -413,10 +413,28 @@ def main():
     # Загружаем данные
     temp_data = joblib.load(data_file)
 
-    # Загружаем Qwen2.5-3B
+    # Загружаем Qwen2.5-3B — сначала локальную, потом fallback на HuggingFace
     safe_print("[AI] Загрузка Qwen2.5-3B для дообучения...")
-    tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
-    model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
+    safe_print(f"[AI] Путь к модели: {MODEL_PATH}")
+    
+    import torch
+    
+    # Сначала пробуем локальную модель
+    if os.path.isdir(MODEL_PATH) and os.listdir(MODEL_PATH):
+        safe_print(f"[LOCAL] Загружаем из {MODEL_PATH}")
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+            model = AutoModelForCausalLM.from_pretrained(MODEL_PATH, torch_dtype=torch.float16)
+            safe_print("[OK] Загружена локальная модель")
+        except Exception as e:
+            safe_print(f"[WARN] Локальная модель не загрузилась: {e}")
+            safe_print("[HF] Fallback на HuggingFace...")
+            tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
+            model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct", torch_dtype=torch.float16)
+    else:
+        safe_print("[HF] Локальная модель не найдена, загружаем с HuggingFace...")
+        tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
+        model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct", torch_dtype=torch.float16)
 
     # Pad token
     if tokenizer.pad_token is None:

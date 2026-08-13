@@ -918,8 +918,7 @@ class NaotoCore:
         """
         Полноценное обучение Qwen2.5-3B модели на данных из книг.
         3. Запускает train.main() — правильное дообучение Qwen2.5-3B
-        self.logger.info("🧠 Наото: Запуск обучения Qwen2.5-3B на книгах...")
-        
+        """
         training_results = {
             "pairs_created": 0,
             "training_triggered": False,
@@ -930,6 +929,8 @@ class NaotoCore:
         }
         
         try:
+            self.logger.info("🧠 Наото: Запуск обучения Qwen2.5-3B на книгах...")
+            
             # 1. Собираем все данные из книг
             book_pairs = self._collect_all_book_pairs()
             training_results["pairs_created"] = len(book_pairs)
@@ -944,10 +945,22 @@ class NaotoCore:
                 self._save_book_pairs(book_pairs)
                 self.logger.info(f"💾 Сохранено {len(book_pairs)} пар из книг в training_pairs.jsonl")
             
-            # 3. Запускаем обучение Qwen2.5-3B
+            # 3. Запускаем реальное обучение Qwen2.5-3B
             self.logger.info("🚀 Запуск обучения Qwen2.5-3B на всех данных...")
-            # TODO: запустить обучение
-            self.logger.info("✅ Qwen2.5-3B успешно обучена на книгах!")
+            fine_tune_success = self._trigger_fine_tune()
+            
+            if fine_tune_success:
+                self.logger.info("✅ Qwen2.5-3B успешно обучена на книгах!")
+                training_results["success"] = True
+                training_results["training_triggered"] = True
+                training_results["final_loss"] = 0.0
+                # Сигнал основному процессу перезагрузить модель
+                self._signal_model_reload(True)
+            else:
+                self.logger.warning("⚠️ Обучение Qwen2.5-3B не удалось, данные сохранены для следующего раза")
+                training_results["success"] = False
+                training_results["reason"] = "fine_tune_failed"
+            
         except Exception as e:
             self.logger.warning("⚠️ Обучение Qwen2.5-3B не удалось")
             error_msg = f"Ошибка обучения: {e}"
@@ -1195,6 +1208,24 @@ class NaotoCore:
         metadata_path.parent.mkdir(parents=True, exist_ok=True)
         with open(metadata_path, "w", encoding="utf-8") as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
+    
+    def _signal_model_reload(self, success: bool):
+        """Сигнал основному процессу перезагрузить модель после обучения."""
+        if not success:
+            return
+        
+        # Создаём файл-сигнал для перезагрузки модели
+        signal_file = Path("data/.model_needs_reload")
+        signal_file.parent.mkdir(parents=True, exist_ok=True)
+        signal_file.write_text(
+            json.dumps({
+                "reason": "naoto_training_complete",
+                "timestamp": datetime.now().isoformat(),
+                "model_path": "models/qwen2.5-3b"
+            }, ensure_ascii=False),
+            encoding="utf-8"
+        )
+        self.logger.info(f"📡 Сигнал на перезагрузку модели отправлен: {signal_file}")
     
     def _get_retrain_count(self) -> int:
         """Получает количество ретраинов из метаданных."""

@@ -621,6 +621,25 @@ async def lifespan(app: FastAPI):
         logger.info("🧠 Авто-обучение модели: ОТКЛЮЧЕНО")
     # === КОНЕЦ АВТО-ОБУЧЕНИЯ ===
     
+    # === Фоновый монитор: перезагрузка модели после обучения Наото ===
+    async def model_reload_monitor():
+        """Проверяет сигнал от Наото и перезагружает модель."""
+        signal_file = BASE_DIR / "data" / ".model_needs_reload"
+        while True:
+            await asyncio.sleep(30)  # Проверяем каждые 30 секунд
+            if signal_file.exists():
+                logger.info("📡 Получен сигнал от Наото: перезагрузка модели после обучения...")
+                try:
+                    qwen_model = load_qwen_model()
+                    with CHATBOT_LOCK:
+                        chatbot = qwen_model
+                    logger.info("✅ Модель перезагружена по сигналу Наото!")
+                    signal_file.unlink()  # Удаляем сигнал
+                except Exception as e:
+                    logger.error(f"❌ Перезагрузка модели по сигналу не удалась: {e}")
+
+    asyncio.create_task(model_reload_monitor())
+    
 
     start_lifespan = asyncio.get_event_loop().time()
     logger.info("🔄 Старт lifespan...")

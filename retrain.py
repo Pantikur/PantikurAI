@@ -11,7 +11,7 @@ import shutil
 import json
 import logging
 from pathlib import Path
-from bot_learns_from_gigachat import generate_self_teaching_dialogs
+
 GIGACHAT_TOKEN = os.getenv("GIGACHAT_TOKEN")
 
 # === Настройки ===
