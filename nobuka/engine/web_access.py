@@ -75,6 +75,7 @@ class NobukaWebAccess:
     def search_best_practices(self, topic: str, max_results: int = 5) -> List[Dict[str, str]]:
         """
         Ищет лучшие практики по теме программирования.
+        Использует реальную базу знаний Нобуки.
         
         Args:
             topic: Тема поиска (например, "python refactoring patterns")
@@ -93,16 +94,47 @@ class NobukaWebAccess:
             except:
                 pass
         
-        # Симуляция поиска (в реальной системе — API)
         self.logger.info(f"🔍 Поиск лучших практик: {topic}")
         
-        practices = self._simulate_best_practices_search(topic)
+        # Загружаем базу знаний программирования
+        try:
+            from nobuka.engine.programming_knowledge_base import ProgrammingKnowledgeBase
+            kb = ProgrammingKnowledgeBase()
+            
+            # Ищем паттерны по теме
+            patterns = kb.search_patterns(topic)
+            for p in patterns[:max_results]:
+                results.append({
+                    "title": p.name,
+                    "description": p.description[:200],
+                    "source": p.category,
+                    "tags": p.tags,
+                    "url": ""
+                })
+            
+            # Ищем лучшие практики по теме
+            for bp in kb.best_practices:
+                if topic.lower() in bp.title.lower() or topic.lower() in bp.description.lower():
+                    results.append({
+                        "title": bp.title,
+                        "description": bp.description[:200],
+                        "source": bp.source or "Python Docs",
+                        "tags": [bp.category],
+                        "url": ""
+                    })
+                    if len(results) >= max_results:
+                        break
+            
+        except Exception as e:
+            self.logger.warning(f"⚠️ Ошибка поиска в базе знаний: {e}")
+            # Фолбэк на симуляцию
+            results = self._simulate_best_practices_search(topic)
         
         # Сохраняем в кэш
-        self.web_cache[cache_key] = json.dumps(practices[:max_results], ensure_ascii=False)
+        self.web_cache[cache_key] = json.dumps(results[:max_results], ensure_ascii=False)
         self._save_cache()
         
-        return practices[:max_results]
+        return results[:max_results]
 
     def _simulate_best_practices_search(self, topic: str) -> List[Dict[str, str]]:
         """Симулирует поиск лучших практик (в реальной системе — реальный поиск)."""

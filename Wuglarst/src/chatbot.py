@@ -31,12 +31,14 @@ import threading
 import logging
 import asyncio
 
-# === Настройки Qwen2.5-3B ===
+# === Настройки Qwen2.5-3B (основная модель) ===
 QWEN25_MAX_LENGTH = 512
 QWEN25_TEMPERATURE = 0.85
 QWEN25_TOP_P = 0.92
 QWEN25_BASE = "Qwen/Qwen2.5-3B-Instruct"
 QWEN25_VUGLARST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "models", "qwen2.5-3b")
+
+# Примечание: Qwen2.5-Coder-3B используется ТОЛЬКО Нобукой (nobuka/)
 
 # Импортируем KnowledgeManager
 KnowledgeManager: Any = None  # type: ignore
@@ -99,11 +101,11 @@ class SimpleTokenizer:
 
 class ChatBot:
     def __init__(self, model_path: str, data_path: str, device: str | None = None):
-        """Инициализация Qwen2.5-3B вместо ChatNN."""
+        """Инициализация Qwen2.5-Coder-3B (оптимизирована для программирования)."""
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.model_path = model_path
         
-        # Определяем путь к модели
+        # Определяем путь к модели (приоритет: custom → vuglarst → base)
         if os.path.exists(model_path):
             self.rugpt_path = model_path
         elif os.path.exists(QWEN25_VUGLARST):

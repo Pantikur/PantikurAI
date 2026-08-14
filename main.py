@@ -395,18 +395,18 @@ def load_qwen_model():
     """Загружает модель ТОЛЬКО из локальных папок (без интернета).
     
     Приоритет загрузки:
-    1. models/qwen2.5-3b (Qwen2.5-3B с 4-bit квантизацией)
+    1. models/qwen2.5-3b (Qwen2.5-3B — основная универсальная)
     2. models/rugpt3_vuglarst/merged (дообученная ruGPT3)
-    3. models/rugpt3 (старая ruGPT3)
+    
+    Примечание: Qwen2.5-Coder-3B используется ТОЛЬКО Нобукой (nobuka/).
     """
     from transformers import AutoTokenizer, AutoModelForCausalLM
     import torch
     
     # Список локальных моделей для проверки
     local_models = [
-        ("models/qwen2.5-3b", "Qwen2.5-3B (новая, быстрая)"),
+        ("models/qwen2.5-3b", "Qwen2.5-3B (основная)"),
         ("models/rugpt3_vuglarst/merged", "ruGPT3-Vuglarst (дообученная)"),
-        ("models/rugpt3", "ruGPT3 (базовая)"),
     ]
     
     tokenizer = None
@@ -469,7 +469,7 @@ def load_qwen_model():
                     )
                     logger.info(f"✅ {display_name} загружена (float16, без квантизации)")
             else:
-                # Старая ruGPT3 или CPU
+                # Загрузка без квантизации (для дообученной модели или CPU)
                 tokenizer = AutoTokenizer.from_pretrained(full_path)
                 model = AutoModelForCausalLM.from_pretrained(
                     full_path,
@@ -927,8 +927,8 @@ async def get_model_size():
                     total += os.path.getsize(fp)
         return total if total > 0 else None
 
-    model_size = get_dir_size("models/qwen2.5-3b") or get_dir_size("models/rugpt3")
-    tokenizer_size = get_dir_size("models/qwen2.5-3b") or get_dir_size("models/rugpt3")
+    model_size = get_dir_size("models/qwen2.5-3b")
+    tokenizer_size = get_dir_size("models/qwen2.5-3b")
     conv_size = get_dir_size("data")
     train_size = get_dir_size("data")
     

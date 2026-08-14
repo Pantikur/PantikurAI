@@ -48,6 +48,8 @@ from ml_optimizer import MLOptimizer
 from document_editor import DocumentEditor
 from log_reader import AppLogReader
 from error_fixer import ErrorFixer
+from programming_knowledge_base import ProgrammingKnowledgeBase
+from learn_programming import ProgrammingLearner
 
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
@@ -140,6 +142,22 @@ class NobukaCore:
             except Exception as e:
                 self.logger.warning(f"Не удалось подключиться к Scientists Network: {e}")
 
+        # ================================================================
+        #  БАЗА ЗНАНИЙ ПО ПРОГРАММИРОВАНИЮ
+        # ================================================================
+        self.programming_kb = ProgrammingKnowledgeBase()
+        self.learner = ProgrammingLearner(self.programming_kb)
+        self.logger.info(f"📚 База знаний программирования загружена: "
+                        f"{self.programming_kb.stats()['total_patterns']} паттернов, "
+                        f"{self.programming_kb.stats()['total_best_practices']} практик")
+
+        # ================================================================
+        #  МОДЕЛИ QWEN2.5 (обе для Нобуки)
+        # ================================================================
+        self.coder_model_path = None
+        self.general_model_path = None
+        self._load_models()
+
         # Сигналы
         self._shutdown_requested = False
         self._setup_signals()
@@ -202,6 +220,254 @@ class NobukaCore:
             seed = self.config.random_seed or int(time.time())
             random.seed(seed)
             self.logger.info(f"Random seed установлен: {seed}")
+
+    def _load_models(self):
+        """Загрузить обе модели: Coder (для кода) и General (для всего остального)."""
+        try:
+            import torch
+            from transformers import AutoTokenizer, AutoModelForCausalLM
+            
+            # ========================================
+            # 1. Загрузка Qwen2.5-Coder-3B (для кода)
+            # ========================================
+            coder_path = Path("models/qwen2.5-coder-3b")
+            if coder_path.exists() and any(coder_path.iterdir()):
+                self.coder_model_path = str(coder_path)
+                self.logger.info(f"🤖 Загрузка Qwen2.5-Coder-3B (для программирования)...")
+                
+                self.coder_tokenizer = AutoTokenizer.from_pretrained(
+                    coder_path,
+                    trust_remote_code=True
+                )
+                
+                if torch.cuda.is_available():
+                    self.coder_model = AutoModelForCausalLM.from_pretrained(
+                        coder_path,
+                        torch_dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    self.logger.info(f"✅ Coder модель загружена на GPU: {torch.cuda.get_device_name(0)}")
+                else:
+                    self.coder_model = AutoModelForCausalLM.from_pretrained(
+                        coder_path,
+                        torch_dtype=torch.float32,
+                        trust_remote_code=True,
+                    )
+                    self.logger.info("✅ Coder модель загружена на CPU")
+                
+                self.coder_model.eval()
+                self.logger.info("🤖 Qwen2.5-Coder-3B готова к работе!")
+            else:
+                self.logger.warning("⚠️ Qwen2.5-Coder-3B не найдена. Запустите: python download_coder_model.py")
+            
+            # ========================================
+            # 2. Загрузка Qwen2.5-3B (для всего остального)
+            # ========================================
+            general_path = Path("models/qwen2.5-3b")
+            if general_path.exists() and any(general_path.iterdir()):
+                self.general_model_path = str(general_path)
+                self.logger.info(f"🤖 Загрузка Qwen2.5-3B (универсальная)...")
+                
+                self.general_tokenizer = AutoTokenizer.from_pretrained(
+                    general_path,
+                    trust_remote_code=True
+                )
+                
+                if torch.cuda.is_available():
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        torch_dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    self.logger.info(f"✅ General модель загружена на GPU: {torch.cuda.get_device_name(0)}")
+                else:
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        torch_dtype=torch.float32,
+                        trust_remote_code=True,
+                    )
+                    self.logger.info("✅ General модель загружена на CPU")
+                
+                self.general_model.eval()
+                self.logger.info("🤖 Qwen2.5-3B готова к работе!")
+            else:
+                self.logger.warning("⚠️ Qwen2.5-3B не найдена. Запустите: python download_qwen_model.py")
+                
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка загрузки моделей: {e}")
+            self.logger.warning("Нобука будет работать без моделей (только анализ кода)")
+
+    # ================================================================
+    #  ВЫБОР МОДЕЛИ В ЗАВИСИМОСТИ ОТ ЗАДАЧИ
+    # ================================================================
+
+    def _should_use_coder_model(self, prompt: str) -> bool:
+        """
+        Определить, нужно ли использовать Coder модель.
+        
+        Coder модель лучше для:
+        - Анализа кода
+        - Генерации кода
+        - Поиска багов
+        - Рефакторинга
+        - Отладки
+        - Паттернов проектирования
+        """
+        code_keywords = [
+            'код', 'python', 'функция', 'класс', 'метод', 'баг', 'ошибка',
+            'дебаг', 'отладк', 'рефакт', 'паттерн', 'алгоритм', 'оптимиз',
+            'импорт', 'синтакс', 'async', 'def ', 'class ', 'import ',
+            'программ', 'скрипт', 'модуль', 'api', 'фреймворк', 'библиотека',
+            'тест', 'pytest', 'unittest', 'coverage', 'lint', 'pypi',
+            'github', 'git', 'коммит', 'ветк', 'merge', 'pull request',
+        ]
+        
+        prompt_lower = prompt.lower()
+        for keyword in code_keywords:
+            if keyword in prompt_lower:
+                return True
+        
+        # Также проверяем, есть ли в промпте код (Python-like синтаксис)
+        code_indicators = [
+            'def ', 'class ', 'import ', 'from ', 'return ', 'yield ',
+            '@', 'lambda ', 'async def', 'await ', 'try:', 'except',
+            'if __name__', '# '
+        ]
+        
+        for indicator in code_indicators:
+            if indicator in prompt:
+                return True
+        
+        return False
+
+    def _generate_with_model(self, model, tokenizer, messages, max_length=512):
+        """
+        Сгенерировать ответ с помощью указанной модели.
+        
+        Args:
+            model: Модель для генерации
+            tokenizer: Токенизатор
+            messages: Список сообщений для чата
+            max_length: Максимальная длина ответа
+            
+        Returns:
+            Сгенерированный ответ
+        """
+        try:
+            import torch
+            
+            # Конвертируем в формат токенизатора
+            text = tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True
+            )
+            
+            # Токенизируем
+            model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+            
+            # Генерируем
+            with torch.no_grad():
+                generated_ids = model.generate(
+                    **model_inputs,
+                    max_new_tokens=max_length,
+                    temperature=0.7,
+                    top_p=0.9,
+                    do_sample=True,
+                )
+            
+            # Декодируем
+            generated_ids = [
+                output_ids[len(input_ids):] 
+                for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+            ]
+            response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+            
+            return response.strip()
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка генерации: {e}")
+            return f"⚠️ Ошибка генерации: {str(e)}"
+
+    def generate_response(self, prompt: str, max_length: int = 512) -> str:
+        """
+        Сгенерировать ответ, автоматически выбирая модель.
+        
+        Использует:
+        - Qwen2.5-Coder-3B для задач программирования
+        - Qwen2.5-3B для всего остального
+        
+        Args:
+            prompt: Текст запроса
+            max_length: Максимальная длина ответа
+            
+        Returns:
+            Сгенерированный ответ
+        """
+        use_coder = self._should_use_coder_model(prompt)
+        
+        if use_coder:
+            self.logger.info("🤖 Используем Coder модель (задача программирования)")
+            if not hasattr(self, 'coder_model') or self.coder_model is None:
+                return "⚠️ Coder модель не загружена. Запустите: python download_coder_model.py"
+            
+            messages = [
+                {"role": "system", "content": "Ты — Нобука, эксперт по программированию. Отвечай на русском языке. Пиши чистый, понятный код с комментариями."},
+                {"role": "user", "content": prompt}
+            ]
+            
+            return self._generate_with_model(
+                self.coder_model,
+                self.coder_tokenizer,
+                messages,
+                max_length
+            )
+        else:
+            self.logger.info("🤖 Используем General модель (универсальная)")
+            if not hasattr(self, 'general_model') or self.general_model is None:
+                return "⚠️ General модель не загружена. Запустите: python download_qwen_model.py"
+            
+            messages = [
+                {"role": "system", "content": "Ты — Нобука, третья младшая сестра. Ты отвечаешь на вопросы, помогаешь с диалогами, эмоциями и общими темами. Отвечай на русском языке тепло и дружелюбно."},
+                {"role": "user", "content": prompt}
+            ]
+            
+            return self._generate_with_model(
+                self.general_model,
+                self.general_tokenizer,
+                messages,
+                max_length
+            )
+
+    def generate_coder_response(self, prompt: str, max_length: int = 512) -> str:
+        """
+        Принудительно использовать Coder модель (для задач программирования).
+        
+        Args:
+            prompt: Текст запроса
+            max_length: Максимальная длина ответа
+            
+        Returns:
+            Сгенерированный ответ
+        """
+        self.logger.info("🤖 Принудительно используем Coder модель")
+        
+        if not hasattr(self, 'coder_model') or self.coder_model is None:
+            return "⚠️ Coder модель не загружена. Запустите: python download_coder_model.py"
+        
+        messages = [
+            {"role": "system", "content": "Ты — Нобука, эксперт по программированию и улучшению кода. Отвечай на русском языке."},
+            {"role": "user", "content": prompt}
+        ]
+        
+        return self._generate_with_model(
+            self.coder_model,
+            self.coder_tokenizer,
+            messages,
+            max_length
+        )
 
     # ================================================================
     #  ОСНОВНОЙ ЦИКЛ
@@ -336,6 +602,10 @@ class NobukaCore:
         # 10. АвтоУлучшение документов (каждые 7 циклов)
         if self.cycle_count % 7 == 0:
             self._auto_improve_documents()
+
+        # 11. Расширение знаний в программировании (каждые 15 циклов)
+        if self.cycle_count % 15 == 0:
+            self._expand_programming_knowledge()
 
         # ================================================================
         #  HUMANITY CYCLE — Обновление души, настроения, инициативы
@@ -1277,6 +1547,65 @@ class NobukaCore:
                 
         except Exception as e:
             self.logger.error(f"❌ Ошибка автоУлучшения документов: {e}")
+
+    # ================================================================
+    #  РАСШИРЕНИЕ ЗНАНИЙ В ПРОГРАММИРОВАНИИ
+    # ================================================================
+
+    def _expand_programming_knowledge(self):
+        """
+        Нобука расширяет свои знания в программировании.
+        
+        В цикле:
+          1. Выбирает тему для изучения
+          2. Извлекает знания из реальных источников
+          3. Сохраняет в базу знаний
+          4. Применяет новые знания к анализу кода
+        """
+        try:
+            self.logger.info("📚 Расширение знаний в программировании...")
+            
+            # Темы для изучения (по очереди)
+            topics = [
+                "asyncio", "decorators", "generators", "contextlib",
+                "dataclasses", "typing", "collections", "functools",
+                "design_patterns", "refactoring", "testing", "optimization",
+                "clean_code", "sOLID", "pattern_matching", "metaclasses",
+            ]
+            
+            # Выбираем тему (ротация)
+            topic_index = self.cycle_count % len(topics)
+            topic = topics[topic_index]
+            
+            self.logger.info(f"📖 Тема изучения: {topic}")
+            
+            # Извлекаем знания из документации Python
+            knowledge = self.learner.learn_from_custom_topic(
+                topic, 
+                sources=['python_docs']
+            )
+            
+            if knowledge:
+                self.logger.info(f"✅ Изучено {len(knowledge)} записей по теме '{topic}'")
+                
+                # Обновляем метрики
+                stats = self.programming_kb.stats()
+                self.metrics["programming_knowledge_items"] = (
+                    stats["total_patterns"] + 
+                    stats["total_best_practices"]
+                )
+                self.logger.info(
+                    f"📊 База знаний: {stats['total_patterns']} паттернов, "
+                    f"{stats['total_best_practices']} практик"
+                )
+            else:
+                self.logger.info(f"ℹ️ По теме '{topic}' новых знаний не найдено")
+            
+            # Сохраняем журнал обучения
+            self.learner.save_learning_log()
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка расширения знаний: {e}")
 
     # ================================================================
     #  СОСТОЯНИЕ И ОТЧЁТЫ
