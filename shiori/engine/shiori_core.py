@@ -28,6 +28,7 @@ from shiori.engine.models import (
 from shiori.engine.threat_hunter import ThreatHunter
 from shiori.engine.patch_manager import PatchManager
 from shiori.engine.web_access import ShioriWebAccess
+from shiori.engine.llm_service import ShioriLLMService
 
 # Humanity Core — живая душа Шиори
 from humanity_core import HumanityLayer
@@ -76,6 +77,17 @@ class ShioriCore:
         self.patch_manager = PatchManager(self.config)
         self.web_access = ShioriWebAccess(self.config)
         
+        # ===== LLM СЕРВИС =====
+        self.llm = ShioriLLMService(self.config)
+        if self.llm.general_loaded:
+            self.logger.info("🧠 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для общих задач")
+        if self.llm.coder_loaded:
+            self.logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для кода")
+        
+        # Передаём LLM в компоненты
+        self.threat_hunter.set_llm(self.llm)
+        self.patch_manager.set_llm(self.llm)
+        
         # ===== ХАРАКТЕР ШИОРИ =====
         self.character = CharacterSystem("shiori", self.config.state_dir)
         
@@ -107,6 +119,12 @@ class ShioriCore:
         # ================================================================
         self.humanity = HumanityLayer("shiori")
         self.humanity.current_cycle = 0
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — безопасность, сухая логика, скрытая забота 🛡️")
     
@@ -611,7 +629,24 @@ class ShioriCore:
         msg_type = initiative["type"]
         
         raw_msg = f"🛡️ [{msg_type}] {topic}"
-        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        # Используем LLM для генерации более естественного сообщения
+        if self.llm.general_loaded:
+            system_prompt = (
+                "Ты — Шиори, защитница проекта Вугларст. "
+                "Ты спокойна, рассудительна, но заботишься о сёстрах. "
+                "Пиши коротко, по делу, с редкой тёплой шуткой."
+            )
+            llm_msg = self.llm.generate_general(
+                prompt=f"Напиши короткое сообщение сестре {target} на тему: {topic}",
+                system_prompt=system_prompt
+            )
+            if not llm_msg.startswith("["):
+                human_msg = llm_msg
+            else:
+                human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        else:
+            human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
         
         self.logger.info(f"💬 Шиори пишет {target}: {human_msg[:100]}...")
         

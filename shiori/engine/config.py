@@ -107,6 +107,15 @@ class ShioriConfig:
     random_seed: Optional[int] = None     # None = случайный, int = для воспроизводимости
     enable_deterministic_mode: bool = False
 
+    # === LLM Модели ===
+    general_model_path: str = "models/qwen2.5-3b"           # Путь/название для общих целей
+    coder_model_path: str = "models/qwen2.5-coder-3b"        # Путь/название для кода
+    model_device: str = "auto"                        # cpu, cuda, auto
+    model_max_tokens: int = 1024                      # Максимальная длина ответа
+    model_temperature: float = 0.7                    # Температура генерации
+    model_use_flash_attention: bool = False           # Использовать Flash Attention
+    llm_enabled: bool = True                          # Включить LLM
+
     # === Безопасность ===
     hard_stop_on_constitution_violation: bool = True
     protect_developer: bool = True        # никогда не блокировать разработчика

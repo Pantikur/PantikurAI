@@ -28,6 +28,11 @@ class ThreatHunter:
         self.config = config
         self.threat_database = self._load_threat_database()
         self.security_rules = self._default_security_rules()
+        self.llm = None
+    
+    def set_llm(self, llm):
+        """Установить LLM сервис для анализа кода."""
+        self.llm = llm
     
     def _load_threat_database(self) -> dict[str, Any]:
         """
@@ -153,9 +158,67 @@ class ThreatHunter:
         
         Args:
             threat: обнаруженная угроза
-        
+            
         Returns:
             Уровень угрозы
+        """
+        # Если есть LLM Coder — используем для анализа
+        if self.llm and self.llm.coder_loaded:
+            return self._classify_with_llm(threat)
+        
+        # Иначе — используем эвристический анализ
+        return self._classify_heuristic(threat)
+    
+    def _classify_with_llm(self, threat: Threat) -> ThreatLevel:
+        """
+        Классифицировать угрозу с помощью LLM Coder.
+        
+        Args:
+            threat: обнаруженная угроза
+            
+        Returns:
+            Уровень угрозы
+        """
+        try:
+            # Гарантируем, что LLM не None (проверено выше)
+            assert self.llm is not None, "LLM должен быть установлен"
+            
+            prompt = (
+                f"Проанализируй угрозу безопасности и определи её уровень.\n\n"
+                f"Категория: {threat.category.value}\n"
+                f"Источник: {threat.source}\n"
+                f"Описание: {threat.description}\n"
+                f"Уверенность: {threat.confidence:.2f}\n\n"
+                f"Верни уровень угрозы: L0, L1, L2, L3, L4 или L5.\n"
+                f"Обоснуй кратко."
+            )
+            
+            response = self.llm.generate_coder(prompt)
+            
+            # Парсим ответ (ищем L0-L5)
+            import re
+            match = re.search(r'L[0-5]', response, re.IGNORECASE)
+            if match:
+                level_str = match.group(0).upper()
+                level_map = {
+                    'L0': ThreatLevel.L0_INFO,
+                    'L1': ThreatLevel.L1_LOW,
+                    'L2': ThreatLevel.L2_MEDIUM,
+                    'L3': ThreatLevel.L3_HIGH,
+                    'L4': ThreatLevel.L4_CRITICAL,
+                    'L5': ThreatLevel.L5_EMERGENCY,
+                }
+                return level_map.get(level_str, ThreatLevel.L2_MEDIUM)
+            
+            return ThreatLevel.L2_MEDIUM
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка LLM классификации: {e}")
+            return ThreatLevel.L2_MEDIUM
+    
+    def _classify_heuristic(self, threat: Threat) -> ThreatLevel:
+        """
+        Эвристическая классификация (fallback).
         """
         # Вес категории угрозы
         category_weights = {

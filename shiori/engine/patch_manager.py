@@ -31,6 +31,11 @@ class PatchManager:
         self.backup_dir = config.state_dir / "backups"
         self.backup_dir.mkdir(parents=True, exist_ok=True)
         self.logger = logging.getLogger("ShioriPatchManager")
+        self.llm = None
+    
+    def set_llm(self, llm):
+        """Установить LLM сервис для генерации кода."""
+        self.llm = llm
     
     # ================================================================
     #  СОЗДАНИЕ И ПРИМЕНЕНИЕ ПАТЧЕЙ
@@ -131,17 +136,63 @@ class PatchManager:
     
     def _simulate_patch_application(self, patch: Patch) -> bool:
         """
-        Симуляция применения патча.
+        Применить патч с использованием LLM Coder или симуляции.
         
         В реальной системе это:
           - Применение патча к файлам
           - Проверка целостности
           - Тестирование функциональности
         """
+        # Если есть LLM Coder — генерируем реальный патч
+        if self.llm and self.llm.coder_loaded:
+            return self._apply_llm_patch(patch)
+        
+        # Иначе — симуляция
         # 90% успешных патчей (симуляция)
         result = random.random() < 0.9
         self.logger.debug(f"Симуляция применения патча {patch.id}: {'успех' if result else 'отказ'}")
         return result
+    
+    def _apply_llm_patch(self, patch: Patch) -> bool:
+        """
+        Применить патч с помощью LLM Coder.
+        
+        Args:
+            patch: патч для применения
+            
+        Returns:
+            True если успешно, False если ошибка
+        """
+        try:
+            # Гарантируем, что LLM не None (проверено выше)
+            assert self.llm is not None, "LLM должен быть установлен"
+            
+            self.logger.info(f"💻 LLM Coder генерирует патч для {patch.vulnerability_id}")
+            
+            # Формируем запрос для кодера
+            prompt = (
+                f"Устранить уязвимость {patch.vulnerability_id}.\n"
+                f"Описание: {patch.description}\n\n"
+                f"Напиши исправленный код или патч.\n"
+            )
+            
+            # Генерируем патч с помощью LLM
+            generated_code = self.llm.generate_coder(prompt)
+            
+            if generated_code.startswith("# [Ошибка") or generated_code.startswith("# [LLM"):
+                self.logger.warning(f"⚠️ LLM Coder не смогла сгенерировать патч: {generated_code[:50]}")
+                return False
+            
+            # В реальной системе здесь был бы код записи патча в файлы
+            # self._write_patch_to_files(patch, generated_code)
+            
+            patch.generated_code = generated_code[:500]  # Сохраняем начало кода
+            self.logger.info(f"✅ LLM Coder сгенерировала патч для {patch.id}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка применения LLM патча: {e}")
+            return False
     
     def _rollback_patch(self, patch: Patch):
         """

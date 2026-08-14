@@ -633,6 +633,9 @@ class HumanityLayer:
         self.soul = InnerMonologue(self.name, self.domain, profile["traits"])
         self.initiative = InitiativeModule(self.name, profile["traits"])
         
+        # LLM сервис (подключается извне)
+        self.llm = None
+        
         # Обновляем speech с актуальным настроением
         self.speech.mood_data = self.mood.get_mood_data()
         
@@ -667,6 +670,23 @@ class HumanityLayer:
     
     def humanize_response(self, raw_text: str, event_type: str = "routine") -> str:
         """Превращает сухой ответ девочки в живую речь."""
+        # Если есть LLM — используем для генерации естественного ответа
+        if self.llm and self.llm.general_loaded:
+            system_prompt = (
+                f"Ты — {self.name}, {self.domain}. "
+                "Твой стиль: " + PERSONALITY_PROFILES.get(self.character_id, {}).get("speech_style", "естественный") + ".\n"
+                "Ответь на сообщение живым, естественным языком. "
+                "Добавь немного эмоций и эмоций в зависимости от контекста."
+            )
+            llm_response = self.llm.generate_general(
+                prompt=f"Контекст: {event_type}. Сообщение: {raw_text}",
+                system_prompt=system_prompt
+            )
+            # Если LLM вернул осмысленный ответ — используем его
+            if not llm_response.startswith("[") and len(llm_response) > 10:
+                return llm_response
+        
+        # Иначе — используем старый SpeechEngine
         return self.speech.humanize(raw_text, event_type)
     
     def generate_chat_message(self, sister: str, context: str = None) -> str:

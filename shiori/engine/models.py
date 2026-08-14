@@ -341,6 +341,7 @@ class Patch:
     rollback_available: bool = True
     rollback_at: Optional[str] = None
     success: bool = False
+    generated_code: str = ""                        # Сгенерированный LLM код (для отладки)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -352,6 +353,7 @@ class Patch:
             "applied_by": self.applied_by,
             "rollback_available": self.rollback_available,
             "success": self.success,
+            "generated_code": self.generated_code[:100] if self.generated_code else "",
         }
 
 

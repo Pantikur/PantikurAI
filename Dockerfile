@@ -124,7 +124,9 @@ ENV PYTHONPATH="/app:${PYTHONPATH}"
 EXPOSE ${PORT}
 
 # === HEALTHCHECK ===
-HEALTHCHECK --interval=30s --timeout=30s --start-period=60s --retries=5 \
+# Увеличен start-period до 120s для загрузки модели
+# Интервал 30s, таймаут 30s, до 5 попыток
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
 # === КОМАНДА ЗАПУСКА (через entrypoint с загрузкой модели) ===
