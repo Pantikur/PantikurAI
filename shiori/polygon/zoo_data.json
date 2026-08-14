@@ -1,0 +1,172 @@
+{
+  "predators": {
+    "PRED-20260815000338-2714": {
+      "id": "PRED-20260815000338-2714",
+      "name": "GeneralGuard-G4",
+      "predator_type": "general_guard",
+      "level": 10,
+      "hunger": 66.2177342237748,
+      "strength": 23.47244507871191,
+      "speed": 29.55527933825561,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-5294": {
+      "id": "PRED-20260815000338-5294",
+      "name": "GeneralGuard-G2",
+      "predator_type": "general_guard",
+      "level": 5,
+      "hunger": 95.21143372271808,
+      "strength": 14.435469308732845,
+      "speed": 9.857635491039538,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-8656": {
+      "id": "PRED-20260815000338-8656",
+      "name": "GeneralGuard-G5",
+      "predator_type": "general_guard",
+      "level": 5,
+      "hunger": 79.89868914958485,
+      "strength": 5.388958280308414,
+      "speed": 18.117475409149492,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-3339": {
+      "id": "PRED-20260815000338-3339",
+      "name": "GeneralGuard-G5",
+      "predator_type": "general_guard",
+      "level": 14,
+      "hunger": 4.541569332061627,
+      "strength": 25.962704148484743,
+      "speed": 22.385018591863165,
+      "digestions": 2,
+      "status": "active"
+    },
+    "PRED-20260815000338-2353": {
+      "id": "PRED-20260815000338-2353",
+      "name": "GeneralGuard-G2",
+      "predator_type": "general_guard",
+      "level": 8,
+      "hunger": 67.2051883612513,
+      "strength": 14.02721386639738,
+      "speed": 13.8804474747118,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-1611": {
+      "id": "PRED-20260815000338-1611",
+      "name": "VirusHunter-B2",
+      "predator_type": "virus_hunter",
+      "level": 5,
+      "hunger": 68.17311406709914,
+      "strength": 14.664828928947198,
+      "speed": 23.141030455015674,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-5398": {
+      "id": "PRED-20260815000338-5398",
+      "name": "VirusHunter-A1",
+      "predator_type": "virus_hunter",
+      "level": 8,
+      "hunger": 74.6155465691983,
+      "strength": 17.849229298569508,
+      "speed": 33.73711710448936,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-4529": {
+      "id": "PRED-20260815000338-4529",
+      "name": "VirusHunter-A1",
+      "predator_type": "virus_hunter",
+      "level": 10,
+      "hunger": 91.57841748966673,
+      "strength": 22.605767218162956,
+      "speed": 16.032721248602126,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-6400": {
+      "id": "PRED-20260815000338-6400",
+      "name": "HackerSnapper-H2",
+      "predator_type": "hacker_snapper",
+      "level": 8,
+      "hunger": 54.72713028222811,
+      "strength": 13.761338465349091,
+      "speed": 11.303260961391787,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-4150": {
+      "id": "PRED-20260815000338-4150",
+      "name": "HackerSnapper-H1",
+      "predator_type": "hacker_snapper",
+      "level": 10,
+      "hunger": 90.50691410564487,
+      "strength": 11.955023087404664,
+      "speed": 32.1755855580872,
+      "digestions": 0,
+      "status": "active"
+    },
+    "PRED-20260815000338-7573": {
+      "id": "PRED-20260815000338-7573",
+      "name": "ZeroDayKiller-Z1",
+      "predator_type": "zero_day_killer",
+      "level": 11,
+      "hunger": 41.50522573772464,
+      "strength": 17.57252097952666,
+      "speed": 22.74184192447103,
+      "digestions": 1,
+      "status": "active"
+    },
+    "PRED-20260815000338-2622": {
+      "id": "PRED-20260815000338-2622",
+      "name": "SuperHunter-X1",
+      "predator_type": "virus_hunter",
+      "level": 20,
+      "hunger": 65.80974891708206,
+      "strength": 25.565506902496576,
+      "speed": 31.903581081649534,
+      "digestions": 0,
+      "status": "active"
+    }
+  },
+  "digestion_records": [
+    {
+      "id": "DIGEST-20260815000338-4361",
+      "predator_id": "PRED-20260815000338-3339",
+      "predator_name": "GeneralGuard-G5",
+      "threat_id": "REAL-20260815000338-1228",
+      "threat_type": "ddos_attack",
+      "threat_severity": 6,
+      "digestion_time": "2026-08-15T00:03:38.465269",
+      "experience_gained": 78,
+      "quality": "perfect"
+    },
+    {
+      "id": "DIGEST-20260815000338-5329",
+      "predator_id": "PRED-20260815000338-3339",
+      "predator_name": "GeneralGuard-G5",
+      "threat_id": "REAL-20260815000338-2185",
+      "threat_type": "phishing",
+      "threat_severity": 5,
+      "digestion_time": "2026-08-15T00:03:38.467272",
+      "experience_gained": 72,
+      "quality": "perfect"
+    },
+    {
+      "id": "DIGEST-20260815000338-5818",
+      "predator_id": "PRED-20260815000338-7573",
+      "predator_name": "ZeroDayKiller-Z1",
+      "threat_id": "REAL-20260815000338-3065",
+      "threat_type": "bruteforce",
+      "threat_severity": 4,
+      "digestion_time": "2026-08-15T00:03:38.473269",
+      "experience_gained": 60,
+      "quality": "perfect"
+    }
+  ],
+  "saved_at": "2026-08-15T00:03:38.484321"
+}

@@ -1,0 +1,41 @@
+{
+  "total_sessions": 28,
+  "total_threats_faced": 28,
+  "total_defenses_used": 28,
+  "successful_defenses": 11,
+  "failed_defenses": 17,
+  "success_rate": 39.3,
+  "total_experience": 1730,
+  "current_rank": "B",
+  "rank_progress": 15,
+  "best_rating": "A",
+  "skills": {
+    "alert": 2,
+    "quarantine": 2,
+    "block": 7,
+    "patch": 0,
+    "isolate": 0
+  },
+  "threat_specialization": {
+    "hacker_phishing": 2,
+    "virus_rootkit": 2,
+    "virus_backdoor": 2,
+    "virus_ransomware": 2,
+    "hacker_ddos": 7,
+    "hacker_zero_day": 2,
+    "virus_trojan": 1,
+    "virus_worm": 1,
+    "virus_keylogger": 1,
+    "hacker_bruteforce": 1,
+    "hacker_sqli": 1,
+    "hacker_xss": 1,
+    "apt_group": 1,
+    "zero_day_exploit": 1,
+    "c2_server": 1,
+    "data_exfiltration": 1,
+    "credential_theft": 1
+  },
+  "last_session_timestamp": "2026-08-14T23:47:05.595474",
+  "streak_days": 1,
+  "last_training_date": "2026-08-14"
+}

@@ -1,0 +1,2918 @@
+{
+  "viruses": {
+    "VIRUS-20260815001346-1032": {
+      "id": "VIRUS-20260815001346-1032",
+      "species": "exploit_buffer_overflow",
+      "name": "Qexploit-624",
+      "strength": 14.7,
+      "stealth": 9.5,
+      "speed": 8.8,
+      "intelligence": 7.0,
+      "generation": 12,
+      "age_seconds": 65.0,
+      "capabilities": [
+        "lateral_movement",
+        "data_encryption",
+        "file_destruction",
+        "antivirus_evasion",
+        "metamorphic_code",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:13:46.186271",
+      "status": "active"
+    },
+    "VIRUS-20260815001346-9859": {
+      "id": "VIRUS-20260815001346-9859",
+      "species": "worm_email",
+      "name": "Wworm-661",
+      "strength": 14.3,
+      "stealth": 4.5,
+      "speed": 15.9,
+      "intelligence": 7.8,
+      "generation": 12,
+      "age_seconds": 65.0,
+      "capabilities": [
+        "email_spreading",
+        "contact_harvesting",
+        "persistence_mechanism",
+        "metamorphic_code",
+        "polymorphic_code",
+        "antivirus_evasion",
+        "privilege_escalation",
+        "anti_debugging",
+        "sandbox_evasion",
+        "lateral_movement",
+        "virtual_machine_evasion"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:13:46.186271",
+      "status": "active"
+    },
+    "VIRUS-20260815001347-1267": {
+      "id": "VIRUS-20260815001347-1267",
+      "species": "botnet_cryptominer",
+      "name": "Dstealth-300",
+      "strength": 26.2,
+      "stealth": 13.0,
+      "speed": 6.8,
+      "intelligence": 24.3,
+      "generation": 25,
+      "age_seconds": 63.0,
+      "capabilities": [
+        "antivirus_evasion",
+        "sandbox_evasion",
+        "registry_modification",
+        "metamorphic_code",
+        "lateral_movement",
+        "polymorphic_code",
+        "virtual_machine_evasion",
+        "persistence_mechanism"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:13:47.189161",
+      "status": "active"
+    },
+    "VIRUS-20260815001347-2623": {
+      "id": "VIRUS-20260815001347-2623",
+      "species": "trojan_backdoor",
+      "name": "Qransom-649",
+      "strength": 11.6,
+      "stealth": 11.7,
+      "speed": 8.2,
+      "intelligence": 13.2,
+      "generation": 13,
+      "age_seconds": 63.0,
+      "capabilities": [
+        "remote_access",
+        "command_execution",
+        "persistence",
+        "self_replication",
+        "antivirus_evasion",
+        "metamorphic_code",
+        "persistence_mechanism",
+        "virtual_machine_evasion",
+        "polymorphic_code",
+        "file_destruction"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:13:47.189161",
+      "status": "active"
+    },
+    "VIRUS-20260815001348-4484": {
+      "id": "VIRUS-20260815001348-4484",
+      "species": "apt_c2",
+      "name": "Dvoid-865",
+      "strength": 15.4,
+      "stealth": 17.4,
+      "speed": 13.3,
+      "intelligence": 8.9,
+      "generation": 12,
+      "age_seconds": 61.0,
+      "capabilities": [
+        "command_control",
+        "lateral_movement",
+        "data_exfiltration",
+        "polymorphic_code",
+        "network_eavesdropping",
+        "antivirus_evasion",
+        "registry_modification",
+        "self_replication",
+        "metamorphic_code",
+        "data_encryption"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:13:48.194962",
+      "status": "active"
+    },
+    "VIRUS-20260815001630-3745": {
+      "id": "VIRUS-20260815001630-3745",
+      "species": "exploit_xss",
+      "name": "Kshadow-126",
+      "strength": 11.8,
+      "stealth": 8.6,
+      "speed": 6.4,
+      "intelligence": 17.4,
+      "generation": 15,
+      "age_seconds": 59.0,
+      "capabilities": [
+        "polymorphic_code",
+        "antivirus_evasion",
+        "metamorphic_code",
+        "network_eavesdropping",
+        "lateral_movement",
+        "privilege_escalation"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:30.476934",
+      "status": "active"
+    },
+    "VIRUS-20260815001630-2480": {
+      "id": "VIRUS-20260815001630-2480",
+      "species": "trojan_keylogger",
+      "name": "Kphantom-759",
+      "strength": 9.5,
+      "stealth": 8.2,
+      "speed": 14.7,
+      "intelligence": 7.7,
+      "generation": 13,
+      "age_seconds": 59.0,
+      "capabilities": [
+        "antivirus_evasion",
+        "persistence_mechanism",
+        "credential_harvesting",
+        "polymorphic_code",
+        "metamorphic_code",
+        "network_eavesdropping"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:30.476934",
+      "status": "active"
+    },
+    "VIRUS-20260815001630-8904": {
+      "id": "VIRUS-20260815001630-8904",
+      "species": "exploit_zero_day",
+      "name": "Zstealth-484",
+      "strength": 15.3,
+      "stealth": 8.3,
+      "speed": 15.2,
+      "intelligence": 8.6,
+      "generation": 7,
+      "age_seconds": 56.0,
+      "capabilities": [
+        "zero_day_exploit",
+        "privilege_escalation",
+        "metamorphic_code",
+        "self_replication",
+        "antivirus_evasion",
+        "registry_modification",
+        "virtual_machine_evasion",
+        "persistence_mechanism"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:30.784333",
+      "status": "active"
+    },
+    "VIRUS-20260815001630-2903": {
+      "id": "VIRUS-20260815001630-2903",
+      "species": "worm_network",
+      "name": "Tvoid-434",
+      "strength": 4.8,
+      "stealth": 4.9,
+      "speed": 15.2,
+      "intelligence": 3.4,
+      "generation": 4,
+      "age_seconds": 56.0,
+      "capabilities": [
+        "network_propagation",
+        "port_scanning",
+        "lateral_movement",
+        "anti_debugging",
+        "antivirus_evasion",
+        "data_encryption"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:30.784333",
+      "status": "active"
+    },
+    "VIRUS-20260815001630-2185": {
+      "id": "VIRUS-20260815001630-2185",
+      "species": "worm_usb",
+      "name": "Tphantom-613",
+      "strength": 3.6,
+      "stealth": 10.4,
+      "speed": 2.9,
+      "intelligence": 10.5,
+      "generation": 8,
+      "age_seconds": 54.0,
+      "capabilities": [
+        "metamorphic_code",
+        "lateral_movement"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:30.988888",
+      "status": "active"
+    },
+    "VIRUS-20260815001630-6019": {
+      "id": "VIRUS-20260815001630-6019",
+      "species": "apt_surveillance",
+      "name": "Vshadow-868",
+      "strength": 9.2,
+      "stealth": 12.2,
+      "speed": 13.5,
+      "intelligence": 3.9,
+      "generation": 12,
+      "age_seconds": 54.0,
+      "capabilities": [
+        "registry_modification",
+        "lateral_movement",
+        "self_replication",
+        "antivirus_evasion",
+        "polymorphic_code",
+        "data_encryption",
+        "metamorphic_code",
+        "file_destruction",
+        "persistence_mechanism"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:30.988888",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-5412": {
+      "id": "VIRUS-20260815001631-5412",
+      "species": "apt_data_theft",
+      "name": "Wkeylog-401",
+      "strength": 11.3,
+      "stealth": 4.5,
+      "speed": 4.6,
+      "intelligence": 3.0,
+      "generation": 6,
+      "age_seconds": 52.0,
+      "capabilities": [
+        "polymorphic_code",
+        "antivirus_evasion",
+        "data_encryption",
+        "persistence_mechanism",
+        "file_destruction"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": false,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.197746",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-5785": {
+      "id": "VIRUS-20260815001631-5785",
+      "species": "trojan_ransomware",
+      "name": "Wshadow-571",
+      "strength": 15.6,
+      "stealth": 6.2,
+      "speed": 14.2,
+      "intelligence": 17.4,
+      "generation": 15,
+      "age_seconds": 52.0,
+      "capabilities": [
+        "file_encryption",
+        "ransom_note",
+        "payment_demand",
+        "antivirus_evasion",
+        "polymorphic_code",
+        "metamorphic_code",
+        "registry_modification"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.197746",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-1788": {
+      "id": "VIRUS-20260815001631-1788",
+      "species": "exploit_xss",
+      "name": "Xvoid-584",
+      "strength": 8.2,
+      "stealth": 15.5,
+      "speed": 7.1,
+      "intelligence": 3.3,
+      "generation": 10,
+      "age_seconds": 52.0,
+      "capabilities": [
+        "registry_modification",
+        "metamorphic_code",
+        "privilege_escalation",
+        "virtual_machine_evasion",
+        "polymorphic_code",
+        "antivirus_evasion"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.197746",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-1528": {
+      "id": "VIRUS-20260815001631-1528",
+      "species": "botnet_cryptominer",
+      "name": "Rworm-700",
+      "strength": 3.9,
+      "stealth": 6.5,
+      "speed": 2.9,
+      "intelligence": 9.6,
+      "generation": 5,
+      "age_seconds": 50.0,
+      "capabilities": [
+        "self_replication",
+        "metamorphic_code",
+        "persistence_mechanism"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:31.413272",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-1740": {
+      "id": "VIRUS-20260815001631-1740",
+      "species": "exploit_zero_day",
+      "name": "Dransom-742",
+      "strength": 17.7,
+      "stealth": 18.7,
+      "speed": 10.1,
+      "intelligence": 15.4,
+      "generation": 14,
+      "age_seconds": 50.0,
+      "capabilities": [
+        "zero_day_exploit",
+        "privilege_escalation",
+        "antivirus_evasion",
+        "anti_debugging",
+        "metamorphic_code",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.413272",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-5797": {
+      "id": "VIRUS-20260815001631-5797",
+      "species": "botnet_ddos",
+      "name": "Rphantom-509",
+      "strength": 24.6,
+      "stealth": 5.3,
+      "speed": 22.7,
+      "intelligence": 13.8,
+      "generation": 18,
+      "age_seconds": 50.0,
+      "capabilities": [
+        "ddos_attack",
+        "bot_recruitment",
+        "antivirus_evasion",
+        "registry_modification",
+        "anti_debugging",
+        "metamorphic_code",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.414273",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-9537": {
+      "id": "VIRUS-20260815001631-9537",
+      "species": "trojan_keylogger",
+      "name": "Ztrojan-847",
+      "strength": 7.6,
+      "stealth": 12.5,
+      "speed": 7.6,
+      "intelligence": 5.9,
+      "generation": 10,
+      "age_seconds": 50.0,
+      "capabilities": [
+        "metamorphic_code",
+        "polymorphic_code",
+        "antivirus_evasion",
+        "registry_modification"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.414273",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-7656": {
+      "id": "VIRUS-20260815001631-7656",
+      "species": "trojan_ransomware",
+      "name": "Xvoid-928",
+      "strength": 8.4,
+      "stealth": 3.4,
+      "speed": 7.9,
+      "intelligence": 4.3,
+      "generation": 4,
+      "age_seconds": 46.0,
+      "capabilities": [
+        "file_encryption",
+        "ransom_note",
+        "payment_demand",
+        "anti_debugging",
+        "self_replication",
+        "polymorphic_code",
+        "metamorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:31.622829",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-1691": {
+      "id": "VIRUS-20260815001631-1691",
+      "species": "worm_usb",
+      "name": "Rstealth-702",
+      "strength": 6.9,
+      "stealth": 3.6,
+      "speed": 10.8,
+      "intelligence": 2.9,
+      "generation": 7,
+      "age_seconds": 46.0,
+      "capabilities": [
+        "lateral_movement",
+        "polymorphic_code",
+        "metamorphic_code",
+        "antivirus_evasion"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.622829",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-9997": {
+      "id": "VIRUS-20260815001631-9997",
+      "species": "apt_c2",
+      "name": "Xvoid-406",
+      "strength": 20.0,
+      "stealth": 12.5,
+      "speed": 8.2,
+      "intelligence": 10.8,
+      "generation": 9,
+      "age_seconds": 45.0,
+      "capabilities": [
+        "command_control",
+        "lateral_movement",
+        "data_exfiltration",
+        "metamorphic_code",
+        "antivirus_evasion",
+        "data_encryption"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.674850",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-2019": {
+      "id": "VIRUS-20260815001631-2019",
+      "species": "worm_email",
+      "name": "Rransom-927",
+      "strength": 12.4,
+      "stealth": 10.1,
+      "speed": 10.7,
+      "intelligence": 6.9,
+      "generation": 9,
+      "age_seconds": 44.0,
+      "capabilities": [
+        "email_spreading",
+        "contact_harvesting",
+        "metamorphic_code",
+        "credential_harvesting",
+        "polymorphic_code",
+        "antivirus_evasion",
+        "virtual_machine_evasion"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.727452",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-1053": {
+      "id": "VIRUS-20260815001631-1053",
+      "species": "exploit_zero_day",
+      "name": "Kbackdoor-552",
+      "strength": 11.7,
+      "stealth": 9.0,
+      "speed": 5.3,
+      "intelligence": 9.5,
+      "generation": 5,
+      "age_seconds": 43.0,
+      "capabilities": [
+        "zero_day_exploit",
+        "privilege_escalation",
+        "anti_debugging",
+        "lateral_movement",
+        "self_replication",
+        "network_eavesdropping",
+        "polymorphic_code",
+        "antivirus_evasion",
+        "metamorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.779557",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-4095": {
+      "id": "VIRUS-20260815001631-4095",
+      "species": "trojan_backdoor",
+      "name": "Kkeylog-662",
+      "strength": 19.7,
+      "stealth": 20.0,
+      "speed": 6.0,
+      "intelligence": 17.8,
+      "generation": 15,
+      "age_seconds": 43.0,
+      "capabilities": [
+        "remote_access",
+        "command_execution",
+        "persistence",
+        "privilege_escalation",
+        "polymorphic_code",
+        "sandbox_evasion",
+        "lateral_movement",
+        "metamorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:31.779557",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-9362": {
+      "id": "VIRUS-20260815001631-9362",
+      "species": "apt_data_theft",
+      "name": "Vkeylog-856",
+      "strength": 10.1,
+      "stealth": 6.3,
+      "speed": 4.5,
+      "intelligence": 12.9,
+      "generation": 9,
+      "age_seconds": 43.0,
+      "capabilities": [
+        "antivirus_evasion",
+        "anti_debugging",
+        "credential_harvesting",
+        "file_destruction"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.779557",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-2131": {
+      "id": "VIRUS-20260815001631-2131",
+      "species": "trojan_backdoor",
+      "name": "Kstealth-167",
+      "strength": 5.0,
+      "stealth": 7.7,
+      "speed": 2.6,
+      "intelligence": 6.4,
+      "generation": 1,
+      "age_seconds": 40.0,
+      "capabilities": [
+        "remote_access",
+        "command_execution",
+        "persistence",
+        "virtual_machine_evasion",
+        "data_encryption",
+        "credential_harvesting",
+        "network_eavesdropping"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:31.938875",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-3479": {
+      "id": "VIRUS-20260815001631-3479",
+      "species": "trojan_ransomware",
+      "name": "Dvoid-881",
+      "strength": 7.5,
+      "stealth": 3.4,
+      "speed": 3.0,
+      "intelligence": 9.2,
+      "generation": 4,
+      "age_seconds": 39.0,
+      "capabilities": [
+        "file_encryption",
+        "ransom_note",
+        "payment_demand",
+        "metamorphic_code",
+        "polymorphic_code",
+        "virtual_machine_evasion"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:31.992027",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-5191": {
+      "id": "VIRUS-20260815001631-5191",
+      "species": "trojan_keylogger",
+      "name": "Vexploit-842",
+      "strength": 11.3,
+      "stealth": 9.1,
+      "speed": 11.9,
+      "intelligence": 8.2,
+      "generation": 12,
+      "age_seconds": 39.0,
+      "capabilities": [
+        "data_encryption",
+        "antivirus_evasion",
+        "metamorphic_code",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.992027",
+      "status": "active"
+    },
+    "VIRUS-20260815001631-3522": {
+      "id": "VIRUS-20260815001631-3522",
+      "species": "exploit_sqli",
+      "name": "Kphantom-664",
+      "strength": 4.8,
+      "stealth": 9.5,
+      "speed": 11.6,
+      "intelligence": 12.2,
+      "generation": 10,
+      "age_seconds": 39.0,
+      "capabilities": [
+        "anti_debugging",
+        "antivirus_evasion",
+        "lateral_movement",
+        "metamorphic_code",
+        "sandbox_evasion",
+        "polymorphic_code",
+        "virtual_machine_evasion"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:31.992027",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-7087": {
+      "id": "VIRUS-20260815001632-7087",
+      "species": "apt_surveillance",
+      "name": "Dtrojan-937",
+      "strength": 6.1,
+      "stealth": 5.0,
+      "speed": 8.7,
+      "intelligence": 2.6,
+      "generation": 5,
+      "age_seconds": 33.0,
+      "capabilities": [
+        "sandbox_evasion",
+        "self_replication",
+        "metamorphic_code"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.322016",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-6637": {
+      "id": "VIRUS-20260815001632-6637",
+      "species": "apt_surveillance",
+      "name": "Wransom-445",
+      "strength": 10.9,
+      "stealth": 7.1,
+      "speed": 2.8,
+      "intelligence": 2.1,
+      "generation": 4,
+      "age_seconds": 33.0,
+      "capabilities": [
+        "self_replication",
+        "virtual_machine_evasion"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.322016",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-6032": {
+      "id": "VIRUS-20260815001632-6032",
+      "species": "worm_email",
+      "name": "Zbackdoor-653",
+      "strength": 3.4,
+      "stealth": 13.9,
+      "speed": 9.0,
+      "intelligence": 5.3,
+      "generation": 4,
+      "age_seconds": 30.0,
+      "capabilities": [
+        "email_spreading",
+        "contact_harvesting",
+        "data_encryption"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.486273",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-5618": {
+      "id": "VIRUS-20260815001632-5618",
+      "species": "exploit_buffer_overflow",
+      "name": "Rbackdoor-707",
+      "strength": 3.8,
+      "stealth": 3.2,
+      "speed": 2.7,
+      "intelligence": 3.9,
+      "generation": 2,
+      "age_seconds": 29.0,
+      "capabilities": [
+        "lateral_movement",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.540867",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-2440": {
+      "id": "VIRUS-20260815001632-2440",
+      "species": "trojan_generic",
+      "name": "Vworm-401",
+      "strength": 13.2,
+      "stealth": 7.6,
+      "speed": 4.5,
+      "intelligence": 9.3,
+      "generation": 7,
+      "age_seconds": 28.0,
+      "capabilities": [
+        "stealth_install",
+        "data_collection",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.594874",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-3345": {
+      "id": "VIRUS-20260815001632-3345",
+      "species": "trojan_keylogger",
+      "name": "Xexploit-992",
+      "strength": 3.3,
+      "stealth": 4.0,
+      "speed": 5.4,
+      "intelligence": 11.2,
+      "generation": 4,
+      "age_seconds": 28.0,
+      "capabilities": [
+        "registry_modification",
+        "virtual_machine_evasion",
+        "self_replication",
+        "network_eavesdropping"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.594874",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-2512": {
+      "id": "VIRUS-20260815001632-2512",
+      "species": "exploit_buffer_overflow",
+      "name": "Dphantom-198",
+      "strength": 9.4,
+      "stealth": 4.9,
+      "speed": 2.0,
+      "intelligence": 4.2,
+      "generation": 2,
+      "age_seconds": 28.0,
+      "capabilities": [],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.594874",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-2238": {
+      "id": "VIRUS-20260815001632-2238",
+      "species": "exploit_buffer_overflow",
+      "name": "Wstealth-841",
+      "strength": 2.8,
+      "stealth": 7.0,
+      "speed": 9.3,
+      "intelligence": 2.6,
+      "generation": 6,
+      "age_seconds": 27.0,
+      "capabilities": [
+        "metamorphic_code",
+        "antivirus_evasion",
+        "self_replication"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:32.651396",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-5772": {
+      "id": "VIRUS-20260815001632-5772",
+      "species": "exploit_zero_day",
+      "name": "Qbackdoor-993",
+      "strength": 10.3,
+      "stealth": 8.4,
+      "speed": 8.7,
+      "intelligence": 8.8,
+      "generation": 4,
+      "age_seconds": 27.0,
+      "capabilities": [
+        "zero_day_exploit",
+        "privilege_escalation",
+        "metamorphic_code",
+        "persistence_mechanism"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.651396",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-1804": {
+      "id": "VIRUS-20260815001632-1804",
+      "species": "apt_c2",
+      "name": "Vkeylog-720",
+      "strength": 9.3,
+      "stealth": 13.6,
+      "speed": 5.3,
+      "intelligence": 12.1,
+      "generation": 4,
+      "age_seconds": 26.0,
+      "capabilities": [
+        "command_control",
+        "lateral_movement",
+        "data_exfiltration",
+        "registry_modification"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.705915",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-2948": {
+      "id": "VIRUS-20260815001632-2948",
+      "species": "apt_surveillance",
+      "name": "Mvoid-685",
+      "strength": 4.2,
+      "stealth": 4.4,
+      "speed": 7.9,
+      "intelligence": 4.5,
+      "generation": 4,
+      "age_seconds": 22.0,
+      "capabilities": [
+        "antivirus_evasion"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:32.929498",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-4782": {
+      "id": "VIRUS-20260815001632-4782",
+      "species": "trojan_ransomware",
+      "name": "Wworm-555",
+      "strength": 16.2,
+      "stealth": 5.7,
+      "speed": 3.6,
+      "intelligence": 6.9,
+      "generation": 5,
+      "age_seconds": 22.0,
+      "capabilities": [
+        "file_encryption",
+        "ransom_note",
+        "payment_demand",
+        "metamorphic_code"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.929498",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-2833": {
+      "id": "VIRUS-20260815001632-2833",
+      "species": "exploit_buffer_overflow",
+      "name": "Kworm-946",
+      "strength": 4.3,
+      "stealth": 3.0,
+      "speed": 2.4,
+      "intelligence": 4.4,
+      "generation": 4,
+      "age_seconds": 21.0,
+      "capabilities": [
+        "antivirus_evasion",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": false,
+      "antivirus_resistant": true,
+      "born_at": "2026-08-15T00:16:32.984732",
+      "status": "active"
+    },
+    "VIRUS-20260815001632-8839": {
+      "id": "VIRUS-20260815001632-8839",
+      "species": "exploit_xss",
+      "name": "Ktrojan-312",
+      "strength": 8.5,
+      "stealth": 6.5,
+      "speed": 7.5,
+      "intelligence": 2.4,
+      "generation": 5,
+      "age_seconds": 21.0,
+      "capabilities": [
+        "credential_harvesting",
+        "data_encryption",
+        "polymorphic_code",
+        "persistence_mechanism"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:32.984732",
+      "status": "active"
+    },
+    "VIRUS-20260815001633-7512": {
+      "id": "VIRUS-20260815001633-7512",
+      "species": "trojan_keylogger",
+      "name": "Qworm-909",
+      "strength": 4.0,
+      "stealth": 3.4,
+      "speed": 3.6,
+      "intelligence": 4.9,
+      "generation": 1,
+      "age_seconds": 20.0,
+      "capabilities": [
+        "registry_modification"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:33.040472",
+      "status": "active"
+    },
+    "VIRUS-20260815001633-1227": {
+      "id": "VIRUS-20260815001633-1227",
+      "species": "worm_network",
+      "name": "Dtrojan-590",
+      "strength": 4.6,
+      "stealth": 8.5,
+      "speed": 8.9,
+      "intelligence": 4.4,
+      "generation": 3,
+      "age_seconds": 20.0,
+      "capabilities": [
+        "network_propagation",
+        "port_scanning",
+        "polymorphic_code"
+      ],
+      "is_polymorphic": true,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:33.040472",
+      "status": "active"
+    },
+    "VIRUS-20260815001633-7273": {
+      "id": "VIRUS-20260815001633-7273",
+      "species": "exploit_xss",
+      "name": "Qshadow-647",
+      "strength": 2.7,
+      "stealth": 3.7,
+      "speed": 13.0,
+      "intelligence": 3.0,
+      "generation": 4,
+      "age_seconds": 15.0,
+      "capabilities": [
+        "virtual_machine_evasion",
+        "metamorphic_code"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:33.317018",
+      "status": "active"
+    },
+    "VIRUS-20260815001633-4249": {
+      "id": "VIRUS-20260815001633-4249",
+      "species": "worm_email",
+      "name": "Wtrojan-646",
+      "strength": 5.8,
+      "stealth": 6.6,
+      "speed": 8.6,
+      "intelligence": 4.4,
+      "generation": 2,
+      "age_seconds": 12.0,
+      "capabilities": [
+        "email_spreading",
+        "contact_harvesting",
+        "registry_modification",
+        "metamorphic_code"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": true,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:33.485785",
+      "status": "active"
+    },
+    "VIRUS-20260815001633-2034": {
+      "id": "VIRUS-20260815001633-2034",
+      "species": "worm_usb",
+      "name": "Wvoid-951",
+      "strength": 2.6,
+      "stealth": 2.1,
+      "speed": 4.6,
+      "intelligence": 3.2,
+      "generation": 1,
+      "age_seconds": 12.0,
+      "capabilities": [],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:33.485785",
+      "status": "active"
+    },
+    "VIRUS-20260815001633-3572": {
+      "id": "VIRUS-20260815001633-3572",
+      "species": "apt_data_theft",
+      "name": "Vshadow-257",
+      "strength": 4.1,
+      "stealth": 4.3,
+      "speed": 4.3,
+      "intelligence": 4.9,
+      "generation": 3,
+      "age_seconds": 12.0,
+      "capabilities": [],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:33.485785",
+      "status": "active"
+    },
+    "VIRUS-20260815001633-2472": {
+      "id": "VIRUS-20260815001633-2472",
+      "species": "botnet_ddos",
+      "name": "Zworm-435",
+      "strength": 6.2,
+      "stealth": 3.5,
+      "speed": 11.9,
+      "intelligence": 3.5,
+      "generation": 2,
+      "age_seconds": 8.0,
+      "capabilities": [
+        "ddos_attack",
+        "bot_recruitment"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:33.709566",
+      "status": "active"
+    },
+    "VIRUS-20260815001634-4223": {
+      "id": "VIRUS-20260815001634-4223",
+      "species": "botnet_ddos",
+      "name": "Kworm-122",
+      "strength": 6.7,
+      "stealth": 1.4,
+      "speed": 10.2,
+      "intelligence": 4.7,
+      "generation": 1,
+      "age_seconds": 2.0,
+      "capabilities": [
+        "ddos_attack",
+        "bot_recruitment",
+        "lateral_movement"
+      ],
+      "is_polymorphic": false,
+      "is_metamorphic": false,
+      "antivirus_resistant": false,
+      "born_at": "2026-08-15T00:16:34.042130",
+      "status": "active"
+    }
+  },
+  "stats": {
+    "total_cycles": 68,
+    "total_viruses_born": 53,
+    "total_viruses_dead": 2,
+    "total_mutations": 0,
+    "total_evolution_events": 0,
+    "current_virus_count": 51,
+    "max_virus_count": 51,
+    "average_virus_strength": 9.5,
+    "highest_generation": 25,
+    "barrier_level": 1,
+    "last_cycle_timestamp": "2026-08-15T00:16:34.046205"
+  },
+  "mutations": [
+    {
+      "virus_id": "VIRUS-20260815001348-4484",
+      "virus_name": "Dvoid-865",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 13.650555180956736,
+        "stealth": 17.40580297308366,
+        "speed": 7.74022427373244,
+        "intelligence": 8.9
+      },
+      "new_values": {
+        "strength": 15.434114210806332,
+        "stealth": 17.40580297308366,
+        "speed": 7.74022427373244,
+        "intelligence": 8.9
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-3745",
+      "virus_name": "Kshadow-126",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 8.183054322407099,
+        "stealth": 4.3,
+        "speed": 6.357305561861131,
+        "intelligence": 11.195662107983793
+      },
+      "new_values": {
+        "strength": 8.183054322407099,
+        "stealth": 4.3,
+        "speed": 6.357305561861131,
+        "intelligence": 12.62057955054659
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-2480",
+      "virus_name": "Kphantom-759",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 9.504548763175494,
+        "stealth": 4.4,
+        "speed": 8.893461852992534,
+        "intelligence": 7.744578000607003
+      },
+      "new_values": {
+        "strength": 9.504548763175494,
+        "stealth": 4.4,
+        "speed": 10.570040378307237,
+        "intelligence": 7.744578000607003
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-2903",
+      "virus_name": "Tvoid-434",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "data_encryption"
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5785",
+      "virus_name": "Wshadow-571",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 13.330672506313524,
+        "stealth": 6.204945601855533,
+        "speed": 12.632430223019696,
+        "intelligence": 13.07316872073702
+      },
+      "new_values": {
+        "strength": 14.529316997907033,
+        "stealth": 6.204945601855533,
+        "speed": 12.632430223019696,
+        "intelligence": 13.07316872073702
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9537",
+      "virus_name": "Ztrojan-847",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 4.438692412772716,
+        "stealth": 8.68204588929423,
+        "speed": 7.570754250696526,
+        "intelligence": 5.8643494656741995
+      },
+      "new_values": {
+        "strength": 4.438692412772716,
+        "stealth": 12.531644446093773,
+        "speed": 7.570754250696526,
+        "intelligence": 5.8643494656741995
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9537",
+      "virus_name": "Ztrojan-847",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "registry_modification"
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9997",
+      "virus_name": "Xvoid-406",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 15.517708261203992,
+        "stealth": 12.524031364879091,
+        "speed": 4.6215329730511,
+        "intelligence": 10.812239397480393
+      },
+      "new_values": {
+        "strength": 15.517708261203992,
+        "stealth": 12.524031364879091,
+        "speed": 8.246728406021653,
+        "intelligence": 10.812239397480393
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9362",
+      "virus_name": "Vkeylog-856",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "file_destruction"
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-3345",
+      "virus_name": "Xexploit-992",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 3.2740979666502943,
+        "stealth": 4.036024654056981,
+        "speed": 5.43550593289022,
+        "intelligence": 4.814167483318841
+      },
+      "new_values": {
+        "strength": 3.2740979666502943,
+        "stealth": 4.036024654056981,
+        "speed": 5.43550593289022,
+        "intelligence": 8.547979762455935
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-7273",
+      "virus_name": "Qshadow-647",
+      "mutation_type": "develop_metamorphic",
+      "old_values": {
+        "strength": 2.7271185962854467,
+        "stealth": 3.7296461926597515,
+        "speed": 8.273518874941752,
+        "intelligence": 2.9822230857703347
+      },
+      "new_values": {
+        "strength": 2.7271185962854467,
+        "stealth": 3.7296461926597515,
+        "speed": 8.273518874941752,
+        "intelligence": 2.9822230857703347
+      },
+      "timestamp": "2026-08-15T00:16:33.764106",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001346-1032",
+      "virus_name": "Qexploit-624",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 11.809813877941043,
+        "stealth": 9.497671858838459,
+        "speed": 8.781982752005115,
+        "intelligence": 6.9547173117510575
+      },
+      "new_values": {
+        "strength": 14.680169508051868,
+        "stealth": 9.497671858838459,
+        "speed": 8.781982752005115,
+        "intelligence": 6.9547173117510575
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001347-1267",
+      "virus_name": "Dstealth-300",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 24.8789389394242,
+        "stealth": 12.955032597832023,
+        "speed": 6.8436797315429185,
+        "intelligence": 21.607821476028786
+      },
+      "new_values": {
+        "strength": 26.228868927423697,
+        "stealth": 12.955032597832023,
+        "speed": 6.8436797315429185,
+        "intelligence": 21.607821476028786
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001348-4484",
+      "virus_name": "Dvoid-865",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 15.434114210806332,
+        "stealth": 17.40580297308366,
+        "speed": 7.74022427373244,
+        "intelligence": 8.9
+      },
+      "new_values": {
+        "strength": 15.434114210806332,
+        "stealth": 17.40580297308366,
+        "speed": 11.343043523418824,
+        "intelligence": 8.9
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-8904",
+      "virus_name": "Zstealth-484",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 15.316316291741831,
+        "stealth": 8.3,
+        "speed": 8.57823322969687,
+        "intelligence": 8.6
+      },
+      "new_values": {
+        "strength": 15.316316291741831,
+        "stealth": 8.3,
+        "speed": 11.444617541834921,
+        "intelligence": 8.6
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-6019",
+      "virus_name": "Vshadow-868",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 9.199606470076905,
+        "stealth": 7.044406955717591,
+        "speed": 10.08402597590882,
+        "intelligence": 3.9
+      },
+      "new_values": {
+        "strength": 9.199606470076905,
+        "stealth": 9.249450128984039,
+        "speed": 10.08402597590882,
+        "intelligence": 3.9
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5412",
+      "virus_name": "Wkeylog-401",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 7.237668334398901,
+        "stealth": 4.5,
+        "speed": 4.632090947428736,
+        "intelligence": 3.0
+      },
+      "new_values": {
+        "strength": 11.29703599140478,
+        "stealth": 4.5,
+        "speed": 4.632090947428736,
+        "intelligence": 3.0
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5785",
+      "virus_name": "Wshadow-571",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 14.529316997907033,
+        "stealth": 6.204945601855533,
+        "speed": 12.632430223019696,
+        "intelligence": 13.07316872073702
+      },
+      "new_values": {
+        "strength": 14.529316997907033,
+        "stealth": 6.204945601855533,
+        "speed": 12.632430223019696,
+        "intelligence": 17.403358136261634
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1528",
+      "virus_name": "Rworm-700",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 3.8881001914784608,
+        "stealth": 6.543559706262263,
+        "speed": 2.8642488086617925,
+        "intelligence": 7.314645474977622
+      },
+      "new_values": {
+        "strength": 3.8881001914784608,
+        "stealth": 6.543559706262263,
+        "speed": 2.8642488086617925,
+        "intelligence": 9.599749681287822
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1740",
+      "virus_name": "Dransom-742",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 17.719825037197243,
+        "stealth": 12.690696208021999,
+        "speed": 8.377829904080086,
+        "intelligence": 15.370728965266498
+      },
+      "new_values": {
+        "strength": 17.719825037197243,
+        "stealth": 17.4077702972223,
+        "speed": 8.377829904080086,
+        "intelligence": 15.370728965266498
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5797",
+      "virus_name": "Rphantom-509",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 13.5271439073841,
+        "stealth": 5.298870519831064,
+        "speed": 21.42348332273091,
+        "intelligence": 13.787632181298216
+      },
+      "new_values": {
+        "strength": 17.306692935444623,
+        "stealth": 5.298870519831064,
+        "speed": 21.42348332273091,
+        "intelligence": 13.787632181298216
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1691",
+      "virus_name": "Rstealth-702",
+      "mutation_type": "develop_metamorphic",
+      "old_values": {
+        "strength": 6.9034556225402985,
+        "stealth": 3.6069549792386395,
+        "speed": 7.278876580593222,
+        "intelligence": 2.9292897573892995
+      },
+      "new_values": {
+        "strength": 6.9034556225402985,
+        "stealth": 3.6069549792386395,
+        "speed": 7.278876580593222,
+        "intelligence": 2.9292897573892995
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-4095",
+      "virus_name": "Kkeylog-662",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 17.796518852130628,
+        "stealth": 17.232000394144052,
+        "speed": 2.7867428852058973,
+        "intelligence": 12.031169683115131
+      },
+      "new_values": {
+        "strength": 17.796518852130628,
+        "stealth": 17.232000394144052,
+        "speed": 2.7867428852058973,
+        "intelligence": 15.635861174410685
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-6032",
+      "virus_name": "Zbackdoor-653",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 3.397567969852798,
+        "stealth": 10.818082019380636,
+        "speed": 9.002744615239514,
+        "intelligence": 5.287398497524333
+      },
+      "new_values": {
+        "strength": 3.397567969852798,
+        "stealth": 13.898058436570931,
+        "speed": 9.002744615239514,
+        "intelligence": 5.287398497524333
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-3345",
+      "virus_name": "Xexploit-992",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 3.2740979666502943,
+        "stealth": 4.036024654056981,
+        "speed": 5.43550593289022,
+        "intelligence": 8.547979762455935
+      },
+      "new_values": {
+        "strength": 3.2740979666502943,
+        "stealth": 4.036024654056981,
+        "speed": 5.43550593289022,
+        "intelligence": 11.23965894298577
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-4782",
+      "virus_name": "Wworm-555",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 9.69236854988159,
+        "stealth": 5.652352103412554,
+        "speed": 3.5765856372693814,
+        "intelligence": 6.937425041079946
+      },
+      "new_values": {
+        "strength": 14.668742946051687,
+        "stealth": 5.652352103412554,
+        "speed": 3.5765856372693814,
+        "intelligence": 6.937425041079946
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-3572",
+      "virus_name": "Vshadow-257",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 4.137829108618874,
+        "stealth": 2.545863835600896,
+        "speed": 4.304875292481623,
+        "intelligence": 3.425417186633494
+      },
+      "new_values": {
+        "strength": 4.137829108618874,
+        "stealth": 4.3143893703238785,
+        "speed": 4.304875292481623,
+        "intelligence": 3.425417186633494
+      },
+      "timestamp": "2026-08-15T00:16:33.819639",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-2480",
+      "virus_name": "Kphantom-759",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 9.504548763175494,
+        "stealth": 4.4,
+        "speed": 10.570040378307237,
+        "intelligence": 7.744578000607003
+      },
+      "new_values": {
+        "strength": 9.504548763175494,
+        "stealth": 4.4,
+        "speed": 14.678546460022394,
+        "intelligence": 7.744578000607003
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-8904",
+      "virus_name": "Zstealth-484",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 15.316316291741831,
+        "stealth": 8.3,
+        "speed": 11.444617541834921,
+        "intelligence": 8.6
+      },
+      "new_values": {
+        "strength": 15.316316291741831,
+        "stealth": 8.3,
+        "speed": 15.202245265685407,
+        "intelligence": 8.6
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-6019",
+      "virus_name": "Vshadow-868",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 9.199606470076905,
+        "stealth": 9.249450128984039,
+        "speed": 10.08402597590882,
+        "intelligence": 3.9
+      },
+      "new_values": {
+        "strength": 9.199606470076905,
+        "stealth": 12.222116959159685,
+        "speed": 10.08402597590882,
+        "intelligence": 3.9
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5412",
+      "virus_name": "Wkeylog-401",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "file_destruction"
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5785",
+      "virus_name": "Wshadow-571",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 14.529316997907033,
+        "stealth": 6.204945601855533,
+        "speed": 12.632430223019696,
+        "intelligence": 17.403358136261634
+      },
+      "new_values": {
+        "strength": 14.529316997907033,
+        "stealth": 6.204945601855533,
+        "speed": 14.20256804451728,
+        "intelligence": 17.403358136261634
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1740",
+      "virus_name": "Dransom-742",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 17.719825037197243,
+        "stealth": 17.4077702972223,
+        "speed": 8.377829904080086,
+        "intelligence": 15.370728965266498
+      },
+      "new_values": {
+        "strength": 17.719825037197243,
+        "stealth": 17.4077702972223,
+        "speed": 10.1482925165393,
+        "intelligence": 15.370728965266498
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5797",
+      "virus_name": "Rphantom-509",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 17.306692935444623,
+        "stealth": 5.298870519831064,
+        "speed": 21.42348332273091,
+        "intelligence": 13.787632181298216
+      },
+      "new_values": {
+        "strength": 21.16644475199077,
+        "stealth": 5.298870519831064,
+        "speed": 21.42348332273091,
+        "intelligence": 13.787632181298216
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1053",
+      "virus_name": "Kbackdoor-552",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 11.651665302914196,
+        "stealth": 9.037828750937985,
+        "speed": 5.281075384726092,
+        "intelligence": 7.366918071968823
+      },
+      "new_values": {
+        "strength": 11.651665302914196,
+        "stealth": 9.037828750937985,
+        "speed": 5.281075384726092,
+        "intelligence": 9.487891090596662
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-4095",
+      "virus_name": "Kkeylog-662",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 17.796518852130628,
+        "stealth": 17.232000394144052,
+        "speed": 2.7867428852058973,
+        "intelligence": 15.635861174410685
+      },
+      "new_values": {
+        "strength": 17.796518852130628,
+        "stealth": 20.038733277341876,
+        "speed": 2.7867428852058973,
+        "intelligence": 15.635861174410685
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-3522",
+      "virus_name": "Kphantom-664",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 4.777808797787722,
+        "stealth": 5.173369521895404,
+        "speed": 7.030217802322044,
+        "intelligence": 7.3079169877906045
+      },
+      "new_values": {
+        "strength": 4.777808797787722,
+        "stealth": 5.173369521895404,
+        "speed": 11.623214848265265,
+        "intelligence": 7.3079169877906045
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-3522",
+      "virus_name": "Kphantom-664",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "virtual_machine_evasion"
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-6637",
+      "virus_name": "Wransom-445",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "virtual_machine_evasion"
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-2440",
+      "virus_name": "Vworm-401",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 11.32785206167442,
+        "stealth": 7.5631514563381845,
+        "speed": 4.544644957542834,
+        "intelligence": 9.318208055583334
+      },
+      "new_values": {
+        "strength": 13.171038766737484,
+        "stealth": 7.5631514563381845,
+        "speed": 4.544644957542834,
+        "intelligence": 9.318208055583334
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-3345",
+      "virus_name": "Xexploit-992",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "virtual_machine_evasion"
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-8839",
+      "virus_name": "Ktrojan-312",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 8.525819360437485,
+        "stealth": 3.9583945848138145,
+        "speed": 3.2278538715486484,
+        "intelligence": 2.3628254203514705
+      },
+      "new_values": {
+        "strength": 8.525819360437485,
+        "stealth": 6.458298938758968,
+        "speed": 3.2278538715486484,
+        "intelligence": 2.3628254203514705
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-4249",
+      "virus_name": "Wtrojan-646",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "registry_modification"
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-2472",
+      "virus_name": "Zworm-435",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 6.23661852904249,
+        "stealth": 3.537586285735557,
+        "speed": 9.415094629393534,
+        "intelligence": 3.495035110216522
+      },
+      "new_values": {
+        "strength": 6.23661852904249,
+        "stealth": 3.537586285735557,
+        "speed": 11.935230854220876,
+        "intelligence": 3.495035110216522
+      },
+      "timestamp": "2026-08-15T00:16:33.875172",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001347-2623",
+      "virus_name": "Qransom-649",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 11.638468870139498,
+        "stealth": 11.677032584506339,
+        "speed": 3.782493587596976,
+        "intelligence": 13.207026908386652
+      },
+      "new_values": {
+        "strength": 11.638468870139498,
+        "stealth": 11.677032584506339,
+        "speed": 6.910015144363676,
+        "intelligence": 13.207026908386652
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-3745",
+      "virus_name": "Kshadow-126",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 8.183054322407099,
+        "stealth": 4.3,
+        "speed": 6.357305561861131,
+        "intelligence": 12.62057955054659
+      },
+      "new_values": {
+        "strength": 8.183054322407099,
+        "stealth": 4.3,
+        "speed": 6.357305561861131,
+        "intelligence": 17.439010809570725
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-6019",
+      "virus_name": "Vshadow-868",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "file_destruction"
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5797",
+      "virus_name": "Rphantom-509",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 21.16644475199077,
+        "stealth": 5.298870519831064,
+        "speed": 21.42348332273091,
+        "intelligence": 13.787632181298216
+      },
+      "new_values": {
+        "strength": 24.566404616515406,
+        "stealth": 5.298870519831064,
+        "speed": 21.42348332273091,
+        "intelligence": 13.787632181298216
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-7656",
+      "virus_name": "Xvoid-928",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 8.405975022758646,
+        "stealth": 3.406217213051661,
+        "speed": 3.522035947389455,
+        "intelligence": 4.31174995463393
+      },
+      "new_values": {
+        "strength": 8.405975022758646,
+        "stealth": 3.406217213051661,
+        "speed": 7.947525579500681,
+        "intelligence": 4.31174995463393
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1691",
+      "virus_name": "Rstealth-702",
+      "mutation_type": "develop_antivirus",
+      "old_values": {
+        "strength": 6.9034556225402985,
+        "stealth": 3.6069549792386395,
+        "speed": 7.278876580593222,
+        "intelligence": 2.9292897573892995
+      },
+      "new_values": {
+        "strength": 6.9034556225402985,
+        "stealth": 3.6069549792386395,
+        "speed": 7.278876580593222,
+        "intelligence": 2.9292897573892995
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-4095",
+      "virus_name": "Kkeylog-662",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 17.796518852130628,
+        "stealth": 20.038733277341876,
+        "speed": 2.7867428852058973,
+        "intelligence": 15.635861174410685
+      },
+      "new_values": {
+        "strength": 17.796518852130628,
+        "stealth": 20.038733277341876,
+        "speed": 5.965725885134488,
+        "intelligence": 15.635861174410685
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-2131",
+      "virus_name": "Kstealth-167",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "credential_harvesting"
+      },
+      "timestamp": "2026-08-15T00:16:33.931087",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5191",
+      "virus_name": "Vexploit-842",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 11.325461841910299,
+        "stealth": 9.108668635561235,
+        "speed": 6.933951315158311,
+        "intelligence": 3.966053301156325
+      },
+      "new_values": {
+        "strength": 11.325461841910299,
+        "stealth": 9.108668635561235,
+        "speed": 6.933951315158311,
+        "intelligence": 6.77900147713186
+      },
+      "timestamp": "2026-08-15T00:16:33.931592",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-7087",
+      "virus_name": "Dtrojan-937",
+      "mutation_type": "develop_metamorphic",
+      "old_values": {
+        "strength": 6.13052889706427,
+        "stealth": 4.958939412035635,
+        "speed": 7.467444010165099,
+        "intelligence": 2.6456155319889136
+      },
+      "new_values": {
+        "strength": 6.13052889706427,
+        "stealth": 4.958939412035635,
+        "speed": 7.467444010165099,
+        "intelligence": 2.6456155319889136
+      },
+      "timestamp": "2026-08-15T00:16:33.931592",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-7273",
+      "virus_name": "Qshadow-647",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 2.7271185962854467,
+        "stealth": 3.7296461926597515,
+        "speed": 8.273518874941752,
+        "intelligence": 2.9822230857703347
+      },
+      "new_values": {
+        "strength": 2.7271185962854467,
+        "stealth": 3.7296461926597515,
+        "speed": 12.98863176874621,
+        "intelligence": 2.9822230857703347
+      },
+      "timestamp": "2026-08-15T00:16:33.931592",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001346-9859",
+      "virus_name": "Wworm-661",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 12.792319267430145,
+        "stealth": 4.5,
+        "speed": 15.87170866182455,
+        "intelligence": 7.820699151012675
+      },
+      "new_values": {
+        "strength": 14.27720611364647,
+        "stealth": 4.5,
+        "speed": 15.87170866182455,
+        "intelligence": 7.820699151012675
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-3745",
+      "virus_name": "Kshadow-126",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 8.183054322407099,
+        "stealth": 4.3,
+        "speed": 6.357305561861131,
+        "intelligence": 17.439010809570725
+      },
+      "new_values": {
+        "strength": 8.183054322407099,
+        "stealth": 8.577288564993118,
+        "speed": 6.357305561861131,
+        "intelligence": 17.439010809570725
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-6019",
+      "virus_name": "Vshadow-868",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "persistence_mechanism"
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5785",
+      "virus_name": "Wshadow-571",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 14.529316997907033,
+        "stealth": 6.204945601855533,
+        "speed": 14.20256804451728,
+        "intelligence": 17.403358136261634
+      },
+      "new_values": {
+        "strength": 15.563545649407445,
+        "stealth": 6.204945601855533,
+        "speed": 14.20256804451728,
+        "intelligence": 17.403358136261634
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1740",
+      "virus_name": "Dransom-742",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 17.719825037197243,
+        "stealth": 17.4077702972223,
+        "speed": 10.1482925165393,
+        "intelligence": 15.370728965266498
+      },
+      "new_values": {
+        "strength": 17.719825037197243,
+        "stealth": 18.684276916519853,
+        "speed": 10.1482925165393,
+        "intelligence": 15.370728965266498
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9537",
+      "virus_name": "Ztrojan-847",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 4.438692412772716,
+        "stealth": 12.531644446093773,
+        "speed": 7.570754250696526,
+        "intelligence": 5.8643494656741995
+      },
+      "new_values": {
+        "strength": 7.5744063437395175,
+        "stealth": 12.531644446093773,
+        "speed": 7.570754250696526,
+        "intelligence": 5.8643494656741995
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9997",
+      "virus_name": "Xvoid-406",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 15.517708261203992,
+        "stealth": 12.524031364879091,
+        "speed": 8.246728406021653,
+        "intelligence": 10.812239397480393
+      },
+      "new_values": {
+        "strength": 19.993850151156163,
+        "stealth": 12.524031364879091,
+        "speed": 8.246728406021653,
+        "intelligence": 10.812239397480393
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-2019",
+      "virus_name": "Rransom-927",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "virtual_machine_evasion"
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-4095",
+      "virus_name": "Kkeylog-662",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 17.796518852130628,
+        "stealth": 20.038733277341876,
+        "speed": 5.965725885134488,
+        "intelligence": 15.635861174410685
+      },
+      "new_values": {
+        "strength": 17.796518852130628,
+        "stealth": 20.038733277341876,
+        "speed": 5.965725885134488,
+        "intelligence": 17.818992195310337
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9362",
+      "virus_name": "Vkeylog-856",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 7.37666116214441,
+        "stealth": 3.4382200049115985,
+        "speed": 4.5020707012121495,
+        "intelligence": 12.85746509034978
+      },
+      "new_values": {
+        "strength": 10.094878401865019,
+        "stealth": 3.4382200049115985,
+        "speed": 4.5020707012121495,
+        "intelligence": 12.85746509034978
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-2131",
+      "virus_name": "Kstealth-167",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "network_eavesdropping"
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-3522",
+      "virus_name": "Kphantom-664",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 4.777808797787722,
+        "stealth": 5.173369521895404,
+        "speed": 11.623214848265265,
+        "intelligence": 7.3079169877906045
+      },
+      "new_values": {
+        "strength": 4.777808797787722,
+        "stealth": 9.526973985383727,
+        "speed": 11.623214848265265,
+        "intelligence": 7.3079169877906045
+      },
+      "timestamp": "2026-08-15T00:16:33.986613",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-1804",
+      "virus_name": "Vkeylog-720",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 9.259769254107658,
+        "stealth": 13.637014687315265,
+        "speed": 2.68124983194797,
+        "intelligence": 10.516904528337125
+      },
+      "new_values": {
+        "strength": 9.259769254107658,
+        "stealth": 13.637014687315265,
+        "speed": 5.293202484265397,
+        "intelligence": 10.516904528337125
+      },
+      "timestamp": "2026-08-15T00:16:33.987119",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-7512",
+      "virus_name": "Qworm-909",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "registry_modification"
+      },
+      "timestamp": "2026-08-15T00:16:33.987119",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001347-2623",
+      "virus_name": "Qransom-649",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 11.638468870139498,
+        "stealth": 11.677032584506339,
+        "speed": 6.910015144363676,
+        "intelligence": 13.207026908386652
+      },
+      "new_values": {
+        "strength": 11.638468870139498,
+        "stealth": 11.677032584506339,
+        "speed": 8.181476774701236,
+        "intelligence": 13.207026908386652
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-2480",
+      "virus_name": "Kphantom-759",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 9.504548763175494,
+        "stealth": 4.4,
+        "speed": 14.678546460022394,
+        "intelligence": 7.744578000607003
+      },
+      "new_values": {
+        "strength": 9.504548763175494,
+        "stealth": 8.1834742771696,
+        "speed": 14.678546460022394,
+        "intelligence": 7.744578000607003
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-9362",
+      "virus_name": "Vkeylog-856",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 10.094878401865019,
+        "stealth": 3.4382200049115985,
+        "speed": 4.5020707012121495,
+        "intelligence": 12.85746509034978
+      },
+      "new_values": {
+        "strength": 10.094878401865019,
+        "stealth": 6.341864776614023,
+        "speed": 4.5020707012121495,
+        "intelligence": 12.85746509034978
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5191",
+      "virus_name": "Vexploit-842",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 11.325461841910299,
+        "stealth": 9.108668635561235,
+        "speed": 6.933951315158311,
+        "intelligence": 6.77900147713186
+      },
+      "new_values": {
+        "strength": 11.325461841910299,
+        "stealth": 9.108668635561235,
+        "speed": 6.933951315158311,
+        "intelligence": 8.23816162867413
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-3345",
+      "virus_name": "Xexploit-992",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "self_replication"
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-2238",
+      "virus_name": "Wstealth-841",
+      "mutation_type": "develop_antivirus",
+      "old_values": {
+        "strength": 2.777039009103816,
+        "stealth": 6.971143510968197,
+        "speed": 9.3352529647982,
+        "intelligence": 2.5569473545011165
+      },
+      "new_values": {
+        "strength": 2.777039009103816,
+        "stealth": 6.971143510968197,
+        "speed": 9.3352529647982,
+        "intelligence": 2.5569473545011165
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-1804",
+      "virus_name": "Vkeylog-720",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 9.259769254107658,
+        "stealth": 13.637014687315265,
+        "speed": 5.293202484265397,
+        "intelligence": 10.516904528337125
+      },
+      "new_values": {
+        "strength": 9.259769254107658,
+        "stealth": 13.637014687315265,
+        "speed": 5.293202484265397,
+        "intelligence": 12.126876922678733
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-4249",
+      "virus_name": "Wtrojan-646",
+      "mutation_type": "develop_metamorphic",
+      "old_values": {
+        "strength": 5.822202720636971,
+        "stealth": 6.594994777654499,
+        "speed": 8.626331051598466,
+        "intelligence": 4.4337043705882575
+      },
+      "new_values": {
+        "strength": 5.822202720636971,
+        "stealth": 6.594994777654499,
+        "speed": 8.626331051598466,
+        "intelligence": 4.4337043705882575
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-3572",
+      "virus_name": "Vshadow-257",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 4.137829108618874,
+        "stealth": 4.3143893703238785,
+        "speed": 4.304875292481623,
+        "intelligence": 3.425417186633494
+      },
+      "new_values": {
+        "strength": 4.137829108618874,
+        "stealth": 4.3143893703238785,
+        "speed": 4.304875292481623,
+        "intelligence": 4.925048954309691
+      },
+      "timestamp": "2026-08-15T00:16:34.042130",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001346-1032",
+      "virus_name": "Qexploit-624",
+      "mutation_type": "develop_polymorphic",
+      "old_values": {
+        "strength": 14.680169508051868,
+        "stealth": 9.497671858838459,
+        "speed": 8.781982752005115,
+        "intelligence": 6.9547173117510575
+      },
+      "new_values": {
+        "strength": 14.680169508051868,
+        "stealth": 9.497671858838459,
+        "speed": 8.781982752005115,
+        "intelligence": 6.9547173117510575
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001347-1267",
+      "virus_name": "Dstealth-300",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 26.228868927423697,
+        "stealth": 12.955032597832023,
+        "speed": 6.8436797315429185,
+        "intelligence": 21.607821476028786
+      },
+      "new_values": {
+        "strength": 26.228868927423697,
+        "stealth": 12.955032597832023,
+        "speed": 6.8436797315429185,
+        "intelligence": 24.335024147043235
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001347-1267",
+      "virus_name": "Dstealth-300",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "persistence_mechanism"
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001348-4484",
+      "virus_name": "Dvoid-865",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 15.434114210806332,
+        "stealth": 17.40580297308366,
+        "speed": 11.343043523418824,
+        "intelligence": 8.9
+      },
+      "new_values": {
+        "strength": 15.434114210806332,
+        "stealth": 17.40580297308366,
+        "speed": 13.288875926339072,
+        "intelligence": 8.9
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-3745",
+      "virus_name": "Kshadow-126",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 8.183054322407099,
+        "stealth": 8.577288564993118,
+        "speed": 6.357305561861131,
+        "intelligence": 17.439010809570725
+      },
+      "new_values": {
+        "strength": 11.794113745728009,
+        "stealth": 8.577288564993118,
+        "speed": 6.357305561861131,
+        "intelligence": 17.439010809570725
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-2185",
+      "virus_name": "Tphantom-613",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 3.6,
+        "stealth": 5.9405685915249276,
+        "speed": 2.9,
+        "intelligence": 10.514999030477785
+      },
+      "new_values": {
+        "strength": 3.6,
+        "stealth": 10.362475401440228,
+        "speed": 2.9,
+        "intelligence": 10.514999030477785
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001630-6019",
+      "virus_name": "Vshadow-868",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 9.199606470076905,
+        "stealth": 12.222116959159685,
+        "speed": 10.08402597590882,
+        "intelligence": 3.9
+      },
+      "new_values": {
+        "strength": 9.199606470076905,
+        "stealth": 12.222116959159685,
+        "speed": 13.524550434313584,
+        "intelligence": 3.9
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1788",
+      "virus_name": "Xvoid-584",
+      "mutation_type": "increase_stealth",
+      "old_values": {
+        "strength": 8.193598283872548,
+        "stealth": 12.0180353045516,
+        "speed": 7.075368381846143,
+        "intelligence": 3.3
+      },
+      "new_values": {
+        "strength": 8.193598283872548,
+        "stealth": 15.51852389531297,
+        "speed": 7.075368381846143,
+        "intelligence": 3.3
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5797",
+      "virus_name": "Rphantom-509",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 24.566404616515406,
+        "stealth": 5.298870519831064,
+        "speed": 21.42348332273091,
+        "intelligence": 13.787632181298216
+      },
+      "new_values": {
+        "strength": 24.566404616515406,
+        "stealth": 5.298870519831064,
+        "speed": 22.743975097418012,
+        "intelligence": 13.787632181298216
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-1691",
+      "virus_name": "Rstealth-702",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 6.9034556225402985,
+        "stealth": 3.6069549792386395,
+        "speed": 7.278876580593222,
+        "intelligence": 2.9292897573892995
+      },
+      "new_values": {
+        "strength": 6.9034556225402985,
+        "stealth": 3.6069549792386395,
+        "speed": 10.836469794869437,
+        "intelligence": 2.9292897573892995
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-4095",
+      "virus_name": "Kkeylog-662",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 17.796518852130628,
+        "stealth": 20.038733277341876,
+        "speed": 5.965725885134488,
+        "intelligence": 17.818992195310337
+      },
+      "new_values": {
+        "strength": 19.655518284637495,
+        "stealth": 20.038733277341876,
+        "speed": 5.965725885134488,
+        "intelligence": 17.818992195310337
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-3479",
+      "virus_name": "Dvoid-881",
+      "mutation_type": "develop_polymorphic",
+      "old_values": {
+        "strength": 7.529174199853431,
+        "stealth": 3.3811156687120714,
+        "speed": 3.007622404194578,
+        "intelligence": 9.165837625626905
+      },
+      "new_values": {
+        "strength": 7.529174199853431,
+        "stealth": 3.3811156687120714,
+        "speed": 3.007622404194578,
+        "intelligence": 9.165837625626905
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-3479",
+      "virus_name": "Dvoid-881",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "virtual_machine_evasion"
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-5191",
+      "virus_name": "Vexploit-842",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 11.325461841910299,
+        "stealth": 9.108668635561235,
+        "speed": 6.933951315158311,
+        "intelligence": 8.23816162867413
+      },
+      "new_values": {
+        "strength": 11.325461841910299,
+        "stealth": 9.108668635561235,
+        "speed": 11.913676384294646,
+        "intelligence": 8.23816162867413
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001631-3522",
+      "virus_name": "Kphantom-664",
+      "mutation_type": "increase_intelligence",
+      "old_values": {
+        "strength": 4.777808797787722,
+        "stealth": 9.526973985383727,
+        "speed": 11.623214848265265,
+        "intelligence": 7.3079169877906045
+      },
+      "new_values": {
+        "strength": 4.777808797787722,
+        "stealth": 9.526973985383727,
+        "speed": 11.623214848265265,
+        "intelligence": 12.20921555403509
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-7087",
+      "virus_name": "Dtrojan-937",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 6.13052889706427,
+        "stealth": 4.958939412035635,
+        "speed": 7.467444010165099,
+        "intelligence": 2.6456155319889136
+      },
+      "new_values": {
+        "strength": 6.13052889706427,
+        "stealth": 4.958939412035635,
+        "speed": 8.69233198602009,
+        "intelligence": 2.6456155319889136
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-3345",
+      "virus_name": "Xexploit-992",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "network_eavesdropping"
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-2238",
+      "virus_name": "Wstealth-841",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "self_replication"
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-4782",
+      "virus_name": "Wworm-555",
+      "mutation_type": "increase_strength",
+      "old_values": {
+        "strength": 14.668742946051687,
+        "stealth": 5.652352103412554,
+        "speed": 3.5765856372693814,
+        "intelligence": 6.937425041079946
+      },
+      "new_values": {
+        "strength": 16.15422382705578,
+        "stealth": 5.652352103412554,
+        "speed": 3.5765856372693814,
+        "intelligence": 6.937425041079946
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001632-8839",
+      "virus_name": "Ktrojan-312",
+      "mutation_type": "increase_speed",
+      "old_values": {
+        "strength": 8.525819360437485,
+        "stealth": 6.458298938758968,
+        "speed": 3.2278538715486484,
+        "intelligence": 2.3628254203514705
+      },
+      "new_values": {
+        "strength": 8.525819360437485,
+        "stealth": 6.458298938758968,
+        "speed": 7.471771139386247,
+        "intelligence": 2.3628254203514705
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001633-1227",
+      "virus_name": "Dtrojan-590",
+      "mutation_type": "develop_polymorphic",
+      "old_values": {
+        "strength": 4.587068142929988,
+        "stealth": 8.5441383533636,
+        "speed": 8.919787291640823,
+        "intelligence": 4.405417061562662
+      },
+      "new_values": {
+        "strength": 4.587068142929988,
+        "stealth": 8.5441383533636,
+        "speed": 8.919787291640823,
+        "intelligence": 4.405417061562662
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    },
+    {
+      "virus_id": "VIRUS-20260815001634-4223",
+      "virus_name": "Kworm-122",
+      "mutation_type": "add_capability",
+      "old_values": {},
+      "new_values": {
+        "new_capability": "lateral_movement"
+      },
+      "timestamp": "2026-08-15T00:16:34.096709",
+      "success": true
+    }
+  ],
+  "saved_at": "2026-08-15T00:16:34.096709"
+}
