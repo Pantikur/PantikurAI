@@ -270,6 +270,7 @@ def start_girls_orchestrator():
 # === Глобальная переменная бота и блокировка ===
 chatbot = None
 CHATBOT_LOCK = threading.RLock()  # Защита при доступе и перезагрузке
+_qwen_cache = None  # Кэш загруженной модели
     # === Глобальная переменная WebSearch ===
 web_search = None
 WEBSH_LOCK = threading.Lock()  # Защита при доступе к web_search
@@ -400,6 +401,11 @@ def load_qwen_model():
     
     Примечание: Qwen2.5-Coder-3B используется ТОЛЬКО Нобукой (nobuka/).
     """
+    global _qwen_cache
+    if _qwen_cache is not None:
+        logger.info("📦 Использую кэшированную модель Qwen2.5-3B")
+        return _qwen_cache
+    
     from transformers import AutoTokenizer, AutoModelForCausalLM
     import torch
     
@@ -508,7 +514,14 @@ def load_qwen_model():
         logger.info("   ✅ Модель загружена на CPU")
     
     # Оборачиваем в QwenBot
-    return QwenBot(tokenizer, model)
+    bot = QwenBot(tokenizer, model)
+    
+    # Сохраняем в кэш
+    global _qwen_cache
+    _qwen_cache = bot
+    logger.info("✅ Модель сохранена в кэш")
+    
+    return bot
 
 
 # === Lifespan: загрузка при старте и остановке ===
@@ -634,6 +647,8 @@ async def lifespan(app: FastAPI):
             if signal_file.exists():
                 logger.info("📡 Получен сигнал от Наото: перезагрузка модели после обучения...")
                 try:
+                    global _qwen_cache
+                    _qwen_cache = None  # Сброс кэша
                     qwen_model = load_qwen_model()
                     with CHATBOT_LOCK:
                         chatbot = qwen_model
@@ -3221,6 +3236,8 @@ def run_retrain_sync():
             logger.info("🎉 Ретраин завершён успешно!")
             # Перезагрузка Qwen2.5-3B
             try:
+                global _qwen_cache
+                _qwen_cache = None  # Сброс кэша
                 qwen_model = load_qwen_model()
                 with CHATBOT_LOCK:
                     chatbot = qwen_model
