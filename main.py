@@ -517,7 +517,6 @@ def load_qwen_model():
     bot = QwenBot(tokenizer, model)
     
     # Сохраняем в кэш
-    global _qwen_cache
     _qwen_cache = bot
     logger.info("✅ Модель сохранена в кэш")
     
@@ -647,7 +646,6 @@ async def lifespan(app: FastAPI):
             if signal_file.exists():
                 logger.info("📡 Получен сигнал от Наото: перезагрузка модели после обучения...")
                 try:
-                    global _qwen_cache
                     _qwen_cache = None  # Сброс кэша
                     qwen_model = load_qwen_model()
                     with CHATBOT_LOCK:
@@ -3236,7 +3234,6 @@ def run_retrain_sync():
             logger.info("🎉 Ретраин завершён успешно!")
             # Перезагрузка Qwen2.5-3B
             try:
-                global _qwen_cache
                 _qwen_cache = None  # Сброс кэша
                 qwen_model = load_qwen_model()
                 with CHATBOT_LOCK:
