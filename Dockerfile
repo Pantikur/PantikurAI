@@ -127,9 +127,10 @@ ENV TRANSFORMERS_OFFLINE=1
 EXPOSE ${PORT}
 
 # === HEALTHCHECK ===
-# /ping — мгновенный ответ 200 без проверки модели
-# start-period=60s достаточно для загрузки uvicorn (модель грузится параллельно)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+# /ping — мгновенный ответ 200, проверяет что uvicorn слушает порт 8000
+# Без start-period — Timeweb может не поддерживать эту опцию
+# timeout=5s — быстро реагируем, interval=15s — чаще проверяем
+HEALTHCHECK --interval=15s --timeout=5s --retries=5 \
     CMD curl -f http://localhost:${PORT}/ping || exit 1
 
 # === КОМАНДА ЗАПУСКА (через entrypoint с загрузкой модели) ===

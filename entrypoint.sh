@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e  # Убран: Timeweb может не поддерживать exit на некоторых командах
 
 echo "🚀 Запуск Pantikur ChatBot..."
 
@@ -20,52 +20,9 @@ mkdir -p /app/shiori/polygon
 # === ЗАГРУЗКА Qwen2.5-3B (публичная модель, без токенов) ===
 # Загружаем модель В ФОНЕ, не блокируя запуск uvicorn
 if [ ! -d "/app/models/qwen2.5-3b" ] || [ -z "$(ls -A /app/models/qwen2.5-3b 2>/dev/null)" ]; then
-    echo "📥 Загрузка Qwen2.5-3B-Instruct из HuggingFace (ФОНОВОЕ)..."
-    echo "   Модель: Qwen/Qwen2.5-3B-Instruct"
-    echo "   Сохранение: /app/models/qwen2.5-3b/"
-    echo "   Размер: ~6 ГБ (5-15 минут)"
-    
-    # Временно отключаем offline-режим для загрузки
-    export HF_HUB_OFFLINE=0
-    export TRANSFORMERS_OFFLINE=0
-    
-    # Запускаем загрузку в фоне
-    python -c "
-import os
-import sys
-import time
-from huggingface_hub import snapshot_download
-
-model_id = 'Qwen/Qwen2.5-3B-Instruct'
-local_dir = '/app/models/qwen2.5-3b'
-log_file = '/app/logs/model_download.log'
-
-try:
-    with open(log_file, 'w') as log:
-        log.write('Downloading model...\n')
-        log.flush()
-        
-        snapshot_download(
-            repo_id=model_id,
-            local_dir=local_dir,
-            local_dir_use_symlinks=False,
-        )
-        
-        log.write(f'✅ Model {model_id} downloaded to {local_dir}\n')
-        print(f'✅ Модель {model_id} загружена в {local_dir}')
-except Exception as e:
-    with open(log_file, 'a') as log:
-        log.write(f'⚠️ Download failed: {e}\n')
-    print(f'⚠️ Не удалось загрузить модель: {e}')
-    print('ℹ️ Бот будет использовать fallback-модель при запуске')
-" 2>&1 &
-    DOWNLOAD_PID=$!
-    echo "📥 Загрузка модели запущена в фоне (PID: $DOWNLOAD_PID)"
-    echo "ℹ️ Uvicorn запустится немедленно, модель загрузится параллельно"
-    
-    # Возвращаем offline-режим после запуска загрузки
-    export HF_HUB_OFFLINE=1
-    export TRANSFORMERS_OFFLINE=1
+    echo "⚠️ Папка /app/models/qwen2.5-3b пуста или отсутствует"
+    echo "ℹ️ Убедитесь, что модель смонтирована через volumes или уже загружена"
+    echo "ℹ️ QwenBot в main.py будет искать модель локально и фоллбэкиться на кэш transformers"
 else
     echo "✅ Qwen2.5-3B уже загружена в /app/models/qwen2.5-3b"
 fi
@@ -123,4 +80,4 @@ exec uvicorn main:app \
     --host ${HOST:-0.0.0.0} \
     --port ${PORT:-8000} \
     --log-level info \
-    --access-log
+    --workers 1
