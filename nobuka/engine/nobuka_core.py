@@ -1360,6 +1360,21 @@ class NobukaCore:
             improvement.fix_attempts = attempt
             self.metrics["fix_attempts"] += 1
 
+            # Пропускаем файлы, которые уже неоднократно не удавалось исправить
+            if file_path in self._failed_files_cache:
+                self._failed_files_cache[file_path] += 1
+                if self._failed_files_cache[file_path] >= 3:
+                    self.logger.warning(
+                        f"⏭️ Пропуск нефиксабельного файла (3+ неудачи): {file_path}"
+                    )
+                    improvement.rolled_back = True
+                    improvement.rollback_reason = "Файл признан нефиксабельным (автоматические правки не работают)"
+                    self.metrics["improvements_rolled_back"] += 1
+                    self.metrics["fix_attempts_failed"] += 1
+                    return
+            else:
+                self._failed_files_cache[file_path] = 1
+
             if attempt >= max_attempts:
                 error = "нет исправимых проблем"
                 if results:

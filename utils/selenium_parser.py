@@ -58,32 +58,34 @@ def _find_chrome_binary() -> Optional[str]:
 
 def _install_chrome_linux() -> bool:
     """
-    Устанавливает Chrome/Chromium на Linux без устаревшего apt-key.
-    Сначала пробует chromium из штатных репозиториев, затем .deb Google напрямую.
+    Устанавливает Google Chrome на Linux.
+    Сначала пробует .deb Google напрямую (стабильная версия).
     """
     try:
-        # 1) Chromium из репозитория дистрибутива (не требует ключей Google)
-        for pkg in ('chromium', 'chromium-browser'):
-            result = subprocess.run(
-                ['apt-get', 'install', '-y', '--no-install-recommends', pkg],
-                capture_output=True,
-            )
-            if result.returncode == 0 and _find_chrome_binary():
-                return True
-
-        # 2) Google Chrome из официального .deb (без apt-key, ставим пакет напрямую)
         deb_path = '/tmp/google-chrome-stable_current_amd64.deb'
+        
+        # Скачиваем .deb пакет Google Chrome напрямую
         dl = subprocess.run(
             ['wget', '-q', '-O', deb_path,
              'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'],
             capture_output=True,
         )
         if dl.returncode == 0:
+            # Устанавливаем через dpkg (требует зависимости)
             install = subprocess.run(
                 ['apt-get', 'install', '-y', deb_path],
                 capture_output=True,
             )
             if install.returncode == 0 and _find_chrome_binary():
+                return True
+            
+            # Если dpkg не справился с зависимостями — пробуем apt
+            subprocess.run(['apt-get', 'update'], capture_output=True)
+            install2 = subprocess.run(
+                ['apt-get', 'install', '-y', deb_path],
+                capture_output=True,
+            )
+            if install2.returncode == 0 and _find_chrome_binary():
                 return True
 
         return False
@@ -181,8 +183,25 @@ class SeleniumBookParser:
             safe_print("[🚀] Запуск Chrome WebDriver...")
             
             if HAS_WDM:
-                service = Service(ChromeDriverManager().install())
-                self.driver = webdriver.Chrome(service=service, options=options)
+                try:
+                    # Пробуем автозагрузку драйвера
+                    service = Service(ChromeDriverManager().install())
+                    self.driver = webdriver.Chrome(service=service, options=options)
+                except Exception as wdm_err:
+                    safe_print(f"⚠️ WDM ошибка: {wdm_err}")
+                    safe_print("ℹ️ Пробуем системный ChromeDriver...")
+                    try:
+                        self.driver = webdriver.Chrome(options=options)
+                    except Exception as sys_err:
+                        safe_print(f"❌ Системный драйвер тоже не сработал: {sys_err}")
+                        # Финальный fallback: запускаем Chrome без драйвера (иногда работает в старых версиях)
+                        safe_print("⚠️ Финальный fallback — запуск без ChromeDriver...")
+                        try:
+                            self.driver = webdriver.Chrome(options=options)
+                            self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+                        except Exception:
+                            safe_print("❌ WebDriver полностью недоступен. Парсинг отключён.")
+                            return False
             else:
                 self.driver = webdriver.Chrome(options=options)
             

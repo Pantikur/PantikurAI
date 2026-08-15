@@ -28,6 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 FROM python:3.11-slim AS production
 
 # === СИСТЕМНЫЕ ЗАВИСИМОСТИ (минимальный набор для Selenium/Web) ===
+# === Google Chrome устанавливается через entrypoint.sh (совместимая версия) ===
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \

@@ -9,9 +9,45 @@ LLM Service — сервис для работы с моделями Qwen2.5.
 from __future__ import annotations
 
 import logging
+import sys
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from shiori.engine.config import ShioriConfig
+
+# Определяем корень проекта для корректных путей к моделям
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+
+def _resolve_model_path(relative_path: str) -> str:
+    """
+    Преобразует относительный путь к модели в абсолютный.
+    Если модель не найдена локально — возвращает HF ID.
+    """
+    local = Path(relative_path)
+    
+    # Список всех возможных корней проекта
+    candidates = [
+        _PROJECT_ROOT,
+        Path.cwd(),  # текущая рабочая директория
+        Path(__file__).resolve().parent.parent.parent,  # один уровень выше shiori/engine
+        Path("/app"),  # стандартный путь в Docker
+        Path("/"),     # корень файловой системы
+    ]
+    
+    for root in candidates:
+        abs_path = root / relative_path
+        if abs_path.exists():
+            resolved = str(abs_path)
+            if resolved != relative_path:
+                return resolved
+    
+    # Fallback — HuggingFace
+    if "qwen2.5-coder" in relative_path:
+        return "Qwen/Qwen2.5-Coder-3B-Instruct"
+    return "Qwen/Qwen2.5-3B-Instruct"
 
 
 class ShioriLLMService:
@@ -49,9 +85,13 @@ class ShioriLLMService:
             
             # Загрузка General модели (Qwen2.5-3B)
             self.logger.info(f"📥 Загрузка General модели: {self.config.general_model_path}")
+            
+            model_id = _resolve_model_path(self.config.general_model_path)
+            self.logger.info(f"📂 Используем модель: {model_id}")
+            
             try:
                 self.general_tokenizer = AutoTokenizer.from_pretrained(
-                    self.config.general_model_path,
+                    model_id,
                     trust_remote_code=True
                 )
                 
@@ -66,7 +106,7 @@ class ShioriLLMService:
                             bnb_4bit_use_double_quant=True,
                         )
                         self.general_model = AutoModelForCausalLM.from_pretrained(
-                            self.config.general_model_path,
+                            model_id,
                             quantization_config=quantization_config,
                             device_map="auto",
                             trust_remote_code=True,
@@ -75,7 +115,7 @@ class ShioriLLMService:
                     except ImportError:
                         self.logger.warning("⚠️ bitsandbytes не установлен, загружаю без квантизации...")
                         self.general_model = AutoModelForCausalLM.from_pretrained(
-                            self.config.general_model_path,
+                            model_id,
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
@@ -84,7 +124,7 @@ class ShioriLLMService:
                     except Exception as e:
                         self.logger.warning(f"⚠️ Ошибка квантизации ({e}), пробую без неё...")
                         self.general_model = AutoModelForCausalLM.from_pretrained(
-                            self.config.general_model_path,
+                            model_id,
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
@@ -92,7 +132,7 @@ class ShioriLLMService:
                         self.logger.info("✅ General модель загружена (float16, fallback)")
                 else:
                     self.general_model = AutoModelForCausalLM.from_pretrained(
-                        self.config.general_model_path,
+                        model_id,
                         torch_dtype=torch.float32,
                         device_map=None,
                         trust_remote_code=True,
@@ -105,9 +145,13 @@ class ShioriLLMService:
             
             # Загрузка Coder модели (Qwen2.5-Coder-3B)
             self.logger.info(f"📥 Загрузка Coder модели: {self.config.coder_model_path}")
+            
+            coder_id = _resolve_model_path(self.config.coder_model_path)
+            self.logger.info(f"📂 Используем Coder модель: {coder_id}")
+            
             try:
                 self.coder_tokenizer = AutoTokenizer.from_pretrained(
-                    self.config.coder_model_path,
+                    coder_id,
                     trust_remote_code=True
                 )
                 
@@ -122,7 +166,7 @@ class ShioriLLMService:
                             bnb_4bit_use_double_quant=True,
                         )
                         self.coder_model = AutoModelForCausalLM.from_pretrained(
-                            self.config.coder_model_path,
+                            coder_id,
                             quantization_config=quantization_config,
                             device_map="auto",
                             trust_remote_code=True,
@@ -131,7 +175,7 @@ class ShioriLLMService:
                     except ImportError:
                         self.logger.warning("⚠️ bitsandbytes не установлен, загружаю без квантизации...")
                         self.coder_model = AutoModelForCausalLM.from_pretrained(
-                            self.config.coder_model_path,
+                            coder_id,
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
@@ -140,7 +184,7 @@ class ShioriLLMService:
                     except Exception as e:
                         self.logger.warning(f"⚠️ Ошибка квантизации ({e}), пробую без неё...")
                         self.coder_model = AutoModelForCausalLM.from_pretrained(
-                            self.config.coder_model_path,
+                            coder_id,
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
@@ -148,7 +192,7 @@ class ShioriLLMService:
                         self.logger.info("✅ Coder модель загружена (float16, fallback)")
                 else:
                     self.coder_model = AutoModelForCausalLM.from_pretrained(
-                        self.config.coder_model_path,
+                        coder_id,
                         torch_dtype=torch.float32,
                         device_map=None,
                         trust_remote_code=True,

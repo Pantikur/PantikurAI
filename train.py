@@ -51,6 +51,31 @@ def safe_print(msg: str):
     print(msg, flush=True)
 
 
+# === ПРОВЕРКА ПАМЯТИ ===
+try:
+    import psutil
+    def check_memory():
+        """Проверяет доступную память и возвращает безопасный batch_size."""
+        total_gb = psutil.virtual_memory().total / (1024**3)
+        available_gb = psutil.virtual_memory().available / (1024**3)
+        safe_print(f"[MEM] Система: {total_gb:.1f} ГБ всего, {available_gb:.1f} ГБ свободно")
+        
+        # Определяем безопасный batch_size
+        if available_gb < 4:
+            safe_print("[WARN] Мало памяти! Используем минимальный batch_size=1")
+            return 1
+        elif available_gb < 8:
+            safe_print("[INFO] Умеренная память. batch_size=2")
+            return 2
+        else:
+            safe_print("[INFO] Достаточная память. batch_size=4")
+            return 4
+    BATCH_SIZE = check_memory()
+except ImportError:
+    safe_print("[WARN] psutil не установлен, используем batch_size=2")
+    BATCH_SIZE = 2
+
+
 # === Настройка устройства (GPU/CPU) ===
 if torch.cuda.is_available():
     DEVICE = torch.device("cuda")
@@ -500,7 +525,7 @@ def main():
     safe_print(f"[DATA] Блоков для обучения: {len(blocks)} (размер: {block_size} токенов)")
 
     dataset = TensorDataset(input_ids)
-    dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 
     # Оптимизатор с scheduler
     optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5, weight_decay=0.01)

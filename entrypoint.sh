@@ -62,6 +62,25 @@ else
     echo "✅ Qwen2.5-3B уже загружена в /app/models/qwen2.5-3b"
 fi
 
+# === УСТАНОВКА GOOGLE CHROME (совместимая версия для Selenium) ===
+echo "🔧 Установка Google Chrome для Selenium..."
+CHROME_BIN_PATH=$(which google-chrome 2>/dev/null || which chromium-browser 2>/dev/null || echo "")
+if [ -z "$CHROME_BIN_PATH" ]; then
+    echo "📥 Chrome не найден — устанавливаем Google Chrome Stable..."
+    CHROME_DEB="/tmp/google-chrome-stable_current_amd64.deb"
+    wget -q -O "$CHROME_DEB" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    if [ -f "$CHROME_DEB" ]; then
+        apt-get update -qq && apt-get install -y -qq "$CHROME_DEB" > /dev/null 2>&1
+        rm -f "$CHROME_DEB"
+        echo "✅ Google Chrome установлен"
+    else
+        echo "⚠️ Не удалось скачать Google Chrome, пробуем Chromium..."
+        apt-get install -y -qq chromium-browser > /dev/null 2>&1 || true
+    fi
+else
+    echo "✅ Chrome уже установлен: $CHROME_BIN_PATH"
+fi
+
 # === ПРОВЕРКА ЗАВИСИМОСТЕЙ ===
 echo "📦 Проверка зависимостей..."
 python -c "import fastapi; import uvicorn; print('✅ Зависимости OK')" || {
