@@ -184,9 +184,35 @@ class SeleniumBookParser:
             
             if HAS_WDM:
                 try:
-                    # Пробуем автозагрузку драйвера
-                    service = Service(ChromeDriverManager().install())
-                    self.driver = webdriver.Chrome(service=service, options=options)
+                    # Пробуем автозагрузку драйвера, совпадающего с установленным Chrome
+                    # Сначала пробуем узнать версию Chrome и подобрать драйвер
+                    chrome_version = None
+                    import subprocess
+                    try:
+                        result = subprocess.run(
+                            ['google-chrome', '--version'],
+                            capture_output=True, text=True, timeout=5
+                        )
+                        if result.returncode == 0:
+                            # Формат: "Google Chrome 151.0.7922.137"
+                            chrome_version = result.stdout.strip().split()[-1].split('.')[0]
+                            safe_print(f"ℹ️ Chrome версия: {chrome_version}")
+                    except Exception:
+                        pass
+                    
+                    # Если не удалось определить версию — пробуем без указания (автоматически)
+                    # Если определили — пробуем скачать драйвер этой версии
+                    if chrome_version:
+                        try:
+                            service = Service(ChromeDriverManager(version=chrome_version).install())
+                            self.driver = webdriver.Chrome(service=service, options=options)
+                        except Exception as wdm_v_err:
+                            safe_print(f"⚠️ WDM v{chrome_version} не удалась, пробую LATEST: {wdm_v_err}")
+                            service = Service(ChromeDriverManager().install())
+                            self.driver = webdriver.Chrome(service=service, options=options)
+                    else:
+                        service = Service(ChromeDriverManager().install())
+                        self.driver = webdriver.Chrome(service=service, options=options)
                 except Exception as wdm_err:
                     safe_print(f"⚠️ WDM ошибка: {wdm_err}")
                     safe_print("ℹ️ Пробуем системный ChromeDriver...")
