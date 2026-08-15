@@ -912,6 +912,12 @@ async def health_check():
         "rate_limit_active": RATE_LIMIT_REQUESTS > 0
     }
 
+# === Endpoint: простой ping (для healthcheck Timeweb) ===
+@app.get("/ping")
+async def ping():
+    """Мгновенный ответ 200 — для проверки работоспособности контейнера"""
+    return {"status": "ok"}
+
 
 # === Endpoint: размер модели ===
 @app.get("/model/size")

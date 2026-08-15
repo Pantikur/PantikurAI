@@ -127,10 +127,10 @@ ENV TRANSFORMERS_OFFLINE=1
 EXPOSE ${PORT}
 
 # === HEALTHCHECK ===
-# Увеличен start-period до 120s для загрузки модели
-# Интервал 30s, таймаут 30s, до 5 попыток
-HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-    CMD curl -f http://localhost:${PORT}/health || exit 1
+# /ping — мгновенный ответ 200 без проверки модели
+# start-period=60s достаточно для загрузки uvicorn (модель грузится параллельно)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/ping || exit 1
 
 # === КОМАНДА ЗАПУСКА (через entrypoint с загрузкой модели) ===
 CMD ["./entrypoint.sh"]
