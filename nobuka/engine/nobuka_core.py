@@ -133,6 +133,9 @@ class NobukaCore:
         self.document_editor = DocumentEditor(self.config)
         self.logger.info(f"📝 Редактор документов инициализирован: {len(self.document_editor.SCAN_DIRS)} директорий для сканирования")
 
+        # Кэш проваленных файлов (для предотвращения бесконечных циклов авто-фиксов)
+        self._failed_files_cache: dict[str, int] = {}
+
         # Сеть учёных
         self.network = None
         if _HAS_NETWORK and get_network is not None:

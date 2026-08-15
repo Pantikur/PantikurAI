@@ -690,114 +690,102 @@ async def lifespan(app: FastAPI):
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
     # === КОНЕЦ АСИНХРОННОГО ЗАПУСКА ===
 
-    # === Фоновая загрузка Qwen2.5-3B (не блокирует запуск сервера) ===
-    async def load_chatbot_background():
-        """Загружает Qwen2.5-3B в фоне, не блокируя запуск сервера."""
-        global chatbot
+    # === ЗАГРУЗКА Qwen2.5-3Б ПЕРЕД СТАРТОМ СЕРВЕРА (блокируем lifespan) ===
+    logger.info("🔁 Загружаю Qwen2.5-3B (блокирую старт сервера)...")
+    load_start = time.time()
+    
+    try:
+        qwen_model = await asyncio.to_thread(load_qwen_model)
+        load_time = time.time() - load_start
+        logger.info(f"📦 Qwen2.5-3B загружен за {load_time:.2f} сек")
         
-        logger.info("🔁 Загружаю Qwen2.5-3B (в фоне)...")
-        load_start = time.time()
-        
-        try:
-            qwen_model = await asyncio.to_thread(load_qwen_model)
-            load_time = time.time() - load_start
-            logger.info(f"📦 Qwen2.5-3B загружен за {load_time:.2f} сек")
-            
-            with CHATBOT_LOCK:
-                chatbot = qwen_model
-            logger.info("✅ Qwen2.5-3B успешно загружен!")
+        with CHATBOT_LOCK:
+            chatbot = qwen_model
+        logger.info("✅ Qwen2.5-3B успешно загружен!")
 
-            if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
-                logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
+        if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
+            logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
+    except Exception as e:
+        logger.critical(f"❌ КРИТИЧЕСКАЯ ОШИБКА: не удалось загрузить Qwen2.5-3B: {e}")
+        logger.critical("⚠️ Сервер НЕ запустится без модели")
+        raise
 
-            # === WebSearch инициализация (в фоне, не блокирует) ===
+    # === WebSearch инициализация (в фоне, не блокирует) ===
+    try:
+        logger.info("🔍 Инициализирую WebSearch (в фоне)...")
+        web_search_start = asyncio.get_event_loop().time()
+        from src.web_search import WebSearch  # type: ignore
+
+        def _init_websearch():
+            ws = WebSearch()
+            ws.init_driver()
+            return ws
+
+        ws_result = await asyncio.to_thread(_init_websearch)
+
+        if ws_result is None or ws_result.driver is None:
+            logger.warning("⚠️ init_driver() вернул driver=None — WebSearch отключён")
+        else:
+            with WEBSH_LOCK:
+                web_search = ws_result
+
+            # Загрузка кэша
             try:
-                logger.info("🔍 Инициализирую WebSearch (в фоне)...")
-                web_search_start = asyncio.get_event_loop().time()
-                from src.web_search import WebSearch  # type: ignore
-
-                def _init_websearch():
-                    ws = WebSearch()
-                    ws.init_driver()
-                    return ws
-
-                ws_result = await asyncio.to_thread(_init_websearch)
-
-                if ws_result is None or ws_result.driver is None:
-                    logger.warning("⚠️ init_driver() вернул driver=None — WebSearch отключён")
-                else:
-                    with WEBSH_LOCK:
-                        web_search = ws_result
-
-                    # Загрузка кэша
-                    try:
-                        cache_file = str(BASE_DIR / "data" / "knowledge_cache.json")
-                        web_search._load_knowledge_cache(cache_file)
-                        logger.info(f"📚 knowledge_cache загружен ({cache_file})")
-                    except Exception as e:
-                        logger.warning(f"⚠️ Ошибка загрузки knowledge_cache: {e}")
-
-                    web_search_time = asyncio.get_event_loop().time() - web_search_start
-                    logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
-
-                    # === ЗАПУСК АВТОНОМНОГО ПОИСКА СЛОВ ===
-                    if AUTO_WEB_SEARCH_ENABLED:
-                        logger.info(f"🔍 Автопоиск слов: ВКЛЮЧЕНО")
-                        logger.info(f"   ⏱️ Интервал: {AUTO_WEB_SEARCH_INTERVAL // 60} минут")
-                        logger.info(f"   📝 Слов за цикл: {AUTO_WEB_SEARCH_BATCH_SIZE}")
-
-                        async def start_auto_web_search():
-                            """Запускает автопоиск слов в фоне"""
-                            try:
-                                from utils.auto_web_search import AutoWebSearch
-                                
-                                # Небольшая задержка перед стартом (ждем полной загрузки)
-                                await asyncio.sleep(30)
-                                
-                                controller = AutoWebSearch(
-                                    interval_seconds=AUTO_WEB_SEARCH_INTERVAL,
-                                    batch_size=AUTO_WEB_SEARCH_BATCH_SIZE,
-                                    min_word_length=AUTO_WEB_SEARCH_MIN_LENGTH,
-                                    extract_depth=AUTO_WEB_SEARCH_EXTRACT_DEPTH,
-                                    max_new_words_per_def=AUTO_WEB_SEARCH_MAX_NEW_WORDS,
-                                    project_root=str(BASE_DIR)
-                                )
-                                
-                                # Подключаем web_search (если инициализирован)
-                                with WEBSH_LOCK:
-                                    controller.web_search = web_search
-                                
-                                # Запускаем в отдельном потоке
-                                loop = asyncio.get_event_loop()
-                                await loop.run_in_executor(None, controller.run_continuous)
-                                
-                            except Exception as e:
-                                logger.error(f"❌ Ошибка автопоиска слов: {e}")
-                        
-                        # Запускаем фоновую задачу
-                        asyncio.create_task(start_auto_web_search())
-                    else:
-                        logger.info("🔍 Автопоиск слов: ОТКЛЮЧЁН")
-
+                cache_file = str(BASE_DIR / "data" / "knowledge_cache.json")
+                web_search._load_knowledge_cache(cache_file)
+                logger.info(f"📚 knowledge_cache загружен ({cache_file})")
             except Exception as e:
-                logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
-                with WEBSH_LOCK:
-                    web_search = None
-                logger.warning("⚠️ WebSearch отключён — поиск слов в интернете недоступен")
+                logger.warning(f"⚠️ Ошибка загрузки knowledge_cache: {e}")
 
-        except Exception as e:
-            logger.critical(f"❌ Ошибка инициализации бота: {e}", exc_info=True)
-            logger.warning("⚠️ Бот не загружен — API будет работать, но ответы недоступны")
-            logger.info("🔄 Запуск фоновой задачи повторной загрузки бота...")
-            try:
-                asyncio.create_task(auto_reload_chatbot_loop())
-            except Exception as retry_err:
-                logger.error(f"❌ Не удалось запустить задачу авто-загрузки: {retry_err}")
+            web_search_time = asyncio.get_event_loop().time() - web_search_start
+            logger.info(f"✅ WebSearch инициализирован за {web_search_time:.2f} сек")
 
-    # Запускаем загрузку в фоне — сервер стартует немедленно
-    asyncio.create_task(load_chatbot_background())
+            # === ЗАПУСК АВТОНОМНОГО ПОИСКА СЛОВ ===
+            if AUTO_WEB_SEARCH_ENABLED:
+                logger.info(f"🔍 Автопоиск слов: ВКЛЮЧЕНО")
+                logger.info(f"   ⏱️ Интервал: {AUTO_WEB_SEARCH_INTERVAL // 60} минут")
+                logger.info(f"   📝 Слов за цикл: {AUTO_WEB_SEARCH_BATCH_SIZE}")
 
-    logger.info(f"✅ Lifespan готов за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек (бот грузится в фоне)")
+                async def start_auto_web_search():
+                    """Запускает автопоиск слов в фоне"""
+                    try:
+                        from utils.auto_web_search import AutoWebSearch
+                        
+                        # Небольшая задержка перед стартом (ждем полной загрузки)
+                        await asyncio.sleep(30)
+                        
+                        controller = AutoWebSearch(
+                            interval_seconds=AUTO_WEB_SEARCH_INTERVAL,
+                            batch_size=AUTO_WEB_SEARCH_BATCH_SIZE,
+                            min_word_length=AUTO_WEB_SEARCH_MIN_LENGTH,
+                            extract_depth=AUTO_WEB_SEARCH_EXTRACT_DEPTH,
+                            max_new_words_per_def=AUTO_WEB_SEARCH_MAX_NEW_WORDS,
+                            project_root=str(BASE_DIR)
+                        )
+                        
+                        # Подключаем web_search (если инициализирован)
+                        with WEBSH_LOCK:
+                            controller.web_search = web_search
+                        
+                        # Запускаем в отдельном потоке
+                        loop = asyncio.get_event_loop()
+                        await loop.run_in_executor(None, controller.run_continuous)
+                        
+                    except Exception as e:
+                        logger.error(f"❌ Ошибка автопоиска слов: {e}")
+                
+                # Запускаем фоновую задачу
+                asyncio.create_task(start_auto_web_search())
+            else:
+                logger.info("🔍 Автопоиск слов: ОТКЛЮЧЁН")
+
+    except Exception as e:
+        logger.error(f"❌ Ошибка инициализации WebSearch: {e}")
+        with WEBSH_LOCK:
+            web_search = None
+        logger.warning("⚠️ WebSearch отключён — поиск слов в интернете недоступен")
+
+    logger.info(f"✅ Lifespan готов за {asyncio.get_event_loop().time() - start_lifespan:.2f} сек")
 
     yield
 
