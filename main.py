@@ -690,25 +690,28 @@ async def lifespan(app: FastAPI):
             logger.error(f"⚠️ Ошибка проверки времени файла: {e}")
     # === КОНЕЦ АСИНХРОННОГО ЗАПУСКА ===
 
-    # === ЗАГРУЗКА Qwen2.5-3Б ПЕРЕД СТАРТОМ СЕРВЕРА (блокируем lifespan) ===
-    logger.info("🔁 Загружаю Qwen2.5-3B (блокирую старт сервера)...")
-    load_start = time.time()
-    
-    try:
-        qwen_model = await asyncio.to_thread(load_qwen_model)
-        load_time = time.time() - load_start
-        logger.info(f"📦 Qwen2.5-3B загружен за {load_time:.2f} сек")
+    # === ЗАГРУЗКА Qwen2.5-3Б В ФОНЕ (НЕ блокируем lifespan — uvicorn стартует сразу) ===
+    async def load_chatbot_background():
+        """Загружает модель в фоне, НЕ блокируя старт сервера."""
+        logger.info("🔁 Загружаю Qwen2.5-3B (в фоне)...")
+        load_start = time.time()
         
-        with CHATBOT_LOCK:
-            chatbot = qwen_model
-        logger.info("✅ Qwen2.5-3B успешно загружен!")
+        try:
+            qwen_model = await asyncio.to_thread(load_qwen_model)
+            load_time = time.time() - load_start
+            logger.info(f"📦 Qwen2.5-3B загружен за {load_time:.2f} сек")
+            
+            with CHATBOT_LOCK:
+                chatbot = qwen_model
+            logger.info("✅ Qwen2.5-3B успешно загружен!")
 
-        if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
-            logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
-    except Exception as e:
-        logger.critical(f"❌ КРИТИЧЕСКАЯ ОШИБКА: не удалось загрузить Qwen2.5-3B: {e}")
-        logger.critical("⚠️ Сервер НЕ запустится без модели")
-        raise
+            if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
+                logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
+        except Exception as e:
+            logger.critical(f"❌ КРИТИЧЕСКАЯ ОШИБКА: не удалось загрузить Qwen2.5-3B: {e}")
+            raise
+    
+    asyncio.create_task(load_chatbot_background())
 
     # === WebSearch инициализация (в фоне, не блокирует) ===
     try:
@@ -2957,8 +2960,18 @@ async def predict(request: Request):
         local_ws = web_search
 
     if local_bot is None:
-        logger.error("❌ chatbot не загружен")
-        raise HTTPException(status_code=500, detail="Сервис временно недоступен")
+        logger.warning("⚠️ Модель ещё загружается, жду до 30 сек...")
+        # Ждём пока модель загрузится (максимум 30 сек)
+        for i in range(60):  # 60 * 0.5 сек = 30 сек
+            await asyncio.sleep(0.5)
+            with CHATBOT_LOCK:
+                local_bot = chatbot
+            if local_bot is not None:
+                logger.info("✅ Модель загрузилась, продолжаем...")
+                break
+        else:
+            logger.error("❌ chatbot не загружен за 30 сек")
+            raise HTTPException(status_code=503, detail="Модель ещё загружается, попробуйте через минуту")
 
     # === Генерация по режимам ===
     try:
