@@ -92,7 +92,8 @@ class ShioriLLMService:
             try:
                 self.general_tokenizer = AutoTokenizer.from_pretrained(
                     model_id,
-                    trust_remote_code=True
+                    trust_remote_code=True,
+                    local_files_only=Path(model_id).exists(),
                 )
                 
                 # Пытаемся использовать 4-bit квантизацию для экономии памяти
@@ -110,6 +111,7 @@ class ShioriLLMService:
                             quantization_config=quantization_config,
                             device_map="auto",
                             trust_remote_code=True,
+                            local_files_only=Path(model_id).exists(),
                         )
                         self.logger.info("✅ General модель загружена с 4-bit квантизацией")
                     except ImportError:
@@ -119,6 +121,7 @@ class ShioriLLMService:
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
+                            local_files_only=Path(model_id).exists(),
                         )
                         self.logger.info("✅ General модель загружена (float16)")
                     except Exception as e:
@@ -128,6 +131,7 @@ class ShioriLLMService:
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
+                            local_files_only=Path(model_id).exists(),
                         )
                         self.logger.info("✅ General модель загружена (float16, fallback)")
                 else:
@@ -136,6 +140,7 @@ class ShioriLLMService:
                         torch_dtype=torch.float32,
                         device_map=None,
                         trust_remote_code=True,
+                        local_files_only=Path(model_id).exists(),
                     )
                     self.logger.info("✅ General модель загружена (CPU, float32)")
                 
@@ -152,7 +157,8 @@ class ShioriLLMService:
             try:
                 self.coder_tokenizer = AutoTokenizer.from_pretrained(
                     coder_id,
-                    trust_remote_code=True
+                    trust_remote_code=True,
+                    local_files_only=Path(coder_id).exists(),
                 )
                 
                 # Пытаемся использовать 4-bit квантизацию для экономии памяти
@@ -170,6 +176,7 @@ class ShioriLLMService:
                             quantization_config=quantization_config,
                             device_map="auto",
                             trust_remote_code=True,
+                            local_files_only=Path(coder_id).exists(),
                         )
                         self.logger.info("✅ Coder модель загружена с 4-bit квантизацией")
                     except ImportError:
@@ -179,6 +186,7 @@ class ShioriLLMService:
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
+                            local_files_only=Path(coder_id).exists(),
                         )
                         self.logger.info("✅ Coder модель загружена (float16)")
                     except Exception as e:
@@ -188,6 +196,7 @@ class ShioriLLMService:
                             torch_dtype=torch.float16,
                             device_map="auto",
                             trust_remote_code=True,
+                            local_files_only=Path(coder_id).exists(),
                         )
                         self.logger.info("✅ Coder модель загружена (float16, fallback)")
                 else:
@@ -196,6 +205,7 @@ class ShioriLLMService:
                         torch_dtype=torch.float32,
                         device_map=None,
                         trust_remote_code=True,
+                        local_files_only=Path(coder_id).exists(),
                     )
                     self.logger.info("✅ Coder модель загружена (CPU, float32)")
                 

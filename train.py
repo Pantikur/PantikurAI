@@ -11,6 +11,10 @@ from collections import Counter
 import re
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
+# Отключаем обращение к HuggingFace Hub при наличии локальных моделей
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
+os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+
 # Принудительный UTF-8 для Windows
 import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
@@ -448,22 +452,47 @@ def main():
     if os.path.isdir(MODEL_PATH) and os.listdir(MODEL_PATH):
         safe_print(f"[LOCAL] Загружаем из {MODEL_PATH}")
         try:
-            tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-            model = AutoModelForCausalLM.from_pretrained(MODEL_PATH, torch_dtype=torch.float16)
-            safe_print("[OK] Загружена локальная модель")
+            # Отключаем обращение к HuggingFace — модель уже локальная
+            tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
+            safe_print("[OK] Токенизатор загружен локально")
+            
+            # Загружаем модель с минимальным потреблением памяти
+            # low_cpu_mem_usage=True позволяет загружать модель поэтапно
+            model = AutoModelForCausalLM.from_pretrained(
+                MODEL_PATH,
+                torch_dtype=torch.float16,
+                low_cpu_mem_usage=True,
+                local_files_only=True,
+            )
+            safe_print("[OK] Загружена локальная модель (float16, low_mem)")
         except Exception as e:
             safe_print(f"[WARN] Локальная модель не загрузилась: {e}")
             safe_print("[HF] Fallback на HuggingFace...")
             tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
-            model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct", torch_dtype=torch.float16)
+            model = AutoModelForCausalLM.from_pretrained(
+                "Qwen/Qwen2.5-3B-Instruct",
+                torch_dtype=torch.float16,
+                low_cpu_mem_usage=True,
+            )
     else:
         safe_print("[HF] Локальная модель не найдена, загружаем с HuggingFace...")
         tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
-        model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct", torch_dtype=torch.float16)
+        model = AutoModelForCausalLM.from_pretrained(
+            "Qwen/Qwen2.5-3B-Instruct",
+            torch_dtype=torch.float16,
+            low_cpu_mem_usage=True,
+        )
 
     # Pad token
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+
+    # Включаем gradient checkpointing для экономии памяти (~40% меньше RAM)
+    try:
+        model.gradient_checkpointing_enable()
+        safe_print("[MEM] Gradient checkpointing включён")
+    except Exception:
+        safe_print("[WARN] Gradient checkpointing не поддерживается")
 
     safe_print("[FIRE] РЕТРАИН: дообучение Qwen2.5-3B на всех данных")
 

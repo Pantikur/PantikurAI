@@ -25,6 +25,10 @@ if [ ! -d "/app/models/qwen2.5-3b" ] || [ -z "$(ls -A /app/models/qwen2.5-3b 2>/
     echo "   Сохранение: /app/models/qwen2.5-3b/"
     echo "   Размер: ~6 ГБ (5-15 минут)"
     
+    # Временно отключаем offline-режим для загрузки
+    export HF_HUB_OFFLINE=0
+    export TRANSFORMERS_OFFLINE=0
+    
     # Запускаем загрузку в фоне
     python -c "
 import os
@@ -58,6 +62,10 @@ except Exception as e:
     DOWNLOAD_PID=$!
     echo "📥 Загрузка модели запущена в фоне (PID: $DOWNLOAD_PID)"
     echo "ℹ️ Uvicorn запустится немедленно, модель загрузится параллельно"
+    
+    # Возвращаем offline-режим после запуска загрузки
+    export HF_HUB_OFFLINE=1
+    export TRANSFORMERS_OFFLINE=1
 else
     echo "✅ Qwen2.5-3B уже загружена в /app/models/qwen2.5-3b"
 fi
