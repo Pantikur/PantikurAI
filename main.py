@@ -497,16 +497,11 @@ def load_qwen_model():
     
     if tokenizer is None:
         # Fallback: пробуем загрузить Qwen2.5-3B из кэша transformers
-        logger.info("🤖 Фоллбэк: пытаюсь загрузить Qwen2.5-3B из кэша transformers...")
-        try:
-            tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
-            model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-3B-Instruct")
-            logger.info("✅ Загружена Qwen2.5-3B (из кэша transformers)")
-            model_name = "Qwen2.5-3B (fallback)"
-        except Exception as e:
-            logger.critical(f"❌ Не удалось загрузить НИ ОДНОЙ модели: {e}")
-            logger.critical("💡 Положите модель в папку models/qwen2.5-3b или models/qwen2.5-1.5b")
-            raise RuntimeError("Не удалось загрузить модель")
+        logger.warning("⚠️ Локальная модель не найдена, пытаюсь загрузить из HF кэша...")
+        logger.warning("⚠️ Если загрузка не удалится — сервис продолжит работу, но /predict будет ждать модель")
+        # НЕ кидает исключение — сервис продолжит работать
+        logger.warning("ℹ️ Модель загрузится позже через авто-загрузку или при первом запросе")
+        return None
     
     if torch.cuda.is_available():
         logger.info(f"   ✅ Модель загружена на GPU: {torch.cuda.get_device_name(0)}")
@@ -696,20 +691,26 @@ async def lifespan(app: FastAPI):
         logger.info("🔁 Загружаю Qwen2.5-3B (в фоне)...")
         load_start = time.time()
         
+        qwen_model = None
         try:
             qwen_model = await asyncio.to_thread(load_qwen_model)
-            load_time = time.time() - load_start
-            logger.info(f"📦 Qwen2.5-3B загружен за {load_time:.2f} сек")
-            
-            with CHATBOT_LOCK:
-                chatbot = qwen_model
-            logger.info("✅ Qwen2.5-3B успешно загружен!")
-
-            if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
-                logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
         except Exception as e:
-            logger.critical(f"❌ КРИТИЧЕСКАЯ ОШИБКА: не удалось загрузить Qwen2.5-3B: {e}")
-            raise
+            logger.error(f"❌ Ошибка загрузки модели: {e}")
+            logger.warning("⚠️ Сервис продолжит работу, модель загрузится при первом запросе")
+        
+        if qwen_model is None:
+            logger.warning("⚠️ Модель не загружена — сервис будет ждать первый запрос")
+            return
+        
+        load_time = time.time() - load_start
+        logger.info(f"📦 Qwen2.5-3B загружен за {load_time:.2f} сек")
+        
+        with CHATBOT_LOCK:
+            chatbot = qwen_model
+        logger.info("✅ Qwen2.5-3B успешно загружен!")
+
+        if hasattr(chatbot, 'dataset') and chatbot.dataset is not None:  # type: ignore[reportAttributeAccessIssue]
+            logger.info(f"📚 Обучено на {len(chatbot.dataset)} примерах")  # type: ignore[reportAttributeAccessIssue]
     
     asyncio.create_task(load_chatbot_background())
 
