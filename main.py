@@ -440,41 +440,45 @@ def load_qwen_model():
                         bnb_4bit_use_double_quant=True,
                     )
                     
-                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True)
+                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True, local_files_only=True)
                     model = AutoModelForCausalLM.from_pretrained(
                         full_path,
                         quantization_config=quantization_config,
                         device_map="auto",
                         trust_remote_code=True,
+                        local_files_only=True,
                     )
                     logger.info(f"✅ {display_name} загружена с 4-bit квантизацией (экономия VRAM)")
                 except ImportError:
                     logger.warning("⚠️ bitsandbytes не установлен, загружаю без квантизации...")
-                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True)
+                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True, local_files_only=True)
                     model = AutoModelForCausalLM.from_pretrained(
                         full_path,
                         torch_dtype=torch.float16,
                         device_map="auto",
                         trust_remote_code=True,
+                        local_files_only=True,
                     )
                     logger.info(f"✅ {display_name} загружена (float16, без квантизации)")
                 except Exception as e:
                     logger.warning(f"⚠️ Ошибка квантизации ({e}), пробую без неё...")
-                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True)
+                    tokenizer = AutoTokenizer.from_pretrained(full_path, trust_remote_code=True, local_files_only=True)
                     model = AutoModelForCausalLM.from_pretrained(
                         full_path,
                         torch_dtype=torch.float16,
                         device_map="auto",
                         trust_remote_code=True,
+                        local_files_only=True,
                     )
                     logger.info(f"✅ {display_name} загружена (float16, без квантизации)")
             else:
                 # Загрузка без квантизации (для дообученной модели или CPU)
-                tokenizer = AutoTokenizer.from_pretrained(full_path)
+                tokenizer = AutoTokenizer.from_pretrained(full_path, local_files_only=True)
                 model = AutoModelForCausalLM.from_pretrained(
                     full_path,
                     torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                    device_map="auto" if torch.cuda.is_available() else None
+                    device_map="auto" if torch.cuda.is_available() else None,
+                    local_files_only=True
                 )
                 logger.info(f"✅ {display_name} загружена")
             
