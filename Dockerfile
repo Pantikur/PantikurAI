@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 FROM python:3.11-slim AS production
 
 # === СИСТЕМНЫЕ ЗАВИСИМОСТИ (минимальный набор для Selenium/Web) ===
-# === Google Chrome устанавливается через entrypoint.sh (совместимая версия) ===
+# === Google Chrome устанавливается здесь (build-time), а не в entrypoint ===
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
@@ -66,6 +66,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         libxss1 \
         libxtst6 \
         xdg-utils && \
+    wget -q -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y --no-install-recommends /tmp/chrome.deb && \
+    rm -f /tmp/chrome.deb && \
     rm -rf /var/lib/apt/lists/*
 
 # === КОПИРУЕМ ЗАВИСИМОСТИ ИЗ BUILDER ===
@@ -80,6 +83,7 @@ RUN mkdir -p /app/logs
 
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY main.py ./
+COPY barston_lore_loader.py ./
 COPY train.py ./
 COPY retrain.py ./
 COPY auto_retrain.py ./

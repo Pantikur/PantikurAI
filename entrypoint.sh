@@ -1,9 +1,9 @@
 #!/bin/bash
-# set -e  # Убран: Timeweb может не поддерживать exit на некоторых командах
+set -e
 
 echo "🚀 Запуск Pantikur ChatBot..."
 
-# === СОЗДАЁМ RUNTIME-ДІРЕКТОРИИ (если смонтированы через volumes) ===
+# === СОЗДАЁМ RUNTIME-ДИРЕКТОРИИ ===
 echo "📁 Инициализация runtime-директорий..."
 mkdir -p /app/logs
 mkdir -p /app/akva/data/communication
@@ -14,120 +14,38 @@ mkdir -p /app/ayiko/aiko_foto
 mkdir -p /app/fuyuki/data
 mkdir -p /app/fuyuki/models
 mkdir -p /app/fuyuki/engine/state
-mkdir -p /app/logs
 mkdir -p /app/data
 mkdir -p /app/shiori/polygon
 
-# === ЗАГРУЗКА Qwen2.5-3B (публичная модель, без токенов) ===
-# Загружаем модель В ФОНЕ, не блокируя запуск uvicorn
-if [ ! -d "/app/models/qwen2.5-3b" ] || [ -z "$(ls -A /app/models/qwen2.5-3b 2>/dev/null)" ]; then
-    echo "⚠️ Папка /app/models/qwen2.5-3b пуста или отсутствует"
-    echo "ℹ️ Убедитесь, что модель смонтирована через volumes или уже загружена"
-    echo "ℹ️ QwenBot в main.py будет искать модель локально и фоллбэкиться на кэш transformers"
-else
-    echo "✅ Qwen2.5-3B уже загружена в /app/models/qwen2.5-3b"
-fi
-
-# === УСТАНОВКА GOOGLE CHROME (совместимая версия для Selenium) ===
-echo "🔧 Установка Google Chrome для Selenium..."
-CHROME_BIN_PATH=$(which google-chrome 2>/dev/null || which chromium-browser 2>/dev/null || echo "")
-if [ -z "$CHROME_BIN_PATH" ]; then
-    echo "📥 Chrome не найден — устанавливаем Google Chrome Stable..."
-    CHROME_DEB="/tmp/google-chrome-stable_current_amd64.deb"
-    wget -q -O "$CHROME_DEB" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    if [ -f "$CHROME_DEB" ]; then
-        apt-get update -qq && apt-get install -y -qq "$CHROME_DEB" > /dev/null 2>&1
-        rm -f "$CHROME_DEB"
-        echo "✅ Google Chrome установлен"
+# === ПРОВЕРКА НАЛИЧИЯ КРИТИЧНЫХ ФАЙЛОВ (fail-fast) ===
+echo "🔍 Проверка критичных файлов..."
+MISSING=0
+for f in main.py barston_lore_loader.py utils/human_params.py; do
+    if [ -f "/app/$f" ]; then
+        echo "   ✅ $f"
     else
-        echo "⚠️ Не удалось скачать Google Chrome, пробуем Chromium..."
-        apt-get install -y -qq chromium-browser > /dev/null 2>&1 || true
+        echo "   ❌ $f ОТСУТСТВУЕТ!"
+        MISSING=1
     fi
-else
-    echo "✅ Chrome уже установлен: $CHROME_BIN_PATH"
+done
+if [ "$MISSING" -eq 1 ]; then
+    echo "❌ Критичные файлы отсутствуют — контейнер не может запуститься!"
+    exit 1
 fi
 
 # === ПРОВЕРКА ЗАВИСИМОСТЕЙ ===
 echo "📦 Проверка зависимостей..."
-python -c "import fastapi; import uvicorn; print('✅ Зависимости OK')" || {
-    echo "❌ Ошибка: отсутствуют необходимые зависимости!"
-    echo "Убедитесь, что requirements.txt установлен корректно"
-    exit 1
-}
-
-# === ПРОВЕРКА PYTHONPATH ===
-echo "🔍 PYTHONPATH=$PYTHONPATH"
-export PYTHONPATH="/app:${PYTHONPATH}"
-echo "✅ PYTHONPATH установлен: $PYTHONPATH"
-
-# === ПРОВЕРКА Готовности main.py ===
-echo "🔍 Проверка main.py..."
-cd /app
-python -c "
-import sys
-sys.path.insert(0, '/app')
-try:
-    import main
-    print('✅ main.py импортируется успешно')
-    print(f'✅ FastAPI app найден: {hasattr(main, \"app\")}')
-except Exception as e:
-    print(f'⚠️ Ошибка импорта main.py: {e}')
-    print('ℹ️ Uvicorn попробует запуститься, но могут быть ошибки')
-" 2>&1
+python -c "import fastapi; import uvicorn; import transformers; print('✅ Зависимости OK')"
 
 # === ЗАПУСК UVICORN ===
-echo "✅ Запускаю uvicorn на ${HOST:-0.0.0.0}:${PORT:-8000}..."
-echo "📋 Переменные окружения:"
-echo "   HOST=${HOST:-0.0.0.0}"
-echo "   PORT=${PORT:-8000}"
-echo "   PYTHONPATH=${PYTHONPATH}"
+HOST="${HOST:-0.0.0.0}"
+PORT="${PORT:-8000}"
+echo "✅ Запускаю uvicorn на ${HOST}:${PORT}..."
+echo "   PYTHONPATH=$PYTHONPATH"
 
-# Запускаем uvicorn в фоне, чтобы entrypoint.sh оставался живым
-uvicorn main:app \
-    --host ${HOST:-0.0.0.0} \
-    --port ${PORT:-8000} \
+# exec заменяет процесс — контейнер живёт пока жив uvicorn
+exec uvicorn main:app \
+    --host ${HOST} \
+    --port ${PORT} \
     --log-level info \
-    --access-log \
-    --workers 1 \
-    > /app/logs/uvicorn.log 2>&1 &
-UVICORN_PID=$!
-
-echo "📌 Uvicorn запущен с PID: $UVICORN_PID"
-echo "📋 Логи uvicorn: /app/logs/uvicorn.log"
-
-# === ЖДЁМ, ПОКА UVICORN НЕ НАЧНЁТ СЛУШАТЬ ПОРТ ===
-echo "⏳ Ожидание запуска uvicorn (макс. 30 секунд)..."
-TIMEOUT=30
-ELAPSED=0
-while [ $ELAPSED -lt $TIMEOUT ]; do
-    if curl -s -f http://localhost:${PORT}/ping > /dev/null 2>&1; then
-        echo "✅ Uvicorn готов! Порт ${PORT} слушает."
-        break
-    fi
-    echo "   Ожидание... (${ELAPSED}s/${TIMEOUT}s)"
-    sleep 2
-    ELAPSED=$((ELAPSED + 2))
-done
-
-if [ $ELAPSED -ge $TIMEOUT ]; then
-    echo "❌ Uvicorn не запустился за ${TIMEOUT} секунд!"
-    echo "📋 Логи uvicorn:"
-    wait $UVICORN_PID 2>&1 || true
-    exit 1
-fi
-
-# === ДЕРЖИМ КОНТЕЙНЕР ЖИВЫМ ===
-echo "🎉 Pantikur ChatBot готов!"
-echo "📡 API доступен на http://localhost:${PORT}/ping"
-echo "📌 PID uvicorn: $UVICORN_PID"
-
-# Перенаправляем вывод uvicorn в stdout контейнера
-# Ждём завершения uvicorn (чтобы контейнер не завершился)
-# Если uvicorn падает — контейнер тоже завершится
-wait $UVICORN_PID
-EXIT_CODE=$?
-echo "⚠️ Uvicorn завершился с кодом $EXIT_CODE"
-
-# Если uvicorn упал — логи будут в stdout контейнера
-# Контейнер завершится с кодом ошибки
-exit $EXIT_CODE
+    --workers 1
