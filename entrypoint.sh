@@ -75,12 +75,41 @@ echo "   HOST=${HOST:-0.0.0.0}"
 echo "   PORT=${PORT:-8000}"
 echo "   PYTHONPATH=${PYTHONPATH}"
 
-# Небольшая задержка перед запуском uvicorn (чтобы порт успел bind)
-sleep 2
-
-# Запускаем uvicorn с правильными параметрами
-exec uvicorn main:app \
+# Запускаем uvicorn в фоне, чтобы entrypoint.sh оставался живым
+uvicorn main:app \
     --host ${HOST:-0.0.0.0} \
     --port ${PORT:-8000} \
     --log-level info \
-    --workers 1
+    --workers 1 &
+UVICORN_PID=$!
+
+echo "📌 Uvicorn запущен с PID: $UVICORN_PID"
+
+# === ЖДЁМ, ПОКА UVICORN НЕ НАЧНЁТ СЛУШАТЬ ПОРТ ===
+echo "⏳ Ожидание запуска uvicorn (макс. 30 секунд)..."
+TIMEOUT=30
+ELAPSED=0
+while [ $ELAPSED -lt $TIMEOUT ]; do
+    if curl -s -f http://localhost:${PORT}/ping > /dev/null 2>&1; then
+        echo "✅ Uvicorn готов! Порт ${PORT} слушает."
+        break
+    fi
+    echo "   Ожидание... (${ELAPSED}s/${TIMEOUT}s)"
+    sleep 2
+    ELAPSED=$((ELAPSED + 2))
+done
+
+if [ $ELAPSED -ge $TIMEOUT ]; then
+    echo "❌ Uvicorn не запустился за ${TIMEOUT} секунд!"
+    echo "📋 Логи uvicorn:"
+    wait $UVICORN_PID 2>&1 || true
+    exit 1
+fi
+
+# === ДЕРЖИМ КОНТЕЙНЕР ЖИВЫМ ===
+echo "🎉 Pantikur ChatBot готов!"
+echo "📡 API доступен на http://localhost:${PORT}/ping"
+echo "📌 PID uvicorn: $UVICORN_PID"
+
+# Ждём завершения uvicorn (чтобы контейнер не завершился)
+wait $UVICORN_PID
