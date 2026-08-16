@@ -128,9 +128,9 @@ EXPOSE ${PORT}
 
 # === HEALTHCHECK ===
 # /ping — мгновенный ответ 200, проверяет что uvicorn слушает порт 8000
-# Без start-period — Timeweb может не поддерживать эту опцию
+# start-period=60s — даём время entrypoint.sh на установку Chrome и запуск uvicorn
 # timeout=5s — быстро реагируем, interval=15s — чаще проверяем
-HEALTHCHECK --interval=15s --timeout=5s --retries=5 \
+HEALTHCHECK --interval=15s --timeout=5s --retries=5 --start-period=60s \
     CMD curl -f http://localhost:${PORT}/ping || exit 1
 
 # === КОМАНДА ЗАПУСКА (через entrypoint с загрузкой модели) ===

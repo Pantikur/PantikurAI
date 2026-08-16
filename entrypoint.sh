@@ -75,6 +75,9 @@ echo "   HOST=${HOST:-0.0.0.0}"
 echo "   PORT=${PORT:-8000}"
 echo "   PYTHONPATH=${PYTHONPATH}"
 
+# Небольшая задержка перед запуском uvicorn (чтобы порт успел bind)
+sleep 2
+
 # Запускаем uvicorn с правильными параметрами
 exec uvicorn main:app \
     --host ${HOST:-0.0.0.0} \
