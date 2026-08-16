@@ -866,7 +866,7 @@ async def security_middleware(request: Request, call_next):
     client_ip = request.client.host if request.client else "unknown"
     
     # Health check полностью минует security-проверки (нужен для Docker/Timeweb)
-    if request.url.path == "/health":
+    if request.url.path in ("/health", "/ping"):
         response = await call_next(request)
         return response
     
@@ -900,8 +900,8 @@ async def security_middleware(request: Request, call_next):
             content={"detail": "Доступ запрещён: подозрительная активность"}
         )
     
-    # Rate limiting (не применяем к health check)
-    if request.url.path != "/health":
+    # Rate limiting (не применяем к health check и ping)
+    if request.url.path not in ("/health", "/ping"):
         if not check_rate_limit(client_ip):
             logger.warning(f"⚠️ Rate limit превышен для IP {client_ip}")
             return JSONResponse(
