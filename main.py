@@ -25,6 +25,9 @@ from datetime import datetime, timedelta
 # === Импорт модуля параметров человека ===
 from utils.human_params import HumanParams, HumanParamsDetector
 
+# === Импорт загрузчика лора Академии Барстон ===
+from barston_lore_loader import get_barston_system_prompt, is_barston_request
+
 # === Автономное обучение из книг (запуск в фоне) ===
 AUTO_BOOK_LEARNING_ENABLED = os.getenv("AUTO_BOOK_LEARNING", "true").lower() in ("true", "1", "yes")
 AUTO_BOOK_LEARNING_CYCLE = int(os.getenv("AUTO_BOOK_LEARNING_CYCLE", "10"))  # минут
@@ -295,7 +298,7 @@ class QwenBot:
         self.world_engine_enabled = False
         self.world_engine = None
     
-    def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat", memory_data: str | None = None) -> str:
+    def generate_response(self, messages: List[Dict[str, str | bool]], mode: str = "chat", memory_data: str | None = None, system_prompt: str | None = None) -> str:
         """Генерация ответа через Qwen2.5-3B.
         
         Двухпроходная генерация:
@@ -303,6 +306,9 @@ class QwenBot:
           запросить архивные данные через [MEMORY_QUERY]{...}[/MEMORY_QUERY]
         - Проход 2 (memory_data!=None): модель получает контекст + архивные данные
           и генерирует финальный ответ
+          
+        system_prompt: опциональный системный промпт (например, лор игры),
+          который добавляется в начало промпта перед контекстом диалога.
         """
         import torch
         
@@ -327,11 +333,14 @@ class QwenBot:
         # Строим промпт
         context_str = "\n".join(context[-10:])  # Последние 10 сообщений
         
+        # Системный промпт (например, лор Академии Барстон) добавляется в начало
+        system_prefix = f"{system_prompt}\n\n" if system_prompt else ""
+        
         if mode == "chat":
             if memory_data:
                 # === ПРОХОД 2: модель решает, нужны ли ей архивные данные ===
                 prompt = (
-                    f"{context_str}\n\n"
+                    f"{system_prefix}{context_str}\n\n"
                     f"Ты — персонаж в ролевой игре. Отвечай от имени своего персонажа, "
                     f"продолжая сцену, с учётом лора и отношений.\n"
                     f"ВАЖНО: если тебе для ответа не хватает информации из архива памяти "
@@ -350,13 +359,13 @@ class QwenBot:
                 )
             else:
                 # Строим промпт для Qwen2.5
-                prompt = f"{context_str}\nПользователь: {last_user_msg}\nБот:"
+                prompt = f"{system_prefix}{context_str}\nПользователь: {last_user_msg}\nБот:"
         elif mode == "rpg":
-            prompt = f"{context_str}\nБот:"
+            prompt = f"{system_prefix}{context_str}\nБот:"
         elif mode == "continue":
-            prompt = f"{context_str}\nБот:"
+            prompt = f"{system_prefix}{context_str}\nБот:"
         else:
-            prompt = f"{context_str}\nБот:"
+            prompt = f"{system_prefix}{context_str}\nБот:"
         
         # Генерация
         try:
@@ -369,7 +378,7 @@ class QwenBot:
             with torch.no_grad():
                 outputs = self.model.generate(
                     inputs.input_ids,
-                    max_length=1024,
+                    max_new_tokens=768,
                     temperature=0.8,
                     top_p=0.9,
                     do_sample=True,
@@ -2885,6 +2894,15 @@ async def predict(request: Request):
         logger.warning(f"🚫 Заблокирован User-Agent: {user_agent}")
         raise HTTPException(status_code=403, detail="Доступ запрещён")
 
+    # === Определение запроса от приложения Академии Барстон ===
+    barston_prompt = None
+    if is_barston_request(user_agent):
+        try:
+            barston_prompt = get_barston_system_prompt()
+            logger.info(f"🏰 Запрос от Академии Барстон — лор инъецирован ({len(barston_prompt)} символов)")
+        except Exception as e:
+            logger.error(f"❌ Ошибка загрузки лора Барстон: {e}")
+
     try:
         body = await request.json()
         logger.debug(f"📥 JSON получен ({len(str(body))} байт)")
@@ -3033,7 +3051,7 @@ async def predict(request: Request):
             start_subgen = asyncio.get_event_loop().time()
             # Передаём все параметры человека в бот
             HumanParamsDetector.apply_params_to_bot(local_bot, params)
-            response = local_bot.generate_response([{"message": prompt_text, "is_own": True}], mode="chat").strip()
+            response = local_bot.generate_response([{"message": prompt_text, "is_own": True}], mode="chat", system_prompt=barston_prompt).strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ narrative: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
 
@@ -3095,7 +3113,7 @@ async def predict(request: Request):
             valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
             HumanParamsDetector.apply_params_to_bot(local_bot, params)
             start_subgen = asyncio.get_event_loop().time()
-            response = local_bot.generate_response(valid_msgs, mode="rpg").strip()
+            response = local_bot.generate_response(valid_msgs, mode="rpg", system_prompt=barston_prompt).strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ rpg: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
 
@@ -3104,7 +3122,7 @@ async def predict(request: Request):
             valid_msgs = [{"message": m.message, "is_own": m.is_own} for m in req.messages]
             HumanParamsDetector.apply_params_to_bot(local_bot, params)
             start_subgen = asyncio.get_event_loop().time()
-            response = local_bot.generate_response(valid_msgs, mode="continue").strip()
+            response = local_bot.generate_response(valid_msgs, mode="continue", system_prompt=barston_prompt).strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
             logger.info(f"⏱ continue: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
 
@@ -3174,9 +3192,9 @@ async def predict(request: Request):
 
             start_subgen = asyncio.get_event_loop().time()
             HumanParamsDetector.apply_params_to_bot(local_bot, params)
-            response = local_bot.generate_response(valid_msgs, mode="chat", memory_data=req.memory_data).strip()
+            response = local_bot.generate_response(valid_msgs, mode="chat", memory_data=req.memory_data, system_prompt=barston_prompt).strip()
             elapsed_sub = asyncio.get_event_loop().time() - start_subgen
-            logger.info(f"⏱ chat: {elapsed_sub:.2f} сек | Длина ответа: {len(response)}")
+            logger.info(f"⏱ chat: {elapsed_sub:.2f} сек | Длина ответа: {len(response)} | Barston: {barston_prompt is not None}")
 
             if not response:
                 response = "Я здесь! 🤖"

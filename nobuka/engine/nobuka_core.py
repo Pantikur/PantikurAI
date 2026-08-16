@@ -233,7 +233,12 @@ class NobukaCore:
             # ========================================
             # 1. Загрузка Qwen2.5-Coder-3B (для кода)
             # ========================================
-            coder_path = Path("models/qwen2.5-coder-3b")
+            # Ищем модели в корне проекта
+            coder_path = Path(__file__).parent.parent.parent / "models" / "qwen2.5-coder-3b"
+            if not coder_path.exists() or not any(coder_path.iterdir()):
+                # Fallback: относительный путь
+                coder_path = Path("models/qwen2.5-coder-3b")
+            
             if coder_path.exists() and any(coder_path.iterdir()):
                 self.coder_model_path = str(coder_path)
                 self.logger.info(f"🤖 Загрузка Qwen2.5-Coder-3B (для программирования)...")
@@ -246,7 +251,7 @@ class NobukaCore:
                 if torch.cuda.is_available():
                     self.coder_model = AutoModelForCausalLM.from_pretrained(
                         coder_path,
-                        torch_dtype=torch.float16,
+                        dtype=torch.float16,
                         device_map="auto",
                         trust_remote_code=True,
                     )
@@ -254,7 +259,7 @@ class NobukaCore:
                 else:
                     self.coder_model = AutoModelForCausalLM.from_pretrained(
                         coder_path,
-                        torch_dtype=torch.float32,
+                        dtype=torch.float32,
                         trust_remote_code=True,
                     )
                     self.logger.info("✅ Coder модель загружена на CPU")
@@ -267,7 +272,11 @@ class NobukaCore:
             # ========================================
             # 2. Загрузка Qwen2.5-3B (для всего остального)
             # ========================================
-            general_path = Path("models/qwen2.5-3b")
+            general_path = Path(__file__).parent.parent.parent / "models" / "qwen2.5-3b"
+            if not general_path.exists() or not any(general_path.iterdir()):
+                # Fallback: относительный путь
+                general_path = Path("models/qwen2.5-3b")
+            
             if general_path.exists() and any(general_path.iterdir()):
                 self.general_model_path = str(general_path)
                 self.logger.info(f"🤖 Загрузка Qwen2.5-3B (универсальная)...")
@@ -280,7 +289,7 @@ class NobukaCore:
                 if torch.cuda.is_available():
                     self.general_model = AutoModelForCausalLM.from_pretrained(
                         general_path,
-                        torch_dtype=torch.float16,
+                        dtype=torch.float16,
                         device_map="auto",
                         trust_remote_code=True,
                     )
@@ -288,7 +297,7 @@ class NobukaCore:
                 else:
                     self.general_model = AutoModelForCausalLM.from_pretrained(
                         general_path,
-                        torch_dtype=torch.float32,
+                        dtype=torch.float32,
                         trust_remote_code=True,
                     )
                     self.logger.info("✅ General модель загружена на CPU")
@@ -319,12 +328,13 @@ class NobukaCore:
         - Паттернов проектирования
         """
         code_keywords = [
-            'код', 'python', 'функция', 'класс', 'метод', 'баг', 'ошибка',
+            'код', 'python', 'функци', 'класс', 'метод', 'баг', 'ошибка',
             'дебаг', 'отладк', 'рефакт', 'паттерн', 'алгоритм', 'оптимиз',
             'импорт', 'синтакс', 'async', 'def ', 'class ', 'import ',
             'программ', 'скрипт', 'модуль', 'api', 'фреймворк', 'библиотека',
             'тест', 'pytest', 'unittest', 'coverage', 'lint', 'pypi',
             'github', 'git', 'коммит', 'ветк', 'merge', 'pull request',
+            'сортировк', 'функционирован', 'кодов', 'программ',
         ]
         
         prompt_lower = prompt.lower()
@@ -344,6 +354,19 @@ class NobukaCore:
                 return True
         
         return False
+
+    @staticmethod
+    def _get_model_device(model):
+        """Получить устройство модели (работает с device_map='auto')."""
+        try:
+            # Сначала пробуем получить устройство из параметров модели
+            params = list(model.parameters())
+            if params:
+                return params[0].device
+            # Если нет параметров, пробуем как модуль
+            return next(model.modules()).weight.device
+        except Exception:
+            return "cpu"  # fallback
 
     def _generate_with_model(self, model, tokenizer, messages, max_length=512):
         """
@@ -369,7 +392,9 @@ class NobukaCore:
             )
             
             # Токенизируем
-            model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
+            model_inputs = tokenizer([text], return_tensors="pt")
+            device = self._get_model_device(model)
+            model_inputs = model_inputs.to(device)
             
             # Генерируем
             with torch.no_grad():

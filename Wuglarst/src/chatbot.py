@@ -101,7 +101,7 @@ class SimpleTokenizer:
 
 class ChatBot:
     def __init__(self, model_path: str, data_path: str, device: str | None = None):
-        """Инициализация Qwen2.5-Coder-3B (оптимизирована для программирования)."""
+        """Инициализация Qwen2.5-3B-Instruct (основная модель чата)."""
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.model_path = model_path
         
@@ -115,13 +115,22 @@ class ChatBot:
         
         print(f"[Qwen2.5] Загрузка модели: {self.rugpt_path}")
         
-        # Загружаем Qwen2.5
-        self.tokenizer = AutoTokenizer.from_pretrained(self.rugpt_path)
-        self.model = AutoModelForCausalLM.from_pretrained(
-            self.rugpt_path,
-            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-            device_map="auto" if torch.cuda.is_available() else None
-        )
+        # Загружаем Qwen2.5 с правильными параметрами для Instruct-модели
+        try:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.rugpt_path,
+                trust_remote_code=True
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                self.rugpt_path,
+                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                device_map="auto" if torch.cuda.is_available() else None,
+                trust_remote_code=True
+            )
+        except Exception as e:
+            print(f"❌ Ошибка загрузки модели Qwen2.5-3B: {e}")
+            print("ℹ️ Попробуйте запустить: python download_qwen_model.py")
+            raise
         
         if torch.cuda.is_available():
             print(f"[Qwen2.5] Загружено на GPU: {torch.cuda.get_device_name(0)}")
@@ -135,19 +144,8 @@ class ChatBot:
         self._user_penis_thickness = None
         self._user_penis_shape = None
         
-        # Инициализация движков
-        self.intuition = IntuitionEngine()
-        self.social = SocialEngine()
-        self.cognitive = CognitiveEngine()
-        self.emotional = EmotionalIntelligenceEngine()
-        self.physiological = PhysiologicalEngine()
-        self.special_cognitive = SpecialCognitiveEngine()
-        self.imagination = ImaginationEngine()
-        self.professions = ProfessionEngine()
-        self.manipulation = ManipulationEngine()
-        self.context = ContextAnalyzer()
-        self.world = WorldEngine()
-
+        # === Инициализация движков (единый блок) ===
+        
         # Поиск и знания
         self.web_search_enabled = False
         self.knowledge_cache = {}
@@ -556,34 +554,66 @@ class ChatBot:
         max_words: int = 80,
         min_words: int = 5
     ) -> str:
-        """Генерация через Qwen2.5 с nucleus sampling."""
+        """Генерация через Qwen2.5 с nucleus sampling.
+        
+        max_length — максимальная длина ВВОДА + ВЫВОДА.
+        max_words — ограничение на количество слов в ответе.
+        """
         self.model.eval()
         
         # Токенизация через Qwen2.5
         inputs = self.tokenizer.encode(input_text, return_tensors="pt")
+        input_len = inputs.input_ids.shape[1]
+        
+        # Для Qwen2.5-Instruct используем chat template
+        if self.tokenizer.chat_template is None:
+            # Если chat_template нет, используем raw input
+            pass
+        else:
+            # Формируем диалог через chat template
+            messages = [{"role": "user", "content": input_text}]
+            try:
+                input_text = self.tokenizer.apply_chat_template(
+                    messages, tokenize=False, add_generation_prompt=True
+                )
+                inputs = self.tokenizer.encode(input_text, return_tensors="pt")
+                input_len = inputs.input_ids.shape[1]
+            except Exception:
+                # Fallback на raw input
+                pass
+        
         if torch.cuda.is_available():
             inputs = inputs.to("cuda")
+        
+        # Вычисляем max_new_tokens чтобы не превысить max_length
+        max_new_tokens = max(1, max_length - input_len)
         
         # Генерация
         with torch.no_grad():
             outputs = self.model.generate(
                 inputs.input_ids,
-                max_length=max_length,
-                temperature=temperature,
-                top_p=top_p,
-                do_sample=True,
-                pad_token_id=self.tokenizer.eos_token_id,
-                eos_token_id=self.tokenizer.eos_token_id
+                max_new_tokens=max_new_tokens,
+                temperature=temperature if temperature > 0 else None,
+                top_p=top_p if top_p < 1.0 else None,
+                do_sample=temperature > 0,
+                pad_token_id=self.tokenizer.pad_token_id if self.tokenizer.pad_token_id is not None else self.tokenizer.eos_token_id,
+                eos_token_id=self.tokenizer.eos_token_id,
+                use_cache=True,
+                # Предотвращение повторов
+                repetition_penalty=1.1,
             )
         
         # Декодируем только новое
         generated_ids = outputs[0][inputs.input_ids.shape[1]:]
         response = self.tokenizer.decode(generated_ids, skip_special_tokens=True)
         
+        # Очистка ответа от артефактов генерации
+        response = response.strip()
+        
         # Фильтр по словам
         words = response.split()
         if len(words) < min_words:
-            return input_text[-50:] + " " + response
+            return input_text[-50:] + " " + response if response else "Я здесь!"
         if len(words) > max_words:
             words = words[:max_words]
             response = " ".join(words)

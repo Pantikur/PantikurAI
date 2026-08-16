@@ -1,0 +1,366 @@
+{
+  "patterns": [
+    {
+      "name": "Strategy Pattern",
+      "category": "design",
+      "description": "Позволяет определять семейство алгоритмов, инкапсулировать каждый из них и делать их взаимозаменяемыми.",
+      "when_to_use": "Когда у вас есть несколько вариантов одного действия, и выбор зависит от контекста",
+      "code_before": "def process(data, strategy):\n    if strategy == 'sort':\n        return sorted(data)\n    elif strategy == 'reverse':\n        return list(reversed(data))",
+      "code_after": "from abc import ABC, abstractmethod\n\nclass ProcessingStrategy(ABC):\n    @abstractmethod\n    def execute(self, data):\n        pass\n\nclass SortStrategy(ProcessingStrategy):\n    def execute(self, data):\n        return sorted(data)\n\ndef process(data, strategy):\n    return strategy.execute(data)",
+      "tags": [
+        "strategy",
+        "design",
+        "oop"
+      ],
+      "complexity": "medium",
+      "confidence": 0.9
+    },
+    {
+      "name": "Observer Pattern",
+      "category": "design",
+      "description": "Механизм подписки, позволяющий одному объекту уведомлять список объектов о событиях.",
+      "when_to_use": "Когда изменение состояния одного объекта должно автоматически уведомлять другие",
+      "code_before": "class Order:\n    def __init__(self):\n        self._status = 'pending'\n    @status.setter\n    def status(self, value):\n        self._status = value\n        email_service.send(self.user, f'Order: {value}')\n        inventory.update(self.items)",
+      "code_after": "class Observable:\n    def __init__(self):\n        self._observers = []\n    def subscribe(self, observer):\n        self._observers.append(observer)\n    def notify(self, event):\n        for observer in self._observers:\n            observer(event)\n\nclass Order(Observable):\n    @status.setter\n    def status(self, value):\n        old = self._status\n        self._status = value\n        self.notify({'old': old, 'new': value})",
+      "tags": [
+        "observer",
+        "event",
+        "publish-subscribe"
+      ],
+      "complexity": "medium",
+      "confidence": 0.9
+    },
+    {
+      "name": "Factory Method",
+      "category": "design",
+      "description": "Определяет интерфейс для создания объектов, но позволяет подклассам изменять тип создаваемых объектов.",
+      "when_to_use": "Когда вы не знаете заранее, какие именно объекты нужно создавать",
+      "code_before": "def create_bot(name):\n    if name == 'nobuka':\n        return NobukaBot(config)\n    elif name == 'shiori':\n        return ShioriBot(config)",
+      "code_after": "class BotRegistry:\n    _factories = {}\n    @classmethod\n    def register(cls, name, bot_class):\n        cls._factories[name] = bot_class\n    @classmethod\n    def create(cls, name, config):\n        return cls._factories[name](config)\n\nBotRegistry.register('nobuka', NobukaBot)\nbot = BotRegistry.create('nobuka', {'mode': 'improve'})",
+      "tags": [
+        "factory",
+        "creation",
+        "registry"
+      ],
+      "complexity": "medium",
+      "confidence": 0.9
+    },
+    {
+      "name": "Dependency Injection",
+      "category": "design",
+      "description": "Внедрение зависимости - объект получает зависимости извне, а не создаёт их сам.",
+      "when_to_use": "Для тестируемости, гибкости и разделения ответственности",
+      "code_before": "class ChatBot:\n    def __init__(self):\n        self.model = QwenModel()\n        self.db = MySQLDatabase()\n        self.cache = RedisCache()",
+      "code_after": "from typing import Protocol\n\nclass ModelProtocol(Protocol):\n    def generate(self, prompt: str) -> str: ...\n\nclass ChatBot:\n    def __init__(self, model: ModelProtocol, db, cache=None):\n        self.model = model\n        self.db = db\n        self.cache = cache",
+      "tags": [
+        "di",
+        "injection",
+        "testing",
+        "protocol"
+      ],
+      "complexity": "medium",
+      "confidence": 0.9
+    },
+    {
+      "name": "Builder Pattern with dataclasses",
+      "category": "design",
+      "description": "Конфигурация с фабричными методами для разных ролей.",
+      "when_to_use": "Когда объект нужно создать из многих частей, и конфигурация сложная",
+      "code_before": "class BotConfig:\n    def __init__(self, model, temperature, max_tokens, top_p, top_k,\n                 stop_sequences, presence_penalty, frequency_penalty):\n        # 10 параметров!",
+      "code_after": "from dataclasses import dataclass, field\nfrom typing import List, Optional\n\n@dataclass\nclass BotConfig:\n    model: str = 'qwen2.5-3b'\n    temperature: float = 0.7\n    max_tokens: int = 1024\n    stop_sequences: List[str] = field(default_factory=list)\n    \n    @classmethod\n    def for_improvement(cls):\n        return cls(temperature=0.3, max_tokens=2048,\n                   system_prompt='Ты - Нобука, эксперт по коду.')",
+      "tags": [
+        "builder",
+        "factory",
+        "dataclass"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    },
+    {
+      "name": "Extract Function",
+      "category": "refactoring",
+      "description": "Выделение фрагмента кода в отдельную функцию с понятным именем.",
+      "when_to_use": "Когда функция делает слишком много",
+      "code_before": "def handle_request(request):\n    token = request.headers.get('Authorization')\n    if not token:\n        return {'error': 'No token'}\n    user = db.query('SELECT * FROM users WHERE token=?', token)\n    if not user:\n        return {'error': 'Invalid token'}\n    # ... ещё 30 строк",
+      "code_after": "def authenticate(request):\n    token = request.get('headers', {}).get('Authorization')\n    if not token:\n        return {'error': 'No token'}\n    return db.query('SELECT * FROM users WHERE token=?', token)\n\ndef handle_request(request):\n    user = authenticate(request)\n    if not user or 'error' in user:\n        return {'error': 'Invalid token'}\n    # ... остальная логика",
+      "tags": [
+        "extract",
+        "function",
+        "readability"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    },
+    {
+      "name": "Guard Clauses",
+      "category": "refactoring",
+      "description": "Замена глубокой вложенности на ранние возвраты (early return).",
+      "when_to_use": "Когда код имеет 4+ уровней вложенности",
+      "code_before": "def process_user(user):\n    if user:\n        if user.is_active:\n            if user.has_permission:\n                if user.role == 'admin':\n                    grant_access(user)\n                else:\n                    deny_access(user)",
+      "code_after": "def process_user(user):\n    if not user:\n        return deny_access(user)\n    if not user.is_active:\n        return deny_access(user)\n    if not user.has_permission:\n        return deny_access(user)\n    if user.role != 'admin':\n        return deny_access(user)\n    grant_access(user)",
+      "tags": [
+        "guard-clauses",
+        "early-return",
+        "readability"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    },
+    {
+      "name": "Replace Conditional with Polymorphism",
+      "category": "refactoring",
+      "description": "Замена if/elif на полиморфизм - каждый случай становится своим подклассом.",
+      "when_to_use": "Когда есть if/elif для разных типов",
+      "code_before": "def get_discount(price, user_type):\n    if user_type == 'premium':\n        return price * 0.7\n    elif user_type == 'regular':\n        return price * 0.9",
+      "code_after": "class DiscountStrategy(ABC):\n    @abstractmethod\n    def apply(self, price):\n        pass\n\nclass PremiumDiscount(DiscountStrategy):\n    def apply(self, price):\n        return price * 0.7\n\ndef get_discount(price, strategy):\n    return strategy.apply(price)",
+      "tags": [
+        "polymorphism",
+        "conditional",
+        "oop"
+      ],
+      "complexity": "medium",
+      "confidence": 0.9
+    },
+    {
+      "name": "Arrange-Act-Assert",
+      "category": "testing",
+      "description": "Структура теста: подготовка, действие, проверка.",
+      "when_to_use": "Для каждого unit-теста",
+      "code_before": "",
+      "code_after": "def test_calculate():\n    # Arrange\n    items = [{'price': 100, 'quantity': 2}]\n    # Act\n    total = calculate_total(items)\n    # Assert\n    assert total == 200",
+      "tags": [
+        "tdd",
+        "unit-test",
+        "pattern"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    },
+    {
+      "name": "Mock External Dependencies",
+      "category": "testing",
+      "description": "Изоляция теста от внешних зависимостей через моки.",
+      "when_to_use": "Когда тест не должен вызывать реальные API",
+      "code_before": "",
+      "code_after": "from unittest.mock import Mock, patch\n\n@patch('my_module.requests.get')\ndef test_api_call(mock_get):\n    mock_get.return_value.json.return_value = {'key': 'value'}\n    result = fetch_data('http://api.example.com')\n    assert result == {'key': 'value'}",
+      "tags": [
+        "mock",
+        "unittest",
+        "isolation"
+      ],
+      "complexity": "medium",
+      "confidence": 0.9
+    },
+    {
+      "name": "Parametrized Tests",
+      "category": "testing",
+      "description": "Запуск одного теста с разными входными данными.",
+      "when_to_use": "Когда нужно проверить функцию с множеством входов",
+      "code_before": "",
+      "code_after": "import pytest\n\n@pytest.mark.parametrize('a, b, op, expected', [\n    (10, 5, '+', 15),\n    (10, 5, '-', 5),\n    (10, 5, '*', 50),\n])\ndef test_calculate(a, b, op, expected):\n    assert calculate(a, b, op) == expected",
+      "tags": [
+        "parametrize",
+        "pytest",
+        "data-driven"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    },
+    {
+      "name": "Memoization with lru_cache",
+      "category": "performance",
+      "description": "Кэширование результатов дорогих вызовов функций.",
+      "when_to_use": "Когда функция вызывается с одними и теми же аргументами",
+      "code_before": "",
+      "code_after": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)",
+      "tags": [
+        "lru-cache",
+        "memoization",
+        "caching"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    },
+    {
+      "name": "Generator for Large Data",
+      "category": "performance",
+      "description": "Генераторы экономят память.",
+      "when_to_use": "Когда данные слишком велики для памяти",
+      "code_before": "",
+      "code_after": "def read_large_file(path):\n    with open(path) as f:\n        for line in f:\n            yield line.strip()\n\n# Использование\nfor line in read_large_file('huge.txt'):\n    process(line)",
+      "tags": [
+        "generator",
+        "memory",
+        "yield"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    },
+    {
+      "name": "Profiling Before Optimization",
+      "category": "performance",
+      "description": "Измеряйте производительность перед оптимизацией.",
+      "when_to_use": "Перед любой оптимизацией",
+      "code_before": "",
+      "code_after": "import cProfile\n\nprofiler = cProfile.Profile()\nprofiler.enable()\nmy_slow_function()\nprofiler.disable()\nprofiler.print_stats(20)",
+      "tags": [
+        "profiling",
+        "cprofile",
+        "benchmarking"
+      ],
+      "complexity": "low",
+      "confidence": 0.9
+    }
+  ],
+  "antipatterns": [
+    {
+      "name": "God Class",
+      "description": "Класс, который знает слишком много, делает слишком много.",
+      "symptoms": [
+        "Файл класса > 500 строк",
+        "50+ методов в одном классе",
+        "Класс используется почти везде",
+        "Сложно тестировать"
+      ],
+      "impact": "Сложность поддержки, дублирование кода, хрупкость",
+      "fix": "Разделите класс на несколько по ответственности (SRP).",
+      "code_example": "# До: class ProjectManager с 40+ методов\n# После: UserManagement, PaymentProcessing, ReportGeneration",
+      "severity": "critical",
+      "related_patterns": [
+        "Strategy Pattern",
+        "SRP"
+      ]
+    },
+    {
+      "name": "Feature Envy",
+      "description": "Метод интересуется данными другого класса больше своего.",
+      "symptoms": [
+        "Метод вызывает get_x(), get_y() у другого объекта",
+        "Логика использует данные другого класса"
+      ],
+      "impact": "Связанность, дублирование логики",
+      "fix": "Переместите метод в класс, данные которого он использует.",
+      "code_example": "# До: Address.get_shipping_cost() интересуется Order\n# После: Order.calculate_shipping(address)",
+      "severity": "medium",
+      "related_patterns": [
+        "Move Method"
+      ]
+    },
+    {
+      "name": "Arrow Code / Deep Nesting",
+      "description": "Слишком глубокая вложенность кода (более 3-4 уровней).",
+      "symptoms": [
+        "Код сдвинут вправо на 4+ уровня",
+        "Много вложенных if/else",
+        "Трудно читать поток выполнения"
+      ],
+      "impact": "Сложность понимания, трудно добавлять условия",
+      "fix": "Guard clauses (ранний return), выделение функций.",
+      "code_example": "# До: 5 уровней вложенности\n# После: guard clauses - читается сверху вниз",
+      "severity": "high",
+      "related_patterns": [
+        "Guard Clauses",
+        "Early Return"
+      ]
+    },
+    {
+      "name": "Data Class",
+      "description": "Класс только хранит данные с getter/setter.",
+      "symptoms": [
+        "Все поля публичные или через getter/setter",
+        "Нет бизнес-логики в классе"
+      ],
+      "impact": "Нарушение инкапсуляции, нет валидации",
+      "fix": "Используйте dataclasses с @property для валидации.",
+      "code_example": "# До: class User с get_name(), get_email()\n# После: @dataclass с @property email",
+      "severity": "medium",
+      "related_patterns": [
+        "Encapsulation",
+        "DataClass"
+      ]
+    }
+  ],
+  "best_practices": [
+    {
+      "title": "Используйте type hints везде",
+      "description": "Аннотации типов делают код самодокументируемым.",
+      "category": "code-quality",
+      "code_example": "def calculate_total(items: list) -> float:\n    return sum(i[\"price\"] * i[\"quantity\"] for i in items)",
+      "source": "PEP 484",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Используйте context managers для ресурсов",
+      "description": "Контекстные менеджеры гарантируют освобождение ресурсов.",
+      "category": "resource-management",
+      "code_example": "with open(\"data.json\", \"r\") as f:\n    data = json.load(f)",
+      "source": "PEP 343",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Используйте logging вместо print",
+      "description": "Logging позволяет контролировать уровень детализации.",
+      "category": "debugging",
+      "code_example": "import logging\nlogger = logging.getLogger(__name__)\nlogger.info(\"Process completed\")",
+      "source": "Python Docs",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Избегайте мутабельных аргументов по умолчанию",
+      "description": "Значения по умолчанию вычисляются один раз при определении функции.",
+      "category": "bugs-prevention",
+      "code_example": "def append_item(item, my_list=None):\n    if my_list is None:\n        my_list = []\n    my_list.append(item)\n    return my_list",
+      "source": "Python Docs",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Используйте dataclasses для контейнеров данных",
+      "description": "dataclasses автоматически генерируют __init__, __repr__, __eq__.",
+      "category": "code-quality",
+      "code_example": "@dataclass\nclass Bot:\n    name: str\n    config: dict\n    skills: list = field(default_factory=list)",
+      "source": "PEP 557",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Используйте Enum для констант",
+      "description": "Enum делает код читаемым и предотвращает ошибки.",
+      "category": "code-quality",
+      "code_example": "from enum import Enum, auto\n\nclass BotRole(Enum):\n    IMPROVER = auto()\n    PROTECTOR = auto()",
+      "source": "PEP 435",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Принцип единственной ответственности (SRP)",
+      "description": "Класс должен иметь только одну причину для изменения.",
+      "category": "architecture",
+      "code_example": "class CodeAnalyzer:      # только анализ\nclass TestRunner:        # только тесты\nclass ReportGenerator:   # только отчёты",
+      "source": "Clean Architecture",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Используйте pathlib вместо os.path",
+      "description": "pathlib - объектно-ориентированный путь к файлам.",
+      "category": "code-quality",
+      "code_example": "from pathlib import Path\nconfig = Path(\"config\") / \"settings.json\"\nif config.exists():\n    content = config.read_text()",
+      "source": "PEP 428",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Используйте f-strings для форматирования",
+      "description": "f-strings быстрее и читабельнее format() и %.",
+      "category": "code-quality",
+      "code_example": "message = f\"Bot {name}: level {level}\"",
+      "source": "PEP 498",
+      "python_version": "3.8+"
+    },
+    {
+      "title": "Используйте comprehensions",
+      "description": "List/dict comprehensions короче и быстрее циклов.",
+      "category": "performance",
+      "code_example": "squares = [x ** 2 for x in range(10) if x % 2 == 0]",
+      "source": "Python Docs",
+      "python_version": "3.8+"
+    }
+  ],
+  "updated": "2026-08-16T15:24:48.851107"
+}
