@@ -44,7 +44,7 @@
 models/
 ├── qwen2.5-3b/              ← General модель (универсальная)
 ├── qwen2.5-coder-3b/        ← Coder модель (для кода)
-└── rugpt3_vuglarst/         ← Fallback
+# rugpt3_vuglarst удалена
 ```
 
 ## ⚙️ Использование в коде

@@ -75,6 +75,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # === РАБОЧАЯ ДИРЕКТОРИЯ ===
 WORKDIR /app
 
+# === СОЗДАЁМ ДИРЕКТОРИЮ ДЛЯ ЛОГОВ ===
+RUN mkdir -p /app/logs
+
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY main.py ./
 COPY train.py ./
@@ -128,9 +131,9 @@ EXPOSE ${PORT}
 
 # === HEALTHCHECK ===
 # /ping — мгновенный ответ 200, проверяет что uvicorn слушает порт 8000
-# start-period=60s — даём время entrypoint.sh на установку Chrome и запуск uvicorn
-# timeout=5s — быстро реагируем, interval=15s — чаще проверяем
-HEALTHCHECK --interval=15s --timeout=5s --retries=5 --start-period=60s \
+# start-period=120s — даём время entrypoint.sh на установку Chrome и запуск uvicorn
+# timeout=10s — увеличен для надёжности, interval=15s — чаще проверяем
+HEALTHCHECK --interval=15s --timeout=10s --retries=10 --start-period=120s \
     CMD curl -f http://localhost:${PORT}/ping || exit 1
 
 # === КОМАНДА ЗАПУСКА (через entrypoint с загрузкой модели) ===

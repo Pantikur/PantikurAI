@@ -5,6 +5,7 @@ echo "🚀 Запуск Pantikur ChatBot..."
 
 # === СОЗДАЁМ RUNTIME-ДІРЕКТОРИИ (если смонтированы через volumes) ===
 echo "📁 Инициализация runtime-директорий..."
+mkdir -p /app/logs
 mkdir -p /app/akva/data/communication
 mkdir -p /app/akva/data/reports
 mkdir -p /app/akva/akva/engine/state
@@ -54,8 +55,14 @@ python -c "import fastapi; import uvicorn; print('✅ Зависимости OK'
     exit 1
 }
 
+# === ПРОВЕРКА PYTHONPATH ===
+echo "🔍 PYTHONPATH=$PYTHONPATH"
+export PYTHONPATH="/app:${PYTHONPATH}"
+echo "✅ PYTHONPATH установлен: $PYTHONPATH"
+
 # === ПРОВЕРКА Готовности main.py ===
 echo "🔍 Проверка main.py..."
+cd /app
 python -c "
 import sys
 sys.path.insert(0, '/app')
@@ -80,10 +87,13 @@ uvicorn main:app \
     --host ${HOST:-0.0.0.0} \
     --port ${PORT:-8000} \
     --log-level info \
-    --workers 1 &
+    --access-log \
+    --workers 1 \
+    > /app/logs/uvicorn.log 2>&1 &
 UVICORN_PID=$!
 
 echo "📌 Uvicorn запущен с PID: $UVICORN_PID"
+echo "📋 Логи uvicorn: /app/logs/uvicorn.log"
 
 # === ЖДЁМ, ПОКА UVICORN НЕ НАЧНЁТ СЛУШАТЬ ПОРТ ===
 echo "⏳ Ожидание запуска uvicorn (макс. 30 секунд)..."
@@ -111,5 +121,13 @@ echo "🎉 Pantikur ChatBot готов!"
 echo "📡 API доступен на http://localhost:${PORT}/ping"
 echo "📌 PID uvicorn: $UVICORN_PID"
 
+# Перенаправляем вывод uvicorn в stdout контейнера
 # Ждём завершения uvicorn (чтобы контейнер не завершился)
+# Если uvicorn падает — контейнер тоже завершится
 wait $UVICORN_PID
+EXIT_CODE=$?
+echo "⚠️ Uvicorn завершился с кодом $EXIT_CODE"
+
+# Если uvicorn упал — логи будут в stdout контейнера
+# Контейнер завершится с кодом ошибки
+exit $EXIT_CODE

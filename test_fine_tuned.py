@@ -13,8 +13,9 @@ if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 BASE_MODEL = "models/qwen2.5-3b"
-LORA_MODEL = "models/rugpt3_vuglarst/lora_weights"
-MERGED_MODEL = "models/rugpt3_vuglarst/merged"
+# rugpt3_vuglarst удалена — модель больше не используется
+# LORA_MODEL = "models/rugpt3_vuglarst/lora_weights"
+# MERGED_MODEL = "models/rugpt3_vuglarst/merged"
 
 print("=" * 60)
 print("[TEST] Тест дообученной модели Вугларста")

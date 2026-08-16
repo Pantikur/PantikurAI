@@ -33,7 +33,7 @@
 models/
 ├── qwen2.5-3b/              ← Основная модель (для main.py)
 ├── qwen2.5-coder-3b/        ← Coder модель (только для Нобуки)
-└── rugpt3_vuglarst/         ← Дообученная ruGPT3 (fallback)
+# rugpt3_vuglarst удалена
 ```
 
 ## 🚀 Как скачать

@@ -24,7 +24,7 @@ def main():
     paths_to_check = [
         "models/qwen2.5-coder-3b",
         "models/qwen2.5-3b",
-        "models/rugpt3_vuglarst/merged",
+        # models/rugpt3_vuglarst/merged (удалена)
     ]
     
     print("[INFO] Проверяем наличие моделей:")
