@@ -116,6 +116,9 @@ COPY naoto/ ./naoto/
 COPY yu/ ./yu/
 COPY ayiko/ ./ayiko/
 COPY scientists_network/ ./scientists_network/
+
+# === ЛОР АКАДЕМИИ БАРСТОН (нужен чат-игре PantikurChat) ===
+COPY fludilka_chat_pantikur/ ./fludilka_chat_pantikur/
 COPY auto_learn_cycle.py ./
 COPY autonomous_girls_v2.py ./
 COPY orchestrator_v3.py ./
