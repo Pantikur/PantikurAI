@@ -16,6 +16,9 @@ WORKDIR /app
 
 COPY requirements.txt .
 
+# ForceIPv4 для сетевых запросов (платформа сборки может не иметь IPv6-маршрута)
+RUN echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-cache-dir \
         --default-timeout=300 \
@@ -29,9 +32,12 @@ FROM python:3.11-slim AS production
 
 # === СИСТЕМНЫЕ ЗАВИСИМОСТИ (минимальный набор для Selenium/Web) ===
 # === Google Chrome устанавливается здесь (build-time), а не в entrypoint ===
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && \
+# === ForceIPv4: платформа сборки может не иметь IPv6-маршрута (Network is unreachable) ===
+RUN echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4 && \
+    echo 'Acquire::http::Timeout "60";' >> /etc/apt/apt.conf.d/99force-ipv4 && \
+    echo 'Acquire::Retries "5";' >> /etc/apt/apt.conf.d/99force-ipv4
+
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl \
         ca-certificates \
@@ -66,7 +72,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         libxss1 \
         libxtst6 \
         xdg-utils && \
-    wget -q -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    wget -4 -q -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     apt-get install -y --no-install-recommends /tmp/chrome.deb && \
     rm -f /tmp/chrome.deb && \
     rm -rf /var/lib/apt/lists/*
