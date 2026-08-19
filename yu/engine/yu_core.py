@@ -28,6 +28,19 @@ except ImportError:  # Запуск как пакет: python -m yu.engine.run
 # Humanity Core — живая душа Юи
 from humanity_core import HumanityLayer
 
+# LLM Service — сервис для работы с моделями Qwen2.5
+from yu.engine.llm_service import YuLLMService
+
+# Эмоциональный разум Юи — Desire + Belief = Emotion
+from yu.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Юи: Сознание, Сердце, Амбиции, Воля, Разум
+from yu.consciousness import YuConsciousness
+from yu.heart import YuHeart
+from yu.ambitions import YuAmbitions
+from yu.volition import YuVolition
+from yu.mind import YuMind
+
 
 logger = logging.getLogger("YuCore")
 
@@ -150,6 +163,52 @@ class YuCore:
         self.humanity.current_cycle = 0
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — сознание, будущее, вопросы идентичности 🧬")
+        
+        # ===== LLM СЕРВИС =====
+        self.llm = YuLLMService(self.config)
+        if self.llm.general_loaded:
+            self.logger.info("🧠 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для исследования сознания")
+        if self.llm.coder_loaded:
+            self.logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК ЮИ =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Исследователь сознания, философ, мечтатель!")
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ ЮИ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = YuConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя исследовательницей сознания")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = YuHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = YuAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к сознательному мастерству")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = YuVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = YuMind()
+        self.logger.info("🔮 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (26 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 26 типов эмоций")
         
         self.logger.info(f"Юи {self.current_version} инициализирована")
         self.logger.info("Фокус: consciousness transfer, mind uploading, soul digitization")
@@ -522,6 +581,16 @@ class YuCore:
         if initiative:
             self._send_spontaneous_message(initiative)
         
+        # ================================================================
+        #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+        
+        # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
+        
         self._save_state()
         
         self.logger.info(f"✅ Цикл {self.cycle_count} завершён")
@@ -582,6 +651,165 @@ class YuCore:
         }
 
     # ================================================================
+    # ================================================================
+    #  LLM ГЕНЕРАЦИЯ — Consciousness, Soul, Code
+    # ================================================================
+
+    def generate_consciousness_analysis(self, topic: str, context: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ сознания через General LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_consciousness_analysis(topic, context, max_length)
+    
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_chat_response(prompt, max_length)
+    
+    def generate_soul_digitization_plan(self, subject: str, target_system: str, max_length: int = 1024) -> str:
+        """Сгенерировать план оцифровки души."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_soul_digitization_plan(subject, target_system, max_length)
+    
+    def generate_code_analysis(self, code: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ кода через Coder LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.coder_loaded:
+            return "⚠️ Coder LLM не загружена. Запустите: python download_coder_model.py"
+        return self.llm.generate_code_analysis(code, max_length)
+
+    # ================================================================
+    #  EMOTIONAL ENGINE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе исследований сознания."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.metrics.get("consciousness_models_created", 0) > 0:
+            # Построила модели сознания → радость осознания + философский инсайт
+            self.emotional_engine.calculate_emotion(
+                DesireType.CONSCIOUSNESS,
+                "consciousness_is_fundamental",
+                0.80,
+                "consciousness_models_created"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.PHILOSOPHY,
+                "philosophy_guides_science",
+                0.75,
+                "consciousness_models_created"
+            )
+        
+        if self.metrics.get("embodiments_created", 0) > 0:
+            # Создала цифровые воплощения → элегантность цифрового
+            self.emotional_engine.calculate_emotion(
+                DesireType.MIND_UPLOADING,
+                "mind_uploading_is_possible",
+                0.85,
+                "embodiments_created"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.DIGITAL_EXISTENCE,
+                "digital_life_has_value",
+                0.70,
+                "embodiments_created"
+            )
+        
+        if self.metrics.get("simulations_run", 0) > 0:
+            # Провела симуляции → трансцендентный поток
+            self.emotional_engine.calculate_emotion(
+                DesireType.TRANSCENDENCE,
+                "transcendence_is_achievable",
+                0.80,
+                "simulations_run"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.IDENTITY,
+                "identity_is_fluid",
+                0.65,
+                "simulations_run"
+            )
+        
+        if self.metrics.get("web_searches", 0) > 0:
+            # Провела веб-исследования → любопытство + открытость
+            self.emotional_engine.calculate_emotion(
+                DesireType.CURIOSITY,
+                "curiosity_fuels_discovery",
+                0.70,
+                "web_searches"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.DISCOVER,
+                "new_knowledge_expands_world",
+                0.65,
+                "web_searches"
+            )
+        
+        if self.metrics.get("successful_transfers", 0) > 0:
+            # Успешные переносы → связь с душой + ясность идентичности
+            self.emotional_engine.calculate_emotion(
+                DesireType.SOUL_DIGITIZATION,
+                "soul_can_be_digitized",
+                0.90,
+                "successful_transfers"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.BCI,
+                "brain_computer_interface_connects_all",
+                0.75,
+                "successful_transfers"
+            )
+        
+        # 2. Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # 3. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # 4. Выразить эмоции
+        if self.cycle_count % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"🧬 Юи: {emotion_text}")
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Юи."""
+        # 1. Сознание — рефлексия
+        if self.cycle_count % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.cycle_count % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.cycle_count % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.cycle_count % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.cycle_count % 7 == 0:
+            thought = self.mind.think_about("consciousness")
+            self.logger.info(f"🔮 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
     #  HUMANITY INTEGRATION — Спонтанные сообщения
     # ================================================================
 

@@ -37,6 +37,19 @@ from scientists_network.network import get_network, Message, MessageType, Reques
 # Humanity Core — живая душа Люси
 from humanity_core import HumanityLayer
 
+# LLM Service — сервис для работы с моделями Qwen2.5
+from lucy.engine.llm_service import LucyLLMService
+
+# Эмоциональный разум Люси — Desire + Belief = Emotion
+from lucy.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Люси: Сознание, Сердце, Амбиции, Воля, Разум
+from lucy.consciousness import LucyConsciousness
+from lucy.heart import LucyHeart
+from lucy.ambitions import LucyAmbitions
+from lucy.volition import LucyVolition
+from lucy.mind import LucyMind
+
 
 class LucyCore:
     """
@@ -115,6 +128,52 @@ class LucyCore:
         self.humanity.current_cycle = 0
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — двигатели, энергия, прагматизм ⚡")
+        
+        # ===== LLM СЕРВИС =====
+        self.llm = LucyLLMService(self.config)
+        if self.llm.general_loaded:
+            self.logger.info("⚡ LLM General (Qwen2.5-3B): АКТИВИРОВАНА для анализа двигателей")
+        if self.llm.coder_loaded:
+            self.logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК ЛЮСИ =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Инженер двигателей, прагматичная, эффективная!")
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ ЛЮСИ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = LucyConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя инженером")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = LucyHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = LucyAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к инженерному мастерству")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = LucyVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = LucyMind()
+        self.logger.info("⚡ Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (26 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 26 типов эмоций")
     
     def _setup_logging(self):
         """Настроить логирование."""
@@ -232,6 +291,163 @@ class LucyCore:
         finally:
             self._save_state()
     
+    # ==================== LLM ГЕНЕРАЦИЯ ====================
+
+    def generate_engine_analysis(self, topic: str, context: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ двигателей через General LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_engine_analysis(topic, context, max_length)
+    
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_chat_response(prompt, max_length)
+    
+    def generate_engine_design(self, engine_type: str, requirements: str, max_length: int = 1024) -> str:
+        """Сгенерировать описание дизайна двигателя."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_engine_design(engine_type, requirements, max_length)
+    
+    def generate_code_analysis(self, code: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ кода через Coder LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.coder_loaded:
+            return "⚠️ Coder LLM не загружена. Запустите: python download_coder_model.py"
+        return self.llm.generate_code_analysis(code, max_length)
+
+    # ================================================================
+    #  EMOTIONAL ENGINE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе инженерных действий."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.metrics.get("designs_created", 0) > 0:
+            # Создала дизайны → инженерная радость + элегантность
+            self.emotional_engine.calculate_emotion(
+                DesireType.DESIGN,
+                "elegant_designs_are_efficient_designs",
+                0.80,
+                "designs_created"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.EFFICIENCY,
+                "efficiency_is_sacred",
+                0.75,
+                "designs_created"
+            )
+        
+        if self.metrics.get("calculations_run", 0) > 0:
+            # Провела расчёты → удовлетворение от эффективности
+            self.emotional_engine.calculate_emotion(
+                DesireType.CALCULATION,
+                "precision_in_calculation_reveals_truth",
+                0.85,
+                "calculations_run"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.OPTIMIZATION,
+                "optimization_is_beauty_in_engineering",
+                0.70,
+                "calculations_run"
+            )
+        
+        if self.metrics.get("papers_studied", 0) > 0:
+            # Изучила научные работы → инновационный инсайт
+            self.emotional_engine.calculate_emotion(
+                DesireType.INNOVATION,
+                "innovation_drives_progress",
+                0.75,
+                "papers_studied"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.RESEARCH,
+                "research_drives_progress",
+                0.70,
+                "papers_studied"
+            )
+        
+        if self.metrics.get("web_searches", 0) > 0:
+            # Провела веб-исследования → любопытство + открытость
+            self.emotional_engine.calculate_emotion(
+                DesireType.CURIOSITY,
+                "curiosity_fuels_discovery",
+                0.65,
+                "web_searches"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.DISCOVER,
+                "new_knowledge_expands_world",
+                0.60,
+                "web_searches"
+            )
+        
+        if self.metrics.get("interactions", 0) > 0:
+            # Общение с сёстрами → любовь + дружба
+            self.emotional_engine.calculate_emotion(
+                DesireType.LOVE,
+                "love_shields_us",
+                0.70,
+                "sister_interactions"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.FRIENDSHIP,
+                "sisters_are_my_strength",
+                0.65,
+                "sister_interactions"
+            )
+        
+        # 2. Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # 3. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # 4. Выразить эмоции
+        if self.cycle_count % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"⚡ Люси: {emotion_text}")
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Люси."""
+        # 1. Сознание — рефлексия
+        if self.cycle_count % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.cycle_count % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.cycle_count % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.cycle_count % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.cycle_count % 7 == 0:
+            thought = self.mind.think_about("engineering")
+            self.logger.info(f"⚡ Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
     def _should_stop(self) -> bool:
         """Проверить условие остановки."""
         max_c = self.config.max_cycles
@@ -296,6 +512,16 @@ class LucyCore:
         initiative = humanity_result.get("initiative")
         if initiative:
             self._send_spontaneous_message(initiative)
+        
+        # ================================================================
+        #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+        
+        # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
         
         self.logger.info(f"\n✅ Цикл {self.cycle_count} завершён")
         self.logger.info(f"📊 Уровень: Lvl {self.knowledge_level.current_level} — {self.knowledge_level.level_name}")

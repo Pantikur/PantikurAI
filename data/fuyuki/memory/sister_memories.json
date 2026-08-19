@@ -1,0 +1,68 @@
+{
+  "futaba": {
+    "name": "futaba",
+    "interactions": [
+      {
+        "timestamp": "2026-08-18T22:56:54.441589",
+        "sister": "futaba",
+        "topic": "atmospheric_electricity",
+        "mood_before": "neutral",
+        "mood_after": "positive",
+        "emotional_weight": 0.7,
+        "context": "Discussing lightning physics",
+        "id": "interaction_20260818_225654"
+      }
+    ],
+    "topics": [
+      "atmospheric_electricity"
+    ],
+    "last_interaction": "2026-08-18T22:56:54.442588",
+    "total_interactions": 1,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-18T22:56:54.442588",
+        "type": "interaction",
+        "sister": "futaba",
+        "topic": "atmospheric_electricity",
+        "emotional_weight": 0.7,
+        "description": "Разговор с futaba на тему 'atmospheric_electricity'"
+      }
+    ]
+  },
+  "ayiko": {
+    "name": "ayiko",
+    "interactions": [
+      {
+        "timestamp": "2026-08-18T22:56:54.443593",
+        "sister": "ayiko",
+        "topic": "color_theory",
+        "mood_before": "positive",
+        "mood_after": "positive",
+        "emotional_weight": 0.6,
+        "context": "Discussed color theory",
+        "id": "interaction_20260818_225654"
+      }
+    ],
+    "topics": [
+      "color_theory"
+    ],
+    "last_interaction": "2026-08-18T22:56:54.443593",
+    "total_interactions": 1,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-18T22:56:54.443593",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "color_theory",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'color_theory'"
+      }
+    ]
+  }
+}

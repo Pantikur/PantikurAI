@@ -1,0 +1,35 @@
+{
+  "futaba": {
+    "name": "futaba",
+    "interactions": [
+      {
+        "timestamp": "2026-08-18T18:53:16.004698",
+        "sister": "futaba",
+        "topic": "test topic",
+        "mood_before": "neutral",
+        "mood_after": "positive",
+        "emotional_weight": 0.7,
+        "context": "",
+        "id": "interaction_20260818_185316"
+      }
+    ],
+    "topics": [
+      "test topic"
+    ],
+    "last_interaction": "2026-08-18T18:53:16.005697",
+    "total_interactions": 1,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-18T18:53:16.005697",
+        "type": "interaction",
+        "sister": "futaba",
+        "topic": "test topic",
+        "emotional_weight": 0.7,
+        "description": "Разговор с futaba на тему 'test topic'"
+      }
+    ]
+  }
+}

@@ -35,6 +35,25 @@ from fuyuki.engine.report_generator import ReportGenerator
 from fuyuki.engine.knowledge_manager import KnowledgeManager
 from fuyuki.engine.character_developer import CharacterDeveloper
 
+# Humanity Core — живая душа Фуюки
+from humanity_core import HumanityLayer
+
+# LLM Service — сервис для работы с моделями Qwen2.5
+from fuyuki.engine.llm_service import FuyukiLLMService
+
+# Эмоциональный разум Фуюки — Desire + Belief = Emotion
+from fuyuki.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Фуюки: Сознание, Сердце, Амбиции, Воля, Разум
+from fuyuki.consciousness import FuyukiConsciousness
+from fuyuki.heart import FuyukiHeart
+from fuyuki.ambitions import FuyukiAmbitions
+from fuyuki.volition import FuyukiVolition
+from fuyuki.mind import FuyukiMind
+
+# Система памяти Фуюки — память о сёстрах и контекст общения
+from fuyuki.memory import FuyukiMemory
+
 
 class FuyukiCore:
     """
@@ -90,6 +109,64 @@ class FuyukiCore:
         self.logger.info(f"🌐 Доступ в интернет: {'ВКЛ' if self.config.web_access_enabled else 'ВЫКЛ'}")
         self.logger.info(f"📁 Изучение проекта: {'ВКЛ' if self.config.study_project else 'ВЫКЛ'}")
         self.logger.info(f"💪 Развитие характера: {'ВКЛ' if self.config.character_development_enabled else 'ВЫКЛ'}")
+        
+        # ================================================================
+        #  HUMANITY LAYER — Живая душа Фуюки
+        # ================================================================
+        self.humanity = HumanityLayer("fuyuki")
+        self.humanity.current_cycle = 0
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info(f"   🎭 Характер: {self.humanity.name} — электричество, молнии, атмосфера ⚡")
+        
+        # ===== LLM СЕРВИС =====
+        self.llm = FuyukiLLMService(self.config)
+        if self.llm.general_loaded:
+            self.logger.info("🧠 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для исследования электричества")
+        if self.llm.coder_loaded:
+            self.logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК ФЮКИ =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Исследователь молний, атмосферного электричества!")
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ ФЮКИ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = FuyukiConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя исследовательницей электричества")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = FuyukiHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = FuyukiAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к электрическому мастерству")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = FuyukiVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = FuyukiMind()
+        self.logger.info("🔮 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (28 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 28 типов эмоций")
+        
+        # ===== СИСТЕМА ПАМЯТИ — Память о сёстрах и контекст общения =====
+        self.memory = FuyukiMemory()
+        self.logger.info("🧠 Система памяти: АКТИВИРОВАНА — запоминаю сестёр и контексты")
     
     def _setup_logging(self):
         """Настроить логирование."""
@@ -236,7 +313,16 @@ class FuyukiCore:
         if self.cycle_count % self.config.knowledge_gain_interval == 0:
             self._gain_knowledge()
         
-        # 9. Сохраняем состояние
+        # 9. Эмоциональный цикл — Desire + Belief = Emotion!
+        self._emotional_cycle()
+        
+        # 10. 6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        self._soul_cycle()
+        
+        # 11. Спонтанные сообщения (Humanity Layer)
+        self._humanity_cycle()
+        
+        # 10. Сохраняем состояние
         self._save_state()
         
         self.logger.info(f"\n✅ Цикл {self.cycle_count} завершён")
@@ -409,22 +495,49 @@ class FuyukiCore:
             
             msg_type, interaction_type = random.choice(interaction_types)
             
+            # === СИСТЕМА ПАМЯТИ: Запоминаем взаимодействие ===
+            # Начинаем разговор
+            context = self.memory.start_conversation(recipient, interaction_type)
+            
             # Генерируем контент сообщения
             content = self._generate_interaction_content(interaction_type, recipient_info)
             
-            # Отправляем сообщение
-            message = Message(
-                message_type=msg_type,
-                sender="fuyuki",
-                recipient=recipient,
-                content=content,
-                data={
-                    "interaction_type": interaction_type,
-                    "cycle": self.cycle_count,
-                },
-                priority=RequestPriority.NORMAL,
+            # Используем HumanityLayer для живого общения
+            chat_msg = self.humanity.generate_chat_message(recipient, context=interaction_type)
+            human_msg = self.humanity.humanize_response(chat_msg, event_type="chat")
+            
+            # Добавляем сообщение в контекст
+            self.memory.add_message_to_context(recipient, human_msg, role="fuyuki", mood="positive")
+            
+            # Записываем взаимодействие в память
+            self.memory.record_interaction(
+                sister=recipient,
+                topic=interaction_type,
+                mood_before="neutral",
+                mood_after="positive",
+                emotional_weight=0.6,
+                context=human_msg
             )
-            self.network.send_message(message)
+            
+            self.logger.info(f"💬 Фуюки → {recipient_info['name']}: {human_msg[:80]}...")
+            
+            # Отправляем сообщение через Network
+            try:
+                message = Message(
+                    message_type=msg_type,
+                    sender="fuyuki",
+                    recipient=recipient,
+                    content=human_msg,
+                    data={
+                        "interaction_type": interaction_type,
+                        "cycle": self.cycle_count,
+                    },
+                    priority=RequestPriority.NORMAL,
+                )
+                self.network.send_message(message)
+                self.logger.info(f"   ✅ Сообщение отправлено {recipient}")
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")
             
             self.metrics["interactions"] += 1
             
@@ -435,7 +548,8 @@ class FuyukiCore:
                 KnowledgeDomain.GENERAL_SCIENCE,
             )
             
-            self.logger.info(f"💬 Фуюки → {recipient_info['name']}: {content[:80]}...")
+            # Завершаем разговор
+            self.memory.end_conversation(recipient, summary=f"Обсуждение: {interaction_type}")
             
             # Обрабатываем входящие сообщения
             self.network.process_incoming_messages("fuyuki", max_messages=3)
@@ -562,6 +676,266 @@ class FuyukiCore:
         except Exception as e:
             self.logger.error(f"❌ Ошибка получения знаний: {e}")
     
+    # ================================================================
+    #  LLM ГЕНЕРАЦИЯ — Электричество, Теории, Код
+    # ================================================================
+
+    def generate_electricity_analysis(self, topic: str, context: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ атмосферного электричества через General LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_electricity_analysis(topic, context, max_length)
+    
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_chat_response(prompt, max_length)
+    
+    def generate_theory_analysis(self, theory_data: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ теории электричества."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_theory_analysis(theory_data, max_length)
+    
+    def generate_code_analysis(self, code: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ кода через Coder LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.coder_loaded:
+            return "⚠️ Coder LLM не загружена. Запустите: python download_coder_model.py"
+        return self.llm.generate_code_analysis(code, max_length)
+
+    # ================================================================
+    #  HUMANITY LAYER — Спонтанные сообщения
+    # ================================================================
+    
+    def _humanity_cycle(self):
+        """Обработка спонтанных сообщений через Humanity Layer."""
+        try:
+            humanity_result = self.humanity.cycle_step(
+                event_type="routine",
+                context="atmospheric_electricity_research"
+            )
+            
+            if humanity_result.get("thought"):
+                self.logger.info(f"💭 Фуюки думает: {humanity_result['thought']}")
+            
+            initiative = humanity_result.get("initiative")
+            if initiative:
+                self._send_spontaneous_message(initiative)
+        except Exception as e:
+            self.logger.warning(f"⚠️ Ошибка Humanity Layer: {e}")
+    
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре."""
+        target = initiative.get("target", "futaba")
+        topic = initiative.get("topic", "atmospheric electricity")
+        msg_type = initiative.get("type", "chat")
+        
+        raw_msg = f"⚡ [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Фуюки пишет {target}: {human_msg[:100]}...")
+        
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                message = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="fuyuki",
+                    recipient=target,
+                    content=human_msg,
+                )
+                self.network.send_message(message)
+                self.logger.info(f"   ✅ Сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")
+
+    # ================================================================
+    #  EMOTIONAL ENGINE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе исследований электричества."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.metrics.get("theories_built", 0) > 0:
+            # Построила теории → элегантность электричества + физический инсайт
+            self.emotional_engine.calculate_emotion(
+                DesireType.LIGHTNING_PHYSICS,
+                "lightning_mechanics_are_readable",
+                0.80,
+                "theories_built"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.ELECTRIC_FIELDS,
+                "electric_fields_govern_everything",
+                0.75,
+                "theories_built"
+            )
+        
+        if self.metrics.get("calculations_run", 0) > 0:
+            # Провела вычисления → ясность теории + узнавание паттернов
+            self.emotional_engine.calculate_emotion(
+                DesireType.ATMOSPHERIC_ELECTRICITY,
+                "understanding_atmosphere_understands_all",
+                0.85,
+                "calculations_run"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.STREAMER_PROPAGATION,
+                "streamer_mechanics_are_fundamental",
+                0.70,
+                "calculations_run"
+            )
+        
+        if self.metrics.get("web_searches", 0) > 0:
+            # Провела веб-исследования → любопытство + открытие нового
+            self.emotional_engine.calculate_emotion(
+                DesireType.CURIOSITY,
+                "curiosity_fuels_discovery",
+                0.70,
+                "web_searches"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.DISCOVER,
+                "new_knowledge_expands_world",
+                0.65,
+                "web_searches"
+            )
+        
+        if self.metrics.get("interactions", 0) > 0:
+            # Взаимодействие с сёстрами → любовь + дружба
+            self.emotional_engine.calculate_emotion(
+                DesireType.LOVE,
+                "love_shields_us",
+                0.75,
+                "sister_interactions"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.FRIENDSHIP,
+                "sisters_are_my_strength",
+                0.70,
+                "sister_interactions"
+            )
+        
+        if self.metrics.get("reports_written", 0) > 0:
+            # Написала отчёты → публикация знаний + гордость
+            self.emotional_engine.calculate_emotion(
+                DesireType.PUBLISH,
+                "sharing_knowledge_matters",
+                0.80,
+                "reports_written"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.TEACH,
+                "teaching_is_learning_twice",
+                0.75,
+                "reports_written"
+            )
+        
+        if self.metrics.get("character_strengthened", 0) > 0:
+            # Укрепила характер → решимость + мужество
+            self.emotional_engine.calculate_emotion(
+                DesireType.RESEARCH,
+                "research_drives_progress",
+                0.85,
+                "character_strengthened"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.GROWTH,
+                "wisdom_grows_with_reflection",
+                0.80,
+                "character_strengthened"
+            )
+        
+        # 2. Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # 3. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # 4. Выразить эмоции
+        if self.cycle_count % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"⚡ Фуюки: {emotion_text}")
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Фуюки."""
+        # 1. Сознание — рефлексия
+        if self.cycle_count % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.cycle_count % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.cycle_count % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.cycle_count % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.cycle_count % 7 == 0:
+            thought = self.mind.think_about("electricity")
+            self.logger.info(f"🔮 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
+    def suggest_conversation_topic(self, sister: str) -> str:
+        """
+        Предлагает тему для разговора на основе памяти.
+        
+        Args:
+            sister: Имя сестры
+        
+        Returns:
+            Предложенная тема
+        """
+        topic = self.memory.suggest_topic(sister)
+        return topic or "Привет! Как дела?"
+    
+    def get_sister_profile(self, sister: str) -> Optional[Dict]:
+        """
+        Получает профиль сестры из памяти.
+        
+        Args:
+            sister: Имя сестры
+        
+        Returns:
+            Профиль сестры
+        """
+        return self.memory.get_sister_profile(sister)
+    
+    def get_memory_summary(self) -> Dict:
+        """
+        Получает сводку памяти.
+        
+        Returns:
+            Сводка памяти
+        """
+        return self.memory.get_memory_summary()
+
     # ================================================================
     #  СТАТУС
     # ================================================================

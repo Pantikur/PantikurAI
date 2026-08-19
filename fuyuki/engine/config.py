@@ -107,6 +107,11 @@ class FuyukiConfig:
     # === Логирование ===
     log_level: str = "INFO"
     log_format: str = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+    
+    # === LLM ===
+    llm_enabled: bool = True              # вкл/выкл LLM
+    general_model_path: str = "models/Qwen2.5-3B-Instruct"
+    coder_model_path: str = "models/Qwen2.5-Coder-3B-Instruct"
 
     # === Взаимодействие с сёстрами ===
     interact_with_sisters: bool = True      # Общаться с 11 другими девочками

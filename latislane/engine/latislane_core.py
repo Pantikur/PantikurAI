@@ -34,6 +34,25 @@ from ml_optimizer import MLOptimizer
 # Humanity Core — живая душа Латислейн
 from humanity_core import HumanityLayer
 
+# LLM Service — сервис для работы с моделями Qwen2.5
+from latislane.engine.llm_service import LatislaneLLMService
+
+# Эмоциональный разум Латислейн — Desire + Belief = Emotion
+from latislane.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Латислейн: Сознание, Сердце, Амбиции, Воля, Разум
+from latislane.consciousness import LatislaneConsciousness
+from latislane.heart import LatislaneHeart
+from latislane.ambitions import LatislaneAmbitions
+from latislane.volition import LatislaneVolition
+from latislane.mind import LatislaneMind
+
+# Система памяти Латислейн — память о сёстрах и контекст общения
+from latislane.memory import LatislaneMemory
+
+# Система характера Латислейн — темперамент, черты, эволюция
+from latislane.character import CharacterSystem, TemperamentType
+
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
     _HAS_NETWORK = True
@@ -117,7 +136,63 @@ class LatislaneCore:
         self.humanity.current_cycle = 0
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — тело, анатомия, точность 🧬")
-
+        
+        # ================================================================
+        #  LLM — Две модели Qwen2.5 для точного анализа
+        # ================================================================
+        self.llm = LatislaneLLMService(self.config)
+        if self.llm.general_loaded or self.llm.coder_loaded:
+            self.logger.info("🧠 LLM: АКТИВИРОВАНА — Qwen2.5 для анатомии и инженерии")
+            self.logger.info(f"   General: {self.llm.general_loaded}")
+            self.logger.info(f"   Coder: {self.llm.coder_loaded}")
+        else:
+            self.logger.warning("⚠️ LLM не загружена. Запустите: python download_qwen_model.py")
+        
+        # ================================================================
+        #  EMOTIONAL ENGINE — Эмоции для точности и инженерии
+        # ================================================================
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.save_state(emotion_state_path)
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Специализация: точность, анатомия, инженерия 🧬")
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ ЛАТИСЛЕЙН =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = LatislaneConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя экспертом по анатомии и точности")
+        
+        # 2. Сердце — эмоции, забота, удовлетворение
+        self.heart = LatislaneHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую удовлетворение от точности")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = LatislaneAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к инженерному совершенству")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = LatislaneVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = LatislaneMind()
+        self.logger.info("🔮 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (15 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 15 типов эмоций")
+        
+        # ===== СИСТЕМА ПАМЯТИ — Память о сёстрах и контекст общения =====
+        self.memory = LatislaneMemory()
+        self.logger.info("🧠 Система памяти: АКТИВИРОВАНА — запоминаю сестёр и контексты")
+        
+        # ===== СИСТЕМА ХАРАКТЕРА — Темперамент, черты, эволюция =====
+        self.character = CharacterSystem()
+        self.logger.info("🧬 Система характера: АКТИВИРОВАНА — темперамент, черты, эволюция")
+        self.logger.info(f"   Темперамент: {self.character.temperament_name}")
+        self.logger.info(f"   Уровень эволюции: {self.character.evolution['current_level']}/{self.character.evolution['max_level']}")
+        
         self.logger.info(f"Нобука {self.current_version} инициализирована")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
 
@@ -265,6 +340,16 @@ class LatislaneCore:
         if self.cycle_count % 10 == 0:
             self._optimize_ml_pipeline()
 
+        # ================================================================
+        #  EMOTIONAL CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+        
+        # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
+        
         # ================================================================
         #  HUMANITY CYCLE — Настроение, душа, спонтанность
         # ================================================================
@@ -864,6 +949,14 @@ class LatislaneCore:
         
         self.logger.info(f"💬 Латислейн пишет {target}: {human_msg[:100]}...")
         
+        # Записывает взаимодействие в память
+        self.memory.record_sister_chat(
+            sister=target,
+            topic=topic,
+            mood_before="neutral",
+            mood_after="positive"
+        )
+        
         if self.network:
             try:
                 from scientists_network.network import Message, MessageType
@@ -883,3 +976,186 @@ class LatislaneCore:
                 )
             except Exception as e:
                 self.logger.warning(f"Не удалось отправить сообщение: {e}")
+
+    # ================================================================
+    #  EMOTIONAL CYCLE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл Латислейн — Desire + Belief = Emotion."""
+        cycle = self.cycle_count
+        
+        # Симуляция: проверка точности
+        accuracy = random.uniform(0.7, 0.98)
+        self.emotional_engine.simulate_accuracy_check(accuracy)
+        
+        # Симуляция: инженерный успех
+        engineering_success = random.random() < 0.85
+        self.emotional_engine.simulate_engineering_success(engineering_success)
+        
+        # Симуляция: проверка безопасности
+        safety_level = random.uniform(0.8, 0.99)
+        self.emotional_engine.simulate_safety_check(safety_level)
+        
+        # Симуляция: взаимодействие с сёстрами (периодически)
+        if cycle % 3 == 0:
+            sisters = ["futaba", "ayiko", "shiori", "hanako", "lucy"]
+            sister = random.choice(sisters)
+            topics = ["анатомия", "безопасность", "структура", "оптимизация", "инженерия"]
+            topic = random.choice(topics)
+            self.emotional_engine.simulate_sister_interaction(sister, topic)
+        
+        # Симуляция: анализ кода (периодически)
+        if cycle % 5 == 0:
+            code_quality = random.uniform(0.6, 0.95)
+            issues = random.randint(0, 10)
+            self.emotional_engine.simulate_code_analysis(code_quality, issues)
+        
+        # Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # Выразить эмоции
+        if cycle % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"🧬 Латислейн: {emotion_text}")
+        
+        # Сохраняем состояние
+        emotion_state_path = self.config.state_dir / 'emotional_state.json'
+        self.emotional_engine.save_state(emotion_state_path)
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Латислейн."""
+        cycle = self.cycle_count
+        
+        # 1. Сознание — рефлексия
+        if cycle % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if cycle % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emoji']} {emotion['dominant_description']}")
+        
+        # 3. Амбиции — прогресс
+        if cycle % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}%")
+        
+        # 4. Воля — укрепление
+        if cycle % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if cycle % 7 == 0:
+            thought = self.mind.think_about('anatomy')
+            self.logger.info(f"🔮 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+        
+        # 7. Характер — эволюция
+        if cycle % 10 == 0:
+            result = self.character.evolve_character("cycle")
+            if result["evolved"]:
+                self.logger.info(f"🧬 ЭВОЛЮЦИЯ: Уровень {result['from_level']} → {result['to_level']}")
+            else:
+                self.logger.info(f"🧬 Характер: уровень {result['current_level']}, очки: {result['points']}/{result['points_needed']}")
+
+
+    # ================================================================
+    #  MEMORY ACCESS — Методы доступа к памяти
+    # ================================================================
+
+    def get_sister_profile(self, sister):
+        """Получает профиль сестры из памяти."""
+        return self.memory.get_sister_profile(sister)
+    
+    def get_emotional_bond(self, sister):
+        """Получает уровень эмоциональной связи с сестрой."""
+        return self.memory.get_emotional_bond(sister)
+    
+    def get_recent_interactions(self, sister, count=5):
+        """Получает недавние взаимодействия с сестрой."""
+        return self.memory.get_recent_interactions(sister, count)
+    
+    def suggest_topic(self, sister):
+        """Предлагает тему для разговора на основе памяти."""
+        return self.memory.suggest_topic(sister)
+    
+    def get_memory_summary(self):
+        """Получает сводку памяти."""
+        return self.memory.get_memory_summary()
+    
+    def start_conversation(self, sister, topic):
+        """Начинает разговор с сестрой (создаёт контекст)."""
+        return self.memory.start_conversation(sister, topic)
+    
+    def add_message_to_context(self, sister, message, role="latislane", mood="neutral"):
+        """Добавляет сообщение в контекст разговора."""
+        return self.memory.add_message_to_context(sister, message, role, mood)
+    
+    def end_conversation(self, sister, summary=""):
+        """Завершает разговор с сестрой."""
+        return self.memory.end_conversation(sister, summary)
+    
+    def get_conversation_history(self, sister):
+        """Получает историю разговоров с сестрой."""
+        return self.memory.get_conversation_history(sister)
+    
+    def get_shared_topics(self, sister):
+        """Получает общие темы с сестрой."""
+        return self.memory.get_shared_topics(sister)
+    
+    def add_anatomy_discovery(self, topic, discovery, accuracy=0.9):
+        """Записывает анатомическое открытие."""
+        return self.memory.record_anatomy_discovery(topic, discovery, accuracy)
+    
+    def record_sister_chat(self, sister, topic, mood_before, mood_after):
+        """Записывает разговор с сестрой (удобный метод)."""
+        self.memory.record_sister_chat(sister, topic, mood_before, mood_after)
+    
+    # ================================================================
+    #  CHARACTER ACCESS — Методы доступа к характеру
+    # ================================================================
+    
+    def get_temperament_profile(self):
+        """Получает профиль темперамента."""
+        return self.character.get_temperament_profile()
+    
+    def get_trait_profile(self, trait_name=None):
+        """Получает профиль черты."""
+        return self.character.get_trait_profile(trait_name)
+    
+    def get_evolution_profile(self):
+        """Получает профиль эволюции."""
+        return self.character.get_evolution_profile()
+    
+    def get_full_character_profile(self):
+        """Получает полный профиль характера."""
+        return self.character.get_full_profile()
+    
+    def evolve_character(self, trigger="experience"):
+        """Эволюционирует характер."""
+        return self.character.evolve_character(trigger)
+    
+    def process_experience(self, experience_type, intensity=0.5):
+        """Обрабатывает опыт и обновляет характер."""
+        return self.character.process_experience(experience_type, intensity)
+    
+    def express_character(self):
+        """Выражает характер текстом."""
+        return self.character.express_character()
+

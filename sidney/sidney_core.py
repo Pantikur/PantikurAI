@@ -23,6 +23,25 @@ from datetime import datetime
 
 from .engine.engine_core import EngineCore
 
+# LLM Service — сервис для работы с моделями Qwen2.5
+from sidney.engine.llm_service import SidneyLLMService
+
+# Эмоциональный разум Сидни — Desire + Belief = Emotion
+from sidney.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# Память о сёстрах и контекст общения
+from sidney.memory import SidneyMemory
+
+# Темперамент, черты и эволюция
+from sidney.character import CharacterSystem
+
+# 6 модулей души Сидни: Сознание, Сердце, Амбиции, Воля, Разум
+from sidney.consciousness import SidneyConsciousness
+from sidney.heart import SidneyHeart
+from sidney.ambitions import SidneyAmbitions
+from sidney.volition import SidneyVolition
+from sidney.mind import SidneyMind
+
 # Humanity Core — живая душа Сидни
 from humanity_core import HumanityLayer
 
@@ -84,6 +103,13 @@ class SidneyCore:
         # === Движок ===
         self.engine = EngineCore(str(self.project_root))
         
+        # ===== LLM СЕРВИС =====
+        self.llm = SidneyLLMService()
+        if self.llm.general_loaded:
+            logger.info("🧠 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для общих задач")
+        if self.llm.coder_loaded:
+            logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для кода")
+        
         # === Состояние системы ===
         self.system_state = {
             "initialized_at": None,
@@ -125,6 +151,51 @@ class SidneyCore:
         # ================================================================
         self.humanity = HumanityLayer("sidney")
         self.humanity.current_cycle = 0
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ================================================================
+        #  EMOTIONAL ENGINE — Эмоциональный разум Сидни
+        # ================================================================
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.sidney_root / "engine" / "state" / "emotional_state.json"
+        self.emotional_engine.save_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        logger.info("   Специализация: игровые движки, системы, инженерия 🎮")
+        
+        # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self.consciousness = SidneyConsciousness()
+        self.heart = SidneyHeart()
+        self.ambitions = SidneyAmbitions()
+        self.volition = SidneyVolition()
+        self.mind = SidneyMind()
+        
+        logger.info("🧠 6-модульная душа: АКТИВИРОВАНА")
+        logger.info("   Сознание, Сердце, Амбиции, Воля, Разум — все активны")
+        
+        # ================================================================
+        #  MEMORY — Память о сёстрах и контекст общения
+        # ================================================================
+        self.memory = SidneyMemory()
+        logger.info("🧠 Память о сёстрах и контекст: АКТИВИРОВАН")
+        logger.info("   Записывает все разговоры, темы, контексты")
+        
+        # ================================================================
+        #  CHARACTER — Темперамент, черты и эволюция
+        # ================================================================
+        self.soul_character = CharacterSystem()
+        logger.info("🧬 Темперамент, черты и эволюция: АКТИВИРОВАНЫ")
+        logger.info(f"   Темперамент: {self.soul_character.temperament_name}")
+        logger.info(f"   Уровней эволюции: {self.soul_character.evolution['max_level']}")
+        
         logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         logger.info(f"   🎭 Характер: {self.humanity.name} — игровой движок, IT-юмор, лояльность 🎮")
     
@@ -457,6 +528,11 @@ class SidneyCore:
                 if initiative:
                     self._send_spontaneous_message(initiative)
                 
+                # ================================================================
+                #  SOUL CYCLE — 6 модулей души
+                # ================================================================
+                self._soul_cycle(cycle_count)
+                
                 # Сохранение
                 self._save_state()
                 self._save_knowledge()
@@ -732,4 +808,173 @@ class SidneyCore:
                 )
             except Exception as e:
                 logger.warning(f"  ⚠️ Не удалось отправить сообщение: {e}")
+    
+    # ================================================================
+    #  EMOTIONAL ENGINE ACCESS — Методы доступа к эмоциям
+    # ================================================================
+    
+    def get_emotion_profile(self):
+        """Получает профиль эмоций."""
+        return self.emotional_engine.get_emotion_profile()
+    
+    def get_dominant_emotion(self):
+        """Получает доминирующую эмоцию."""
+        return self.emotional_engine.get_dominant_emotion()
+    
+    def express_emotions(self):
+        """Выражает текущие эмоции текстом."""
+        return self.emotional_engine.express_emotions()
+    
+    def get_current_mood(self):
+        """Получает текущее настроение."""
+        return self.emotional_engine.get_current_mood()
+    
+    def simulate_engine_render(self, engine_name, quality):
+        """Симулирует рендер движка."""
+        return self.emotional_engine.simulate_engine_render(engine_name, quality)
+    
+    def simulate_optimization(self, fps_improvement, optimization_type="general"):
+        """Симулирует оптимизацию."""
+        return self.emotional_engine.simulate_optimization(fps_improvement, optimization_type)
+    
+    def simulate_hybrid_render(self, success, voxel_count=1000):
+        """Симулирует гибридный рендер."""
+        return self.emotional_engine.simulate_hybrid_render(success, voxel_count)
+    
+    def simulate_system_load(self, load_percentage):
+        """Симулирует нагрузку системы."""
+        return self.emotional_engine.simulate_system_load(load_percentage)
+    
+    def record_sister_chat(self, sister, topic, mood_before, mood_after):
+        """Записывает разговор с сестрой (удобный метод)."""
+        self.emotional_engine.simulate_sister_interaction(sister, topic, 0.7)
+        self.humanity.memory.record_sister_chat(sister, topic, mood_before, mood_after)
+        self.memory.record_sister_chat(sister, topic, mood_before, mood_after)
+    
+    # ================================================================
+    #  MEMORY ACCESS — Методы доступа к памяти
+    # ================================================================
+    
+    def get_sister_profile(self, sister):
+        """Получает профиль сестры."""
+        return self.memory.get_sister_profile(sister)
+    
+    def get_conversation_summary(self, sister):
+        """Получает сводку разговоров с сестрой."""
+        return self.memory.get_conversation_summary(sister)
+    
+    def get_memory_summary(self):
+        """Получает полную сводку памяти."""
+        return self.memory.get_memory_summary()
+    
+    def suggest_topic(self, sister):
+        """Предлагает тему для разговора с сестрой."""
+        return self.memory.suggest_topic(sister)
+    
+    def start_conversation(self, sister, topic):
+        """Начинает новый разговор."""
+        self.memory.start_conversation(sister, topic)
+    
+    def add_message(self, sister, sender, content, mood="neutral"):
+        """Добавляет сообщение в разговор."""
+        self.memory.add_message(sister, sender, content, mood)
+    
+    def end_conversation(self, sister):
+        """Завершает разговор."""
+        self.memory.end_conversation(sister)
+    
+    def get_active_conversation(self, sister):
+        """Получает активный контекст разговора."""
+        return self.memory.get_active_conversation(sister)
+    
+    def record_engineering_discovery(self, topic, discovery, impact="medium"):
+        """Записывает инженерное открытие."""
+        self.memory.record_engineering_discovery(topic, discovery, impact)
+    
+    def record_history_event(self, event_type, description, related_sisters=None):
+        """Записывает историческое событие."""
+        self.memory.record_history_event(event_type, description, related_sisters)
+    
+    def get_topic_frequency(self, sister):
+        """Получает частоту тем для сестры."""
+        return self.memory.get_topic_frequency(sister)
+    
+    # ================================================================
+    #  CHARACTER ACCESS — Методы доступа к темпераменту и эволюции
+    # ================================================================
+    
+    def get_temperament_profile(self):
+        """Получает профиль темперамента."""
+        return self.soul_character.get_temperament_profile()
+    
+    def get_trait_profile(self, trait_name=None):
+        """Получает профиль черты."""
+        return self.soul_character.get_trait_profile(trait_name)
+    
+    def get_evolution_profile(self):
+        """Получает профиль эволюции."""
+        return self.soul_character.get_evolution_profile()
+    
+    def get_full_character_profile(self):
+        """Полный профиль характера."""
+        return self.soul_character.get_full_profile()
+    
+    def express_character(self):
+        """Выражает характер текстом."""
+        return self.soul_character.express_character()
+    
+    def evolve_character(self, trigger="experience"):
+        """Эволюционирует характер."""
+        return self.soul_character.evolve_character(trigger)
+    
+    def process_experience(self, experience_type, intensity=0.5):
+        """Обрабатывает опыт и обновляет характер."""
+        return self.soul_character.process_experience(experience_type, intensity)
+    
+    def add_character_event(self, event_type, description, traits_affected=None, impact=0.0):
+        """Добавляет событие характера."""
+        return self.soul_character.add_character_event(event_type, description, traits_affected, impact)
+
+    
+    # ================================================================
+    #  SOUL CYCLE — 6 модулей души
+    # ================================================================
+    
+    def _soul_cycle(self, cycle: int):
+        """Цикл 6 модулей души Сидни."""
+        
+        # 1. Сознание — рефлексия (каждые 3 цикла)
+        if cycle % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            logger.info(f"💭 Сознание: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик (каждые 4 цикла)
+        if cycle % 4 == 0:
+            emotion = self.heart.express_emotions()
+            logger.info(f"💖 Сердце: {emotion['dominant_emoji']} {emotion['dominant_description']}")
+        
+        # 3. Амбиции — прогресс (каждые 5 циклов)
+        if cycle % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}%")
+        
+        # 4. Воля — укрепление (каждые 6 циклов)
+        if cycle % 6 == 0:
+            result = self.volition.strengthen_will()
+            logger.info(f"💪 Воля укреплена: {result['new_willpower']:.0%}")
+        
+        # 5. Разум — анализ (каждые 7 циклов)
+        if cycle % 7 == 0:
+            thought = self.mind.think_about('engine_architecture')
+            logger.info(f"🔮 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+        
+        # 7. Характер — эволюция (каждые 8 циклов)
+        if cycle % 8 == 0:
+            evolution = self.soul_character.evolve_character("soul_cycle")
+            if evolution.get("evolved"):
+                logger.info(f"🧬 Эволюция характера: уровень {evolution['from_level']} → {evolution['to_level']}!")
+            else:
+                logger.info(f"🧬 Характер: уровень {evolution['current_level']}, очков: {evolution['points']}/{evolution['points_needed']}")
 

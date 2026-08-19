@@ -104,6 +104,11 @@ class LatislaneConfig:
     max_change_risk_threshold: float = 0.05
     auto_rollback_on_failure: bool = True
 
+    # === LLM ===
+    llm_enabled: bool = True
+    general_model_path: str = "models/qwen2.5-3b"
+    coder_model_path: str = "models/qwen2.5-coder-3b"
+
     # === Взаимодействие с сёстрами ===
     notify_futaba_on_logic_change: bool = True
     notify_shiori_on_security_change: bool = True

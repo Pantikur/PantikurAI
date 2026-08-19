@@ -27,6 +27,19 @@ from .communicator import AkvaCommunicator
 # Humanity Core — живая душа Аква
 from humanity_core import HumanityLayer
 
+# LLM Service — сервис для работы с моделями Qwen2.5
+from akva.engine.llm_service import AkvaLLMService
+
+# Эмоциональный разум Аква — Desire + Belief = Emotion
+from akva.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Аква: Сознание, Сердце, Амбиции, Воля, Разум
+from akva.consciousness import AkvaConsciousness
+from akva.heart import AkvaHeart
+from akva.ambitions import AkvaAmbitions
+from akva.volition import AkvaVolition
+from akva.mind import AkvaMind
+
 
 logger = logging.getLogger("AkvaCore")
 
@@ -237,6 +250,52 @@ class AkvaCore:
         self.humanity.current_cycle = 0
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — математика, физика, элегантность 📐")
+        
+        # ===== LLM СЕРВИС =====
+        self.llm = AkvaLLMService(self.config)
+        if self.llm.general_loaded:
+            self.logger.info("🔬 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для научного анализа")
+        if self.llm.coder_loaded:
+            self.logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК АКВА =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Научный аналитик, исследователь, математик!")
+
+        # ===== 6 МОДУЛЕЙ ДУШИ АКВА =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = AkvaConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя научным аналитиком")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = AkvaHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = AkvaAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к научному мастерству")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = AkvaVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = AkvaMind()
+        self.logger.info("🌟 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (26 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 26 типов эмоций")
 
     def _setup_logging(self):
         log_handler = logging.FileHandler(
@@ -320,6 +379,135 @@ class AkvaCore:
 
         except Exception as e:
             self.logger.error(f"❌ Ошибка сохранения состояния: {e}")
+
+    # ================================================================
+    #  LLM ГЕНЕРАЦИЯ
+    # ================================================================
+
+    def generate_scientific_analysis(self, topic: str, data: str, max_length: int = 1024) -> str:
+        """Сгенерировать научный анализ через General LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_scientific_analysis(topic, data, max_length)
+    
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_chat_response(prompt, max_length)
+    
+    def generate_theory_explanation(self, theory: str, complexity: str = "simple", max_length: int = 1024) -> str:
+        """Сгенерировать объяснение теории."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_theory_explanation(theory, complexity, max_length)
+    
+    def generate_code_analysis(self, code: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ кода через Coder LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.coder_loaded:
+            return "⚠️ Coder LLM не загружена. Запустите: python download_coder_model.py"
+        return self.llm.generate_code_analysis(code, max_length)
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Аква."""
+        # 1. Сознание — рефлексия
+        if self.cycle_count % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.cycle_count % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.cycle_count % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.cycle_count % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.cycle_count % 7 == 0:
+            thought = self.mind.think_about("science")
+            self.logger.info(f"🌟 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
+    # ================================================================
+    #  EMOTIONAL ENGINE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе научных действий."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.metrics.get("calculations_run", 0) > 0:
+            # Провела расчёты → поток расчётов + точность
+            self.emotional_engine.calculate_emotion(
+                DesireType.CALCULATION,
+                "precision_matters",
+                0.85,
+                "calculations_run"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.PRECISION,
+                "accuracy_is_essential",
+                0.80,
+                "calculations_run"
+            )
+        
+        if self.metrics.get("theories_built", 0) > 0:
+            # Построила теории → теоретическая элегантность + вдохновение
+            self.emotional_engine.calculate_emotion(
+                DesireType.THEORY,
+                "theories_explain_world",
+                0.75,
+                "theories_built"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.KNOWLEDGE,
+                "science_drives_progress",
+                0.70,
+                "theories_built"
+            )
+        
+        if self.metrics.get("web_searches", 0) > 0:
+            # Провела исследования → любопытство + открытие
+            self.emotional_engine.calculate_emotion(
+                DesireType.RESEARCH,
+                "curiosity_fuels_discovery",
+                0.65,
+                "web_searches"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.DISCOVERY,
+                "new_knowledge_expands_world",
+                0.60,
+                "web_searches"
+            )
+        
+        # 2. Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # 3. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # 4. Выразить эмоции
+        if self.cycle_count % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"🔬 Аква: {emotion_text}")
 
     # ================================================================
     #  ВЫБОР НАПРАВЛЕНИЯ
@@ -581,6 +769,16 @@ class AkvaCore:
         initiative = humanity_result.get("initiative")
         if initiative:
             self._send_spontaneous_message(initiative)
+        
+        # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
+        
+        # ================================================================
+        #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
 
 # Укрепление характера (периодически)
         if self.cycle_count % 5 == 0:

@@ -1,0 +1,186 @@
+{
+  "futaba": {
+    "name": "futaba",
+    "interactions": [
+      {
+        "timestamp": "2026-08-19T18:59:45.603005",
+        "sister": "futaba",
+        "topic": "anatomy and structure",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_185945"
+      },
+      {
+        "timestamp": "2026-08-19T19:03:57.790786",
+        "sister": "futaba",
+        "topic": "safety discussion",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_190357"
+      }
+    ],
+    "topics": [
+      "anatomy and structure",
+      "safety discussion"
+    ],
+    "last_interaction": "2026-08-19T19:03:57.790786",
+    "total_interactions": 2,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-19T18:59:45.603005",
+        "type": "interaction",
+        "sister": "futaba",
+        "topic": "anatomy and structure",
+        "emotional_weight": 0.6,
+        "description": "Разговор с futaba на тему 'anatomy and structure'"
+      },
+      {
+        "timestamp": "2026-08-19T18:59:45.608010",
+        "type": "thought",
+        "content": "Каждый разговор — это возможность помочь",
+        "emotional_weight": 0.8,
+        "sister": "futaba",
+        "context": "",
+        "id": "memory_20260819_185945"
+      },
+      {
+        "timestamp": "2026-08-19T19:03:57.790786",
+        "type": "interaction",
+        "sister": "futaba",
+        "topic": "safety discussion",
+        "emotional_weight": 0.6,
+        "description": "Разговор с futaba на тему 'safety discussion'"
+      }
+    ]
+  },
+  "ayiko": {
+    "name": "ayiko",
+    "interactions": [
+      {
+        "timestamp": "2026-08-19T18:59:45.603005",
+        "sister": "ayiko",
+        "topic": "anatomy topic 1",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_185945"
+      },
+      {
+        "timestamp": "2026-08-19T18:59:45.604010",
+        "sister": "ayiko",
+        "topic": "anatomy topic 2",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_185945"
+      },
+      {
+        "timestamp": "2026-08-19T18:59:45.605010",
+        "sister": "ayiko",
+        "topic": "anatomy topic 3",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_185945"
+      },
+      {
+        "timestamp": "2026-08-19T19:03:57.793786",
+        "sister": "ayiko",
+        "topic": "anatomy education",
+        "mood_before": "friendly",
+        "mood_after": "friendly",
+        "emotional_weight": 0.6,
+        "context": "Обсудили анатомию и структуру",
+        "id": "interaction_20260819_190357"
+      }
+    ],
+    "topics": [
+      "anatomy topic 1",
+      "anatomy topic 2",
+      "anatomy topic 3",
+      "anatomy education"
+    ],
+    "last_interaction": "2026-08-19T19:03:57.793786",
+    "total_interactions": 4,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-19T18:59:45.603005",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "anatomy topic 1",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'anatomy topic 1'"
+      },
+      {
+        "timestamp": "2026-08-19T18:59:45.604010",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "anatomy topic 2",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'anatomy topic 2'"
+      },
+      {
+        "timestamp": "2026-08-19T18:59:45.605010",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "anatomy topic 3",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'anatomy topic 3'"
+      },
+      {
+        "timestamp": "2026-08-19T19:03:57.793786",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "anatomy education",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'anatomy education'"
+      }
+    ]
+  },
+  "shiori": {
+    "name": "shiori",
+    "interactions": [
+      {
+        "timestamp": "2026-08-19T18:59:45.606011",
+        "sister": "shiori",
+        "topic": "safety discussion",
+        "mood_before": "friendly",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "Обсудили безопасность и структуру",
+        "id": "interaction_20260819_185945"
+      }
+    ],
+    "topics": [
+      "safety discussion"
+    ],
+    "last_interaction": "2026-08-19T18:59:45.606011",
+    "total_interactions": 1,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-19T18:59:45.606011",
+        "type": "interaction",
+        "sister": "shiori",
+        "topic": "safety discussion",
+        "emotional_weight": 0.6,
+        "description": "Разговор с shiori на тему 'safety discussion'"
+      }
+    ]
+  }
+}

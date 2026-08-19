@@ -112,6 +112,11 @@ class LucyConfig:
     log_level: str = "INFO"               # DEBUG, INFO, WARNING, ERROR
     log_format: str = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
     save_state_every_n_cycles: int = 5    # сохранять состояние каждые N циклов
+    
+    # === LLM ===
+    llm_enabled: bool = True              # вкл/выкл LLM
+    general_model_path: str = "models/Qwen2.5-3B-Instruct"
+    coder_model_path: str = "models/Qwen2.5-Coder-3B-Instruct"
 
     def __post_init__(self):
         """Создать директории после инициализации."""

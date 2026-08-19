@@ -33,6 +33,16 @@ from shiori.engine.llm_service import ShioriLLMService
 # Humanity Core — живая душа Шиори
 from humanity_core import HumanityLayer
 
+# Эмоциональный разум Шиори — Desire + Belief = Emotion
+from shiori.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Шиори: Сознание, Сердце, Амбиции, Воля, Разум
+from shiori.consciousness import ShioriConsciousness
+from shiori.heart import ShioriHeart
+from shiori.ambitions import ShioriAmbitions
+from shiori.volition import ShioriVolition
+from shiori.mind import ShioriMind
+
 
 class ShioriCore:
     """
@@ -127,7 +137,41 @@ class ShioriCore:
         
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — безопасность, сухая логика, скрытая забота 🛡️")
-    
+
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК ШИОРИ =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Писательница, хранительница историй, защитница!")
+
+        # ===== 6 МОДУЛЕЙ ДУШИ ШИОРИ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = ShioriConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя хранительницей")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = ShioriHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = ShioriAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к безопасности системы")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = ShioriVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = ShioriMind()
+        self.logger.info("🌟 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (25 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 25 типов эмоций")
+
     # ================================================================
     #  ИНИЦИАЛИЗАЦИЯ
     # ================================================================
@@ -256,6 +300,16 @@ class ShioriCore:
             self._self_improve()
         
         # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
+        
+        # ================================================================
+        #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+        
+        # ================================================================
         #  HUMANITY CYCLE — Настроение, душа, спонтанность
         # ================================================================
         self.humanity.current_cycle = self.cycle_count
@@ -277,6 +331,86 @@ class ShioriCore:
         
         self.logger.info(f"Цикл защиты {self.cycle_count} завершён")
     
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Шиори."""
+        # 1. Сознание — рефлексия
+        if self.cycle_count % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.cycle_count % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.cycle_count % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.cycle_count % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.cycle_count % 7 == 0:
+            thought = self.mind.think_about("security")
+            self.logger.info(f"🌟 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
+    # ================================================================
+    #  EMOTIONAL ENGINE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе действий по защите."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.metrics.get("threats_mitigated", 0) > 0:
+            # Устранила угрозу → решимость + мужество
+            self.emotional_engine.calculate_emotion(
+                DesireType.DEFEND,
+                "i_will_not_stand_by",
+                0.85,
+                "threat_mitigated"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.PROTECT,
+                "i_can_protect_them",
+                0.80,
+                "threat_mitigated"
+            )
+        
+        if self.metrics.get("scans_completed", 0) > 0:
+            # Провела сканирование → спокойствие
+            self.emotional_engine.calculate_emotion(
+                DesireType.SAFETY,
+                "safety_matters",
+                0.60,
+                "scan_completed"
+            )
+        
+        # 2. Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # 3. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # 4. Выразить эмоции
+        if self.cycle_count % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"📖 Шиори: {emotion_text}")
+
     # ================================================================
     #  СКАНИРОВАНИЕ И ОБНАРУЖЕНИЕ
     # ================================================================

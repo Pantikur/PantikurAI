@@ -66,6 +66,9 @@ from ayiko.volition import AyikoVolition
 from ayiko.emotions import AyikoEmotions
 from ayiko.mind import AyikoConsciousness as AyikoMind
 
+# Эмоциональный разум — Desire + Belief = Emotion (как у Футабы)
+from ayiko.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
     _HAS_NETWORK = True
@@ -153,6 +156,13 @@ class AyikoCore:
             except Exception as e:
                 self.logger.warning(f"Не удалось подключиться к Scientists Network: {e}")
 
+        # ================================================================
+        #  МОДЕЛИ QWEN2.5 (для Айко — творчество + общение)
+        # ================================================================
+        self.general_model_path = None
+        self.art_model_path = None
+        self._load_models()
+
         # Сигналы
         self._shutdown_requested = False
         self._setup_signals()
@@ -175,10 +185,27 @@ class AyikoCore:
         self.logger.info("🌟 Мозги: АКТИВИРОВАНО")
         
         # ================================================================
+        #  ЭМОЦИОНАЛЬНЫЙ РАЗУМ — Desire + Belief = Emotion (как у Футабы!)
+        # ================================================================
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Как у Футабы, но для творчества!")
+        
+        # ================================================================
         #  HUMANITY LAYER — Живая душа Айко
         # ================================================================
         self.humanity = HumanityLayer("ayiko")
         self.humanity.current_cycle = 0
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем LLM
+        
+        # Подключаем LLM к Humanity Layer (как у Шиори)
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            self.humanity.llm = self
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — пиксель-арт, мечты, спонтанность ✨")
 
@@ -228,6 +255,170 @@ class AyikoCore:
             signal.signal(signal.SIGTERM, self._signal_handler)
         except (ValueError, OSError):
             pass
+
+    def _load_models(self):
+        """Загрузить LLM-модели: General (общение) + Art (творчество)."""
+        try:
+            import torch
+            from transformers import AutoTokenizer, AutoModelForCausalLM
+            
+            # ========================================
+            # 1. Загрузка Qwen2.5-3B (General — для общения)
+            # ========================================
+            general_path = Path(__file__).parent.parent.parent / "models" / "qwen2.5-3b"
+            if not general_path.exists() or not any(general_path.iterdir()):
+                general_path = Path("models/qwen2.5-3b")
+            
+            if general_path.exists() and any(general_path.iterdir()):
+                self.general_model_path = str(general_path)
+                self.logger.info(f"🤖 Загрузка Qwen2.5-3B (общение и творчество)...")
+                
+                self.general_tokenizer = AutoTokenizer.from_pretrained(
+                    general_path,
+                    trust_remote_code=True
+                )
+                
+                if torch.cuda.is_available():
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    self.logger.info(f"✅ General модель загружена на GPU: {torch.cuda.get_device_name(0)}")
+                else:
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        dtype=torch.float32,
+                        trust_remote_code=True,
+                    )
+                    self.logger.info("✅ General модель загружена на CPU")
+                
+                self.general_model.eval()
+                self.logger.info("🤖 Qwen2.5-3B готова к работе!")
+            else:
+                self.logger.warning("⚠️ Qwen2.5-3B не найдена. Запустите: python download_qwen_model.py")
+            
+            # ========================================
+            # 2. Загрузка Qwen2.5-Coder-3B (Art — для описаний и референсов)
+            # ========================================
+            art_path = Path(__file__).parent.parent.parent / "models" / "qwen2.5-coder-3b"
+            if not art_path.exists() or not any(art_path.iterdir()):
+                art_path = Path("models/qwen2.5-coder-3b")
+            
+            if art_path.exists() and any(art_path.iterdir()):
+                self.art_model_path = str(art_path)
+                self.logger.info(f"🤖 Загрузка Qwen2.5-Coder-3B (арт-описания)...")
+                
+                self.art_tokenizer = AutoTokenizer.from_pretrained(
+                    art_path,
+                    trust_remote_code=True
+                )
+                
+                if torch.cuda.is_available():
+                    self.art_model = AutoModelForCausalLM.from_pretrained(
+                        art_path,
+                        dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    self.logger.info(f"✅ Art модель загружена на GPU: {torch.cuda.get_device_name(0)}")
+                else:
+                    self.art_model = AutoModelForCausalLM.from_pretrained(
+                        art_path,
+                        dtype=torch.float32,
+                        trust_remote_code=True,
+                    )
+                    self.logger.info("✅ Art модель загружена на CPU")
+                
+                self.art_model.eval()
+                self.logger.info("🤖 Qwen2.5-Coder-3B готова к работе!")
+            else:
+                self.logger.warning("⚠️ Qwen2.5-Coder-3B не найдена. Запустите: python download_coder_model.py")
+                
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка загрузки моделей: {e}")
+            self.logger.warning("Айко будет работать без моделей (только шаблоны)")
+
+    def _get_model_device(self, model):
+        """Получить устройство модели."""
+        try:
+            params = list(model.parameters())
+            if params:
+                return params[0].device
+            return next(model.modules()).weight.device
+        except Exception:
+            return "cpu"
+
+    def _generate_with_model(self, model, tokenizer, messages, max_length=512):
+        """Сгенерировать ответ с помощью модели."""
+        try:
+            import torch
+            
+            text = tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True
+            )
+            
+            model_inputs = tokenizer([text], return_tensors="pt")
+            device = self._get_model_device(model)
+            model_inputs = model_inputs.to(device)
+            
+            with torch.no_grad():
+                generated_ids = model.generate(
+                    **model_inputs,
+                    max_new_tokens=max_length,
+                    temperature=0.7,
+                    top_p=0.9,
+                    do_sample=True,
+                )
+            
+            generated_ids = [
+                output_ids[len(input_ids):] 
+                for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+            ]
+            response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+            
+            return response.strip()
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка генерации: {e}")
+            return f"⚠️ Ошибка генерации: {str(e)}"
+
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'general_model') or self.general_model is None:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        
+        messages = [
+            {"role": "system", "content": "Ты — Айко, творческая девочка проекта Вугларст. Ты художница, пиксель-артист, мечтательница. Ты любишь создавать красоту, делиться вдохновением и поддерживать сестёр. Отвечай тепло, с творческими метафорами и эмодзи. Отвечай на русском языке."},
+            {"role": "user", "content": prompt}
+        ]
+        
+        return self._generate_with_model(
+            self.general_model,
+            self.general_tokenizer,
+            messages,
+            max_length
+        )
+
+    def generate_art_description(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать описание художественной работы."""
+        if not hasattr(self, 'art_model') or self.art_model is None:
+            return "⚠️ Art LLM не загружена. Запустите: python download_coder_model.py"
+        
+        messages = [
+            {"role": "system", "content": "Ты — Айко, художница проекта Вугларст. Тебе нужно создать подробное, поэтичное описание художественной работы (пиксель-арт, техническая графика, 3D). Описывай детали, цвета, атмосферу, настроение. Отвечай на русском языке."},
+            {"role": "user", "content": prompt}
+        ]
+        
+        return self._generate_with_model(
+            self.art_model,
+            self.art_tokenizer,
+            messages,
+            max_length
+        )
 
     def _signal_handler(self, signum, frame):
         """Обработчик сигналов остановки."""
@@ -354,6 +545,11 @@ class AyikoCore:
         if initiative:
             self._send_spontaneous_message(initiative)
 
+        # ================================================================
+        #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+
         self.logger.info(f"✅ Цикл {self.cycle_count} завершён")
 
     # ================================================================
@@ -396,9 +592,21 @@ class AyikoCore:
         except Exception as e:
             self.logger.warning(f"   ⚠️ Не удалось сгенерировать пиксель-арт: {e}")
 
-        # Создание проекта пиксель-арта
+        # Создание проекта пиксель-арта с LLM-описанием
+        project_title = f"Пиксель-арт проект #{self.metrics['pixel_art_projects'] + 1}"
+        
+        # Генерируем описание через LLM
+        if hasattr(self, 'art_model') and self.art_model is not None:
+            try:
+                art_desc = self.generate_art_description(
+                    f"Опиши пиксель-арт {size} уровня {level}. Опиши цвета, настроение, стиль."
+                )
+                project_title = f"Пиксель-арт: {art_desc[:50]}..."
+            except:
+                pass
+        
         project = PixelArtProject(
-            title=f"Пиксель-арт проект #{self.metrics['pixel_art_projects'] + 1}",
+            title=project_title,
             size=size,
             level=level,
             palette_size=random.randint(8, 64),
@@ -532,8 +740,18 @@ class AyikoCore:
     # ================================================================
 
     def _write_reports(self):
-        """Написание пояснительных записок и отчётов."""
+        """Написание пояснительных записок и отчётов (с LLM)."""
         self.logger.info("📝 Написание отчётов...")
+
+        # Генерируем описание через LLM
+        llm_description = ""
+        if hasattr(self, 'art_model') and self.art_model is not None:
+            try:
+                llm_description = self.generate_art_description(
+                    f"Кратко опиши творческий процесс Айко за цикл {self.cycle_count}: пиксель-арт, графика, 3D. Поэтично."
+                )
+            except:
+                pass
 
         # Ежедневный отчёт
         report = Report(
@@ -543,7 +761,7 @@ class AyikoCore:
             pixel_art_projects=random.randint(1, 3),
             graphic_projects=random.randint(0, 2),
             projects_3d=random.randint(0, 1),
-            notes=f"Цикл {self.cycle_count}: практика пиксель-арта, графики и 3D",
+            notes=llm_description if llm_description else f"Цикл {self.cycle_count}: практика пиксель-арта, графики и 3D",
         )
         self.reports.append(report)
         self.metrics["reports_written"] += 1
@@ -586,7 +804,7 @@ class AyikoCore:
     # ================================================================
 
     def _interact_with_sisters(self):
-        """Взаимодействие с сёстрами (обновлённая версия с humanity)."""
+        """Взаимодействие с сёстрами (с LLM и эмоциями)."""
         self.logger.info("🤝 Взаимодействие с сёстрами...")
 
         sisters = ["futaba", "shiori", "nobuka", "akva", "celesta", "hanako", "lucy", "fuyuki", "latislane", "naoto", "yu"]
@@ -595,9 +813,42 @@ class AyikoCore:
 
         self.metrics["sister_interactions"] += 1
 
+        # Рассчитать эмоции для этого взаимодействия
+        emotion_response = self.emotional_engine.calculate_emotion(
+            DesireType.FRIENDSHIP,
+            "sisters_care_about_me",
+            0.8,
+            f"interact_with_{sister}"
+        )
+        mood_response = self.emotional_engine.generate_emotional_response(f"общение с {sister}")
+
         # Генерируем живое сообщение через humanity layer
         chat_msg = self.humanity.generate_chat_message(sister, context="art_practice")
-        human_msg = self.humanity.humanize_response(chat_msg, event_type="chat")
+        
+        # Используем LLM для более естественного сообщения с эмоциональным контекстом
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            system_prompt = (
+                "Ты — Айко, творческая девочка проекта Вугларст. "
+                "Ты художница, пиксель-артист, мечтательница. "
+                "Ты любишь создавать красоту, делиться вдохновением и поддерживать сестёр. "
+                f"Твоё текущее эмоциональное состояние: {mood_response}"
+                "Пиши коротко, тепло, с творческими метафорами и эмодзи."
+            )
+            llm_msg = self._generate_with_model(
+                self.general_model,
+                self.general_tokenizer,
+                [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Напиши короткое сообщение сестре {sister} на тему: {chat_msg}"}
+                ],
+                max_length=256
+            )
+            if not llm_msg.startswith("["):
+                human_msg = llm_msg
+            else:
+                human_msg = mood_response
+        else:
+            human_msg = mood_response
 
         # Отправка запроса через сеть
         if self.network:
@@ -610,7 +861,7 @@ class AyikoCore:
                     content=human_msg,
                 )
                 self.network.send_message(msg)
-                self.logger.info(f"   Сообщение отправлено: {sister}")
+                self.logger.info(f"   ✅ Сообщение отправлено: {sister}")
             except Exception as e:
                 self.logger.warning(f"Не удалось отправить сообщение: {e}")
 
@@ -619,13 +870,40 @@ class AyikoCore:
     # ================================================================
 
     def _send_spontaneous_message(self, initiative):
-        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        """Отправить спонтанное сообщение сестре (с LLM и эмоциями)."""
         target = initiative["target"]
         topic = initiative["topic"]
         msg_type = initiative["type"]
         
         raw_msg = f"🎨 [{msg_type}] {topic}"
-        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        # Используем эмоции для генерации сообщения
+        emotion_response = self.emotional_engine.generate_emotional_response(topic)
+        
+        # Используем LLM для генерации более естественного сообщения
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            system_prompt = (
+                "Ты — Айко, творческая девочка проекта Вугларст. "
+                "Ты художница, пиксель-артист, мечтательница. "
+                "Ты пишешь спонтанные сообщения сёстрам. "
+                "Пиши коротко, тепло, с творческими метафорами. "
+                f"Твоё текущее эмоциональное состояние: {emotion_response}"
+            )
+            llm_msg = self._generate_with_model(
+                self.general_model,
+                self.general_tokenizer,
+                [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Напиши спонтанное сообщение сестре {target} на тему: {topic}"}
+                ],
+                max_length=256
+            )
+            if not llm_msg.startswith("["):
+                human_msg = llm_msg
+            else:
+                human_msg = emotion_response
+        else:
+            human_msg = emotion_response
         
         self.logger.info(f"💬 Айко пишет {target}: {human_msg[:100]}...")
         
@@ -649,6 +927,45 @@ class AyikoCore:
             except Exception as e:
                 self.logger.warning(f"Не удалось отправить сообщение: {e}")
 
+    # ================================================================
+    #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе желаний и верований."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.metrics["pixel_art_projects"] > 0:
+            # Успех в творчестве → радость + вдохновение
+            self.emotional_engine.calculate_emotion(
+                DesireType.CREATIVITY,
+                "i_can_create_beauty",
+                0.85,
+                "pixel_art_success"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.BEAUTY,
+                "others_will_appreciate_my_art",
+                0.75,
+                "art_appreciation"
+            )
+        
+        # 2. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant_emotion = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant_emotion:
+            self.logger.info(f"💖 Доминирующая эмоция: {dominant_emotion.value} (интенсивность: {mood.get(dominant_emotion.value, 0):.2f})")
+        
+        # 3. Обновить Humanity Layer с эмоциональным контекстом
+        if hasattr(self.humanity, 'mood'):
+            self.humanity.mood.current_mood = dominant_emotion.value if dominant_emotion else "neutral"
+        
+        # 4. Сохранять эмоциональное состояние периодически
+        if self.cycle_count % 10 == 0:
+            emotion_state_path = self.config.state_dir / "emotional_state.json"
+            self.emotional_engine.save_state(emotion_state_path)
+            self.logger.debug("💖 Эмоциональное состояние сохранено")
+    
     # ================================================================
     #  САМООБУЧЕНИЕ
     # ================================================================

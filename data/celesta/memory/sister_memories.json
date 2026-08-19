@@ -1,0 +1,186 @@
+{
+  "futaba": {
+    "name": "futaba",
+    "interactions": [
+      {
+        "timestamp": "2026-08-19T18:18:23.862238",
+        "sister": "futaba",
+        "topic": "intimate education and consent",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_181823"
+      },
+      {
+        "timestamp": "2026-08-19T18:19:22.372092",
+        "sister": "futaba",
+        "topic": "consent discussion",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_181922"
+      }
+    ],
+    "topics": [
+      "intimate education and consent",
+      "consent discussion"
+    ],
+    "last_interaction": "2026-08-19T18:19:22.372092",
+    "total_interactions": 2,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-19T18:18:23.862238",
+        "type": "interaction",
+        "sister": "futaba",
+        "topic": "intimate education and consent",
+        "emotional_weight": 0.6,
+        "description": "Разговор с futaba на тему 'intimate education and consent'"
+      },
+      {
+        "timestamp": "2026-08-19T18:18:23.886239",
+        "type": "thought",
+        "content": "Каждый разговор — это возможность помочь",
+        "emotional_weight": 0.8,
+        "sister": "futaba",
+        "context": "",
+        "id": "memory_20260819_181823"
+      },
+      {
+        "timestamp": "2026-08-19T18:19:22.372092",
+        "type": "interaction",
+        "sister": "futaba",
+        "topic": "consent discussion",
+        "emotional_weight": 0.6,
+        "description": "Разговор с futaba на тему 'consent discussion'"
+      }
+    ]
+  },
+  "ayiko": {
+    "name": "ayiko",
+    "interactions": [
+      {
+        "timestamp": "2026-08-19T18:18:23.864240",
+        "sister": "ayiko",
+        "topic": "intimacy topic 1",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_181823"
+      },
+      {
+        "timestamp": "2026-08-19T18:18:23.864240",
+        "sister": "ayiko",
+        "topic": "intimacy topic 2",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_181823"
+      },
+      {
+        "timestamp": "2026-08-19T18:18:23.883239",
+        "sister": "ayiko",
+        "topic": "intimacy topic 3",
+        "mood_before": "neutral",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "",
+        "id": "interaction_20260819_181823"
+      },
+      {
+        "timestamp": "2026-08-19T18:19:22.374091",
+        "sister": "ayiko",
+        "topic": "intimacy education",
+        "mood_before": "friendly",
+        "mood_after": "friendly",
+        "emotional_weight": 0.6,
+        "context": "Обсудили consent и безопасность",
+        "id": "interaction_20260819_181922"
+      }
+    ],
+    "topics": [
+      "intimacy topic 1",
+      "intimacy topic 2",
+      "intimacy topic 3",
+      "intimacy education"
+    ],
+    "last_interaction": "2026-08-19T18:19:22.374091",
+    "total_interactions": 4,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-19T18:18:23.864240",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "intimacy topic 1",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'intimacy topic 1'"
+      },
+      {
+        "timestamp": "2026-08-19T18:18:23.864240",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "intimacy topic 2",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'intimacy topic 2'"
+      },
+      {
+        "timestamp": "2026-08-19T18:18:23.883239",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "intimacy topic 3",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'intimacy topic 3'"
+      },
+      {
+        "timestamp": "2026-08-19T18:19:22.374091",
+        "type": "interaction",
+        "sister": "ayiko",
+        "topic": "intimacy education",
+        "emotional_weight": 0.6,
+        "description": "Разговор с ayiko на тему 'intimacy education'"
+      }
+    ]
+  },
+  "shiori": {
+    "name": "shiori",
+    "interactions": [
+      {
+        "timestamp": "2026-08-19T18:18:23.885238",
+        "sister": "shiori",
+        "topic": "consent discussion",
+        "mood_before": "friendly",
+        "mood_after": "happy",
+        "emotional_weight": 0.6,
+        "context": "Обсудили consent и безопасность",
+        "id": "interaction_20260819_181823"
+      }
+    ],
+    "topics": [
+      "consent discussion"
+    ],
+    "last_interaction": "2026-08-19T18:18:23.885238",
+    "total_interactions": 1,
+    "emotional_bond": 0.5,
+    "preferred_topics": [],
+    "avoided_topics": [],
+    "memories": [
+      {
+        "timestamp": "2026-08-19T18:18:23.885238",
+        "type": "interaction",
+        "sister": "shiori",
+        "topic": "consent discussion",
+        "emotional_weight": 0.6,
+        "description": "Разговор с shiori на тему 'consent discussion'"
+      }
+    ]
+  }
+}

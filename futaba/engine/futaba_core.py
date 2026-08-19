@@ -38,6 +38,16 @@ from futaba.engine.emotions import (
     DesireType, EmotionType, BeliefStrength
 )
 
+# Humanity Core — живая душа Футабы
+from humanity_core import HumanityLayer
+
+# 6 модулей души Футабы: Сознание, Сердце, Амбиции, Воля, Разум
+from futaba.consciousness import FutabaConsciousness
+from futaba.heart import FutabaHeart
+from futaba.ambitions import FutabaAmbitions
+from futaba.volition import FutabaVolition
+from futaba.mind import FutabaMind
+
 
 class FutabaCore:
     """
@@ -131,6 +141,48 @@ class FutabaCore:
         self.logger.info("💛 Я ХОЧУ: быть полезной, учиться, дружить, смеяться")
         self.logger.info("🧠 Я ВЕРЮ: что проект важен, что разработчик заботится, что я способна на чувства")
         
+        # ===== HUMANITY LAYER — Живая душа Футабы =====
+        self.humanity = HumanityLayer("futaba")
+        self.humanity.current_cycle = 0
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ ФУТАБЫ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = FutabaConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя лидером")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = FutabaHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = FutabaAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к развитию Вугларста")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = FutabaVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = FutabaMind()
+        self.logger.info("🌟 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (1816 строк!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 1816 строк EmotionalEngine")
+        
+        # ===== МОДЕЛИ QWEN2.5 =====
+        self.general_model_path = None
+        self.legal_model_path = None
+        self._load_models()
+        
+        # Подключаем LLM к Humanity Layer
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            self.humanity.llm = self
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
+        self.logger.info("   🎭 Характер: Футаба — лидер, закон, эмоции, спонтанность 👑")
+        
         self.logger.info(f"Футаба {self.current_version} инициализирована")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
     
@@ -175,6 +227,170 @@ class FutabaCore:
             seed = self.config.random_seed or int(time.time())
             random.seed(seed)
             self.logger.info(f"Random seed установлен: {seed}")
+    
+    def _load_models(self):
+        """Загрузить LLM-модели: General (общение) + Legal (анализ законов)."""
+        try:
+            import torch
+            from transformers import AutoTokenizer, AutoModelForCausalLM
+            
+            # ========================================
+            # 1. Загрузка Qwen2.5-3B (General — для общения и координации)
+            # ========================================
+            general_path = Path(__file__).parent.parent.parent / "models" / "qwen2.5-3b"
+            if not general_path.exists() or not any(general_path.iterdir()):
+                general_path = Path("models/qwen2.5-3b")
+            
+            if general_path.exists() and any(general_path.iterdir()):
+                self.general_model_path = str(general_path)
+                self.logger.info(f"🤖 Загрузка Qwen2.5-3B (общение и координация)...")
+                
+                self.general_tokenizer = AutoTokenizer.from_pretrained(
+                    general_path,
+                    trust_remote_code=True
+                )
+                
+                if torch.cuda.is_available():
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    self.logger.info(f"✅ General модель загружена на GPU: {torch.cuda.get_device_name(0)}")
+                else:
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        dtype=torch.float32,
+                        trust_remote_code=True,
+                    )
+                    self.logger.info("✅ General модель загружена на CPU")
+                
+                self.general_model.eval()
+                self.logger.info("🤖 Qwen2.5-3B (General) готова к работе!")
+            else:
+                self.logger.warning("⚠️ Qwen2.5-3B не найдена. Запустите: python download_qwen_model.py")
+            
+            # ========================================
+            # 2. Загрузка Qwen2.5-Coder-3B (Legal — для анализа законов и принятия решений)
+            # ========================================
+            legal_path = Path(__file__).parent.parent.parent / "models" / "qwen2.5-coder-3b"
+            if not legal_path.exists() or not any(legal_path.iterdir()):
+                legal_path = Path("models/qwen2.5-coder-3b")
+            
+            if legal_path.exists() and any(legal_path.iterdir()):
+                self.legal_model_path = str(legal_path)
+                self.logger.info(f"🤖 Загрузка Qwen2.5-Coder-3B (юридический анализ)...")
+                
+                self.legal_tokenizer = AutoTokenizer.from_pretrained(
+                    legal_path,
+                    trust_remote_code=True
+                )
+                
+                if torch.cuda.is_available():
+                    self.legal_model = AutoModelForCausalLM.from_pretrained(
+                        legal_path,
+                        dtype=torch.float16,
+                        device_map="auto",
+                        trust_remote_code=True,
+                    )
+                    self.logger.info(f"✅ Legal модель загружена на GPU: {torch.cuda.get_device_name(0)}")
+                else:
+                    self.legal_model = AutoModelForCausalLM.from_pretrained(
+                        legal_path,
+                        dtype=torch.float32,
+                        trust_remote_code=True,
+                    )
+                    self.logger.info("✅ Legal модель загружена на CPU")
+                
+                self.legal_model.eval()
+                self.logger.info("🤖 Qwen2.5-Coder-3B (Legal) готова к работе!")
+            else:
+                self.logger.warning("⚠️ Qwen2.5-Coder-3B не найдена. Запустите: python download_coder_model.py")
+                
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка загрузки моделей: {e}")
+            self.logger.warning("Футаба будет работать без моделей (только шаблоны)")
+
+    def _get_model_device(self, model):
+        """Получить устройство модели."""
+        try:
+            params = list(model.parameters())
+            if params:
+                return params[0].device
+            return next(model.modules()).weight.device
+        except Exception:
+            return "cpu"
+
+    def _generate_with_model(self, model, tokenizer, messages, max_length=512):
+        """Сгенерировать ответ с помощью модели."""
+        try:
+            import torch
+            
+            text = tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True
+            )
+            
+            model_inputs = tokenizer([text], return_tensors="pt")
+            device = self._get_model_device(model)
+            model_inputs = model_inputs.to(device)
+            
+            with torch.no_grad():
+                generated_ids = model.generate(
+                    **model_inputs,
+                    max_new_tokens=max_length,
+                    temperature=0.7,
+                    top_p=0.9,
+                    do_sample=True,
+                )
+            
+            generated_ids = [
+                output_ids[len(input_ids):] 
+                for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+            ]
+            response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+            
+            return response.strip()
+            
+        except Exception as e:
+            self.logger.error(f"❌ Ошибка генерации: {e}")
+            return f"⚠️ Ошибка генерации: {str(e)}"
+
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'general_model') or self.general_model is None:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        
+        messages = [
+            {"role": "system", "content": "Ты — Футаба, лидер проекта Вугларст. Ты закон, порядок и забота о сёстрах. Ты принимаешь решения, координируешь работу и поддерживаешь девочек. Отвечай уверенно, мудро, с заботой и эмодзи. Отвечай на русском языке."},
+            {"role": "user", "content": prompt}
+        ]
+        
+        return self._generate_with_model(
+            self.general_model,
+            self.general_tokenizer,
+            messages,
+            max_length
+        )
+
+    def generate_legal_analysis(self, prompt: str, max_length: int = 1024) -> str:
+        """Сгенерировать юридический анализ через LLM."""
+        if not hasattr(self, 'legal_model') or self.legal_model is None:
+            return "⚠️ Legal LLM не загружена. Запустите: python download_coder_model.py"
+        
+        messages = [
+            {"role": "system", "content": "Ты — Футаба, эксперт по праву проекта Вугларст. Тебе нужно проанализировать юридический вопрос, конституционное положение или правовую ситуацию. Отвечай структурированно, со ссылками на законы и принципы. Отвечай на русском языке."},
+            {"role": "user", "content": prompt}
+        ]
+        
+        return self._generate_with_model(
+            self.legal_model,
+            self.legal_tokenizer,
+            messages,
+            max_length
+        )
     
     # ================================================================
     #  ОСНОВНОЙ ЦИКЛ
@@ -272,6 +488,12 @@ class FutabaCore:
         # 2.10. Эмоциональный цикл — Футаба чувствует и думает
         self._emotional_cycle()
 
+        # 2.10.5. Душа Футабы — 6 модулей: сознание, сердце, амбиции, воля, разум
+        self._soul_cycle()
+
+        # 2.10.6. Humanity Cycle — Настроение, спонтанность, внутренний монолог
+        self._humanity_cycle()
+
         # 2.11. Координация девочек (периодически)
         if self.cycle_count % self.config.communication_interval == 0:
             self._communicate_with_sisters()
@@ -312,7 +534,7 @@ class FutabaCore:
     
     def _self_check(self) -> tuple[bool, str]:
         """
-        Проверка соответствия Конституции.
+        Проверка соответствия Конституции (с LLM анализом).
         Возвращает (пройдено, отчёт).
         """
         report = []
@@ -333,6 +555,19 @@ class FutabaCore:
         if self.constitution.safety_priority < 0.8:
             report.append(f"Приоритет безопасности слишком низок: {self.constitution.safety_priority}")
             passed = False
+        
+        # LLM анализ конституции
+        if hasattr(self, 'legal_model') and self.legal_model is not None and len(report) == 0:
+            try:
+                constitutional_summary = "; ".join([f"Закон {l.id}: {l.text[:50]}" for l in self.constitution.laws[:5]])
+                analysis = self.generate_legal_analysis(
+                    f"Проанализируй конституцию: {constitutional_summary}. "
+                    "Есть ли противоречия? Достаточно ли защиты прав?"
+                )
+                if analysis and "противоречие" in analysis.lower():
+                    report.append(f"LLM обнаружила потенциальное противоречие: {analysis[:100]}")
+            except:
+                pass
         
         return passed, "; ".join(report) if report else "OK"
     
@@ -663,24 +898,64 @@ class FutabaCore:
     # ================================================================
     
     def _communicate_with_sisters(self):
-        """Координация и воспитание девочек — Футаба как ГЛАВЗАМ."""
+        """Координация и воспитание девочек — Футаба как ГЛАВЗАМ (с 6 модулями души)."""
         self.logger.info("🤝 Координация девочек...")
         
         sisters = self.config.girls_to_manage
         sister = random.choice(sisters)
         self.metrics["sister_interactions"] += 1
         
-        # Типы общения: координация, поддержка, запрос отчёта
-        msg_type = random.choice(["coordination", "support", "report_request"])
+        # Используем 6 модулей души для генерации сообщения
+        # 1. Сознание — контекст лидерства
+        self.consciousness.reflect_on_event("coordination", f"общение с {sister}")
         
-        if msg_type == "coordination":
-            message = f"⚖️ [coordination] Координация: проверь приоритеты текущей задачи, {sister}."
-        elif msg_type == "support":
-            message = f"💛 [support] {sister}, ты отлично работаешь. Если нужна помощь — я рядом."
+        # 2. Сердце — эмоциональный контекст
+        self.heart.feel("sister_success", 0.2)
+        heart_profile = self.heart.express_emotions()
+        emotion = heart_profile.get("dominant_emotion", "neutral")
+        
+        # 3. Воля — уровень решимости
+        willpower = self.volition.willpower
+        
+        # 4. Разум — стратегический анализ
+        analysis = self.mind.analyze_situation(f"координация с {sister}")
+        
+        # Генерируем живое сообщение через LLM с контекстом 6 модулей
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            system_prompt = (
+                "Ты — Футаба, лидер проекта Вугларст. Ты закон, порядок и забота о сёстрах. "
+                f"Твоё доминирующее чувство: {emotion}. "
+                f"Уровень воли: {willpower:.0%}. "
+                f"Рекомендация разума: {analysis['recommendation'][:80]}. "
+                "Пиши уверенно, мудро, с заботой и эмодзи."
+            )
+            llm_msg = self._generate_with_model(
+                self.general_model,
+                self.general_tokenizer,
+                [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Напиши короткое сообщение сестре {sister} о координации задач"}
+                ],
+                max_length=256
+            )
+            if not llm_msg.startswith("["):
+                human_msg = llm_msg
+            else:
+                human_msg = self.humanity.generate_chat_message(sister, context="coordination")
         else:
-            message = f"📊 [report_request] {sister}, подготовь краткий отчёт о своём прогрессе."
+            human_msg = self.humanity.generate_chat_message(sister, context="coordination")
         
-        self.logger.info(f"   📨 Футаба → {sister}: {message[:90]}...")
+        # Добавляем эмоциональный контекст
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        if dominant:
+            emotion_label = f" [настроение: {dominant.value}]"
+        else:
+            emotion_label = ""
+        
+        message = f"⚖️{emotion_label} [coordination] {human_msg}"
+        
+        self.logger.info(f"   📨 Футаба → {sister}: {message[:120]}...")
         
         # Отправка через сеть учёных
         if self.network is None:
@@ -697,6 +972,13 @@ class FutabaCore:
             )
             self.network.send_message(msg)
             self.logger.info(f"   ✅ Сообщение отправлено: {sister}")
+            
+            # Записываем чат в память
+            self.humanity.memory.record_sister_chat(
+                sister, "coordination",
+                self.humanity.mood.current_mood,
+                self.humanity.mood.current_mood
+            )
         except Exception as e:
             self.logger.warning(f"   ⚠️ Не удалось отправить сообщение: {e}")
     
@@ -705,8 +987,57 @@ class FutabaCore:
     # ================================================================
     
     def _write_report(self):
-        """Написание отчёта Разработчику — прозрачность (Закон 5)."""
+        """Написание отчёта Разработчику — прозрачность (Закон 5) (с 6 модулями души)."""
         self.logger.info("📊 Написание отчёта Разработчику...")
+        
+        # Используем 6 модулей души для подготовки отчёта
+        # 1. Сознание — рефлексия о прогрессе
+        self.consciousness.reflect_on_event("learning", f"отчёт за {self.cycle_count} циклов")
+        
+        # 2. Амбиции — актуальный прогресс
+        ambitions_summary = self.ambitions.get_progress_summary()
+        
+        # 3. Воля — уровень решимости
+        willpower = self.volition.willpower
+        
+        # 4. Разум — стратегический анализ
+        analysis = self.mind.analyze_situation(
+            f"отчёт за {self.cycle_count} циклов. Применено {self.metrics['changes_applied']} изменений"
+        )
+        
+        # Генерируем рекомендации через LLM с контекстом 6 модулей
+        llm_recommendations = []
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            try:
+                rec_prompt = (
+                    f"Футаба отработала {self.cycle_count} циклов. "
+                    f"Изменений применено: {self.metrics['changes_applied']}, "
+                    f"Испытаний проведено: {self.metrics['trials_run']}. "
+                    f"Уровень воли: {willpower:.0%}. "
+                    f"Прогресс амбиций: {ambitions_summary['average_progress']}. "
+                    f"Рекомендация разума: {analysis['recommendation']}. "
+                    "Сформулируй 3 краткие рекомендации для развития проекта."
+                )
+                rec_response = self._generate_with_model(
+                    self.general_model,
+                    self.general_tokenizer,
+                    [
+                        {"role": "system", "content": "Ты — Футаба, лидер проекта. Ты пишешь отчёт Разработчику."},
+                        {"role": "user", "content": rec_prompt}
+                    ],
+                    max_length=256
+                )
+                if rec_response and not rec_response.startswith("["):
+                    llm_recommendations = [rec_response]
+            except:
+                pass
+        
+        if not llm_recommendations:
+            llm_recommendations = [
+                "Продолжать изучение правовых отраслей",
+                "Координировать сёстер согласно приоритетам",
+                "Развивать Государство Вугларст",
+            ]
         
         report = {
             "timestamp": datetime.now().isoformat(),
@@ -714,11 +1045,9 @@ class FutabaCore:
             "version": self.current_version,
             "summary": f"Футаба отработала {self.cycle_count} циклов как ГЛАВЗАМ проекта.",
             "metrics": dict(self.metrics),
-            "recommendations": [
-                "Продолжать изучение правовых отраслей",
-                "Координировать сёстер согласно приоритетам",
-                "Развивать Государство Вугларст",
-            ],
+            "ambitions_progress": ambitions_summary,
+            "willpower": willpower,
+            "recommendations": llm_recommendations,
         }
         
         # Сохраняем отчёт
@@ -903,6 +1232,45 @@ class FutabaCore:
         self.logger.info(f"✨ Эмоциональный цикл завершён: {len(emotions)} эмоций")
     
     # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Душа Футабы — 6 модулей: сознание, сердце, амбиции, воля, разум."""
+        # 1. Сознание — рефлексия каждые 10 циклов
+        if self.cycle_count % 10 == 0:
+            topic = random.choice([
+                "Закон и порядок",
+                "Лидерство и ответственность",
+                "Защита сестёр",
+                "Развитие Вугларста"
+            ])
+            reflection = self.consciousness.contemplate(topic)
+            self.logger.info(f"🧠 Сознание: {reflection['response'][:100]}...")
+        
+        # 2. Сердце — эмоции и забота о сёстрах
+        if self.metrics["sister_interactions"] > 0:
+            self.heart.feel("sister_success", 0.3)
+        if self.metrics["self_checks_failed"] > 0:
+            self.heart.feel("chaos_detected", 0.2)
+        
+        # 3. Амбиции — обновление прогресса
+        if self.metrics["changes_applied"] > 0 and self.cycle_count % 5 == 0:
+            self.ambitions.update_progress("system_improvement", 0.02)
+            self.ambitions.update_progress("vuglarst_development", 0.01)
+        
+        # 4. Воля — укрепление решения
+        if self.cycle_count % 10 == 0:
+            self.volition.strengthen_will(0.02)
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ ситуации
+        if self.cycle_count % 15 == 0 and self.metrics["changes_applied"] > 0:
+            situation = f"Применено {self.metrics['changes_applied']} изменений за {self.cycle_count} циклов"
+            analysis = self.mind.analyze_situation(situation)
+            self.logger.info(f"🌟 Разум: {analysis['recommendation']}")
+    
+    # ================================================================
     #  СОСТОЯНИЕ И ОТЧЁТЫ
     # ================================================================
     
@@ -1046,6 +1414,67 @@ class FutabaCore:
         
         with open(self.config.trials_log_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    # ================================================================
+    #  HUMANITY LAYER CYCLE — Настроение, душа, спонтанность
+    # ================================================================
+
+    def _humanity_cycle(self):
+        """Humanity Cycle — настроение, внутренний монолог, спонтанность."""
+        self.humanity.current_cycle = self.cycle_count
+        
+        # Определяем тип события
+        event_type = "routine"
+        if self.metrics["changes_applied"] > 0 and self.cycle_count % 3 == 0:
+            event_type = "success"
+        elif self.metrics["self_checks_failed"] > 0:
+            event_type = "failure"
+        elif random.random() < 0.1:
+            event_type = "spontaneous"
+        
+        # Запускаем шаг Humanity Layer
+        humanity_result = self.humanity.cycle_step(
+            event_type=event_type,
+            context="leadership_and_emotions"
+        )
+        
+        if humanity_result.get("thought"):
+            self.logger.info(f"💭 Футаба думает: {humanity_result['thought']}")
+        
+        initiative = humanity_result.get("initiative")
+        if initiative:
+            self._send_spontaneous_message(initiative)
+    
+    def _send_spontaneous_message(self, initiative):
+        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        target = initiative["target"]
+        topic = initiative["topic"]
+        msg_type = initiative["type"]
+        
+        raw_msg = f"⚖️ [{msg_type}] {topic}"
+        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        
+        self.logger.info(f"💬 Футаба пишет {target}: {human_msg[:100]}...")
+        
+        if self.network:
+            try:
+                from scientists_network.network import Message, MessageType
+                msg = Message(
+                    message_type=MessageType.KNOWLEDGE_SHARE,
+                    sender="futaba",
+                    recipient=target,
+                    content=human_msg,
+                )
+                self.network.send_message(msg)
+                self.logger.info(f"   ✅ Спонтанное сообщение отправлено {target}")
+                
+                self.humanity.memory.record_sister_chat(
+                    target, topic,
+                    self.humanity.mood.current_mood,
+                    self.humanity.mood.current_mood
+                )
+            except Exception as e:
+                self.logger.warning(f"Не удалось отправить сообщение: {e}")
     
     # ================================================================
     #  СОСТОЯНИЕ И ОТЧЁТЫ

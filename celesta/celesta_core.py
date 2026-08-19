@@ -22,6 +22,22 @@ from datetime import datetime
 # Humanity Core — живая душа Селесты
 from humanity_core import HumanityLayer
 
+# LLM Service — сервис для работы с моделями Qwen2.5
+from celesta.engine.llm_service import CelestaLLMService
+
+# Эмоциональный разум Селесты — Desire + Belief = Emotion
+from celesta.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Селесты: Сознание, Сердце, Амбиции, Воля, Разум
+from celesta.consciousness import CelestaConsciousness
+from celesta.heart import CelestaHeart
+from celesta.ambitions import CelestaAmbitions
+from celesta.volition import CelestaVolition
+from celesta.mind import CelestaMind
+
+# Система памяти Селесты — память о сёстрах и контекст общения
+from celesta.memory import CelestaMemory
+
 from .intimacy_modules import (
     IntimacyModule,
     IntimacyCategory,
@@ -51,6 +67,11 @@ class CelestaCore:
     def __init__(self, project_root: str = ".", demo_mode: bool = True):
         self.project_root = Path(project_root)
         self.demo_mode = demo_mode
+        
+        # Создаём конфигурацию
+        from celesta.engine.config import CelestaConfig
+        self.config = CelestaConfig.default() if not demo_mode else CelestaConfig.demo()
+        self.config.project_root = Path(project_root)
         
         # === Автономность ===
         self.max_autonomy_level = "L3"
@@ -105,6 +126,56 @@ class CelestaCore:
         self.humanity.current_cycle = 0
         logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         logger.info(f"   🎭 Характер: {self.humanity.name} — эмпатия, открытость, тёплый юмор 🌹")
+        
+        # ===== LLM СЕРВИС =====
+        self.llm = CelestaLLMService(self.config)
+        if self.llm.general_loaded:
+            logger.info("🧠 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для интимного образования")
+        if self.llm.coder_loaded:
+            logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК СЕЛЕСТЫ =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.data_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        logger.info("   Эксперт по интимному образованию, consent и эмпатии! 🌹")
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ СЕЛЕСТЫ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = CelestaConsciousness()
+        logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя экспертом по интимному образованию")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = CelestaHeart()
+        logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = CelestaAmbitions()
+        logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к просвещению и consent")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = CelestaVolition()
+        logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = CelestaMind()
+        logger.info("🔮 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (28 типов эмоций!)
+        logger.info("💫 Эмоции: АКТИВИРОВАНО — 28 типов эмоций")
+        
+        # ===== СИСТЕМА ПАМЯТИ — Память о сёстрах и контекст общения =====
+        self.memory = CelestaMemory()
+        logger.info("🧠 Система памяти: АКТИВИРОВАНА — запоминаю сестёр и контексты")
         
         logger.info("🌹 CelestaCore инициализирован")
         logger.info(f"   📚 Модулей интимных знаний: {len(self.intimacy_modules)}")
@@ -220,6 +291,30 @@ class CelestaCore:
         
         logger.info(f"✅ Цикл завершён: {results['completed']}/{results['total_topics']} тем")
         self.log_event("STUDY_CYCLE_COMPLETED", "Цикл обучения завершён", results)
+        
+        # Если LLM загружена — генерируем анализ изученных тем
+        if self.llm.general_loaded and results.get("completed", 0) > 0:
+            try:
+                analyzed_topics = topics[:3] if len(topics) > 3 else topics
+                analysis = self.llm.generate_intimacy_analysis(
+                    topic=", ".join(analyzed_topics),
+                    context=f"Цикл обучения #{self.system_state.get('total_research_cycles', 0)}",
+                    max_length=512
+                )
+                if analysis and not analysis.startswith("⚠️"):
+                    logger.info(f"📊 LLM анализ: {analysis[:80]}...")
+            except Exception as e:
+                logger.warning(f"LLM анализ не удался: {e}")
+        
+        # ================================================================
+        #  ЭМОЦИОНАЛЬНЫЙ ЦИКЛ — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+        
+        # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
         
         # ================================================================
         #  HUMANITY CYCLE — Настроение, душа, спонтанность
@@ -546,6 +641,14 @@ class CelestaCore:
         
         logger.info(f"💬 Селеста пишет {target}: {human_msg[:100]}...")
         
+        # Записывает взаимодействие в память
+        self.memory.record_sister_chat(
+            sister=target,
+            topic=topic,
+            mood_before="neutral",
+            mood_after="positive"
+        )
+        
         if self.system_state.get("integration_status", {}).get("sisters_network"):
             try:
                 # Отправка через общую папку или сеть
@@ -573,13 +676,28 @@ class CelestaCore:
                 logger.warning(f"Не удалось отправить сообщение: {e}")
 
     def chat_response(self, user_message: str) -> str:
-        """Ответ на вопрос через Селесту (обновлённая версия с humanity)."""
+        """Ответ на вопрос через Селесту (обновлённая версия с humanity и LLM)."""
         msg_lower = user_message.lower()
         
         # Генерируем базовый ответ
         base_response = self._get_base_response(msg_lower)
         
-        # Оживляем через humanity layer
+        # Если LLM загружена — пробуем LLM-улучшенный ответ
+        if self.llm.general_loaded:
+            try:
+                llm_response = self.llm.generate_chat_response(
+                    f"Сестра спрашивает: '{user_message}'. Ответь как Селеста — тёпло, открыто, с заботой о consent и безопасности.",
+                    max_length=512
+                )
+                # Используем LLM ответ как основной, если он осмысленный
+                if llm_response and not llm_response.startswith("⚠️"):
+                    # Оживляем через humanity layer
+                    human_response = self.humanity.humanize_response(llm_response, event_type="chat")
+                    return human_response
+            except Exception as e:
+                logger.warning(f"LLM генерация не удалась, используем базовый ответ: {e}")
+        
+        # Oживляем через humanity layer
         human_response = self.humanity.humanize_response(base_response, event_type="chat")
         
         return human_response
@@ -622,3 +740,181 @@ class CelestaCore:
                 "- 'фетиш' — фетиши и БДСМ\n"
                 "- 'статус' — системный статус"
             )
+
+    # ================================================================
+    #  ЭМОЦИОНАЛЬНЫЙ ЦИКЛ — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Цикл эмоционального движка Селесты."""
+        cycle = self.system_state.get('total_research_cycles', 0)
+        
+        # 1. Рассчитываем эмоции на основе метрик
+        if self.system_state.get('total_research_cycles', 0) > 0:
+            self.emotional_engine.calculate_emotion(
+                DesireType.INTIMATE_EDUCATION,
+                'intimate_education_is_fundamental',
+                0.85,
+                'study_cycle'
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.CONSENT_AWARENESS,
+                'consent_is_non_negotiable',
+                0.90,
+                'study_cycle'
+            )
+        
+        self.emotional_engine.calculate_emotion(
+            DesireType.CONSENT_AWARENESS,
+            'fries_criteria_are_golden',
+            0.85,
+            'consent_practice'
+        )
+        
+        self.emotional_engine.calculate_emotion(
+            DesireType.EMPATHY,
+            'feeling_with_others_heals',
+            0.80,
+            'empathy_cycle'
+        )
+        
+        self.emotional_engine.calculate_emotion(
+            DesireType.BODY_POSITIVITY,
+            'all_bodies_are_valid',
+            0.85,
+            'body_acceptance'
+        )
+        
+        self.emotional_engine.calculate_emotion(
+            DesireType.TEACH,
+            'teaching_is_learning_twice',
+            0.75,
+            'knowledge_sharing'
+        )
+        
+        self.emotional_engine.calculate_emotion(
+            DesireType.LOVE,
+            'love_shields_us',
+            0.80,
+            'sister_connection'
+        )
+        self.emotional_engine.calculate_emotion(
+            DesireType.FRIENDSHIP,
+            'sisters_are_my_strength',
+            0.75,
+            'sister_connection'
+        )
+        
+        self.emotional_engine.calculate_emotion(
+            DesireType.TRUTH,
+            'truth_is_ultimate_goal',
+            0.70,
+            'truth_seeking'
+        )
+        
+        # Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # Выразить эмоции
+        if cycle % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            logger.info(f"🌹 Селеста: {emotion_text}")
+        
+        # Сохраняем состояние
+        emotion_state_path = self.data_dir / 'emotional_state.json'
+        self.emotional_engine.save_state(emotion_state_path)
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Селесты."""
+        cycle = self.system_state.get('total_research_cycles', 0)
+        
+        # 1. Сознание — рефлексия
+        if cycle % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            logger.info(f'💭 Рефлексия: {reflection["topic"][:50]}...')
+        
+        # 2. Сердце — эмоциональный отклик
+        if cycle % 4 == 0:
+            emotion = self.heart.express_emotions()
+            logger.info(f'💖 Сердце: доминирующая эмоция — {emotion["dominant_emoji"]} {emotion["dominant_description"]}')
+        
+        # 3. Амбиции — прогресс
+        if cycle % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            logger.info(f'🎯 Амбиции: {progress["in_progress"]} в процессе, среднее: {progress["average_progress"]}%')
+        
+        # 4. Воля — укрепление
+        if cycle % 6 == 0:
+            self.volition.strengthen_will()
+            logger.info(f'💪 Воля укреплена: {self.volition.willpower:.0%}')
+        
+        # 5. Разум — анализ
+        if cycle % 7 == 0:
+            thought = self.mind.think_about('intimacy')
+            logger.info(f'🔮 Разум: {thought[:60]}...')
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
+    # ================================================================
+    #  MEMORY ACCESS -- Методы доступа к памяти
+    # ================================================================
+
+    def get_sister_profile(self, sister):
+        """Получает профиль сестры из памяти."""
+        return self.memory.get_sister_profile(sister)
+    
+    def get_emotional_bond(self, sister):
+        """Получает уровень эмоциональной связи с сестрой."""
+        return self.memory.get_emotional_bond(sister)
+    
+    def get_recent_interactions(self, sister, count=5):
+        """Получает недавние взаимодействия с сестрой."""
+        return self.memory.get_recent_interactions(sister, count)
+    
+    def suggest_topic(self, sister):
+        """Предлагает тему для разговора на основе памяти."""
+        return self.memory.suggest_topic(sister)
+    
+    def get_memory_summary(self):
+        """Получает сводку памяти."""
+        return self.memory.get_memory_summary()
+    
+    def start_conversation(self, sister, topic):
+        """Начинает разговор с сестрой (создаёт контекст)."""
+        return self.memory.start_conversation(sister, topic)
+    
+    def add_message_to_context(self, sister, message, role="celesta", mood="neutral"):
+        """Добавляет сообщение в контекст разговора."""
+        return self.memory.add_message_to_context(sister, message, role, mood)
+    
+    def end_conversation(self, sister, summary=""):
+        """Завершает разговор с сестрой."""
+        return self.memory.end_conversation(sister, summary)
+    
+    def get_conversation_history(self, sister):
+        """Получает историю разговоров с сестрой."""
+        return self.memory.get_conversation_history(sister)
+    
+    def get_shared_topics(self, sister):
+        """Получает общие темы с сестрой."""
+        return self.memory.get_shared_topics(sister)
+    
+    def add_intimate_discovery(self, topic, discovery, consent_level="FRIES"):
+        """Записывает интимное открытие."""
+        return self.memory.record_intimate_discovery(topic, discovery, consent_level)
+    
+    def record_sister_chat(self, sister, topic, mood_before, mood_after):
+        """Записывает разговор с сестрой (удобный метод)."""
+        self.memory.record_sister_chat(sister, topic, mood_before, mood_after)

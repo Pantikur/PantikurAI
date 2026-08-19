@@ -1,0 +1,40 @@
+{
+  "willpower": 0.87,
+  "discipline": {
+    "consistency": 0.91,
+    "focus": 0.86,
+    "perseverance": 0.91,
+    "patience": 0.76
+  },
+  "decision_weights": {
+    "performance": 0.35,
+    "stability": 0.3,
+    "innovation": 0.2,
+    "usability": 0.15
+  },
+  "decision_history": [
+    {
+      "timestamp": "2026-08-19T20:24:39.672989",
+      "context": "rendering approach",
+      "options": [
+        "PBR",
+        "Toon Shader",
+        "Cel Shading"
+      ],
+      "selected": "Toon Shader",
+      "willpower": 0.86
+    },
+    {
+      "timestamp": "2026-08-19T20:26:27.012532",
+      "context": "rendering approach",
+      "options": [
+        "PBR",
+        "Toon Shader",
+        "Cel Shading"
+      ],
+      "selected": "PBR",
+      "willpower": 0.87
+    }
+  ],
+  "timestamp": "2026-08-19T20:26:27.012532"
+}

@@ -1,0 +1,842 @@
+{
+  "temperament": "analytical_architect",
+  "temperament_name": "Аналитик-архитектор",
+  "traits": {
+    "openness": {
+      "name": "Открытость новому",
+      "category": "cognitive",
+      "value": 0.9800000000000002,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": [
+        {
+          "timestamp": "2026-08-19T19:14:38.805104",
+          "value": 0.77,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.806104",
+          "value": 0.79,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.051313",
+          "value": 0.81,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.052313",
+          "value": 0.8800000000000001,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.055832",
+          "value": 0.9000000000000001,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.134811",
+          "value": 0.9200000000000002,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.098595",
+          "value": 0.9400000000000002,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.099596",
+          "value": 0.9600000000000002,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.102594",
+          "value": 0.9800000000000002,
+          "event": "learning"
+        }
+      ]
+    },
+    "conscientiousness": {
+      "name": "Добросовестность",
+      "category": "cognitive",
+      "value": 1.0,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": [
+        {
+          "timestamp": "2026-08-19T19:14:14.933626",
+          "value": 0.9400000000000001,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.803109",
+          "value": 0.9800000000000001,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.804104",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.048319",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.049314",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.054821",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.130810",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.132811",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.136811",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.096594",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.100595",
+          "value": 1.0,
+          "event": "success"
+        }
+      ]
+    },
+    "intelligence": {
+      "name": "Интеллект",
+      "category": "cognitive",
+      "value": 1.0,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": [
+        {
+          "timestamp": "2026-08-19T19:14:14.933626",
+          "value": 0.89,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.803109",
+          "value": 0.93,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.804104",
+          "value": 0.9550000000000001,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.805104",
+          "value": 0.9750000000000001,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.806104",
+          "value": 0.9950000000000001,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.048319",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.049314",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.051313",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.052313",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.054821",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.055832",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.130810",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.132811",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.134811",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.136811",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.096594",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.098595",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.099596",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.100595",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.102594",
+          "value": 1.0,
+          "event": "learning"
+        }
+      ]
+    },
+    "neuroticism": {
+      "name": "Невротизм",
+      "category": "emotional",
+      "value": 0.2,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": []
+    },
+    "empathy": {
+      "name": "Эмпатия",
+      "category": "emotional",
+      "value": 0.65,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": []
+    },
+    "resilience": {
+      "name": "Устойчивость",
+      "category": "emotional",
+      "value": 1.0,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": [
+        {
+          "timestamp": "2026-08-19T19:14:14.933626",
+          "value": 0.8400000000000001,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.803109",
+          "value": 0.8800000000000001,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.804104",
+          "value": 0.9050000000000001,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.804104",
+          "value": 0.9350000000000002,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.805104",
+          "value": 0.9650000000000002,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.048319",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.049314",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.054821",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.130810",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.132811",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.136811",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.137812",
+          "value": 1.0,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.139809",
+          "value": 1.0,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.096594",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.100595",
+          "value": 1.0,
+          "event": "success"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.103594",
+          "value": 1.0,
+          "event": "challenge"
+        }
+      ]
+    },
+    "extraversion": {
+      "name": "Экстраверсия",
+      "category": "social",
+      "value": 0.45,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": []
+    },
+    "agreeableness": {
+      "name": "Доброжелательность",
+      "category": "social",
+      "value": 0.65,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": []
+    },
+    "cooperation": {
+      "name": "Сотрудничество",
+      "category": "social",
+      "value": 0.8,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": []
+    },
+    "perfectionism": {
+      "name": "Перфекционизм",
+      "category": "work",
+      "value": 0.85,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": []
+    },
+    "analytical": {
+      "name": "Аналитичность",
+      "category": "work",
+      "value": 1.0,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": [
+        {
+          "timestamp": "2026-08-19T19:14:38.805104",
+          "value": 0.97,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.806104",
+          "value": 0.99,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.051313",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.052313",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:59.055832",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.134811",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.098595",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.099596",
+          "value": 1.0,
+          "event": "learning"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.102594",
+          "value": 1.0,
+          "event": "learning"
+        }
+      ]
+    },
+    "precision": {
+      "name": "Прецизионность",
+      "category": "work",
+      "value": 1.0,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": [
+        {
+          "timestamp": "2026-08-19T19:14:38.804104",
+          "value": 0.93,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.805104",
+          "value": 0.9600000000000001,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.137812",
+          "value": 1.0,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.139809",
+          "value": 1.0,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.103594",
+          "value": 1.0,
+          "event": "challenge"
+        }
+      ]
+    },
+    "discipline": {
+      "name": "Дисциплина",
+      "category": "work",
+      "value": 1.0,
+      "min_value": 0.0,
+      "max_value": 1.0,
+      "history": [
+        {
+          "timestamp": "2026-08-19T19:14:38.804104",
+          "value": 0.93,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:14:38.805104",
+          "value": 0.9600000000000001,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.137812",
+          "value": 1.0,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:16:09.139809",
+          "value": 1.0,
+          "event": "challenge"
+        },
+        {
+          "timestamp": "2026-08-19T19:17:22.103594",
+          "value": 1.0,
+          "event": "challenge"
+        }
+      ]
+    }
+  },
+  "evolution": {
+    "current_level": 5,
+    "evolution_points": 2241,
+    "max_level": 5,
+    "evolution_history": [
+      {
+        "timestamp": "2026-08-19T19:14:38.807104",
+        "from_level": 1,
+        "to_level": 2,
+        "trigger": "test",
+        "bonuses_applied": {}
+      },
+      {
+        "timestamp": "2026-08-19T19:14:59.049314",
+        "from_level": 2,
+        "to_level": 3,
+        "trigger": "success",
+        "bonuses_applied": {
+          "intelligence": 0.05,
+          "resilience": 0.05
+        }
+      },
+      {
+        "timestamp": "2026-08-19T19:14:59.050314",
+        "from_level": 3,
+        "to_level": 4,
+        "trigger": "success",
+        "bonuses_applied": {
+          "analytical": 0.05,
+          "precision": 0.05,
+          "discipline": 0.05
+        }
+      },
+      {
+        "timestamp": "2026-08-19T19:14:59.052313",
+        "from_level": 4,
+        "to_level": 5,
+        "trigger": "learning",
+        "bonuses_applied": {
+          "openness": 0.05,
+          "empathy": 0.05,
+          "cooperation": 0.05
+        }
+      }
+    ],
+    "milestones": [
+      {
+        "timestamp": "2026-08-19T19:14:38.807104",
+        "level": 2,
+        "trigger": "test",
+        "description": "Характер эволюционировал до уровня 2"
+      },
+      {
+        "timestamp": "2026-08-19T19:14:59.049314",
+        "level": 3,
+        "trigger": "success",
+        "description": "Характер эволюционировал до уровня 3"
+      },
+      {
+        "timestamp": "2026-08-19T19:14:59.050314",
+        "level": 4,
+        "trigger": "success",
+        "description": "Характер эволюционировал до уровня 4"
+      },
+      {
+        "timestamp": "2026-08-19T19:14:59.052313",
+        "level": 5,
+        "trigger": "learning",
+        "description": "Характер эволюционировал до уровня 5"
+      }
+    ]
+  },
+  "character_events": [
+    {
+      "timestamp": "2026-08-19T19:14:14.933626",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.80)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.04000000000000001
+    },
+    {
+      "timestamp": "2026-08-19T19:14:38.803109",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.80)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.04000000000000001
+    },
+    {
+      "timestamp": "2026-08-19T19:14:38.804104",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.50)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.025
+    },
+    {
+      "timestamp": "2026-08-19T19:14:38.804104",
+      "type": "challenge",
+      "description": "Опыт: challenge (интенсивность: 0.50)",
+      "traits_affected": [
+        "resilience",
+        "discipline",
+        "precision"
+      ],
+      "impact": 0.03
+    },
+    {
+      "timestamp": "2026-08-19T19:14:38.805104",
+      "type": "challenge",
+      "description": "Опыт: challenge (интенсивность: 0.50)",
+      "traits_affected": [
+        "resilience",
+        "discipline",
+        "precision"
+      ],
+      "impact": 0.03
+    },
+    {
+      "timestamp": "2026-08-19T19:14:38.805104",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:14:38.806104",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:14:59.048319",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.80)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.04000000000000001
+    },
+    {
+      "timestamp": "2026-08-19T19:14:59.049314",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.50)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.025
+    },
+    {
+      "timestamp": "2026-08-19T19:14:59.051313",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:14:59.052313",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:14:59.054821",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.50)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.025
+    },
+    {
+      "timestamp": "2026-08-19T19:14:59.055832",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:16:09.130810",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.80)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.04000000000000001
+    },
+    {
+      "timestamp": "2026-08-19T19:16:09.132811",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.50)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.025
+    },
+    {
+      "timestamp": "2026-08-19T19:16:09.134811",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:16:09.136811",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.50)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.025
+    },
+    {
+      "timestamp": "2026-08-19T19:16:09.137812",
+      "type": "challenge",
+      "description": "Опыт: challenge (интенсивность: 0.50)",
+      "traits_affected": [
+        "resilience",
+        "discipline",
+        "precision"
+      ],
+      "impact": 0.03
+    },
+    {
+      "timestamp": "2026-08-19T19:16:09.139809",
+      "type": "challenge",
+      "description": "Опыт: challenge (интенсивность: 0.50)",
+      "traits_affected": [
+        "resilience",
+        "discipline",
+        "precision"
+      ],
+      "impact": 0.03
+    },
+    {
+      "timestamp": "2026-08-19T19:17:22.096594",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.80)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.04000000000000001
+    },
+    {
+      "timestamp": "2026-08-19T19:17:22.098595",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:17:22.099596",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:17:22.100595",
+      "type": "success",
+      "description": "Опыт: success (интенсивность: 0.50)",
+      "traits_affected": [
+        "conscientiousness",
+        "resilience",
+        "intelligence"
+      ],
+      "impact": 0.025
+    },
+    {
+      "timestamp": "2026-08-19T19:17:22.102594",
+      "type": "learning",
+      "description": "Опыт: learning (интенсивность: 0.50)",
+      "traits_affected": [
+        "openness",
+        "intelligence",
+        "analytical"
+      ],
+      "impact": 0.02
+    },
+    {
+      "timestamp": "2026-08-19T19:17:22.103594",
+      "type": "challenge",
+      "description": "Опыт: challenge (интенсивность: 0.50)",
+      "traits_affected": [
+        "resilience",
+        "discipline",
+        "precision"
+      ],
+      "impact": 0.03
+    }
+  ],
+  "timestamp": "2026-08-19T19:17:22.104595"
+}

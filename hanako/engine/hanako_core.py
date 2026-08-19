@@ -34,6 +34,19 @@ from hanako.engine.auto_start import AutoStartSystem
 # Humanity Core — живая душа Ханако
 from humanity_core import HumanityLayer
 
+# LLM Service — сервис для работы с моделями Qwen2.5
+from hanako.engine.llm_service import HanakoLLMService
+
+# Эмоциональный разум Ханако — Desire + Belief = Emotion
+from hanako.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Ханако: Сознание, Сердце, Амбиции, Воля, Разум
+from hanako.consciousness import HanakoConsciousness
+from hanako.heart import HanakoHeart
+from hanako.ambitions import HanakoAmbitions
+from hanako.volition import HanakoVolition
+from hanako.mind import HanakoMind
+
 
 class HanakoCore:
     """
@@ -118,6 +131,52 @@ class HanakoCore:
         self.humanity.current_cycle = 0
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — гравитация, спокойствие, космические метафоры 🌌")
+        
+        # ===== LLM СЕРВИС =====
+        self.llm = HanakoLLMService(self.config)
+        if self.llm.general_loaded:
+            self.logger.info("🌌 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для гравитационного анализа")
+        if self.llm.coder_loaded:
+            self.logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК ХАНАКО =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Исследователь гравитации, спокойная, мудрая!")
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ ХАНАКО =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = HanakoConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя исследователем космоса")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = HanakoHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = HanakoAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к гравитационному мастерству")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = HanakoVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = HanakoMind()
+        self.logger.info("🌌 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (26 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 26 типов эмоций")
 
     # ==================== Запуск / Остановка ====================
 
@@ -191,6 +250,16 @@ class HanakoCore:
         initiative = humanity_result.get("initiative")
         if initiative:
             self._send_spontaneous_message(initiative)
+        
+        # ================================================================
+        #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+        
+        # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
 
     def run_loop(self, max_cycles: int = 0):
         """Основной цикл работы."""
@@ -207,6 +276,133 @@ class HanakoCore:
             self.logger.info("Получен KeyboardInterrupt — остановка")
         finally:
             self.stop()
+
+    # ==================== LLM ГЕНЕРАЦИЯ ====================
+
+    def generate_gravity_analysis(self, topic: str, context: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ гравитации через General LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_gravity_analysis(topic, context, max_length)
+    
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_chat_response(prompt, max_length)
+    
+    def generate_theory_explanation(self, theory: str, complexity: str = "simple", max_length: int = 1024) -> str:
+        """Сгенерировать объяснение гравитационной теории."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_theory_explanation(theory, complexity, max_length)
+    
+    def generate_code_analysis(self, code: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ кода через Coder LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.coder_loaded:
+            return "⚠️ Coder LLM не загружена. Запустите: python download_coder_model.py"
+        return self.llm.generate_code_analysis(code, max_length)
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Ханако."""
+        # 1. Сознание — рефлексия
+        if self.total_cycles % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.total_cycles % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.total_cycles % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.total_cycles % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.total_cycles % 7 == 0:
+            thought = self.mind.think_about("cosmos")
+            self.logger.info(f"🌌 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
+    # ================================================================
+    #  EMOTIONAL ENGINE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе гравитационных действий."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.level.total_theories > 0:
+            # Построила теории → теоретическая элегантность + космическая гармония
+            self.emotional_engine.calculate_emotion(
+                DesireType.THEORY,
+                "theories_explain_reality",
+                0.80,
+                "theories_built"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.HARMONY,
+                "harmony_in_universe_harmony_in_mind",
+                0.75,
+                "theories_built"
+            )
+        
+        if len(self.research_tasks) > 0:
+            # Провела исследования → космическая радость + любопытство
+            self.emotional_engine.calculate_emotion(
+                DesireType.COSMOS,
+                "exploring_cosmos_expands_mind",
+                0.70,
+                "research_tasks"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.CURIOSITY,
+                "curiosity_fuels_discovery",
+                0.65,
+                "research_tasks"
+            )
+        
+        if len(self.theories) > 0:
+            # Имеет теории → поток гравитации + мудрость
+            self.emotional_engine.calculate_emotion(
+                DesireType.GRAVITY,
+                "understanding_gravity_understands_cosmos",
+                0.75,
+                "theories_stored"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.WISDOM,
+                "learning_never_stops",
+                0.70,
+                "theories_stored"
+            )
+        
+        # 2. Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # 3. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # 4. Выразить эмоции
+        if self.total_cycles % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"🌌 Ханако: {emotion_text}")
 
     # ==================== Исследования ====================
 

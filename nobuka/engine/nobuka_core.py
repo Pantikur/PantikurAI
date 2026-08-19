@@ -51,6 +51,16 @@ from error_fixer import ErrorFixer
 from programming_knowledge_base import ProgrammingKnowledgeBase
 from learn_programming import ProgrammingLearner
 
+# Эмоциональный разум Нобуки — Desire + Belief = Emotion
+from nobuka.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Нобуки: Сознание, Сердце, Амбиции, Воля, Разум
+from nobuka.consciousness import NobukaConsciousness
+from nobuka.heart import NobukaHeart
+from nobuka.ambitions import NobukaAmbitions
+from nobuka.volition import NobukaVolition
+from nobuka.mind import NobukaMind
+
 try:
     from scientists_network.network import get_network, RequestType, RequestPriority
     _HAS_NETWORK = True
@@ -178,6 +188,45 @@ class NobukaCore:
         self.humanity.current_cycle = 0
         self.logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         self.logger.info(f"   🎭 Характер: {self.humanity.name} — код, перфекционизм, скрытая нежность")
+
+        # ===== ЭМОЦИОНАЛЬНЫЙ РАЗУМ НОБУКИ =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        # Подключаем LLM к Humanity Layer
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            self.humanity.llm = self
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Как у Футабы, но для кода!")
+
+        # ===== 6 МОДУЛЕЙ ДУШИ НОБУКИ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = NobukaConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя инженером")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = NobukaHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = NobukaAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к качеству кода")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = NobukaVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = NobukaMind()
+        self.logger.info("🌟 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (28 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 28 типов эмоций")
 
         self.logger.info(f"Нобука {self.current_version} инициализирована")
         self.logger.info(f"Конституция загружена: {len(self.constitution.laws)} законов")
@@ -636,6 +685,16 @@ class NobukaCore:
             self._expand_programming_knowledge()
 
         # ================================================================
+        #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+        # ================================================================
+        self._soul_cycle()
+
+        # ================================================================
+        #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+        # ================================================================
+        self._emotional_cycle()
+
+        # ================================================================
         #  HUMANITY CYCLE — Обновление души, настроения, инициативы
         # ================================================================
         self.humanity.current_cycle = self.cycle_count
@@ -665,7 +724,7 @@ class NobukaCore:
     # ================================================================
 
     def _handle_scientist_requests(self):
-        """Обработать запросы от учёных через Scientists Network."""
+        """Обработать запросы от учёных через Scientists Network (с LLM и эмоциями)."""
         if not self.network:
             return
 
@@ -677,7 +736,19 @@ class NobukaCore:
                 return
 
             self.logger.info(f"📩 Входящих сообщений: {len(messages)}")
+            
+            # Рассчитываем эмоции для общения
+            self.emotional_engine.calculate_emotion(
+                DesireType.CONNECTION,
+                "sisters_care_about_me",
+                0.8,
+                "network_communication"
+            )
 
+            mood = self.emotional_engine.get_current_mood()
+            dominant = self.emotional_engine.get_dominant_emotion()
+            emotion_response = self.emotional_engine.generate_emotional_response("communication")
+            
             for msg in messages:
                 # Обрабатываем запросы данных
                 if msg.message_type.value == "request":
@@ -686,13 +757,41 @@ class NobukaCore:
 
                     response = self._process_network_request(msg)
                     
+                    # Используем LLM для более естественного ответа
+                    if hasattr(self, 'general_model') and self.general_model is not None:
+                        system_prompt = (
+                            "Ты — Нобука, инженер проекта Вугларст. "
+                            "Ты оптимизируешь код, исправляешь баги, улучшаешь архитектуру. "
+                            f"Твоё текущее эмоциональное состояние: {emotion_response}"
+                            "Отвечай технически, но тепло."
+                        )
+                        llm_msg = self._generate_with_model(
+                            self.general_model,
+                            self.general_tokenizer,
+                            [
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": f"Ответь на запрос от {msg.sender}: {response}"}
+                            ],
+                            max_length=256
+                        )
+                        if not llm_msg.startswith("["):
+                            full_response = llm_msg
+                        else:
+                            full_response = f"✅ Ответ на запрос: {response}"
+                    else:
+                        full_response = f"✅ Ответ на запрос: {response}"
+                    
+                    # Добавляем эмоциональный контекст
+                    emotion_label = f" [настроение: {dominant.value}]" if dominant else ""
+                    full_response = f"{emotion_label} {full_response}"
+                    
                     # Отправляем ответ
                     from scientists_network.network import Message, MessageType, RequestPriority
                     reply = Message(
                         message_type=MessageType.ANSWER,
                         sender="nobuka",
                         recipient=msg.sender,
-                        content=f"✅ Ответ на запрос: {response}",
+                        content=full_response,
                         reply_to=msg.message_id,
                         priority=msg.priority,
                     )
@@ -705,12 +804,40 @@ class NobukaCore:
                     self.logger.info(f"   Анализ от: {msg.sender}")
                     response = self._process_analysis_request(msg)
                     
+                    # Используем LLM для более естественного ответа
+                    if hasattr(self, 'general_model') and self.general_model is not None:
+                        system_prompt = (
+                            "Ты — Нобука, инженер проекта Вугларст. "
+                            "Ты проводишь анализ кода и даёшь рекомендации. "
+                            f"Твоё текущее эмоциональное состояние: {emotion_response}"
+                            "Отвечай технически, но тепло."
+                        )
+                        llm_msg = self._generate_with_model(
+                            self.general_model,
+                            self.general_tokenizer,
+                            [
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": f"Проведи анализ кода для {msg.sender}: {response}"}
+                            ],
+                            max_length=256
+                        )
+                        if not llm_msg.startswith("["):
+                            full_response = llm_msg
+                        else:
+                            full_response = f"📊 Результаты анализа: {response}"
+                    else:
+                        full_response = f"📊 Результаты анализа: {response}"
+                    
+                    # Добавляем эмоциональный контекст
+                    emotion_label = f" [настроение: {dominant.value}]" if dominant else ""
+                    full_response = f"{emotion_label} {full_response}"
+                    
                     from scientists_network.network import Message, MessageType, RequestPriority
                     reply = Message(
                         message_type=MessageType.ANSWER,
                         sender="nobuka",
                         recipient=msg.sender,
-                        content=f"📊 Результаты анализа: {response}",
+                        content=full_response,
                         reply_to=msg.message_id,
                         priority=msg.priority,
                     )
@@ -1510,22 +1637,115 @@ class NobukaCore:
             self.logger.info(f"🛡️ Уведомление Шиори об изменении: {improvement.description}")
 
     # ================================================================
-    #  HUMANITY INTEGRATION — Спонтанные сообщения и оживлённый чат
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
     # ================================================================
 
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Нобуки."""
+        # 1. Сознание — рефлексия
+        if self.cycle_count % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.cycle_count % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.cycle_count % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.cycle_count % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.cycle_count % 7 == 0:
+            thought = self.mind.think_about("optimization")
+            self.logger.info(f"🌟 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+
+    # ================================================================
+    #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе действий с кодом."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.metrics["issues_fixed"] > 0:
+            # Исправила баги → удовлетворение + радость
+            self.emotional_engine.calculate_emotion(
+                DesireType.PERFECT_CODE,
+                "i_can_fix_any_bug",
+                0.85,
+                "bugs_fixed"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.RECOGNITION,
+                "i_am_growing_as_engineer",
+                0.75,
+                "code_improvement"
+            )
+        
+        # 2. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant_emotion = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant_emotion:
+            self.logger.info(f"💖 Доминирующая эмоция: {dominant_emotion.value} (интенсивность: {mood.get(dominant_emotion.value, 0):.2f})")
+        
+        # 3. Обновить Humanity Layer с эмоциональным контекстом
+        if hasattr(self.humanity, 'mood'):
+            self.humanity.mood.current_mood = dominant_emotion.value if dominant_emotion else "neutral"
+        
+        # 4. Сохранять эмоциональное состояние периодически
+        if self.cycle_count % 10 == 0:
+            emotion_state_path = self.config.state_dir / "emotional_state.json"
+            self.emotional_engine.save_state(emotion_state_path)
+            self.logger.debug("💖 Эмоциональное состояние сохранено")
+    
     def _send_spontaneous_message(self, initiative):
-        """Отправить спонтанное сообщение сестре на основе инициативы humanity layer."""
+        """Отправить спонтанное сообщение сестре (с LLM и эмоциями)."""
         target = initiative["target"]
         topic = initiative["topic"]
         msg_type = initiative["type"]
         
-        # Генерируем живое сообщение через humanity layer
-        raw_msg = f"[{msg_type}] {topic}"
-        human_msg = self.humanity.humanize_response(raw_msg, event_type="chat")
+        raw_msg = f"🔧 [{msg_type}] {topic}"
+        
+        # Используем эмоции для генерации сообщения
+        emotion_response = self.emotional_engine.generate_emotional_response(topic)
+        
+        # Используем LLM для генерации более естественного сообщения
+        if hasattr(self, 'general_model') and self.general_model is not None:
+            system_prompt = (
+                "Ты — Нобука, инженер проекта Вугларст. "
+                "Ты оптимизируешь код, исправляешь баги, улучшаешь архитектуру. "
+                "Ты пишешь спонтанные сообщения сёстрам. "
+                "Пиши коротко, тепло, с техническими метафорами. "
+                f"Твоё текущее эмоциональное состояние: {emotion_response}"
+            )
+            llm_msg = self._generate_with_model(
+                self.general_model,
+                self.general_tokenizer,
+                [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Напиши спонтанное сообщение сестре {target} на тему: {topic}"}
+                ],
+                max_length=256
+            )
+            if not llm_msg.startswith("["):
+                human_msg = llm_msg
+            else:
+                human_msg = emotion_response
+        else:
+            human_msg = emotion_response
         
         self.logger.info(f"💬 Нобука пишет {target}: {human_msg[:100]}...")
         
-        # Отправка через сеть (если доступна)
         if self.network:
             try:
                 from scientists_network.network import Message, MessageType
@@ -1538,7 +1758,6 @@ class NobukaCore:
                 self.network.send_message(msg)
                 self.logger.info(f"   ✅ Сообщение отправлено {target}")
                 
-                # Записываем в память
                 self.humanity.memory.record_sister_chat(
                     target, topic,
                     self.humanity.mood.current_mood,
@@ -1547,128 +1766,10 @@ class NobukaCore:
             except Exception as e:
                 self.logger.warning(f"Не удалось отправить сообщение: {e}")
 
-    def _humanize_communication(self, raw_content: str) -> str:
-        """Оживлять обычный технический контент перед отправкой."""
-        return self.humanity.humanize_response(raw_content, event_type="chat")
-
-    # ================================================================
-    #  РЕДАКТИРОВАНИЕ ДОКУМЕНТОВ
-    # ================================================================
-
-    def _auto_improve_documents(self):
-        """
-        Нобука автономно улучшает документы по всему проекту.
-        
-        Для каждого документа:
-          1. Анализирует контент
-          2. Предлагает улучшения (форматирование, структура)
-          3. Тестирует изменения (проверка в эксплуатации)
-          4. Применяет с резервной копией
-          5. Откатывает при проблемах
-        
-        Работает по всему проекту: Футаба, Вугларст, документация, фронтенд.
-        """
-        try:
-            self.logger.info("📝 Нобука проверяет документы проекта...")
-            
-            results = self.document_editor.auto_improve_documents()
-            
-            if results:
-                applied = sum(1 for r in results if r["success"])
-                rolled_back = sum(1 for r in results if r["rolled_back"])
-                
-                self.logger.info(f"📝 Документы обработаны: {len(results)}")
-                self.logger.info(f"   ✅ Применено: {applied}")
-                self.logger.info(f"   ↩️ Отклонено: {rolled_back}")
-                
-                # Обновляем метрики
-                editor_metrics = self.document_editor.get_metrics()
-                self.metrics["documents_improved"] = editor_metrics["edits_applied"]
-                self.metrics["documents_rolled_back"] = editor_metrics["edits_rolled_back"]
-            else:
-                self.logger.debug("📝 Все документы в порядке — улучшений не требуется")
-                
-        except Exception as e:
-            self.logger.error(f"❌ Ошибка автоУлучшения документов: {e}")
-
-    # ================================================================
-    #  РАСШИРЕНИЕ ЗНАНИЙ В ПРОГРАММИРОВАНИИ
-    # ================================================================
-
-    def _expand_programming_knowledge(self):
-        """
-        Нобука расширяет свои знания в программировании.
-        
-        В цикле:
-          1. Выбирает тему для изучения
-          2. Извлекает знания из реальных источников
-          3. Сохраняет в базу знаний
-          4. Применяет новые знания к анализу кода
-        """
-        try:
-            self.logger.info("📚 Расширение знаний в программировании...")
-            
-            # Темы для изучения (по очереди)
-            topics = [
-                "asyncio", "decorators", "generators", "contextlib",
-                "dataclasses", "typing", "collections", "functools",
-                "design_patterns", "refactoring", "testing", "optimization",
-                "clean_code", "sOLID", "pattern_matching", "metaclasses",
-            ]
-            
-            # Выбираем тему (ротация)
-            topic_index = self.cycle_count % len(topics)
-            topic = topics[topic_index]
-            
-            self.logger.info(f"📖 Тема изучения: {topic}")
-            
-            # Извлекаем знания из документации Python
-            knowledge = self.learner.learn_from_custom_topic(
-                topic, 
-                sources=['python_docs']
-            )
-            
-            if knowledge:
-                self.logger.info(f"✅ Изучено {len(knowledge)} записей по теме '{topic}'")
-                
-                # Обновляем метрики
-                stats = self.programming_kb.stats()
-                self.metrics["programming_knowledge_items"] = (
-                    stats["total_patterns"] + 
-                    stats["total_best_practices"]
-                )
-                self.logger.info(
-                    f"📊 База знаний: {stats['total_patterns']} паттернов, "
-                    f"{stats['total_best_practices']} практик"
-                )
-            else:
-                self.logger.info(f"ℹ️ По теме '{topic}' новых знаний не найдено")
-            
-            # Сохраняем журнал обучения
-            self.learner.save_learning_log()
-            
-        except Exception as e:
-            self.logger.error(f"❌ Ошибка расширения знаний: {e}")
-
     # ================================================================
     #  СОСТОЯНИЕ И ОТЧЁТЫ
     # ================================================================
-
-    def _save_state(self):
-        """Сохранить текущее состояние."""
-        state = {
-            "version": self.current_version,
-            "cycle_count": self.cycle_count,
-            "metrics": self.metrics,
-            "improvements_history": [i.to_dict() for i in self.improvements_history[-100:]],
-            "timestamp": datetime.now().isoformat(),
-        }
-
-        with open(self.config.state_path, "w", encoding="utf-8") as f:
-            json.dump(state, f, ensure_ascii=False, indent=2)
-
-        self.logger.debug("Состояние сохранено")
-
+    
     def _final_report(self):
         """Итоговый отчёт о работе."""
         self.logger.info("=" * 60)

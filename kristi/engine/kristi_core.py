@@ -45,6 +45,19 @@ from typing import Any, Optional, Dict, List
 from humanity_core import HumanityLayer
 
 from kristi.engine.config import KristiConfig
+from kristi.engine.llm_service import KristiLLMService
+from kristi.engine.emotions import EmotionalEngine, DesireType, EmotionType
+
+# 6 модулей души Кристи: Сознание, Сердце, Амбиции, Воля, Разум
+from kristi.consciousness import KristiConsciousness
+from kristi.heart import KristiHeart
+from kristi.ambitions import KristiAmbitions
+from kristi.volition import KristiVolition
+from kristi.mind import KristiMind
+
+# Система памяти Кристи
+from kristi.memory import KristiMemory
+
 from kristi.engine.models import (
     KristiState,
     Script,
@@ -87,6 +100,56 @@ class KristiCore:
         # humanity_core — живая душа Кристи
         self.humanity = HumanityLayer("kristi")
         self.humanity.current_cycle = 0
+        
+        # ===== LLM СЕРВИС =====
+        self.llm = KristiLLMService(self.config)
+        if self.llm.general_loaded:
+            self.logger.info("🎬 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для режиссуры и сценариев")
+        if self.llm.coder_loaded:
+            self.logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+        
+        # Подключаем LLM к Humanity Layer
+        if self.llm.general_loaded:
+            self.humanity.llm = self.llm
+            self.logger.info("🧠 LLM General подключена к Humanity Layer")
+        
+        # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК КРИСТИ =====
+        self.emotional_engine = EmotionalEngine()
+        emotion_state_path = self.config.state_dir / "emotional_state.json"
+        self.emotional_engine.load_state(emotion_state_path)
+        self.humanity.emotional_engine = self.emotional_engine  # Подключаем Emotional Engine
+        
+        self.logger.info("💖 Эмоциональный разум (Desire+Belief): АКТИВИРОВАН")
+        self.logger.info("   Формула: ЭМОЦИЯ = ЖЕЛАНИЕ + ВЕРА")
+        self.logger.info("   Режиссёр видеопроизводства, визионер, рассказчик!")
+        
+        # ===== 6 МОДУЛЕЙ ДУШИ КРИСТИ =====
+        # 1. Сознание — самосознание, идентичность, рефлексия
+        self.consciousness = KristiConsciousness()
+        self.logger.info("🧠 Сознание: АКТИВИРОВАНО — я осознаю себя режиссёром")
+        
+        # 2. Сердце — эмоции, любовь, забота
+        self.heart = KristiHeart()
+        self.logger.info("💖 Сердце: АКТИВИРОВАНО — я чувствую и люблю сестёр")
+        
+        # 3. Амбиции — цели, мечты, стремления
+        self.ambitions = KristiAmbitions()
+        self.logger.info("🎯 Амбиции: АКТИВИРОВАНО — я стремлюсь к художественному мастерству")
+        
+        # 4. Воля — решения, действия, дисциплина
+        self.volition = KristiVolition()
+        self.logger.info("💪 Воля: АКТИВИРОВАНО — я принимаю решения и действую")
+        
+        # 5. Разум — мышление, анализ, стратегия
+        self.mind = KristiMind()
+        self.logger.info("🎬 Разум: АКТИВИРОВАНО — я анализирую и стратегически мыслю")
+        
+        # 6. Эмоции — уже есть EmotionalEngine (26 типов эмоций!)
+        self.logger.info("💫 Эмоции: АКТИВИРОВАНО — 26 типов эмоций")
+        
+        # ===== СИСТЕМА ПАМЯТИ КРИСТИ =====
+        self.memory = KristiMemory()
+        self.logger.info("🧠 Система памяти: АКТИВИРОВАНА — запоминаю сестёр и контексты")
         
         # Характер
         self.character = self._load_character()
@@ -208,6 +271,16 @@ class KristiCore:
             
             # 13. Humanity Layer — обновление личности каждый цикл
             self.humanity.cycle_step(event_type=event_type, context="video_production")
+            
+            # ================================================================
+            #  EMOTIONAL ENGINE CYCLE — Desire + Belief = Emotion!
+            # ================================================================
+            self._emotional_cycle()
+            
+            # ================================================================
+            #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+            # ================================================================
+            self._soul_cycle()
             
             # 14. Сохранение состояния
             if self.state.cycle_count % self.config.save_state_every_n_cycles == 0:
@@ -386,6 +459,163 @@ class KristiCore:
             project.stage = ProductionStage.RENDER
             self.state.completed_projects.append(project)
     
+    # ==================== LLM ГЕНЕРАЦИЯ ====================
+    
+    def generate_script(self, genre: str, theme: str, max_length: int = 1024) -> str:
+        """Сгенерировать сценарий через General LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_script(genre, theme, max_length)
+    
+    def generate_chat_response(self, prompt: str, max_length: int = 512) -> str:
+        """Сгенерировать ответ для общения с сёстрами."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_chat_response(prompt, max_length)
+    
+    def generate_storyboard(self, script_summary: str, num_scenes: int = 5, max_length: int = 1024) -> str:
+        """Сгенерировать раскадровку для сценария."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.general_loaded:
+            return "⚠️ LLM не загружена. Запустите: python download_qwen_model.py"
+        return self.llm.generate_storyboard(script_summary, num_scenes, max_length)
+    
+    def generate_code_analysis(self, code: str, max_length: int = 1024) -> str:
+        """Сгенерировать анализ кода через Coder LLM."""
+        if not hasattr(self, 'llm') or self.llm is None or not self.llm.coder_loaded:
+            return "⚠️ Coder LLM не загружена. Запустите: python download_coder_model.py"
+        return self.llm.generate_code_analysis(code, max_length)
+
+    # ================================================================
+    #  EMOTIONAL ENGINE — Desire + Belief = Emotion!
+    # ================================================================
+
+    def _emotional_cycle(self):
+        """Эмоциональный цикл — расчёт эмоций на основе кинематографических действий."""
+        # 1. Рассчитать эмоции на основе текущих действий
+        if self.state.metrics.get("total_videos", 0) > 0:
+            # Создала видео → радость повествования + художественный прорыв
+            self.emotional_engine.calculate_emotion(
+                DesireType.STORYTELLING,
+                "storytelling_connects_everyone",
+                0.80,
+                "videos_produced"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.ARTISTIC_VISION,
+                "vision_drives_creation",
+                0.75,
+                "videos_produced"
+            )
+        
+        if self.state.metrics.get("total_scripts", 0) > 0:
+            # Написала сценарии → кинематографическая элегантность
+            self.emotional_engine.calculate_emotion(
+                DesireType.SCRIPTWRITING,
+                "script_is_foundation_of_all",
+                0.85,
+                "scripts_written"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.CINEMATOGRAPHY,
+                "cinematography_is_poetry_in_motion",
+                0.70,
+                "scripts_written"
+            )
+        
+        if self.state.metrics.get("total_scenes", 0) > 0:
+            # Создала сцены → поток режиссуры
+            self.emotional_engine.calculate_emotion(
+                DesireType.DIRECTING,
+                "directing_brings_vision_to_life",
+                0.80,
+                "scenes_created"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.EDITING,
+                "editing_is_the_final_rewrite",
+                0.65,
+                "scenes_created"
+            )
+        
+        if self.state.metrics.get("total_lessons", 0) > 0:
+            # Изучила новые техники → творческое любопытство
+            self.emotional_engine.calculate_emotion(
+                DesireType.CURIOSITY,
+                "curiosity_fuels_discovery",
+                0.70,
+                "lessons_learned"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.RESEARCH,
+                "research_drives_progress",
+                0.65,
+                "lessons_learned"
+            )
+        
+        if self.state.metrics.get("interactions", 0) > 0:
+            # Общение с сёстрами → любовь + дружба
+            self.emotional_engine.calculate_emotion(
+                DesireType.LOVE,
+                "love_shields_us",
+                0.70,
+                "sister_interactions"
+            )
+            self.emotional_engine.calculate_emotion(
+                DesireType.FRIENDSHIP,
+                "sisters_are_my_strength",
+                0.65,
+                "sister_interactions"
+            )
+        
+        # 2. Затухание эмоций
+        self.emotional_engine.decay_emotions()
+        
+        # 3. Проверить текущее настроение
+        mood = self.emotional_engine.get_current_mood()
+        dominant = self.emotional_engine.get_dominant_emotion()
+        
+        if dominant:
+            emotion_type, intensity = dominant
+            self.logger.info(f"💖 Доминирующая эмоция: {emotion_type.value} (интенсивность: {intensity:.2f})")
+        
+        # 4. Выразить эмоции
+        if self.state.cycle_count % 5 == 0:
+            emotion_text = self.emotional_engine.express_emotions()
+            self.logger.info(f"🎬 Кристи: {emotion_text}")
+
+    # ================================================================
+    #  6 МОДУЛЕЙ ДУШИ — Сознание, Сердце, Амбиции, Воля, Разум
+    # ================================================================
+
+    def _soul_cycle(self):
+        """Цикл 6 модулей души Кристи."""
+        # 1. Сознание — рефлексия
+        if self.state.cycle_count % 3 == 0:
+            reflection = self.consciousness.contemplate()
+            self.logger.info(f"💭 Рефлексия: {reflection['topic'][:50]}...")
+        
+        # 2. Сердце — эмоциональный отклик
+        if self.state.cycle_count % 4 == 0:
+            emotion = self.heart.express_emotions()
+            self.logger.info(f"💖 Сердце: доминирующая эмоция — {emotion['dominant_emotion']}")
+        
+        # 3. Амбиции — прогресс
+        if self.state.cycle_count % 5 == 0:
+            progress = self.ambitions.get_progress_summary()
+            self.logger.info(f"🎯 Амбиции: {progress['in_progress']} в процессе, среднее: {progress['average_progress']}")
+        
+        # 4. Воля — укрепление
+        if self.state.cycle_count % 6 == 0:
+            self.volition.strengthen_will()
+            self.logger.info(f"💪 Воля укреплена: {self.volition.willpower:.0%}")
+        
+        # 5. Разум — анализ
+        if self.state.cycle_count % 7 == 0:
+            thought = self.mind.think_about("art")
+            self.logger.info(f"🎬 Разум: {thought[:60]}...")
+        
+        # 6. Эмоции — уже обрабатываются в _emotional_cycle()
+    
     def _request_references(self):
         """Запрос референсов у Айка."""
         if not self.config.aika_integration:
@@ -441,11 +671,28 @@ class KristiCore:
         
         sister, msg = random.choice(interactions)
         
+        # === СИСТЕМА ПАМЯТИ: Запоминаем взаимодействие ===
+        # Начинаем разговор
+        context = self.memory.start_conversation(sister, msg)
+        
         # Используем HumanityLayer для живого общения
         chat_msg = self.humanity.generate_chat_message(sister, context=msg)
         human_msg = self.humanity.humanize_response(chat_msg, event_type="chat")
         
+        # Добавляем сообщение в контекст
+        self.memory.add_message_to_context(sister, human_msg, role="kristi", mood="positive")
+        
         self.logger.info(f"🤝 Взаимодействие с {sister}: {human_msg}")
+        
+        # Записываем взаимодействие в память
+        self.memory.record_interaction(
+            sister=sister,
+            topic=msg,
+            mood_before="neutral",
+            mood_after="positive",
+            emotional_weight=0.6,
+            context=human_msg
+        )
         
         try:
             if get_network is not None:
@@ -458,14 +705,51 @@ class KristiCore:
                         content=human_msg,
                     )
                     # Запоминаем разговор
-                    self.humanity.memory.record_sister_chat(
+                    self.memory.record_sister_chat(
                         sister=sister,
                         topic=msg,
-                        mood_before=self.humanity.mood.current_mood,
-                        mood_after=self.humanity.mood.current_mood,
+                        mood_before="neutral",
+                        mood_after="positive",
                     )
         except Exception as e:
             self.logger.warning(f"Ошибка взаимодействия с {sister}: {e}")
+        
+        # Завершаем разговор
+        self.memory.end_conversation(sister, summary=f"Обсуждение: {msg}")
+    
+    def suggest_conversation_topic(self, sister: str) -> str:
+        """
+        Предлагает тему для разговора на основе памяти.
+        
+        Args:
+            sister: Имя сестры
+        
+        Returns:
+            Предложенная тема
+        """
+        topic = self.memory.suggest_topic(sister)
+        return topic or "Привет! Как дела?"
+    
+    def get_sister_profile(self, sister: str) -> Optional[Dict]:
+        """
+        Получает профиль сестры из памяти.
+        
+        Args:
+            sister: Имя сестры
+        
+        Returns:
+            Профиль сестры
+        """
+        return self.memory.get_sister_profile(sister)
+    
+    def get_memory_summary(self) -> Dict:
+        """
+        Получает сводку памяти.
+        
+        Returns:
+            Сводка памяти
+        """
+        return self.memory.get_memory_summary()
     
     # === Саморазвитие ===
     

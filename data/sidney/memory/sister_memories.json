@@ -1,0 +1,104 @@
+{
+  "nobuka": {
+    "name": "nobuka",
+    "total_chats": 2,
+    "first_chat": "2026-08-19T20:36:20.722598",
+    "last_chat": "2026-08-19T20:36:20.723598",
+    "topics": {
+      "engine optimization": 1,
+      "rendering pipeline": 1
+    },
+    "moods": {
+      "before": [
+        "calm",
+        "neutral"
+      ],
+      "after": [
+        "happy",
+        "excited"
+      ]
+    },
+    "chat_history": [
+      {
+        "timestamp": "2026-08-19T20:36:20.722598",
+        "topic": "engine optimization",
+        "mood_before": "calm",
+        "mood_after": "happy"
+      },
+      {
+        "timestamp": "2026-08-19T20:36:20.723598",
+        "topic": "rendering pipeline",
+        "mood_before": "neutral",
+        "mood_after": "excited"
+      }
+    ]
+  },
+  "ayiko": {
+    "name": "ayiko",
+    "total_chats": 2,
+    "first_chat": "2026-08-19T20:36:20.723598",
+    "last_chat": "2026-08-19T20:36:20.724598",
+    "topics": {
+      "engine optimization": 1,
+      "rendering pipeline": 1
+    },
+    "moods": {
+      "before": [
+        "calm",
+        "neutral"
+      ],
+      "after": [
+        "happy",
+        "excited"
+      ]
+    },
+    "chat_history": [
+      {
+        "timestamp": "2026-08-19T20:36:20.723598",
+        "topic": "engine optimization",
+        "mood_before": "calm",
+        "mood_after": "happy"
+      },
+      {
+        "timestamp": "2026-08-19T20:36:20.724598",
+        "topic": "rendering pipeline",
+        "mood_before": "neutral",
+        "mood_after": "excited"
+      }
+    ]
+  },
+  "lucy": {
+    "name": "lucy",
+    "total_chats": 2,
+    "first_chat": "2026-08-19T20:36:20.724598",
+    "last_chat": "2026-08-19T20:36:20.725599",
+    "topics": {
+      "engine optimization": 1,
+      "rendering pipeline": 1
+    },
+    "moods": {
+      "before": [
+        "calm",
+        "neutral"
+      ],
+      "after": [
+        "happy",
+        "excited"
+      ]
+    },
+    "chat_history": [
+      {
+        "timestamp": "2026-08-19T20:36:20.724598",
+        "topic": "engine optimization",
+        "mood_before": "calm",
+        "mood_after": "happy"
+      },
+      {
+        "timestamp": "2026-08-19T20:36:20.725599",
+        "topic": "rendering pipeline",
+        "mood_before": "neutral",
+        "mood_after": "excited"
+      }
+    ]
+  }
+}

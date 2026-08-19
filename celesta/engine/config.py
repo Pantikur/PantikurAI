@@ -72,6 +72,11 @@ class CelestaConfig:
     max_function_lines: int = 50          # максимум строк в функции
     max_complexity: int = 10              # максимум цикломатической сложности
 
+    # === LLM ===
+    llm_enabled: bool = True
+    general_model_path: str = "models/qwen2.5-3b"
+    coder_model_path: str = "models/qwen2.5-coder-3b"
+
     # === Взаимодействие с сёстрами ===
     notify_futaba_on_change: bool = True
     notify_shiori_on_security_change: bool = True
