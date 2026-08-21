@@ -13,7 +13,7 @@
 ```
 project/
 ├── knowledge_manager.py          # Менеджер знаний
-├── update_knowledge.py           # Скрипт обновления знаний
+├── update_knowledge.py           # Скрипт обновления знаний (в scripts/)
 ├── Wuglarst/src/chatbot.py       # Модифицированный чат-бот
 └── data/knowledge/               # Данные знаний
     ├── learned_words.json        # Выученные слова и определения
@@ -65,7 +65,7 @@ python -m Wuglarst.src.chatbot
 
 ```bash
 # Обновить систему знаний и подготовить данные
-python update_knowledge.py
+python scripts/update_knowledge.py
 ```
 
 ### 3. Ретраин модели

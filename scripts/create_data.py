@@ -5,7 +5,7 @@ import joblib
 import numpy as np
 
 # Определяем BASE_DIR
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Пример данных (замените на реальные из вашего обучения)
 data = {

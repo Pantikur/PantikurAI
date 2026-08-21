@@ -34,8 +34,8 @@ Pantikur/
 ├── inspect_data.py             ← Анализ датасета
 ├── generate_worlds.py          ← Генерация вымышленных миров
 ├── add_world_examples.py       ← Добавление примеров миров
-├── auto_train.py               ← Автозапуск обучения при изменениях
-├── auto_retrain.py             ← Автоматический ретраин
+├── scripts/auto_train.py         ← Автозапуск обучения при изменениях
+├── scripts/auto_retrain.py       ← Автоматический ретраин
 ├── inference.py                ← Интерактивный режим (чат в консоли)
 │
 ├── Wuglarst/                   ← Ядро бота (модуль)
@@ -69,7 +69,7 @@ Pantikur/
 ├── static/                     ← Статика (если есть)
 │
 ├── knowledge_manager.py        ← Система запоминания новых слов
-├── init_knowledge_system.py    ← Инициализация знаний
+├── scripts/init_knowledge_system.py    ← Инициализация знаний
 │
 ├── Procfile                    ← Запуск через Uvicorn (Timeweb/Render)
 ├── render.yaml                 ← Деплой на Render.com

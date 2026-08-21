@@ -17,11 +17,12 @@ update_gigachat_token.py — Обновляет GIGACHAT_TOKEN в .env
 
 import os
 import sys
+import sys
 import requests
 from pathlib import Path
 
 # Пути
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = BASE_DIR / ".env"
 
 
@@ -109,7 +110,7 @@ def main():
     
     # Обновляем .env
     env["GIGACHAT_TOKEN"] = new_token
-    write_env(ENV_PATH)
+    write_env(ENV_PATH, env)
     
     print("\n[OK] Токен обновлён! Теперь можно запустить:")
     print("  python learn_knowledge_from_web.py")

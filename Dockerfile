@@ -92,14 +92,13 @@ COPY main.py ./
 COPY barston_lore_loader.py ./
 COPY train.py ./
 COPY retrain.py ./
-COPY auto_retrain.py ./
 COPY generate_training_data.py ./
 COPY bot_learns_from_gigachat.py ./
 COPY Wuglarst/ ./Wuglarst/
 COPY utils/ ./utils/
 COPY data/ ./data/
 COPY web_researcher.py ./
-COPY web_researcher_demo.py ./
+COPY scripts/web_researcher_demo.py ./scripts/web_researcher_demo.py
 COPY web_researcher_README.md ./
 
 # === КОПИРУЕМ ВСЕ МОДУЛИ УЧЁНЫХ (12 девочек) ===

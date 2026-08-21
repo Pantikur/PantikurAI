@@ -22,7 +22,7 @@ pip install -r requirements.txt
 Запустите скрипт инициализации, который создаст все необходимые директории и файлы:
 
 ```bash
-python init_knowledge_system.py
+python scripts/init_knowledge_system.py
 ```
 
 Этот скрипт:
@@ -38,7 +38,7 @@ python init_knowledge_system.py
 Pantikur/
 ├── knowledge_manager.py
 ├── update_knowledge.py
-├── auto_learn_cycle.py
+├── scripts/auto_learn_cycle.py
 ├── init_knowledge_system.py
 ├── knowledge_system_README.md
 ├── DEPLOYMENT.md
@@ -71,7 +71,7 @@ python -m Wuglarst.src.chatbot
 
 ```bash
 # 1. Обновить систему знаний и сгенерировать обучающие пары
-python update_knowledge.py
+python scripts/update_knowledge.py
 
 # 2. Запустить ретраин модели
 python retrain.py
@@ -81,7 +81,7 @@ python retrain.py
 
 ```bash
 # Запустить автоматический цикл обучения
-python auto_learn_cycle.py
+python scripts/auto_learn_cycle.py
 ```
 
 Этот скрипт будет автоматически:
@@ -96,13 +96,13 @@ python auto_learn_cycle.py
 **Linux/Mac (cron):**
 ```bash
 # Проверять каждые 30 минут
-*/30 * * * * cd /path/to/project && python update_knowledge.py && python retrain.py
+*/30 * * * * cd /path/to/project && python scripts/update_knowledge.py && python retrain.py
 ```
 
 **Windows (Task Scheduler):**
 Создайте задачу, которая запускает:
 ```
-python update_knowledge.py
+python scripts/update_knowledge.py
 python retrain.py
 ```
 
@@ -157,7 +157,7 @@ bot.get_knowledge_report()
 
 ```bash
 cd /path/to/project
-python update_knowledge.py
+python scripts/update_knowledge.py
 ```
 
 ### Проблема: Ошибки при ретраине

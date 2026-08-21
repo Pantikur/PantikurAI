@@ -27,7 +27,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Пути к скриптам
-UPDATE_SCRIPT = "update_knowledge.py"
+UPDATE_SCRIPT = "scripts/update_knowledge.py"
 RETRAIN_SCRIPT = "retrain.py"
 
 # Параметры цикла

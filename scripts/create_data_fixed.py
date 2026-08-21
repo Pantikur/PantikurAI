@@ -5,7 +5,7 @@ import numpy as np
 from collections import Counter
 
 # Определение путей
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 data_dir = os.path.join(BASE_DIR, '..', 'data')
 conversations_file = os.path.join(data_dir, 'conversations.json')
 output_file = os.path.join(data_dir, 'chat_data.pkl')

@@ -20,7 +20,7 @@ if sys.platform == "win32":
     sys.stderr = codecs.getwriter("utf-8")(sys.stderr.buffer, "strict")
 
 # Добавляем проект в путь
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from scientists_network.research_monitor import ResearchMonitor
 

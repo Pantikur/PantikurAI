@@ -87,7 +87,8 @@ Pantikur/
 │   ├── laws/                         # Основные законы
 │   └── knowledge/                    # База знаний
 │
-├── test_sidney.py                     # Тест Сидни
+├── tests/
+│   └── test_sidney.py                 # Тест Сидни
 └── data/
     └── wuglarst/                      # Состояние Wuglarst
 ```
@@ -116,7 +117,7 @@ python daemon.py install
 
 ```bash
 cd d:\NewCod\Pantikur
-python test_sidney.py
+python tests/test_sidney.py
 ```
 
 ---
@@ -239,7 +240,7 @@ python daemon.py install
 
 1. **Запустите Wuglarst** — `python Wuglarst/daemon.py start`
 2. **Установите автозапуск** — `python Wuglarst/daemon.py install`
-3. **Запустите Сидни** — `python test_sidney.py`
+3. **Запустите Сидни** — `python tests/test_sidney.py`
 4. **Откройте браузер** — `http://localhost:8001`
 5. **Наслаждайтесь!** 🎉
 

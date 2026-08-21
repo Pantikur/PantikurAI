@@ -431,18 +431,24 @@ curl http://localhost:8000/network/history?sender=hanako&limit=20
 ```
 
 ### Отправка сообщения
+
+Эндпоинт принимает JSON-тело (`NetworkSendRequest`):
+
 ```bash
 # Отправить сообщение всем
 curl -X POST http://localhost:8000/network/send \
-  -d "sender=hanako&recipient=all&content=Привет всем!&message_type=greeting"
+  -H "Content-Type: application/json" \
+  -d '{"sender": "hanako", "recipient": "all", "content": "Привет всем!", "message_type": "greeting"}'
 
 # Отправить вопрос
 curl -X POST http://localhost:8000/network/send \
-  -d "sender=lucy&recipient=akva&content=Какие у тебя данные по аэродинамике?&message_type=question&priority=high"
+  -H "Content-Type: application/json" \
+  -d '{"sender": "lucy", "recipient": "akva", "content": "Какие у тебя данные по аэродинамике?", "message_type": "question", "priority": "high"}'
 
 # Отправить теорию
 curl -X POST http://localhost:8000/network/send \
-  -d "sender=akva&recipient=all&content=Новая теория квантовой гравитации&message_type=theory&priority=high"
+  -H "Content-Type: application/json" \
+  -d '{"sender": "akva", "recipient": "all", "content": "Новая теория квантовой гравитации", "message_type": "theory", "priority": "high"}'
 ```
 
 ### Примеры коммуникации

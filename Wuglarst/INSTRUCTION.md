@@ -80,7 +80,7 @@ http://localhost:8001/health
 
 ```bash
 cd d:\NewCod\Pantikur
-python test_sidney.py
+python tests/test_sidney.py
 ```
 
 Сидни автоматически подключится к Wuglarst и покажет свой статус.

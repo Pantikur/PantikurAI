@@ -11,7 +11,7 @@ if sys.platform == "win32":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 # === ПУТИ ===
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 CONVERSATIONS_PATH = DATA_DIR / "conversations.json"
 AKADEMIA_DIR = BASE_DIR / "fludilka_chat_pantikur" / "akademia_barston"

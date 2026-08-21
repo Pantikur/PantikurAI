@@ -29,7 +29,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("PantikurStarter")
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Загрузка .env
 def load_env():

@@ -35,7 +35,7 @@ from datetime import datetime
 from typing import List, Dict, Optional
 
 # Пути
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 KNOWLEDGE_DIR = DATA_DIR / "knowledge"
 LEARNED_WORDS_PATH = KNOWLEDGE_DIR / "learned_words.json"
@@ -49,8 +49,10 @@ if _SRC_PATH.exists():
     sys.path.insert(0, str(_SRC_PATH))
 
 # Импорт WebSearch (опционально, может отсутствовать)
-try:
-    from web_search import WebSearch
+# Модуль в Wuglarst/src — Pylance не видит sys.path.insert.
+# Добавим type: ignore + комментарий.
+try:  # type: ignore[import-not-found]
+    from web_search import WebSearch  # type: ignore
     _HAS_WEB_SEARCH = True
 except ImportError:
     WebSearch = None  # type: ignore
@@ -434,6 +436,15 @@ def print_report(words: List[Dict]):
     print("[REPORT] ОТЧЁТ")
     print("=" * 60)
     
+    # Загружаем статистику из файла, если он существует
+    stats = {}
+    if KNOWLEDGE_STATS_PATH.exists():
+        try:
+            with open(KNOWLEDGE_STATS_PATH, "r", encoding="utf-8") as f:
+                stats = json.load(f)
+        except Exception:
+            stats = {}
+    
     total = len(words)
     with_def = sum(1 for w in words if w.get("definition", ""))
     without_def = total - with_def
@@ -509,7 +520,7 @@ def main():
     )
     
     # Загрузка .env ДО парсинга аргументов
-    env_path = Path(__file__).resolve().parent / ".env"
+    env_path = Path(__file__).resolve().parent.parent / ".env"
     if env_path.exists():
         try:
             from dotenv import load_dotenv
@@ -751,7 +762,7 @@ def main():
         try:
             import subprocess
             result = subprocess.run(
-                [sys.executable, "retrain.py"],
+                [sys.executable, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "retrain.py")],
                 capture_output=False,
                 text=True,
             )

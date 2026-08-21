@@ -212,23 +212,6 @@ def learn_from_books(args):
     except Exception as e:
         logger.warning(f"[WARN] Обучение из книг не удалась: {e}")
         return False
-    except Exception as e:
-        logger.warning(f"[WARN] Генерация данных из utils не удалась: {e}")
-        return False
-
-    result = subprocess.run(cmd, capture_output=False)
-    if result.returncode != 0:
-        logger.error("[ERR] Сбор данных не удался.")
-        return False
-
-    line_count = 0
-    if TRAINING_PAIRS_PATH.exists():
-        line_count = sum(1 for _ in open(TRAINING_PAIRS_PATH, 'r', encoding='utf-8'))
-        logger.info(f"[OK] Данные собраны: {TRAINING_PAIRS_PATH} ({line_count} строк)")
-    else:
-        logger.warning("[WARN] Файл training_pairs.jsonl не создан — возможно, нет новых знаний")
-
-    return True
 
 
 def has_new_data():
@@ -316,6 +299,114 @@ def restore_backup():
     return restored
 
 
+def merge_generated_worlds():
+    """Добавляет сгенерированные миры (generated_worlds.json) в conversations.json.
+    Раньше это делал отдельный скрипт auto_train.py."""
+    generated_file = BASE_DIR / "generated_worlds.json"
+
+    if not generated_file.exists():
+        logger.info("[WORLD] generated_worlds.json не найден — пропускаем")
+        return 0
+
+    if not CONVERSATIONS_JSON.exists():
+        logger.warning("[WARN] conversations.json не найден — пропускаем мердж")
+        return 0
+
+    try:
+        with open(generated_file, "r", encoding="utf-8") as f:
+            new_data_raw = json.load(f)
+    except Exception as e:
+        logger.warning(f"[WARN] Не удалось прочитать generated_worlds.json: {e}")
+        return 0
+
+    if not isinstance(new_data_raw, list):
+        logger.warning("[WARN] generated_worlds.json — не список, пропускаем")
+        return 0
+
+    with open(CONVERSATIONS_JSON, "r", encoding="utf-8") as f:
+        base_data = json.load(f)
+
+    if not isinstance(base_data, list):
+        logger.warning("[WARN] conversations.json — не список, пропускаем мердж")
+        return 0
+
+    new_pairs = []
+    for item in new_data_raw:
+        if isinstance(item, dict) and item.get("input") and item.get("output"):
+            new_pairs.append([str(item["input"]), str(item["output"])])
+
+    added = 0
+    for pair in new_pairs:
+        if pair not in base_data:
+            base_data.append(pair)
+            added += 1
+
+    if added > 0:
+        with open(CONVERSATIONS_JSON, "w", encoding="utf-8") as f:
+            json.dump(base_data, f, ensure_ascii=False, indent=2)
+        logger.info(f"[DATA] Добавлено новых примеров из миров: {added}")
+    else:
+        logger.info("[DATA] Новых примеров из generated_worlds.json нет")
+
+    return added
+
+
+def watch_data_changes():
+    """Режим слежения за изменениями данных (раньше auto_retrain.py).
+    Запускает полный ретраин при изменении conversations.json / training_pairs.jsonl."""
+    from watchdog.observers import Observer
+    from watchdog.events import FileSystemEventHandler
+
+    watched_files = ["conversations.json", "training_pairs.jsonl"]
+
+    class RetrainHandler(FileSystemEventHandler):
+        def on_modified(self, event):
+            if event.is_directory:
+                return
+            filename = os.path.basename(event.src_path)
+            if filename not in watched_files:
+                return
+
+            logger.info(f"[WATCH] Изменён файл: {filename}")
+            logger.info("[WATCH] Запускаем полный ретраин...")
+            cmd = [sys.executable, os.path.basename(__file__)]
+
+            try:
+                result = subprocess.run(
+                    cmd + ["--generate", "0"],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                    timeout=7200,
+                )
+                if result.returncode == 0:
+                    logger.info("[WATCH] Ретраин успешно завершён")
+                else:
+                    logger.error(f"[WATCH] Ошибка ретраина: {result.stderr[:500]}")
+            except subprocess.TimeoutExpired:
+                logger.error("[WATCH] Ретраин превысил лимит (2 часа)")
+            except Exception as e:
+                logger.error(f"[WATCH] Ошибка: {e}")
+
+    print(f"👀 Слежение за папкой: {DATA_DIR}")
+    print("💡 Измените conversations.json или training_pairs.jsonl — начнётся обучение")
+
+    event_handler = RetrainHandler()
+    observer = Observer()
+    observer.schedule(event_handler, path=str(DATA_DIR), recursive=False)
+    observer.start()
+
+    try:
+        while True:
+            import time as _time
+            _time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+        print("\n🛑 Слежение остановлено")
+
+    observer.join()
+
+
 def main():
     parser = argparse.ArgumentParser(description="Полный цикл: сбор данных + ретраин модели (обучение с нуля)")
     parser.add_argument(
@@ -347,10 +438,31 @@ def main():
         help="Включить обучение из книг (автономный сбор знаний)"
     )
 
+    parser.add_argument(
+        "--merge-generated",
+        action="store_true",
+        help="Добавить сгенерированные миры (generated_worlds.json) в conversations.json перед обучением"
+    )
+
+    parser.add_argument(
+        "--watch",
+        action="store_true",
+        help="Режим слежения: запускает ретраин при изменении файлов данных (раньше auto_retrain.py)"
+    )
+
     args = parser.parse_args()
 
+    # === Режим слежения (раньше auto_retrain.py) ===
+    if args.watch:
+        watch_data_changes()
+        return
+
     ensure_directories()
-    
+
+    # === Мердж сгенерированных миров (раньше auto_train.py) ===
+    if args.merge_generated:
+        merge_generated_worlds()
+
     # === Этап 0: Генерация данных из utils ===
     generate_params_training_data()
     

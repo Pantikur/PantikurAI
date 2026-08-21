@@ -12,13 +12,13 @@ from pathlib import Path
 from typing import List, Dict, Set
 
 # Загрузка .env
-env_path = Path(__file__).resolve().parent / ".env"
+env_path = Path(__file__).resolve().parent.parent / ".env"
 if env_path.exists():
     from dotenv import load_dotenv
     load_dotenv(env_path)
 
 # Пути
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 TOKENIZER_PATH = DATA_DIR / "tokenizer.json"
 TRAINING_PAIRS_PATH = DATA_DIR / "training_pairs.jsonl"

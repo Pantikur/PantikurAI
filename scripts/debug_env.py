@@ -7,7 +7,7 @@ print(f"Directory contents: {os.listdir()} if os.path.exists('.') else 'Director
 
 # Попробуем найти файлы вручную
 print("\nChecking for project files:")
-base_dir = os.path.dirname(os.path.abspath(__file__))
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(f"Base directory: {base_dir}")
 
 data_dir = os.path.join(base_dir, '..', 'data')

@@ -115,6 +115,8 @@ class GigaChatLearningSystem:
             except Exception as e:
                 logger.error(f"Не удалось получить GIGACHAT_TOKEN: {e}")
                 raise ValueError("GIGACHAT_TOKEN не найден")
+        if token is None:
+            raise ValueError("GIGACHAT_TOKEN не найден в .env")
         return token
 
     def _refresh_token_if_needed(self):
@@ -377,7 +379,7 @@ class GigaChatLearningSystem:
             logger.info(f"🚀 Запуск ретраина модели (количество эпох управляется через retrain.py -> train.py)...")
 
             result = subprocess.run(
-                [sys.executable, "retrain.py", "--verbose"],
+                [sys.executable, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "retrain.py"), "--verbose"],
                 capture_output=True,
                 text=True,
                 timeout=RETRAIN_TIMEOUT,

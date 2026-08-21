@@ -265,7 +265,7 @@ else:
 class ImprovementCreator:
     """Создатель улучшений для девочек."""
     
-    # 12 девочек проекта
+    # 14 девочек проекта
     ZONES = {
         "futaba": {
             "name": "Футаба",
@@ -363,10 +363,10 @@ class ImprovementCreator:
                 "safety_protocol",
             ]
         },
-        "akira": {
-            "name": "Акра",
-            "emoji": "🔢",
-            "focus": "Математика, вычисления, оптимизация",
+        "akva": {
+            "name": "Аква",
+            "emoji": "🔬",
+            "focus": "Математика, физика, аэродинамика, сопротивление материалов",
             "folder": "akva",
             "improvements": [
                 "numerical_optimizer",
@@ -409,6 +409,30 @@ class ImprovementCreator:
                 "consciousness_framework",
                 "neural_simulator",
                 "memory_architect",
+            ]
+        },
+        "kristi": {
+            "name": "Кристи",
+            "emoji": "🎬",
+            "focus": "Режиссёр видеопроизводства — от идеи до финального рендера",
+            "folder": "kristi",
+            "improvements": [
+                "scene_director",
+                "storyboard_generator",
+                "animation_pipeline",
+                "video_renderer",
+            ]
+        },
+        "sidney": {
+            "name": "Сидни",
+            "emoji": "🎮",
+            "focus": "Разработка игрового движка — графика, физика, аудио, анимация, ИИ",
+            "folder": "sidney",
+            "improvements": [
+                "render_engine",
+                "physics_simulator",
+                "audio_engine",
+                "animation_system",
             ]
         }
     }
