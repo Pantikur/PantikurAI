@@ -31,7 +31,7 @@ from shiori.engine.web_access import ShioriWebAccess
 from shiori.engine.llm_service import ShioriLLMService
 
 # Humanity Core — живая душа Шиори
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # Эмоциональный разум Шиори — Desire + Belief = Emotion
 from shiori.engine.emotions import EmotionalEngine, DesireType, EmotionType

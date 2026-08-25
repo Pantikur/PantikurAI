@@ -43,7 +43,7 @@ from sidney.volition import SidneyVolition
 from sidney.mind import SidneyMind
 
 # Humanity Core — живая душа Сидни
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 logger = logging.getLogger("sidney.core")
 

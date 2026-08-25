@@ -27,7 +27,7 @@ from naoto.engine.models import (
 )
 
 # Humanity Core — живая душа Наото
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # LLM Service — сервис для работы с моделями Qwen2.5
 from naoto.engine.llm_service import NaotoLLMService

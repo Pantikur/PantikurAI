@@ -41,7 +41,7 @@ from pathlib import Path
 from typing import Any, Optional, Dict, List
 
 # Humanity Core — живая душа Айко
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 from ayiko.engine.config import AyikoConfig
 from ayiko.engine.models import (
@@ -258,6 +258,11 @@ class AyikoCore:
 
     def _load_models(self):
         """Загрузить LLM-модели: General (общение) + Art (творчество)."""
+        # Отключаем загрузку моделей в chatbot-api для экономии памяти
+        import os
+        if os.environ.get("AYIKO_LLM_ENABLED", "1") != "1":
+            self.logger.info("⚠️ LLM Ayiko отключена (AYIKO_LLM_ENABLED=0)")
+            return
         try:
             import torch
             from transformers import AutoTokenizer, AutoModelForCausalLM

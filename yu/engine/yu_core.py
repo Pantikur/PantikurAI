@@ -26,7 +26,7 @@ except ImportError:  # Запуск как пакет: python -m yu.engine.run
     from .config import YuConfig
 
 # Humanity Core — живая душа Юи
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # LLM Service — сервис для работы с моделями Qwen2.5
 from yu.engine.llm_service import YuLLMService

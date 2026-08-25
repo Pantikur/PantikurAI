@@ -89,15 +89,13 @@ RUN mkdir -p /app/logs
 
 # === КОПИРУЕМ КОД ПРИЛОЖЕНИЯ ===
 COPY main.py ./
-COPY barston_lore_loader.py ./
-COPY train.py ./
-COPY retrain.py ./
-COPY generate_training_data.py ./
-COPY bot_learns_from_gigachat.py ./
+COPY config.py ./
+COPY utils/text_utils.py ./utils/text_utils.py
 COPY Wuglarst/ ./Wuglarst/
 COPY utils/ ./utils/
 COPY data/ ./data/
-COPY web_researcher.py ./
+COPY api/ ./api/
+COPY services/ ./services/
 COPY scripts/web_researcher_demo.py ./scripts/web_researcher_demo.py
 COPY web_researcher_README.md ./
 
@@ -114,15 +112,15 @@ COPY celesta/ ./celesta/
 COPY naoto/ ./naoto/
 COPY yu/ ./yu/
 COPY ayiko/ ./ayiko/
+COPY sidney/ ./sidney/
 COPY scientists_network/ ./scientists_network/
 
 # === ЛОР АКАДЕМИИ БАРСТОН (нужен чат-игре PantikurChat) ===
 COPY fludilka_chat_pantikur/ ./fludilka_chat_pantikur/
-COPY auto_learn_cycle.py ./
-COPY autonomous_girls_v2.py ./
-COPY orchestrator_v3.py ./
-COPY orchestrator.py ./
-COPY humanity_core.py ./
+
+# === КОПИРУЕМ МОДУЛИ И СКРИПТЫ ===
+COPY modules/ ./modules/
+COPY scripts/ ./scripts/
 
 # === КОПИРУЕМ ENTRYPOINT ===
 COPY entrypoint.sh ./entrypoint.sh

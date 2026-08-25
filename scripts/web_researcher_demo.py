@@ -17,7 +17,7 @@ if sys.platform == "win32":
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from web_researcher import WebResearcher
+from services.web_researcher import WebResearcher
 
 
 async def demo_basic():

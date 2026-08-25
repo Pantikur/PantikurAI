@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 # Humanity Core — живая душа Нобуки
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # Добавляем текущую директорию в path
 _script_dir = Path(__file__).parent.resolve()
@@ -274,7 +274,11 @@ class NobukaCore:
             self.logger.info(f"Random seed установлен: {seed}")
 
     def _load_models(self):
-        """Загрузить обе модели: Coder (для кода) и General (для всего остального)."""
+        """Загрузить модели."""
+        # Отключение LLM через переменную окружения
+        if os.environ.get("NOBUKA_LLM_ENABLED", "1") != "1":
+            self.logger.info("⚠️ LLM Nobuka отключена (NOBUKA_LLM_ENABLED=0)")
+            return
         try:
             import torch
             from transformers import AutoTokenizer, AutoModelForCausalLM

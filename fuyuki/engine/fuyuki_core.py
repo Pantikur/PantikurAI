@@ -36,7 +36,7 @@ from fuyuki.engine.knowledge_manager import KnowledgeManager
 from fuyuki.engine.character_developer import CharacterDeveloper
 
 # Humanity Core — живая душа Фуюки
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # LLM Service — сервис для работы с моделями Qwen2.5
 from fuyuki.engine.llm_service import FuyukiLLMService

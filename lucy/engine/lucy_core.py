@@ -35,7 +35,7 @@ from lucy.engine.report_generator import ReportGenerator
 from scientists_network.network import get_network, Message, MessageType, RequestPriority
 
 # Humanity Core — живая душа Люси
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # LLM Service — сервис для работы с моделями Qwen2.5
 from lucy.engine.llm_service import LucyLLMService

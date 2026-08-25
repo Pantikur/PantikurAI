@@ -15,6 +15,7 @@ LLM Service — сервис для работы с моделями Qwen2.5.
 from __future__ import annotations
 
 import logging
+import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -78,8 +79,10 @@ class LatislaneLLMService:
         self.general_loaded = False
         self.coder_loaded = False
         
-        if self.config.llm_enabled:
-            self._load_models()
+        if os.environ.get("LATISLANE_LLM_ENABLED", "1") != "1":
+            self.logger.info("⚠️ LLM Latislane отключена (LATISLANE_LLM_ENABLED=0)")
+            return
+        self._load_models()
     
     def _load_models(self):
         """Загрузить обе модели."""

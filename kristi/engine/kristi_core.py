@@ -42,7 +42,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional, Dict, List
 
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 from kristi.engine.config import KristiConfig
 from kristi.engine.llm_service import KristiLLMService

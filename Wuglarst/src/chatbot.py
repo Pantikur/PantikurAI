@@ -46,7 +46,7 @@ QWEN25_VUGLARST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(o
 # Импортируем KnowledgeManager
 KnowledgeManager: Any = None  # type: ignore
 try:
-    from knowledge_manager import KnowledgeManager as _KnowledgeManager  # type: ignore
+    from services.knowledge_manager import KnowledgeManager as _KnowledgeManager  # type: ignore
     knowledge_manager_available = True
 except ImportError:
     print("⚠️ knowledge_manager не найден. Установите сначала.")
@@ -70,24 +70,46 @@ class ChatBot(WorldEngineApiMixin, WorldGenMixin):
         
         print(f"[Qwen2.5] Загрузка модели: {self.rugpt_path}")
         
-        # Загружаем Qwen2.5 с правильными параметрами для Instruct-модели
+        # Загружаем Qwen2.5 с 4-bit квантизацией для экономии памяти
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(
                 self.rugpt_path,
                 trust_remote_code=True
             )
-            self.model = AutoModelForCausalLM.from_pretrained(
-                self.rugpt_path,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                device_map="auto" if torch.cuda.is_available() else None,
-                trust_remote_code=True
-            )
+            
+            # 4-bit квантизация
+            use_4bit = False
+            try:
+                from transformers import BitsAndBytesConfig
+                quantization_config = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_compute_dtype=torch.float16,
+                    bnb_4bit_quant_type="nf4",
+                    bnb_4bit_use_double_quant=True,
+                )
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    self.rugpt_path,
+                    quantization_config=quantization_config,
+                    device_map="auto",
+                    trust_remote_code=True
+                )
+                use_4bit = True
+            except ImportError:
+                print("⚠️ bitsandbytes не установлен, загружаю без квантизации")
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    self.rugpt_path,
+                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                    device_map="auto" if torch.cuda.is_available() else None,
+                    trust_remote_code=True
+                )
         except Exception as e:
             print(f"❌ Ошибка загрузки модели Qwen2.5-3B: {e}")
             print("ℹ️ Попробуйте запустить: python download_qwen_model.py")
             raise
         
-        if torch.cuda.is_available():
+        if use_4bit:
+            print("[Qwen2.5] ✅ Загружено с 4-bit квантизацией (~2 ГБ VRAM/RAM)")
+        elif torch.cuda.is_available():
             print(f"[Qwen2.5] Загружено на GPU: {torch.cuda.get_device_name(0)}")
         else:
             print("[Qwen2.5] Загружено на CPU")

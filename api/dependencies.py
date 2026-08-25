@@ -1,36 +1,50 @@
 # api/dependencies.py — Зависимости для FastAPI Dependency Injection
 
-def get_chatbot_ref():
-    from main import chatbot_ref
-    return chatbot_ref
+from services.model_init import get_chatbot_ref, get_chatbot_lock
+from services.service_init import (
+    get_latislane_lock, get_celesta_lock, get_research_monitor_lock,
+    get_latislane, get_celesta, get_research_monitor,
+)
+
+
+def get_chatbot_ref_dep():
+    """Зависимость для получения chatbot_ref."""
+    return get_chatbot_ref()
+
 
 def get_CHATBOT_LOCK():
-    from main import CHATBOT_LOCK
-    return CHATBOT_LOCK
+    """Зависимость для получения CHATBOT_LOCK."""
+    return get_chatbot_lock()
+
 
 def get_LATISLANE_LOCK():
-    from main import LATISLANE_LOCK
-    return LATISLANE_LOCK
+    """Зависимость для получения LATISLANE_LOCK."""
+    return get_latislane_lock()
+
 
 def get_CELESTA_LOCK():
-    from main import CELESTA_LOCK
-    return CELESTA_LOCK
+    """Зависимость для получения CELESTA_LOCK."""
+    return get_celesta_lock()
+
 
 def get_RESEARCH_MONITOR_LOCK():
-    from main import RESEARCH_MONITOR_LOCK
-    return RESEARCH_MONITOR_LOCK
+    """Зависимость для получения RESEARCH_MONITOR_LOCK."""
+    return get_research_monitor_lock()
+
 
 def get_latislane_core():
-    from main import latislane_core
-    return latislane_core
+    """Зависимость для получения LatislaneCore."""
+    return get_latislane()
+
 
 def get_celesta_core():
-    from main import celesta_core
-    return celesta_core
+    """Зависимость для получения CelestaCore."""
+    return get_celesta()
 
-def get_research_monitor():
-    from main import research_monitor
-    return research_monitor
+
+def get_research_monitor_dep():
+    """Зависимость для получения ResearchMonitor."""
+    return get_research_monitor()
 
 
 # === Зависимости для значений конфигурации ===

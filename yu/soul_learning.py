@@ -24,7 +24,7 @@ from datetime import datetime
 # Импорт веб-исследователя
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from web_researcher import WebResearcher
+from services.web_researcher import WebResearcher
 
 logger = logging.getLogger("yu.soul_learning")
 

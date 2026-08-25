@@ -15,6 +15,7 @@ LLM Service — сервис для работы с моделями Qwen2.5.
 from __future__ import annotations
 
 import logging
+import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -75,6 +76,9 @@ class SidneyLLMService:
         self.general_loaded = False
         self.coder_loaded = False
         
+        if os.environ.get("SIDNEY_LLM_ENABLED", "1") != "1":
+            self.logger.info("⚠️ LLM Sidney отключена (SIDNEY_LLM_ENABLED=0)")
+            return
         self._load_models()
     
     def _load_models(self):

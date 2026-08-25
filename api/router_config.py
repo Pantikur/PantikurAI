@@ -6,7 +6,7 @@ from fastapi import APIRouter
 from api.dependencies import (
     get_latislane_core, get_LATISLANE_LOCK,
     get_celesta_core, get_CELESTA_LOCK,
-    get_research_monitor,
+    get_research_monitor_dep,
 )
 
 # === Импорт эндпоинтов ===
@@ -330,85 +330,85 @@ ROUTES = [
         "path": "/research/status",
         "methods": ["GET"],
         "endpoint": research_status,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/start/{scientist}",
         "methods": ["POST"],
         "endpoint": research_start,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/stop/{scientist}",
         "methods": ["POST"],
         "endpoint": research_stop,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/summary",
         "methods": ["GET"],
         "endpoint": research_summary,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/events",
         "methods": ["GET"],
         "endpoint": research_events,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/data",
         "methods": ["GET"],
         "endpoint": research_data,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/logs",
         "methods": ["GET"],
         "endpoint": research_logs,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/theories",
         "methods": ["GET"],
         "endpoint": research_theories,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/calculations",
         "methods": ["GET"],
         "endpoint": research_calculations,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/papers",
         "methods": ["GET"],
         "endpoint": research_papers,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/history",
         "methods": ["GET"],
         "endpoint": research_history,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/{scientist}/status",
         "methods": ["GET"],
         "endpoint": research_core_status,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/live/{scientist}",
         "methods": ["GET"],
         "endpoint": research_live,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/research/live/all",
         "methods": ["GET"],
         "endpoint": research_live_all,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
 
     # === 13. NETWORK ===
@@ -416,19 +416,19 @@ ROUTES = [
         "path": "/network/status",
         "methods": ["GET"],
         "endpoint": network_status,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/network/history",
         "methods": ["GET"],
         "endpoint": network_history,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
     {
         "path": "/network/send",
         "methods": ["POST"],
         "endpoint": network_send,
-        "dependencies": [get_research_monitor],
+        "dependencies": [get_research_monitor_dep],
     },
 
     # === 14. SECURITY ===

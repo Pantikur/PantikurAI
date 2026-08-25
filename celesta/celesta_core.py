@@ -20,7 +20,7 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime
 
 # Humanity Core — живая душа Селесты
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # LLM Service — сервис для работы с моделями Qwen2.5
 from celesta.engine.llm_service import CelestaLLMService
@@ -127,17 +127,22 @@ class CelestaCore:
         logger.info("🧠 Humanity Layer: АКТИВИРОВАН")
         logger.info(f"   🎭 Характер: {self.humanity.name} — эмпатия, открытость, тёплый юмор 🌹")
         
-        # ===== LLM СЕРВИС =====
-        self.llm = CelestaLLMService(self.config)
-        if self.llm.general_loaded:
-            logger.info("🧠 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для интимного образования")
-        if self.llm.coder_loaded:
-            logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
-        
-        # Подключаем LLM к Humanity Layer
-        if self.llm.general_loaded:
-            self.humanity.llm = self.llm
-            logger.info("🧠 LLM General подключена к Humanity Layer")
+        # ===== LLM СЕРВИС (отключаем в chatbot-api для экономии памяти) =====
+        import os
+        self.llm = None
+        if os.environ.get("CELESTA_LLM_ENABLED", "1") == "1":
+            self.llm = CelestaLLMService(self.config)
+            if self.llm and self.llm.general_loaded:
+                logger.info("🧠 LLM General (Qwen2.5-3B): АКТИВИРОВАНА для интимного образования")
+            if self.llm and self.llm.coder_loaded:
+                logger.info("💻 LLM Coder (Qwen2.5-Coder-3B): АКТИВИРОВАНА для анализа кода")
+            
+            # Подключаем LLM к Humanity Layer
+            if self.llm and self.llm.general_loaded:
+                self.humanity.llm = self.llm
+                logger.info("🧠 LLM General подключена к Humanity Layer")
+        else:
+            logger.info("⚠️ LLM Celesta отключена (CELESTA_LLM_ENABLED=0)")
         
         # ===== ЭМОЦИОНАЛЬНЫЙ ДВИЖОК СЕЛЕСТЫ =====
         self.emotional_engine = EmotionalEngine()
@@ -293,7 +298,7 @@ class CelestaCore:
         self.log_event("STUDY_CYCLE_COMPLETED", "Цикл обучения завершён", results)
         
         # Если LLM загружена — генерируем анализ изученных тем
-        if self.llm.general_loaded and results.get("completed", 0) > 0:
+        if self.llm is not None and self.llm.general_loaded and results.get("completed", 0) > 0:
             try:
                 analyzed_topics = topics[:3] if len(topics) > 3 else topics
                 analysis = self.llm.generate_intimacy_analysis(
@@ -683,7 +688,7 @@ class CelestaCore:
         base_response = self._get_base_response(msg_lower)
         
         # Если LLM загружена — пробуем LLM-улучшенный ответ
-        if self.llm.general_loaded:
+        if self.llm is not None and self.llm.general_loaded:
             try:
                 llm_response = self.llm.generate_chat_response(
                     f"Сестра спрашивает: '{user_message}'. Ответь как Селеста — тёпло, открыто, с заботой о consent и безопасности.",

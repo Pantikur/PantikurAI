@@ -32,7 +32,7 @@ from universal_analyzer import UniversalAnalyzer
 from ml_optimizer import MLOptimizer
 
 # Humanity Core — живая душа Латислейн
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # LLM Service — сервис для работы с моделями Qwen2.5
 from latislane.engine.llm_service import LatislaneLLMService

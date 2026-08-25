@@ -20,7 +20,7 @@ mkdir -p /app/shiori/polygon
 # === ПРОВЕРКА НАЛИЧИЯ КРИТИЧНЫХ ФАЙЛОВ (fail-fast) ===
 echo "🔍 Проверка критичных файлов..."
 MISSING=0
-for f in main.py barston_lore_loader.py utils/human_params.py; do
+for f in main.py config.py utils/text_utils.py; do
     if [ -f "/app/$f" ]; then
         echo "   ✅ $f"
     else

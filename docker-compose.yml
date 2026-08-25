@@ -31,18 +31,34 @@ services:
       - AUTO_WEB_SEARCH_MIN_LENGTH=${AUTO_WEB_SEARCH_MIN_LENGTH:-2}
       - AUTO_WEB_SEARCH_EXTRACT_DEPTH=${AUTO_WEB_SEARCH_EXTRACT_DEPTH:-1}
       - AUTO_WEB_SEARCH_MAX_NEW_WORDS=${AUTO_WEB_SEARCH_MAX_NEW_WORDS:-10}
+      # Отключаем LLM всех девочек в chatbot-api (экономит ~70GB RAM)
+      - CELESTA_LLM_ENABLED=0
+      - AYIKO_LLM_ENABLED=0
+      - HANAKO_LLM_ENABLED=0
+      - FUYUKI_LLM_ENABLED=0
+      - LUCY_LLM_ENABLED=0
+      - FUTABA_LLM_ENABLED=0
+      - SHIORI_LLM_ENABLED=0
+      - NOBUKA_LLM_ENABLED=0
+      - LATISLANE_LLM_ENABLED=0
+      - AKVA_LLM_ENABLED=0
+      - YU_LLM_ENABLED=0
+      - NAOTO_LLM_ENABLED=0
+      - SIDNEY_LLM_ENABLED=0
+      - KRISTI_LLM_ENABLED=0
     env_file:
       - .env
     restart: unless-stopped
+    mem_limit: 24g
     volumes:
       - ./logs:/app/logs
       - ./models:/app/models
       - ./data:/app/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ping || exit 1"]
       interval: 15s
       timeout: 10s
-      start_period: 60s
+      start_period: 180s
       retries: 10
     stdin_open: true
     tty: true
@@ -57,9 +73,25 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - HF_TOKEN=${HF_TOKEN:-}
+      # Отключаем LLM всех девочек (экономим RAM)
+      - CELESTA_LLM_ENABLED=0
+      - AYIKO_LLM_ENABLED=0
+      - HANAKO_LLM_ENABLED=0
+      - FUYUKI_LLM_ENABLED=0
+      - LUCY_LLM_ENABLED=0
+      - FUTABA_LLM_ENABLED=0
+      - SHIORI_LLM_ENABLED=0
+      - NOBUKA_LLM_ENABLED=0
+      - LATISLANE_LLM_ENABLED=0
+      - AKVA_LLM_ENABLED=0
+      - YU_LLM_ENABLED=0
+      - NAOTO_LLM_ENABLED=0
+      - SIDNEY_LLM_ENABLED=0
+      - KRISTI_LLM_ENABLED=0
     env_file:
       - .env
     restart: unless-stopped
+    mem_limit: 15g
     volumes:
       - ./shared_knowledge.json:/app/shared_knowledge.json
       - ./global_progress.json:/app/global_progress.json
@@ -79,7 +111,7 @@ services:
       - ./yu:/app/yu
       - ./ayiko:/app/ayiko
       - ./sidney:/app/sidney
-    command: python orchestrator_v3.py
+    command: python modules/orchestrator_v3.py
 
   # === АВТООБУЧЕНИЕ МОДЕЛИ (Ханако) ===
   auto-learn:
@@ -93,6 +125,7 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    mem_limit: 10g
     volumes:
       - ./data:/app/data
       - ./models:/app/models

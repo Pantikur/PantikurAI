@@ -32,7 +32,7 @@ from hanako.engine.reports import ReportSystem
 from hanako.engine.auto_start import AutoStartSystem
 
 # Humanity Core — живая душа Ханако
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # LLM Service — сервис для работы с моделями Qwen2.5
 from hanako.engine.llm_service import HanakoLLMService

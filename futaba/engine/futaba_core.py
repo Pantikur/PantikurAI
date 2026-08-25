@@ -15,6 +15,7 @@ from __future__ import annotations
 from scientists_network.character_system import CharacterSystem
 import json
 import logging
+import os
 import random
 import signal
 import sys
@@ -39,7 +40,7 @@ from futaba.engine.emotions import (
 )
 
 # Humanity Core — живая душа Футабы
-from humanity_core import HumanityLayer
+from services.humanity_core import HumanityLayer
 
 # 6 модулей души Футабы: Сознание, Сердце, Амбиции, Воля, Разум
 from futaba.consciousness import FutabaConsciousness
@@ -230,6 +231,10 @@ class FutabaCore:
     
     def _load_models(self):
         """Загрузить LLM-модели: General (общение) + Legal (анализ законов)."""
+        # Отключение LLM через переменную окружения
+        if os.environ.get("FUTABA_LLM_ENABLED", "1") != "1":
+            self.logger.info("⚠️ LLM Futaba отключена (FUTABA_LLM_ENABLED=0)")
+            return
         try:
             import torch
             from transformers import AutoTokenizer, AutoModelForCausalLM

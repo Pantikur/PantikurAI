@@ -99,12 +99,30 @@ class CelestaLLMService:
                     trust_remote_code=True
                 )
                 
-                self.general_model = AutoModelForCausalLM.from_pretrained(
-                    general_path,
-                    device_map="auto",
-                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                    trust_remote_code=True
-                )
+                # 4-bit квантизация для экономии памяти
+                try:
+                    from transformers import BitsAndBytesConfig
+                    quantization_config = BitsAndBytesConfig(
+                        load_in_4bit=True,
+                        bnb_4bit_compute_dtype=torch.float16,
+                        bnb_4bit_quant_type="nf4",
+                        bnb_4bit_use_double_quant=True,
+                    )
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        quantization_config=quantization_config,
+                        device_map="auto",
+                        trust_remote_code=True
+                    )
+                    self.logger.info("✅ General модель загружена с 4-bit квантизацией")
+                except ImportError:
+                    self.logger.warning("⚠️ bitsandbytes не установлен, загружаю без квантизации")
+                    self.general_model = AutoModelForCausalLM.from_pretrained(
+                        general_path,
+                        device_map="auto",
+                        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                        trust_remote_code=True
+                    )
                 
                 self.general_loaded = True
                 self.logger.info("✅ General модель (Qwen2.5-3B) загружена")
@@ -112,28 +130,10 @@ class CelestaLLMService:
             except Exception as e:
                 self.logger.error(f"❌ Ошибка загрузки General модели: {e}")
             
-            # 2. Coder Model — Qwen2.5-Coder-3B для анализа кода
-            try:
-                coder_path = _resolve_model_path(self.config.coder_model_path)
-                self.logger.info(f"💻 Загрузка Coder (Qwen2.5-Coder-3B): {coder_path}")
-                
-                self.coder_tokenizer = AutoTokenizer.from_pretrained(
-                    coder_path,
-                    trust_remote_code=True
-                )
-                
-                self.coder_model = AutoModelForCausalLM.from_pretrained(
-                    coder_path,
-                    device_map="auto",
-                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                    trust_remote_code=True
-                )
-                
-                self.coder_loaded = True
-                self.logger.info("✅ Coder модель (Qwen2.5-Coder-3B) загружена")
-                
-            except Exception as e:
-                self.logger.error(f"❌ Ошибка загрузки Coder модели: {e}")
+            # 2. Coder Model — ОТКЛЮЧЕНА для экономии памяти
+            # self.coder_model отключена — используется только General модель
+            self.logger.info("⚠️ Coder модель отключена для экономии памяти")
+            self.coder_loaded = False
             
             if self.general_loaded or self.coder_loaded:
                 self.logger.info("✅ LLM сервис инициализирован")
