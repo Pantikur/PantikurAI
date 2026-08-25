@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wuglarst AI — Редактор видео</title>
+    <title>Wuglarst AI — Видеоредактор</title>
     <style>
         * {
             margin: 0;
@@ -11,408 +11,826 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-dark: #1a1a2e;
+            --bg-panel: #16213e;
+            --bg-darker: #0f0f1a;
+            --accent: #e94560;
+            --accent-hover: #ff6b81;
+            --text: #e0e0e0;
+            --text-dim: #888;
+            --border: #2a2a4a;
+            --timeline-bg: #12122a;
+            --track-video: #2d4a7a;
+            --track-audio: #2d7a4a;
+            --frame: #3a3a5a;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: var(--bg-dark);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== ВЕРХНЯЯ ПАНЕЛЬ ===== */
+        .top-bar {
+            height: 40px;
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 20px;
+        }
+
+        .top-bar .logo {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--accent);
+        }
+
+        .top-bar .menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .top-bar .menu-item {
+            color: var(--text-dim);
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .top-bar .menu-item:hover {
+            color: var(--text);
+        }
+
+        .top-bar .actions {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
             color: #fff;
-            min-height: 100vh;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #3a3a5a;
+        }
+
+        /* ===== ОСНОВНАЯ РАБОЧАЯ ОБЛАСТЬ ===== */
+        .main-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ===== ЛЕВАЯ ПАНЕЛЬ ИНСТРУМЕНТОВ ===== */
+        .toolbar {
+            width: 50px;
+            background: var(--bg-darker);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 10px 0;
+            gap: 5px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header p {
-            color: #aaa;
-            font-size: 1.1em;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.05);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 800px;
-            width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .upload-area:hover {
-            border-color: #48dbfb;
-            background: rgba(72, 219, 251, 0.1);
-        }
-
-        .upload-area.has-file {
-            border-color: #2ecc71;
-            background: rgba(46, 204, 113, 0.1);
-        }
-
-        .upload-icon {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .file-name {
-            margin-top: 10px;
-            color: #2ecc71;
-            font-weight: bold;
-        }
-
-        .upload-hint {
-            color: #888;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .prompt-section {
-            margin-bottom: 20px;
-        }
-
-        .prompt-section label {
-            display: block;
-            margin-bottom: 8px;
-            color: #aaa;
-            font-size: 0.9em;
-        }
-
-        .prompt-section textarea {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            font-size: 1em;
-            resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
-        }
-
-        .prompt-section textarea:focus {
-            outline: none;
-            border-color: #48dbfb;
-        }
-
-        .btn-generate {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(90deg, #ff6b6b, #feca57);
+        .tool-btn {
+            width: 36px;
+            height: 36px;
             border: none;
-            border-radius: 10px;
-            color: #000;
-            font-size: 1.1em;
-            font-weight: bold;
+            background: transparent;
+            color: var(--text-dim);
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
         }
 
-        .btn-generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        .tool-btn:hover {
+            background: var(--bg-panel);
+            color: var(--text);
         }
 
-        .btn-generate:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .status {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .status.processing {
-            display: block;
-            background: rgba(255, 193, 7, 0.2);
-            border: 1px solid #ffc107;
-            color: #ffc107;
-        }
-
-        .status.success {
-            display: block;
-            background: rgba(46, 204, 113, 0.2);
-            border: 1px solid #2ecc71;
-            color: #2ecc71;
-        }
-
-        .status.error {
-            display: block;
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
-        }
-
-        .result-section {
-            display: none;
-        }
-
-        .result-section.visible {
-            display: block;
-        }
-
-        .result-section h3 {
-            margin-bottom: 15px;
-            color: #48dbfb;
-        }
-
-        .result-video {
-            width: 100%;
-            border-radius: 10px;
-            background: #000;
-        }
-
-        .download-btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #2ecc71;
+        .tool-btn.active {
+            background: var(--accent);
             color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: all 0.3s;
         }
 
-        .download-btn:hover {
-            background: #27ae60;
-            transform: translateY(-2px);
+        .tool-separator {
+            width: 30px;
+            height: 1px;
+            background: var(--border);
+            margin: 5px 0;
         }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 193, 7, 0.3);
-            border-radius: 50%;
-            border-top-color: #ffc107;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-            vertical-align: middle;
+        /* ===== ЦЕНТРАЛЬНАЯ ЧАСТЬ ===== */
+        .center-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
+        /* ===== ПРЕДПРОСМОТР ===== */
+        .preview-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-darker);
             padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
-        .feature-card .icon {
-            font-size: 2em;
+        .video-player {
+            width: 100%;
+            max-width: 720px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-player video,
+        .video-player canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-placeholder {
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        .video-placeholder .icon {
+            font-size: 48px;
             margin-bottom: 10px;
         }
 
-        .feature-card h4 {
-            margin-bottom: 5px;
-            color: #48dbfb;
+        .video-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
         }
 
-        .feature-card p {
-            color: #aaa;
-            font-size: 0.9em;
+        .play-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
         }
 
-        .footer {
-            margin-top: 40px;
+        /* ===== ТАЙМЛАЙН ===== */
+        .timeline-area {
+            height: 180px;
+            background: var(--timeline-bg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-header {
+            height: 28px;
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 11px;
+            color: var(--text-dim);
+            gap: 15px;
+        }
+
+        .timeline-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .timeline-tracks {
+            width: 120px;
+            background: var(--bg-darker);
+            border-right: 1px solid var(--border);
+        }
+
+        .track-label {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 11px;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .timeline-content {
+            flex: 1;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .timeline-ruler {
+            height: 20px;
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .timeline-tracks-area {
+            flex: 1;
+            position: relative;
+        }
+
+        .track {
+            height: 40px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .track-video {
+            background: var(--track-video);
+        }
+
+        .track-audio {
+            background: var(--track-audio);
+        }
+
+        .clip {
+            position: absolute;
+            height: 32px;
+            top: 4px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .frames-row {
+            display: flex;
+            gap: 2px;
+            padding: 5px 0;
+        }
+
+        .frame-thumb {
+            width: 40px;
+            height: 25px;
+            background: var(--frame);
+            border-radius: 3px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .frame-thumb:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+        }
+
+        /* ===== ПРАВАЯ ПАНЕЛЬ ===== */
+        .right-panel {
+            width: 300px;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs-header {
+            display: flex;
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 5px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-size: 11px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Вкладка: Материалы */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
             text-align: center;
-            color: #666;
-            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent);
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        .upload-zone .icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .material-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .material-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: var(--bg-darker);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .material-item:hover {
+            background: #1a1a3a;
+        }
+
+        .material-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .material-info {
+            flex: 1;
+        }
+
+        .material-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .material-meta {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        /* Вкладка: Сценарий */
+        .script-area {
+            width: 100%;
+            min-height: 200px;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .script-area:focus {
+            border-color: var(--accent);
+        }
+
+        .script-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        /* Вкладка: Чат */
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .chat-msg {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .chat-msg.user {
+            background: var(--accent);
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .chat-msg.ai {
+            background: var(--bg-darker);
+            align-self: flex-start;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 12px;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent);
+        }
+
+        .chat-send {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a6a;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🎬 Wuglarst AI</h1>
-        <p>Нейросетевой редактор видео с мощным GPU</p>
-    </div>
-
-    <div class="container">
-        <div class="upload-area" id="uploadArea">
-            <div class="upload-icon">📁</div>
-            <p>Нажми или перетащи видео сюда</p>
-            <p class="upload-hint">MP4, AVI, MOV (до 500MB)</p>
-            <input type="file" id="fileInput" accept="video/*">
-            <div class="file-name" id="fileName"></div>
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+    <div class="top-bar">
+        <div class="logo">🎬 Wuglarst AI</div>
+        <div class="menu">
+            <div class="menu-item">Файл</div>
+            <div class="menu-item">Редактирование</div>
+            <div class="menu-item">Видео</div>
+            <div class="menu-item">Эффекты</div>
+            <div class="menu-item">Экспорт</div>
         </div>
-
-        <div class="prompt-section">
-            <label for="prompt">Опиши, что нужно сделать:</label>
-            <textarea id="prompt" placeholder="Например: Добавь эффект огня, измени цвет на неоновый, добавь субтитры..."></textarea>
-        </div>
-
-        <button class="btn-generate" id="generateBtn" disabled>🚀 Сгенерировать</button>
-
-        <div class="status" id="status"></div>
-
-        <div class="result-section" id="resultSection">
-            <h3>✅ Готово!</h3>
-            <video class="result-video" id="resultVideo" controls></video>
-            <a class="download-btn" id="downloadBtn" href="#" download>⬇️ Скачать видео</a>
+        <div class="actions">
+            <button class="btn btn-secondary">Сохранить</button>
+            <button class="btn btn-primary">Экспорт видео</button>
         </div>
     </div>
 
-    <div class="features">
-        <div class="feature-card">
-            <div class="icon">⚡</div>
-            <h4>Быстро</h4>
-            <p>GPU-ускоренная обработка</p>
+    <!-- ОСНОВНАЯ ОБЛАСТЬ -->
+    <div class="main-area">
+        <!-- ЛЕВАЯ ПАНЕЛЬ ИНСТРУМЕНТОВ -->
+        <div class="toolbar">
+            <button class="tool-btn active" title="Выделение">⬚</button>
+            <button class="tool-btn" title="Кисть">✏️</button>
+            <button class="tool-btn" title="Текст">T</button>
+            <div class="tool-separator"></div>
+            <button class="tool-btn" title="Фигуры">⬡</button>
+            <button class="tool-btn" title="Ластик">🧹</button>
+            <button class="tool-btn" title="Камера">📷</button>
+            <div class="tool-separator"></div>
+            <button class="tool-btn" title="Фильтры">🎨</button>
+            <button class="tool-btn" title="Переходы">✨</button>
+            <button class="tool-btn" title="Звук">🔊</button>
+            <div class="tool-separator"></div>
+            <button class="tool-btn" title="AI Генерация">🤖</button>
         </div>
-        <div class="feature-card">
-            <div class="icon">🎨</div>
-            <h4>Креативно</h4>
-            <p>AI понимает естественный язык</p>
-        </div>
-        <div class="feature-card">
-            <div class="icon">🔒</div>
-            <h4>Безопасно</h4>
-            <p>Приватная обработка данных</p>
-        </div>
-    </div>
 
-    <div class="footer">
-        <p>© 2026 Wuglarst AI • Работает на GPU • wuglarst.ru</p>
+        <!-- ЦЕНТР -->
+        <div class="center-area">
+            <!-- ПРЕДПРОСМОТР -->
+            <div class="preview-area">
+                <div class="video-player" id="videoPlayer">
+                    <div class="video-placeholder">
+                        <div class="icon">🎬</div>
+                        <p>Загрузите видео или сгенерируйте сцену</p>
+                    </div>
+                    <video id="previewVideo" style="display:none;" controls></video>
+                    <div class="video-controls">
+                        <button class="play-btn" id="playBtn">▶</button>
+                        <button class="play-btn">⏮</button>
+                        <button class="play-btn">⏭</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ТАЙМЛАЙН -->
+            <div class="timeline-area">
+                <div class="timeline-header">
+                    <span>🎞 Таймлайн</span>
+                    <span style="margin-left:auto;">00:00:00 / 00:00:30</span>
+                </div>
+                <div class="timeline-body">
+                    <div class="timeline-tracks">
+                        <div class="track-label">🎥 Видео</div>
+                        <div class="track-label">🔊 Аудио 1</div>
+                        <div class="track-label">🔊 Аудио 2</div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-ruler">
+                            <div style="position:absolute; left:0; font-size:10px; color:#666;">00:00</div>
+                            <div style="position:absolute; left:33%; font-size:10px; color:#666;">00:10</div>
+                            <div style="position:absolute; left:66%; font-size:10px; color:#666;">00:20</div>
+                            <div style="position:absolute; right:0; font-size:10px; color:#666;">00:30</div>
+                        </div>
+                        <div class="timeline-tracks-area">
+                            <div class="track track-video">
+                                <div class="clip" style="left:0; width:60%;">Сцена 1</div>
+                                <div class="clip" style="left:62%; width:35%;">Сцена 2</div>
+                            </div>
+                            <div class="track track-audio">
+                                <div class="clip" style="left:0; width:100%; background:rgba(45,122,74,0.3);">Звуковая дорожка</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Покадровая дорожка -->
+                <div style="padding: 10px; background: var(--bg-darker); border-top: 1px solid var(--border);">
+                    <div class="frames-row" id="framesRow">
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                        <div class="frame-thumb"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ПРАВАЯ ПАНЕЛЬ -->
+        <div class="right-panel">
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="materials">📁 Материалы</button>
+                <button class="tab-btn" data-tab="script">📝 Сценарий</button>
+                <button class="tab-btn" data-tab="chat">💬 AI</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Вкладка: Материалы -->
+                <div class="tab-pane active" id="tab-materials">
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="icon">📤</div>
+                        <p style="font-size:12px; color:var(--text-dim);">Перетащите файлы сюда<br>или нажмите для выбора</p>
+                        <input type="file" id="fileInput" multiple style="display:none;" accept="video/*,audio/*,image/*">
+                    </div>
+                    <div class="material-list" id="materialList">
+                        <!-- Материалы будут добавляться сюда -->
+                    </div>
+                </div>
+
+                <!-- Вкладка: Сценарий -->
+                <div class="tab-pane" id="tab-script">
+                    <label style="font-size:12px; color:var(--text-dim); margin-bottom:8px; display:block;">Текстовый сценарий</label>
+                    <textarea class="script-area" id="scriptArea" placeholder="Введите сценарий видео...&#10;&#10;Например:&#10;Кадр 1: Закат над городом, плавный наезд камеры&#10;Кадр 2: Герой идёт по набережной&#10;Эффект: тёплые тона, кинематографичная съёмка"></textarea>
+                    <div class="script-actions">
+                        <button class="btn btn-primary" id="generateBtn">🤖 AI генерация</button>
+                        <button class="btn btn-secondary" id="clearScriptBtn">Очистить</button>
+                    </div>
+                </div>
+
+                <!-- Вкладка: Чат -->
+                <div class="tab-pane" id="tab-chat">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-msg ai">
+                            Привет! Я AI-ассистент Wuglarst. Помогу создать видео. Опишите, что хотите получить!
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Опишите сцену или задайте вопрос...">
+                        <button class="chat-send" id="chatSendBtn">➤</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const uploadArea = document.getElementById('uploadArea');
+        // ===== ВКЛАДКИ =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ===== ИНСТРУМЕНТЫ =====
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // ===== ЗАГРУЗКА ФАЙЛОВ =====
+        const uploadZone = document.getElementById('uploadZone');
         const fileInput = document.getElementById('fileInput');
-        const fileName = document.getElementById('fileName');
-        const prompt = document.getElementById('prompt');
-        const generateBtn = document.getElementById('generateBtn');
-        const status = document.getElementById('status');
-        const resultSection = document.getElementById('resultSection');
-        const resultVideo = document.getElementById('resultVideo');
-        const downloadBtn = document.getElementById('downloadBtn');
+        const materialList = document.getElementById('materialList');
 
-        let selectedFile = null;
+        uploadZone.addEventListener('click', () => fileInput.click());
 
-        uploadArea.addEventListener('click', () => fileInput.click());
-
-        uploadArea.addEventListener('dragover', (e) => {
+        uploadZone.addEventListener('dragover', e => {
             e.preventDefault();
-            uploadArea.style.borderColor = '#48dbfb';
+            uploadZone.style.borderColor = 'var(--accent)';
         });
 
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.style.borderColor = '';
         });
 
-        uploadArea.addEventListener('drop', (e) => {
+        uploadZone.addEventListener('drop', e => {
             e.preventDefault();
-            uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-            if (e.dataTransfer.files.length) {
-                handleFile(e.dataTransfer.files[0]);
-            }
+            uploadZone.style.borderColor = '';
+            handleFiles(e.dataTransfer.files);
         });
 
         fileInput.addEventListener('change', () => {
-            if (fileInput.files.length) {
-                handleFile(fileInput.files[0]);
-            }
+            handleFiles(fileInput.files);
         });
 
-        function handleFile(file) {
-            if (!file.type.startsWith('video/')) {
-                alert('Пожалуйста, выбери видеофайл');
-                return;
-            }
-            selectedFile = file;
-            fileName.textContent = `📎 ${file.name}`;
-            uploadArea.classList.add('has-file');
-            generateBtn.disabled = false;
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                const item = document.createElement('div');
+                item.className = 'material-item';
+                const type = file.type.startsWith('video') ? '🎥' : file.type.startsWith('audio') ? '🔊' : '🖼';
+                item.innerHTML = `
+                    <div class="material-icon">${type}</div>
+                    <div class="material-info">
+                        <div class="material-name">${file.name}</div>
+                        <div class="material-meta">${(file.size / 1024 / 1024).toFixed(1)} MB</div>
+                    </div>
+                `;
+                materialList.prepend(item);
+            });
         }
 
-        prompt.addEventListener('input', () => {
-            generateBtn.disabled = !selectedFile || !prompt.value.trim();
+        // ===== ЧАТ =====
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+
+        function addMessage(text, isUser = false) {
+            const msg = document.createElement('div');
+            msg.className = 'chat-msg ' + (isUser ? 'user' : 'ai');
+            msg.textContent = text;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        chatSendBtn.addEventListener('click', sendChat);
+        chatInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') sendChat();
         });
 
-        generateBtn.addEventListener('click', async () => {
-            if (!selectedFile || !prompt.value.trim()) return;
-
-            generateBtn.disabled = true;
-            status.className = 'status processing';
-            status.innerHTML = '<span class="loading-spinner"></span> Обработка видео... Это может занять несколько минут';
-            resultSection.classList.remove('visible');
-
-            const formData = new FormData();
-            formData.append('video', selectedFile);
-            formData.append('prompt', prompt.value.trim());
+        async function sendChat() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            addMessage(text, true);
+            chatInput.value = '';
 
             try {
-                const response = await fetch('/predict', {
+                const response = await fetch('/chat', {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
                 });
+                const data = await response.json();
+                addMessage(data.reply || 'Ответ от AI...');
+            } catch (e) {
+                addMessage('AI пока не отвечает. Проверьте сервер.');
+            }
+        }
 
-                if (!response.ok) {
-                    throw new Error(`Ошибка: ${response.status}`);
-                }
+        // ===== AI ГЕНЕРАЦИЯ =====
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const script = document.getElementById('scriptArea').value;
+            if (!script.trim()) {
+                alert('Введите сценарий!');
+                return;
+            }
+            addMessage('Генерирую видео по сценарию... Подождите.', false);
+            // Здесь будет вызов API для генерации
+        });
 
-                const result = await response.json();
-
-                status.className = 'status success';
-                status.textContent = '✅ Видео успешно обработано!';
-
-                if (result.output_path) {
-                    resultVideo.src = result.output_path;
-                    resultVideo.style.display = 'block';
-                    downloadBtn.href = result.output_path;
-                    resultSection.classList.add('visible');
-                }
-            } catch (error) {
-                status.className = 'status error';
-                status.textContent = `❌ Ошибка: ${error.message}`;
-                console.error(error);
-            } finally {
-                generateBtn.disabled = false;
+        // ===== КЛАВИШИ =====
+        document.addEventListener('keydown', e => {
+            if (e.key === ' ') {
+                e.preventDefault();
+                const btn = document.getElementById('playBtn');
+                btn.textContent = btn.textContent === '▶' ? '⏸' : '▶';
             }
         });
     </script>
