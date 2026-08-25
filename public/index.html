@@ -159,9 +159,10 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        /* ===== ПРЕДПРОСМОТР ===== */
+        /* ===== 3D VIEWPORT ===== */
         .preview-area {
             flex: 1;
             display: flex;
@@ -170,6 +171,7 @@
             background: var(--bg-darker);
             padding: 20px;
             position: relative;
+            overflow: hidden;
         }
 
         .video-player {
@@ -572,6 +574,60 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #4a4a6a;
         }
+
+        /* ===== 3D VIEWPORT ===== */
+        .viewport-3d {
+            width: 100%;
+            height: 100%;
+            background: #0a0a1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viewport-3d canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .viewport-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        .info-item {
+            margin: 4px 0;
+            color: var(--text-dim);
+        }
+
+        .info-item .label {
+            color: #888;
+        }
+
+        .info-item .value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .viewport-hint {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-dim);
+            text-align: center;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -612,74 +668,26 @@
 
         <!-- ЦЕНТР -->
         <div class="center-area">
-            <!-- ПРЕДПРОСМОТР -->
+            <!-- 3D ПРОСТРАНСТВО -->
             <div class="preview-area">
-                <div class="video-player" id="videoPlayer">
-                    <div class="video-placeholder">
-                        <div class="icon">🎬</div>
-                        <p>Загрузите видео или сгенерируйте сцену</p>
-                    </div>
-                    <video id="previewVideo" class="hidden" controls></video>
-                    <div class="video-controls">
-                        <button class="play-btn" id="playBtn">▶</button>
-                        <button class="play-btn">⏮</button>
-                        <button class="play-btn">⏭</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ТАЙМЛАЙН -->
-            <div class="timeline-area">
-                <div class="timeline-header">
-                    <span>🎞 Таймлайн</span>
-                    <span class="timeline-timecode">00:00:00 / 00:00:30</span>
-                </div>
-                <div class="timeline-body">
-                    <div class="timeline-tracks">
-                        <div class="track-label">🎥 Видео</div>
-                        <div class="track-label">🔊 Аудио 1</div>
-                        <div class="track-label">🔊 Аудио 2</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-ruler">
-                            <div class="ruler-mark ruler-start">00:00</div>
-                            <div class="ruler-mark ruler-mid1">00:10</div>
-                            <div class="ruler-mark ruler-mid2">00:20</div>
-                            <div class="ruler-mark ruler-end">00:30</div>
+                <div class="viewport-3d" id="viewport3D">
+                    <div class="viewport-info">
+                        <div class="info-item">
+                            <span class="label">Камера:</span>
+                            <span class="value" id="camPos">0, 0, 0</span>
                         </div>
-                        <div class="timeline-tracks-area">
-                            <div class="track track-video">
-                                <div class="clip clip-s1">Сцена 1</div>
-                                <div class="clip clip-s2">Сцена 2</div>
-                            </div>
-                            <div class="track track-audio">
-                                <div class="clip clip-audio">Звуковая дорожка</div>
-                            </div>
+                        <div class="info-item">
+                            <span class="label">Объекты:</span>
+                            <span class="value" id="objCount">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">FPS:</span>
+                            <span class="value" id="fpsCounter">60</span>
                         </div>
                     </div>
-                </div>
-                <div class="frames-container">
-                    <div class="frames-row" id="framesRow">
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
-                        <div class="frame-thumb"></div>
+                    <div class="viewport-hint">
+                        <p>ЛКМ — вращение | ПКМ — перемещение | Колесо — масштаб</p>
+                        <p>Добавьте объекты через панель инструментов</p>
                     </div>
                 </div>
             </div>
@@ -732,6 +740,8 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script>
         // ===== ВКЛАДКИ =====
         document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -850,6 +860,165 @@
                 btn.textContent = btn.textContent === '▶' ? '⏸' : '▶';
             }
         });
+
+        // ===== 3D ПРОСТРАНСТВО (Three.js) =====
+        (function init3D() {
+            const viewport = document.getElementById('viewport3D');
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a1a);
+            scene.fog = new THREE.Fog(0x0a0a1a, 20, 100);
+
+            const camera = new THREE.PerspectiveCamera(75, viewport.clientWidth / viewport.clientHeight, 0.1, 1000);
+            camera.position.set(5, 5, 5);
+            camera.lookAt(0, 0, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(viewport.clientWidth, viewport.clientHeight);
+            renderer.shadowMap.enabled = true;
+            viewport.insertBefore(renderer.domElement, viewport.firstChild);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            // Сетка
+            const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
+            scene.add(gridHelper);
+
+            // Оси
+            const axesHelper = new THREE.AxesHelper(2);
+            scene.add(axesHelper);
+
+            // Освещение
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 10, 7);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            const pointLight = new THREE.PointLight(0xe94560, 0.5, 20);
+            pointLight.position.set(-5, 3, -5);
+            scene.add(pointLight);
+
+            // Материалы
+            const materials = {
+                cube: new THREE.MeshStandardMaterial({ color: 0xe94560, metalness: 0.3, roughness: 0.4 }),
+                sphere: new THREE.MeshStandardMaterial({ color: 0x48dbfb, metalness: 0.5, roughness: 0.2 }),
+                cylinder: new THREE.MeshStandardMaterial({ color: 0x0abde3, metalness: 0.4, roughness: 0.3 }),
+                plane: new THREE.MeshStandardMaterial({ color: 0x1a1a2e, metalness: 0.1, roughness: 0.8 })
+            };
+
+            // Объекты сцены
+            const objects = [];
+
+            // Добавляем пол
+            const planeGeometry = new THREE.PlaneGeometry(20, 20);
+            const plane = new THREE.Mesh(planeGeometry, materials.plane);
+            plane.rotation.x = -Math.PI / 2;
+            plane.position.y = -0.01;
+            plane.receiveShadow = true;
+            scene.add(plane);
+            objects.push(plane);
+
+            // Функция добавления объекта
+            function addObject(type, position) {
+                let geometry, mesh;
+                const pos = position || { x: (Math.random() - 0.5) * 6, y: 1, z: (Math.random() - 0.5) * 6 };
+
+                switch (type) {
+                    case 'cube':
+                        geometry = new THREE.BoxGeometry(1, 1, 1);
+                        mesh = new THREE.Mesh(geometry, materials.cube);
+                        break;
+                    case 'sphere':
+                        geometry = new THREE.SphereGeometry(0.6, 32, 32);
+                        mesh = new THREE.Mesh(geometry, materials.sphere);
+                        break;
+                    case 'cylinder':
+                        geometry = new THREE.CylinderGeometry(0.5, 0.5, 1.2, 32);
+                        mesh = new THREE.Mesh(geometry, materials.cylinder);
+                        break;
+                }
+
+                mesh.position.set(pos.x, pos.y, pos.z);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                scene.add(mesh);
+                objects.push(mesh);
+                updateObjectCount();
+                return mesh;
+            }
+
+            // Обновление счётчика объектов
+            function updateObjectCount() {
+                document.getElementById('objCount').textContent = objects.length - 1; // минус пол
+            }
+
+            // Обновление позиции камеры
+            function updateCameraInfo() {
+                const pos = camera.position;
+                document.getElementById('camPos').textContent = 
+                    `${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}, ${pos.z.toFixed(1)}`;
+            }
+
+            // FPS счётчик
+            let frameCount = 0;
+            let lastTime = performance.now();
+            function updateFPS() {
+                frameCount++;
+                const currentTime = performance.now();
+                if (currentTime - lastTime >= 1000) {
+                    document.getElementById('fpsCounter').textContent = frameCount;
+                    frameCount = 0;
+                    lastTime = currentTime;
+                }
+            }
+
+            // Анимация
+            let time = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.01;
+
+                // Анимация объектов
+                objects.forEach((obj, i) => {
+                    if (i > 0) { // не пол
+                        obj.rotation.y += 0.01;
+                        obj.position.y += Math.sin(time + i) * 0.002;
+                    }
+                });
+
+                controls.update();
+                renderer.render(scene, camera);
+                updateCameraInfo();
+                updateFPS();
+            }
+
+            animate();
+
+            // Обработка изменения размера
+            window.addEventListener('resize', () => {
+                const width = viewport.clientWidth;
+                const height = viewport.clientHeight;
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            });
+
+            // Привязка кнопок инструментов
+            const toolBtns = document.querySelectorAll('.tool-btn');
+            toolBtns.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    if (index === 4) { // Фигуры
+                        addObject('cube');
+                    } else if (index === 0) { // Выделение (куб по умолчанию)
+                        addObject('cube');
+                    }
+                });
+            });
+        })();
     </script>
 </body>
 </html>
