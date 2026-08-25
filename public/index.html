@@ -336,6 +336,24 @@
             background: var(--accent);
         }
 
+        .hidden { display: none; }
+        .timeline-timecode { margin-left: auto; }
+        .ruler-mark {
+            position: absolute;
+            font-size: 10px;
+            color: #666;
+        }
+        .ruler-start { left: 0; }
+        .ruler-mid1 { left: 33%; }
+        .ruler-mid2 { left: 66%; }
+        .ruler-end { right: 0; }
+        .clip-s1 { left: 0; width: 60%; }
+        .clip-s2 { left: 62%; width: 35%; }
+        .clip-audio { left: 0; width: 100%; background: rgba(45,122,74,0.3); }
+        .frames-container { padding: 10px; background: var(--bg-darker); border-top: 1px solid var(--border); }
+        .upload-text { font-size: 12px; color: var(--text-dim); }
+        .label-sm { font-size: 12px; color: var(--text-dim); margin-bottom: 8px; display: block; }
+
         /* ===== ПРАВАЯ ПАНЕЛЬ ===== */
         .right-panel {
             width: 300px;
@@ -601,7 +619,7 @@
                         <div class="icon">🎬</div>
                         <p>Загрузите видео или сгенерируйте сцену</p>
                     </div>
-                    <video id="previewVideo" style="display:none;" controls></video>
+                    <video id="previewVideo" class="hidden" controls></video>
                     <div class="video-controls">
                         <button class="play-btn" id="playBtn">▶</button>
                         <button class="play-btn">⏮</button>
@@ -614,7 +632,7 @@
             <div class="timeline-area">
                 <div class="timeline-header">
                     <span>🎞 Таймлайн</span>
-                    <span style="margin-left:auto;">00:00:00 / 00:00:30</span>
+                    <span class="timeline-timecode">00:00:00 / 00:00:30</span>
                 </div>
                 <div class="timeline-body">
                     <div class="timeline-tracks">
@@ -624,24 +642,23 @@
                     </div>
                     <div class="timeline-content">
                         <div class="timeline-ruler">
-                            <div style="position:absolute; left:0; font-size:10px; color:#666;">00:00</div>
-                            <div style="position:absolute; left:33%; font-size:10px; color:#666;">00:10</div>
-                            <div style="position:absolute; left:66%; font-size:10px; color:#666;">00:20</div>
-                            <div style="position:absolute; right:0; font-size:10px; color:#666;">00:30</div>
+                            <div class="ruler-mark ruler-start">00:00</div>
+                            <div class="ruler-mark ruler-mid1">00:10</div>
+                            <div class="ruler-mark ruler-mid2">00:20</div>
+                            <div class="ruler-mark ruler-end">00:30</div>
                         </div>
                         <div class="timeline-tracks-area">
                             <div class="track track-video">
-                                <div class="clip" style="left:0; width:60%;">Сцена 1</div>
-                                <div class="clip" style="left:62%; width:35%;">Сцена 2</div>
+                                <div class="clip clip-s1">Сцена 1</div>
+                                <div class="clip clip-s2">Сцена 2</div>
                             </div>
                             <div class="track track-audio">
-                                <div class="clip" style="left:0; width:100%; background:rgba(45,122,74,0.3);">Звуковая дорожка</div>
+                                <div class="clip clip-audio">Звуковая дорожка</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Покадровая дорожка -->
-                <div style="padding: 10px; background: var(--bg-darker); border-top: 1px solid var(--border);">
+                <div class="frames-container">
                     <div class="frames-row" id="framesRow">
                         <div class="frame-thumb"></div>
                         <div class="frame-thumb"></div>
@@ -681,8 +698,8 @@
                 <div class="tab-pane active" id="tab-materials">
                     <div class="upload-zone" id="uploadZone">
                         <div class="icon">📤</div>
-                        <p style="font-size:12px; color:var(--text-dim);">Перетащите файлы сюда<br>или нажмите для выбора</p>
-                        <input type="file" id="fileInput" multiple style="display:none;" accept="video/*,audio/*,image/*">
+                        <p class="upload-text">Перетащите файлы сюда<br>или нажмите для выбора</p>
+                        <input type="file" id="fileInput" class="hidden" multiple accept="video/*,audio/*,image/*">
                     </div>
                     <div class="material-list" id="materialList">
                         <!-- Материалы будут добавляться сюда -->
@@ -691,7 +708,7 @@
 
                 <!-- Вкладка: Сценарий -->
                 <div class="tab-pane" id="tab-script">
-                    <label style="font-size:12px; color:var(--text-dim); margin-bottom:8px; display:block;">Текстовый сценарий</label>
+                    <label class="label-sm">Текстовый сценарий</label>
                     <textarea class="script-area" id="scriptArea" placeholder="Введите сценарий видео...&#10;&#10;Например:&#10;Кадр 1: Закат над городом, плавный наезд камеры&#10;Кадр 2: Герой идёт по набережной&#10;Эффект: тёплые тона, кинематографичная съёмка"></textarea>
                     <div class="script-actions">
                         <button class="btn btn-primary" id="generateBtn">🤖 AI генерация</button>
