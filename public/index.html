@@ -832,10 +832,12 @@
                 const response = await fetch('/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
+                    body: JSON.stringify({
+                        messages: [{ message: text, is_own: true }]
+                    })
                 });
                 const data = await response.json();
-                addMessage(data.reply || 'Ответ от AI...');
+                addMessage(data.response || data.reply || 'Ответ от AI...');
             } catch (e) {
                 addMessage('AI пока не отвечает. Проверьте сервер.');
             }
