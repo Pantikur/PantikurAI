@@ -57,36 +57,16 @@ class QwenBot:
         system_prefix = f"{system_prompt}\n\n" if system_prompt else ""
         
         if mode == "chat":
-            if memory_data:
-                # === ПРОХОД 2: финальный ответ ===
-                prompt = (
-                    f"{system_prefix}{context_str}\n\n"
-                    f"=== АРХИВНЫЕ ДАННЫЕ ИЗ ПАМЯТИ ИГРЫ ===\n{memory_data}\n"
-                    f"=== КОНЕЦ АРХИВНЫХ ДАННЫХ ===\n\n"
-                    f"Используй эти архивные данные для финального ответа. "
-                    f"Отвечай от имени персонажа, продолжая сцену с учётом лора, отношений "
-                    f"и архивных данных выше. НЕ запрашивай [MEMORY_QUERY] — данные уже предоставлены.\n\nБот:"
-                )
-            else:
-                # === ПРОХОД 1: модель может запросить архив через [MEMORY_QUERY] ===
-                prompt = (
-                    f"{system_prefix}{context_str}\n\n"
-                    f"Ты — персонаж в ролевой игре. Отвечай от имени своего персонажа, "
-                    f"продолжая сцену, с учётом лора и отношений.\n"
-                    f"ВАЖНО: если тебе для ответа не хватает информации из архива памяти "
-                    f"(хронология прошлых событий, где находится предмет, что было в локации, "
-                    f"отношения с персонажем) — ты МОЖЕШЬ запросить её. Для этого начни ответ "
-                    f"со строки [MEMORY_QUERY] и в ней укажи JSON с нужными данными, например:\n"
-                    f"[MEMORY_QUERY]{{\"timeline\": 5}}[/MEMORY_QUERY]\n"
-                    f"[MEMORY_QUERY]{{\"item\": \"ключ\"}}[/MEMORY_QUERY]\n"
-                    f"[MEMORY_QUERY]{{\"location\": \"Комната Лилиан\"}}[/MEMORY_QUERY]\n"
-                    f"[MEMORY_QUERY]{{\"relationship\": \"Виктор\"}}[/MEMORY_QUERY]\n"
-                    f"[MEMORY_QUERY]{{\"items\": \"all\"}}[/MEMORY_QUERY]\n"
-                    f"[MEMORY_QUERY]{{\"scene\": 10}}[/MEMORY_QUERY]\n"
-                    f"[MEMORY_QUERY]{{\"full\": true}}[/MEMORY_QUERY]\n"
-                    f"Ты можешь запросить только ОДИН запрос за раз. Если данных достаточно — "
-                    f"просто отвечай как персонаж.\n\nБот:"
-                )
+            prompt = (
+                f"Ты — Wuglarst, дружелюбный AI-ассистент для создания видео. "
+                f"Помогаешь пользователю создавать, монтировать и анимировать видео в 3D-редакторе.\n"
+                f"Отвечай кратко, по делу, на русском языке.\n"
+                f"Если пользователь просит создать сцену/видео — предложи сгенерировать её через AI.\n"
+                f"НЕ выдумывай диалог за пользователя и не продолжай сам с собой.\n\n"
+                f"{context_str}\n\n"
+                f"Пользователь: {last_user_msg}\n"
+                f"Ответ ассистента:"
+            )
         elif mode == "rpg":
             prompt = f"{system_prefix}{context_str}\nБот:"
         elif mode == "continue":
@@ -97,30 +77,40 @@ class QwenBot:
         # Генерация
         try:
             self.model.eval()
-            inputs = self.tokenizer.encode(prompt, return_tensors="pt")
+            inputs = self.tokenizer(prompt, return_tensors="pt")
             
             if torch.cuda.is_available():
-                inputs = inputs.to("cuda")
+                inputs = {k: v.to("cuda") for k, v in inputs.items()}
             
             with torch.no_grad():
                 outputs = self.model.generate(
-                    inputs.input_ids,
-                    max_new_tokens=768,
-                    temperature=0.8,
+                    inputs["input_ids"],
+                    max_new_tokens=150,
+                    temperature=0.7,
                     top_p=0.9,
                     do_sample=True,
+                    repetition_penalty=1.2,
                     pad_token_id=self.tokenizer.eos_token_id,
                     eos_token_id=self.tokenizer.eos_token_id
                 )
             
-            generated_ids = outputs[0][inputs.input_ids.shape[1]:]
+            generated_ids = outputs[0][inputs["input_ids"].shape[1]:]
             response = self.tokenizer.decode(generated_ids, skip_special_tokens=True)
             
-            # Убираем имя "Бот:" из ответа
+            # Обрезаем, если модель начала выдумывать диалог от имени пользователя
+            cut_markers = ["Пользователь:", "User:", "\n\nПользователь"]
+            for marker in cut_markers:
+                idx = response.find(marker)
+                if idx >= 0:
+                    response = response[:idx].strip()
+            
+            # Убираем имя "Бот:" / "Ассистент:" из ответа
             if response.startswith("Бот:"):
                 response = response[4:].strip()
-            elif response.startswith("Пользователь:"):
+            elif response.startswith("Ассистент:"):
                 response = response[11:].strip()
+            elif response.startswith("Пользователь:"):
+                response = ""
             
             return response.strip()
         except Exception as e:

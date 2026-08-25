@@ -829,15 +829,37 @@
             chatInput.value = '';
 
             try {
-                const response = await fetch('/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        messages: [{ message: text, is_own: true }]
-                    })
-                });
-                const data = await response.json();
-                addMessage(data.response || data.reply || 'Ответ от AI...');
+                let messages = [{ message: text, is_own: true }];
+                let memory_data = null;
+                let response = '';
+
+                // Двухпроходная генерация: если модель запросила архив памяти
+                for (let pass = 0; pass < 2; pass++) {
+                    const payload = { messages };
+                    if (memory_data) payload.memory_data = memory_data;
+
+                    const res = await fetch('/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+
+                    if (data.memory_query) {
+                        // Модель запросила архив — отвечаем пустыми данными (память не подключена)
+                        memory_data = JSON.stringify({ empty: true, note: "Память не подключена в web-версии" });
+                        continue;
+                    }
+
+                    response = data.response || data.reply || '';
+                    break;
+                }
+
+                if (response) {
+                    addMessage(response);
+                } else {
+                    addMessage('Qwen подключён, но пока молчит. Попробуйте ещё раз.');
+                }
             } catch (e) {
                 addMessage('AI пока не отвечает. Проверьте сервер.');
             }
